@@ -16,7 +16,7 @@ import pytest
 
 from app.core.config import Settings
 from app.modules.memory import cache, get_memory_block, invalidate_memory_block
-from app.tests.fakes import fake_session
+from app.tests.fakes import fake_session, make_user
 
 
 def _memory(text: str) -> MagicMock:
@@ -33,11 +33,7 @@ def _memory(text: str) -> MagicMock:
 
 
 def _user() -> MagicMock:
-    user = MagicMock()
-    user.id = uuid4()
-    user.memory_enabled = True
-    user.name = None
-    return user
+    return make_user(name=None)
 
 
 async def test_memory_block_write_racing_a_memory_write_is_never_served(fake_redis):

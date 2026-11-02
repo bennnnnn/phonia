@@ -35,6 +35,10 @@ class StemSettings(BaseModel):
     # pool (core/readings.py). Normal messages read in milliseconds; past this the turn
     # reads no subject and the model answers without a verified solve.
     subject_read_timeout_seconds: float = 3.0
+    # Pool slots solves may not fill, kept for those readings (core/sympy_slots.py): with
+    # three workers, solves run two at a time and a reading always finds a slot. A
+    # reading still uses an idle solve slot. 0 shares every slot, as before.
+    sympy_reading_reserved_slots: int = 1
     # modules/math/image_extract.py's vision-chat call is a network round trip, not
     # local synchronous SymPy work — reusing stem_solve_timeout_seconds's 5s
     # budget (sized for CPU-bound solve/integrate) cut off OCR calls that

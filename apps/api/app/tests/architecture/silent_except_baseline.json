@@ -42,7 +42,7 @@
   "modules/math/tool.py": 1,
   "modules/math/tools/prompt.py": 1,
   "modules/math/unit_conversion.py": 3,
-  "modules/memory/cache.py": 2,
+  "modules/memory/cache.py": 1,
   "modules/memory/enqueue_policy.py": 1,
   "modules/memory/extract_backlog.py": 6,
   "modules/memory/history_scan.py": 5,
