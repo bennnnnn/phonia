@@ -10,10 +10,10 @@ from uuid import uuid4
 
 import pytest
 
+from app.modules.chat import finalize_registry
 from app.modules.chat import service as chats
+from app.modules.conversation import history as conversation_history
 from app.tests.fakes import redis_mock
-
-_HISTORY = "app.modules.chat.service.conversation_history"
 
 
 @pytest.mark.asyncio
@@ -51,18 +51,14 @@ async def test_list_messages_page_waits_only_when_it_reaches_the_newest_row(
     anchors = {"newest": {}, "before": {"before": uuid4()}}
     anchors |= {"after": {"after": uuid4()}, "around": {"around": uuid4()}}
     with (
-        patch(
-            "app.modules.chat.service.get_chat", AsyncMock(return_value=SimpleNamespace(title="T"))
-        ),
-        patch(
-            "app.modules.chat.service.finalize_registry.wait_for_inflight_stream",
-            side_effect=wait_stream,
-        ),
-        patch("app.modules.chat.service.finalize_registry.wait_for_pending_finalize", AsyncMock()),
-        patch(f"{_HISTORY}.messages_page_before", side_effect=page_before),
-        patch(f"{_HISTORY}.messages_after", side_effect=page_after),
-        patch(f"{_HISTORY}.messages_around", side_effect=page_around),
-        patch("app.modules.chat.service._attach_cached_related_prompts", AsyncMock()),
+        patch.object(chats, "get_chat", AsyncMock(return_value=SimpleNamespace(title="T"))),
+        patch.object(finalize_registry, "wait_for_inflight_stream", side_effect=wait_stream),
+        patch.object(finalize_registry, "wait_for_pending_finalize", AsyncMock()),
+        patch.object(conversation_history, "messages_page_before", side_effect=page_before),
+        patch.object(conversation_history, "messages_after", side_effect=page_after),
+        patch.object(conversation_history, "messages_around", side_effect=page_around),
+        # The newest page asks Redis for cached follow-up questions; none are cached.
+        patch.object(chats, "load_related_prompts", AsyncMock(return_value={})),
     ):
         await chats.list_messages_page(
             AsyncMock(), redis_mock(), SimpleNamespace(id=uuid4()), uuid4(), **anchors[anchor]

@@ -17,6 +17,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.orm import Chat, Message
 from app.modules.conversation import chats_repository as _chats
 from app.modules.conversation import messages_repository as _messages
+from app.modules.conversation.pins import MAX_PINNED_CHATS
 
 
 async def get_chat(session: AsyncSession, chat_id: UUID, user_id: UUID) -> Chat | None:
@@ -113,7 +114,7 @@ def peek_recent_chat(chat_id: UUID, user_id: UUID) -> Chat | None:
 
 async def pinned_chats(session: AsyncSession, user_id: UUID) -> list[Chat]:
     """The user's pinned chats (the drawer's top)."""
-    return await _chats.list_pinned(session, user_id)
+    return await _chats.list_pinned(session, user_id, limit=MAX_PINNED_CHATS)
 
 
 async def recent_chats_page(

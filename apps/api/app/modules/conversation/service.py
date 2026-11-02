@@ -16,6 +16,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.orm import Chat, Message
 from app.modules.conversation import chats_repository as _chats
 from app.modules.conversation import messages_repository as _messages
+from app.modules.conversation.pins import MAX_PINNED_CHATS as MAX_PINNED_CHATS
 
 
 async def create_chat(session: AsyncSession, *, user_id: UUID, model: str) -> Chat:
@@ -36,9 +37,6 @@ async def set_title_if_empty(
 ) -> bool:
     """The generated title, unless the user named the chat first; whether it was set."""
     return await _chats.set_title_if_empty(session, chat_id, title, user_id=user_id, commit=commit)
-
-
-MAX_PINNED_CHATS = _chats.MAX_PINNED_CHATS
 
 
 async def count_other_pins_locked(session: AsyncSession, user_id: UUID, chat_id: UUID) -> int:

@@ -13,10 +13,6 @@ from app.models.orm import Chat, Message, User
 from app.repositories.batch_delete import delete_in_batches
 from app.repositories.keyset import after, decode_cursor, encode_cursor, page_of
 
-# The most chats one account keeps pinned. The drawer reads every pin on each open, so
-# the pins are a bounded list: pinning past this is refused (chat's ``PinLimitError``).
-MAX_PINNED_CHATS = 50
-
 # Same process just created this chat. The send that follows should not pay
 # another Neon round trip to prove the caller owns it.
 _CHAT_CACHE_TTL_SECONDS = 120.0
@@ -120,8 +116,9 @@ async def list_for_user(
     return list(result.scalars().all())
 
 
-async def list_pinned(session: AsyncSession, user_id: UUID) -> list[Chat]:
-    """The user's pinned, unarchived chats with messages, newest first; list columns only."""
+async def list_pinned(session: AsyncSession, user_id: UUID, *, limit: int) -> list[Chat]:
+    """The user's pinned, unarchived chats with messages, newest first, at most ``limit``;
+    list columns only."""
     has_messages = exists().where(Message.chat_id == Chat.id)
     result = await session.execute(
         select(Chat)
@@ -129,7 +126,7 @@ async def list_pinned(session: AsyncSession, user_id: UUID) -> list[Chat]:
         .where(Chat.user_id == user_id, Chat.pinned.is_(True), Chat.archived.is_(False))
         .where(has_messages)
         .order_by(Chat.updated_at.desc(), Chat.id.desc())
-        .limit(MAX_PINNED_CHATS)
+        .limit(limit)
     )
     return list(result.scalars().all())
 
