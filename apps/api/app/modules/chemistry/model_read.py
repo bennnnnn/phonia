@@ -50,12 +50,6 @@ def chemistry_menu() -> dict[str, tuple[OpCard, ...]]:
     return {kind: tuple(cards) for kind, cards in menu.items()}
 
 
-def chemistry_needs_formula(op: str) -> bool:
-    """The law is about one substance the question names."""
-    law = _laws().get(op)
-    return law is not None and law.species is not None
-
-
 def _ruled_out(law: ChemistryLaw, message: str) -> bool:
     """The message's own words rule the law out, as they would for the binder: a word its
     binding excludes, or an equation for a law that reads none."""

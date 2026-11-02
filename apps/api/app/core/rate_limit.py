@@ -8,7 +8,13 @@ logger = logging.getLogger(__name__)
 
 
 async def allow_request(redis: Redis, key: str, *, limit: int, window_seconds: int) -> bool:
-    """Increment a windowed counter; expire on first hit.
+    """Count one request in a fixed window; False once ``limit`` is passed.
+
+    A fixed window, not a sliding one: the key's TTL is set by the window's first
+    request and the count starts again when it expires. Up to ``limit`` requests
+    just before the reset and ``limit`` just after it all pass, so a caller can
+    reach twice ``limit`` across a window edge: read each limit as a flood
+    bound, not an exact rate.
 
     INCR and EXPIRE run in one pipeline so a crash between them cannot leave a
     counter key with no TTL (permanent rate-limit for that bucket).

@@ -18,6 +18,7 @@ if command -v uv >/dev/null 2>&1; then
       uv run ruff format --check . &&
       uv run mypy &&
       uv run python ../../scripts/check_mypy_strict.py &&
+      uv run vulture &&
       if uv run python -c "from app.core.config import Settings; Settings().database_url" >/dev/null 2>&1; then
         echo "    Migrating database (alembic upgrade head)..."
         uv run alembic upgrade head

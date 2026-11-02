@@ -1,4 +1,9 @@
-"""Global REST rate limiting (Redis sliding window via INCR+EXPIRE)."""
+"""Global REST rate limiting: a fixed window per caller (Redis INCR + EXPIRE NX).
+
+The window starts at a caller's first request and resets when its key expires, so a
+burst that straddles the reset can reach twice the limit in a short span; this is a
+coarse flood limit, not a smoothed rate (``core/rate_limit.allow_request``).
+"""
 
 from __future__ import annotations
 

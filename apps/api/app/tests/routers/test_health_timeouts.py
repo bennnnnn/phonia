@@ -52,7 +52,12 @@ class _Redis:
     [
         (0.0, 0.0, 200, {"status": "ok", "redis": "ok"}),
         (0.0, _STALL_S, 200, {"status": "ok", "redis": "degraded"}),
-        (_STALL_S, 0.0, 503, {"detail": "Dependency check failed"}),
+        (
+            _STALL_S,
+            0.0,
+            503,
+            {"detail": {"code": "unavailable", "message": "Dependency check failed"}},
+        ),
     ],
 )
 async def test_ready_bounds_each_dependency_check(

@@ -9,7 +9,7 @@ import pytest
 from app.core.config import Settings
 from app.modules.physics.catalog import CATALOG, symbol_for
 from app.modules.physics.direct import format_direct_physics_working
-from app.modules.physics.notation import renamed_operations, shown
+from app.modules.physics.notation import _SHOWN, shown
 from app.modules.physics.reply_policy import PHYSICS_VELOCITY_NOTATION, physics_prompt_hints
 from app.services.law_binding.spec import FormulaSpec
 from app.tests.modules.physics.support import build_verified_physics_block, extract_physics_intent
@@ -83,7 +83,7 @@ _OLD_SYMBOL = re.compile(
 )
 
 
-@pytest.mark.parametrize("operation", sorted(renamed_operations()))
+@pytest.mark.parametrize("operation", sorted(_SHOWN))
 def test_every_renamed_law_shows_no_old_symbol(operation: str) -> None:
     """Each operation in the table is a catalog law, and nothing it shows keeps u or v."""
     spec = CATALOG[operation]

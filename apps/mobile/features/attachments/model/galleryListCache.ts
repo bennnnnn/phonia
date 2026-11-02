@@ -57,7 +57,8 @@ export function isGalleryPageFresh(filter: GalleryFilter, query: string): boolea
 export function galleryPageReadAt(filter: GalleryFilter, query: string): number | undefined {
   return resource.fetchedAt(galleryListCacheKey(filter, query));
 }
-export function setGalleryPage(filter: GalleryFilter, query: string, page: GalleryPage, nextCursor: string | null = null): void {
+/** Tests only: a completed first-page read, already in the cache. The app fills it with `fetchGalleryPage`. */
+export function seedGalleryPageForTest(filter: GalleryFilter, query: string, page: GalleryPage, nextCursor: string | null = null): void {
   resource.set(galleryListCacheKey(filter, query), firstEntry(page, nextCursor));
 }
 export function invalidateGalleryCache(): void {

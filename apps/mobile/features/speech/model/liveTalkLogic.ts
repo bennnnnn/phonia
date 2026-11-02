@@ -190,10 +190,10 @@ const LIVE_TALK_429S: ReadonlyMap<unknown, LiveTalkGate> = new Map<unknown, Live
 ]);
 
 /**
- * The realtime provider failed: the server's 502 when it minted no key, and the phone's own
- * SDP exchange with the provider (`realtimeSdp.ts`), whose status is the provider's, not Recall's.
+ * The realtime provider failed: the server's 502 when it minted no key, or when OpenAI opened
+ * no call for the phone's offer (`POST /speech/live/connect`, `realtimeSdp.ts`).
  */
-export const LIVE_TALK_UPSTREAM_FAILED = "upstream_failed";
+const LIVE_TALK_UPSTREAM_FAILED = "upstream_failed";
 
 export function liveTalkErrorGate(error: unknown): LiveTalkGate {
   // The one case an update fixes: this build has no WebRTC.

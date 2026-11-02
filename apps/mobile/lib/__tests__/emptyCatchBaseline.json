@@ -44,7 +44,7 @@
   "features/todos/model/reminderProposal.ts": 1,
   "features/todos/model/todoReminders.ts": 1,
   "hooks/useBootstrapSync.ts": 3,
-  "lib/api/client.ts": 2,
+  "lib/api/client.ts": 1,
   "lib/auth.ts": 1,
   "lib/cache/cacheFile.ts": 1,
   "lib/cache/staleResource.ts": 1,

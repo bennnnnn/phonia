@@ -12,7 +12,9 @@ jest.mock("expo-modules-core", () => ({
 }));
 jest.mock("expo-constants", () => ({}));
 jest.mock("@/lib/speech/voiceAudio", () => ({ yieldMicToWebRtc: jest.fn(async () => undefined) }));
-jest.mock("@/features/speech/api", () => ({ speechApi: { createRealtimeSession: jest.fn(), realtimeTool: jest.fn() } }));
+jest.mock("@/features/speech/api", () => ({
+  speechApi: { createRealtimeSession: jest.fn(), connectRealtimeSession: jest.fn(), realtimeTool: jest.fn() },
+}));
 jest.mock("react-native-webrtc", () => ({
   mediaDevices: { getUserMedia: jest.fn() },
   RTCPeerConnection: jest.fn(), RTCSessionDescription: jest.fn((value) => value),
@@ -24,7 +26,6 @@ describe("physical-phone Realtime turns", () => {
   let events: RealtimeVoiceEvent[];
   const emit = (event: object) => channel.onmessage?.({ data: JSON.stringify(event) });
   const sent = () => channel.send.mock.calls.map(([value]) => JSON.parse(value));
-  const originalFetch = globalThis.fetch;
 
   beforeEach(() => {
     jest.useFakeTimers();
@@ -42,10 +43,10 @@ describe("physical-phone Realtime turns", () => {
       setRemoteDescription: async () => { channel.onopen?.(); emit({ type: "session.created" }); },
       close: jest.fn(), getReceivers: () => [],
     }));
-    (speechApi.createRealtimeSession as jest.Mock).mockResolvedValue({ client_secret: "ek_mock", call_id: "session-mock", model: "mock", expires_at: 123 });
-    globalThis.fetch = jest.fn(async () => ({ ok: true, text: async () => "v=0\nm=audio" })) as unknown as typeof fetch;
+    (speechApi.createRealtimeSession as jest.Mock).mockResolvedValue({ call_id: "session-mock", model: "mock", expires_at: 123 });
+    (speechApi.connectRealtimeSession as jest.Mock).mockResolvedValue({ sdp: "v=0\nm=audio" });
   });
-  afterEach(() => { jest.clearAllTimers(); jest.useRealTimers(); globalThis.fetch = originalFetch; });
+  afterEach(() => { jest.clearAllTimers(); jest.useRealTimers(); });
 
   async function connect() {
     const session = await createRealtimeVoiceSession({ token: "tok", chatId: "chat-1", onEvent: (event) => events.push(event) });

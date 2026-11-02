@@ -7,6 +7,7 @@ from typing import Any
 from unittest.mock import AsyncMock, MagicMock, patch
 from uuid import uuid4
 
+import fakeredis.aioredis
 import pytest
 from fastapi.testclient import TestClient
 
@@ -22,6 +23,11 @@ _IMAGE = base64.b64encode(b"\xff\xd8\xff fake jpeg").decode()
 _SETTINGS = Settings(math_tools_enabled=True)
 
 
+def _fake_redis() -> fakeredis.aioredis.FakeRedis:
+    """A fresh Redis for the scan's per-user slots, open reads and daily count."""
+    return fakeredis.aioredis.FakeRedis(decode_responses=True)
+
+
 def _client(settings: Settings | None = None) -> TestClient:
     user = MagicMock(spec=User)
     user.id = uuid4()
@@ -33,7 +39,7 @@ def _client(settings: Settings | None = None) -> TestClient:
 
 def _guards(*, allowed: bool = True) -> Any:
     return (
-        patch("app.services.scan_read.get_redis_client", return_value=MagicMock()),
+        patch("app.services.scan_read.get_redis_client", return_value=_fake_redis()),
         patch(
             "app.services.scan_read.quota_service.global_spend_exceeded",
             AsyncMock(return_value=False),

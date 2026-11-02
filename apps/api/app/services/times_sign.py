@@ -17,6 +17,8 @@ from __future__ import annotations
 
 import re
 
+from app.services.latex_groups import group_end
+
 TIMES = r"\times"
 
 # A dot of multiplication: \cdot (not \cdots or \cdotp), the dot operator, the middle dot.
@@ -54,7 +56,7 @@ def with_times(latex: str) -> str:
     while at < len(latex):
         words = _WORDS.match(latex, at)
         if words is not None:
-            end = _group_end(latex, words.end() - 1)
+            end = group_end(latex, words.end() - 1)
             out.append(latex[at:end])
             at = end
             continue
@@ -86,16 +88,3 @@ def _keeps_dot(before: str, after: str) -> bool:
     if _VECTOR_BEFORE.search(before) or _VECTOR.match(after.lstrip()):
         return True
     return _UNIT_AFTER.match(after) is not None
-
-
-def _group_end(latex: str, brace: int) -> int:
-    """Past the ``{…}`` group that opens at ``brace``."""
-    depth = 0
-    for index in range(brace, len(latex)):
-        if latex[index] == "{":
-            depth += 1
-        elif latex[index] == "}":
-            depth -= 1
-            if depth == 0:
-                return index + 1
-    return len(latex)

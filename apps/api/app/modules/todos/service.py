@@ -21,6 +21,14 @@ async def list_owned_todos(
     return await todos_repo.list_for_user(session, user_id, limit=limit, offset=offset)
 
 
+async def todos_for_export(
+    session: AsyncSession, user_id: UUID, *, after_id: UUID | None, limit: int
+) -> list[TodoItem]:
+    """A page of the user's to-dos after ``after_id`` by id (the data export); no
+    recurrence is advanced, and a to-do deleted meanwhile skips no other."""
+    return await todos_repo.list_after_id(session, user_id, limit=limit, cursor=after_id)
+
+
 async def delete_user_rows(session: AsyncSession, user_id: UUID) -> None:
     """Every to-do of a deleted account; no commit (``account.lifecycle``)."""
     await todos_repo.delete_all_for_user(session, user_id)

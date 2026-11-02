@@ -163,3 +163,142 @@ async def test_a_chat_turns_tool_round_is_left_to_finalize(model_spend_redis) ->
     assert usage == {"input": 3_000, "output": 40}
     await asyncio.sleep(0)
     assert await _metered(model_spend_redis) == 0
+
+
+# ── stream attempts no reply kept ─────────────────────────────────────────────
+
+
+@pytest.mark.parametrize(
+    "usage, prompt_chars, cause, tokens",
+    [
+        ({"input": 2_000, "output": 30}, 400, "cap", (2_000, 30)),  # reported usage wins
+        ({"input": 2_000}, 400, "server", (2_000, 0)),  # reported, whatever the cause
+        ({}, 4_000, "cap", (1_000, 0)),  # ran, no usage: the prompt's estimate
+        ({}, 4_000, "empty", (1_000, 0)),
+        ({}, 4_000, "timeout", (1_000, 0)),
+        ({}, 4_000, None, (1_000, 0)),  # stopped before its text
+        ({}, 4_000, "request", None),  # refused: nothing ran
+        ({}, 4_000, "rate_limit", None),
+        ({}, 4_000, "connection", None),
+        ({}, 4_000, "server", None),
+    ],
+)
+def test_discarded_attempt_cost(
+    usage: dict[str, int], prompt_chars: int, cause: str | None, tokens: tuple[int, int] | None
+) -> None:
+    cost = llm_spend.discarded_attempt_cost_usd("free-chat", usage, prompt_chars, cause)
+    if tokens is None:
+        assert cost == 0.0
+    else:
+        expected = estimate_cost_usd("free-chat", input_tokens=tokens[0], output_tokens=tokens[1])
+        assert cost == pytest.approx(expected)
+
+
+def _delta_chunk(content: str | None, usage: SimpleNamespace | None = None) -> SimpleNamespace:
+    delta = SimpleNamespace(content=content, reasoning_content=None, tool_calls=None)
+    return SimpleNamespace(choices=[SimpleNamespace(delta=delta, finish_reason=None)], usage=usage)
+
+
+class _Stream:
+    def __init__(self, chunks: list[SimpleNamespace], error: Exception | None = None) -> None:
+        self._chunks = list(chunks)
+        self._error = error
+
+    def __aiter__(self) -> "_Stream":
+        return self
+
+    async def __anext__(self) -> SimpleNamespace:
+        if self._chunks:
+            return self._chunks.pop(0)
+        if self._error is not None:
+            raise self._error
+        raise StopAsyncIteration
+
+
+async def _stream_reply(providers: list[Any], usage: dict[str, int]) -> str:
+    fake = AsyncMock(side_effect=providers)
+    with patch.object(litellm_gateway, "acompletion", fake):
+        tokens = [
+            token
+            async for token in litellm_gateway.stream_chat_completion(
+                settings=_SETTINGS,
+                model_alias="smart-chat",
+                messages=[{"role": "user", "content": "x" * 4_000}],
+                max_tokens=50,
+                usage=usage,
+                fallback_aliases=["free-chat"],
+            )
+        ]
+    return "".join(tokens)
+
+
+async def test_a_discarded_stream_attempt_counts_toward_global_spend(model_spend_redis) -> None:
+    """The first model answered only whitespace (with usage), the backup answered: the
+    user is charged the backup alone, global spend gets the discarded attempt too."""
+    empty = _Stream([_delta_chunk("  "), _delta_chunk(None, _usage(5_000, 7))])
+    answered = _Stream([_delta_chunk("Hello."), _delta_chunk(None, _usage(4_000, 3))])
+    usage: dict[str, int] = {}
+
+    assert await _stream_reply([empty, answered], usage) == "Hello."
+
+    assert usage == {"input": 4_000, "output": 3}  # the user's quota: the kept attempt
+    # Finalize charges the kept one; the meter adds only the discarded one.
+    assert await _metered(model_spend_redis) == _cost("smart-chat", 5_000, 7)
+
+
+async def test_a_discarded_attempt_without_usage_counts_its_prompt(model_spend_redis) -> None:
+    empty = _Stream([_delta_chunk("   ")])  # ran, ended with no text and no usage
+    answered = _Stream([_delta_chunk("Hello.")])
+
+    assert await _stream_reply([empty, answered], {}) == "Hello."
+
+    assert await _metered(model_spend_redis) == _cost("smart-chat", 1_000, 0)
+
+
+async def test_a_refused_attempt_adds_nothing(model_spend_redis) -> None:
+    refused = type("BadRequest", (Exception,), {"status_code": 400})("bad request")
+    answered = _Stream([_delta_chunk("Hello.")])
+
+    assert await _stream_reply([refused, answered], {}) == "Hello."
+
+    assert await _metered(model_spend_redis) == 0
+
+
+async def test_a_reply_cut_off_after_its_text_is_left_to_finalize(model_spend_redis) -> None:
+    text = "The answer is 4. " * 40  # past any think hold: the reply has started
+    broken = _Stream([_delta_chunk(text, _usage(5_000, 2))], error=RuntimeError("reset"))
+    usage: dict[str, int] = {}
+
+    with pytest.raises(litellm_gateway.ModelUnavailableError):
+        await _stream_reply([broken], usage)
+
+    assert usage == {"input": 5_000, "output": 2}  # finalize charges the partial reply
+    assert await _metered(model_spend_redis) == 0
+
+
+async def test_stream_calls_disable_litellm_and_sdk_retries() -> None:
+    fake = AsyncMock(return_value=_Stream([_delta_chunk("Hi.")]))
+    with patch.object(litellm_gateway, "acompletion", fake):
+        tokens = [
+            token
+            async for token in litellm_gateway.stream_chat_completion(
+                settings=_SETTINGS,
+                model_alias="free-chat",
+                messages=[{"role": "user", "content": "x"}],
+                max_tokens=50,
+            )
+        ]
+    assert tokens == ["Hi."]
+    assert fake.await_args is not None
+    kwargs = fake.await_args.kwargs
+    assert (kwargs["num_retries"], kwargs["max_retries"]) == (0, 0)
+
+
+@pytest.mark.parametrize("call", [_complete_text, _complete_structured, _vision])
+async def test_completion_calls_disable_litellm_and_sdk_retries(model_spend_redis, call) -> None:
+    fake = AsyncMock(return_value=_completion('{"needs_search": false}'))
+    with patch.object(litellm_gateway, "acompletion", fake):
+        await call()
+    assert fake.await_args is not None
+    kwargs = fake.await_args.kwargs
+    assert (kwargs["num_retries"], kwargs["max_retries"]) == (0, 0)

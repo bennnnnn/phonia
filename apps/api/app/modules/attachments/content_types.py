@@ -10,6 +10,7 @@ import io
 import zipfile
 
 from app.core.attachment_limits import MAX_ATTACHMENT_SIZE
+from app.core.image_signatures import sniff_image_type
 
 IMAGE_CONTENT_TYPES = frozenset(
     {
@@ -104,16 +105,11 @@ def _docx_zip_bomb(data: bytes) -> bool:
 
 def _sniff_signature(data: bytes) -> str | None:
     """Detect a few common binary types by leading magic bytes."""
-    if len(data) >= 3 and data[:3] == b"\xff\xd8\xff":
-        return "image/jpeg"
-    if len(data) >= 8 and data[:8] == b"\x89PNG\r\n\x1a\n":
-        return "image/png"
+    image = sniff_image_type(data)
+    if image is not None:
+        return image
     if len(data) >= 4 and data[:4] == b"%PDF":
         return "application/pdf"
-    if len(data) >= 6 and data[:6] in (b"GIF87a", b"GIF89a"):
-        return "image/gif"
-    if len(data) >= 12 and data[:4] == b"RIFF" and data[8:12] == b"WEBP":
-        return "image/webp"
     if len(data) >= 4 and data[:4] == b"PK\x03\x04":
         return _office_content_type(data)
     if len(data) >= 8 and data[:8] == b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1":

@@ -5,19 +5,12 @@ from uuid import UUID
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from app.core.validation import normalize_stored_chat_title
-from app.models.model_catalog import validate_user_alias
-from app.models.schemas.common import MessageFeedback, MessageRole
+from app.models.schemas.common import MessageFeedback, MessageRole, ModelChoice
 from app.models.schemas.text import UserText
 
 
 class ChatCreate(BaseModel):
-    model: str = "auto"
-
-    @field_validator("model")
-    @classmethod
-    def validate_model(cls, value: str) -> str:
-        validate_user_alias(value, allow_auto=True)
-        return value
+    model: ModelChoice = "auto"
 
 
 class ChatRename(BaseModel):
@@ -125,19 +118,11 @@ class MessagePageOut(BaseModel):
 class _StreamClientContext(BaseModel):
     """Shared model + geo fields for message / regenerate / edit bodies."""
 
-    model: str | None = None
+    model: ModelChoice | None = None
     client_timezone: UserText | None = Field(default=None, max_length=64)
     client_location: UserText | None = Field(default=None, max_length=200)
     client_latitude: float | None = Field(default=None, ge=-90, le=90)
     client_longitude: float | None = Field(default=None, ge=-180, le=180)
-
-    @field_validator("model")
-    @classmethod
-    def validate_model(cls, value: str | None) -> str | None:
-        if value is None:
-            return None
-        validate_user_alias(value, allow_auto=True)
-        return value
 
 
 class ChatMessageRequest(_StreamClientContext):

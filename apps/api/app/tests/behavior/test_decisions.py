@@ -6,9 +6,9 @@ from typing import Any
 
 import pytest
 
-from app.modules.chat.turn_trace import plain_record
 from app.tests.behavior import decisions, stem_sweep, sweep
 from app.tests.behavior.cases import CASES
+from app.tests.turn_trace_support import plain_record
 
 # A few turns of every corpus. cc-001 and cc-002 are sweep replies the finalize step rewrites:
 # the trace begun when the turn is read also holds what its passes changed.

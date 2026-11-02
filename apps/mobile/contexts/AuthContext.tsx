@@ -15,7 +15,6 @@ import {
   loginWithApple,
   loginWithDev,
   loginWithGoogle,
-  logoutSession,
   setConsentRequiredHandler,
   setTokenRefreshHandler,
   setUnauthorizedHandler,
@@ -40,6 +39,7 @@ import {
 } from "@/lib/auth";
 import { cachedUserMatchesToken, clearCachedUser, mergeCachedUser, readCachedUser, writeCachedUser } from "@/lib/cachedUser";
 import { AccountSessionContext } from "@/contexts/accountSession";
+import { endServerSession, watchPendingLogouts } from "@/lib/pendingLogout";
 import { reportCorruptSessionCleared } from "@/lib/sentry";
 import { clearSignedOutAccount } from "@/lib/signOutCleanup";
 import { forgetSyncRecords } from "@/lib/syncRecords";
@@ -97,6 +97,22 @@ async function readStoredSession(): Promise<{ token: string | null; corrupt: boo
 /** The account a failed launch read, for its Sign out: who to clear, which session to end. */
 type LaunchSession = { userId: string | undefined; accessToken: string | null };
 const NO_LAUNCH_SESSION: LaunchSession = { userId: undefined, accessToken: null };
+
+/** This device's Expo push token, loaded on demand so startup does not load expo-notifications. */
+const readDevicePushToken = (): Promise<string | null> =>
+  import("@/features/notifications/model/pushNotifications")
+    .then(({ devicePushToken }) => devicePushToken())
+    .catch(() => null);
+
+/** The server's half of a sign-out, with this device's push token (or its reminders keep coming);
+ * one the server does not hear (offline) is sent again (lib/pendingLogout.ts). */
+function logOutOfServer(accessToken: string, refreshToken: Promise<string | null>): void {
+  void endServerSession(
+    Promise.all([refreshToken, readDevicePushToken()]).then(([refresh, push]) => ({
+      accessToken, refreshToken: refresh, pushToken: push,
+    })),
+  ).catch(() => {});
+}
 
 export function AuthProvider({ children, onRestored }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
@@ -166,16 +182,7 @@ export function AuthProvider({ children, onRestored }: AuthProviderProps) {
       if (credentials.status === "rejected") throw credentials.reason;
     });
     localCleanupRef.current = cleanup;
-    if (accessToken) {
-      // The device's push token goes with the logout, or this account's reminders keep
-      // arriving on a signed-out phone. A failure to read it never holds the logout.
-      const pushToken = import("@/features/notifications/model/pushNotifications")
-        .then(({ devicePushToken }) => devicePushToken())
-        .catch(() => null);
-      void Promise.all([refreshToken, pushToken])
-        .then(([refresh, push]) => logoutSession(accessToken, refresh, push))
-        .catch(() => {});
-    }
+    if (accessToken) logOutOfServer(accessToken, refreshToken);
     return cleanup;
   }, [setCurrentToken, setCurrentUser]);
 
@@ -310,6 +317,9 @@ export function AuthProvider({ children, onRestored }: AuthProviderProps) {
     });
     return () => setUnauthorizedHandler(null);
   }, [signOut]);
+
+  // A sign-out the server did not hear (offline) is sent at start and when the network returns.
+  useEffect(() => watchPendingLogouts(readDevicePushToken), []);
 
   useEffect(() => {
     setTokenRefreshHandler((accessToken, refreshedUser) => {

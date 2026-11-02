@@ -13,6 +13,12 @@ export function noteChatPageRead(chatId: string, at = Date.now()): void {
   pageReads.set(chatId, { session: getSessionGeneration(), at });
 }
 
+/** Sign-out (with the cached threads, `clearAllCachedChatMessages`): the session fence
+ * already hides these from the next sign-in; this lets the map go. */
+export function clearChatPageReads(): void {
+  pageReads.clear();
+}
+
 /** When this sign-in last read the chat's newest page, if it did. */
 export function chatPageReadAt(chatId: string): number | undefined {
   const read = pageReads.get(chatId);

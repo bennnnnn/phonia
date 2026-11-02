@@ -25,7 +25,9 @@ from app.modules.todos.schemas import (
 router = APIRouter(prefix="/todos", tags=["todos"])
 
 
-_MAX_TODOS_PAGE = 1000
+# The phone reads every page of its window on a visit; 200 a page, like the drawer's
+# chats, keeps one response bounded where 1000 rows a page was the whole list at once.
+_MAX_TODOS_PAGE = 200
 
 
 def _todo_out(item: TodoItem, user: User) -> TodoOut:
@@ -44,6 +46,7 @@ def _completed_since(days: int) -> datetime:
 async def list_todos_page(
     request: Request,
     limit: int = Query(default=_MAX_TODOS_PAGE, ge=1, le=_MAX_TODOS_PAGE),
+    # The id of the last row read: a to-do's id orders its rows (no time ties to break).
     cursor: UUID | None = None,
     # Completed rows only from the last this many days; the rest on request
     # (code-health audit NET-16). Omitted: every row.

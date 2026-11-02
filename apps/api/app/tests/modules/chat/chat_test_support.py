@@ -146,7 +146,4 @@ def stream_offline_io():
         stack.enter_context(
             patch("app.modules.chat.turn_load.wait_for_pending_finalize", AsyncMock())
         )
-        stack.enter_context(
-            patch("app.modules.web_search.is_short_letter_answer", return_value=False)
-        )
         yield

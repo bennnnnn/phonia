@@ -50,7 +50,7 @@ async def test_list_page_before_orders_by_created_at_and_id():
     anchor.id = anchor_id
     anchor.created_at = 5
     ref = MagicMock()
-    ref.scalar_one_or_none.return_value = anchor
+    ref.one_or_none.return_value = anchor
     page = MagicMock()
     page.scalars.return_value.all.return_value = [_msg("older", 5)]
     session.execute = AsyncMock(side_effect=[ref, page])

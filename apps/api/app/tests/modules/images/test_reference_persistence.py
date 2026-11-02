@@ -32,7 +32,12 @@ async def test_image_reference_persistence_is_atomic_and_regeneration_reuses_inp
     gateway.presign_upload.return_value = SimpleNamespace(
         attachment_id=str(output_id), storage_key="generated-output"
     )
-    generated = AsyncMock(return_value=(b"png", "image/png"))
+
+    async def provider(*_args: object, on_call, **_kwargs: object) -> tuple[bytes, str]:
+        on_call()  # as generate_image does just before it asks the provider
+        return b"png", "image/png"
+
+    generated = AsyncMock(side_effect=provider)
     load = AsyncMock(return_value=[(source, b"reference-bytes")])
     create = AsyncMock(side_effect=[assistant] if regenerate else [prior, assistant])
     add_image = AsyncMock(side_effect=RuntimeError("insert failed") if fail_write else None)
@@ -82,7 +87,8 @@ async def test_image_reference_persistence_is_atomic_and_regeneration_reuses_inp
                 await generate_for_chat(Settings(), **args)
             session.commit.assert_not_awaited()
             assert gateway.delete_bytes.await_count == 2
-            refund.assert_awaited_once()
+            # The provider was asked: a failed save keeps the slot.
+            refund.assert_not_awaited()
         else:
             await generate_for_chat(Settings(), **args)
             session.commit.assert_awaited_once()
@@ -101,9 +107,11 @@ async def test_image_reference_persistence_is_atomic_and_regeneration_reuses_inp
             assert [copy.source for copy in copies.await_args.kwargs["copies"]] == [source]
 
 
+@pytest.mark.parametrize("asked", [False, True])
 @pytest.mark.asyncio
-async def test_generate_for_chat_refunds_on_cancelled_error():
-    """Hard cancel (CancelledError) must refund — except Exception would miss it."""
+async def test_generate_for_chat_a_cancel_refunds_only_before_the_provider_is_asked(asked):
+    """A hard cancel (CancelledError) before the call refunds (``except Exception`` would
+    miss it); one after the provider was asked keeps the slot, since the call may be billed."""
     import asyncio
 
     user = SimpleNamespace(id=uuid4())
@@ -113,7 +121,9 @@ async def test_generate_for_chat_refunds_on_cancelled_error():
     session.__aenter__.return_value = session
     gateway = AsyncMock()
 
-    async def boom(*_args: object, **_kwargs: object) -> None:
+    async def boom(*_args: object, on_call, **_kwargs: object) -> None:
+        if asked:
+            on_call()
         raise asyncio.CancelledError()
 
     with (
@@ -140,7 +150,7 @@ async def test_generate_for_chat_refunds_on_cancelled_error():
                 chat_id=chat_id,
                 prompt="a cat",
             )
-    refund.assert_awaited_once()
+    assert refund.await_count == int(not asked)
 
 
 @pytest.mark.parametrize("next_day_uses", [0, 1])

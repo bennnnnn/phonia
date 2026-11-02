@@ -141,7 +141,7 @@ def _hermetic_redis():
     _REAL_CONNECT.setdefault("connect", redis_module._connect)
     server = fakeredis.FakeServer()
 
-    def connect(_socket_timeout: float) -> fakeredis.aioredis.FakeRedis:
+    def connect(_socket_timeout: float, *_pool: object) -> fakeredis.aioredis.FakeRedis:
         return fakeredis.aioredis.FakeRedis(server=server, decode_responses=True)
 
     redis_module.get_redis_client.cache_clear()

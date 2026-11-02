@@ -3,6 +3,7 @@ import { Alert, Text } from "react-native";
 import { act, render } from "@testing-library/react-native";
 import { useChatMenuActions } from "@/features/chat/hooks/useChatMenuActions";
 import { api, type Chat } from "@/lib/api";
+import { ApiRequestError } from "@/lib/api/errorBody";
 import { beginChatMutation } from "@/features/chat/model/mutationLock";
 
 let mockSession = 0;
@@ -39,6 +40,18 @@ it("restores a pinned chat when optimistic archive fails", async () => {
   expect(patch).toHaveBeenCalledWith("one", { archived: true, pinned: false });
   expect(patch).toHaveBeenLastCalledWith("one", { archived: false, pinned: true });
   expect(mockError).toHaveBeenCalledWith("chat.archive_failed");
+});
+
+it.each([
+  ["at the pin limit", new ApiRequestError(409, JSON.stringify({ detail: { code: "pin_limit", message: "full", limit: 50 } })), "chat.pin_limit"],
+  ["offline", new Error("offline"), "chat.pin_failed"],
+])("unpins again and says why when a pin fails %s", async (_case, error, message) => {
+  (api.setPin as jest.Mock).mockRejectedValueOnce(error);
+  await render(<Probe />);
+  await act(async () => { current.showRowMenu({ ...chat, pinned: false }); });
+  await act(async () => { await current.togglePinChat(); });
+  expect(patch).toHaveBeenLastCalledWith("one", { pinned: false });
+  expect(mockError).toHaveBeenCalledWith(message);
 });
 
 it("ignores failed rename completion after account switch", async () => {

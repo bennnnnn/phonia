@@ -10,6 +10,8 @@ from __future__ import annotations
 
 import re
 
+from app.services.latex_groups import closed_group_end
+
 _SPAN_RE = re.compile(r"\$([^$]+)\$")
 
 _INT_BOUNDS_RE = re.compile(
@@ -38,21 +40,6 @@ _DOT_PRODUCT_RE = re.compile(r"^\(([^()][^(),]*,[^()]+)\)\s*\\cdot\s*\(([^()][^(
 _MAX_PRODUCT_FACTORS = 20
 
 
-def _group_end(tex: str, start: int) -> int | None:
-    """Index after the ``{…}`` group opening at ``start``."""
-    if start >= len(tex) or tex[start] != "{":
-        return None
-    depth = 0
-    for index in range(start, len(tex)):
-        if tex[index] == "{":
-            depth += 1
-        elif tex[index] == "}":
-            depth -= 1
-            if depth == 0:
-                return index + 1
-    return None
-
-
 def _times_beside_fractions(tex: str) -> str:
     """``44\\frac{2}{2}4`` is 44 * 2/2 * 4: a number beside a fraction multiplies.
 
@@ -65,8 +52,8 @@ def _times_beside_fractions(tex: str) -> str:
             out.append(tex[index])
             index += 1
             continue
-        numerator_end = _group_end(tex, index + len("\\frac"))
-        end = _group_end(tex, numerator_end) if numerator_end is not None else None
+        numerator_end = closed_group_end(tex, index + len("\\frac"))
+        end = closed_group_end(tex, numerator_end) if numerator_end is not None else None
         if end is None:
             out.append(tex[index])
             index += 1

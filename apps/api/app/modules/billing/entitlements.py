@@ -43,6 +43,7 @@ Allowance = Literal[
     "daily_speech_transcriptions",
     "daily_speech_tts",
     "monthly_live_talk_minutes",
+    "library_storage_bytes",
 ]
 ALLOWANCES: tuple[Allowance, ...] = get_args(Allowance)
 
@@ -57,6 +58,7 @@ _ALLOWANCE_SETTING: dict[Allowance, str] = {
     "daily_speech_transcriptions": "daily_speech_transcriptions",
     "daily_speech_tts": "daily_speech_tts",
     "monthly_live_talk_minutes": "monthly_live_talk_minutes",
+    "library_storage_bytes": "library_storage_bytes",
 }
 
 # Metered features: included when the plan's allowance is above zero.
@@ -104,7 +106,7 @@ def has_strong_everyday_model(subject: _HasPlan | str | None, settings: Settings
 
 
 def allowance(subject: _HasPlan | str | None, name: Allowance, settings: Settings) -> int:
-    """This plan's number for *name* (a daily cap, or monthly minutes). Never negative."""
+    """This plan's *name*: a daily cap, monthly minutes or Library bytes. Never negative."""
     value = getattr(settings, setting_name(name, plan_of(subject)))
     return max(0, int(value))
 

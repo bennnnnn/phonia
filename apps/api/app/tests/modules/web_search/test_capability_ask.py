@@ -19,8 +19,8 @@ from app.modules.chat.turn_prep.context import StreamContext
 from app.modules.web_search import (
     WebSearchAdapter,
     asks_only_whether_it_searches,
-    asks_whether_it_searches,
 )
+from app.modules.web_search.capability_ask import asks_whether_it_searches
 from app.modules.web_search.command import asks_to_search
 from app.modules.web_search.detection import needs_web_search, web_search_skip
 from app.tests.fakes import isolated_settings

@@ -20,6 +20,7 @@ from app.modules.attachments.content_types import (
 from app.modules.attachments.models import ORIGINAL_FILENAME_MAX_CHARS
 from app.modules.attachments.quota import has_current_upload_reservation, upload_counter
 from app.modules.attachments.schemas import AttachmentPresignOut
+from app.modules.attachments.storage_quota import has_room_for, storage_full_message
 from app.services.quota import counters
 
 
@@ -46,7 +47,11 @@ async def create_presigned_upload(
     size_bytes: int,
     filename: str | None = None,
 ) -> AttachmentPresignOut:
-    """Validate, reserve image quota, presign storage, and create a pending row."""
+    """Validate, check Library room, reserve the day's slot, presign, create a pending row.
+
+    Both backends presign (local returns an API upload URL), so the Library total
+    is checked here for both.
+    """
     if not is_allowed_content_type(content_type):
         raise AttachmentUploadError(
             "Unsupported content type", status_code=400, code="unsupported_type"
@@ -55,6 +60,12 @@ async def create_presigned_upload(
         raise AttachmentUploadError("Invalid file size", status_code=400, code="invalid_size")
 
     normalized = normalize_content_type(content_type)
+    room = await has_room_for(session, settings, user, size_bytes)
+    await session.commit()  # end the read: no transaction open across the presign
+    if not room:
+        raise AttachmentUploadError(
+            storage_full_message(user), status_code=409, code="storage_full"
+        )
 
     gateway = get_storage_gateway(settings)
     if isinstance(gateway, UnconfiguredStorageGateway):
@@ -96,7 +107,6 @@ async def create_presigned_upload(
     return AttachmentPresignOut(
         attachment_id=attachment_id,
         upload_url=presigned.upload_url,
-        storage_key=presigned.storage_key,
         headers=presigned.headers,
         api_upload=presigned.api_upload,
     )

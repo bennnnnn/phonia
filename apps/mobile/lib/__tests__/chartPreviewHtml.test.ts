@@ -1,5 +1,6 @@
 import { buildVegaPageHtml, CHART_PAGE, chartPreviewConfig } from "@/lib/chartPreviewHtml";
-import { normalizeChartSpec } from "@/lib/chartPresentation";
+import { presentChartSpec } from "@/lib/chartPresentation";
+import { type JsonRecord } from "@/lib/chartSeriesSpec";
 import { PREVIEW_PAGE_LINK_KIND } from "@/lib/preview/previewPage";
 import { CHART_PREVIEW_CSP, PREVIEW_CSP } from "@/lib/preview/previewSandbox";
 
@@ -16,12 +17,22 @@ const theme = {
   isDark: false,
 };
 
-describe("normalizeChartSpec", () => {
+/**
+ * What the app draws (`presentChartSpec`, the path `buildVegaPageHtml` takes), written back
+ * over the given spec so each case reads its result in place.
+ */
+function present(spec: object, width?: number): void {
+  const out = presentChartSpec(spec as JsonRecord, width);
+  for (const key of Object.keys(spec)) delete (spec as Record<string, unknown>)[key];
+  Object.assign(spec, out);
+}
+
+describe("presentChartSpec layout and category order", () => {
   it("sets sort null on nominal x so months keep data.values order", () => {
     const spec = {
       encoding: { x: { field: "month", type: "nominal" }, y: { field: "inches", type: "quantitative" } },
     };
-    normalizeChartSpec(spec);
+    present(spec);
     expect((spec.encoding.x as { sort?: unknown }).sort).toBeNull();
   });
 
@@ -29,15 +40,15 @@ describe("normalizeChartSpec", () => {
     const spec = {
       encoding: { x: { field: "month", type: "nominal", sort: "ascending" } },
     };
-    normalizeChartSpec(spec);
+    present(spec);
     expect(spec.encoding.x.sort).toBe("ascending");
   });
 
   it("leaves quantitative and temporal x alone", () => {
     const quant = { encoding: { x: { field: "n", type: "quantitative" } } };
     const time = { encoding: { x: { field: "t", type: "temporal" } } };
-    normalizeChartSpec(quant);
-    normalizeChartSpec(time);
+    present(quant);
+    present(time);
     expect("sort" in quant.encoding.x).toBe(false);
     expect("sort" in time.encoding.x).toBe(false);
   });
@@ -46,7 +57,7 @@ describe("normalizeChartSpec", () => {
     const spec = {
       layer: [{ encoding: { x: { field: "month", type: "nominal" } } }],
     };
-    normalizeChartSpec(spec);
+    present(spec);
     expect((spec.layer[0].encoding.x as { sort?: unknown }).sort).toBeNull();
   });
 
@@ -77,8 +88,8 @@ describe("normalizeChartSpec", () => {
   ])("stands %s as columns, whichever way the model wrote them", (_name, labels) => {
     const standing = bars(labels, "name", "n");
     const across = bars(labels, "n", "name");
-    normalizeChartSpec(standing);
-    normalizeChartSpec(across);
+    present(standing);
+    present(across);
     expect(axisFields(standing)).toEqual(["name", "n"]);
     expect(axisFields(across)).toEqual(["name", "n"]);
     expect((across.encoding.x as { sort?: unknown }).sort).toBeNull();
@@ -91,8 +102,8 @@ describe("normalizeChartSpec", () => {
   ])("lays %s across the card, whichever way the model wrote them", (_name, labels) => {
     const standing = bars(labels, "name", "n");
     const across = bars(labels, "n", "name");
-    normalizeChartSpec(standing);
-    normalizeChartSpec(across);
+    present(standing);
+    present(across);
     expect(axisFields(standing)).toEqual(["n", "name"]);
     expect(axisFields(across)).toEqual(["n", "name"]);
     expect((standing.encoding.y as { sort?: unknown }).sort).toBeNull();
@@ -102,8 +113,8 @@ describe("normalizeChartSpec", () => {
     const languages = ["Python", "JavaScript", "TypeScript", "Java", "C#"];
     const narrow = bars(languages, "name", "n");
     const wide = bars(languages, "name", "n");
-    normalizeChartSpec(narrow, 320);
-    normalizeChartSpec(wide, 640);
+    present(narrow, 320);
+    present(wide, 640);
     expect(axisFields(narrow)).toEqual(["n", "name"]);
     expect(axisFields(wide)).toEqual(["name", "n"]);
   });
@@ -113,7 +124,7 @@ describe("normalizeChartSpec", () => {
     const years = bars(Array.from({ length: 12 }, (_, i) => String(2015 + i)), "name", "n");
     const tilted = bars(["Rent", "Food"], "name", "n");
     (tilted.encoding.x as Record<string, unknown>).axis = { labelAngle: -45 };
-    for (const spec of [names, years, tilted]) normalizeChartSpec(spec);
+    for (const spec of [names, years, tilted]) present(spec);
     expect((names.encoding.x as { axis?: unknown }).axis).toEqual({ labelAngle: 0 });
     expect((years.encoding.x as { axis?: unknown }).axis).toEqual({ labelAngle: 0, labelOverlap: "parity" });
     // An angle the model chose for its columns stays.
@@ -123,7 +134,7 @@ describe("normalizeChartSpec", () => {
   it("drops a column label angle when the bars lie down", () => {
     const spec = bars(LONG_NAMES, "name", "n");
     (spec.encoding.x as Record<string, unknown>).axis = { labelAngle: -45, title: "Country" };
-    normalizeChartSpec(spec);
+    present(spec);
     expect((spec.encoding.y as { axis?: unknown }).axis).toEqual({ title: "Country" });
   });
 
@@ -132,8 +143,8 @@ describe("normalizeChartSpec", () => {
     (spec.encoding.y as Record<string, unknown>).sort = "-x";
     const named = bars(["Jan", "Feb", "Mar"], "n", "name");
     (named.encoding.y as Record<string, unknown>).sort = { encoding: "x", order: "descending" };
-    normalizeChartSpec(spec);
-    normalizeChartSpec(named);
+    present(spec);
+    present(named);
     expect(spec.encoding.x).toMatchObject({ field: "name", sort: "-y" });
     expect(spec.encoding.y2).toEqual({ field: "top" });
     expect(spec.encoding).not.toHaveProperty("x2");
@@ -144,8 +155,8 @@ describe("normalizeChartSpec", () => {
     const faceted = bars(["Male", "Female"], "name", "n", { column: { field: "series" } });
     const panel = bars(LONG_NAMES, "name", "n");
     const concat = { hconcat: [panel] };
-    normalizeChartSpec(faceted);
-    normalizeChartSpec(concat);
+    present(faceted);
+    present(concat);
     expect(axisFields(faceted)).toEqual(["name", "n"]);
     expect((faceted.encoding.x as { axis?: unknown }).axis).toBeUndefined();
     expect(axisFields(panel)).toEqual(["name", "n"]);
@@ -157,7 +168,7 @@ describe("normalizeChartSpec", () => {
       data: { url: "data.json" },
       encoding: { x: { field: "n", type: "quantitative" }, y: { field: "name", type: "nominal" } },
     };
-    normalizeChartSpec(spec);
+    present(spec);
     expect(axisFields(spec)).toEqual(["n", "name"]);
   });
 
@@ -169,19 +180,19 @@ describe("normalizeChartSpec", () => {
         y: { field: "inches", type: "quantitative" },
       },
     };
-    normalizeChartSpec(spec);
+    present(spec);
     expect((spec.encoding.x as { field?: string }).field).toBe("month");
   });
 
   it("moves the group offset with the bars when it turns them", () => {
     const across = bars(LONG_NAMES, "name", "n", { xOffset: { field: "series", type: "nominal" } });
-    normalizeChartSpec(across);
+    present(across);
     expect(axisFields(across)).toEqual(["n", "name"]);
     expect((across.encoding.yOffset as { field?: string }).field).toBe("series");
     expect(across.encoding).not.toHaveProperty("xOffset");
 
     const standing = bars(["Q1", "Q2", "Q3", "Q4"], "n", "name", { yOffset: { field: "series", type: "nominal" } });
-    normalizeChartSpec(standing);
+    present(standing);
     expect(axisFields(standing)).toEqual(["name", "n"]);
     expect((standing.encoding.xOffset as { field?: string }).field).toBe("series");
     expect(standing.encoding).not.toHaveProperty("yOffset");
@@ -193,7 +204,7 @@ describe("normalizeChartSpec", () => {
       encoding: { x: { field: "a" }, tooltip: [{ field: "a", format: "[datum.a)" }] },
       layer: [{ mark: "line", encoding: { tooltip: { field: "b" } } }],
     };
-    normalizeChartSpec(spec);
+    present(spec);
     expect(spec.encoding).not.toHaveProperty("tooltip");
     expect(spec.layer[0].encoding).not.toHaveProperty("tooltip");
   });
@@ -207,7 +218,7 @@ describe("normalizeChartSpec", () => {
       mark: "bar",
       encoding: { x: { field: "lo", type: "quantitative", bin: "binned" }, y: { aggregate: "count" } },
     };
-    normalizeChartSpec(spec);
+    present(spec);
     expect(spec.encoding).toMatchObject({ x: { bin: "binned" }, x2: { field: end } });
   });
 
@@ -216,8 +227,10 @@ describe("normalizeChartSpec", () => {
       mark: "bar",
       encoding: { x: { field: "lo", type: "quantitative", bin: "binned" } as Record<string, unknown> },
     };
-    normalizeChartSpec(spec);
-    expect(spec.encoding.x).toEqual({ field: "lo", type: "quantitative" });
+    present(spec);
+    // A plain quantitative axis now (its labels compacted like any other's), no longer binned.
+    expect(spec.encoding.x).toMatchObject({ field: "lo", type: "quantitative" });
+    expect(spec.encoding.x).not.toHaveProperty("bin");
     expect(spec.encoding).not.toHaveProperty("x2");
   });
 
@@ -230,7 +243,7 @@ describe("normalizeChartSpec", () => {
         yOffset: { field: "series", type: "nominal" },
       },
     };
-    normalizeChartSpec(spec);
+    present(spec);
     const enc = spec.encoding as Record<string, { field?: string } | undefined>;
     expect(enc.yOffset?.field).toBe("series");
     expect(enc.xOffset).toBeUndefined();

@@ -310,3 +310,15 @@ def test_worked_maths_that_says_use_or_write_is_maths(request_text: str, reply: 
 )
 def test_the_source_asked_for_stays_code(request_text: str, reply: str) -> None:
     assert unwrap_code_maths(reply, request_text) == reply
+
+
+def test_proper_case_element_cache_is_bounded() -> None:
+    """Every lowercase word of every reply was kept for the life of the process."""
+    from app.modules.chat.proper_case import _elements
+
+    _elements.cache_clear()
+    for n in range(5_000):
+        _elements(f"zz{n}")
+    info = _elements.cache_info()
+    assert info.maxsize is not None
+    assert info.currsize <= info.maxsize

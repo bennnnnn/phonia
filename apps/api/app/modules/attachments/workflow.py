@@ -14,6 +14,7 @@ from app.core.redis import get_redis_client
 from app.exceptions import DomainError
 from app.gateways.storage_gateway import (
     LocalStorageGateway,
+    StorageGateway,
     StorageUnavailableError,
     get_storage_gateway,
 )
@@ -21,11 +22,7 @@ from app.models.orm import Attachment, User
 from app.models.schemas.page import Page
 from app.modules.attachments import chunks_repository as chunks_repo
 from app.modules.attachments import repository as attachments_repo
-from app.modules.attachments.content import (
-    MAX_ATTACHMENT_SIZE,
-    ensure_verified_or_purge,
-    purge_invalid_upload,
-)
+from app.modules.attachments.content import MAX_ATTACHMENT_SIZE, purge_invalid_upload
 from app.modules.attachments.content_types import bytes_match_claimed, is_image_content_type
 from app.modules.attachments.lifecycle import delete_storage_keys, enqueue_failed_storage_deletes
 from app.modules.attachments.markers import strip_attachment_from_content
@@ -33,6 +30,7 @@ from app.modules.attachments.quota import has_current_upload_reservation, upload
 from app.modules.attachments.schemas import AttachmentListItemOut, AttachmentOut
 from app.modules.attachments.thumbnails import thumbnail_bytes, thumbnail_edge
 from app.modules.attachments.upload import AttachmentUploadError, cancel_pending_upload
+from app.modules.attachments.verify import verify_upload_once
 from app.modules.conversation import history as chat_history
 from app.services.quota import counters
 
@@ -77,19 +75,30 @@ async def _verified_row(
             raise AttachmentWorkflowError(
                 "The attachment has not finished uploading", status_code=409
             )
-        error, removed = await ensure_verified_or_purge(
-            gateway,
-            session,
-            attachment_id=attachment_id,
-            content_type=row.content_type,
-            storage_key=row.storage_key,
-            declared_size=row.size_bytes,
-        )
-        if error:
-            if removed:
-                await _refund_upload(user, row)
-            raise AttachmentWorkflowError(error, status_code=400)
+        await _verify_or_refuse(session, settings, gateway, user, row)
     return row, gateway
+
+
+async def _verify_or_refuse(
+    session: AsyncSession,
+    settings: Settings,
+    gateway: StorageGateway,
+    user: User,
+    row: Attachment,
+) -> None:
+    """Check an R2 upload once; refuse it (refunding a purged upload's slot) when bad."""
+    result = await verify_upload_once(session, settings, gateway, row, user.id)
+    if result.busy:
+        raise AttachmentWorkflowError(
+            "The upload is still being checked. Try again shortly.",
+            status_code=409,
+            code="upload_verifying",
+            headers={"Retry-After": "2"},
+        )
+    if result.error:
+        if result.removed:
+            await _refund_upload(user, row)
+        raise AttachmentWorkflowError(result.error, status_code=400)
 
 
 async def list_attachments(
@@ -222,29 +231,24 @@ async def store_local_upload(
     attachment_id: UUID,
     stream: AsyncIterator[bytes],
 ) -> None:
-    row = await attachments_repo.get_by_id(session, attachment_id, user.id, for_update=True)
-    if row is None:
-        raise AttachmentWorkflowError("Not found", status_code=404)
     gateway = get_storage_gateway(settings)
     if not isinstance(gateway, LocalStorageGateway):
         raise AttachmentWorkflowError("Use presigned upload", status_code=501)
+    pending = await attachments_repo.get_by_id(session, attachment_id, user.id)
+    # Read the body with no transaction open: the row lock and its pooled
+    # connection were held for the whole 10 MB stream.
+    await session.commit()
+    if pending is None:
+        raise AttachmentWorkflowError("Not found", status_code=404)
+    if pending.message_id is not None:
+        raise AttachmentWorkflowError("Attachment is already linked to a message", status_code=409)
+    data, detail = await _read_local_upload(stream, pending)
+
+    row = await attachments_repo.get_by_id(session, attachment_id, user.id, for_update=True)
+    if row is None:
+        raise AttachmentWorkflowError("Not found", status_code=404)
     if row.message_id is not None:
         raise AttachmentWorkflowError("Attachment is already linked to a message", status_code=409)
-
-    cap = min(MAX_ATTACHMENT_SIZE, max(row.size_bytes, 0))
-    detail: str | None = None
-    try:
-        data = await _read_upload_capped(stream, cap)
-    except _UploadTooLarge:
-        data = b""
-        detail = "Invalid upload size"
-    if detail is None:
-        if not data or len(data) > MAX_ATTACHMENT_SIZE:
-            detail = "Invalid upload size"
-        elif len(data) != row.size_bytes:
-            detail = "Uploaded size does not match the declared size"
-        elif not bytes_match_claimed(row.content_type, data):
-            detail = "Uploaded bytes do not match the declared content type"
     if row.verified_at is not None:
         if detail is None and await gateway.read_bytes(row.storage_key) == data:
             return
@@ -264,6 +268,24 @@ async def store_local_upload(
     await attachments_repo.mark_verified(session, row.id)
 
 
+async def _read_local_upload(
+    stream: AsyncIterator[bytes], row: Attachment
+) -> tuple[bytes, str | None]:
+    """The body, capped at the declared size, and the refusal for it (None when valid)."""
+    cap = min(MAX_ATTACHMENT_SIZE, max(row.size_bytes, 0))
+    try:
+        data = await _read_upload_capped(stream, cap)
+    except _UploadTooLarge:
+        return b"", "Invalid upload size"
+    if not data or len(data) > MAX_ATTACHMENT_SIZE:
+        return data, "Invalid upload size"
+    if len(data) != row.size_bytes:
+        return data, "Uploaded size does not match the declared size"
+    if not bytes_match_claimed(row.content_type, data):
+        return data, "Uploaded bytes do not match the declared content type"
+    return data, None
+
+
 async def confirm_upload(
     session: AsyncSession,
     settings: Settings,
@@ -274,25 +296,12 @@ async def confirm_upload(
     await session.commit()  # the check below downloads the whole object: no transaction open
     if row is None:
         raise AttachmentWorkflowError("Not found", status_code=404)
+    if row.verified_at is not None:
+        return  # checked before: a repeat confirm never downloads the object again
     gateway = get_storage_gateway(settings)
     if isinstance(gateway, LocalStorageGateway):
-        if row.verified_at is None:
-            raise AttachmentWorkflowError(
-                "The attachment has not finished uploading", status_code=409
-            )
-        return
-    error, removed = await ensure_verified_or_purge(
-        gateway,
-        session,
-        attachment_id=attachment_id,
-        content_type=row.content_type,
-        storage_key=row.storage_key,
-        declared_size=row.size_bytes,
-    )
-    if error:
-        if removed:
-            await _refund_upload(user, row)
-        raise AttachmentWorkflowError(error, status_code=400)
+        raise AttachmentWorkflowError("The attachment has not finished uploading", status_code=409)
+    await _verify_or_refuse(session, settings, gateway, user, row)
 
 
 async def _drop_row_for_missing_file(session: AsyncSession, attachment_id: UUID) -> None:

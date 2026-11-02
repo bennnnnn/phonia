@@ -46,9 +46,12 @@ _PUBLISH_PAUSE_SECONDS = 0.1
 # Users seen on one process within the TTL; far above normal traffic.
 _USER_CACHE_MAX_ENTRIES = 5_000
 _GENERATION_PREFIX = "usergen:"
+# Least recently used goes first: a user active on every request is not evicted by a
+# burst of one-off sign-ins, as oldest-stored-first did.
 _user_cache: TtlCache[UUID, tuple[User, str]] = TtlCache(
     ttl_seconds=USER_CACHE_TTL_SECONDS,
     max_entries=_USER_CACHE_MAX_ENTRIES,
+    lru=True,
 )
 
 

@@ -383,11 +383,6 @@ def rate_limited_payload() -> dict[str, Any]:
     )
 
 
-def rate_limited_connect_payload() -> dict[str, Any]:
-    """The socket refused a connection over its connect limit (no turn to name)."""
-    return {"type": "error", "code": RATE_LIMITED_CODE, "message": RATE_LIMITED_MESSAGE}
-
-
 def restarting_payload(*, user_message_saved: bool) -> dict[str, Any]:
     """A turn the server refused or stopped because it is shutting down (a deploy)."""
     return turn_error_payload(

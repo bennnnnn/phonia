@@ -20,6 +20,7 @@ import re
 from dataclasses import dataclass
 from fractions import Fraction
 
+from app.modules.math.tex_numbers import fraction_tex
 from app.services.md_fence_scan import has_closed_fence, without_fences
 from app.services.text_normalize import collapse_ws
 from app.services.times_sign import with_times
@@ -285,13 +286,6 @@ def _value(node: _Node, values: dict[str, int]) -> Fraction:
     return result
 
 
-def _fraction_tex(value: Fraction) -> str:
-    if value.denominator == 1:
-        return str(value.numerator)
-    sign = "-" if value < 0 else ""
-    return f"{sign}\\frac{{{abs(value.numerator)}}}{{{value.denominator}}}"
-
-
 def _plain(value: Fraction) -> str:
     return (
         str(value.numerator) if value.denominator == 1 else f"{value.numerator}/{value.denominator}"
@@ -431,7 +425,7 @@ def bare_expression_reply(message: str, *, prior_assistant: str | None = None) -
         lines += [
             "",
             f"For example, if ${given}$:",
-            f"$${with_times(f'{tex} = {working}')} = {_fraction_tex(result)}$$",
+            f"$${with_times(f'{tex} = {working}')} = {fraction_tex(result)}$$",
         ]
         suggestions.append(f'find its value for a number: "{typed} when {given}"')
         if len(expression.variables) == 1:

@@ -9,6 +9,7 @@ from app.background.message_indexing import index_message_job
 from app.core.config import Settings
 from app.modules.memory.switch import memory_switch_on
 from app.tests.fakes import redis_mock
+from app.tests.job_fakes import patch_job_enqueue
 
 
 @pytest.mark.asyncio
@@ -58,7 +59,7 @@ async def test_enqueue_post_turn_jobs_includes_message_index():
         prior_count=4,
     )
     with (
-        patch("app.core.jobs.enqueue", AsyncMock()) as enqueue,
+        patch_job_enqueue() as enqueue,
         patch("app.services.quota.global_spend_exceeded", AsyncMock(return_value=False)),
     ):
         await enqueue_post_turn_jobs(

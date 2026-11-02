@@ -199,7 +199,11 @@ async def test_pin_service_reports_concurrent_archive(metadata_session):
     sync_session.commit()
     assert chat.archived is False
 
-    with pytest.raises(chats_service.ChatsError) as exc:
+    # The pin cap's count locks the users row, a table this SQLite fixture leaves out.
+    with (
+        patch.object(chats_repo, "count_other_pins_locked", AsyncMock(return_value=0)),
+        pytest.raises(chats_service.ChatsError) as exc,
+    ):
         await chats_service.pin_chat(session, user, chat.id, pinned=True)
 
     assert exc.value.status_code == 409

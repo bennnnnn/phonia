@@ -37,7 +37,7 @@ def test_link_preview_rejects_a_non_http_url(url):
         response = _client(uuid4()).get("/link-preview", params={"url": url})
 
     assert response.status_code == 400
-    assert response.json() == {"detail": "Invalid URL"}
+    assert response.json() == {"detail": {"code": "invalid", "message": "Invalid URL"}}
     allow.assert_not_awaited()
     fetch.assert_not_awaited()
 

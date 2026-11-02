@@ -131,7 +131,8 @@ piece of the `SubjectAdapter` the review asks for (finding 6).
 - Time: 3.5 s per call (the measured p95 of a call), the maths read included, with no
   fallback model; a timeout is logged at info, never as an error report. Nothing awaits
   the shadow read: the turn's trace line says `pending`, and the read logs its own
-  `turn_model_read` line when it finishes.
+  `turn_model_read` line when it finishes. A read that ended without a result (the spend
+  cap, a timeout, an error, all caught inside its tracked task) says `skipped`.
 - Shadow scope and cost: only turns the subject read calls maths, physics or chemistry, with
   no instant reply, and a share of those (`model_reader_shadow_rate`, 10%); none at the
   day's spend cap. About 1,500 input and 70 output tokens per read, $0.13–0.17 per 1,000

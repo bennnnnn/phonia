@@ -26,6 +26,7 @@ async def run_orphan_reaper_cycle(settings: Settings) -> None:
         name="attachment orphan reaper",
         lock_key=LOCK_KEY,
         lock_ttl_seconds=lock_ttl_yield_next_tick(interval),
+        interval_seconds=interval,
         enabled=settings.attachments_enabled,
         fn=_reaper_cycle,
         settings=settings,

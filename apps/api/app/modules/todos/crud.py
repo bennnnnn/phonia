@@ -45,7 +45,7 @@ async def list_todos_page(
     session: AsyncSession,
     user: User,
     *,
-    limit: int = 1000,
+    limit: int = 200,
     cursor: UUID | None = None,
     completed_since: datetime | None = None,
 ) -> tuple[list[TodoItem], UUID | None]:

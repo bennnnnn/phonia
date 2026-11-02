@@ -1,44 +1,30 @@
-import { LIVE_TALK_UPSTREAM_FAILED } from "@/features/speech/model/liveTalkLogic";
+import { speechApi } from "@/features/speech/api";
 
-const OPENAI_REALTIME_CALLS_URL = "https://api.openai.com/v1/realtime/calls";
-const SDP_EXCHANGE_TIMEOUT_MS = 10_000;
+const SDP_EXCHANGE_TIMEOUT_MS = 15_000;
 
 /**
- * The one intentional provider-network exception: WebRTC media must be
- * negotiated directly, using only the backend-issued short-lived client
- * secret. Never proxy the media path or expose a permanent provider key.
+ * Trades the phone's WebRTC offer for OpenAI's answer through Recall's API
+ * (`POST /speech/live/connect`). The server opens the call with the session's
+ * short-lived secret, which never reaches the phone, so it knows the call and
+ * hangs it up itself when the session ends or its minutes run out. Only the
+ * media then flows directly between the phone and OpenAI.
+ *
+ * A refusal keeps the server's status and code: its `upstream_failed` (OpenAI
+ * opened no call) reads as a failed connection, `live_talk_session_ended` as
+ * the session being over.
  */
 export async function exchangeRealtimeSdp(
-  ephemeralClientSecret: string,
+  token: string,
+  sessionId: string,
   localSdp: string,
 ): Promise<string> {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), SDP_EXCHANGE_TIMEOUT_MS);
-  try {
-    const response = await fetch(OPENAI_REALTIME_CALLS_URL, {
-      method: "POST",
-      body: localSdp,
-      headers: {
-        Authorization: `Bearer ${ephemeralClientSecret}`,
-        "Content-Type": "application/sdp",
-      },
-      signal: controller.signal,
-    });
-    const answerSdp = await response.text();
-    if (!response.ok) {
-      const error = new Error(
-        `OpenAI Realtime SDP exchange failed (${response.status}): ${answerSdp.slice(0, 240)}`,
-      ) as Error & { status?: number; code?: string };
-      error.status = response.status;
-      // The provider's status, not Recall's: its 429 is not this month's minutes, its 403 no paywall.
-      error.code = LIVE_TALK_UPSTREAM_FAILED;
-      throw error;
-    }
-    if (!answerSdp.includes("v=0")) {
-      throw new Error("OpenAI Realtime returned an invalid SDP answer");
-    }
-    return answerSdp;
-  } finally {
-    clearTimeout(timeout);
+  const { sdp: answerSdp } = await speechApi.connectRealtimeSession(
+    token,
+    { callId: sessionId, sdp: localSdp },
+    SDP_EXCHANGE_TIMEOUT_MS,
+  );
+  if (typeof answerSdp !== "string" || !answerSdp.includes("v=0")) {
+    throw new Error("OpenAI Realtime returned an invalid SDP answer");
   }
+  return answerSdp;
 }

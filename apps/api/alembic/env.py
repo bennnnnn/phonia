@@ -33,7 +33,15 @@ _MIGRATION_ONLY_INDEXES = frozenset(
 )
 
 
+# Columns no code reads any more, waiting for their drop in a later release
+# (docs/ROLLBACK.md, "Contracts waiting for a later release"): the release that stops
+# mapping a column cannot drop it, since the previous one still selects it.
+_RETIRED_COLUMNS = frozenset({("users", "response_style")})
+
+
 def include_object(obj, name, type_, reflected, compare_to) -> bool:  # type: ignore[no-untyped-def]
+    if type_ == "column" and reflected and (obj.table.name, name) in _RETIRED_COLUMNS:
+        return False
     return not (type_ == "index" and reflected and name in _MIGRATION_ONLY_INDEXES)
 
 
