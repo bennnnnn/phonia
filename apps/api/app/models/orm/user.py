@@ -52,7 +52,6 @@ class User(Base):
     # Last processed RevenueCat webhook event_timestamp_ms — ignore older events.
     rc_last_event_at_ms: Mapped[int | None] = mapped_column(BigInteger, nullable=True)
     enabled_models: Mapped[list[str] | None] = mapped_column(JSONB, nullable=True)
-    response_style: Mapped[str] = mapped_column(String, default="balanced")
     response_tone: Mapped[str] = mapped_column(String, default="casual", server_default="casual")
     # How many emoji replies use (Settings → Personalization): off, some or more.
     emoji_use: Mapped[str] = mapped_column(String, default="some", server_default="some")

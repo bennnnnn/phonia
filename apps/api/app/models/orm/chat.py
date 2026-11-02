@@ -14,6 +14,7 @@ from sqlalchemy import (
     String,
     Text,
     func,
+    text,
 )
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -30,6 +31,24 @@ class Chat(Base):
     __table_args__ = (
         Index("ix_chats_user_updated", "user_id", "updated_at"),
         Index("ix_chats_user_archived", "user_id", "archived"),
+        # The drawer's pages, newest first by (updated_at, id), each in its own
+        # predicate (migration 0123): dated chats, then archived ones.
+        Index(
+            "ix_chats_user_recent",
+            "user_id",
+            "updated_at",
+            "id",
+            postgresql_where=text("pinned IS false AND archived IS false"),
+        ),
+        Index(
+            "ix_chats_user_archived_recent",
+            "user_id",
+            "updated_at",
+            "id",
+            postgresql_where=text("archived IS true"),
+        ),
+        # The hourly delete of abandoned drafts by age (data retention).
+        Index("ix_chats_created", "created_at"),
         # DB index (migration 0021) is actually:
         #   CREATE INDEX ix_chats_title_trgm ON chats USING gin (title gin_trgm_ops)
         #   WHERE title IS NOT NULL AND title <> ''
