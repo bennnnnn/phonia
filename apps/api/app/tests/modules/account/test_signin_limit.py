@@ -30,7 +30,7 @@ from app.core.deps import get_redis, get_settings_dep
 from app.exceptions import AuthenticationError, RedisUnavailableError
 from app.main import create_app
 from app.models.schemas import AuthResponse, UserOut
-from app.modules.account import quota_carryover, refresh_limit, signin_limit
+from app.modules.account import quota_carryover, signin_limit
 from app.modules.account import service as auth_service
 from app.tests.fakes import fake_session, make_user, redis_mock
 

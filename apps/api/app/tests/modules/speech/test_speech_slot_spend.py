@@ -57,7 +57,7 @@ def test_a_failed_clip_keeps_its_slot_only_once_the_provider_was_asked(
     service_fn, prefix = _ROUTES[route]
     user = api_user(plan="plus")
     client = TestClient(app_with_user(user))
-    redis = fakeredis.aioredis.FakeRedis(decode_responses=True)
+    redis: Any = fakeredis.aioredis.FakeRedis(decode_responses=True)
     with (
         patch("app.modules.speech.api.get_redis_client", return_value=redis),
         patch(f"app.modules.speech.api.speech_service.{service_fn}", _provider(asked, outcome)),
