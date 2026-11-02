@@ -250,6 +250,24 @@ def _find_rows(solution: WorkedSolution) -> tuple[str, ...]:
     )
 
 
+def _asked_by_parts(parts: Sequence[Part]) -> tuple[str, ...]:
+    """What each part finds, when the model wrote no ``required`` record: the symbol its
+    answer names, with the part's title as its meaning (``$v$ (speed of the car)``), so a
+    question in parts always lists one Required line per part, as the server's do."""
+    rows: list[str] = []
+    for part in parts:
+        symbol = next(
+            (a.symbol for a in part.answers if a.symbol and not names_nothing(a.symbol)), ""
+        )
+        if symbol:
+            rows.append(math_line(tidy_symbol(symbol), part.title or None))
+        elif part.title:
+            rows.append(text_line(part.title))
+        else:
+            return ()  # a part that names nothing: no line can be lettered for it
+    return tuple(rows)
+
+
 def render_worked(
     solution: WorkedSolution, layout: WorkedLayout, *, streaming: bool = False
 ) -> str:
@@ -288,6 +306,9 @@ def _render_in_parts(
     part that streams in later never rewrites it. While the block streams, each given
     stays where it was written; the shared ones are drawn together once it is whole."""
     shown = list(solution.parts)
+    if not streaming and not solution.required:
+        # Drawn above the parts, so only once the block is whole (done carries the text).
+        required = _asked_by_parts(shown)
     if streaming:
         # A part waits for the answer above it: one written later, with the others at the
         # end, would land above what was drawn after it.

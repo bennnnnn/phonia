@@ -85,6 +85,12 @@ def test_two_questions_are_two_parts_each_with_its_own_givens(block: str) -> Non
     assert train.rstrip().endswith("$30\\,\\mathrm{m/s}$")
 
 
+def test_parts_with_nothing_asked_still_list_what_each_part_finds() -> None:
+    # Live: the model wrote the parts with no ``required`` record at all.
+    text = _laid_out(CONTRACT.replace(f"{_ASKED}\n", ""))
+    assert text == _laid_out(CONTRACT)
+
+
 def test_every_shape_is_the_same_layout() -> None:
     assert (
         _laid_out(CONTRACT) == _laid_out(GIVENS_FIRST) == _laid_out(LIVE) == _laid_out(UNLABELLED)
