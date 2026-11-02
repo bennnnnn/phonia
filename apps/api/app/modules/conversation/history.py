@@ -80,10 +80,8 @@ async def messages_before(
 
 
 async def chats_for_export(session: AsyncSession, user_id: UUID, *, limit: int) -> list[Chat]:
-    """The user's chats, archived ones too, each with its summary (the data export)."""
-    return await _chats.list_for_user(
-        session, user_id, limit=limit, include_archived=True, with_summary=True
-    )
+    """The user's chats, each with its summary (the data export)."""
+    return await _chats.list_for_user(session, user_id, limit=limit, with_summary=True)
 
 
 async def messages_page(
@@ -111,15 +109,8 @@ async def pinned_chats(session: AsyncSession, user_id: UUID) -> list[Chat]:
 async def recent_chats_page(
     session: AsyncSession, user_id: UUID, *, limit: int, cursor: str | None = None
 ) -> tuple[list[Chat], str | None]:
-    """A page of the user's unarchived chats, newest activity first, and the next cursor."""
+    """A page of the user's unpinned chats, newest activity first, and the next cursor."""
     return await _chats.list_recent_page(session, user_id, limit=limit, cursor=cursor)
-
-
-async def archived_chats_page(
-    session: AsyncSession, user_id: UUID, *, limit: int, cursor: str | None = None
-) -> tuple[list[Chat], str | None]:
-    """A page of the user's archived chats, and the next cursor."""
-    return await _chats.list_archived_page(session, user_id, limit=limit, cursor=cursor)
 
 
 def chats_by_recency(

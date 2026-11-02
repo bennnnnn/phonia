@@ -62,7 +62,6 @@ async def search_conversations(
         sql_cast(Chat.title, Text).label("content"),
         literal("chat").label("role"),
         func.coalesce(Chat.updated_at, Chat.created_at).label("created_at"),
-        Chat.archived.label("archived"),
     ).where(
         Chat.user_id == user_id,
         Chat.title.isnot(None),
@@ -79,7 +78,6 @@ async def search_conversations(
             Message.content.label("content"),
             Message.role.label("role"),
             Message.created_at.label("created_at"),
-            Chat.archived.label("archived"),
         )
         .join(Chat, Message.chat_id == Chat.id)
         .where(Chat.user_id == user_id, *msg_where)
@@ -114,7 +112,6 @@ async def search_conversations(
                 "content": content,
                 "role": row.role,
                 "created_at": created,
-                "archived": bool(row.archived),
             }
         )
     return results, next_cursor

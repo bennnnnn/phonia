@@ -24,7 +24,6 @@ export type Chat = {
   title: string | null;
   model: string;
   pinned: boolean;
-  archived?: boolean;
   created_at: string;
   updated_at: string;
 };
@@ -59,7 +58,6 @@ export type ChatList = {
   last_7_days: Chat[];
   this_month: Chat[];
   older: Chat[];
-  archived: Chat[];
 };
 
 export type AuthResult = {

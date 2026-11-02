@@ -31,7 +31,7 @@ If you no longer have the app, {contact} from the email address your Recall acco
 ## What is deleted
 
 - Your profile and settings.
-- Every chat and its messages, including archived chats.
+- Every chat and its messages.
 - Your saved memory.
 - Your reminders and to-dos.
 - Files and photos you uploaded, AI images you created, the text read from them, and their search indexes.

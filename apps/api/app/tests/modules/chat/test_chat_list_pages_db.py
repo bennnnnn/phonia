@@ -2,7 +2,7 @@
 
 ``GET /chats`` read at most 200 chats and said nothing of the rest, so the 201st never
 reached the drawer. The first page now names a cursor, and the next pages hold only the
-older dated chats: pinned and archived ones came with the first.
+older dated chats: pinned ones came with the first.
 """
 
 from __future__ import annotations
@@ -58,4 +58,4 @@ async def test_the_chat_list_reads_on_after_its_first_page(db_session):
 
     assert dated(first) + dated(rest) == [chat.id for chat in reversed(chats)]
     assert rest.next_cursor is None
-    assert rest.pinned == [] and rest.archived == []
+    assert rest.pinned == []

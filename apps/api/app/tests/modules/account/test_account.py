@@ -362,7 +362,7 @@ async def test_build_export_structure(_empty_product_events_for_exports):
 
 
 @pytest.mark.asyncio
-async def test_build_export_includes_archived_chats():
+async def test_build_export_includes_chats():
 
     session = AsyncMock()
     user = MagicMock()
@@ -371,15 +371,15 @@ async def test_build_export_includes_archived_chats():
     user.name = "n"
     user.created_at = datetime(2024, 1, 1)
 
-    archived = MagicMock()
-    archived.id = uuid4()
-    archived.title = "Old"
-    archived.model = "free-chat"
-    archived.pinned = False
-    archived.created_at = datetime(2024, 1, 1)
-    archived.updated_at = datetime(2024, 1, 1)
+    chat = MagicMock()
+    chat.id = uuid4()
+    chat.title = "Old"
+    chat.model = "free-chat"
+    chat.pinned = False
+    chat.created_at = datetime(2024, 1, 1)
+    chat.updated_at = datetime(2024, 1, 1)
 
-    list_chats = AsyncMock(return_value=[archived])
+    list_chats = AsyncMock(return_value=[chat])
     with (
         patch(
             "app.modules.account.export.chat_history.chats_for_export",
@@ -406,7 +406,6 @@ async def test_build_export_includes_archived_chats():
 
     assert len(data["chats"]) == 1
     assert data["chats"][0]["title"] == "Old"
-    # chat.history's export read includes archived chats (test_chat_history.py).
     list_chats.assert_awaited_once()
 
 

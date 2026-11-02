@@ -42,21 +42,6 @@ async def set_pinned(session: AsyncSession, chat: Chat, pinned: bool) -> Chat:
     return await _chats.set_pinned(session, chat, pinned)
 
 
-async def set_archived(session: AsyncSession, chat: Chat, archived: bool) -> Chat:
-    return await _chats.set_archived(session, chat, archived)
-
-
-async def archive_all_chats(session: AsyncSession, user_id: UUID, *, commit: bool = True) -> int:
-    return await _chats.archive_all_for_user(session, user_id, commit=commit)
-
-
-async def set_archived_many(
-    session: AsyncSession, user_id: UUID, chat_ids: list[UUID], *, archived: bool
-) -> list[UUID]:
-    """The ids of the user's chats among ``chat_ids`` that changed."""
-    return await _chats.set_archived_many(session, user_id, chat_ids, archived=archived)
-
-
 async def delete_chats(session: AsyncSession, user_id: UUID, chat_ids: list[UUID]) -> list[UUID]:
     """The ids of the user's chats among ``chat_ids`` that were deleted."""
     return await _chats.delete_many(session, user_id, chat_ids)

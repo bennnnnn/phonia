@@ -152,7 +152,6 @@ def test_mobile_account_and_auth_have_feature_homes() -> None:
         "app/settings/notifications.tsx": "features/account/screens/NotificationsSettingsScreen",
         "app/settings/data-controls.tsx": "features/account/screens/DataControlsScreen",
         "app/settings/security.tsx": "features/account/screens/SecuritySettingsScreen",
-        "app/settings/archived-chats.tsx": "features/account/screens/ArchivedChatsScreen",
         "app/settings/models.tsx": "features/account/screens/ModelsSettingsScreen",
         "app/settings/profile.tsx": "features/account/screens/ProfileSettingsScreen",
         "app/settings/voice.tsx": "features/account/screens/VoiceSettingsScreen",

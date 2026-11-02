@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import logging
 from datetime import UTC, datetime, timedelta
-from typing import Literal
 from uuid import UUID
 
 from redis.asyncio import Redis
@@ -17,7 +16,6 @@ from app.core.db import SessionLocal
 from app.exceptions import DomainError
 from app.models.orm import Chat, Message, User
 from app.models.schemas import ChatListOut, ChatOut, MessageOut, MessagePageOut, UsageOut
-from app.models.schemas.page import Page
 from app.modules.chat import finalize_registry
 from app.modules.chat.email_fence import rewrite_first_email_fence
 from app.modules.chat.related_prompts import (
@@ -36,7 +34,6 @@ from app.services.quota import utc_today
 logger = logging.getLogger(__name__)
 
 DEFAULT_CHAT_LIST_LIMIT = 200
-ARCHIVED_CHAT_LIST_LIMIT = 50
 
 
 class ChatsError(DomainError):
@@ -66,25 +63,21 @@ async def list_chats_grouped(
 ) -> ChatListOut:
     """The drawer's chats by recency; ``cursor`` reads the dated chats after a page.
 
-    The first page also holds every pinned chat and the newest archived ones. The days
+    The first page also holds every pinned chat. The days
     are the phone's (``client_timezone``, as a chat turn sends it), the profile's when it
     sends none or no valid one: the phone files a chat it inserts itself in its own zone,
     and the profile's copy of that zone lags behind a flight until the next sync.
     """
 
-    async def _pinned_and_archived() -> tuple[list[Chat], tuple[list[Chat], str | None]]:
+    async def _pinned() -> list[Chat]:
         if cursor is not None:
-            return [], ([], None)
+            return []
         async with SessionLocal() as side_session:
-            pinned = await conversation_history.pinned_chats(side_session, user.id)
-            archived = await conversation_history.archived_chats_page(
-                side_session, user.id, limit=ARCHIVED_CHAT_LIST_LIMIT
-            )
-        return pinned, archived
+            return await conversation_history.pinned_chats(side_session, user.id)
 
-    (dated, next_cursor), (pinned, (archived, archived_cursor)) = await gather_or_cancel(
+    (dated, next_cursor), pinned = await gather_or_cancel(
         conversation_history.recent_chats_page(session, user.id, limit=limit, cursor=cursor),
-        _pinned_and_archived(),
+        _pinned(),
     )
     zone = time_context_service.effective_timezone(user.timezone, client_timezone)
     grouped = conversation_history.chats_by_recency(dated, user_timezone=zone)
@@ -95,20 +88,8 @@ async def list_chats_grouped(
         last_7_days=[ChatOut.model_validate(c) for c in grouped["last_7_days"]],
         this_month=[ChatOut.model_validate(c) for c in grouped["this_month"]],
         older=[ChatOut.model_validate(c) for c in grouped["older"]],
-        archived=[ChatOut.model_validate(c) for c in archived],
         next_cursor=next_cursor,
-        archived_next_cursor=archived_cursor,
     )
-
-
-async def list_archived_chats(
-    session: AsyncSession, user: User, *, limit: int, cursor: str | None
-) -> Page[ChatOut]:
-    """Archived chats after the drawer's first page, by cursor: none is out of reach."""
-    chats, next_cursor = await conversation_history.archived_chats_page(
-        session, user.id, limit=limit, cursor=cursor
-    )
-    return Page(items=[ChatOut.model_validate(c) for c in chats], next_cursor=next_cursor)
 
 
 async def get_chat(session: AsyncSession, user: User, chat_id: UUID) -> Chat:
@@ -128,53 +109,26 @@ async def rename_chat(session: AsyncSession, user: User, chat_id: UUID, title: s
 
 async def pin_chat(session: AsyncSession, user: User, chat_id: UUID, *, pinned: bool) -> Chat:
     chat = await get_chat(session, user, chat_id)
-    if pinned and chat.archived:
-        raise ChatsError("Unarchive the chat before pinning", status_code=409)
-    chat = await conversation_service.set_pinned(session, chat, pinned)
-    if pinned and chat.archived:
-        raise ChatsError("Unarchive the chat before pinning", status_code=409)
-    return chat
-
-
-async def archive_chat(session: AsyncSession, user: User, chat_id: UUID, *, archived: bool) -> Chat:
-    chat = await get_chat(session, user, chat_id)
-    return await conversation_service.set_archived(session, chat, archived)
-
-
-async def archive_all_chats(session: AsyncSession, user: User) -> int:
-    try:
-        count = await conversation_service.archive_all_chats(session, user.id, commit=False)
-        await session.commit()
-    except Exception:
-        await session.rollback()
-        raise
-    return count
+    return await conversation_service.set_pinned(session, chat, pinned)
 
 
 async def bulk_chats(
     session: AsyncSession,
     user: User,
     *,
-    action: Literal["archive", "unarchive", "delete"],
     chat_ids: list[UUID],
 ) -> list[UUID]:
     """One transaction for the drawer's selection: the phone sent one request per chat,
     and a few hundred at once passed the REST rate limit. Ids not the user's are skipped."""
     unique = list(dict.fromkeys(chat_ids))
     try:
-        if action == "delete":
-            changed = await conversation_service.delete_chats(session, user.id, unique)
-        else:
-            changed = await conversation_service.set_archived_many(
-                session, user.id, unique, archived=action == "archive"
-            )
+        changed = await conversation_service.delete_chats(session, user.id, unique)
         await session.commit()
     except Exception:
         await session.rollback()
         raise
-    if action == "delete":
-        for chat_id in changed:
-            conversation_service.forget_chat(chat_id)
+    for chat_id in changed:
+        conversation_service.forget_chat(chat_id)
     return changed
 
 

@@ -29,7 +29,6 @@ class Chat(Base):
     __tablename__ = "chats"
     __table_args__ = (
         Index("ix_chats_user_updated", "user_id", "updated_at"),
-        Index("ix_chats_user_archived", "user_id", "archived"),
         # DB index (migration 0021) is actually:
         #   CREATE INDEX ix_chats_title_trgm ON chats USING gin (title gin_trgm_ops)
         #   WHERE title IS NOT NULL AND title <> ''
@@ -46,13 +45,12 @@ class Chat(Base):
     title: Mapped[str | None] = mapped_column(String)
     model: Mapped[str] = mapped_column(String, default="free-chat")
     pinned: Mapped[bool] = mapped_column(Boolean, default=False)
-    archived: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false")
     # Rolling summary of messages older than the recent window (history compression)
     summary: Mapped[str | None] = mapped_column(Text)
     summary_message_count: Mapped[int] = mapped_column(Integer, default=0)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     # Last activity: a reply or a picture turn (chats_repository.touch_by_id). Pinning,
-    # renaming, archiving, a generated title or a compacted history is not activity,
+    # renaming, a generated title or a compacted history is not activity,
     # so none of them moves the chat to Today in the drawer.
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 

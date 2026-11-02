@@ -82,7 +82,6 @@ _LIST_COLUMNS = load_only(
     Chat.title,
     Chat.model,
     Chat.pinned,
-    Chat.archived,
     Chat.created_at,
     Chat.updated_at,
     raiseload=True,
@@ -94,7 +93,6 @@ async def list_for_user(
     user_id: UUID,
     limit: int | None = 200,
     *,
-    include_archived: bool = False,
     with_summary: bool = False,
 ) -> list[Chat]:
     """The user's chats with messages: list columns only, unless ``with_summary`` (export)."""
@@ -107,8 +105,6 @@ async def list_for_user(
     )
     if not with_summary:
         stmt = stmt.options(_LIST_COLUMNS)
-    if not include_archived:
-        stmt = stmt.where(Chat.archived.is_(False))
     if limit is not None:
         stmt = stmt.limit(limit)
     result = await session.execute(stmt)
@@ -116,12 +112,12 @@ async def list_for_user(
 
 
 async def list_pinned(session: AsyncSession, user_id: UUID) -> list[Chat]:
-    """The user's pinned, unarchived chats with messages, newest first; list columns only."""
+    """The user's pinned chats with messages, newest first; list columns only."""
     has_messages = exists().where(Message.chat_id == Chat.id)
     result = await session.execute(
         select(Chat)
         .options(_LIST_COLUMNS)
-        .where(Chat.user_id == user_id, Chat.pinned.is_(True), Chat.archived.is_(False))
+        .where(Chat.user_id == user_id, Chat.pinned.is_(True))
         .where(has_messages)
         .order_by(Chat.updated_at.desc(), Chat.id.desc())
     )
@@ -135,7 +131,7 @@ async def list_recent_page(
     limit: int,
     cursor: str | None = None,
 ) -> tuple[list[Chat], str | None]:
-    """One page of the drawer's dated chats (unpinned, unarchived), newest first.
+    """One page of the drawer's dated chats (unpinned), newest first.
 
     Returns the chats and the cursor for the next page (None: the last).
     """
@@ -143,30 +139,7 @@ async def list_recent_page(
     stmt = (
         select(Chat)
         .options(_LIST_COLUMNS)
-        .where(Chat.user_id == user_id, Chat.pinned.is_(False), Chat.archived.is_(False))
-        .where(has_messages)
-    )
-    if cursor is not None:
-        at, ids = decode_cursor(cursor, ids=1)
-        stmt = stmt.where(after((Chat.updated_at, Chat.id), at, ids))
-    stmt = stmt.order_by(Chat.updated_at.desc(), Chat.id.desc()).limit(limit + 1)
-    rows = list((await session.execute(stmt)).scalars().all())
-    return page_of(rows, limit, lambda chat: encode_cursor(chat.updated_at, chat.id))
-
-
-async def list_archived_page(
-    session: AsyncSession,
-    user_id: UUID,
-    *,
-    limit: int,
-    cursor: str | None = None,
-) -> tuple[list[Chat], str | None]:
-    """One page of archived chats, newest first, and the cursor for the next (None: the last)."""
-    has_messages = exists().where(Message.chat_id == Chat.id)
-    stmt = (
-        select(Chat)
-        .options(_LIST_COLUMNS)
-        .where(Chat.user_id == user_id, Chat.archived.is_(True))
+        .where(Chat.user_id == user_id, Chat.pinned.is_(False))
         .where(has_messages)
     )
     if cursor is not None:
@@ -277,70 +250,10 @@ async def set_title_if_empty(
 
 async def set_pinned(session: AsyncSession, chat: Chat, pinned: bool) -> Chat:
     stmt = update(Chat).where(Chat.id == chat.id, Chat.user_id == chat.user_id)
-    if pinned:
-        stmt = stmt.where(Chat.archived.is_(False))
     await session.execute(stmt.values(pinned=pinned).execution_options(synchronize_session=False))
     await session.commit()
     await session.refresh(chat)
     return chat
-
-
-async def set_archived(session: AsyncSession, chat: Chat, archived: bool) -> Chat:
-    stmt = (
-        update(Chat)
-        .where(Chat.id == chat.id, Chat.user_id == chat.user_id)
-        .values(archived=archived)
-    )
-    if archived:
-        # Explicitly clear the database value even if this ORM object saw an
-        # unpinned chat before another request pinned it.
-        stmt = stmt.values(pinned=False)
-    await session.execute(stmt.execution_options(synchronize_session=False))
-    await session.commit()
-    await session.refresh(chat)
-    return chat
-
-
-async def archive_all_for_user(
-    session: AsyncSession,
-    user_id: UUID,
-    *,
-    commit: bool = True,
-) -> int:
-    result = cast(
-        CursorResult[Any],
-        await session.execute(
-            update(Chat)
-            .where(Chat.user_id == user_id, Chat.archived.is_(False))
-            .values(archived=True, pinned=False)
-            .execution_options(synchronize_session=False)
-        ),
-    )
-    if commit:
-        await session.commit()
-    else:
-        await session.flush()
-    return int(result.rowcount or 0)
-
-
-async def set_archived_many(
-    session: AsyncSession, user_id: UUID, chat_ids: list[UUID], *, archived: bool
-) -> list[UUID]:
-    """Archive (and unpin) or unarchive the user's chats among ``chat_ids``; the ids changed.
-
-    The caller owns the commit (one transaction for the whole selection).
-    """
-    values: dict[str, bool] = {"archived": archived}
-    if archived:
-        values["pinned"] = False
-    result = await session.execute(
-        update(Chat)
-        .where(Chat.user_id == user_id, Chat.id.in_(chat_ids))
-        .values(**values)
-        .returning(Chat.id)
-        .execution_options(synchronize_session=False)
-    )
-    return list(result.scalars().all())
 
 
 async def delete_many(session: AsyncSession, user_id: UUID, chat_ids: list[UUID]) -> list[UUID]:

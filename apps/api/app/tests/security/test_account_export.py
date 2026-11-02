@@ -55,7 +55,6 @@ async def test_export_includes_profile_all_memory_and_every_owned_record(world: 
         json={"feedback": "up"},
         headers=a.headers,
     )
-    await c.patch(f"/chats/{data.chat_id}/archive", json={"archived": True}, headers=a.headers)
 
     response = await c.get("/auth/me/export", headers=a.headers)
     assert response.status_code == 200
@@ -79,7 +78,6 @@ async def test_export_includes_profile_all_memory_and_every_owned_record(world: 
     ]
 
     [chat] = export["chats"]
-    assert chat["archived"] is True
     assert chat["messages"][1]["feedback"] == "up"
     [todo] = export["todos"]
     assert todo["content"] == f"buy {data.secret_word}"

@@ -58,19 +58,6 @@ def test_patch_quiet_hours():
     assert r.json()["quiet_hours_enabled"] is True
 
 
-def test_archive_all_chats():
-    user = api_user()
-    app = app_with_user(user)
-    with patch(
-        "app.modules.chat.api.chats_service.archive_all_chats",
-        AsyncMock(return_value=3),
-    ) as archive:
-        client = TestClient(app)
-        r = client.post("/chats/archive-all", headers={"Authorization": "Bearer tok"})
-    assert r.status_code == 204
-    archive.assert_awaited_once()
-
-
 def test_delete_all_chats():
     user = api_user()
     app = app_with_user(user)

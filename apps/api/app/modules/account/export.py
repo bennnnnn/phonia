@@ -118,7 +118,6 @@ def _chat_header(chat: Chat) -> dict[str, Any]:
         "title": chat.title,
         "model": chat.model,
         "pinned": chat.pinned,
-        "archived": _json_safe(chat.archived),
         # Rolling summary of older messages kept for the model's context.
         "summary": _json_safe(chat.summary),
         "created_at": chat.created_at.isoformat(),

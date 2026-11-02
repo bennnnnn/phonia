@@ -1,4 +1,4 @@
-"""/chats over HTTP: list, rename, archive, delete, messages."""
+"""/chats over HTTP: list, rename, delete, messages."""
 
 # ── chats ──────────────────────────────────────────────────────────────────────
 from datetime import datetime
@@ -23,7 +23,6 @@ def test_create_chat():
     chat.title = None
     chat.model = "free-chat"
     chat.pinned = False
-    chat.archived = False
     chat.created_at = datetime(2024, 1, 1)
     chat.updated_at = datetime(2024, 1, 1)
 
@@ -49,7 +48,6 @@ def test_create_chat_ignores_retired_project_id():
     chat.title = None
     chat.model = "free-chat"
     chat.pinned = False
-    chat.archived = False
     chat.created_at = datetime(2024, 1, 1)
     chat.updated_at = datetime(2024, 1, 1)
 
@@ -78,10 +76,6 @@ def test_list_chats():
             AsyncMock(return_value=(empty_list, None)),
         ),
         patch("app.modules.conversation.chats_repository.list_pinned", AsyncMock(return_value=[])),
-        patch(
-            "app.modules.conversation.chats_repository.list_archived_page",
-            AsyncMock(return_value=(empty_list, None)),
-        ),
     ):
         client = TestClient(app)
         r = client.get("/chats", headers={"Authorization": "Bearer tok"})
@@ -93,9 +87,7 @@ def test_list_chats():
         "last_7_days": [],
         "this_month": [],
         "older": [],
-        "archived": [],
         "next_cursor": None,
-        "archived_next_cursor": None,
     }
 
 
@@ -109,10 +101,6 @@ def test_list_chats_answers_an_unchanged_list_with_304():
             AsyncMock(return_value=([], None)),
         ),
         patch("app.modules.conversation.chats_repository.list_pinned", AsyncMock(return_value=[])),
-        patch(
-            "app.modules.conversation.chats_repository.list_archived_page",
-            AsyncMock(return_value=([], None)),
-        ),
     ):
         client = TestClient(app)
         first = client.get("/chats", headers={"Authorization": "Bearer tok"})
@@ -126,7 +114,7 @@ def test_list_chats_answers_an_unchanged_list_with_304():
 
 
 def test_list_chats_never_overlaps_ops_on_one_session():
-    """The dated page and the pinned + archived queries run concurrently, and an AsyncSession can
+    """The dated page and the pinned query run concurrently, and an AsyncSession can
     only run one operation at a time (asyncpg raises InterfaceError on
     overlap) — so each concurrent query must get its own session. Simulate
     asyncpg's guard: mark a session busy across a yield point and record a
@@ -158,10 +146,6 @@ def test_list_chats_never_overlaps_ops_on_one_session():
         patch(
             "app.modules.conversation.chats_repository.list_pinned",
             AsyncMock(side_effect=tracked("pinned", [])),
-        ),
-        patch(
-            "app.modules.conversation.chats_repository.list_archived_page",
-            AsyncMock(side_effect=tracked("archived", ([], None))),
         ),
     ):
         client = TestClient(app)
@@ -462,21 +446,6 @@ async def test_delete_chat_keeps_library_attachments():
     enqueue.assert_not_awaited()
 
 
-def test_archived_chats_page_by_cursor_past_the_drawer():
-    """GET /chats/archived reads on from the drawer's ``archived_next_cursor``."""
-    user = api_user()
-    app = app_with_user(user)
-    page = AsyncMock(return_value=([], "next-page"))
-    with patch.object(chats_repo, "list_archived_page", page):
-        client = TestClient(app)
-        r = client.get(
-            "/chats/archived?cursor=abc&limit=20", headers={"Authorization": "Bearer tok"}
-        )
-    assert r.status_code == 200
-    assert r.json() == {"items": [], "next_cursor": "next-page"}
-    assert page.await_args.kwargs == {"limit": 20, "cursor": "abc"}
-
-
 def test_bulk_chats_runs_one_request_and_caps_the_selection():
     """One request for the whole selection (it was one per chat, past the rate limit)."""
     from app.modules.chat import service as chats_service
@@ -489,7 +458,7 @@ def test_bulk_chats_runs_one_request_and_caps_the_selection():
         client = TestClient(app)
         ok = client.post(
             "/chats/bulk",
-            json={"action": "archive", "chat_ids": ids},
+            json={"action": "delete", "chat_ids": ids},
             headers={"Authorization": "Bearer tok"},
         )
         too_many = client.post(
@@ -504,6 +473,5 @@ def test_bulk_chats_runs_one_request_and_caps_the_selection():
         )
     assert ok.status_code == 200
     assert ok.json() == {"changed": ids[:2]}
-    assert bulk.await_args.kwargs["action"] == "archive"
     assert [str(i) for i in bulk.await_args.kwargs["chat_ids"]] == ids
     assert (too_many.status_code, wrong.status_code) == (422, 422)

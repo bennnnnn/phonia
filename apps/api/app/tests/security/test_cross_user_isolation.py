@@ -64,7 +64,6 @@ async def test_chat_routes_answer_404_for_another_users_chat(world: World) -> No
         ("GET", f"/chats/{chat}", None),
         ("PATCH", f"/chats/{chat}", {"title": "pwned"}),
         ("PATCH", f"/chats/{chat}/pin", {"pinned": True}),
-        ("PATCH", f"/chats/{chat}/archive", {"archived": True}),
         ("GET", f"/chats/{chat}/messages", None),
         ("GET", f"/chats/{chat}/messages?before={msg}", None),
         ("PATCH", f"/chats/{chat}/messages/{msg}/feedback", {"feedback": "down"}),
@@ -83,7 +82,10 @@ async def test_chat_routes_answer_404_for_another_users_chat(world: World) -> No
         assert response.status_code == missing.status_code, (method, path)
 
     # Bulk routes only ever touch the caller's own chats.
-    assert (await c.post("/chats/archive-all", headers=b.headers)).status_code == 204
+    bulk = await c.post(
+        "/chats/bulk", json={"action": "delete", "chat_ids": [str(chat)]}, headers=b.headers
+    )
+    assert bulk.status_code == 200 and bulk.json() == {"changed": []}
     assert (await c.delete("/chats", headers=b.headers)).status_code == 204
     listed = (await c.get("/chats", headers=b.headers)).json()
     assert str(chat) not in json.dumps(listed)
@@ -92,7 +94,6 @@ async def test_chat_routes_answer_404_for_another_users_chat(world: World) -> No
     assert owner_view.status_code == 200
     assert owner_view.json()["title"].startswith("A private")
     assert owner_view.json()["pinned"] is False
-    assert owner_view.json()["archived"] is False
     messages = (await c.get(f"/chats/{chat}/messages", headers=a.headers)).json()["messages"]
     assert [m["id"] for m in messages] == [str(data.user_message_id), str(msg)]
     assert messages[1]["feedback"] is None

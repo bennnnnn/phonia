@@ -50,12 +50,12 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   **Pinned** section at the top of the drawer.
 - ✅ **Share / Export** — share a conversation as a markdown transcript via the **native OS
   share sheet** (Messages, Mail, Files, …); export a chat as PDF from the in-chat `⋯` menu.
-  Chat `⋯` + drawer long-press (share/pin/archive/delete);
+  Chat `⋯` + drawer long-press (share/pin/delete);
   no backend. This is **not** a
   ChatGPT-style public `chatgpt.com/share/…` URL — anyone with that kind of link could
   read the thread without signing in. Public web links are a separate privacy feature
   (not started; do not assume we have them).
-- ✅ **Manage from the drawer** — long-press any chat for **Pin/Unpin · Share · Archive · Delete**.
+- ✅ **Manage from the drawer** — long-press any chat for **Pin/Unpin · Share · Delete**.
 - ✅ **Library** — drawer **Library** → paginated grid of the user’s verified attachments
   (generated images, uploaded images, and files — not web lookup / reference photos,
   which stay on the chat). Tabs: All / Generated / Uploaded / Files.
@@ -86,12 +86,10 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   scanner, profile) is uploaded as a re-encode with no EXIF, GPS or XMP, upright; PNG and
   WebP keep their format, the rest become JPEG, and a GIF keeps its frames with its
   metadata blocks dropped (`features/attachments/model/attachmentPrep.ts`).
-- ✅ **Archive** — drawer long-press and in-chat `⋯` menu; archived chats show in a separate
-  section and are excluded from the main list.
-- ✅ **Multi-select** — drawer **Select** mode: tap rows to choose, then bulk **Archive** or
-  **Delete** (with confirm).
+- ✅ **Multi-select** — drawer **Select** mode: tap rows to choose, then bulk **Delete**
+  (with confirm).
 - ✅ **Chat management reliability** — manual titles survive delayed
-  generation; pin/archive updates are atomic; drawer and header changes stay in sync.
+  generation; pin updates are atomic; drawer and header changes stay in sync.
   Bulk partial failures preserve successful actions, and stale reads cannot restore
   deleted chats. Saved history and title polling respect navigation and account changes.
 - 🔜 Chat-list pagination beyond the current 200-row limit; pins take priority within it.
@@ -797,7 +795,7 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   (`users.push_*_enabled`; the scheduler skips a kind that is off, and to-do reminders
   off also stops the on-device ones). Reminder lead, email reminders, quiet hours.
 - ✅ **Models** — Auto and model toggles. Developer diagnostics are omitted from this screen.
-- ✅ **Data controls** — archived chats, archive all, delete all chats (Library stays),
+- ✅ **Data controls** — delete all chats (Library stays),
   export, delete account.
 - ✅ **Security** — session list + revoke + sign out of all devices. Removing a device stops its
   access token at once (the session id is revoked), not when the token expires. No MFA.
