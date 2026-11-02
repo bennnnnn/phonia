@@ -23,7 +23,7 @@ import re
 import time
 from asyncio import CancelledError
 from collections import Counter
-from collections.abc import AsyncIterator, Callable, Iterable, Mapping
+from collections.abc import AsyncIterator, Callable, Iterable
 from contextvars import ContextVar
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any, cast
@@ -101,10 +101,6 @@ def begin_turn_trace(kind: str) -> TurnTrace:
     trace = TurnTrace(kind=kind)
     _TRACE.set(trace)
     return trace
-
-
-def current_turn_trace() -> TurnTrace | None:
-    return _TRACE.get()
 
 
 @_quietly

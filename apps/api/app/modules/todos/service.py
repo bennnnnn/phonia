@@ -14,13 +14,6 @@ from app.models.orm import TodoItem
 from app.modules.todos import repository as todos_repo
 
 
-async def list_owned_todos(
-    session: AsyncSession, user_id: UUID, *, limit: int, offset: int = 0
-) -> list[TodoItem]:
-    """Read a page of a user's to-dos without advancing recurrence."""
-    return await todos_repo.list_for_user(session, user_id, limit=limit, offset=offset)
-
-
 async def todos_for_export(
     session: AsyncSession, user_id: UUID, *, after_id: UUID | None, limit: int
 ) -> list[TodoItem]:

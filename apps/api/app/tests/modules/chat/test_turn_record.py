@@ -22,7 +22,7 @@ from app.modules.conversation import chats_repository as chats_repo
 from app.modules.conversation import history, turn_record
 from app.repositories import users as users_repo
 from app.services import quota as quota_service
-from app.tests.fakes import fake_session, make_user, redis_mock
+from app.tests.fakes import make_user
 from app.tests.job_fakes import patch_job_enqueue
 
 _USER = UUID(int=1)

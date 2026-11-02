@@ -11,7 +11,7 @@ result (``app/tests/architecture/test_gather_cancels.py``).
 from __future__ import annotations
 
 import asyncio
-from collections.abc import Awaitable, Callable
+from collections.abc import Awaitable
 from typing import Any, overload
 
 # The fixed-arity forms are typed as tuples, as typeshed types ``asyncio.gather``; like
@@ -66,28 +66,3 @@ async def gather_or_cancel(*aws: Awaitable[Any]) -> Any:
             task.cancel()
         await asyncio.gather(*tasks, return_exceptions=True)
         raise
-
-
-async def finish_despite_cancel[T](
-    work: Awaitable[T], *, then: Callable[[], None] | None = None
-) -> T:
-    """``work``'s result, run to its end even if this task is cancelled meanwhile.
-
-    A save a cancel cuts in half can leave rows pointing at files the caller's cleanup then
-    deletes. Once ``work`` has finished, ``then`` runs (to mark it done) and a cancel that
-    arrived meanwhile is raised. A failure of ``work`` itself, its own cancellation
-    included, is raised as it is, without ``then``.
-    """
-    task = asyncio.ensure_future(work)
-    cancelled = False
-    while not task.done():
-        try:
-            await asyncio.wait({task})
-        except asyncio.CancelledError:
-            cancelled = True
-    result = task.result()
-    if then is not None:
-        then()
-    if cancelled:
-        raise asyncio.CancelledError
-    return result

@@ -1,8 +1,6 @@
-from typing import Annotated, Literal
+from typing import Literal
 
-from pydantic import AfterValidator, BaseModel
-
-from app.models.model_catalog import validate_user_alias
+from pydantic import BaseModel
 
 MessageRole = Literal["user", "assistant", "system"]
 
@@ -31,15 +29,6 @@ UserVoice = Literal[
 ]
 
 MessageFeedback = Literal["up", "down"]
-
-
-def _model_choice(value: str) -> str:
-    validate_user_alias(value, allow_auto=True)
-    return value
-
-
-# A model a request picks: a catalog alias, or Auto.
-ModelChoice = Annotated[str, AfterValidator(_model_choice)]
 
 
 class UsageOut(BaseModel):
