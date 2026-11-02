@@ -24,8 +24,9 @@ export function isSolutionHeading(text: string): boolean {
  * its name ("**Average speed formula**", see `lawHeading`; **Formula** when unnamed),
  * **Substitution** or **Steps**, **Answer** (**Answer (a)** for one part),
  * each a bold heading on its own line followed by one state per line, with
- * the move as a short note after " — " (`$2x = 8$ — subtract 3`). A rearrangement
- * for the unknown is a line of its own (`Solve for $t$`), never a note.
+ * the move written as a short note after " — " (`$2x = 8$ — subtract 3`), which the
+ * phone draws as a line of its own above that state, never at the right edge. A
+ * rearrangement for the unknown is a line of its own (`Solve for $t$`), never a note.
  */
 export const WORKOUT_HEADINGS: readonly string[] = [
   ...OPENING_HEADINGS,
@@ -80,6 +81,19 @@ export function splitWorkoutNote(line: string): { state: string; note: string | 
   return { state: line, note: null };
 }
 
+/**
+ * A heading inside Solution, a level under the sections: a formula under its name,
+ * Substitution, Steps. Given, Required, Solution and Answer are the sections. Read from
+ * the heading alone, so a reply with no **Solution** heading is drawn the same way.
+ */
+export function isWorkingHeading(heading: string): boolean {
+  return (
+    !OPENING_HEADINGS.includes(heading) &&
+    !isAnswerHeading(heading) &&
+    !isSolutionHeading(heading)
+  );
+}
+
 /** **Required** or an older **Find**: what is asked. */
 export function isRequiredHeading(heading: string): boolean {
   return REQUIRED_HEADINGS.includes(heading);
@@ -87,7 +101,7 @@ export function isRequiredHeading(heading: string): boolean {
 
 /**
  * ``$v$ — speed`` → ``$v$ (speed)``: what is asked reads as one line, the unknown with its
- * meaning beside it, never a note at the right edge (that place is a move's). The API
+ * meaning beside it in brackets, symbol first as in Given, never a move's note. The API
  * writes it this way since November 2026 (`services/workout.asked_line`); older replies
  * and a model's own reply are drawn the same.
  */

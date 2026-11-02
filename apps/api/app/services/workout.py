@@ -18,8 +18,10 @@ it has lines:
 - **Steps**: an equation changed one move at a time
 - **Answer**: the verified result (the caller's answer fence follows)
 
-Each line is one state. A move is a short note after the state
-(``$2x = 8$ — subtract 3 from both sides``), never a heading of its own.
+Each line is one state. A move is written as a short note after the state
+(``$2x = 8$ — subtract 3 from both sides``), never a heading of its own; the phone draws
+it as a line of its own just above that state (``rules/workout.tsx``), nothing at the
+right edge.
 Maths numbers each move instead (``modules/math/tools/lesson.py``): a bold
 ``**1. Subtract 4 from both sides**`` over the move written on both sides,
 then the simplified line.
@@ -182,8 +184,9 @@ def _note_at(line: str) -> int:
 
 def asked_line(line: str) -> str:
     """``$v$ — speed`` → ``$v$ (speed)``: what is asked reads as one line, the unknown with
-    its meaning beside it. A note after " — " is a move's, drawn at the right edge of the
-    working; the meaning of an unknown is no move (November 2026)."""
+    its meaning beside it, symbol first as in Given. A note after " — " is a move's (the
+    phone draws it as a line of its own above its maths); the meaning of an unknown is no
+    move (November 2026)."""
     at = _note_at(line)
     if at < 0:
         return line

@@ -11,6 +11,7 @@ import {
   unwrapSingle,
 } from "@/components/markdown/markdownAstHelpers";
 import type { StyleMap } from "@/components/markdown/markdownContentStyles";
+import { subheadingStyle, workingBlockStyle } from "@/components/markdown/rules/workout";
 import { Radius } from "@/lib/radius";
 import { Space } from "@/lib/space";
 import { DYNAMIC_TYPE_MAX, Type, Weight } from "@/lib/type";
@@ -144,8 +145,13 @@ export function renderLessonStep(
   t: Theme,
 ): React.ReactElement {
   return (
-    // A little extra space above each step so its lines read as one block.
-    <View key={key} testID="lesson-step" style={[styles.paragraphRun, { marginTop: Space.xs }]}>
+    // A numbered move is working inside Solution: behind its rule, a little extra space
+    // above it (inside the rule, so the rule runs on) so its lines read as one block.
+    <View
+      key={key}
+      testID="lesson-step"
+      style={[workingBlockStyle(t), { paddingTop: Space.xs }]}
+    >
       <View
         style={{
           flexDirection: "row",
@@ -184,8 +190,9 @@ export function renderLessonStep(
           {lessonLabelNodes(
             step.label,
             `${key}-label`,
-            [styles.body, styles.text, Weight.semibold, { color: t.assistantText }],
-            t.assistantText,
+            // A heading inside Solution, a level under the sections.
+            subheadingStyle(styles, t),
+            t.textSecondary,
           )}
         </View>
       </View>
@@ -225,11 +232,15 @@ export function renderLessonStep(
             </View>
           ) : null}
           {step.formulas.map((formula, i) => (
-            <MathText
-              scrollOverflow
+            // A move's maths is centred, as in every worked section; the reason above it
+            // stays at the left.
+            <View
               key={`${key}-formula-${i}`}
-              latex={formula}
-            />
+              testID="lesson-step-maths"
+              style={{ alignItems: "center", maxWidth: "100%" }}
+            >
+              <MathText scrollOverflow latex={formula} />
+            </View>
           ))}
         </View>
       ) : null}

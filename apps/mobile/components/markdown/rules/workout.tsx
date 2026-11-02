@@ -13,7 +13,10 @@ import {
   openingStrong,
   unwrapSingle,
 } from "@/components/markdown/markdownAstHelpers";
-import type { StyleMap } from "@/components/markdown/markdownContentStyles";
+import {
+  PARAGRAPH_GAP,
+  type StyleMap,
+} from "@/components/markdown/markdownContentStyles";
 import { withGreenTicks } from "@/components/markdown/rules/textWithMath";
 import { Radius } from "@/lib/radius";
 import { Space } from "@/lib/space";
@@ -24,8 +27,8 @@ import {
   isAnswerHeading,
   isRequiredHeading,
   isSolutionHeading,
+  isWorkingHeading,
   lawHeading,
-  OPENING_HEADINGS,
   SOLUTION_HEADING,
   splitWorkoutNote,
   workoutHeading,
@@ -145,16 +148,46 @@ function lastMathLine(lines: string[]): number {
   return lines.length - 1;
 }
 
-/** Given and Required, what the question states and asks, sit behind a thin rule. */
-const RULED_SECTIONS: ReadonlySet<string> = new Set(OPENING_HEADINGS);
 const RULE_WIDTH = 2;
 
-/** One state of a section: its maths, and its move as a note at the right edge. A given's
- * closing "where" line names each symbol in secondary ink. */
+/**
+ * The thin rule Given and Required sit behind, and the working inside Solution: every
+ * section between Solution and Answer (a formula under its name, Substitution, Steps, a
+ * numbered move) is ruled, its gap below padded instead of left as a margin, so the
+ * sections run together as one ruled block under **Solution**.
+ */
+export function workoutRule(t: Theme) {
+  return {
+    marginLeft: Space.xxs,
+    paddingLeft: Space.sm,
+    borderLeftWidth: RULE_WIDTH,
+    borderLeftColor: t.separator,
+  } as const;
+}
+
+/** A section inside Solution: ruled, its gap kept inside the rule so the next one meets it. */
+export function workingBlockStyle(t: Theme) {
+  return { ...workoutRule(t), marginBottom: 0, paddingBottom: PARAGRAPH_GAP } as const;
+}
+
+/** A heading inside Solution, a level under the section headings: smaller, in secondary ink. */
+export function subheadingStyle(styles: StyleMap, t: Theme): StyleProp<TextStyle> {
+  return [styles.text, { ...Type.secondary, ...Weight.semibold, color: t.textSecondary }];
+}
+
+// "Solve for $t$": a step of the working written as words, drawn as a move.
+const SOLVE_FOR = /^Solve for\s/;
+
+/**
+ * One state of a section, its maths. Nothing is ever drawn at the right edge: a move
+ * (`$2x = 8$ — subtract 3`) is a line of its own just above the maths it reached, drawn
+ * as "Solve for $t$" is; what is asked reads "$t$ (time)" on one row. A given's closing
+ * "where" line names each symbol in secondary ink.
+ */
 function renderWorkoutLine(
   lineKey: string,
   line: string,
-  { given, asked }: { given: boolean; asked: boolean },
+  { given, asked, working }: { given: boolean; asked: boolean; working: boolean },
   {
     body,
     noteStyle,
@@ -168,7 +201,12 @@ function renderWorkoutLine(
     asked ? askedLine(marked.text) : marked.text,
   );
   const naming = given && /^where\s/i.test(state);
-  return (
+  const move = !note && SOLVE_FOR.test(state);
+  // Inside Solution a line of maths is centred, as a textbook sets it; what names or
+  // explains it (a heading, a move, "Solve for") stays at the left above it. A line too
+  // wide to fit keeps the full width and its own overflow.
+  const centred = working && !move && state.includes("$");
+  const row = (
     <View
       key={lineKey}
       testID="workout-line"
@@ -176,103 +214,81 @@ function renderWorkoutLine(
         flexDirection: "row",
         flexWrap: "wrap",
         alignItems: "center",
-        columnGap: Space.sm,
-        rowGap: Space.xxs,
+        justifyContent: centred ? "center" : "flex-start",
+        flexShrink: 1,
       }}
     >
-      <View
-        style={{
-          flexDirection: "row",
-          flexWrap: "wrap",
-          alignItems: "center",
-          flexShrink: 1,
-        }}
-      >
-        {naming
-          ? namingPieces(state).map((piece, pieceIndex) => (
-              <View
-                key={`${lineKey}-name-${pieceIndex}`}
-                testID="workout-naming"
-                // A symbol stays beside its meaning; a long meaning wraps after it.
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  maxWidth: "100%",
-                  marginRight: Space.xxs,
-                }}
-              >
-                {workoutInline(
-                  piece,
-                  `${lineKey}-name-${pieceIndex}`,
-                  [noteStyle, { flexShrink: 1 }],
-                  t.textSecondary,
-                )}
-              </View>
-            ))
-          : asked
-            ? (
-                <View
-                  testID="workout-asked"
-                  // The unknown stays beside its meaning on one line; a long meaning
-                  // wraps inside it, never onto a row of its own.
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    maxWidth: "100%",
-                  }}
-                >
-                  {workoutInline(
-                    state,
-                    `${lineKey}-asked`,
-                    [body, { flexShrink: 1 }],
-                    t.assistantText,
-                  )}
-                </View>
-              )
-            : workoutInline(
-                state,
-                `${lineKey}-state`,
-                body,
-                t.assistantText,
-                t.success,
-              )}
-        {marked.caret ? <StreamingCursor key={`${lineKey}-caret`} /> : null}
-      </View>
-      {note ? (
+      {naming ? (
+        namingPieces(state).map((piece, pieceIndex) => (
+          <View
+            key={`${lineKey}-name-${pieceIndex}`}
+            testID="workout-naming"
+            // A symbol stays beside its meaning; a long meaning wraps after it.
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              maxWidth: "100%",
+              marginRight: Space.xxs,
+            }}
+          >
+            {workoutInline(
+              piece,
+              `${lineKey}-name-${pieceIndex}`,
+              [noteStyle, { flexShrink: 1 }],
+              t.textSecondary,
+            )}
+          </View>
+        ))
+      ) : (
         <View
-          testID="workout-note"
+          testID={asked ? "workout-asked" : move ? "workout-move" : undefined}
+          // The unknown stays beside its meaning on one line; a long meaning wraps
+          // inside it, never onto a row of its own.
           style={{
-            // Pushed to the right edge; on its own line when the row is full.
-            marginLeft: given ? 0 : "auto",
             flexDirection: "row",
-            flexWrap: "wrap",
+            flexWrap: asked ? undefined : "wrap",
             alignItems: "center",
-            justifyContent: "flex-end",
-            flexShrink: 1,
+            maxWidth: "100%",
           }}
         >
           {workoutInline(
-            note,
-            `${lineKey}-note`,
-            noteStyle,
-            t.textSecondary,
-            t.success,
+            state,
+            `${lineKey}-state`,
+            move ? [noteStyle, { flexShrink: 1 }] : [body, { flexShrink: 1 }],
+            move ? t.textSecondary : t.assistantText,
+            move ? undefined : t.success,
           )}
         </View>
-      ) : null}
+      )}
+      {marked.caret ? <StreamingCursor key={`${lineKey}-caret`} /> : null}
+    </View>
+  );
+  if (!note) return row;
+  return (
+    <View key={lineKey} testID="workout-step" style={{ gap: Space.xxs }}>
+      <View
+        testID="workout-move"
+        style={{ flexDirection: "row", flexWrap: "wrap", alignItems: "center" }}
+      >
+        {workoutInline(note, `${lineKey}-note`, noteStyle, t.textSecondary, t.success)}
+      </View>
+      {row}
     </View>
   );
 }
 
 /**
- * A worked-solution section. The heading stays at the margin and its lines are
- * indented under it: Given and Required behind a thin rule, the working without one,
- * every section's lines starting at the same edge. Each given is its own line,
- * and a closing "where v₀ = initial speed, …" line names them in secondary ink.
- * A move's note sits at the right edge, and the last line of maths in a
- * written-out answer sits in a white, bordered box (the lines before it are working, a
- * sentence after it stays below). A card the server landed is its own
- * ```answer fence and never reaches here; this draws older replies the same way.
+ * A worked-solution section, at one of two levels. Given, Required, Solution and Answer
+ * are sections: a heading at the margin, Given's and Required's lines behind a thin rule.
+ * Every other section (a formula under its name, Substitution, Steps) is working inside
+ * Solution: a smaller heading in secondary ink and its lines, all behind the same rule,
+ * whoever wrote the reply and whether or not it has a **Solution** heading; its lines of
+ * maths are centred, the words above them at the left. Each given is
+ * its own line, and a closing "where v₀ = initial speed, …" line names them in secondary
+ * ink. The last line of maths in a written-out answer sits in a white, bordered box,
+ * outside the rule (the lines before it are working, a sentence after it stays below). A
+ * card the server landed is its own ```answer fence and never reaches here; this draws
+ * older replies the same way.
  */
 export function renderWorkoutSection(
   key: string,
@@ -288,16 +304,29 @@ export function renderWorkoutSection(
   const given = section.heading === "Given";
   const asked = isRequiredHeading(section.heading);
   const answer = isAnswerHeading(section.heading);
+  const working = isWorkingHeading(section.heading);
   const boxed = answer ? lastMathLine(section.lines) : -1;
   const lines = section.lines.map((line, index) =>
     renderWorkoutLine(
       `${key}-line-${index}`,
       line,
-      { given, asked },
+      { given, asked, working },
       { body, noteStyle },
       t,
     ),
   );
+  if (working) {
+    return (
+      <View key={key} testID="workout-section" style={workingBlockStyle(t)}>
+        <Text testID="workout-subheading" style={subheadingStyle(styles, t)}>
+          {section.heading}
+        </Text>
+        <View testID="workout-body" style={{ gap: Space.xs, marginTop: Space.xxs }}>
+          {lines}
+        </View>
+      </View>
+    );
+  }
   const heading = (
     <Text
       testID="workout-heading"
@@ -327,25 +356,8 @@ export function renderWorkoutSection(
       {heading}
       <View
         testID="workout-body"
-        // Given and Required sit behind a rule; the working keeps its edge without one,
-        // and the Answer's box needs neither.
-        style={
-          answer
-            ? { gap: Space.xs }
-            : RULED_SECTIONS.has(section.heading)
-              ? {
-                  marginLeft: Space.xxs,
-                  paddingLeft: Space.sm,
-                  borderLeftWidth: RULE_WIDTH,
-                  borderLeftColor: t.separator,
-                  gap: Space.xs,
-                }
-              : {
-                  marginLeft: Space.xxs,
-                  paddingLeft: Space.sm + RULE_WIDTH,
-                  gap: Space.xs,
-                }
-        }
+        // Given and Required sit behind a rule; the Answer's box needs none.
+        style={answer ? { gap: Space.xs } : { ...workoutRule(t), gap: Space.xs }}
       >
         {answer ? (
           <>
