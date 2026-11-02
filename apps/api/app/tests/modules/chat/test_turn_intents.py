@@ -304,7 +304,6 @@ def test_one_part_turns_get_no_contract(text: str) -> None:
         recall_memory=False,
         advice_memory=False,
         minimal_personal_context=False,
-        prompt_location=None,
         summary=None,
         memory_block="",
         attachment_rag_block="",

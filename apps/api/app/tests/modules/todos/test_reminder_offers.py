@@ -108,7 +108,7 @@ async def _offer_turn(session: Any, redis: Any, reply: str, prior: str) -> tuple
         avatar_url=None,
         google_sub=str(uuid4()),
     )
-    chat = await chats_repo.create(session, user_id=user.id, model="free-chat")
+    chat = await chats_repo.create(session, user_id=user.id)
     text, written = await materialize_reminder_fences(
         session,
         user_id=user.id,
@@ -328,7 +328,7 @@ async def test_the_answer_to_when_finishes_the_add(db_session, fake_redis, asked
         avatar_url=None,
         google_sub=str(uuid4()),
     )
-    chat = await chats_repo.create(db_session, user_id=user.id, model="free-chat")
+    chat = await chats_repo.create(db_session, user_id=user.id)
     for role, content in (
         ("user", "can you remind me to call mom? i always forget"),
         ("assistant", asked),
@@ -367,7 +367,7 @@ async def test_a_question_about_something_else_is_no_when(db_session, fake_redis
         avatar_url=None,
         google_sub=str(uuid4()),
     )
-    chat = await chats_repo.create(db_session, user_id=user.id, model="free-chat")
+    chat = await chats_repo.create(db_session, user_id=user.id)
     asked = "Good idea. When is your exam?"
     for role, content in (
         ("user", "remind me to study"),
@@ -428,7 +428,7 @@ async def test_a_time_after_another_question_finishes_nothing(
         avatar_url=None,
         google_sub=str(uuid4()),
     )
-    chat = await chats_repo.create(db_session, user_id=user.id, model="free-chat")
+    chat = await chats_repo.create(db_session, user_id=user.id)
     for role, content in (("user", asked_for), ("assistant", question), ("user", "friday at 6am")):
         await messages_repo.create(
             db_session, chat_id=chat.id, user_id=user.id, role=role, content=content

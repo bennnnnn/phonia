@@ -29,16 +29,10 @@ _SECOND = re.compile(r"\bsecond\b", re.IGNORECASE)
 _FIRST = re.compile(r"\b(?:first|native)\b", re.IGNORECASE)
 
 
-def reply_for_profile_question(
-    question: str, facts: Sequence[str], *, location: str | None = None
-) -> str:
-    """One sentence from the saved facts, or a clear miss. Never a question back.
-
-    ``location`` is the place set on the account, used when no saved fact says
-    where the user lives.
-    """
+def reply_for_profile_question(question: str, facts: Sequence[str]) -> str:
+    """One sentence from the saved facts, or a clear miss. Never a question back."""
     if _LIVE_ASK.search(question):
-        return _home_reply(facts, location)
+        return _home_reply(facts)
     if _LANGUAGE_ASK.search(question):
         return _language_reply(question, facts)
     if _EDUCATION_ASK.search(question):
@@ -51,12 +45,10 @@ def reply_for_profile_question(
     return "I don't have that saved."
 
 
-def _home_reply(facts: Sequence[str], location: str | None) -> str:
+def _home_reply(facts: Sequence[str]) -> str:
     home = _first(_LIVES_IN, facts)
     if home:
         return f"You live in {home}."
-    if location:
-        return f"I don't have where you live saved, but your location is set to {location}."
     return "I don't have where you live saved."
 
 

@@ -101,9 +101,7 @@ async def _end_new_turn(ctx: StreamContext, chat_id: UUID) -> None:
         logger.exception("User message persist failed chat_id=%s", chat_id)
 
 
-def _regenerate_images(
-    turn: RegenerateTurn, settings: Settings, model_alias: str | None
-) -> tuple[list[UUID], str]:
+def _regenerate_images(turn: RegenerateTurn, settings: Settings) -> tuple[list[UUID], str]:
     """The photos the message being answered again carries, and the model that reads them.
 
     Persisted image markers identify the current input on regeneration; unlike a new
@@ -112,10 +110,7 @@ def _regenerate_images(
     image_ids = image_attachment_ids_from_text(turn.content) if settings.attachments_enabled else []
     if not image_ids:
         return image_ids, turn.model
-    explicit = plan_service.is_explicit_pick(model_alias)
-    return image_ids, plan_service.image_turn_model(
-        turn.user, settings, turn.model, explicit=explicit
-    )
+    return image_ids, plan_service.image_turn_model(turn.user, settings, turn.model)
 
 
 @traced_turn("new")
@@ -127,14 +122,10 @@ async def stream_chat_response(
     user_id: UUID,
     chat_id: UUID,
     content: str,
-    model_alias: str | None = None,
     attachment_ids: list[UUID] | None = None,
     should_cancel: Callable[[], bool] | None = None,
     outcome: TurnOutcome | None = None,
     client_timezone: str | None = None,
-    client_location: str | None = None,
-    client_latitude: float | None = None,
-    client_longitude: float | None = None,
     on_status: StreamStatusFn | None = None,
     on_reasoning: StreamReasoningFn | None = None,
     user: User | None = None,
@@ -164,7 +155,6 @@ async def stream_chat_response(
             user_id=user_id,
             chat_id=chat_id,
             content=content,
-            model_alias=model_alias,
             user=user,
             user_generation=user_generation,
             chat=chat,
@@ -195,16 +185,12 @@ async def stream_chat_response(
             user_id=user_id,
             chat_id=chat_id,
             content=content,
-            model_alias=model_alias,
             settings=settings,
             redis=redis,
             reserved_tokens=res.reserved_tokens,
             attachment_ids=attachment_ids or [],
             attachment_rows=rows,
             client_timezone=client_timezone,
-            client_location=client_location,
-            client_latitude=client_latitude,
-            client_longitude=client_longitude,
             on_status=status,
             user=turn.user,
             timing=timing,
@@ -249,13 +235,9 @@ async def stream_regenerate_response(
     *,
     user_id: UUID,
     chat_id: UUID,
-    model_alias: str | None = None,
     should_cancel: Callable[[], bool] | None = None,
     outcome: TurnOutcome | None = None,
     client_timezone: str | None = None,
-    client_location: str | None = None,
-    client_latitude: float | None = None,
-    client_longitude: float | None = None,
     on_status: StreamStatusFn | None = None,
     on_reasoning: StreamReasoningFn | None = None,
 ) -> AsyncIterator[str]:
@@ -264,9 +246,7 @@ async def stream_regenerate_response(
     timing.mark_phase("turn_start")
     status = wrap_stream_status(timing, on_status)
     async with turn_resources(deps, redis, user_id=user_id, chat_id=chat_id) as res:
-        turn = await load_regenerate_turn(
-            deps, redis, settings, user_id=user_id, chat_id=chat_id, model_alias=model_alias
-        )
+        turn = await load_regenerate_turn(deps, redis, settings, user_id=user_id, chat_id=chat_id)
         if outcome is not None:
             outcome.mark_user_message_saved()  # The message answered again just loaded.
         settings = profile_service.settings_for_user(settings, turn.user)
@@ -283,7 +263,7 @@ async def stream_regenerate_response(
             on_status=status,
         ):
             return
-        current_image_ids, model = _regenerate_images(turn, settings, model_alias)
+        current_image_ids, model = _regenerate_images(turn, settings)
         await res.reserve(
             user=turn.user,
             content=turn.content,
@@ -298,9 +278,6 @@ async def stream_regenerate_response(
             content=turn.content,
             model=model,
             client_timezone=client_timezone,
-            client_location=client_location,
-            client_latitude=client_latitude,
-            client_longitude=client_longitude,
             on_status=status,
             user=turn.user,
             chat=turn.chat,
@@ -333,7 +310,7 @@ async def stream_regenerate_response(
             run_title=False,
             skip_memory_jobs=False,
             regenerate_backup=turn.backup,
-            # The earlier reply's model (or the user's pick) runs whatever its health.
+            # The earlier reply's model runs whatever its health.
             model_named=True,
             # Regenerating says the answer was not good enough: one level more.
             thinking=thinking_level(turn.content, regenerate=True, settings=settings),

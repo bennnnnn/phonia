@@ -101,9 +101,8 @@
   "id": "rg-015",
   "area": "places",
   "prompt": "how many minutes to drive to the airport",
-  "location": "Westlands, Nairobi, Kenya",
   "reply": "From Westlands to Jomo Kenyatta International Airport is about **35–60 minutes** by car, depending on traffic on Mombasa Road.",
-  "expect": "search"
+  "expect": "instant"
  },
  {
   "id": "rg-020",
@@ -277,7 +276,6 @@
   "id": "rg-050",
   "area": "news",
   "prompt": "the exchange rate in my country today",
-  "location": "Westlands, Nairobi, Kenya",
   "reply": "Today 1 USD is about **129 KES**.",
   "expect": "search"
  },
@@ -285,7 +283,6 @@
   "id": "rg-051",
   "area": "news",
   "prompt": "the gas prices in my area today",
-  "location": "Westlands, Nairobi, Kenya",
   "reply": "Petrol in Nairobi is about **KES 177 a litre** this month.",
   "expect": "search"
  },
@@ -402,18 +399,9 @@
   "expect": "instant"
  },
  {
-  "id": "rg-074",
-  "area": "places",
-  "prompt": "What’s my current location?",
-  "location": "Westlands, Nairobi, Kenya",
-  "reply": "",
-  "expect": "instant"
- },
- {
   "id": "rg-075",
   "area": "places",
   "prompt": "where’s my location right now",
-  "location": "Westlands, Nairobi, Kenya",
   "reply": "",
   "expect": "instant"
  },
@@ -435,7 +423,6 @@
   "id": "rg-078",
   "area": "places",
   "prompt": "where’s my phone",
-  "location": "Westlands, Nairobi, Kenya",
   "reply": "I can’t see your phone. On an iPhone, open **Find My** on another Apple device or sign in at icloud.com/find; on Android, use **Find My Device** at google.com/android/find.",
   "expect": "answer"
  },

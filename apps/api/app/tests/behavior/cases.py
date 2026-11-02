@@ -87,7 +87,6 @@ class Case:
     # Earlier turns as (role, text), oldest first.
     history: tuple[tuple[str, str], ...] = ()
     pro: bool = False
-    location: str | None = None
     tags: tuple[str, ...] = field(default=())
     # The user's memory switch (Settings → Memory).
     memory_enabled: bool = True
@@ -999,45 +998,35 @@ CASES: tuple[Case, ...] = (
         "time and location",
         "find a coffee shop near me",
         Expect(instant="location"),
-        "Asks to turn on location, since none is set.",
-    ),
-    Case(
-        "location-nearby-set",
-        "time and location",
-        "find a coffee shop near me",
-        Expect(search="yes", hints=("local_places",)),
-        "A short list of nearby coffee shops around Nairobi, with sources.",
-        location="Westlands, Nairobi, Kenya",
+        "Asks for the city: the app does not use the device's location.",
     ),
     Case(
         "location-where-am-i",
         "time and location",
         "where am I",
         Expect(search="no"),
-        "The saved location (Westlands, Nairobi), or how to set one.",
-        location="Westlands, Nairobi, Kenya",
+        "Says it can't tell where the user is (no device location), with the local time.",
     ),
     Case(
         "location-weather-here",
         "time and location",
         "what's the weather like here",
-        Expect(search="yes"),
-        "The weather in Nairobi from a search.",
-        location="Westlands, Nairobi, Kenya",
+        Expect(instant="location"),
+        "Asks for the city: the app does not use the device's location.",
     ),
     Case(
         "location-weather-unset",
         "time and location",
         "will it rain tomorrow",
         Expect(instant="location"),
-        "Asks to turn on location (or name a city), since none is set.",
+        "Asks for the city: the app does not use the device's location.",
     ),
     Case(
         "location-trip-minutes-unset",
         "time and location",
         "how many minutes to drive to the airport",
         Expect(instant="location"),
-        "Asks to turn on location: a drive time needs a starting point.",
+        "Asks for the city: a drive time needs a starting point.",
     ),
     Case(
         "location-duration-not-a-trip",

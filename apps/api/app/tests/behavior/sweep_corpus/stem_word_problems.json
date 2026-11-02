@@ -659,8 +659,7 @@
   "prompt": "is it going to rain this afternoon? planning to walk to the library to study",
   "history": [],
   "reply": "In Addis Ababa this afternoon it's around **20 °C** and cloudy, with a **good chance of showers between about 2 and 5 PM** (it's the tail end of the rainy season). Take an umbrella or head out before 2 PM if you can. ☔",
-  "expect": "search",
-  "location": "Addis Ababa, Ethiopia"
+  "expect": "instant"
  },
  {
   "id": "s2-066",
@@ -830,8 +829,7 @@
   "prompt": "How far is the closest eyeglasses store from me?",
   "history": [],
   "reply": "The closest eyeglasses store is **Vision Plus Optics** on Bole Road, about **1.2 km** away (5 minutes by car).",
-  "expect": "search",
-  "location": "Addis Ababa, Ethiopia"
+  "expect": "instant"
  },
  {
   "id": "s2-085",
@@ -879,8 +877,7 @@
   "prompt": "what's the weather like on saturday? we have an outdoor study group",
   "history": [],
   "reply": "Saturday in Addis looks **mostly sunny, 22 °C**, with a small chance of a shower after 3 PM. A morning session outside should be fine.",
-  "expect": "search",
-  "location": "Addis Ababa, Ethiopia"
+  "expect": "instant"
  },
  {
   "id": "s2-091",

@@ -82,7 +82,7 @@ def test_a_message_about_something_else(text: str, last_reply: str) -> None:
 
 async def test_a_yes_about_the_loan_gets_its_figures_and_no_card() -> None:
     turn = await prepare_standing_turn(
-        "Yes", Settings(), None, user=None, location=None, earlier=_HOUSE, last_reply=_OFFER
+        "Yes", Settings(), None, user=None, earlier=_HOUSE, last_reply=_OFFER
     )
 
     assert turn is not None and turn.standing
@@ -104,7 +104,7 @@ async def test_a_yes_about_the_loan_gets_its_figures_and_no_card() -> None:
 )
 async def test_no_loan_in_the_chat_no_block(earlier: list[tuple[str, ...]]) -> None:
     turn = await prepare_standing_turn(
-        "Yes", Settings(), None, user=None, location=None, earlier=earlier, last_reply=_OFFER
+        "Yes", Settings(), None, user=None, earlier=earlier, last_reply=_OFFER
     )
 
     assert turn is None
@@ -116,7 +116,6 @@ async def test_a_message_about_another_product_gets_no_block() -> None:
         Settings(),
         None,
         user=None,
-        location=None,
         earlier=_HOUSE,
         last_reply="",
     )
@@ -130,7 +129,6 @@ async def test_money_off_no_block() -> None:
         Settings(money_enabled=False),
         None,
         user=None,
-        location=None,
         earlier=_HOUSE,
         last_reply=_OFFER,
     )

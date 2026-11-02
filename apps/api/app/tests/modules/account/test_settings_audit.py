@@ -181,21 +181,3 @@ def test_logout_all():
         r = client.post("/auth/logout-all", headers={"Authorization": "Bearer tok"})
     assert r.status_code == 204
     purge.assert_awaited_once()
-
-
-def test_patch_tone_keeps_stored_ids():
-    user = api_user()
-    updated = api_user(response_tone="funny")
-    app = app_with_user(user)
-    with patch(
-        "app.modules.account.lifecycle.users_repo.update",
-        AsyncMock(return_value=updated),
-    ):
-        client = TestClient(app)
-        r = client.patch(
-            "/auth/me",
-            headers={"Authorization": "Bearer tok"},
-            json={"response_tone": "funny"},
-        )
-    assert r.status_code == 200
-    assert r.json()["response_tone"] == "funny"

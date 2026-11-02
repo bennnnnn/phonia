@@ -291,7 +291,6 @@ async def test_stream_chat_response_at_spend_cap_never_prepares_the_turn(
     fake_redis, spend: str, refusal: type[Exception], code: str
 ) -> None:
     user = _user()
-    user.default_model = "free-chat"
     prepare = AsyncMock()
     release = AsyncMock()
     deps = turn_deps(
@@ -368,7 +367,7 @@ async def test_regenerate_reads_back_a_lost_usage_counter_in_its_load_session(fa
         ),
     ):
         await turn_load.load_regenerate_turn(
-            deps, fake_redis, _SETTINGS, user_id=user.id, chat_id=uuid4(), model_alias=None
+            deps, fake_redis, _SETTINGS, user_id=user.id, chat_id=uuid4()
         )
         reserved = await _reserve(fake_redis, user)
 

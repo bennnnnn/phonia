@@ -30,7 +30,7 @@ from app.modules.chat.prompt_constants import (
 )
 from app.modules.chat.prompt_inject import append_after_history, conversation_turns
 from app.modules.chat.prompt_repeats import REPLY_POLICIES, last_policy_parts, policies_once
-from app.modules.chat.response_tone import EMOJI_HINTS, TONE_HINTS
+from app.modules.chat.response_tone import EMOJI_HINTS, VOICE_HINT
 from app.modules.chat.stream_pipeline import _prior_window
 from app.modules.chat.tool_loop.results import ToolResults
 from app.modules.chat.tool_loop.rounds import _hand_off
@@ -121,7 +121,7 @@ async def test_the_marked_message_is_the_same_on_every_kind_of_turn_for_one_user
         "\n\n".join(
             (
                 _IDENTITY,
-                TONE_HINTS["casual"],
+                VOICE_HINT,
                 EMOJI_HINTS["some"],
                 TONE_FORMAT_GUARD,
                 UNCLEAR_MESSAGE_HINT,
@@ -164,7 +164,7 @@ async def test_their_own_instructions_and_language_are_part_of_the_same_text(
     user = {"custom_instructions": "Keep it upbeat.", "locale": "es", "job": "Designer"}
     messages = await _prompt_at(_NINE, user=user, **case)
     stable = messages[0]["content"]
-    tone = f"{TONE_HINTS['casual']}\n\n{EMOJI_HINTS['some']}"
+    tone = f"{VOICE_HINT}\n\n{EMOJI_HINTS['some']}"
     assert stable.startswith(f"{_IDENTITY}\n\n{tone}\n\n{TONE_FORMAT_GUARD}")
     assert "Keep it upbeat." in stable
     assert stable.endswith(locale_system_hint("es"))

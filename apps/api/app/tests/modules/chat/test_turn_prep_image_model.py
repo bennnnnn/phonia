@@ -1,8 +1,7 @@
 """A turn uses a photo model only when it shows the model an image (R4.4).
 
 A picture Recall generated earlier no longer moves later turns to the photo
-model; an explicit pick that can read images keeps a photo turn; a re-sent
-photo gets backups that can read it.
+model; a re-sent photo gets backups that can read it.
 """
 
 from collections.abc import Iterator
@@ -28,7 +27,7 @@ _SETTINGS = Settings(attachments_enabled=True, mock_llm_enabled=True, openrouter
 
 
 def _pro_user() -> Any:
-    return SimpleNamespace(id=uuid4(), plan="pro", enabled_models=None)
+    return SimpleNamespace(id=uuid4(), plan="pro")
 
 
 def _stand_in(**fields: object) -> Any:
@@ -44,7 +43,7 @@ def _generated_cat() -> list[SimpleNamespace]:
     ]
 
 
-def _turn(content: str, *, recent: list[Any], image: bool = False, alias: str | None = None):
+def _turn(content: str, *, recent: list[Any], image: bool = False):
     return UserTurn(
         user_id=uuid4(),
         chat_id=uuid4(),
@@ -53,7 +52,6 @@ def _turn(content: str, *, recent: list[Any], image: bool = False, alias: str | 
         stored_content=content,
         attachment_ids=None,
         has_image_attachment=image,
-        model_alias=alias,
         recent_messages=recent,
         lesson_active=False,
     )
@@ -78,21 +76,11 @@ def test_a_generated_image_earlier_does_not_move_a_hard_question_to_the_photo_mo
     assert turn_model(turn, _pro_user(), _SETTINGS) == "smart-chat"
 
 
-@pytest.mark.parametrize(
-    "alias, expected",
-    [
-        # Pro's everyday model reads the photo itself.
-        (None, ROUTING.everyday_strong),
-        ("auto", ROUTING.everyday_strong),
-        ("gpt-6-luna", "gpt-6-luna"),
-        ("free-chat", "free-chat"),
-        ("smart-chat", "vision-chat"),
-    ],
-)
-def test_a_photo_sent_now_runs_on_a_model_that_reads_it(alias: str | None, expected: str) -> None:
-    turn = _turn("what's in this picture?", recent=[], image=True, alias=alias)
+def test_a_photo_sent_now_runs_on_a_model_that_reads_it() -> None:
+    turn = _turn("what's in this picture?", recent=[], image=True)
     model = turn_model(turn, _pro_user(), _SETTINGS)
-    assert model == expected
+    # Pro's everyday model reads the photo itself.
+    assert model == ROUTING.everyday_strong
     assert model_catalog.reads_images(model)
 
 
@@ -152,7 +140,6 @@ async def test_a_resent_photo_moves_the_turn_and_its_backups_to_image_readers() 
             user_id=user.id,
             chat_id=uuid4(),
             content="and the colour?",
-            model_alias=None,
             settings=_SETTINGS,
             redis=redis_mock(),
             reserved_tokens=100,
@@ -172,19 +159,7 @@ async def test_a_resent_photo_moves_the_turn_and_its_backups_to_image_readers() 
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize(
-    "alias, resolved, probing",
-    [
-        # The user's own pick runs whatever its health.
-        ("gpt-6-luna", "gpt-6-luna", {"vision-chat"}),
-        # A pick that cannot read the photo moves to the photo lane, which the user
-        # did not name: it claims its probe like any routed model.
-        ("smart-chat", "smart-chat", {"vision-chat", "gpt-6-luna"}),
-    ],
-)
-async def test_only_a_model_the_user_named_runs_without_its_probe(
-    alias: str, resolved: str, probing: set[str]
-) -> None:
+async def test_a_routed_photo_turn_claims_its_probe() -> None:
     from app.modules.chat.turn_prep import prepare
 
     user = _pro_user()
@@ -196,7 +171,6 @@ async def test_only_a_model_the_user_named_runs_without_its_probe(
             user_id=user.id,
             chat_id=uuid4(),
             content="what's in this picture?",
-            model_alias=alias,
             settings=_SETTINGS,
             redis=redis_mock(),
             reserved_tokens=100,
@@ -205,9 +179,9 @@ async def test_only_a_model_the_user_named_runs_without_its_probe(
             turn_mode=_stand_in(lightweight=False, rich_context=True),
             prior_count=2,
             recent_messages=[],
-            resolved_model=resolved,
+            resolved_model="smart-chat",
             unhealthy=frozenset(),
             half_open=frozenset({"vision-chat", "gpt-6-luna"}),
         )
         await await_user_message_persist(ctx)
-    assert ctx.probe_models == probing
+    assert ctx.probe_models == {"vision-chat", "gpt-6-luna"}

@@ -21,7 +21,6 @@ from app.modules import memory as memory_service
 from app.modules.account import quota_carryover
 from app.modules.account import tokens as tokens_service
 from app.modules.attachments import service as attachments_service
-from app.modules.billing import plan as plan_service
 from app.modules.chat import service as chats_service
 from app.modules.memory import crud as memory_crud
 from app.modules.todos import service as todos_service
@@ -31,22 +30,7 @@ from app.repositories import users as users_repo
 logger = logging.getLogger(__name__)
 
 
-async def update_account(
-    session: AsyncSession,
-    user: User,
-    settings: Settings,
-    fields: dict[str, Any],
-) -> User:
-    # An older app still sends default_model: it chooses through the same rule.
-    chosen = fields.pop("default_model", None)
-    if chosen is not None and "enabled_models" not in fields:
-        fields["enabled_models"] = plan_service.models_choosing(user, settings, chosen)
-    if "enabled_models" in fields:
-        fields["enabled_models"] = plan_service.validate_enabled_models_for_update(
-            user,
-            fields["enabled_models"],
-            settings,
-        )
+async def update_account(session: AsyncSession, user: User, fields: dict[str, Any]) -> User:
     # A rename changes which saved name facts the memory block keeps (memory.user_name).
     memory_changed = (
         "memory_enabled" in fields and fields["memory_enabled"] != user.memory_enabled

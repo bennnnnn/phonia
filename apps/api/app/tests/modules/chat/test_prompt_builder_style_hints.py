@@ -104,22 +104,11 @@ def test_closed_form_math_prompt_is_instance_first_not_a_lecture():
     assert "Do not jump straight to the instance" not in MATH_INTENT_HINT
 
 
-def test_funny_tone_does_not_pad_one_line_arithmetic() -> None:
-    from app.modules.chat.response_tone import TONE_HINTS
+# The emoji setting alone decides emoji; a voice line that named them contradicted it.
+def test_the_reply_voice_says_nothing_about_emoji() -> None:
+    from app.modules.chat.response_tone import VOICE_HINT
 
-    funny = TONE_HINTS["funny"]
-    assert "3+0" in funny
-    assert "one line" in funny
-    assert "```tip" not in funny
-    assert "occasional emoji" not in funny
-
-
-# The emoji setting alone decides emoji; a tone that named them contradicted it.
-def test_no_tone_speaks_about_emoji() -> None:
-    from app.modules.chat.response_tone import TONE_HINTS
-
-    for tone, hint in TONE_HINTS.items():
-        assert "emoji" not in hint.lower(), tone
+    assert "emoji" not in VOICE_HINT.lower()
 
 
 @pytest.mark.parametrize(
@@ -164,9 +153,7 @@ def test_every_turn_carries_the_users_emoji_setting(level: str) -> None:
     from app.modules.chat.prompt_sections import STABLE_SECTIONS, PromptTurn
     from app.modules.chat.response_tone import emoji_hint
 
-    user = SimpleNamespace(
-        response_tone="casual", emoji_use=level, custom_instructions=None, locale="en"
-    )
+    user = SimpleNamespace(emoji_use=level, custom_instructions=None, locale="en")
     turn = cast("PromptTurn", SimpleNamespace(user=user))
     texts = [text for section in STABLE_SECTIONS[:2] for text in section.render(turn)]
     assert emoji_hint(level) in texts
@@ -685,7 +672,6 @@ def _turn_prompt(
         id=uuid4(),
         name="Bini",
         email="bini@example.com",
-        response_tone="casual",
         locale="en",
         timezone="UTC",
     )

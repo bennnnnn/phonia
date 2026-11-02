@@ -15,7 +15,7 @@ TEMPLATES: dict[str, dict[str, dict[str, str]]] = {
                 "matters to you. Ask it anything, or jot down reminders.\n\n"
                 "A few things to try first:\n"
                 "  - Tell Recall about yourself so its memory gets useful fast.\n"
-                "  - Set your preferred language, tone, and response length in Settings.\n\n"
+                "  - Set your preferred language and emoji use in Settings.\n\n"
                 "Cheers,\nThe Recall team"
             ),
             "html": (
@@ -25,7 +25,7 @@ TEMPLATES: dict[str, dict[str, dict[str, str]]] = {
                 "<p>A few things to try first:</p>"
                 "<ul>"
                 "<li>Tell Recall about yourself so its memory gets useful fast.</li>"
-                "<li>Set your preferred language, tone, and response length in Settings.</li>"
+                "<li>Set your preferred language and emoji use in Settings.</li>"
                 "</ul>"
                 "<p>Cheers,<br/>The Recall team</p>"
             ),

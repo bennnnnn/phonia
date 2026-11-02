@@ -25,8 +25,8 @@ async def _seed(session):
         avatar_url=None,
         google_sub=str(uuid4()),
     )
-    chat_a = await chats.create(session, user_id=user.id, model="free-chat")
-    chat_b = await chats.create(session, user_id=user.id, model="free-chat")
+    chat_a = await chats.create(session, user_id=user.id)
+    chat_b = await chats.create(session, user_id=user.id)
     message = Message(id=uuid4(), user_id=user.id, chat_id=chat_a.id, role="user", content="file")
     session.add(message)
     await session.flush()

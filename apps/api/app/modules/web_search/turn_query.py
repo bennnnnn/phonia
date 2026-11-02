@@ -12,7 +12,6 @@ from typing import Any
 
 from app.core.config import Settings
 from app.modules.web_search.command import search_command
-from app.modules.web_search.geo_intent import is_geo_query
 from app.modules.web_search.officeholder import office_with_subject, office_without_place
 from app.modules.web_search.patterns import (
     _CLARIFICATION,
@@ -23,7 +22,6 @@ from app.modules.web_search.patterns import (
 from app.modules.web_search.place_answer import question_in_given_place
 from app.modules.web_search.query_builders import (
     anchor_news_query_to_today,
-    anchor_to_location,
     build_search_queries,
     is_current_news_request,
 )
@@ -82,7 +80,6 @@ async def search_queries_for_turn(
     messages: list[dict[str, Any]],
     *,
     user_timezone: str | None = None,
-    user_location: str | None = None,
 ) -> list[str]:
     """Queries for this turn's search, best first; never empty for a non-empty message."""
     cleaned = collapse_ws(user_text)
@@ -97,7 +94,7 @@ async def search_queries_for_turn(
             subject = anchor_recency_to_year(subject, cleaned, user_timezone)
         return [subject]
     priors = collect_prior_user_messages(messages, user_text)
-    # A place named after "I don't have your location yet" asks the earlier question there.
+    # A place named after "I don't know where you are" asks the earlier question there.
     asked_there = question_in_given_place(
         cleaned, priors[-1] if priors else None, _last_assistant_text(messages)
     )
@@ -126,9 +123,6 @@ async def search_queries_for_turn(
     release = release_search_query(cleaned)
     if release is not None:
         return [release]
-    # "Coffee near me" searched those words and found New York cafés.
-    if user_location and is_geo_query(cleaned):
-        return [anchor_to_location(cleaned, user_location)]
     if is_current_news_request(cleaned):
         return [cleaned]
     return [anchor_recency_to_year(cleaned, cleaned, user_timezone)]

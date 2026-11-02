@@ -8,10 +8,8 @@ from app.core.config import Settings
 from app.gateways.mcp.base import ToolContext, ToolResult
 from app.models.schemas.tools import WebSearchToolInput
 from app.modules.web_search.formatting import sources_payload
-from app.modules.web_search.geo_intent import is_geo_query
 from app.modules.web_search.query_builders import (
     anchor_news_query_to_today,
-    anchor_to_location,
     filter_hits_to_today,
     is_current_news_request,
     is_news_today_request,
@@ -104,8 +102,6 @@ class WebSearchAdapter:
             query = anchor_news_query_to_today(query, ctx.user_timezone)
         else:
             query = anchor_recency_to_year(query, user_query, ctx.user_timezone)
-        if ctx.user_location and is_geo_query(user_query):
-            query = anchor_to_location(query, ctx.user_location)
         # One search per turn: a repeat call gets the first call's result.
         first = ctx.first_results.get(self.name)
         if first is not None:

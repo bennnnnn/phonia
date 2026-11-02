@@ -48,7 +48,6 @@ async def test_stream_does_not_duplicate_user_message(fake_redis, stream_offline
 
     fake_user = MagicMock()
     fake_user.id = user_id
-    fake_user.default_model = "free-chat"
     fake_chat = MagicMock()
     fake_chat.model = "free-chat"
     fake_chat.summary = None
@@ -90,7 +89,6 @@ async def test_memory_extraction_runs_on_later_turn(fake_redis, stream_offline_i
 
     fake_user = MagicMock()
     fake_user.id = MagicMock()
-    fake_user.default_model = "free-chat"
     fake_chat = MagicMock()
     fake_chat.model = "free-chat"
     fake_chat.summary = None
@@ -151,7 +149,6 @@ async def test_memory_extraction_skipped_when_memory_disabled(fake_redis, stream
 
     fake_user = MagicMock()
     fake_user.id = MagicMock()
-    fake_user.default_model = "free-chat"
     fake_user.memory_enabled = False
 
     fake_chat = MagicMock()
@@ -203,7 +200,6 @@ async def test_memory_extraction_throttled_when_every_n_gt_1(fake_redis, stream_
 
     fake_user = MagicMock()
     fake_user.id = MagicMock()
-    fake_user.default_model = "free-chat"
     fake_chat = MagicMock()
     fake_chat.model = "free-chat"
     fake_chat.summary = None
@@ -258,7 +254,6 @@ async def test_a_reminder_reply_enqueues_no_background_write(fake_redis, stream_
 
     fake_user = MagicMock()
     fake_user.id = MagicMock()
-    fake_user.default_model = "free-chat"
     fake_chat = MagicMock()
     fake_chat.model = "free-chat"
     fake_chat.summary = None
@@ -312,7 +307,6 @@ async def test_stream_sets_final_content_on_cancel(fake_redis, stream_offline_io
 
     fake_user = MagicMock()
     fake_user.id = MagicMock()
-    fake_user.default_model = "free-chat"
     fake_chat = MagicMock()
     fake_chat.model = "free-chat"
     fake_chat.summary = None
@@ -1638,7 +1632,6 @@ async def test_stream_closes_llm_stream_on_cancel(fake_redis, stream_offline_io)
 
     fake_user = MagicMock()
     fake_user.id = MagicMock()
-    fake_user.default_model = "free-chat"
     fake_chat = MagicMock()
     fake_chat.model = "free-chat"
     fake_chat.summary = None
@@ -1709,7 +1702,6 @@ async def test_stream_places_query_without_location_prompts_to_enable(
 
     fake_user = MagicMock()
     fake_user.id = MagicMock()
-    fake_user.default_model = "free-chat"
     fake_user.location = ""  # no location set
     fake_user.location_enabled = False
 
@@ -1758,7 +1750,6 @@ async def test_stream_places_query_with_client_location_skips_the_settings_promp
 
     fake_user = MagicMock()
     fake_user.id = MagicMock()
-    fake_user.default_model = "free-chat"
     fake_user.location = ""
     fake_user.location_enabled = True
 
@@ -1813,7 +1804,6 @@ async def test_stream_persists_raw_text_when_enrichment_fails(fake_redis, stream
 
     fake_user = MagicMock()
     fake_user.id = MagicMock()
-    fake_user.default_model = "free-chat"
     fake_chat = MagicMock()
     fake_chat.model = "free-chat"
     fake_chat.summary = None
@@ -1888,7 +1878,6 @@ async def test_stream_no_final_content_on_normal_completion(fake_redis, stream_o
 
     fake_user = MagicMock()
     fake_user.id = MagicMock()
-    fake_user.default_model = "free-chat"
     fake_chat = MagicMock()
     fake_chat.model = "free-chat"
     fake_chat.summary = None
@@ -1935,7 +1924,6 @@ async def test_regenerate_keeps_assistant_when_stream_empty(fake_redis):
 
     fake_user = MagicMock()
     fake_user.id = MagicMock()
-    fake_user.default_model = "free-chat"
     fake_user.timezone = None
 
     fake_chat = MagicMock()
@@ -2040,13 +2028,12 @@ async def test_regenerate_omits_assistant_from_prompt_without_pre_delete(fake_re
     """Prior assistant stays in DB until finalize; prompt build must omit it."""
     from app.modules import chat as chat_module
     from app.modules.chat.prompt_builder import PromptStats
-    from app.modules.chat.turn_prep import ClientGeoContext, TurnPromptBundle
+    from app.modules.chat.turn_prep import TurnPromptBundle
 
     captured: dict[str, object] = {}
 
     fake_user = MagicMock()
     fake_user.id = MagicMock()
-    fake_user.default_model = "free-chat"
     fake_user.timezone = None
 
     fake_chat = MagicMock()
@@ -2074,15 +2061,6 @@ async def test_regenerate_omits_assistant_from_prompt_without_pre_delete(fake_re
             fallback_models=[],
             lightweight=False,
             rich_context=True,
-            geo=ClientGeoContext(
-                user_location=None,
-                client_lat=None,
-                client_lng=None,
-                has_geo_fix=False,
-                geo_query=False,
-                ambiguous_nearby=False,
-                local_places=False,
-            ),
             local_tz="UTC",
             verified_subject=None,
         )
@@ -2165,7 +2143,6 @@ async def test_regenerate_passes_client_geo_to_the_turn(fake_redis):
 
     fake_user = MagicMock()
     fake_user.id = MagicMock()
-    fake_user.default_model = "free-chat"
     fake_user.timezone = None
     fake_user.locale = "en"
 

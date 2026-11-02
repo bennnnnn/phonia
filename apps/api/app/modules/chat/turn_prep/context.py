@@ -26,10 +26,9 @@ from app.modules.chat.turn_prep.mode import classify_turn_mode
 from app.modules.chat.turn_prep.money import server_parts, with_money_block
 from app.modules.chat.turn_prep.reading import read_turn, read_turn_message
 from app.modules.chat.turn_prep.request import (
-    ClientGeoContext,
     TurnIdentity,
     TurnRequest,
-    resolve_client_geo,
+    read_geo_ask,
 )
 from app.modules.chat.turn_timing import TurnTimingTracker
 from app.modules.chat.turn_trace import note_lightweight, note_plan, note_subject, note_teaching
@@ -74,9 +73,6 @@ class StreamContext:
     # the current client timezone). Finalization must use the same zone that
     # prompt construction used for relative dates and reminder clocks.
     user_timezone: str | None = None
-    # The device location when this turn needs one ("coffee near me"); a
-    # search for it names the place.
-    search_location: str | None = None
     user: User | None = None
     # Pre-assigned id for the assistant row so `done` can be sent to the client
     # before the background DB insert commits.
@@ -157,7 +153,6 @@ class TurnPromptBundle:
     fallback_models: list[str]
     lightweight: bool
     rich_context: bool
-    geo: ClientGeoContext
     local_tz: str
     verified_subject: VerifiedSolveBlock | None = None
     solver_unverified: bool = False
@@ -172,11 +167,6 @@ class TurnPromptBundle:
     # The chat's last messages the prompt was built from (``StreamContext.recent_messages``).
     recent_messages: list[Any] | None = None
     worked: WorkedLayout | None = None
-
-
-def _search_location(geo: ClientGeoContext) -> str | None:
-    """The place a search for this turn names: only a turn that needs one."""
-    return geo.user_location if geo.geo_query else None
 
 
 def stream_context_from_bundle(
@@ -216,7 +206,6 @@ def stream_context_from_bundle(
         reserved_tokens=reserved_tokens,
         max_output_tokens=bundle.max_out,
         user_timezone=bundle.local_tz,
-        search_location=_search_location(bundle.geo),
         user=user,
         recalled_count=bundle.stats.recalled,
         memory_hints=list(bundle.stats.memory_hints),
@@ -265,7 +254,7 @@ async def await_user_message_persist(ctx: StreamContext) -> None:
 
 
 async def _load_turn_identity(request: TurnRequest, settings: Settings) -> TurnIdentity:
-    """The user, chat and turn mode, with the turn's geo and clock resolved in memory.
+    """The user, chat and turn mode, with what it asks about places and its clock.
 
     Prepare and regenerate pass all three, so a turn skips a Neon checkout; one
     left out is read in a single short session.
@@ -292,13 +281,7 @@ async def _load_turn_identity(request: TurnRequest, settings: Settings) -> TurnI
                 mode = classify_turn_mode(recent, request.content)
     if request.force_rich_context and not mode.rich_context:
         mode = replace(mode, rich_context=True)
-    geo = resolve_client_geo(
-        user,
-        request.content,
-        client_location=request.client_location,
-        client_latitude=request.client_latitude,
-        client_longitude=request.client_longitude,
-    )
+    geo = read_geo_ask(request.content)
     local_tz = time_context_service.effective_timezone(user.timezone, request.client_timezone)
     note_lightweight(mode.lightweight_reason)
     return TurnIdentity(user=user, chat=chat, mode=mode, geo=geo, local_tz=local_tz)
@@ -352,7 +335,6 @@ def _bundle(
         fallback_models=fallback_models,
         lightweight=identity.mode.lightweight,
         rich_context=identity.mode.rich_context,
-        geo=identity.geo,
         local_tz=identity.local_tz,
         verified_subject=augmented.verified_subject,
         solver_unverified=augmented.solver_unverified,
@@ -411,7 +393,7 @@ async def build_stream_prompt_context(
     # sessions inside build_prompt_messages). Do not emit preparing/remembering
     # theater — casual chat should look like TTS: tap, then tokens. Real work
     # (search, files, math) still emits its own activity chip.
-    user, chat, mode, geo = identity.user, identity.chat, identity.mode, identity.geo
+    user, chat, mode = identity.user, identity.chat, identity.mode
     stats = PromptStats()
     # More than one request: each is answered (``intents``), and the prompt says how.
     plan = _turn_plan(request.content, settings)
@@ -431,7 +413,6 @@ async def build_stream_prompt_context(
             advice_memory=mode.advice_memory,
             accepted_offer=mode.accepted_offer,
             client_timezone=request.client_timezone,
-            prompt_location=geo.user_location if geo.geo_query and geo.has_geo_fix else None,
             omit_message_ids=request.omit_message_ids,
             probe_attachment_rag=request.probe_attachment_rag,
             recent_messages=request.recent_messages,

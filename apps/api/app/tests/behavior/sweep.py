@@ -24,8 +24,8 @@ multi-part reply carries). Area "multi" must be read as more than one request an
 "multi lookalike" as one.
 
 Turns run as a Pro user, so image generation can claim one; ``"pro": false``
-runs one as free. ``"location"`` gives the user a saved location. ``"gap"``
-names a known miss: ``test_sweep.py`` expects it to fail until it is fixed.
+runs one as free. ``"gap"`` names a known miss: ``test_sweep.py`` expects it to fail
+until it is fixed.
 """
 
 from __future__ import annotations
@@ -173,7 +173,6 @@ class Entry:
     expect: str = "answer"
     history: tuple[tuple[str, str], ...] = ()
     pro: bool = True
-    location: str | None = None
     gap: str | None = None
     # More outcomes the same turn must also have (``"expect": ["search", "answer"]``).
     also: tuple[str, ...] = ()
@@ -215,7 +214,6 @@ def load(paths: list[Path] | None = None) -> list[Entry]:
                     expect=str(first),
                     history=history,
                     pro=bool(raw.get("pro", True)),
-                    location=raw.get("location"),
                     gap=raw.get("gap"),
                     also=tuple(str(item) for item in also),
                 )
@@ -234,7 +232,6 @@ def _user(*, pro: bool) -> User:
         name="Bini",
         email="bini@example.com",
         plan="pro" if pro else "free",
-        response_tone="casual",
         emoji_use="some",
         locale="en",
         timezone=USER_TIMEZONE,
@@ -369,7 +366,6 @@ async def _run_entry(entry: Entry) -> Outcome:
             "",
             history=entry.history,
             pro=entry.pro,
-            location=entry.location,
         ),
         settings,
     )
@@ -494,9 +490,9 @@ def _judge_expect(outcome: Outcome, expect: str) -> list[str]:
             problems.append("image generation took the turn")
         if route.instant == "text" and route.instant_text:
             problems.append(f"instant reply: {route.instant_text[:80]!r}")
-        # "How many minutes in a good nap" answered "Turn on Location".
+        # "How many minutes in a good nap" answered "Tell me the city".
         if route.instant == "location":
-            problems.append("answered with the turn-on-location reply")
+            problems.append("answered with the where-are-you reply")
         # "3 cups of flour for 12 cookies…" is a problem to solve, not a pick to personalise.
         if entry.area in STEM_AREAS and "advice" in route.hints:
             problems.append("given the personal-recommendation hint")

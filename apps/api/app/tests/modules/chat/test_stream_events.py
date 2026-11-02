@@ -110,7 +110,6 @@ def _turn_failures() -> list[BaseException]:
         RedisUnavailableError,
         SpendCapReachedError,
         TurnRefusedError,
-        UnknownModelOverrideError,
     )
     from app.gateways.litellm_gateway import ModelUnavailableError
 
@@ -119,7 +118,6 @@ def _turn_failures() -> list[BaseException]:
         RedisUnavailableError(),
         ChatBusyError(),
         AttachmentValidationError("Too big."),
-        UnknownModelOverrideError("x"),
         SpendCapReachedError("Paused today."),
         ConsentRequiredError(),
         TurnRefusedError("No more pictures.", code="daily_limit"),

@@ -169,14 +169,6 @@ class ConsentRequiredError(ChatServiceError):
         super().__init__(message)
 
 
-class UnknownModelOverrideError(ChatServiceError):
-    """Per-message picker asked for an alias the user's pool does not include."""
-
-    def __init__(self, alias: str) -> None:
-        self.alias = alias
-        super().__init__(f"Unknown or unavailable model: {alias}")
-
-
 class RedisUnavailableError(Exception):
     """Redis is required for auth revocation / quota; outage → fail closed with 503.
 

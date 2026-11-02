@@ -30,7 +30,7 @@ async def _user(session):
 
 
 async def _chat(session, user_id, *, age: timedelta, with_message: bool) -> Chat:
-    chat = await chats_repo.create(session, user_id=user_id, model="free-chat")
+    chat = await chats_repo.create(session, user_id=user_id)
     chat.created_at = NOW - age
     if with_message:
         session.add(Message(chat_id=chat.id, user_id=user_id, role="user", content="hi"))

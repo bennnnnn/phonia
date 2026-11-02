@@ -24,7 +24,6 @@ def _turn(attachment_ids: list[UUID] | None = None, **known: Any) -> UserTurn:
         stored_content="summarize this\n\n[File: notes.txt]",
         attachment_ids=attachment_ids or [uuid4()],
         has_image_attachment=False,
-        model_alias=None,
         recent_messages=None,
         lesson_active=False,
         **known,

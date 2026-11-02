@@ -69,7 +69,6 @@ async def run_tool_rounds(
     web_search: bool | None = None,
     user_timezone: str | None = None,
     user_text: str | None = None,
-    user_location: str | None = None,
     has_verified_math: bool = False,
     search_parts: list[str] | None = None,
     skip_tools: frozenset[str] = frozenset(),
@@ -105,7 +104,6 @@ async def run_tool_rounds(
         user_timezone=user_timezone,
         user_query=user_text,
         tavily_budget=TurnTavilyBudget(settings=settings, user=user),
-        user_location=user_location,
         deadline=time.monotonic() + settings.mcp_tool_loop_total_timeout_seconds,
     )
     # An obvious lookup used to spend a model round deciding to call

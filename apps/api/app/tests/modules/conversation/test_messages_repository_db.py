@@ -49,7 +49,7 @@ def _build_message(chat_id, user_id, *, created_at, message_id=None, role="user"
 @pytest.mark.asyncio
 async def test_list_recent_returns_correct_order_and_respects_limit(db_session):
     user = await _make_user(db_session)
-    chat = await chats_repo.create(db_session, user_id=user.id, model="free-chat")
+    chat = await chats_repo.create(db_session, user_id=user.id)
     base = datetime(2026, 1, 1, tzinfo=UTC)
     messages = [
         _build_message(chat.id, user.id, created_at=base + timedelta(minutes=i), content=f"m{i}")
@@ -69,8 +69,8 @@ async def test_list_recent_returns_correct_order_and_respects_limit(db_session):
 @pytest.mark.asyncio
 async def test_get_by_id_scoped_by_chat_does_not_leak_across_chats(db_session):
     user = await _make_user(db_session)
-    chat_a = await chats_repo.create(db_session, user_id=user.id, model="free-chat")
-    chat_b = await chats_repo.create(db_session, user_id=user.id, model="free-chat")
+    chat_a = await chats_repo.create(db_session, user_id=user.id)
+    chat_b = await chats_repo.create(db_session, user_id=user.id)
     message = await messages_repo.create(
         db_session, chat_id=chat_a.id, user_id=user.id, role="user", content="hi"
     )
@@ -95,7 +95,7 @@ async def test_list_range_is_stable_across_created_at_ties(db_session):
     insertion order instead of id order and fail this assertion.
     """
     user = await _make_user(db_session)
-    chat = await chats_repo.create(db_session, user_id=user.id, model="free-chat")
+    chat = await chats_repo.create(db_session, user_id=user.id)
     same_time = datetime(2026, 1, 1, tzinfo=UTC)
     insertion_order_ids = [3, 1, 4, 0, 2]
     messages = [
@@ -126,7 +126,7 @@ async def test_get_last_user_uses_id_tiebreaker_when_created_at_ties(db_session)
     (created_at, id) so a shared millisecond doesn't make "last"
     non-deterministic — regenerate relies on a single canonical last row."""
     user = await _make_user(db_session)
-    chat = await chats_repo.create(db_session, user_id=user.id, model="free-chat")
+    chat = await chats_repo.create(db_session, user_id=user.id)
     same_time = datetime(2026, 1, 1, tzinfo=UTC)
     # Insert in an order that does NOT match id order, so insertion-order
     # fallback would pick the wrong row if the id tiebreaker were dropped.

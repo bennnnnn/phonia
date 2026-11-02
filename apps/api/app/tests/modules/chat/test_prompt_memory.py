@@ -30,7 +30,6 @@ def _user(*, memory: bool = True) -> User:
         name="Bini",
         email="bini@example.com",
         plan="free",
-        response_tone="casual",
         locale="en",
         timezone="Africa/Nairobi",
         memory_enabled=memory,

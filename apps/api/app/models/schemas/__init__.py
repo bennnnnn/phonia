@@ -18,7 +18,6 @@ from app.models.schemas.auth import (
 from app.models.schemas.chats import (
     ChatBulkAction,
     ChatBulkOut,
-    ChatCreate,
     ChatListOut,
     ChatMessageRequest,
     ChatOut,
@@ -46,7 +45,6 @@ __all__ = [
     "AuthSessionOut",
     "ChatBulkAction",
     "ChatBulkOut",
-    "ChatCreate",
     "ChatListOut",
     "ChatMessageRequest",
     "ChatOut",

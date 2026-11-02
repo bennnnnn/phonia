@@ -41,9 +41,8 @@ async def create(
     session: AsyncSession,
     *,
     user_id: UUID,
-    model: str,
 ) -> Chat:
-    chat = Chat(user_id=user_id, model=model)
+    chat = Chat(user_id=user_id)
     session.add(chat)
     await session.commit()
     await session.refresh(chat)
@@ -51,7 +50,6 @@ async def create(
         Chat(
             id=chat.id,
             user_id=chat.user_id,
-            model=chat.model,
         )
     )
     return chat
@@ -80,7 +78,6 @@ _LIST_COLUMNS = load_only(
     Chat.id,
     Chat.user_id,
     Chat.title,
-    Chat.model,
     Chat.pinned,
     Chat.created_at,
     Chat.updated_at,

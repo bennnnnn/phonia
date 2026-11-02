@@ -9,7 +9,6 @@ from __future__ import annotations
 import re
 
 from app.models.orm import User
-from app.modules.account import profile as profile_service
 from app.modules.turn_reading.writing_kind import is_email_or_message_request
 from app.services import prompt_safety
 
@@ -48,7 +47,6 @@ _NO_NAME_TO_SIGN = (
 def format_user_profile_block(
     user: User,
     *,
-    location_override: str | None = None,
     include_email: bool = False,
 ) -> str:
     """Basic identity — injected into every chat prompt."""
@@ -70,9 +68,6 @@ def format_user_profile_block(
         lines.append(f"- Country: {user.country.strip()}")
     if user.job and user.job.strip():
         lines.append(f"- Job: {user.job.strip()}")
-    location = location_override or profile_service.user_location_label(user)
-    if location:
-        lines.append(f"- Location: {location}")
     lines.append(
         "Share profile fields only when the user asks for that specific field — never recite "
         "email or location in a general 'who am I' answer. Do not say their name is missing "

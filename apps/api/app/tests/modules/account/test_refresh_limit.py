@@ -35,7 +35,6 @@ def _user_out(user_id: UUID) -> UserOut:
         name="Phone",
         avatar_url=None,
         plan="free",
-        enabled_models=None,
         memory_enabled=True,
         created_at=datetime(2024, 1, 1),
     )

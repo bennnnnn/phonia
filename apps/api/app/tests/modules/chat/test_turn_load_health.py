@@ -38,7 +38,7 @@ async def test_read_breakers_reads_failing_providers_and_never_raises() -> None:
 
 
 def _deps(resolve: MagicMock) -> tuple[Any, Any, Any]:
-    user = SimpleNamespace(id=uuid4(), plan="pro", enabled_models=None)
+    user = SimpleNamespace(id=uuid4(), plan="pro")
     chat = SimpleNamespace(id=uuid4())
     deps = turn_deps(
         session_factory=FakeSessionCM,
@@ -66,7 +66,6 @@ async def _load(deps: Any, user: Any, chat: Any, redis: Any, content: str) -> An
             user_id=user.id,
             chat_id=chat.id,
             content=content,
-            model_alias=None,
             user=None,
             chat=None,
             skip_usage_seed=True,
@@ -114,7 +113,7 @@ async def test_a_regenerate_reads_health_for_its_backups_and_claims_nothing() ->
     for alias, at in (("smart-chat", now - 31), ("glm-5.2", now - 5)):
         key = f"recall:model_health:samples:{model_health._model_of(alias)}"
         await redis.zadd(key, {f"0|900|{int(at * 1e9)}": at})
-    user: Any = SimpleNamespace(plan="pro", enabled_models=None)
+    user: Any = SimpleNamespace(plan="pro")
     fallbacks, half_open = await _fallback_models(user, Settings(), redis, "gpt-6-luna")
     # The cooling model is no backup; the half-open one is, behind its probe.
     assert "glm-5.2" not in fallbacks

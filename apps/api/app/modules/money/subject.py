@@ -29,7 +29,6 @@ class MoneyPeer:
         redis: Redis | None,
         *,
         user: User | None,
-        location: str | None,
         earlier: Sequence[str | Sequence[str]],
         last_reply: str,
     ) -> MoneyTurn | None:
@@ -40,7 +39,6 @@ class MoneyPeer:
             settings,
             redis,
             user=user,
-            location=location,
             earlier=earlier,
             last_reply=last_reply,
         )
@@ -52,7 +50,6 @@ class MoneyPeer:
         redis: Redis | None,
         *,
         user: User | None,
-        location: str | None,
         earlier: Sequence[str | Sequence[str]],
         last_reply: str,
     ) -> MoneyTurn | None:
@@ -63,7 +60,6 @@ class MoneyPeer:
             settings,
             redis,
             user=user,
-            location=location,
             earlier=earlier,
             last_reply=last_reply,
         )

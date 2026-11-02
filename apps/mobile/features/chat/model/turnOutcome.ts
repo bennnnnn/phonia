@@ -34,7 +34,6 @@ const ERROR_CODES = new Set([
   "unavailable",
   "busy",
   "attachment_rejected",
-  "unknown_model",
   "rate_limited",
   "consent_required",
   "daily_limit",

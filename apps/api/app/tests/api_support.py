@@ -21,17 +21,12 @@ def api_user(**kw: Any) -> MagicMock:
     u.email = kw.get("email", "test@recall.local")
     u.name = kw.get("name", "Tester")
     u.avatar_url = None
-    u.default_model = "auto"
     u.plan = kw.get("plan", "free")
-    u.enabled_models = kw.get("enabled_models", None)
-    u.response_tone = kw.get("response_tone", "funny")
     u.emoji_use = kw.get("emoji_use", "some")
     u.memory_enabled = True
     u.memory_include_sensitive = False
     u.locale = kw.get("locale", "en")
     u.timezone = kw.get("timezone", "UTC")
-    u.location = kw.get("location", None)
-    u.location_enabled = kw.get("location_enabled", bool(kw.get("location")))
     u.custom_instructions = kw.get("custom_instructions", None)
     u.age = kw.get("age", None)
     u.country = kw.get("country", None)

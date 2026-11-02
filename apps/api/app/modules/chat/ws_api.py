@@ -123,20 +123,11 @@ def _status_emitters(websocket: WebSocket) -> tuple[StreamStatusFn, StreamReason
     return emit_status, emit_reasoning
 
 
-def _client_geo_kwargs(
-    request: ChatMessageRequest,
-    *,
-    client_timezone: str | None,
-) -> dict[str, Any]:
-    """Where the phone is for this turn. Its zone is the one the turn's frame names,
-    since the phone can change zone while the socket stays open (a flight, Settings);
-    a frame without one (an older phone) keeps the zone of the auth frame."""
-    return {
-        "client_timezone": request.client_timezone or client_timezone,
-        "client_location": request.client_location,
-        "client_latitude": request.client_latitude,
-        "client_longitude": request.client_longitude,
-    }
+def _turn_timezone(request: ChatMessageRequest, client_timezone: str | None) -> str | None:
+    """The phone's zone for this turn: the one the turn's frame names, since the phone
+    can change zone while the socket stays open (a flight, Settings); a frame without
+    one (an older phone) keeps the zone of the auth frame."""
+    return request.client_timezone or client_timezone
 
 
 async def _handle_regenerate(
@@ -166,12 +157,11 @@ async def _handle_regenerate(
             settings,
             user_id=user_id,
             chat_id=chat_id,
-            model_alias=request.model,
             should_cancel=cancel_event.is_set,
             outcome=outcome,
             on_status=emit_status,
             on_reasoning=emit_reasoning,
-            **_client_geo_kwargs(request, client_timezone=client_timezone),
+            client_timezone=_turn_timezone(request, client_timezone),
         )
 
     return await run_chat_stream(
@@ -244,7 +234,6 @@ async def _handle_message(
             user_id=user_id,
             chat_id=chat_id,
             content=request.content,
-            model_alias=request.model,
             attachment_ids=request.attachment_ids,
             should_cancel=cancel_event.is_set,
             outcome=outcome,
@@ -252,7 +241,7 @@ async def _handle_message(
             on_reasoning=emit_reasoning,
             user=user,
             user_generation=user_generation,
-            **_client_geo_kwargs(request, client_timezone=client_timezone),
+            client_timezone=_turn_timezone(request, client_timezone),
         )
 
     return await run_chat_stream(

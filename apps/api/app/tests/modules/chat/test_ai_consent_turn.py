@@ -30,7 +30,6 @@ def _user(*, agreed: bool) -> MagicMock:
     user = MagicMock()
     user.id = uuid4()
     user.plan = "free"
-    user.default_model = "free-chat"
     user.ai_data_consent_at = datetime(2026, 10, 19, tzinfo=UTC) if agreed else None
     return user
 

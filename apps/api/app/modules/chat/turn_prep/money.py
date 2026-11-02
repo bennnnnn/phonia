@@ -59,7 +59,6 @@ async def money_turn(
             settings,
             redis,
             user=identity.user,
-            location=identity.geo.user_location,
             earlier=earlier,
             last_reply=last_reply,
         )
@@ -73,7 +72,6 @@ async def money_turn(
         settings,
         redis,
         user=identity.user,
-        location=identity.geo.user_location,
         earlier=earlier,
         last_reply=last_reply,
     )

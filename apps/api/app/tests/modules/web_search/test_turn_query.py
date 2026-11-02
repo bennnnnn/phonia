@@ -110,95 +110,14 @@ async def test_tool_loop_searches_the_topic_not_the_request() -> None:
     assert _awaited(run_search).kwargs["budget"] is ctx.tavily_budget
 
 
-# "Find a coffee shop near me" searched those words: New York cafés came back and
-# the reply gave them Nairobi addresses. "Weather here" found Milwaukee.
-_NAIROBI = "Westlands, Nairobi, Kenya"
-
-
-@pytest.mark.parametrize(
-    "query, expected",
-    [
-        ("coffee shops near me", "coffee shops near Westlands, Nairobi, Kenya"),
-        ("coffee nearby", "coffee near Westlands, Nairobi, Kenya"),
-        ("weather in current location", "weather in Westlands, Nairobi, Kenya"),
-        ("weather in my location today", "weather in Westlands, Nairobi, Kenya today"),
-        ("current weather", "current weather Westlands, Nairobi, Kenya"),
-        # The model already named the place: it is not added twice.
-        ("best coffee shops Westlands Nairobi", "best coffee shops Westlands Nairobi"),
-    ],
-)
-def test_anchor_to_location_names_the_place(query: str, expected: str) -> None:
-    from app.modules.web_search.query_builders import anchor_to_location
-
-    assert anchor_to_location(query, _NAIROBI) == expected
-    assert anchor_to_location(query, None) == query
-
-
 @pytest.mark.asyncio
-@pytest.mark.parametrize(
-    "message, location, expected",
-    [
-        (
-            "find a coffee shop near me",
-            _NAIROBI,
-            "find a coffee shop near Westlands, Nairobi, Kenya",
-        ),
-        (
-            "what's the weather like here",
-            _NAIROBI,
-            "what's the weather like here Westlands, Nairobi, Kenya",
-        ),
-        ("find a coffee shop near me", None, "find a coffee shop near me"),
-        # Not a nearby ask: the saved place stays out of the search.
-        ("who won the last world cup", _NAIROBI, "who won the last world cup"),
-    ],
-)
-async def test_turn_search_names_the_place_for_a_nearby_ask(
-    message: str, location: str | None, expected: str
-) -> None:
-    queries = await turn_query.search_queries_for_turn(
-        Settings(), message, [{"role": "user", "content": message}], user_location=location
-    )
-    assert queries == [expected]
-
-
-@pytest.mark.asyncio
-async def test_forced_search_sends_the_turn_location() -> None:
+async def test_a_nearby_ask_searches_its_own_words() -> None:
+    """The app does not know where the user is: no place is added to the search."""
     message = "find a coffee shop near me"
-    ctx = tool_context(user_query=message, user_location=_NAIROBI)
-    run_search = AsyncMock(return_value=([], [message]))
-    with patch("app.modules.chat.tool_loop.forced_search.run_cached_search", run_search):
-        await forced_search._force_web_search_if_needed(
-            settings=Settings(web_search_enabled=True),
-            messages=[{"role": "user", "content": message}],
-            search_hits=[],
-            ctx=ctx,
-            on_status=None,
-            should_cancel=None,
-            search_required=True,
-        )
-    assert _awaited(run_search).args[1] == ["find a coffee shop near Westlands, Nairobi, Kenya"]
-
-
-@pytest.mark.asyncio
-@pytest.mark.parametrize(
-    "user_query, location, sent",
-    [
-        ("find a coffee shop near me", _NAIROBI, "coffee shops near Westlands, Nairobi, Kenya"),
-        ("find a coffee shop near me", None, "coffee shops near me"),
-        ("tell me about coffee", _NAIROBI, "coffee shops near me"),
-    ],
-)
-async def test_model_written_search_names_the_place(
-    user_query: str, location: str | None, sent: str
-) -> None:
-    from app.modules.web_search.tool import WebSearchAdapter
-
-    ctx = tool_context(user_query=user_query, user_location=location)
-    run_search = AsyncMock(return_value=([], [sent]))
-    with patch("app.modules.web_search.tool.run_cached_search", run_search):
-        await WebSearchAdapter(Settings()).invoke({"query": "coffee shops near me"}, ctx)
-    assert _awaited(run_search).args[1] == [sent]
+    queries = await turn_query.search_queries_for_turn(
+        Settings(), message, [{"role": "user", "content": message}]
+    )
+    assert queries == [message]
 
 
 @pytest.mark.asyncio

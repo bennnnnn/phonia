@@ -75,7 +75,6 @@ async def test_history_load_overlaps_account_and_chat_load() -> None:
         user.id = uuid4()
         user.plan = "pro"
         user.timezone = "UTC"
-        user.default_model = "free-chat"
         user.memory_enabled = True
         return user
 
@@ -122,7 +121,6 @@ async def test_user_and_chat_ownership_loads_overlap() -> None:
     user.id = user_id
     user.plan = "pro"
     user.timezone = "UTC"
-    user.default_model = "free-chat"
     user.memory_enabled = True
 
     chat = MagicMock()
@@ -170,7 +168,6 @@ async def test_every_turn_loads_the_recent_window(
     user.id = uuid4()
     user.plan = "pro"
     user.timezone = "UTC"
-    user.default_model = "free-chat"
     user.memory_enabled = True
 
     chat = MagicMock()

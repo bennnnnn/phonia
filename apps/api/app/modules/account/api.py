@@ -329,13 +329,12 @@ async def update_me(
     body: UserUpdate,
     user: User = Depends(get_current_user),
     session: AsyncSession = Depends(get_db),
-    settings: Settings = Depends(get_settings_dep),
 ) -> UserOut:
     fields = profile_service.with_ai_data_consent(
         body.model_dump(exclude_unset=True), now=datetime.now(UTC)
     )
     try:
-        updated = await account_lifecycle.update_account(session, user, settings, fields)
+        updated = await account_lifecycle.update_account(session, user, fields)
     except ValueError as exc:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
     return UserOut.model_validate(updated)

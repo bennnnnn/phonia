@@ -93,7 +93,7 @@ async def test_memory_selection_ranks_the_sql_scores(db_session) -> None:
 
 
 async def _chat_with_message(session, user_id):
-    chat = await chats_repo.create(session, user_id=user_id, model="free-chat")
+    chat = await chats_repo.create(session, user_id=user_id)
     message = Message(chat_id=chat.id, user_id=user_id, role="user", content="m")
     session.add(message)
     await session.flush()

@@ -44,7 +44,6 @@ def _token(uid=None):
 def _fake_user(uid=None):
     user = MagicMock()
     user.id = uid or uuid4()
-    user.default_model = "free-chat"
     user.memory_enabled = True
     return user
 

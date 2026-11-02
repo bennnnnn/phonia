@@ -33,7 +33,7 @@ async def _make_user(session):
 async def _make_chat_with_message(session, user_id):
     """A chat with >=1 message — list_for_user only surfaces chats that have
     at least one message (has_messages EXISTS subquery)."""
-    chat = await chats_repo.create(session, user_id=user_id, model="free-chat")
+    chat = await chats_repo.create(session, user_id=user_id)
     await messages_repo.create(
         session,
         chat_id=chat.id,
@@ -51,7 +51,7 @@ async def test_get_by_id_returns_none_for_a_different_users_chat(db_session):
     from "ignored the filter and returned the canned row anyway"."""
     owner = await _make_user(db_session)
     other_user = await _make_user(db_session)
-    chat = await chats_repo.create(db_session, user_id=owner.id, model="free-chat")
+    chat = await chats_repo.create(db_session, user_id=owner.id)
 
     assert await chats_repo.get_by_id(db_session, chat.id, other_user.id) is None
 
@@ -80,7 +80,7 @@ async def test_list_for_user_excludes_chats_with_no_messages(db_session):
     level — an abandoned draft chat (zero messages) should never surface."""
     user = await _make_user(db_session)
     with_message = await _make_chat_with_message(db_session, user.id)
-    await chats_repo.create(db_session, user_id=user.id, model="free-chat")  # no messages
+    await chats_repo.create(db_session, user_id=user.id)  # no messages
 
     result = await chats_repo.list_for_user(db_session, user.id)
 
@@ -91,7 +91,7 @@ async def test_list_for_user_excludes_chats_with_no_messages(db_session):
 async def test_generated_title_preserves_rename_and_owner_scope(db_session):
     owner = await _make_user(db_session)
     other_user = await _make_user(db_session)
-    chat = await chats_repo.create(db_session, user_id=owner.id, model="free-chat")
+    chat = await chats_repo.create(db_session, user_id=owner.id)
     assert not await chats_repo.set_title_if_empty(
         db_session, chat.id, "Wrong owner", user_id=other_user.id
     )

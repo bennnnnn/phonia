@@ -193,62 +193,8 @@ def _is_team_specific_sports_query(cleaned: str) -> bool:
     )
 
 
-# "near me" becomes "near <place>"; "my location" becomes the place itself.
-_LOCATION_PHRASES = (
-    (r"\b(?:near|close to)\s+me\b|\bnearby\b|\baround here\b", "near {loc}"),
-    (r"\b(?:my|current|the user'?s)\s+(?:current\s+)?location\b", "{loc}"),
-)
-
-
-def anchor_to_location(query: str, location: str | None) -> str:
-    """``coffee near me`` with a saved place is ``coffee near Westlands, Nairobi``.
-
-    A search engine has no idea where "me" or "here" is: it answered with New
-    York cafés and Milwaukee weather. The place replaces those words, or is
-    appended when the query names no part of it ("Westlands Nairobi" does).
-    """
-    loc = (location or "").strip()
-    if not loc:
-        return query
-    anchored = query
-    for pattern, replacement in _LOCATION_PHRASES:
-        anchored = re.sub(pattern, replacement.format(loc=loc), anchored, flags=re.I)
-    parts = [part.strip().lower() for part in loc.split(",") if len(part.strip()) > 2]
-    if not any(part in anchored.lower() for part in parts):
-        anchored = f"{anchored} {loc}"
-    return anchored
-
-
-def _geo_located_queries(
-    cleaned: str,
-    user_location: str | None,
-    *,
-    latitude: float | None = None,
-    longitude: float | None = None,
-) -> list[str]:
+def _geo_queries(cleaned: str) -> list[str]:
     query = _QUERY_PREFIX.sub("", cleaned.strip()).strip(" ?.!")
-    loc = (user_location or "").strip()
-    coord = (
-        f"{latitude:.5f},{longitude:.5f}"
-        if latitude is not None and longitude is not None
-        else None
-    )
-    anchor = coord or loc
-    if anchor:
-        for pattern, repl in (
-            (r"\bnear me\b", f"near {anchor}"),
-            (r"\bnearby\b", f"near {anchor}"),
-            (r"\baround here\b", f"near {anchor}"),
-            (r"\bin(?:\s+this)?\s+town\b", f"in {loc or anchor}"),
-            (r"\bclose to me\b", f"near {anchor}"),
-            (r"\bfrom me\b", f"from {anchor}"),
-            (r"\bfrom here\b", f"from {anchor}"),
-        ):
-            query = re.sub(pattern, repl, query, flags=re.I)
-        if anchor.lower() not in query.lower():
-            query = f"{query} {anchor}"
-        if loc and loc.lower() not in query.lower():
-            query = f"{query} {loc}"
     primary = query or cleaned
     return [primary, f"{primary} official website address"]
 
@@ -257,9 +203,6 @@ def build_search_queries(
     text: str,
     *,
     user_timezone: str | None = None,
-    user_location: str | None = None,
-    latitude: float | None = None,
-    longitude: float | None = None,
     prior_user_messages: list[str] | None = None,
 ) -> list[str]:
     subject = resolve_search_subject(text, prior_user_messages=prior_user_messages)
@@ -301,7 +244,6 @@ def build_search_queries(
         return build_search_queries(
             subject,
             user_timezone=user_timezone,
-            user_location=user_location,
             prior_user_messages=None,
         )
 
@@ -309,17 +251,11 @@ def build_search_queries(
         return build_search_queries(
             subject,
             user_timezone=user_timezone,
-            user_location=user_location,
             prior_user_messages=None,
         )
 
     if is_geo_query(subject) or is_geo_query(current):
-        return _geo_located_queries(
-            cleaned or current,
-            user_location,
-            latitude=latitude,
-            longitude=longitude,
-        )
+        return _geo_queries(cleaned or current)
 
     fallback = cleaned or current
     if fallback and is_current_news_request(current):

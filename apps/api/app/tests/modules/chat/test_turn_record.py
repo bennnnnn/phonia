@@ -99,7 +99,7 @@ async def test_a_message_saved_for_a_turn_moves_the_chat_up(db_session) -> None:
         avatar_url=None,
         google_sub=str(uuid4()),
     )
-    chat = await chats_repo.create(db_session, user_id=user.id, model="free-chat")
+    chat = await chats_repo.create(db_session, user_id=user.id)
     long_ago = datetime.now(UTC) - timedelta(days=3)
     chat.updated_at = long_ago
     await db_session.flush()

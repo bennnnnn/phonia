@@ -1,10 +1,8 @@
-"""The server reads geo intent exactly the way the phone does.
+"""The server's geo intent readers, held to `docs/fixtures/geo_intent_cases.json`.
 
-The phone decides before sending whether to read GPS (`lib/places/localPlacesQuery.ts`),
-so it must ask for a fix on the same messages the server answers from the user's
-location. `docs/fixtures/geo_intent_cases.json` holds the cases both sides must
-agree on; the mobile test (`lib/places/__tests__/localPlacesQuery.test.ts`) asserts the
-same file, so a rule changed on one side alone fails a suite.
+The phone reads the location question the same way (`lib/places/locationQuestion.ts`,
+whose test `lib/places/__tests__/locationQuestion.test.ts` asserts the same file), so a
+rule changed on one side alone fails a suite.
 """
 
 from __future__ import annotations

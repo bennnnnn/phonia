@@ -24,7 +24,6 @@ from app.exceptions import (
     RedisUnavailableError,
     SpendCapReachedError,
     TurnRefusedError,
-    UnknownModelOverrideError,
 )
 from app.gateways.litellm_gateway import ModelUnavailableError
 from app.modules.analytics.service import _ALLOWED_PROPERTIES
@@ -52,7 +51,6 @@ _TURN_FAILURES: list[BaseException] = [
     RedisUnavailableError(),
     ChatBusyError(),
     AttachmentValidationError("Too big."),
-    UnknownModelOverrideError("x"),
     SpendCapReachedError("Paused today."),
     SpendCapReachedError("Pictures paused.", feature="image_generation"),
     ConsentRequiredError(),

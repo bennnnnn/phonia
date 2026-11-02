@@ -80,7 +80,7 @@ async def test_the_reminder_pass_never_commits_or_rolls_back_its_callers_session
     due = (datetime.now(UTC) + timedelta(days=30)).replace(hour=17, minute=0, second=0)
     due = due.replace(microsecond=0)
     user = await _user_with_a_saved_reminder(db_session, due=due, errands=errands)
-    chat = await chats_repo.create(db_session, user_id=user.id, model="free-chat")
+    chat = await chats_repo.create(db_session, user_id=user.id)
     kind = reply
     if reply == "new":
         reply = _reminder_reply(due + timedelta(hours=1)).replace("Call mom", "Water the plants")

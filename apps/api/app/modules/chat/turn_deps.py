@@ -152,12 +152,11 @@ class Plan(Protocol):
 
 
 class ModelChoice(Protocol):
-    """The model a turn runs on (``model_routing.choice``): the user's pool, routed."""
+    """The model a turn runs on (``model_routing.choice``): the plan's pool, routed."""
 
-    def resolve_user_model_override(
+    def resolve_user_model(
         self,
         user: User,
-        model_alias: str | None,
         content: str,
         settings: Settings,
         *,
@@ -170,7 +169,6 @@ class ModelChoice(Protocol):
     def resolve_regenerate_model(
         self,
         user: User,
-        model_alias: str | None,
         content: str,
         prior_assistant_model: str | None,
         settings: Settings,

@@ -126,7 +126,6 @@ async def test_a_turn_loads_when_its_pooled_connection_died_unnoticed(
         user_id=seeded.user.id,
         chat_id=seeded.chat.id,
         content="And what is 3 + 3?",
-        model_alias=None,
         user=None,
         chat=None,
         skip_usage_seed=True,
@@ -149,7 +148,6 @@ async def test_a_regenerate_loads_when_its_pooled_connection_died_unnoticed(
         get_settings(),
         user_id=seeded.user.id,
         chat_id=seeded.chat.id,
-        model_alias=None,
     )
 
     assert turn.content == "What is 2 + 2?"
@@ -172,7 +170,6 @@ async def test_the_message_saves_when_its_pooled_connection_died_unnoticed(
             stored_content="And what is 3 + 3?",
             attachment_ids=None,
             has_image_attachment=False,
-            model_alias=None,
             recent_messages=None,
             lesson_active=False,
         ),

@@ -52,7 +52,6 @@ _ALLOWED_PROPERTIES: dict[str, dict[str, frozenset[str]]] = {
                 "unavailable",
                 "busy",
                 "attachment_rejected",
-                "unknown_model",
                 "rate_limited",
                 "consent_required",
                 "daily_limit",

@@ -43,7 +43,6 @@ class Chat(Base):
         ForeignKey("users.id", ondelete="CASCADE"), nullable=False
     )
     title: Mapped[str | None] = mapped_column(String)
-    model: Mapped[str] = mapped_column(String, default="free-chat")
     pinned: Mapped[bool] = mapped_column(Boolean, default=False)
     # Rolling summary of messages older than the recent window (history compression)
     summary: Mapped[str | None] = mapped_column(Text)

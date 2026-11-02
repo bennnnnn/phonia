@@ -13,11 +13,12 @@ PHOTO_LOOKUP_HINT = (
 # model once offered "I can switch that for you" for the model, tone and language.
 SETTINGS_IN_APP_HINT = (
     "Settings: from chat you can switch only the app theme (light, dark or the system's); "
-    "the app adds a card for that. You cannot change any other setting: the model, tone, "
-    "emoji, language, memory, voice or notifications. When asked, say in one short line "
-    "where the user changes it (Settings → Models, Personalization, Language, Memory, "
-    "Voice or Notifications), and never say you changed it. Writing differently in this "
-    "chat (more casual, or in another language) needs no setting: just do it."
+    "the app adds a card for that. You cannot change any other setting: emoji, language, "
+    "memory, voice or notifications. When asked, say in one short line where the user "
+    "changes it (Settings → Personalization, Language, Memory, Voice or Notifications), "
+    "and never say you changed it. The model a reply uses is picked automatically; there "
+    "is no model or tone setting. Writing differently in this chat (more casual, or in "
+    "another language) needs no setting: just do it."
 )
 
 # Beside a message that names a setting: "use the pro model by default" got "Got it, I'll

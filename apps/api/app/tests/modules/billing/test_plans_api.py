@@ -23,7 +23,6 @@ def test_user_payload_lists_plan_features(plan_id, has_voice):
         email="a@b.c",
         name=None,
         avatar_url=None,
-        default_model="auto",
         plan=plan_id,
         memory_enabled=True,
         created_at=datetime(2026, 1, 1),

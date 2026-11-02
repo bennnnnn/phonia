@@ -239,7 +239,6 @@ async def run_tool_loop_path(
         web_search=web_search_flag,
         user_timezone=ctx.user_timezone,
         user_text=gate.content,
-        user_location=ctx.search_location,
         has_verified_math=gate.has_verified_math,
         search_parts=search_parts,
         skip_tools=gate.skip_tools,
@@ -472,7 +471,6 @@ async def _answer_reply_calls(
             chat_id=ctx.chat_id,
             user_timezone=ctx.user_timezone,
             user_text=ctx.user_message_content,
-            user_location=ctx.search_location,
             on_status=on_status,
             should_cancel=should_cancel,
         )

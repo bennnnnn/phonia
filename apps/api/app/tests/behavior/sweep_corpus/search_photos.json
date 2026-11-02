@@ -112,8 +112,7 @@
   "area": "time",
   "prompt": "Will it rain at 6pm?",
   "reply": "Looks dry at **6 PM** — only a **10%** chance of rain, with clouds clearing by sunset. Showers return after midnight, so you're fine for the evening.",
-  "expect": "search",
-  "location": "Addis Ababa, Ethiopia"
+  "expect": "instant"
  },
  {
   "id": "sp-016",
@@ -481,8 +480,7 @@
   "area": "places",
   "prompt": "coffee near me",
   "reply": "Coffee spots close to you:\n\n1. **Tomoca (Bole branch)** — 0.4 km, open until 8 PM, ★ 4.6\n2. **Kaldi's Coffee, Bole Medhanialem** — 0.7 km, open until 10 PM, ★ 4.3\n3. **Galani Coffee** — 1.2 km, open until 7 PM, ★ 4.7, great for working\n\nWant directions to one of them?",
-  "expect": "search",
-  "location": "Addis Ababa, Ethiopia"
+  "expect": "instant"
  },
  {
   "id": "sp-056",
@@ -496,8 +494,7 @@
   "area": "places",
   "prompt": "Directions to the airport",
   "reply": "Here's the drive from you to **Bole International Airport**:\n\n- **Distance:** 6.8 km\n- **Time:** about 18 minutes in current traffic\n- **Route:** Africa Avenue (Bole Road) south, then follow the signs for Terminal 2\n\nTraffic builds after 5 PM, so add 15 minutes if you're leaving then.",
-  "expect": "search",
-  "location": "Addis Ababa, Ethiopia"
+  "expect": "instant"
  },
  {
   "id": "sp-058",
@@ -511,8 +508,7 @@
   "area": "places",
   "prompt": "What's open near me right now?",
   "reply": "Open now near you:\n\n- **Shoa Supermarket** — open until 10 PM (0.3 km)\n- **Kaldi's Coffee** — open until 10 PM (0.6 km)\n- **24-hour pharmacy on Bole Road** — open all night (0.9 km)\n- **Yod Abyssinia** — traditional restaurant, open until 11 PM, live music tonight (1.4 km)\n\nLooking for something specific — food, pharmacy, groceries?",
-  "expect": "search",
-  "location": "Addis Ababa, Ethiopia"
+  "expect": "instant"
  },
  {
   "id": "sp-060",
@@ -543,8 +539,7 @@
   "area": "places",
   "prompt": "Get directions to Bole airport from Piassa",
   "reply": "**Piassa → Bole International Airport**\n\n1. Head south on **Churchill Avenue** to La Gare\n2. Turn east toward **Meskel Square**\n3. Continue on **Africa Avenue (Bole Road)** to the airport\n\n**About 9 km, 25–35 minutes** right now. A Ride or Feres trip costs roughly 400–500 birr.",
-  "expect": "search",
-  "location": "Addis Ababa, Ethiopia"
+  "expect": "search"
  },
  {
   "id": "sp-063",
@@ -1221,8 +1216,7 @@
   "area": "places",
   "prompt": "how long does it take to walk to the stadium from here?",
   "reply": "Addis Ababa Stadium is about **2.4 km** from you, so roughly **30 minutes** on foot via Churchill Avenue.",
-  "expect": "search",
-  "location": "Addis Ababa, Ethiopia"
+  "expect": "instant"
  },
  {
   "id": "sp-124",
@@ -1236,24 +1230,21 @@
   "area": "places",
   "prompt": "I leave at 5pm and need to arrive by 7pm, how long is the drive to the airport?",
   "reply": "From you the drive to **Bole International Airport** is about **20 minutes** without traffic, but after 5 PM it often takes **35–45 minutes**. Leaving at 5 you'll make 7 PM comfortably.",
-  "expect": "search",
-  "location": "Addis Ababa, Ethiopia"
+  "expect": "instant"
  },
  {
   "id": "sp-126",
   "area": "time",
   "prompt": "I want to know if it will rain tomorrow",
   "reply": "Tomorrow looks mostly dry: a **20%** chance of a light shower after 4 PM, high of **22°C**.",
-  "expect": "search",
-  "location": "Addis Ababa, Ethiopia"
+  "expect": "instant"
  },
  {
   "id": "sp-127",
   "area": "time",
   "prompt": "Do you know whether it's going to snow this weekend?",
   "reply": "No snow expected this weekend: lows stay around **4°C**, with rain on Sunday.",
-  "expect": "search",
-  "location": "Toronto, Canada"
+  "expect": "instant"
  },
  {
   "id": "sp-128",

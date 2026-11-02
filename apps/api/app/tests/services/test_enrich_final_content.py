@@ -674,7 +674,7 @@ async def _reminder_turn(
         avatar_url=None,
         google_sub=str(uuid4()),
     )
-    chat = await chats_repo.create(db_session, user_id=user.id, model="free-chat")
+    chat = await chats_repo.create(db_session, user_id=user.id)
 
     @asynccontextmanager
     async def _session() -> Any:

@@ -13,7 +13,6 @@ from app.models.orm import User
 from app.models.schemas import (
     ChatBulkAction,
     ChatBulkOut,
-    ChatCreate,
     ChatListOut,
     ChatOut,
     ChatRename,
@@ -31,15 +30,10 @@ router = APIRouter(prefix="/chats", tags=["chats"])
 
 @router.post("", response_model=ChatOut, status_code=status.HTTP_201_CREATED)
 async def create_chat(
-    body: ChatCreate,
     user: User = Depends(get_current_user),
     session: AsyncSession = Depends(get_db),
 ) -> ChatOut:
-    chat = await chats_service.create_chat(
-        session,
-        user,
-        model=body.model,
-    )
+    chat = await chats_service.create_chat(session, user)
     return ChatOut.model_validate(chat)
 
 

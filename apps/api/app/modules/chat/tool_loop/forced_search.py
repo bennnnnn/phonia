@@ -127,7 +127,6 @@ async def _search_targets(
                 target,
                 messages,
                 user_timezone=ctx.user_timezone,
-                user_location=ctx.user_location,
             )
             for target in targets
         )

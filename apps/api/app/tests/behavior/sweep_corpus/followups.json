@@ -1255,7 +1255,7 @@
   ],
   "reply": "Of those three, **Gishen Pharmacy near Edna Mall** is the closest to Bole Medhanialem — it's only about a 5-minute walk from the church, and it's open **24 hours**, so you won't have to worry about closing time.\n\n- **Selam Pharmacy (Atlas)** is roughly 2 km away — about 10 minutes by taxi.\n- **Kenema Pharmacy (Bole Rwanda)** is the farthest, around 3 km.\n\nIf you need a specific medicine, call ahead to make sure it's in stock.",
   "expect": "search",
-  "location": "Addis Ababa, Ethiopia"
+  "gap": "\"closest to bole medhanialem\" (a place in lower case) is not read as naming its place: with no device location nothing is searched"
  },
  {
   "id": "hf-074",
@@ -1578,8 +1578,7 @@
    ]
   ],
   "reply": "Bole International Airport is about **6.8 km** from you, roughly 18 minutes by car in current traffic.",
-  "expect": "search",
-  "location": "Addis Ababa, Ethiopia"
+  "expect": "instant"
  },
  {
   "id": "hf-093",

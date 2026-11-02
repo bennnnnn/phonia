@@ -20,7 +20,6 @@ if TYPE_CHECKING:
     )
     from app.modules.web_search.formatting import (
         AMBIGUOUS_NEARBY_HINT,
-        GEO_ACTIVE_LOCATION_HINT,
         GEO_DISTANCE_HINT,
         LOCAL_PLACES_FORMAT_HINT,
         WEB_SEARCH_HINT,
@@ -67,7 +66,6 @@ if TYPE_CHECKING:
 
 _EXPORTS = {
     "AMBIGUOUS_NEARBY_HINT": "formatting",
-    "GEO_ACTIVE_LOCATION_HINT": "formatting",
     "GEO_DISTANCE_HINT": "formatting",
     "LOCAL_PLACES_FORMAT_HINT": "formatting",
     "SearchSource": "formatting",
@@ -104,7 +102,6 @@ _EXPORTS = {
 
 __all__ = [
     "AMBIGUOUS_NEARBY_HINT",
-    "GEO_ACTIVE_LOCATION_HINT",
     "GEO_DISTANCE_HINT",
     "LOCAL_PLACES_FORMAT_HINT",
     "WEB_SEARCH_HINT",

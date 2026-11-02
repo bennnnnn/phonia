@@ -20,7 +20,7 @@ async def _chat_with(db_session, count: int):
         avatar_url=None,
         google_sub=str(uuid4()),
     )
-    chat = await chats_repo.create(db_session, user_id=user.id, model="free-chat")
+    chat = await chats_repo.create(db_session, user_id=user.id)
     start = datetime(2026, 1, 1, tzinfo=UTC)
     rows = []
     for index in range(count):

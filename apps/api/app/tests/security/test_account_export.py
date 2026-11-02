@@ -19,7 +19,6 @@ async def test_export_includes_profile_all_memory_and_every_owned_record(world: 
         user = await session.get(User, a.id)
         assert user is not None
         user.custom_instructions = "Answer like a pirate"
-        user.location = "Lisbon"
         user.timezone = "Europe/Lisbon"
         user.job = "Nurse"
         user.age = 41
@@ -62,7 +61,6 @@ async def test_export_includes_profile_all_memory_and_every_owned_record(world: 
 
     profile = export["user"]
     assert profile["custom_instructions"] == "Answer like a pirate"
-    assert profile["location"] == "Lisbon"
     assert profile["timezone"] == "Europe/Lisbon"
     assert profile["job"] == "Nurse" and profile["age"] == 41
     assert "google_sub" not in profile

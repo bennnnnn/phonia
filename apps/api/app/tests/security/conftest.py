@@ -97,8 +97,8 @@ async def _seed(settings: Settings, storage_root: Path) -> tuple[UUID, UUID, Own
         session.add_all([a, b])
         await session.flush()
 
-        a_chat = Chat(user_id=a.id, model="free-chat", title=f"A private {secret}")
-        b_chat = Chat(user_id=b.id, model="free-chat", title="B chat")
+        a_chat = Chat(user_id=a.id, title=f"A private {secret}")
+        b_chat = Chat(user_id=b.id, title="B chat")
         session.add_all([a_chat, b_chat])
         await session.flush()
 

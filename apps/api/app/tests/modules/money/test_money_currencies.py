@@ -8,43 +8,27 @@ from app.modules.money.currencies import country_for, currency_for
 
 
 @pytest.mark.parametrize(
-    ("currency", "location", "country"),
+    ("currency", "country"),
     [
-        ("", None, "the United States"),
-        ("USD", "Austin, TX", "the United States"),
-        ("USD", "Addis Ababa, Ethiopia", "Ethiopia"),
-        ("", "Seattle, Washington, United States", "the United States"),
-        ("", "Addis Ababa, Ethiopia", "Ethiopia"),
-        ("ETB", None, "Ethiopia"),
-        ("GBP", "Austin, TX", "the United Kingdom"),
+        ("", "the United States"),
+        ("USD", "the United States"),
+        ("ETB", "Ethiopia"),
+        ("GBP", "the United Kingdom"),
     ],
 )
-def test_country_for_names_the_country_searched(
-    currency: str, location: str | None, country: str
-) -> None:
-    assert country_for(currency, location) == country
+def test_country_for_names_the_country_searched(currency: str, country: str) -> None:
+    assert country_for(currency) == country
 
 
 @pytest.mark.parametrize(
-    ("currency", "location", "expected"),
+    ("currency", "expected"),
     [
-        # Named in the message: that one, wherever the user lives.
-        ("EUR", "Austin, TX", "EUR"),
-        ("USD", "Addis Ababa, Ethiopia", "USD"),
-        # Named nowhere: the saved place's currency.
-        ("", "Addis Ababa, Ethiopia", "ETB"),
-        ("", "Berlin, Germany", "EUR"),
-        ("", "London, United Kingdom", "GBP"),
-        ("", "Seattle, WA", "USD"),
-        ("", "Toronto, Canada", "CAD"),
-        # No place saved: US dollars.
-        ("", None, "USD"),
-        ("", "", "USD"),
-        # A place this list does not know: no symbol rather than a wrong one.
-        ("", "São Paulo, Brazil", ""),
+        # Named in the message: that one.
+        ("EUR", "EUR"),
+        ("ETB", "ETB"),
+        # Named nowhere: US dollars (the app does not know where the user is).
+        ("", "USD"),
     ],
 )
-def test_currency_for_falls_back_to_the_saved_place(
-    currency: str, location: str | None, expected: str
-) -> None:
-    assert currency_for(currency, location) == expected
+def test_currency_for_falls_back_to_us_dollars(currency: str, expected: str) -> None:
+    assert currency_for(currency) == expected

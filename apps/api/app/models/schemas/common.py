@@ -21,7 +21,6 @@ MemorySensitivity = Literal[
 MemoryOpKind = Literal["add", "update", "supersede", "delete", "mute"]
 
 
-ResponseTone = Literal["funny", "professional", "casual", "soft"]
 EmojiUse = Literal["off", "some", "more"]
 
 # The voices a user may pick for read-aloud.

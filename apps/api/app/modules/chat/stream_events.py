@@ -27,7 +27,6 @@ from app.exceptions import (
     RedisUnavailableError,
     SpendCapReachedError,
     TurnRefusedError,
-    UnknownModelOverrideError,
 )
 from app.gateways.litellm_gateway import ModelUnavailableError
 from app.modules.chat.stream_accum import Completion
@@ -436,8 +435,6 @@ def error_payload_for_exception(exc: BaseException) -> dict[str, Any]:
         return {"type": "error", "code": "busy", "message": exc.message}
     if isinstance(exc, AttachmentValidationError):
         return {"type": "error", "code": "attachment_rejected", "message": exc.message}
-    if isinstance(exc, UnknownModelOverrideError):
-        return {"type": "error", "code": "unknown_model", "message": exc.message}
     if isinstance(exc, SpendCapReachedError):
         return {"type": "error", "code": "spend_cap", "message": exc.message, **exc.fields}
     if isinstance(exc, ConsentRequiredError):

@@ -33,7 +33,7 @@ async def test_the_chat_list_reads_on_after_its_first_page(db_session):
     base = datetime(2026, 1, 5, tzinfo=UTC)
     chats = []
     for index in range(3):
-        chat = await chats_repo.create(db_session, user_id=user.id, model="free-chat")
+        chat = await chats_repo.create(db_session, user_id=user.id)
         await messages_repo.create(
             db_session, chat_id=chat.id, user_id=user.id, role="user", content="hi"
         )

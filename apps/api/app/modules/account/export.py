@@ -61,15 +61,10 @@ _PROFILE_FIELDS = (
     "name",
     "avatar_url",
     "plan",
-    "default_model",
-    "enabled_models",
-    "response_tone",
     "emoji_use",
     "custom_instructions",
     "locale",
     "timezone",
-    "location",
-    "location_enabled",
     "age",
     "country",
     "job",
@@ -116,7 +111,6 @@ def _chat_header(chat: Chat) -> dict[str, Any]:
     return {
         "id": str(chat.id),
         "title": chat.title,
-        "model": chat.model,
         "pinned": chat.pinned,
         # Rolling summary of older messages kept for the model's context.
         "summary": _json_safe(chat.summary),

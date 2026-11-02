@@ -36,7 +36,7 @@ def metadata_session():
 async def test_topic_preserves_manual_rename_after_stale_read(metadata_session):
     sync_session, session = metadata_session
     owner_id = uuid4()
-    chat = Chat(user_id=owner_id, model="auto", title=None)
+    chat = Chat(user_id=owner_id, title=None)
     sync_session.add(chat)
     sync_session.commit()
     chat_id = chat.id

@@ -5,19 +5,8 @@ from uuid import UUID
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from app.core.validation import normalize_stored_chat_title
-from app.models.model_catalog import validate_user_alias
 from app.models.schemas.common import MessageFeedback, MessageRole
 from app.models.schemas.text import UserText
-
-
-class ChatCreate(BaseModel):
-    model: str = "auto"
-
-    @field_validator("model")
-    @classmethod
-    def validate_model(cls, value: str) -> str:
-        validate_user_alias(value, allow_auto=True)
-        return value
 
 
 class ChatRename(BaseModel):
@@ -70,7 +59,6 @@ class ChatOut(BaseModel):
 
     id: UUID
     title: str | None
-    model: str
     pinned: bool = False
     created_at: datetime
     updated_at: datetime
@@ -114,25 +102,10 @@ class MessagePageOut(BaseModel):
     has_more_after: bool = False
 
 
-class _StreamClientContext(BaseModel):
-    """Shared model + geo fields for message / regenerate / edit bodies."""
+class ChatMessageRequest(BaseModel):
+    """A message or regenerate body."""
 
-    model: str | None = None
     client_timezone: UserText | None = Field(default=None, max_length=64)
-    client_location: UserText | None = Field(default=None, max_length=200)
-    client_latitude: float | None = Field(default=None, ge=-90, le=90)
-    client_longitude: float | None = Field(default=None, ge=-180, le=180)
-
-    @field_validator("model")
-    @classmethod
-    def validate_model(cls, value: str | None) -> str | None:
-        if value is None:
-            return None
-        validate_user_alias(value, allow_auto=True)
-        return value
-
-
-class ChatMessageRequest(_StreamClientContext):
     # Cap the body — without it a client can push a multi-MB prompt that
     # bloats the DB row and memory-extraction job. 32k chars is well beyond
     # any realistic chat turn. UserText: a NUL used to fail the background

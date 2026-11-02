@@ -138,7 +138,6 @@ async def test_google_login_preserves_uploaded_photo_and_refreshes_provider_phot
         email=user.email,
         name=user.name,
         avatar_url=user.avatar_url,
-        default_model="free-chat",
         memory_enabled=True,
         created_at=datetime.now(UTC),
     )
@@ -171,7 +170,6 @@ async def test_provider_login_only_fills_a_blank_saved_name(provider, saved_name
         email=user.email,
         name=saved_name,
         avatar_url=user.avatar_url,
-        default_model="free-chat",
         memory_enabled=True,
         created_at=datetime.now(UTC),
     )

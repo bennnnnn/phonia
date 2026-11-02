@@ -12,7 +12,7 @@ from app.services import model_health
 
 
 def _user(plan_id: str) -> SimpleNamespace:
-    return SimpleNamespace(plan=plan_id, enabled_models=None)
+    return SimpleNamespace(plan=plan_id)
 
 
 @pytest.mark.parametrize(

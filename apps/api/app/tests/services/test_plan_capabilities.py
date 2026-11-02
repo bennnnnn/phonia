@@ -16,9 +16,9 @@ _SETTINGS = Settings(mock_llm_enabled=True, openrouter_api_key="")
 _HARD = "plan a zero-downtime migration of a monolith Postgres schema to sharded tables"
 
 
-def _User(plan: str = "pro", enabled: list[str] | None = None) -> Any:
-    """A stand-in for the ORM user: the plan and the enabled models are all routing reads."""
-    return SimpleNamespace(plan=plan, enabled_models=enabled)
+def _User(plan: str = "pro") -> Any:
+    """A stand-in for the ORM user: the plan is all routing reads."""
+    return SimpleNamespace(plan=plan)
 
 
 def test_unhealthy_first_choice_is_skipped_for_a_healthy_strong_model() -> None:
@@ -37,19 +37,10 @@ def test_unhealthy_first_choice_is_skipped_for_a_healthy_strong_model() -> None:
 
 
 def test_a_degraded_model_beats_none() -> None:
-    user = _User(enabled=["auto", "smart-chat"])
-    assert (
-        model_choice.resolve_user_model(user, _HARD, _SETTINGS, unhealthy=frozenset({"smart-chat"}))
-        == "smart-chat"
+    resolved = routing.resolve_alias_in_pool(
+        "auto", _HARD, ["smart-chat"], _SETTINGS, unhealthy=frozenset({"smart-chat"})
     )
-
-
-def test_an_explicit_pick_is_kept_even_when_unhealthy() -> None:
-    user = _User()
-    picked = model_choice.resolve_user_model_override(
-        user, "smart-chat", "hi", _SETTINGS, unhealthy=frozenset({"smart-chat"})
-    )
-    assert picked == "smart-chat"
+    assert resolved == "smart-chat"
 
 
 def test_photo_turn_backups_all_read_images() -> None:
@@ -60,16 +51,6 @@ def test_photo_turn_backups_all_read_images() -> None:
     assert "qwen-3.7-flash" not in fallbacks
 
 
-def test_photo_turn_with_no_image_reader_enabled_uses_the_photo_backup() -> None:
-    """The audit's probe: a Pro user with only Auto, smart-chat and GLM 5.2 enabled."""
-    user = _User(enabled=["auto", "smart-chat", "glm-5.2"])
-    assert plan_service.chat_fallback_models(user, _SETTINGS, "vision-chat") == [
-        "fallback-vision-model"
-    ]
-    # A text turn keeps its usual backups.
-    assert plan_service.chat_fallback_models(user, _SETTINGS, "smart-chat") == ["glm-5.2"]
-
-
 def test_an_image_turn_on_an_explicit_reader_backs_up_to_readers() -> None:
     fallbacks = plan_service.chat_fallback_models(
         _User(), _SETTINGS, "gpt-6-luna", needs_vision=True
@@ -78,69 +59,42 @@ def test_an_image_turn_on_an_explicit_reader_backs_up_to_readers() -> None:
     assert all(model_catalog.reads_images(alias) for alias in fallbacks)
 
 
-def test_photo_backup_never_repeats_the_primary_model() -> None:
-    fallbacks = plan_service.chat_fallback_models(
-        _User(enabled=["auto", "smart-chat"]),
-        _SETTINGS,
-        "fallback-vision-model",
-        needs_vision=True,
-    )
-    assert fallbacks == []
-
-
 @pytest.mark.parametrize(
-    "routed, explicit, expected",
+    "routed, expected",
     [
-        # An explicit pick that reads images keeps the photo turn.
-        ("gpt-6-luna", True, "gpt-6-luna"),
-        ("free-chat", True, "free-chat"),
-        # One that cannot goes to the photo lane.
-        ("smart-chat", True, "vision-chat"),
         # Auto's everyday lane: the photo lane (the same model, thinking off).
-        ("qwen-3.7-flash", False, "vision-chat"),
+        ("qwen-3.7-flash", "vision-chat"),
         # Auto's hard lanes: the strongest image reader above the everyday tier.
-        ("smart-chat", False, "glm-5.3-flash"),
-        ("glm-5.2", False, "glm-5.3-flash"),
+        ("smart-chat", "glm-5.3-flash"),
+        ("glm-5.2", "glm-5.3-flash"),
         # Already on the photo lane: stays.
-        ("vision-chat", False, "vision-chat"),
+        ("vision-chat", "vision-chat"),
     ],
 )
-def test_image_turn_model(routed: str, explicit: bool, expected: str) -> None:
-    assert plan_service.image_turn_model(_User(), _SETTINGS, routed, explicit=explicit) == expected
+def test_image_turn_model(routed: str, expected: str) -> None:
+    assert plan_service.image_turn_model(_User(), _SETTINGS, routed) == expected
 
 
 def test_image_turn_model_skips_an_unhealthy_reader() -> None:
     assert (
         plan_service.image_turn_model(
-            _User(), _SETTINGS, "smart-chat", explicit=False, unhealthy=frozenset({"glm-5.3-flash"})
+            _User(), _SETTINGS, "smart-chat", unhealthy=frozenset({"glm-5.3-flash"})
         )
         == "vision-chat"
     )
 
 
-@pytest.mark.parametrize(
-    "routed, explicit",
-    [("qwen-3.7-flash", False), ("vision-chat", False), ("smart-chat", True)],
-)
-def test_a_photo_turn_skips_an_open_photo_lane(routed: str, explicit: bool) -> None:
+@pytest.mark.parametrize("routed", ["qwen-3.7-flash", "vision-chat"])
+def test_a_photo_turn_skips_an_open_photo_lane(routed: str) -> None:
     """The photo lane shares the everyday lane's model, and its breaker: while it is
     open, a photo goes straight to the backup it would have fallen back to."""
     open_lane = frozenset({"qwen-3.7-flash", "vision-chat"})
     backups = plan_service.chat_fallback_models(
         _User(), _SETTINGS, "vision-chat", unhealthy=open_lane, needs_vision=True
     )
-    model = plan_service.image_turn_model(
-        _User(), _SETTINGS, routed, explicit=explicit, unhealthy=open_lane
-    )
+    model = plan_service.image_turn_model(_User(), _SETTINGS, routed, unhealthy=open_lane)
     assert model == backups[0]
     assert model not in open_lane and model_catalog.reads_images(model)
-
-
-def test_is_explicit_pick() -> None:
-    assert plan_service.is_explicit_pick("smart-chat")
-    assert not plan_service.is_explicit_pick("auto")
-    assert not plan_service.is_explicit_pick(None)
-    assert not plan_service.is_explicit_pick("")
 
 
 def test_a_json_ask_avoids_a_model_without_json_mode(monkeypatch: pytest.MonkeyPatch) -> None:

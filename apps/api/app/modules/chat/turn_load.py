@@ -245,7 +245,6 @@ async def load_new_turn(
     user_id: UUID,
     chat_id: UUID,
     content: str,
-    model_alias: str | None,
     user: User | None,
     chat: Chat | None,
     skip_usage_seed: bool,
@@ -281,9 +280,8 @@ async def load_new_turn(
     # after a draft, used to read the messages again in a session of its own.
     turn_mode = classify_turn_mode(recent, content)
     prior_user, prior_model = last_user_turn(recent)
-    model = deps.model_choice.resolve_user_model_override(
+    model = deps.model_choice.resolve_user_model(
         loaded_user,
-        model_alias,
         content,
         settings,
         prior_user=prior_user,
@@ -322,7 +320,6 @@ async def load_regenerate_turn(
     *,
     user_id: UUID,
     chat_id: UUID,
-    model_alias: str | None,
 ) -> RegenerateTurn:
     # Last-message reads must see the committed assistant. Overlapping that
     # load with wait_for_pending_finalize can regenerate from a stale last
@@ -337,7 +334,7 @@ async def load_regenerate_turn(
     # A regenerate routes the line on its own (``resolve_regenerate_model``): no prior line.
     await read_turn_message(last_user.content, [], settings)
     model = deps.model_choice.resolve_regenerate_model(
-        user, model_alias, last_user.content, last.model, settings
+        user, last_user.content, last.model, settings
     )
     backup: RegenerateBackup | None = None
     omit_message_ids: set[UUID] | None = None

@@ -27,13 +27,13 @@ if TYPE_CHECKING:
     )
     from app.modules.chat.turn_prep.prepare import prepare_chat_turn
     from app.modules.chat.turn_prep.request import (
-        ClientGeoContext,
+        GeoAsk,
         TurnRequest,
-        resolve_client_geo,
+        read_geo_ask,
     )
 
 _EXPORTS = {
-    "ClientGeoContext": "request",
+    "GeoAsk": "request",
     "RegenerateBackup": "context",
     "StreamContext": "context",
     "TurnPromptBundle": "context",
@@ -43,13 +43,13 @@ _EXPORTS = {
     "count_images": "attachments",
     "load_attachment_rows": "attachments",
     "prepare_chat_turn": "prepare",
-    "resolve_client_geo": "request",
+    "read_geo_ask": "request",
     "stream_context_from_bundle": "context",
     "vision_reserve_tokens": "attachments",
 }
 
 __all__ = [
-    "ClientGeoContext",
+    "GeoAsk",
     "RegenerateBackup",
     "StreamContext",
     "TurnPromptBundle",
@@ -59,7 +59,7 @@ __all__ = [
     "count_images",
     "load_attachment_rows",
     "prepare_chat_turn",
-    "resolve_client_geo",
+    "read_geo_ask",
     "stream_context_from_bundle",
     "vision_reserve_tokens",
 ]

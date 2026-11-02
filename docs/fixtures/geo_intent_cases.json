@@ -1,10 +1,10 @@
 {
-  "about": "Geo intent shared by apps/api/app/modules/web_search/{patterns,distance_patterns,geo_intent}.py (with is_location_question in app/services/time_context.py) and apps/mobile/lib/places/localPlacesQuery.ts, which the phone runs before sending to decide whether to read GPS. Both test suites ask every reader about every case: `reads` lists the readers that say yes, and every other reader must say no. Change a rule on both sides and update these cases in the same change. The composite is_geo_query is not held here: the server adds a local-weather ask, the phone a where-am-I ask.",
+  "about": "Geo intent read by apps/api/app/modules/web_search/{patterns,distance_patterns,geo_intent}.py (with is_location_question in app/services/time_context.py). The phone keeps only the location question (apps/mobile/lib/places/locationQuestion.ts, which hides search sources under a where-am-I reply); it does not use the device's location. The API suite asks every reader about every case and the phone suite asks isLocationQuestion: `reads` lists the readers that say yes, and every other reader must say no. Change a rule and update these cases in the same change. The composite is_geo_query is not held here: the server adds a local-weather ask.",
   "readers": {
-    "proximity": "is_proximity_query / isProximityQuery",
-    "distance": "is_distance_query / isDistanceQuery",
+    "proximity": "is_proximity_query",
+    "distance": "is_distance_query",
     "location_question": "is_location_question / isLocationQuestion",
-    "ambiguous_places": "is_ambiguous_local_places_query / isAmbiguousLocalPlacesQuery"
+    "ambiguous_places": "is_ambiguous_local_places_query"
   },
   "rules": {
     "distance_intent": "_DISTANCE_INTENT: how far, driving time, directions to. A fixed A-to-B distance (distance between, distance from the sun) names its own origin and needs no GPS unless the origin is the user (_FROM_USER).",

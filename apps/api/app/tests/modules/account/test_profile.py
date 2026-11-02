@@ -4,13 +4,7 @@ import pytest
 
 from app.core.validation import normalize_avatar_url
 from app.models.schemas import UserUpdate
-from app.modules.account.profile import (
-    effective_location_label,
-    normalize_client_coordinates,
-    normalize_client_location,
-    normalize_display_name,
-    user_location_label,
-)
+from app.modules.account.profile import normalize_display_name
 
 
 @pytest.mark.parametrize(
@@ -71,57 +65,14 @@ def test_user_update_rejects_invalid_timezone():
         UserUpdate(timezone="Not/A/Zone")
 
 
-def test_user_location_label_requires_enabled():
-    class U:
-        location_enabled = False
-        location = "Oakland, CA"
+def test_the_account_stores_no_location() -> None:
+    """The app does not use the device's location: nothing about it is saved or accepted."""
+    from app.models.orm import User
+    from app.models.schemas import UserOut
 
-    assert user_location_label(U()) is None
-
-
-def test_user_location_label_when_enabled():
-    class U:
-        location_enabled = True
-        location = "  Oakland, CA  "
-
-    assert user_location_label(U()) == "Oakland, CA"
-
-
-def test_normalize_client_location():
-    assert normalize_client_location("  San Francisco, CA  ") == "San Francisco, CA"
-    assert normalize_client_location("") is None
-    assert normalize_client_location("x" * 201) is None
-
-
-def test_effective_location_label_ignores_client_when_disabled():
-    class U:
-        location_enabled = False
-        location = None
-
-    assert effective_location_label(U(), "San Francisco, CA") is None
-
-
-def test_effective_location_label_prefers_client_when_enabled():
-    class U:
-        location_enabled = True
-        location = "Oakland, CA"
-
-    assert effective_location_label(U(), "San Francisco, CA") == "San Francisco, CA"
-
-
-def test_effective_location_label_falls_back_to_profile():
-    class U:
-        location_enabled = True
-        location = "Oakland, CA"
-
-    assert effective_location_label(U(), None) == "Oakland, CA"
-
-
-def test_normalize_client_coordinates():
-    assert normalize_client_coordinates(37.8, -122.4) == (37.8, -122.4)
-    assert normalize_client_coordinates(None, None) is None
-    assert normalize_client_coordinates(37.8, None) is None
-    assert normalize_client_coordinates(91.0, 0.0) is None
+    assert "location" not in User.__table__.c and "location_enabled" not in User.__table__.c
+    assert "location" not in UserUpdate.model_fields
+    assert "location" not in UserOut.model_fields
 
 
 # Web search can be turned off (Settings → Data controls): one narrowed copy of the

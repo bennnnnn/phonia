@@ -1,42 +1,19 @@
-"""Preset response tones and emoji use — mapped into chat system prompts."""
+"""The reply voice and emoji use — mapped into chat system prompts."""
 
 import re
 
-from app.models.schemas.common import EmojiUse, ResponseTone
+from app.models.schemas.common import EmojiUse
 
-DEFAULT_RESPONSE_TONE: ResponseTone = "casual"
-
-TONE_HINTS: dict[str, str] = {
-    "funny": (
-        "Tone: FUNNY and playful. Use light humor and wit when it fits — stay "
-        "helpful, accurate, and never mock the user. "
-        "Exception: a one-line arithmetic identity (3+0, 4!, 2+2) stays one line — "
-        "no bit, no personification, no coffee-break bit. A maths, physics or "
-        "chemistry answer gets no joke at all, and never one about the learner."
-    ),
-    "professional": (
-        "Tone: PROFESSIONAL. Polished, clear, and respectful. Avoid slang unless the user "
-        "uses it first."
-    ),
-    # "Like texting" read as lowercase: "h₂o", "10°c", "thursday", "boyle's law" (2026-10-24).
-    "casual": (
-        "Tone: CASUAL and friendly. Conversational and relaxed — like texting a smart friend, "
-        "in word choice only: write with normal capitals (sentences, names, days, months) and "
-        "never lowercase a chemical formula (H₂O), a unit (°C, K) or a variable (P, V)."
-    ),
-    "soft": (
-        "Tone: SOFT and gentle. Warm, supportive phrasing. Avoid harsh, blunt, or "
-        "judgmental wording."
-    ),
-}
+# Every reply's voice; there is no tone setting. "Like texting" read as lowercase:
+# "h₂o", "10°c", "thursday", "boyle's law" (2026-10-24).
+VOICE_HINT = (
+    "Tone: CASUAL and friendly. Conversational and relaxed — like texting a smart friend, "
+    "in word choice only: write with normal capitals (sentences, names, days, months) and "
+    "never lowercase a chemical formula (H₂O), a unit (°C, K) or a variable (P, V)."
+)
 
 
-def tone_hint(tone: str | None) -> str:
-    key = tone if tone in TONE_HINTS else DEFAULT_RESPONSE_TONE
-    return TONE_HINTS[key]
-
-
-# How many emoji a reply uses (Settings → Personalization). The tone never decides it.
+# How many emoji a reply uses (Settings → Personalization).
 DEFAULT_EMOJI_USE: EmojiUse = "some"
 
 # Where an emoji never goes, whatever the setting: it would break what is read there.

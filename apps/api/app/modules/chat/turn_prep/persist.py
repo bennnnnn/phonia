@@ -50,7 +50,6 @@ class UserTurn:
     stored_content: str
     attachment_ids: list[UUID] | None
     has_image_attachment: bool
-    model_alias: str | None
     recent_messages: list[Any] | None
     lesson_active: bool
     user: User | None = None
@@ -63,7 +62,7 @@ class UserTurn:
 
 
 def turn_model(turn: UserTurn, user: User, settings: Settings) -> str:
-    """The model already chosen, else the user's pick for this text.
+    """The model already chosen, else Auto's pick for this text.
 
     A photo sent with this message needs a model that reads it. An earlier photo
     only counts once the prompt build sends it again (``image_model``).
@@ -71,9 +70,8 @@ def turn_model(turn: UserTurn, user: User, settings: Settings) -> str:
     model = turn.model
     if model is None:
         prior_user, prior_model = last_user_turn(turn.recent_messages)
-        model = model_choice.resolve_user_model_override(
+        model = model_choice.resolve_user_model(
             user,
-            turn.model_alias,
             turn.content,
             settings,
             prior_user=prior_user,
@@ -92,7 +90,6 @@ def image_model(turn: UserTurn, user: User, settings: Settings, routed: str) -> 
         user,
         settings,
         routed,
-        explicit=plan_service.is_explicit_pick(turn.model_alias),
         unhealthy=turn.unhealthy or frozenset(),
     )
 

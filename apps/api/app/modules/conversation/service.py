@@ -18,8 +18,8 @@ from app.modules.conversation import chats_repository as _chats
 from app.modules.conversation import messages_repository as _messages
 
 
-async def create_chat(session: AsyncSession, *, user_id: UUID, model: str) -> Chat:
-    return await _chats.create(session, user_id=user_id, model=model)
+async def create_chat(session: AsyncSession, *, user_id: UUID) -> Chat:
+    return await _chats.create(session, user_id=user_id)
 
 
 async def touch_chat(session: AsyncSession, chat_id: UUID, *, commit: bool = True) -> None:

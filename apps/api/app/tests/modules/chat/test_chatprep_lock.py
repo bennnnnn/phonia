@@ -26,7 +26,6 @@ pytest_plugins = ("app.tests.modules.chat.chat_test_support",)
 def _user() -> MagicMock:
     user = MagicMock()
     user.id = uuid4()
-    user.default_model = "free-chat"
     user.plan = "free"
     return user
 

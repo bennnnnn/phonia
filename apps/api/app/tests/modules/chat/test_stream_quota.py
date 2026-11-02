@@ -19,7 +19,6 @@ from app.tests.modules.chat.chat_test_support import turn_deps
 def _pro_user() -> MagicMock:
     user = MagicMock()
     user.id = uuid4()
-    user.default_model = "smart-chat"
     user.plan = "pro"
     return user
 
@@ -314,7 +313,7 @@ async def test_stream_chat_response_quota_exceeded(fake_redis, used: int) -> Non
     user_id = uuid4()
     await fake_redis.set(f"usage:{user_id}:{quota_service.utc_today().isoformat()}", used)
     settings = Settings(daily_token_limit=100)
-    fake_user = MagicMock(id=user_id, plan="free", default_model="free-chat")
+    fake_user = MagicMock(id=user_id, plan="free")
     # Fail immediately if the guard lets message persistence begin.
     prepare = AsyncMock(side_effect=AssertionError("Over-limit turn reached preparation"))
     deps = turn_deps(

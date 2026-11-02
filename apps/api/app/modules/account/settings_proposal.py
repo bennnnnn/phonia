@@ -2,8 +2,8 @@
 
 The theme (light, dark or the system's) is the one setting a chat line changes, and
 only when the user taps the card: the chat path stores the change in Redis, and the
-confirm hands it to the phone, which keeps the theme. Every other setting (model,
-tone, language, memory) is changed by hand in Settings.
+confirm hands it to the phone, which keeps the theme. Every other setting (language,
+memory, emoji) is changed by hand in Settings.
 """
 
 from __future__ import annotations

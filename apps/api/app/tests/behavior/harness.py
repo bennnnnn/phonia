@@ -352,13 +352,10 @@ async def route_case(case: Case, settings: Settings | None = None) -> Route:
         name=USER_NAME,
         email="bini@example.com",
         plan="pro" if case.pro else "free",
-        response_tone="casual",
         emoji_use="some",
         locale=case.locale,
         timezone=USER_TIMEZONE,
         memory_enabled=case.memory_enabled,
-        location=case.location,
-        location_enabled=case.location is not None,
     )
     chat = Chat(id=uuid4(), user_id=user.id, title=None)
     rows = _rows(case)
@@ -439,9 +436,6 @@ async def route_case(case: Case, settings: Settings | None = None) -> Route:
                 content=text,
                 model=model,
                 client_timezone=USER_TIMEZONE,
-                client_location=case.location,
-                client_latitude=None,
-                client_longitude=None,
                 user=user,
                 chat=chat,
                 turn_mode=turn_mode,

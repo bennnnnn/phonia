@@ -40,17 +40,8 @@ class ChatsError(DomainError):
     """A chat history refusal."""
 
 
-async def create_chat(
-    session: AsyncSession,
-    user: User,
-    *,
-    model: str,
-) -> Chat:
-    return await conversation_service.create_chat(
-        session,
-        user_id=user.id,
-        model=model,
-    )
+async def create_chat(session: AsyncSession, user: User) -> Chat:
+    return await conversation_service.create_chat(session, user_id=user.id)
 
 
 async def list_chats_grouped(

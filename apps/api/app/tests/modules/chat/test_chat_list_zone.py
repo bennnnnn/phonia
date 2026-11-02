@@ -64,7 +64,7 @@ async def user(db_session: AsyncSession, monkeypatch: pytest.MonkeyPatch) -> Use
 @pytest.fixture
 def add_chat(db_session: AsyncSession, user: User) -> AddChat:
     async def add(updated_at: datetime) -> Chat:
-        chat = await chats_repo.create(db_session, user_id=user.id, model="free-chat")
+        chat = await chats_repo.create(db_session, user_id=user.id)
         await messages_repo.create(
             db_session, chat_id=chat.id, user_id=user.id, role="user", content="hi"
         )
