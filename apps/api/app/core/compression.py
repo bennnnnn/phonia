@@ -10,7 +10,7 @@ What is left alone: an event stream (SSE replies must reach the phone token by
 token, and Starlette's own exclusion keeps them that way), WebSockets (not HTTP
 responses), bodies already compressed or binary (photos, files, audio), bodies
 under ``minimum_size``, read-aloud audio (base64, it barely shrinks), and the
-responses that carry credentials (sign-in, refresh, the live-talk secret): a
+responses that carry credentials (sign-in, refresh): a
 secret is never compressed beside text an attacker could choose (BREACH).
 """
 

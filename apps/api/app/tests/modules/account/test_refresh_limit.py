@@ -107,9 +107,8 @@ async def test_many_accounts_behind_one_address_refresh_until_the_backstop(clien
 
 @pytest.mark.parametrize("down", ["backstop", "account"])
 def test_a_redis_outage_answers_503_not_a_limit(client, down):
-    """It answered 429 + Retry-After 60, read on the phone as a limit: live talk said the
-    month's minutes were used up, and requests that needed a refresh failed for up to a
-    minute after Redis was back. Still closed: no refresh goes through."""
+    """It answered 429 + Retry-After 60, read on the phone as a limit, and requests that
+    needed a refresh failed for up to a minute after Redis was back. Still closed: no refresh goes through."""
     broken = redis_mock()
     broken.pipeline.side_effect = RedisConnectionError("down")
     client.app.dependency_overrides[get_redis] = lambda: broken

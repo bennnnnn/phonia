@@ -1,8 +1,7 @@
 """Whether the user's memory is on: the Settings → Memory switch.
 
-Every reader asks here (code-health audit CLAR-11). Chat read the column with a default
-of on and live talk with a default of off, so a reply could recall what a voice turn
-in the same account would not.
+Every reader asks here (code-health audit CLAR-11), so every reader agrees on whether
+memory is on.
 """
 
 from __future__ import annotations

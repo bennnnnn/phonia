@@ -40,7 +40,7 @@ class TavilyBudget(Protocol):
 class ToolContext:
     """The turn a tool runs in, passed to every ``invoke`` with its arguments.
 
-    The tool loop and live talk build one per turn. ``tavily_budget`` and
+    The tool loop builds one per turn. ``tavily_budget`` and
     ``first_results`` are shared by reference by every call in that turn.
     """
 

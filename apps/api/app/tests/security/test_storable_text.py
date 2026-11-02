@@ -27,11 +27,9 @@ from app.modules.attachments.schemas import AttachmentPresignIn
 from app.modules.chat.stream_api import require_chat_rate_limit
 from app.modules.images.schemas import ImageGenerateIn
 from app.modules.memory.schemas import MemoryInstructIn, MemoryUpdate
-from app.modules.speech.realtime import RealtimePersistIn, RealtimeToolIn
 from app.modules.todos.schemas import TodoCreate, TodoUpdate
 
 _CHAT = str(uuid4())
-_CALL = "call-12345678"
 
 # (schema, the field under test, the rest of a valid body)
 PERSISTED_TEXT_FIELDS: list[tuple[type[BaseModel], str, dict[str, Any]]] = [
@@ -53,13 +51,6 @@ PERSISTED_TEXT_FIELDS: list[tuple[type[BaseModel], str, dict[str, Any]]] = [
     (ImageGenerateIn, "prompt", {"chat_id": _CHAT}),
     (ImageGenerateIn, "user_message", {"chat_id": _CHAT, "prompt": "a cat"}),
     (AttachmentPresignIn, "filename", {"content_type": "application/pdf", "size_bytes": 10}),
-    (RealtimePersistIn, "user_text", {"chat_id": _CHAT, "call_id": _CALL}),
-    (RealtimePersistIn, "assistant_text", {"chat_id": _CHAT, "call_id": _CALL, "user_text": "hi"}),
-    (
-        RealtimeToolIn,
-        "query",
-        {"chat_id": _CHAT, "call_id": _CALL, "turn_id": "t1", "name": "web_search"},
-    ),
 ]
 
 

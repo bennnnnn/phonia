@@ -354,15 +354,6 @@ CATALOG: tuple[ChatModel, ...] = (
         selectable=False,
         description="Legacy alias for OpenAI read-aloud.",
     ),
-    ChatModel(
-        id="live-talk-model",
-        label="Live talk",
-        model="openai/gpt-realtime-2.1",
-        provider="openai",
-        api_key_field="openai_api_key",
-        selectable=False,
-        description="Speech-to-speech for live talk.",
-    ),
 )
 
 _BY_ID: dict[str, ChatModel] = {m.id: m for m in CATALOG}

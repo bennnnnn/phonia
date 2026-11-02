@@ -35,10 +35,6 @@ _UPWARD = {
     ("modules.account", "modules.chat"): "deletion drops chat's cached follow-up questions",
     ("modules.images", "modules.chat"): "a picture turn sets off chat's post-turn jobs; a cut cue",
     ("modules.physics", "modules.chat"): "a direct reply is presented as chat presents one",
-    (
-        "modules.speech",
-        "modules.chat",
-    ): "a voice turn sets off chat's post-turn jobs and presentation",
     ("services.quota", "modules.billing"): "a daily budget is the plan's number (entitlements)",
 }
 

@@ -23,7 +23,7 @@ This policy explains what Recall collects, who receives it, how long it is kept,
 
 - **Account information**: Your name, email address and profile picture from Google or Apple Sign-In, and which of the two you use.
 - **Profile and settings**: What you add in Settings, such as a display name or photo, age, country, job, custom instructions, language, time zone and preferences.
-- **Conversations**: Messages you send, responses from the AI, chat titles, summaries of long chats, and your thumbs-up/thumbs-down feedback. Live talk turns are saved as text in the chat; the audio itself is not stored.
+- **Conversations**: Messages you send, responses from the AI, chat titles, summaries of long chats, and your thumbs-up/thumbs-down feedback.
 - **Learned facts**: Information Recall saves to personalize your experience (preferences, projects, facts you share). You can see, edit, mute or delete each one on the Memory screen, or turn memory off.
 - **Reminders**: To-dos and reminders you create or confirm.
 - **Files and photos**: Images and documents you attach, AI images you create, the text read from them, and numeric search indexes (embeddings) of your messages, memory and files that let Recall find relevant context.
@@ -47,7 +47,7 @@ We do not sell your personal data and do not use it for advertising.
 ## AI Processing and Other Services That Receive Your Data
 
 - **AI model providers, through OpenRouter**: Your messages, recent chat history, relevant saved memory and reminders, profile details that help the answer (your name and, when relevant, email address, age, country, job, custom instructions, time zone and location), photos and files you attach with the text read from them, photos you scan in the scanner (math, physics and chemistry), and web search results. OpenRouter forwards each request to a company that runs the chosen model: the model's maker (currently Anthropic, OpenAI, DeepSeek, Alibaba's Qwen, Z.ai, and Black Forest Labs for AI images) or another hosting provider OpenRouter works with. Background work uses the same route: chat titles, memory, follow-up questions, reading photos and scanned PDFs, and the search indexes described above.
-- **OpenAI, for voice**: When you use voice input, read aloud or live talk, your recorded audio and the text to be read go to OpenAI. During live talk your phone connects to OpenAI directly with a short-lived key, and OpenAI also receives that conversation's instructions, which include recent messages, relevant memory, your custom instructions and upcoming reminders.
+- **OpenAI, for voice**: When you use voice input or read aloud, your recorded audio and the text to be read go to OpenAI.
 - **Mathpix, for math photos**: Photos of math problems you scan, or send asking for a solution, go to Mathpix to read the math. Recall asks Mathpix not to keep them to improve its service.
 - **Tavily, for web search and photo lookups**: Search words Recall writes from your message, which can include your city or, for nearby questions, your coordinates. If Tavily has no answer or your daily search allowance is used up, our server sends the same search words to public search engines (such as DuckDuckGo, Bing or Google) instead. You can turn web search and photo lookups off in Settings → Data controls.
 - **PubChem, for chemistry**: The names or structures of chemicals in a chemistry question, to look up their properties. No account details are sent.
@@ -57,7 +57,7 @@ Each of these services handles the data under its own terms and privacy policy. 
 ## Service Providers
 
 - **OpenRouter** routes AI requests to the model providers above.
-- **OpenAI** provides voice input, read aloud and live talk.
+- **OpenAI** provides voice input and read aloud.
 - **Mathpix** reads math in photos.
 - **Tavily** provides web search and reference photos; public search engines are the backup.
 - **PubChem** (U.S. National Center for Biotechnology Information) answers chemistry lookups.
@@ -72,7 +72,7 @@ Each of these services handles the data under its own terms and privacy policy. 
 - **Resend** delivers email.
 - **Expo** delivers push notifications (through Apple's and Google's push services) and app updates.
 
-Your phone talks to some of these directly: Google or Apple when you sign in, RevenueCat and the store when you buy, Expo for notifications and updates, OpenAI during live talk, Sentry for crash reports, Google for site icons, and public code hosts when you run an HTML preview that loads their scripts.
+Your phone talks to some of these directly: Google or Apple when you sign in, RevenueCat and the store when you buy, Expo for notifications and updates, Sentry for crash reports, Google for site icons, and public code hosts when you run an HTML preview that loads their scripts.
 
 ## Data Storage
 

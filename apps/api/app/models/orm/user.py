@@ -88,7 +88,7 @@ class User(Base):
     push_reminders_enabled: Mapped[bool] = mapped_column(
         Boolean, default=True, server_default="true"
     )
-    # Read-aloud and live talk voice; None keeps the server default.
+    # Read-aloud voice; None keeps the server default.
     tts_voice: Mapped[str | None] = mapped_column(String(16), nullable=True)
     email_reminders_enabled: Mapped[bool] = mapped_column(
         Boolean, default=False, server_default="false"

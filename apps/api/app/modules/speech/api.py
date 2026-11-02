@@ -7,11 +7,10 @@ from fastapi import APIRouter, Depends, HTTPException, Request, status
 
 from app.core.config import Settings
 from app.core.consent import get_consented_user
-from app.core.deps import get_current_user, get_settings_dep
+from app.core.deps import get_settings_dep
 from app.core.redis import get_redis_client
 from app.core.request_limits import reject_oversized
 from app.models.orm import User
-from app.modules.speech import live_talk as live_talk_service
 from app.modules.speech import service as speech_service
 from app.modules.speech.gates import (
     RefundDayOnFailure,
@@ -23,7 +22,6 @@ from app.modules.speech.gates import (
 from app.modules.speech.schemas import (
     SPEECH_MAX_AUDIO_BYTES,
     SPEECH_MAX_REQUEST_BYTES,
-    SpeechLiveStatusOut,
     SpeechTranscriptionIn,
     SpeechTranscriptionOut,
     SpeechTtsIn,
@@ -190,13 +188,3 @@ async def transcribe_speech(
         result = await _transcribe_bytes(settings, data, filename, language)
         await quota_service.record_voice_spend(redis, quota_service.STT_SPEND_USD)
         return result
-
-
-@router.get("/live", response_model=SpeechLiveStatusOut)
-async def live_talk_status(
-    user: User = Depends(get_current_user),
-    settings: Settings = Depends(get_settings_dep),
-) -> SpeechLiveStatusOut:
-    if not settings.speech_live_talk_enabled:
-        return SpeechLiveStatusOut(enabled=False, entitled=False, remaining=0, limit=0)
-    return await live_talk_service.live_talk_status(get_redis_client(), user, settings)

@@ -30,7 +30,7 @@ _RATE_WINDOW_SECONDS = 60
 
 
 class SpeechRefusedError(DomainError):
-    """A speech or live talk request refused before it spends."""
+    """A speech request refused before it spends."""
 
 
 def require_plan_feature(user: User, settings: Settings, feature: Feature, message: str) -> None:
@@ -53,8 +53,7 @@ async def require_speech_rate(redis: Redis, settings: Settings, key: str, messag
     """At most ``speech_rate_limit_per_minute`` requests a minute under *key* (0 is off).
 
     A Redis error denies the request (fail closed) with ``RedisUnavailableError``: 503
-    unavailable, never ``speech_rate_limited``, which live talk words as the month's
-    minutes used up.
+    unavailable, never ``speech_rate_limited``.
     """
     rate_limit = settings.speech_rate_limit_per_minute
     if rate_limit <= 0:

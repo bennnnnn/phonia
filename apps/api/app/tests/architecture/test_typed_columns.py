@@ -1,10 +1,9 @@
 """A typed column is read as an attribute, not through getattr (code-health audit CLAR-11).
 
 ``getattr(user, "memory_enabled", True)`` types as ``Any``, so a renamed column breaks
-nothing, and its default becomes the behaviour: chat read memory as on and live talk as
-off. A row annotated as a model reads its columns directly, a user's columns are never
-read through ``getattr``, and the Settings → Memory switch has one reader,
-``memory.switch.memory_switch_on``. Rows that come in several shapes (message dicts and
+nothing, and its default becomes the behaviour. A row annotated as a model reads its
+columns directly, a user's columns are never read through ``getattr``, and the
+Settings → Memory switch has one reader, ``memory.switch.memory_switch_on``. Rows that come in several shapes (message dicts and
 rows alike) stay duck-typed until they get one type.
 """
 

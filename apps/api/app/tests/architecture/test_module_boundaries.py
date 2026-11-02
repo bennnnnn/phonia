@@ -269,9 +269,6 @@ def test_speech_runtime_code_has_one_owner() -> None:
     module_root = APP_ROOT / "modules" / "speech"
     expected = {
         "api.py",
-        "live_talk.py",
-        "live_talk_tools.py",
-        "realtime.py",
         "schemas.py",
         "service.py",
     }

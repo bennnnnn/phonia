@@ -18,7 +18,6 @@ _MOCK_MP3_BYTES = b"\xff\xfb\x90\x00" + b"\x00" * 64
 _STT_ALIAS = "speech-stt-model"
 TTS_QUALITY_ALIAS = "speech-tts-model"
 TTS_FAST_ALIAS = "speech-tts-fast-model"
-LIVE_TALK_ALIAS = "live-talk-model"
 _OPENAI_TTS_VOICES = frozenset(
     {
         "alloy",

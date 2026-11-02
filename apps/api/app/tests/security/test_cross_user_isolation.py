@@ -393,48 +393,6 @@ async def test_image_generation_into_another_users_chat_is_404(world: World) -> 
 
 
 @pytest.mark.asyncio
-async def test_live_talk_routes_refuse_another_users_chat(world: World) -> None:
-    c, b, data = world.client, world.b, world.a_data
-    async with SessionLocal() as session:
-        row = await session.get(User, b.id)
-        assert row is not None
-        row.plan = "pro"
-        await session.commit()
-    from app.core.user_cache import forget_user
-
-    forget_user(b.id)
-    session_resp = await c.post(
-        "/speech/live/session", json={"chat_id": str(data.chat_id)}, headers=b.headers
-    )
-    assert session_resp.status_code == 404
-    persisted = await c.post(
-        "/speech/live/persist",
-        json={
-            "chat_id": str(data.chat_id),
-            "call_id": "call-" + uuid4().hex,
-            "user_text": "remember my bank pin",
-            "assistant_text": "ok",
-        },
-        headers=b.headers,
-    )
-    assert persisted.status_code == 403
-    tool = await c.post(
-        "/speech/live/tool",
-        json={
-            "chat_id": str(data.chat_id),
-            "call_id": "call-" + uuid4().hex,
-            "turn_id": "t1",
-            "name": "memory_lookup",
-            "query": "what is the plan",
-        },
-        headers=b.headers,
-    )
-    assert tool.status_code == 403
-    assert data.secret_word not in tool.text
-    assert await _count(Message, Message.chat_id == data.chat_id) == 2
-
-
-@pytest.mark.asyncio
 async def test_session_of_another_user_cannot_be_revoked(world: World) -> None:
     from app.modules.account import tokens
 

@@ -22,7 +22,7 @@ from .boundary_support import APP_ROOT
 _TESTS = APP_ROOT / "tests"
 _PLACEHOLDER = re.compile(r"(?<!\{)\{[A-Za-z_0-9!:.]*\}(?!\})")
 # Literal prompt-copy asserts left; lower this when a change replaces some.
-_PINNED = 99
+_PINNED = 98
 
 
 def _prompt_texts() -> list[str]:

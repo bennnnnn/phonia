@@ -90,8 +90,8 @@ async def materialize_reminder_fences(
     last (``card_retime.retime_untapped_card``); None reads them.
 
     The writes join the caller's session and are never committed or rolled back
-    here: the caller commits them with its own rows (live talk's voice turn) or
-    rolls them back (code-health audit ARCH-07).
+    here: the caller commits them with its own rows or rolls them back (code-health
+    audit ARCH-07).
     """
     turn = partial(
         _materialize,

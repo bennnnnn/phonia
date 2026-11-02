@@ -2,7 +2,7 @@
 
 Conversation owns the chats, messages and message chunks (code-health audit ARCH-08;
 structure ticket ST-03): their repositories sit in this module and stay private. Chat,
-images, live talk, to-dos, memory, attachments and the account read through these
+images, to-dos, memory, attachments and the account read through these
 operations and write through ``service``; a turn chat did not stream saves through
 ``turn_record``, and memory forgets past snippets through ``history_rag``.
 """

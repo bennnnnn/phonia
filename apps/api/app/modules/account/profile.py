@@ -56,7 +56,7 @@ def settings_for_user(settings: Settings, user: User | None) -> Settings:
     """The server's switches narrowed by the user's own, for one of their turns.
 
     Every search path (forced search, the web_search tool, photo lookups, a photo
-    above an answer, live talk) already reads these two server switches, so a user
+    above an answer) already reads these two server switches, so a user
     who turned web search off is covered everywhere by this one copy.
     """
     # ``is not False``: a row not saved yet holds None, and the column's default is on.

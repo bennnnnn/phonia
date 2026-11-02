@@ -1,6 +1,6 @@
 """Public todo operations for other product modules.
 
-This module does not import chat, so live talk can call it without a circular
+This module does not import chat, so any module can call it without a circular
 import.
 """
 

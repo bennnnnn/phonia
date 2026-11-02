@@ -31,12 +31,10 @@ from app.core.config import Settings
 from app.core.db import get_db
 from app.core.deps import get_current_user, get_settings_dep
 from app.core.spend_counter import MICRO_USD_PER_USD, spend_key
-from app.gateways.openai_speech_gateway import RealtimeClientSecretResult
 from app.main import create_app
 from app.models.orm import User
 from app.models.schemas.scan import SCAN_MAX_IMAGE_BYTES
 from app.modules.account.email_authority import AccountExistsError
-from app.modules.speech.live_talk import LiveTalkSessionContext
 from app.services.quota import IMAGE_GENERATION_SPEND_CAP_MESSAGE, counters
 
 FIXTURE = Path(__file__).resolve().parents[4] / "docs" / "fixtures" / "error_codes.json"
@@ -153,91 +151,6 @@ def _memory_instruct(*, spend_capped: bool = False, allowed: bool = True) -> Any
     ):
         return _client(_user()).post(
             "/memories/instruct", headers=_AUTH, json={"instruction": "Remember I like tea"}
-        )
-
-
-def _live_talk_unconfigured() -> Any:
-    """POST /speech/live/session for a Pro user on a server with no Realtime key."""
-    user = _user()
-    user.plan = "pro"
-    user.tts_voice = None
-    settings = Settings(
-        speech_live_talk_enabled=True, speech_realtime_voice_enabled=True, openai_api_key=""
-    )
-    with (
-        patch(
-            "app.modules.speech.realtime.live_talk_service.load_live_talk_session_context",
-            AsyncMock(return_value=MagicMock()),
-        ),
-        patch("app.core.rest_rate_limit.allow_request", AsyncMock(return_value=True)),
-    ):
-        return _client(user, settings).post("/speech/live/session", headers=_AUTH, json={})
-
-
-_LIVE_TALK_ON = Settings(
-    openai_api_key="sk-test", speech_live_talk_enabled=True, speech_realtime_voice_enabled=True
-)
-
-
-def _live_talk(
-    path: str,
-    *,
-    settings: Settings | None = None,
-    plan: str = "pro",
-    consented: bool = True,
-    **refused: bool,
-) -> Any:
-    """POST a live talk route for a user on ``plan``, refused where ``refused`` says.
-
-    ``rate_limited``: the route's own per-minute limit is used up; ``spend_capped``: the
-    voice spend breaker is open; ``minutes_used``: the month has no session left;
-    ``mint_failed``: the realtime provider minted no key; ``saves_used``: the call saved
-    every turn it may; ``session_ended``: the save names no live session. A save names
-    this chat's session.
-    """
-    user = _user(consented=consented)
-    user.plan = plan
-    user.tts_voice = None
-    user.custom_instructions = None
-    chat_id = uuid4()
-    allowed = AsyncMock(return_value=not refused.get("rate_limited"))
-    minted = RealtimeClientSecretResult(value="ek_test", expires_at=123)
-    with (
-        patch(
-            "app.modules.speech.realtime.get_redis_client",
-            return_value=fakeredis.aioredis.FakeRedis(decode_responses=True),
-        ),
-        patch(
-            "app.modules.speech.realtime.live_talk_service.load_live_talk_session_context",
-            AsyncMock(return_value=LiveTalkSessionContext(None, "", "")),
-        ),
-        patch(
-            "app.modules.speech.realtime.live_talk_service.realtime_session_bound_chat_id",
-            AsyncMock(return_value=None if refused.get("session_ended") else chat_id),
-        ),
-        patch("app.modules.speech.gates.allow_request_unless_down", allowed),
-        patch("app.modules.speech.realtime.allow_request_unless_down", allowed),
-        patch(
-            "app.services.quota.global_spend_exceeded",
-            AsyncMock(return_value=refused.get("spend_capped", False)),
-        ),
-        patch(
-            "app.services.quota.reserve_live_talk_seconds",
-            AsyncMock(return_value=0 if refused.get("minutes_used") else 900),
-        ),
-        patch(
-            "app.services.quota.take_live_talk_save",
-            AsyncMock(return_value=not refused.get("saves_used")),
-        ),
-        patch(
-            "app.modules.speech.realtime.openai_speech_gateway.create_realtime_client_secret",
-            AsyncMock(return_value=None if refused.get("mint_failed") else minted),
-        ),
-        patch("app.core.rest_rate_limit.allow_request", AsyncMock(return_value=True)),
-    ):
-        body = {"chat_id": str(chat_id), "call_id": "issued-session", "user_text": "hi"}
-        return _client(user, settings or _LIVE_TALK_ON).post(
-            path, headers=_AUTH, json=body if path.endswith("/persist") else {}
         )
 
 
@@ -484,29 +397,8 @@ def _bodies() -> dict[str, dict[str, Any]]:
         "presign_daily_limit": _refusal(_presign("image/png", 128, at_daily_cap=True)),
         "dictation_daily_limit": _refusal(_transcribe(at_daily_cap=True)),
         "dictation_rate_limited": _refusal(_transcribe(allowed=False)),
-        # Every voice request at the day's spend cap: dictation, live talk's session and saves.
+        # Every voice request at the day's spend cap.
         "voice_spend_cap": _refusal(_transcribe(spend_capped=True)),
-        "live_talk_not_configured": _refusal(_live_talk_unconfigured()),
-        "live_talk_minutes_used": _refusal(_live_talk("/speech/live/session", minutes_used=True)),
-        "live_talk_rate_limited": _refusal(_live_talk("/speech/live/session", rate_limited=True)),
-        "live_talk_spend_cap": _refusal(_live_talk("/speech/live/session", spend_capped=True)),
-        "live_talk_upstream_failed": _refusal(_live_talk("/speech/live/session", mint_failed=True)),
-        "live_talk_not_available": _refusal(
-            _live_talk(
-                "/speech/live/session", settings=Settings(speech_realtime_voice_enabled=False)
-            )
-        ),
-        # The paywall opens for this code only; consent opens the consent step instead.
-        "live_talk_not_in_plan": _refusal(_live_talk("/speech/live/session", plan="free")),
-        "live_talk_consent_required": _refusal(_live_talk("/speech/live/session", consented=False)),
-        "live_talk_save_rate_limited": _refusal(
-            _live_talk("/speech/live/persist", rate_limited=True)
-        ),
-        "live_talk_save_spend_cap": _refusal(_live_talk("/speech/live/persist", spend_capped=True)),
-        "live_talk_saves_used": _refusal(_live_talk("/speech/live/persist", saves_used=True)),
-        # A save the plan or the session no longer allows ends the call.
-        "live_talk_save_not_in_plan": _refusal(_live_talk("/speech/live/persist", plan="free")),
-        "live_talk_session_ended": _refusal(_live_talk("/speech/live/persist", session_ended=True)),
         "memory_spend_cap": _refusal(_memory_instruct(spend_capped=True)),
         "memory_busy": _refusal(_memory_instruct()),
         "memory_rate_limited": _refusal(_memory_instruct(allowed=False)),

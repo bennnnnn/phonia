@@ -2,8 +2,7 @@
 
 ``global_spend_exceeded`` read a Redis error as the cap reached (fail closed), so an outage
 after sign-in answered as the day's spend cap: pictures and voice "temporarily unavailable,
-try again later", scans "paused", memory edits "paused", and live talk "this month's minutes
-used". The phone took each for the cap and never checked its connection, which it does after
+try again later", scans "paused" and memory edits "paused". The phone took each for the cap and never checked its connection, which it does after
 a 503. Nothing spends either way. The spend read is what fails here (``spend_musd:<day>``), so
 each route's own gate runs. Chat turns: ``modules/chat/test_turn_quota_reserve.py``.
 """
@@ -39,14 +38,7 @@ _UNAVAILABLE = {
     }
 }
 _CHAT_ID = uuid4()
-_CALL_ID = "issued-session"
 _CAP_USD = 1.0
-_LIVE_TALK = Settings(
-    speech_live_talk_enabled=True,
-    speech_realtime_voice_enabled=True,
-    openai_api_key="sk-test",
-    daily_global_spend_usd=_CAP_USD,
-)
 _PHOTO = {"image_base64": base64.b64encode(b"\xff\xd8\xff fake jpeg").decode()}
 
 Spend = Literal["down", "capped"]
@@ -62,7 +54,7 @@ class _Gate:
     settings: Settings = field(default_factory=lambda: Settings(daily_global_spend_usd=_CAP_USD))
     # Where the route reads its Redis client: given the fake whose spend read fails.
     redis_at: tuple[str, ...] = ()
-    # The route's own reads before its spend gate (a chat, a live talk's history).
+    # The route's own reads before its spend gate (a chat).
     stubs: tuple[tuple[str, Any], ...] = ()
 
 
@@ -95,30 +87,6 @@ GATES: dict[str, _Gate] = {
         plan="pro",
         redis_at=("app.modules.speech.api.get_redis_client",),
     ),
-    "live talk session": _Gate(
-        send=lambda c: c.post("/speech/live/session", headers=_AUTH, json={}),
-        capped=(429, "voice_spend_cap"),
-        plan="pro",
-        settings=_LIVE_TALK,
-        redis_at=("app.modules.speech.realtime.get_redis_client",),
-        stubs=(
-            (
-                "app.modules.speech.realtime.live_talk_service.load_live_talk_session_context",
-                AsyncMock(return_value=MagicMock()),
-            ),
-        ),
-    ),
-    "live talk saves": _Gate(
-        send=lambda c: c.post(
-            "/speech/live/persist",
-            headers=_AUTH,
-            json={"chat_id": str(_CHAT_ID), "call_id": _CALL_ID, "user_text": "hi"},
-        ),
-        capped=(429, "voice_spend_cap"),
-        plan="pro",
-        settings=_LIVE_TALK,
-        redis_at=("app.modules.speech.realtime.get_redis_client",),
-    ),
     "image generation": _Gate(
         send=lambda c: c.post(
             "/images/generate",
@@ -138,16 +106,15 @@ GATES: dict[str, _Gate] = {
 }
 
 
-def _reads(spend: Spend, user_id: Any, read: Callable[[str], Any]) -> Callable[[str], Any]:
-    """Redis reads: the day's spend fails or is over the cap; a live talk's session is open."""
-    session_key = f"live_talk_rt:{user_id}:{_CALL_ID}"
+def _reads(spend: Spend, read: Callable[[str], Any]) -> Callable[[str], Any]:
+    """Redis reads: the day's spend fails or is over the cap."""
 
     async def get(key: str) -> Any:
         if key == spend_key():
             if spend == "down":
                 raise RedisConnectionError("Error 111 connecting to redis")
             return str(10**12)
-        return str(_CHAT_ID) if key == session_key else await read(key)
+        return await read(key)
 
     return get
 
@@ -160,7 +127,7 @@ def _client(gate: _Gate, spend: Spend) -> Iterator[tuple[TestClient, AsyncMock]]
     app.dependency_overrides[get_current_user] = lambda: user
     app.dependency_overrides[get_settings_dep] = lambda: gate.settings
     app.dependency_overrides[get_redis] = lambda: redis
-    reads = AsyncMock(side_effect=_reads(spend, user.id, redis.get))
+    reads = AsyncMock(side_effect=_reads(spend, redis.get))
     with ExitStack() as stack:
         stack.enter_context(patch.object(redis, "get", reads))
         for target in gate.redis_at:
@@ -233,7 +200,7 @@ def test_every_spend_gate_is_listed() -> None:
         # Photo lookup: the chat's photo turn, and a reply's photo (best-effort, none).
         "modules/images/search.py",
         "modules/memory/api.py",  # memory edits
-        "modules/speech/gates.py",  # dictation, read aloud, live talk's session and saves
+        "modules/speech/gates.py",  # dictation, read aloud
         # The resolver answers None on any failure: services/test_conversation_reference.py.
         "services/conversation_reference.py",
         "services/scan_read.py",  # photo scans, every subject

@@ -1,4 +1,4 @@
-"""What each plan allows per day or month, and the global daily spend cap."""
+"""What each plan allows per day, and the global daily spend cap."""
 
 from pydantic import BaseModel
 
@@ -33,10 +33,6 @@ class PlanAllowanceSettings(BaseModel):
     daily_speech_tts: int = 0
     daily_speech_tts_plus: int = 100
     daily_speech_tts_pro: int = 100
-    # Live talk minutes per UTC calendar month.
-    monthly_live_talk_minutes: int = 0
-    monthly_live_talk_minutes_plus: int = 0
-    monthly_live_talk_minutes_pro: int = 60
     # AI pictures and reference-photo lookups per UTC day.
     daily_image_generations: int = 3
     daily_image_generations_plus: int = 10

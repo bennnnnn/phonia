@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 class LlmSettings(BaseModel):
     openrouter_api_key: str = ""
-    # Direct OpenAI key for all voice: dictation, read-aloud and Live Talk WebRTC.
+    # Direct OpenAI key for all voice: dictation and read-aloud.
     openai_api_key: str = ""
     # Model-initiated LiteLLM tools= loop. Ordinary chat streams immediately;
     # the loop runs only when the turn still looks like search / unsolved math /

@@ -57,11 +57,6 @@ def app_with_user(user: User) -> FastAPI:
 
     app = create_app()
     app.dependency_overrides[get_current_user] = lambda: user
-    # Pin live-talk minutes so a local operator .env cannot change the
-    # remaining/limit assertions.
-    app.dependency_overrides[get_settings_dep] = lambda: Settings(
-        monthly_live_talk_minutes=0,
-        monthly_live_talk_minutes_plus=0,
-        monthly_live_talk_minutes_pro=60,
-    )
+    # Settings from their defaults, so a local operator .env cannot change assertions.
+    app.dependency_overrides[get_settings_dep] = lambda: Settings()
     return app

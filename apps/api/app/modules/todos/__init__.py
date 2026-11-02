@@ -77,9 +77,6 @@ if TYPE_CHECKING:
         build_todos_system_section as build_todos_system_section,
     )
     from app.modules.todos.prompt_context import (
-        format_todos_voice_block as format_todos_voice_block,
-    )
-    from app.modules.todos.prompt_context import (
         select_todos_for_prompt as select_todos_for_prompt,
     )
     from app.modules.todos.prompt_hint import (
@@ -104,7 +101,6 @@ _EXPORTS = {
     "TODO_HINT": ("prompt_hint", "TODO_HINT"),
     "apply_todo_actions": ("actions", "apply_todo_actions"),
     "build_todos_system_section": ("prompt_context", "build_todos_system_section"),
-    "format_todos_voice_block": ("prompt_context", "format_todos_voice_block"),
     "materialize_reminder_fences": ("reminder_fences", "materialize_reminder_fences"),
     "reminder_cards_as_text": ("proposals", "reminder_cards_as_text"),
     "without_denials": ("reply_denials", "without_denials"),

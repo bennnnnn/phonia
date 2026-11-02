@@ -1,4 +1,4 @@
-"""Speech-to-text, text-to-speech, and live talk.
+"""Speech-to-text and text-to-speech.
 
 Importing a submodule must not pull the other product's service graph.
 """

@@ -28,7 +28,7 @@ from app.modules.account import quota_carryover, signin_limit
 from app.modules.account.email_authority import SignInProvider
 from app.modules.billing.entitlements import setting_name
 from app.services import quota
-from app.services.quota import carryover, counters, live_talk
+from app.services.quota import counters
 
 from .conftest import delete_accounts, isolated_settings, reset_process_caches
 
@@ -50,11 +50,9 @@ async def linked_world(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> Async
     from app.main import create_app
 
     settings = isolated_settings(monkeypatch, tmp_path)
-    # One UTC day and month for the whole test: a run across midnight keeps its counters.
-    day, month = quota.utc_today(), quota.utc_month()
+    # One UTC day for the whole test: a run across midnight keeps its counters.
+    day = quota.utc_today()
     monkeypatch.setattr(counters, "clock", lambda: day)
-    monkeypatch.setattr(live_talk, "utc_month", lambda: month)
-    monkeypatch.setattr(carryover, "utc_month", lambda: month)
     redis = get_redis_client()
     await engine.dispose(close=False)
     world: Linked | None = None
@@ -120,8 +118,8 @@ async def signed_in(
     return user_id, str(body["access_token"])
 
 
-async def use(redis: Any, user_id: UUID, used: dict[str, int], live_talk: int = 0) -> None:
-    """Spend *used* of each daily counter (by prefix) and *live_talk* seconds."""
+async def use(redis: Any, user_id: UUID, used: dict[str, int]) -> None:
+    """Spend *used* of each daily counter (by prefix)."""
     allowances: dict[str, Any] = {
         setting_name(spec.allowance, "pro"): 10 for spec in counters.COUNTERS.values()
     }
@@ -132,15 +130,6 @@ async def use(redis: Any, user_id: UUID, used: dict[str, int], live_talk: int = 
     for name, spec in counters.COUNTERS.items():
         for _ in range(used.get(spec.prefix, 0)):
             assert await counters.reserve(name, redis, user, caps)
-    if live_talk:
-        granted = await quota.reserve_live_talk_seconds(
-            redis,
-            user_id,
-            allowance_seconds=3600,
-            max_session_seconds=live_talk,
-            min_session_seconds=1,
-        )
-        assert granted == live_talk
 
 
 async def counts(redis: Any, user_id: UUID) -> dict[str, int]:
@@ -168,14 +157,13 @@ async def deleted_account(
     email: str,
     used: dict[str, int],
     *,
-    live_talk: int,
     claims: Mapping[str, Any] | None = None,
 ) -> str:
-    """An account made with *provider* on *email* uses *used* and *live_talk* seconds and is
-    deleted. Returns its sub."""
+    """An account made with *provider* on *email* uses *used* and is deleted. Returns its
+    sub."""
     sub = f"{provider}-{uuid4()}"
     user_id, token = await signed_in(world, provider, sub, email, claims)
-    await use(world.redis, user_id, used, live_talk=live_talk)
+    await use(world.redis, user_id, used)
     await delete(world, user_id, token)
     return sub
 
