@@ -17,6 +17,7 @@ minute for two days.
 from __future__ import annotations
 
 import logging
+import re
 from dataclasses import dataclass
 from enum import StrEnum
 from typing import Any
@@ -71,9 +72,11 @@ class EmailOutcome(StrEnum):
     """What became of one send (``deliver_email``)."""
 
     SENT = "sent"
-    # Not sent, and sending again later may work: no connection, a timeout, a 429, a 5xx.
+    # Not sent, and sending again later may work: no connection, a timeout, a 429, a 5xx,
+    # or a refusal of our account or sender (a bad key, an unverified domain), which
+    # every message gets until someone fixes the configuration.
     RETRY = "retry"
-    # The provider refused this message for good (a 4xx other than 429: a bad address).
+    # The provider refused this message for good (a bad recipient address or field).
     REJECTED = "rejected"
     # Not attempted: email is off, no provider, no recipient.
     SKIPPED = "skipped"
@@ -183,11 +186,60 @@ def _result(response: httpx.Response, to_label: str) -> EmailResult:
         logger.warning("Transactional email throttled to=%s", to_label)
         return EmailResult(EmailOutcome.RETRY, retry_after=_retry_after(response))
     if 400 <= status < 500:
+        error_name, message = _error_body(response)
+        if _account_or_sender_error(status, error_name, message):
+            # Every message gets this answer until the key, sender or domain is fixed:
+            # held and tried again, never given up on as if this message were at fault.
+            logger.error(
+                "Transactional email refused for the account or sender, not the message "
+                "(check RESEND_API_KEY and EMAIL_FROM) status=%s name=%s to=%s",
+                status,
+                error_name,
+                to_label,
+            )
+            return EmailResult(EmailOutcome.RETRY)
         # This message's own fault (a bad address): sent again, it gets the same answer.
-        logger.error("Transactional email rejected status=%s to=%s", status, to_label)
+        logger.error(
+            "Transactional email rejected status=%s name=%s to=%s", status, error_name, to_label
+        )
         return EmailResult(EmailOutcome.REJECTED)
     logger.warning("Transactional email provider error status=%s to=%s", status, to_label)
     return EmailResult(EmailOutcome.RETRY)
+
+
+# Resend answers a key, sender or domain problem with these for any message: 401 and 403
+# (missing, invalid or restricted key; a domain not verified), 404 and 405 (a wrong
+# ``resend_api_url``). A 400 or 422 is about the request, and a refused sender says so
+# in its error ``name`` or names the ``from`` field.
+_ACCOUNT_STATUSES = frozenset({401, 403, 404, 405})
+_SENDER_ERROR_NAMES = frozenset(
+    {
+        "invalid_from_address",
+        "invalid_access",
+        "invalid_region",
+        "missing_api_key",
+        "invalid_api_key",
+        "restricted_api_key",
+    }
+)
+_SENDER_FIELD = re.compile(r"`from`|\bfrom\b field|\bsender\b", re.IGNORECASE)
+
+
+def _error_body(response: httpx.Response) -> tuple[str, str]:
+    """Resend's error ``name`` and ``message`` (empty when the body is not its JSON)."""
+    try:
+        body = response.json()
+    except ValueError:
+        return "", ""
+    if not isinstance(body, dict):
+        return "", ""
+    return str(body.get("name") or ""), str(body.get("message") or "")
+
+
+def _account_or_sender_error(status: int, error_name: str, message: str) -> bool:
+    if status in _ACCOUNT_STATUSES or error_name in _SENDER_ERROR_NAMES:
+        return True
+    return status == 422 and bool(_SENDER_FIELD.search(message))
 
 
 def _retry_after(response: httpx.Response) -> float | None:

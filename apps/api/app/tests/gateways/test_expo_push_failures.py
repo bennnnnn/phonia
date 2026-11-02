@@ -99,3 +99,45 @@ async def test_a_refused_request_is_split_until_the_bad_message_is_alone() -> No
     assert [ticket for ticket, _ in result.receipt_tickets] == [
         f"ticket-ExponentPushToken[{i}]" for i in (0, 1, 3, 4)
     ]
+
+
+@pytest.mark.asyncio
+async def test_an_error_before_the_request_went_is_not_held_as_maybe_accepted() -> None:
+    async def post(*_a: Any, **_kw: Any) -> httpx.Response:
+        raise TypeError("Object of type datetime is not JSON serializable")
+
+    result = await _send(post)
+    assert result.delivered == [False] * 3
+    assert result.holds == [None] * 3
+
+
+@pytest.mark.asyncio
+async def test_a_429_sends_no_later_chunk() -> None:
+    """Expo asked us to slow down: the next 100 used to go at once anyway."""
+    sent: list[int] = []
+
+    async def post(*_a: Any, json: list[dict[str, Any]], **_kw: Any) -> httpx.Response:
+        sent.append(len(json))
+        return httpx.Response(429, headers={"Retry-After": "60"}, request=_REQUEST)
+
+    result = await _send(post, count=gateway.MAX_MESSAGES_PER_REQUEST * 2 + 5)
+
+    assert sent == [gateway.MAX_MESSAGES_PER_REQUEST]
+    assert result.throttled
+    held = [h for h in result.holds if h is not None]
+    assert held == [PushHold(HoldReason.THROTTLED, 60.0)] * gateway.MAX_MESSAGES_PER_REQUEST
+
+
+@pytest.mark.asyncio
+async def test_a_429_while_splitting_sends_no_other_half() -> None:
+    calls: list[int] = []
+
+    async def post(*_a: Any, json: list[dict[str, Any]], **_kw: Any) -> httpx.Response:
+        calls.append(len(json))
+        status = 400 if len(calls) == 1 else 429
+        return httpx.Response(status, request=_REQUEST)
+
+    result = await _send(post, count=4)
+
+    assert calls == [4, 2]
+    assert result.throttled

@@ -297,7 +297,6 @@ async def test_gateway_real_path_swallows_errors(monkeypatch):
         (500, {}, email_gateway.EmailOutcome.RETRY, None),
         (503, {}, email_gateway.EmailOutcome.RETRY, None),
         (422, {}, email_gateway.EmailOutcome.REJECTED, None),  # a bad address
-        (403, {}, email_gateway.EmailOutcome.REJECTED, None),
     ],
 )
 async def test_deliver_email_says_what_became_of_the_send(
@@ -734,3 +733,45 @@ async def test_login_dev_skips_enqueue_when_email_disabled():
             AsyncMock(), settings, email="dev@test.local", name="Dev", redis=redis
         )
     enq.assert_not_awaited()
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "status, body, outcome",
+    [
+        # Our account or sender: every message gets this until it is fixed, so it waits.
+        (401, {"name": "missing_api_key", "message": "Missing API key"}, "retry"),
+        (403, {"name": "invalid_api_key", "message": "API key is invalid"}, "retry"),
+        (403, {"name": "validation_error", "message": "The x.com domain is not verified"}, "retry"),
+        (404, {"name": "not_found", "message": "The requested endpoint does not exist"}, "retry"),
+        (422, {"name": "invalid_from_address", "message": "Invalid from"}, "retry"),
+        (422, {"name": "validation_error", "message": "Invalid `from` field."}, "retry"),
+        (403, None, "retry"),
+        # This message: sent again, it gets the same answer.
+        (422, {"name": "validation_error", "message": "Invalid `to` field."}, "rejected"),
+        (400, {"name": "validation_error", "message": "Invalid `to` field."}, "rejected"),
+        (422, None, "rejected"),
+    ],
+)
+async def test_an_account_or_sender_refusal_is_retried_not_given_up(
+    monkeypatch, caplog, status, body, outcome
+):
+    import logging
+
+    import httpx
+
+    class FakeClient:
+        async def post(self, url, json, headers):
+            if body is None:
+                return httpx.Response(status, text="<html>")
+            return httpx.Response(status, json={"statusCode": status, **body})
+
+    monkeypatch.setattr(
+        "app.gateways.email_gateway.get_pooled_client", lambda *_a, **_kw: FakeClient()
+    )
+    with caplog.at_level(logging.ERROR, logger="app.gateways.email_gateway"):
+        result = await email_gateway.deliver_email(
+            Settings(resend_api_key="rk_test"), to="a@b.com", subject="Hi", html="<p/>", text="t"
+        )
+    assert result.outcome == outcome
+    assert any(record.levelno == logging.ERROR for record in caplog.records)

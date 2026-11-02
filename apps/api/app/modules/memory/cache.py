@@ -2,10 +2,15 @@
 
 Every block is tied to the memory generation read before its facts were: the
 query blocks fold it into their key, and the question-free blocks
-(``memblock:{user}``, ``:w``, ``:x``) store it in front of the text. A memory
+(``memblock2:{user}``, ``:w``, ``:x``) store it in front of the text. A memory
 write that commits after a turn read its facts bumps the generation, so the
 block that turn stores afterwards is never served, even though its SET came
 after the write's invalidation.
+
+The tagged blocks have their own key prefix: during a rolling deploy a process of
+the previous release reads ``memblock:{user}`` as plain text, and would have put
+the generation line into the prompt. Each release reads only the entries it wrote;
+invalidation drops both until no deployed release writes the old keys.
 """
 
 import hashlib
@@ -46,7 +51,15 @@ def memory_query_scoped_key(
 
 
 def memory_block_key(user_id: UUID) -> str:
+    return f"memblock2:{user_id}"
+
+
+def _legacy_memory_block_key(user_id: UUID) -> str:
+    """The previous release's untagged blocks; dropped on invalidation while it may run."""
     return f"memblock:{user_id}"
+
+
+_BLOCK_SUFFIXES = ("", ":x", ":w", ":wx")
 
 
 def memory_generation_key(user_id: UUID) -> str:
@@ -103,17 +116,16 @@ async def invalidate_memory_block(user_id: UUID) -> None:
     Tried twice: a failure leaves a "forget X" injectable until the blocks
     expire (``memory_cache_ttl``), so it is logged at warning, not hidden.
     """
-    block_key = memory_block_key(user_id)
+    block_keys = [
+        f"{base}{suffix}"
+        for base in (memory_block_key(user_id), _legacy_memory_block_key(user_id))
+        for suffix in _BLOCK_SUFFIXES
+    ]
     for attempt in range(1, _INVALIDATE_ATTEMPTS + 1):
         try:
             redis = get_redis_client()
             await bump_generation(redis, memory_generation_key(user_id))
-            await redis.delete(
-                block_key,
-                f"{block_key}:x",
-                f"{block_key}:w",
-                f"{block_key}:wx",
-            )
+            await redis.delete(*block_keys)
             return
         except Exception as exc:
             if attempt == _INVALIDATE_ATTEMPTS:

@@ -83,6 +83,9 @@ _open_sockets: dict[UUID, int] = {}
 # its sockets stop counting within the lease, so a crash never leaks a slot.
 SOCKET_LEASE_SECONDS = 90
 SOCKET_RENEW_SECONDS = 30
+# A lease is first added for this long, and gets its full term only once admitted: a
+# refused socket whose take-back fails stops counting within it, not a whole lease.
+SOCKET_CLAIM_SECONDS = 5
 _SOCKETS_KEY_PREFIX = "wssock:"
 
 
@@ -190,18 +193,34 @@ async def user_socket_slot(redis: Redis, user_id: UUID, limit: int) -> AsyncIter
 
 
 async def _claim_socket(redis: Redis, key: str, socket_id: str, limit: int) -> bool:
-    """Drop expired leases, add this one, count: one transaction. Over the cap, take it back."""
+    """Drop expired leases, add this one, count: one transaction. Over the cap, take it back.
+
+    The lease is added for ``SOCKET_CLAIM_SECONDS`` and extended once admitted, so a
+    take-back that fails (Redis gone mid-claim) leaves no refused lease counting against
+    the user for a full term. A failed extension raises: the caller refuses (fail closed).
+    """
     now = time.time()
     async with redis.pipeline(transaction=True) as pipe:
         pipe.zremrangebyscore(key, "-inf", now)
-        pipe.zadd(key, {socket_id: now + SOCKET_LEASE_SECONDS})
+        pipe.zadd(key, {socket_id: now + SOCKET_CLAIM_SECONDS})
         pipe.zcard(key)
         pipe.expire(key, SOCKET_LEASE_SECONDS)
         _dropped, _added, held, _ttl = await pipe.execute()
-    if int(held) <= limit:
-        return True
-    await redis.zrem(key, socket_id)
-    return False
+    if int(held) > limit:
+        with suppress(RedisError, OSError):  # it expires within SOCKET_CLAIM_SECONDS
+            await redis.zrem(key, socket_id)
+        return False
+    await _extend_lease(redis, key, socket_id)
+    return True
+
+
+async def _extend_lease(redis: Redis, key: str, socket_id: str) -> None:
+    """Give this socket's lease a full term. Not ``xx``: a lease that expired while Redis
+    could not be reached is added back, so an open socket counts again."""
+    async with redis.pipeline(transaction=True) as pipe:
+        pipe.zadd(key, {socket_id: time.time() + SOCKET_LEASE_SECONDS})
+        pipe.expire(key, SOCKET_LEASE_SECONDS)
+        await pipe.execute()
 
 
 async def _renew_socket(redis: Redis, key: str, socket_id: str) -> None:
@@ -209,10 +228,7 @@ async def _renew_socket(redis: Redis, key: str, socket_id: str) -> None:
     while True:
         await asyncio.sleep(SOCKET_RENEW_SECONDS)
         try:
-            async with redis.pipeline(transaction=True) as pipe:
-                pipe.zadd(key, {socket_id: time.time() + SOCKET_LEASE_SECONDS}, xx=True)
-                pipe.expire(key, SOCKET_LEASE_SECONDS)
-                await pipe.execute()
+            await _extend_lease(redis, key, socket_id)
         except (RedisError, OSError):
             logger.debug("Chat socket lease renew failed", exc_info=True)
 

@@ -1,5 +1,6 @@
 import { chatsApi } from "@/features/chat/api";
 import { request, requestRevalidated } from "@/lib/api/client";
+import { ApiRequestError } from "@/lib/api/errorBody";
 
 jest.mock("@/lib/api/client", () => ({ request: jest.fn(), requestRevalidated: jest.fn() }));
 let mockZone = "Asia/Kathmandu";
@@ -30,4 +31,42 @@ it("reads a new zone at a new path: a list kept for the old one is never revalid
   await chatsApi.listChats("token");
   const paths = jest.mocked(requestRevalidated).mock.calls.map(([path]) => path);
   expect(paths).toEqual(["/chats?client_timezone=Asia%2FKathmandu", "/chats?client_timezone=Pacific%2FKiritimati"]);
+});
+
+describe("listAllMessages", () => {
+  const msg = (id: string) => ({ id, role: "user", content: id });
+  const staleCursor = () =>
+    new ApiRequestError(422, JSON.stringify({ detail: { code: "invalid_cursor", message: "gone" } }));
+
+  it("starts again from the newest page when a regenerate removed the page's anchor", async () => {
+    jest
+      .mocked(requestRevalidated)
+      .mockResolvedValueOnce({ messages: [msg("c"), msg("d")], has_more: true })
+      .mockResolvedValueOnce({ messages: [msg("c"), msg("e")], has_more: true });
+    jest
+      .mocked(request)
+      .mockRejectedValueOnce(staleCursor())
+      .mockResolvedValueOnce({ messages: [msg("a"), msg("b")], has_more: false });
+
+    const all = await chatsApi.listAllMessages("token", "chat-1");
+
+    expect(all.map((m) => m.id)).toEqual(["a", "b", "c", "e"]);
+  });
+
+  it("stops with the messages it has once regenerates keep moving the anchor", async () => {
+    jest.mocked(requestRevalidated).mockResolvedValue({ messages: [msg("c"), msg("d")], has_more: true });
+    jest.mocked(request).mockRejectedValue(staleCursor());
+
+    const all = await chatsApi.listAllMessages("token", "chat-1");
+
+    expect(all.map((m) => m.id)).toEqual(["c", "d"]);
+    expect(request).toHaveBeenCalledTimes(3);
+  });
+
+  it("still fails on any other error", async () => {
+    jest.mocked(requestRevalidated).mockResolvedValue({ messages: [msg("c")], has_more: true });
+    jest.mocked(request).mockRejectedValue(new Error("offline"));
+
+    await expect(chatsApi.listAllMessages("token", "chat-1")).rejects.toThrow("offline");
+  });
 });

@@ -19,11 +19,13 @@ from __future__ import annotations
 import re
 from collections.abc import Iterable
 
+from fastapi import HTTPException as DetailedHTTPException
 from starlette.exceptions import HTTPException
 from starlette.responses import JSONResponse
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 from app.core.config import get_settings
+from app.exceptions import status_code_name
 
 TOO_LARGE_DETAIL = "Request body too large"
 
@@ -86,7 +88,7 @@ class RequestBodyLimitMiddleware:
                     # FastAPI re-raises HTTPException from body parsing, and a
                     # route's own ``request.body()`` lets it propagate to the
                     # exception middleware, so this becomes a 413 response.
-                    raise HTTPException(status_code=413, detail=TOO_LARGE_DETAIL)
+                    raise DetailedHTTPException(status_code=413, detail=_too_large_detail())
             return message
 
         async def tracking_send(message: Message) -> None:
@@ -103,6 +105,11 @@ class RequestBodyLimitMiddleware:
             await _too_large(scope, receive, send)
 
 
+def _too_large_detail() -> dict[str, str]:
+    """The shared refusal shape, ``{"detail": {"code", "message"}}``, on either path."""
+    return {"code": status_code_name(413), "message": TOO_LARGE_DETAIL}
+
+
 async def _too_large(scope: Scope, receive: Receive, send: Send) -> None:
-    response = JSONResponse({"detail": TOO_LARGE_DETAIL}, status_code=413)
+    response = JSONResponse({"detail": _too_large_detail()}, status_code=413)
     await response(scope, receive, send)

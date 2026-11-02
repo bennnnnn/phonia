@@ -157,14 +157,20 @@ async def get_by_id(
     *,
     for_update: bool = False,
     owner_consented: bool = False,
+    fresh: bool = False,
 ) -> Attachment | None:
+    """``fresh`` overwrites a row this session already holds with the database's: the
+    session keeps loaded rows (``expire_on_commit=False``), so a plain re-read returns
+    the copy it loaded before another request changed it."""
     statement = select(Attachment).where(
         Attachment.id == attachment_id, Attachment.user_id == user_id
     )
     if owner_consented:  # only while the owner has AI data consent (indexing OCRs and embeds)
         statement = statement.join(User).where(User.ai_data_consent_at.is_not(None))
     if for_update:
-        statement = statement.with_for_update().execution_options(populate_existing=True)
+        statement = statement.with_for_update()
+    if for_update or fresh:
+        statement = statement.execution_options(populate_existing=True)
     result = await session.execute(statement)
     return result.scalar_one_or_none()
 

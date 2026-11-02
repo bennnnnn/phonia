@@ -464,13 +464,14 @@ async def warm_sympy_pool(warmup: Callable[[], None]) -> None:
     rotates it to the back of the free-slot queue, which made the first real
     solve select an untouched slot and pay the full spawn/import cost. Submit one
     warmup per slot concurrently so each process is ready before the API reports
-    startup complete.
+    startup complete. They go on the reading lane, which may take every slot (the solve
+    lane cannot reach ``sympy_reading_reserved_slots``, so that worker stayed cold).
     """
     executor = get_sympy_executor()
     executor.set_warmup(warmup)
     # Every slot warms whatever happens to the others; a cold one warms before its first job.
     results = await asyncio.gather(
-        *(executor.run(warmup, timeout=20.0) for _ in range(executor.max_workers)),
+        *(executor.run_reading(warmup, timeout=20.0) for _ in range(executor.max_workers)),
         return_exceptions=True,
     )
     for result in results:

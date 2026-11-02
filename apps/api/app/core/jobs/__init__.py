@@ -30,6 +30,7 @@ from app.core.jobs.delayed import (
     LOCK_RETRY_BACKOFF_S,
     enqueue_later,
     retry_delay_s,
+    retry_span_s,
     schedule_job,
 )
 from app.core.jobs.pending import MAX_JOB_DELIVERIES
@@ -67,6 +68,7 @@ __all__ = [
     "replay_dlq",
     "report_queue_metrics",
     "retry_delay_s",
+    "retry_span_s",
     "schedule_job",
     "start_worker",
     "stop_worker",

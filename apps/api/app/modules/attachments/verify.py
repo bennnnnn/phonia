@@ -85,8 +85,9 @@ async def verify_upload_once(
     if token is None:
         return VerifyResult(busy=True)
     try:
-        # A peer that held the lock may have verified or purged the row meanwhile.
-        fresh = await attachments_repo.get_by_id(session, row.id, user_id)
+        # A peer that held the lock may have verified or purged the row meanwhile: read
+        # the database, not the copy this session loaded before the wait.
+        fresh = await attachments_repo.get_by_id(session, row.id, user_id, fresh=True)
         await session.commit()  # no transaction open across the download
         if fresh is None:
             return VerifyResult(error="Upload not found")

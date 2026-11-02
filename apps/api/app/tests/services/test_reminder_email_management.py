@@ -289,6 +289,35 @@ async def test_a_refused_email_is_stamped_and_never_retried(email_sql):
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize("status", [401, 403, 404])
+async def test_an_account_refusal_holds_the_reminder_instead_of_losing_it(
+    email_sql, fake_redis, status
+):
+    """A bad key or sender used to read as this message's fault: every reminder was
+    stamped as emailed and never sent."""
+    import httpx
+
+    sync_session, session = email_sql
+    _, rows = _rows(sync_session)
+    settings = Settings(email_enabled=True, resend_api_key="rk_test")
+    backoff = SendBackoff.for_channel(fake_redis, settings, "email")
+
+    class FakeClient:
+        async def post(self, url, json, headers):
+            return httpx.Response(status, json={"name": "invalid_api_key", "message": "bad"})
+
+    with patch("app.gateways.email_gateway.get_pooled_client", lambda *_a, **_kw: FakeClient()):
+        sent = await reminder_email.process_todo_reminder_emails(
+            session, settings, now=NOW, backoff=backoff
+        )
+    assert sent == 0
+    sync_session.refresh(rows[0])
+    assert rows[0].email_sent_at is None
+    key = f"recall:email:hold:{rows[0].id}:{_due(rows[0])}"
+    assert 0 < await fake_redis.ttl(key) <= settings.reminder_retry_max_seconds
+
+
+@pytest.mark.asyncio
 @pytest.mark.parametrize(("budget", "sent"), [(60, 12), (0, 1)])
 async def test_the_cycle_reads_pages_while_its_budget_lasts(email_sql, budget, sent):
     """It used to stop at 10 pages, whatever the backlog; now at its time budget."""

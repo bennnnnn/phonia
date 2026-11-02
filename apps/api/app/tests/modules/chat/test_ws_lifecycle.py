@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import time
 from contextlib import ExitStack
 from typing import Any
 from unittest.mock import AsyncMock, MagicMock, patch
@@ -204,6 +205,35 @@ async def test_an_open_socket_renews_its_lease(fake_redis, monkeypatch) -> None:
         await asyncio.sleep(0.05)
         [(_member, renewed)] = await fake_redis.zrange(key, 0, -1, withscores=True)
     assert renewed > first
+
+
+async def test_a_refused_lease_that_cannot_be_taken_back_stops_counting_soon(
+    fake_redis, monkeypatch
+) -> None:
+    """The take-back raised and the refused lease counted for a whole term (90 s)."""
+    user_id = uuid4()
+    key = ws_limits.sockets_key(user_id)
+    async with ws_limits.user_socket_slot(fake_redis, user_id, 1) as first:
+        monkeypatch.setattr(fake_redis, "zrem", AsyncMock(side_effect=ConnectionError("blip")))
+        async with ws_limits.user_socket_slot(fake_redis, user_id, 1) as second:
+            assert (first, second) == (True, False)
+        monkeypatch.undo()
+        scores = sorted(score for _m, score in await fake_redis.zrange(key, 0, -1, withscores=True))
+    # The admitted lease has its full term; the refused one ends within the claim window.
+    assert scores[0] <= time.time() + ws_limits.SOCKET_CLAIM_SECONDS
+    assert scores[1] > time.time() + ws_limits.SOCKET_CLAIM_SECONDS
+
+
+async def test_a_lease_that_expired_during_a_redis_blip_is_added_back(
+    fake_redis, monkeypatch
+) -> None:
+    monkeypatch.setattr(ws_limits, "SOCKET_RENEW_SECONDS", 0.01)
+    user_id = uuid4()
+    key = ws_limits.sockets_key(user_id)
+    async with ws_limits.user_socket_slot(fake_redis, user_id, 5):
+        await fake_redis.delete(key)  # another machine's claim dropped it as expired
+        await asyncio.sleep(0.05)
+        assert await fake_redis.zcard(key) == 1
 
 
 def test_ws_refuses_a_new_turn_once_the_server_is_stopping(monkeypatch) -> None:

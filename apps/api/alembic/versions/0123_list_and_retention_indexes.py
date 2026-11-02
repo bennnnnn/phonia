@@ -15,11 +15,17 @@ Revises: 0122_todo_due_set_at
 
 Indexes only: an expand, and dropping a prefix index breaks no query of the previous
 release. Built and dropped CONCURRENTLY so writes keep flowing.
+
+A CONCURRENTLY build that fails (a timeout, a deadlock, a deploy stopped midway) leaves
+an INVALID index of that name, which ``IF NOT EXISTS`` would skip on the next run while
+the planner never uses it. Each build first drops an invalid index of its name, and the
+old attachments index goes only once its replacement is valid.
 """
 
 from collections.abc import Sequence
 from typing import Union
 
+import sqlalchemy as sa
 from alembic import op
 
 revision: str = "0123_list_and_retention_indexes"
@@ -28,35 +34,52 @@ branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
 _CREATE = (
-    "CREATE INDEX CONCURRENTLY IF NOT EXISTS ix_chats_user_recent "
-    "ON chats (user_id, updated_at, id) WHERE pinned IS false AND archived IS false",
-    "CREATE INDEX CONCURRENTLY IF NOT EXISTS ix_chats_user_archived_recent "
-    "ON chats (user_id, updated_at, id) WHERE archived IS true",
-    "CREATE INDEX CONCURRENTLY IF NOT EXISTS ix_chats_created ON chats (created_at)",
-    "CREATE INDEX CONCURRENTLY IF NOT EXISTS ix_usage_daily_date ON usage_daily (date)",
-    "CREATE INDEX CONCURRENTLY IF NOT EXISTS ix_attachments_user_created "
-    "ON attachments (user_id, created_at, id)",
+    (
+        "ix_chats_user_recent",
+        "ON chats (user_id, updated_at, id) WHERE pinned IS false AND archived IS false",
+    ),
+    (
+        "ix_chats_user_archived_recent",
+        "ON chats (user_id, updated_at, id) WHERE archived IS true",
+    ),
+    ("ix_chats_created", "ON chats (created_at)"),
+    ("ix_usage_daily_date", "ON usage_daily (date)"),
+    ("ix_attachments_user_created", "ON attachments (user_id, created_at, id)"),
 )
-_NEW_INDEXES = (
-    "ix_attachments_user_created",
-    "ix_usage_daily_date",
-    "ix_chats_created",
-    "ix_chats_user_archived_recent",
-    "ix_chats_user_recent",
-)
+_OLD_ATTACHMENTS_INDEX = ("ix_attachments_user", "ON attachments (user_id)")
+_REPLACES_OLD = "ix_attachments_user_created"
+
+
+def _index_valid(name: str) -> bool | None:
+    """None when there is no such index; else whether Postgres may use it."""
+    return (
+        op.get_bind()
+        .execute(
+            sa.text("SELECT indisvalid FROM pg_index WHERE indexrelid = to_regclass(:name)"),
+            {"name": name},
+        )
+        .scalar()
+    )
+
+
+def _build(name: str, definition: str) -> None:
+    """Build an index, replacing an invalid one a failed earlier build left."""
+    if _index_valid(name) is False:
+        op.execute(f"DROP INDEX CONCURRENTLY IF EXISTS {name}")
+    op.execute(f"CREATE INDEX CONCURRENTLY IF NOT EXISTS {name} {definition}")
 
 
 def upgrade() -> None:
     with op.get_context().autocommit_block():
-        for statement in _CREATE:
-            op.execute(statement)
-        op.execute("DROP INDEX CONCURRENTLY IF EXISTS ix_attachments_user")
+        for name, definition in _CREATE:
+            _build(name, definition)
+        # The FK cascade keeps an index to use: the old one stays until the new is valid.
+        if _index_valid(_REPLACES_OLD):
+            op.execute(f"DROP INDEX CONCURRENTLY IF EXISTS {_OLD_ATTACHMENTS_INDEX[0]}")
 
 
 def downgrade() -> None:
     with op.get_context().autocommit_block():
-        op.execute(
-            "CREATE INDEX CONCURRENTLY IF NOT EXISTS ix_attachments_user ON attachments (user_id)"
-        )
-        for name in _NEW_INDEXES:
+        _build(*_OLD_ATTACHMENTS_INDEX)
+        for name, _definition in reversed(_CREATE):
             op.execute(f"DROP INDEX CONCURRENTLY IF EXISTS {name}")

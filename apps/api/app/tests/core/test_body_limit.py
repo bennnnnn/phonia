@@ -118,7 +118,9 @@ async def test_body_limit_rejects_oversized_bodies(
         limit = _PATH_LIMITS.get(path, _LIMIT)
         # Never buffers more than one chunk past the cap.
         assert sum(read_log) <= limit + 256
-        assert response.json() == {"detail": "Request body too large"}
+        assert response.json() == {
+            "detail": {"code": "too_large", "message": "Request body too large"}
+        }
 
 
 async def test_body_limit_declared_length_rejected_without_reading() -> None:
@@ -129,6 +131,8 @@ async def test_body_limit_declared_length_rejected_without_reading() -> None:
             response = await client.post("/raw", content=b"a" * (_LIMIT * 4))
     assert response.status_code == 413
     assert read_log == []
+    # The shared refusal shape, as the streamed path answers.
+    assert response.json()["detail"]["code"] == "too_large"
 
 
 async def test_body_limit_zero_disables_cap() -> None:
@@ -154,7 +158,11 @@ async def test_body_limit_is_mounted_on_the_api() -> None:
                 content=_chunks(_LIMIT * 20),
                 headers={"content-type": "application/json"},
             )
+            declared = await client.post("/auth/google", content=b"a" * (_LIMIT * 4))
     assert response.status_code == 413
+    assert response.json()["detail"]["code"] == "too_large"
+    assert declared.status_code == 413
+    assert declared.json() == response.json()
 
 
 def test_the_scan_cap_fits_the_largest_scan_and_stays_below_the_upload_cap() -> None:

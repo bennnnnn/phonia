@@ -48,12 +48,14 @@ class RealtimeCallResult:
     call_id: str
 
 
-# ``ended``: OpenAI confirmed the hang-up. ``gone``: it refused it for the call itself,
-# which it opened for us, so the call is no longer live (the phone's own hang-up got
-# there first). ``failed``: no answer, our key or rate refused, or OpenAI's own error:
-# the call may still be running, so the caller tries again.
+# ``ended``: OpenAI confirmed the hang-up. ``gone``: it no longer knows the call (404,
+# 410), which it opened for us, so the call is not live (the phone's own hang-up got
+# there first). ``failed``: anything else, a 400 or 409 included, since neither says the
+# call is over: no answer, our key or rate refused, a request it would not take, or its
+# own error. The call may still be running, so nothing is refunded and the caller tries
+# again.
 HangupOutcome = Literal["ended", "gone", "failed"]
-_NO_LIVE_CALL = frozenset({400, 404, 409, 410})
+_NO_LIVE_CALL = frozenset({404, 410})
 
 
 def realtime_model(settings: Settings) -> str:

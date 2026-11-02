@@ -41,8 +41,15 @@ _HANGUP_GRACE_SECONDS = 5
 # The phone connects right after the mint (it gathers ICE meanwhile): an unused secret
 # is dropped after this, or with the session if that is shorter.
 _SECRET_TTL_SECONDS = 120
-# A held call id outlives the session's reservation by the grace /live/end has to settle.
+# A held call id outlives the session's reservation by every retry its hang-up job can
+# make (``end_call`` reads a missing id as "no call", so the job would stop early), plus
+# this for the attempts' own run time and the worker's lag moving due jobs.
 _CALL_ID_TAIL_SECONDS = 15 * 60
+
+
+def _call_id_ttl(left: int) -> int:
+    span = left + _HANGUP_GRACE_SECONDS + jobs.retry_span_s() + _CALL_ID_TAIL_SECONDS
+    return int(span) + 1
 
 
 class LiveCallUnconfirmedError(Exception):
@@ -101,8 +108,21 @@ async def connect(
             "Could not start realtime voice", status_code=status.HTTP_502_BAD_GATEWAY
         )
     # Kept before the checks below, so an end that runs from here on finds the call.
-    await redis.set(_call_key(user_id, session_id), call.call_id, ex=left + _CALL_ID_TAIL_SECONDS)
-    await schedule_hangup(redis, user_id, session_id, delay_s=left + _HANGUP_GRACE_SECONDS)
+    await redis.set(_call_key(user_id, session_id), call.call_id, ex=_call_id_ttl(left))
+    try:
+        # Raises, unlike ``enqueue_later``: without this job nothing ends an unreported call.
+        await jobs.schedule_job(
+            redis,
+            HANGUP_JOB,
+            _hangup_payload(user_id, session_id),
+            delay_s=left + _HANGUP_GRACE_SECONDS,
+        )
+    except Exception:
+        logger.exception("live_talk_hangup could not be scheduled; ending the call")
+        await _hang_up_now(settings, call.call_id)
+        raise SpeechRefusedError(
+            "Could not start realtime voice", status_code=status.HTTP_503_SERVICE_UNAVAILABLE
+        ) from None
     left = await quota_service.live_talk_seconds_left(redis, user_id, session_id)
     if not left or "v=0" not in call.answer_sdp:
         if not await end_call(redis, settings, user_id, session_id):
@@ -131,13 +151,24 @@ async def end_call(redis: Redis, settings: Settings, user_id: UUID, session_id: 
     return True
 
 
+async def _hang_up_now(settings: Settings, call_id: str) -> None:
+    """Hang a call up without Redis, which may be what just failed. The session keeps its
+    reservation: a refund waits for an end that can settle it."""
+    if await openai_speech_gateway.hangup_realtime_call(settings, call_id) == "failed":
+        logger.error("live talk call=%s could not be hung up after a scheduling failure", call_id)
+
+
+def _hangup_payload(user_id: UUID, session_id: str) -> dict[str, object]:
+    return {"user_id": str(user_id), "session_id": session_id}
+
+
 async def schedule_hangup(redis: Redis, user_id: UUID, session_id: str, *, delay_s: float) -> None:
-    """Have the worker hang the session's call up (and settle it) after ``delay_s``."""
+    """Have the worker hang the session's call up (and settle it) after ``delay_s``.
+
+    Best-effort: the job ``connect`` scheduled for the reservation's end is still there.
+    """
     await jobs.enqueue_later(
-        redis,
-        HANGUP_JOB,
-        {"user_id": str(user_id), "session_id": session_id},
-        delay_s=max(0.0, delay_s),
+        redis, HANGUP_JOB, _hangup_payload(user_id, session_id), delay_s=max(0.0, delay_s)
     )
 
 

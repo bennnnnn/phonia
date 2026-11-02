@@ -55,6 +55,8 @@ class PushSendResult:
     # Per message: why it waits before its next try; None for the ordinary next cycle (a
     # request that never reached Expo goes again then, as does an undelivered ticket).
     holds: list[PushHold | None] = field(default_factory=list)
+    # Expo answered 429: no later request went, and the cycle stops for this channel.
+    throttled: bool = False
 
 
 def _invalid_token_from_error(details: object) -> str | None:
@@ -139,9 +141,15 @@ async def _send_range(
     except _UNSENT_ERRORS:
         logger.warning("Expo push not sent offset=%s count=%s", start, len(chunk), exc_info=True)
         return
-    except Exception:
+    except httpx.TransportError:
+        # The request may have gone out (a read timeout, a dropped connection).
         logger.exception("Expo push send failed offset=%s count=%s", start, len(chunk))
         _hold(out, start, end, PushHold(HoldReason.AMBIGUOUS))
+        return
+    except Exception:
+        # Failed before any byte went (building the request): nothing can have been
+        # delivered, so it is not held as maybe accepted.
+        logger.exception("Expo push not sent offset=%s count=%s", start, len(chunk))
         return
     try:
         response.raise_for_status()
@@ -171,15 +179,17 @@ async def _refused(
         )
         middle = (start + end) // 2
         await _send_range(client, messages, start, middle, out)
-        await _send_range(client, messages, middle, end, out)
+        if not out.throttled:
+            await _send_range(client, messages, middle, end, out)
         return
     if status in _SPLIT_STATUSES:
         logger.error("Expo refused a push message status=%s offset=%s", status, start)
         _hold(out, start, end, PushHold(HoldReason.REJECTED))
         return
     if status == 429:
-        logger.warning("Expo push throttled count=%s", end - start)
+        logger.warning("Expo push throttled count=%s; sending no more this cycle", end - start)
         _hold(out, start, end, PushHold(HoldReason.THROTTLED, _retry_after(response)))
+        out.throttled = True
         return
     logger.error("Expo push request failed status=%s count=%s", status, end - start)
     _hold(out, start, end, PushHold(HoldReason.SERVER, _retry_after(response)))
@@ -239,6 +249,7 @@ async def send_push_messages(messages: list[dict[str, Any]]) -> PushSendResult:
     caps each request at ``MAX_MESSAGES_PER_REQUEST`` messages, so larger batches are
     split into sequential chunks — a failure in one chunk doesn't affect the others — and
     a chunk Expo refuses as a whole (a 400) is split in halves until the bad one is alone.
+    A 429 ends the sending: later chunks are left for a later cycle (``throttled``).
     """
     out = PushSendResult(
         invalid_tokens=[],
@@ -247,6 +258,8 @@ async def send_push_messages(messages: list[dict[str, Any]]) -> PushSendResult:
     )
     client = get_pooled_client(EXPO_TIMEOUT_SECONDS)
     for offset in range(0, len(messages), MAX_MESSAGES_PER_REQUEST):
+        if out.throttled:
+            break
         end = min(offset + MAX_MESSAGES_PER_REQUEST, len(messages))
         await _send_range(client, messages, offset, end, out)
     return out

@@ -37,6 +37,7 @@ async def _cycle(
     settings: Settings | None = None,
     redis: object | None = None,
     holds: list[PushHold | None] | None = None,
+    throttled: bool = False,
 ) -> list[str]:
     order: list[str] = []
     page_iter = iter(pages)
@@ -49,6 +50,9 @@ async def _cycle(
 
     async def dispatch(items: list[OutboundPush], settings: Settings) -> PushSendResult:
         order.append(f"dispatch {len(items)}")
+        if throttled:
+            hold = PushHold(HoldReason.THROTTLED, 60.0)
+            return PushSendResult([], [False] * len(items), [], [hold] * len(items), True)
         if holds is not None:
             return PushSendResult([], [False] * len(items), holds=holds[: len(items)])
         return PushSendResult([], [True] * len(items))
@@ -94,6 +98,18 @@ async def test_each_expo_request_is_marked_before_the_next_one_goes():
 async def test_a_cycle_that_lost_its_lock_stops_sending():
     """A peer that took the lock would send the same to-dos again."""
     order = await _cycle([PushPage(messages=_messages(250), next_after=None)], _lock(True, False))
+    assert order == ["collect after=None", "dispatch 100", "mark 100"]
+
+
+@pytest.mark.asyncio
+async def test_a_throttled_request_stops_the_cycle():
+    """After a 429 the cycle sent the next chunks and pages anyway."""
+    key = (datetime(2026, 10, 20, 9, 0, tzinfo=UTC), uuid4())
+    pages = [
+        PushPage(messages=_messages(250), next_after=key),
+        PushPage(messages=_messages(1), next_after=None),
+    ]
+    order = await _cycle(pages, _lock(True, True, True, True), throttled=True)
     assert order == ["collect after=None", "dispatch 100", "mark 100"]
 
 

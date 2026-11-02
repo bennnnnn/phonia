@@ -65,7 +65,12 @@ async def _push_cycle(settings: Settings, lock: CycleLock) -> None:
                 logger.warning("Push cycle lost its lock; stopping before the next send")
                 return
             chunk = messages[start : start + MAX_MESSAGES_PER_REQUEST]
-            sent += await _send_and_mark(settings, redis, chunk)
+            delivered, throttled = await _send_and_mark(settings, redis, chunk)
+            sent += delivered
+            if throttled:
+                # Expo asked us to slow down: the rest wait for a later cycle.
+                logger.warning("Push cycle throttled by Expo; stopping (sent=%s)", sent)
+                return
         if page.next_after is None:
             break
         if time.monotonic() >= stop_at:
@@ -78,8 +83,9 @@ async def _push_cycle(settings: Settings, lock: CycleLock) -> None:
 
 async def _send_and_mark(
     settings: Settings, redis: Redis, chunk: list[push_notifications.OutboundPush]
-) -> int:
-    """Send one Expo request and mark its to-dos at once, before the next request.
+) -> tuple[int, bool]:
+    """Send one Expo request and mark its to-dos at once, before the next request; how
+    many were delivered, and whether Expo throttled it.
 
     Marking only after the whole batch let a stopped worker (every deploy) or a lost
     lock leave accepted reminders unmarked, to go out again next cycle. A push that may
@@ -98,7 +104,7 @@ async def _send_and_mark(
         await push_notifications.finalize_push_deliveries(session, chunk, result.delivered)
     backoff = push_notifications.push_backoff(redis, settings)
     await push_notifications.hold_failed(backoff, chunk, result, settings)
-    return sum(1 for ok in result.delivered if ok)
+    return sum(1 for ok in result.delivered if ok), result.throttled
 
 
 async def run_push_cycle(settings: Settings) -> None:

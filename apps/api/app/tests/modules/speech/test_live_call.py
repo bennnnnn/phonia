@@ -153,6 +153,35 @@ def test_connect_opens_the_call_with_the_kept_secret_and_schedules_its_end(live)
     assert len(live.calls) == 1
 
 
+def test_a_connect_whose_hang_up_cannot_be_scheduled_ends_the_call_and_is_503(live):
+    """``enqueue_later`` swallowed the error: no job would ever have ended the call."""
+    session = live.mint()
+
+    with patch(
+        "app.modules.speech.live_call.jobs.schedule_job",
+        AsyncMock(side_effect=ConnectionError("redis down")),
+    ):
+        r = live.connect(session)
+
+    assert r.status_code == 503
+    assert live.hangups == ["rtc_abc123"]
+    assert live.scheduled() == []
+
+
+def test_the_call_id_outlives_every_retry_of_its_hang_up_job(live):
+    """A key that expired mid-retry read as "no call", so the job stopped while the
+    call could still run."""
+    from app.core.jobs.delayed import MAX_ATTEMPTS, retry_delay_s
+
+    session = live.mint()
+    live.connect(session)
+
+    ttl = live.run(live.redis.ttl(f"livetalk_call:{live.user.id}:{session}"))
+    [(_payload, hangup_in)] = live.scheduled()
+    slowest = sum(retry_delay_s(a, rand=lambda: 1.0) for a in range(2, MAX_ATTEMPTS + 1))
+    assert ttl > hangup_in + slowest
+
+
 @pytest.mark.parametrize("session", ["not-a-session", "someone-elses-session"])
 def test_connect_refuses_a_session_this_user_was_not_minted(live, session):
     live.mint()
@@ -374,7 +403,10 @@ async def test_create_realtime_call_is_none_when_openai_opens_nothing(response):
     [
         (_response(200), "ended"),
         (_response(404, "no such call"), "gone"),
-        (_response(400, "call not active"), "gone"),
+        (_response(410, "call ended"), "gone"),
+        # Neither says the call is over: no refund until a hang-up is confirmed.
+        (_response(400, "bad request"), "failed"),
+        (_response(409, "conflict"), "failed"),
         (_response(401, "bad key"), "failed"),
         (_response(429, "slow down"), "failed"),
         (_response(500, "oops"), "failed"),
