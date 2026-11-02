@@ -12,6 +12,7 @@ from app.modules.chat.prompt_constants.lesson_flow import lesson_continue_hint
 from app.modules.chat.prompt_format import _style_format_hints
 from app.modules.chat.turn_prep.context import StreamContext
 from app.modules.turn_reading.lesson_flow import lesson_after_gap, lesson_titles, teach_subject
+from app.tests.job_fakes import patch_job_enqueue
 
 NOW = datetime(2026, 10, 18, 12, tzinfo=UTC)
 
@@ -141,7 +142,7 @@ def _ctx(*, memory_enabled=True, skip=False):
 
 async def _job_types(ctx, reply):
     with (
-        patch("app.core.jobs.enqueue", AsyncMock()) as enqueue,
+        patch_job_enqueue() as enqueue,
         patch(
             "app.modules.chat.post_turn.quota_service.global_spend_exceeded",
             AsyncMock(return_value=False),

@@ -38,8 +38,10 @@ from app.core.jobs.queue import (
     JOBS_GROUP,
     JOBS_STREAM,
     JobDiscardError,
+    JobRequest,
     JobSkipped,
     enqueue,
+    enqueue_many,
     register,
 )
 from app.core.jobs.worker import is_worker_alive, start_worker, stop_worker
@@ -52,8 +54,10 @@ __all__ = [
     "LOCK_RETRY_BACKOFF_S",
     "MAX_JOB_DELIVERIES",
     "JobDiscardError",
+    "JobRequest",
     "JobSkipped",
     "enqueue",
+    "enqueue_many",
     "enqueue_later",
     "is_worker_alive",
     "job_done_key",

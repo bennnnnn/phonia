@@ -2,7 +2,8 @@
 
 import json
 import logging
-from collections.abc import Awaitable, Callable
+from collections.abc import Awaitable, Callable, Sequence
+from dataclasses import dataclass
 from typing import Any, cast
 
 from redis.asyncio import Redis
@@ -108,6 +109,49 @@ async def enqueue(
         logger.exception("Failed to enqueue job type=%s", job_type)
         # Never raises: a silent job loss is still visible in Sentry.
         sentry.report_exception(f"enqueue_failed:{job_type}")
+
+
+@dataclass(frozen=True, slots=True)
+class JobRequest:
+    """One job for ``enqueue_many``: what ``enqueue`` takes."""
+
+    job_type: str
+    payload: dict[str, Any]
+    dedupe_key: str | None = None
+
+
+async def enqueue_many(redis: Redis, requests: Sequence[JobRequest]) -> list[bool]:
+    """Persist several jobs in one round trip (a pipeline, no transaction); never raises.
+
+    A turn queued up to five jobs as five XADDs. Each entry carries its own
+    ``dedupe_key`` as ``enqueue`` writes it, so the worker's dedupe is unchanged.
+    One rejected XADD loses only its job; a lost connection loses all of them, as it
+    would have the separate commands. Returns, per request, whether it was queued.
+    """
+    if not requests:
+        return []
+    hard_cap = hard_maxlen()
+    try:
+        async with redis.pipeline(transaction=False) as pipe:
+            for request in requests:
+                fields = job_fields(request.job_type, request.payload, dedupe_key=request.dedupe_key)
+                if hard_cap is None:
+                    pipe.xadd(JOBS_STREAM, cast(Any, fields))
+                else:
+                    pipe.xadd(JOBS_STREAM, cast(Any, fields), maxlen=hard_cap, approximate=True)
+            results: list[Any] = await pipe.execute(raise_on_error=False)
+    except Exception as exc:
+        results = [exc] * len(requests)
+    queued: list[bool] = []
+    for request, result in zip(requests, results, strict=True):
+        failed = isinstance(result, BaseException)
+        if failed:
+            logger.error(
+                "Failed to enqueue job type=%s", request.job_type, exc_info=cast(Exception, result)
+            )
+            sentry.report_exception(f"enqueue_failed:{request.job_type}")
+        queued.append(not failed)
+    return queued
 
 
 def job_fields(

@@ -10,6 +10,7 @@ from app.core.config import Settings
 from app.gateways.stream_signals import StreamAttempt
 from app.modules.chat.turn_outcome import TurnOutcome
 from app.modules.conversation import chats_repository, messages_repository
+from app.tests.job_fakes import patch_job_enqueue
 from app.tests.modules.chat.chat_test_support import (
     FakeSessionCM as _FakeSessionCM,
 )
@@ -64,7 +65,7 @@ async def test_stream_does_not_duplicate_user_message(fake_redis, stream_offline
         patch("app.services.quota.adjust_usage", AsyncMock()),
         patch("app.repositories.usage.add_tokens", AsyncMock()),
         patch.object(chats_repository, "touch_by_id", AsyncMock()),
-        patch("app.core.jobs.enqueue", AsyncMock()),
+        patch_job_enqueue(),
     ):
         collected = []
         async for tok in chat_module.stream_chat_response(
@@ -110,7 +111,7 @@ async def test_memory_extraction_runs_on_later_turn(fake_redis, stream_offline_i
         patch("app.services.quota.adjust_usage", AsyncMock()),
         patch("app.repositories.usage.add_tokens", AsyncMock()),
         patch.object(chats_repository, "touch_by_id", AsyncMock()),
-        patch("app.core.jobs.enqueue", AsyncMock()) as enqueue_job,
+        patch_job_enqueue() as enqueue_job,
     ):
         outcome = TurnOutcome()
         async for _ in chat_module.stream_chat_response(
@@ -172,7 +173,7 @@ async def test_memory_extraction_skipped_when_memory_disabled(fake_redis, stream
         patch("app.services.quota.adjust_usage", AsyncMock()),
         patch("app.repositories.usage.add_tokens", AsyncMock()),
         patch.object(chats_repository, "touch_by_id", AsyncMock()),
-        patch("app.core.jobs.enqueue", AsyncMock()) as enqueue_job,
+        patch_job_enqueue() as enqueue_job,
     ):
         outcome = TurnOutcome()
         async for _ in chat_module.stream_chat_response(
@@ -223,7 +224,7 @@ async def test_memory_extraction_throttled_when_every_n_gt_1(fake_redis, stream_
         patch("app.services.quota.adjust_usage", AsyncMock()),
         patch("app.repositories.usage.add_tokens", AsyncMock()),
         patch.object(chats_repository, "touch_by_id", AsyncMock()),
-        patch("app.core.jobs.enqueue", AsyncMock()) as enqueue_job,
+        patch_job_enqueue() as enqueue_job,
     ):
         outcome = TurnOutcome()
         async for _ in chat_module.stream_chat_response(
@@ -277,7 +278,7 @@ async def test_a_reminder_reply_enqueues_no_background_write(fake_redis, stream_
         patch("app.services.quota.adjust_usage", AsyncMock()),
         patch("app.repositories.usage.add_tokens", AsyncMock()),
         patch.object(chats_repository, "touch_by_id", AsyncMock()),
-        patch("app.core.jobs.enqueue", AsyncMock()) as enqueue_job,
+        patch_job_enqueue() as enqueue_job,
     ):
         outcome = TurnOutcome()
         async for _ in chat_module.stream_chat_response(
@@ -337,7 +338,7 @@ async def test_stream_sets_final_content_on_cancel(fake_redis, stream_offline_io
         patch("app.services.quota.adjust_usage", AsyncMock()),
         patch("app.repositories.usage.add_tokens", AsyncMock()),
         patch.object(chats_repository, "touch_by_id", AsyncMock()),
-        patch("app.core.jobs.enqueue", AsyncMock()),
+        patch_job_enqueue(),
     ):
         outcome = TurnOutcome()
         yielded: list[str] = []
@@ -1683,7 +1684,7 @@ async def test_stream_closes_llm_stream_on_cancel(fake_redis, stream_offline_io)
         patch("app.services.quota.adjust_usage", AsyncMock()),
         patch("app.repositories.usage.add_tokens", AsyncMock()),
         patch.object(chats_repository, "touch_by_id", AsyncMock()),
-        patch("app.core.jobs.enqueue", AsyncMock()),
+        patch_job_enqueue(),
     ):
         async for _ in chat_module.stream_chat_response(
             offline_deps(),
@@ -1731,7 +1732,7 @@ async def test_stream_places_query_without_location_prompts_to_enable(
         patch("app.services.quota.adjust_usage", AsyncMock()),
         patch("app.repositories.usage.add_tokens", AsyncMock()),
         patch.object(chats_repository, "touch_by_id", AsyncMock()),
-        patch("app.core.jobs.enqueue", AsyncMock()),
+        patch_job_enqueue(),
     ):
         yielded: list[str] = []
         async for tok in chat_module.stream_chat_response(
@@ -1784,7 +1785,7 @@ async def test_stream_places_query_with_client_location_skips_the_settings_promp
         patch("app.services.quota.adjust_usage", AsyncMock()),
         patch("app.repositories.usage.add_tokens", AsyncMock()),
         patch.object(chats_repository, "touch_by_id", AsyncMock()),
-        patch("app.core.jobs.enqueue", AsyncMock()),
+        patch_job_enqueue(),
     ):
         yielded: list[str] = []
         async for tok in chat_module.stream_chat_response(
@@ -1844,7 +1845,7 @@ async def test_stream_persists_raw_text_when_enrichment_fails(fake_redis, stream
         stack.enter_context(patch("app.services.quota.adjust_usage", AsyncMock()))
         stack.enter_context(patch("app.repositories.usage.add_tokens", AsyncMock()))
         stack.enter_context(patch.object(chats_repository, "touch_by_id", AsyncMock()))
-        stack.enter_context(patch("app.core.jobs.enqueue", AsyncMock()))
+        stack.enter_context(patch_job_enqueue())
         stack.enter_context(
             patch("app.modules.chat.stream_pipeline.finalize_stream_turn_db", finalize)
         )
@@ -1907,7 +1908,7 @@ async def test_stream_no_final_content_on_normal_completion(fake_redis, stream_o
         patch("app.services.quota.adjust_usage", AsyncMock()),
         patch("app.repositories.usage.add_tokens", AsyncMock()),
         patch.object(chats_repository, "touch_by_id", AsyncMock()),
-        patch("app.core.jobs.enqueue", AsyncMock()),
+        patch_job_enqueue(),
     ):
         outcome = TurnOutcome()
         async for _ in chat_module.stream_chat_response(

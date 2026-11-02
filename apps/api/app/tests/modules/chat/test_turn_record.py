@@ -26,6 +26,7 @@ from app.modules.speech.live_talk import persist_live_talk_turn
 from app.repositories import users as users_repo
 from app.services import quota as quota_service
 from app.tests.fakes import fake_session, make_user, redis_mock
+from app.tests.job_fakes import patch_job_enqueue
 
 _USER = UUID(int=1)
 _CHAT = UUID(int=2)
@@ -43,7 +44,7 @@ async def _queued(run: Any) -> list[tuple[str, dict[str, str]]]:
         calls.append((name, payload))
 
     with (
-        patch("app.core.jobs.enqueue", enqueue),
+        patch_job_enqueue(enqueue),
         patch.object(quota_service, "global_spend_exceeded", AsyncMock(return_value=False)),
     ):
         await run()
