@@ -226,9 +226,11 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   ends your turn; the orb never shows “Transcribing…”. Physical devices enable
   echo cancellation and barge-in; iOS Simulator retains half-duplex. Free and Plus
   open the plans. Pro: **60 minutes per UTC calendar month**. Each session reserves up to
-  15 minutes at mint (refused under 1 minute left), the phone hangs up when its reservation
-  ends, and `POST /speech/live/end` settles the reservation to the time the server measured
-  (a session that never reports keeps the whole reservation). Settings → Account shows the
+  15 minutes at mint (refused under 1 minute left). The phone's offer goes through
+  `POST /speech/live/connect`, so the server knows the OpenAI call and hangs it up itself:
+  on `POST /speech/live/end`, which then settles the reservation to the time the server
+  measured, and when the reservation runs out. Unused minutes come back only once OpenAI
+  confirms the hang-up (a session that never reports keeps the whole reservation). Settings → Account shows the
   minutes left. Tap the mic (next to close) to mute so Recall
   cannot hear you; it turns red. Playback is not paused. No Listening/Speaking
   labels on screen; screen readers hear each phase (listening, thinking, speaking) as

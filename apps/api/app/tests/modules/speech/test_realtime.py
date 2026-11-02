@@ -462,7 +462,9 @@ def test_live_end_cannot_refund_a_session_it_does_not_own():
     assert r.json()["remaining_seconds"] == 3600 - 900
 
 
-def test_realtime_session_returns_ephemeral_key_and_recall_session_id():
+def test_realtime_session_keeps_the_ephemeral_key_and_returns_the_recall_session_id():
+    """The phone connects through /live/connect: the secret never reaches it, so it can
+    open no OpenAI call the server does not know of (``live_call``)."""
     user = api_user(plan="pro")
     settings = Settings(
         openai_api_key="sk-test",
@@ -472,15 +474,20 @@ def test_realtime_session_returns_ephemeral_key_and_recall_session_id():
     )
     mint = AsyncMock(return_value=RealtimeClientSecretResult(value="ek_test", expires_at=123))
     client = TestClient(_realtime_app(user, settings))
-    with _session_mint_patches(mint=mint):
+    with _session_mint_patches(mint=mint) as fake_redis:
         r = client.post(
             "/speech/live/session",
             headers={"Authorization": "Bearer tok"},
             json={},
         )
+        body = r.json()
+        import asyncio
+
+        kept = asyncio.run(fake_redis.get(f"livetalk_secret:{user.id}:{body['call_id']}"))
     assert r.status_code == 200
-    body = r.json()
-    assert body["client_secret"] == "ek_test"
+    assert "client_secret" not in body
+    assert "ek_test" not in r.text
+    assert kept == "ek_test"
     assert body["expires_at"] == 123
     assert body["call_id"]
     assert body["model"] == "gpt-realtime-2.1"

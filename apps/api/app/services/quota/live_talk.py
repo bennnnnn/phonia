@@ -2,9 +2,10 @@
 
 Live talk runs phone <-> OpenAI over WebRTC once the server mints a session,
 so the server meters time at its own boundary: mint reserves a capped
-session length out of this UTC month's seconds, and the end report settles
-it to the time that actually passed (never refunding past the reservation).
-A phone that never reports keeps the full reservation charged. The global
+session length out of this UTC month's seconds, and the end settles it to the
+time that actually passed (never refunding past the reservation), but only once
+the server has hung the OpenAI call up (``modules/speech/live_call.py``). A
+phone that never reports keeps the full reservation charged. The global
 spend counter follows the same reservation (``LIVE_TALK_SPEND_USD_PER_MINUTE``),
 and a session may save one turn per ``LIVE_TALK_SECONDS_PER_SAVE`` reserved
 seconds: the phone posts the turns, so neither cost nor rows follow its count.
@@ -170,6 +171,22 @@ async def release_live_talk_seconds(
     if seconds <= 0:
         return
     await refund_daily(redis, live_talk_month_key(user_id, month or utc_month()), amount=seconds)
+
+
+async def live_talk_seconds_left(redis: Redis, user_id: UUID, session_id: str) -> int | None:
+    """Seconds until this session's reservation runs out (0 once it has); None when
+    there is none to run out: settled, never minted, or past its grace."""
+    raw = await redis.get(_live_talk_reservation_key(user_id, (session_id or "").strip()))
+    if raw is None:
+        return None
+    text = raw.decode() if isinstance(raw, bytes | bytearray) else str(raw)
+    try:
+        reserved_text, started_text, _month = text.split(":", 2)
+        reserved, started_ms = int(reserved_text), int(started_text)
+    except ValueError:
+        return None
+    now_ms = int(datetime.now(UTC).timestamp() * 1000)
+    return max(0, reserved - (now_ms - started_ms) // 1000)
 
 
 async def settle_live_talk_session(redis: Redis, user_id: UUID, session_id: str) -> int | None:

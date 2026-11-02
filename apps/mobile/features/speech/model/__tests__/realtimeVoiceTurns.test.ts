@@ -12,7 +12,12 @@ jest.mock("expo-modules-core", () => ({ requireOptionalNativeModule: jest.fn() }
 jest.mock("expo-constants", () => ({}));
 jest.mock("@/lib/speech/voiceAudio", () => ({ yieldMicToWebRtc: jest.fn(async () => undefined) }));
 jest.mock("@/features/speech/api", () => ({
-  speechApi: { createRealtimeSession: jest.fn(), realtimeTool: jest.fn(), endRealtimeSession: jest.fn() },
+  speechApi: {
+    createRealtimeSession: jest.fn(),
+    connectRealtimeSession: jest.fn(),
+    realtimeTool: jest.fn(),
+    endRealtimeSession: jest.fn(),
+  },
 }));
 jest.mock("react-native-webrtc", () => ({
   mediaDevices: { getUserMedia: jest.fn() },
@@ -31,7 +36,6 @@ type FakeChannel = {
   onmessage?: (message: { data?: unknown }) => void;
 };
 
-const originalFetch = globalThis.fetch;
 
 function dial(device: Device, options: { open?: boolean; sessionCreated?: boolean } = {}) {
   (requireOptionalNativeModule as jest.Mock).mockReturnValue({ isDevice: device === "phone" });
@@ -85,15 +89,14 @@ beforeEach(() => {
   jest.clearAllMocks();
   (globalThis as unknown as { __DEV__: boolean }).__DEV__ = false;
   (speechApi.createRealtimeSession as jest.Mock).mockResolvedValue({
-    client_secret: "ek_mock", call_id: "call-1", model: "mock", expires_at: 123,
+    call_id: "call-1", model: "mock", expires_at: 123,
   });
-  globalThis.fetch = jest.fn(async () => ({ ok: true, text: async () => "v=0\nm=audio" })) as unknown as typeof fetch;
+  (speechApi.connectRealtimeSession as jest.Mock).mockResolvedValue({ sdp: "v=0\nm=audio" });
 });
 
 afterEach(() => {
   jest.clearAllTimers();
   jest.useRealTimers();
-  globalThis.fetch = originalFetch;
 });
 
 describe("barge-in (echo cancellation on)", () => {

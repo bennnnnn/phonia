@@ -20,6 +20,7 @@ from app.gateways import openai_speech_gateway
 from app.models.orm import User
 from app.models.schemas import MessageOut
 from app.models.schemas.text import UserText
+from app.modules.speech import live_call
 from app.modules.speech import live_talk as live_talk_service
 from app.modules.speech.gates import (
     SpeechRefusedError,
@@ -40,12 +41,24 @@ class RealtimeSessionIn(BaseModel):
 
 
 class RealtimeSessionOut(BaseModel):
-    client_secret: str
+    """A minted session. Its client secret stays on the server (``live_call``): the
+    phone connects through ``/live/connect``."""
+
     expires_at: int
     call_id: str
     model: str
-    # Seconds reserved from this month's live talk minutes; the phone hangs up here.
+    # Seconds reserved from this month's live talk minutes; the server hangs up here.
     max_duration_seconds: int
+
+
+class RealtimeConnectIn(BaseModel):
+    call_id: str = Field(min_length=8, max_length=128)
+    # The phone's WebRTC offer (a few KB with its ICE candidates).
+    sdp: str = Field(min_length=10, max_length=32_000)
+
+
+class RealtimeConnectOut(BaseModel):
+    sdp: str
 
 
 class RealtimeEndIn(BaseModel):
@@ -153,7 +166,8 @@ async def create_realtime_session(
     user: User = Depends(get_consented_user),
     settings: Settings = Depends(get_settings_dep),
 ) -> RealtimeSessionOut:
-    """Mint a short-lived key; mobile completes WebRTC directly with OpenAI."""
+    """Mint a session: reserve its minutes and a short-lived OpenAI secret the server
+    keeps. The phone then connects through ``/live/connect``."""
     ctx = await _load_session_context_or_404(body.chat_id, user, settings)
     redis, reserved = await _reserve_realtime_or_raise(user, settings)
 
@@ -187,13 +201,31 @@ async def create_realtime_session(
     await quota_service.record_live_talk_reservation(
         redis, user.id, session_id, reserved_seconds=reserved
     )
+    await live_call.keep_client_secret(
+        redis, user.id, session_id, result.value, reserved_seconds=reserved
+    )
     return RealtimeSessionOut(
-        client_secret=result.value,
         expires_at=result.expires_at,
         call_id=session_id,
         model=openai_speech_gateway.realtime_model(settings),
         max_duration_seconds=reserved,
     )
+
+
+@router.post("/live/connect", response_model=RealtimeConnectOut)
+async def connect_realtime_session(
+    body: RealtimeConnectIn,
+    user: User = Depends(get_consented_user),
+    settings: Settings = Depends(get_settings_dep),
+) -> RealtimeConnectOut:
+    """The phone's WebRTC offer for a minted session: the server opens the OpenAI call
+    with the session's secret and answers with OpenAI's SDP. Once per session."""
+    if not settings.speech_live_talk_enabled or not settings.speech_realtime_voice_enabled:
+        raise SpeechRefusedError(
+            "Not available", status_code=status.HTTP_404_NOT_FOUND, code="not_available"
+        )
+    answer = await live_call.connect(get_redis_client(), settings, user.id, body.call_id, body.sdp)
+    return RealtimeConnectOut(sdp=answer)
 
 
 @router.post("/live/end", response_model=SpeechLiveStatusOut)
@@ -202,18 +234,22 @@ async def end_realtime_session(
     user: User = Depends(get_current_user),
     settings: Settings = Depends(get_settings_dep),
 ) -> SpeechLiveStatusOut:
-    """The phone hung up: charge the time that passed, give back the rest.
+    """The phone hung up: the server hangs the OpenAI call up too, then charges the time
+    that passed and gives back the rest.
 
-    Idempotent. A session that is never reported keeps its full reservation.
+    Idempotent. The rest comes back only once OpenAI confirms the call is over: until
+    then the session keeps its whole reservation and a job keeps trying (``live_call``).
+    A session that is never reported is hung up, and charged in full, when its
+    reservation runs out.
     """
     if not settings.speech_live_talk_enabled or not settings.speech_realtime_voice_enabled:
         raise SpeechRefusedError(
             "Not available", status_code=status.HTTP_404_NOT_FOUND, code="not_available"
         )
     redis = get_redis_client()
-    charged = await quota_service.settle_live_talk_session(redis, user.id, body.call_id)
-    if charged is not None:
+    if not await live_call.finish_session(redis, settings, user.id, body.call_id):
         await live_talk_service.close_realtime_session(redis, user.id, body.call_id)
+        await live_call.schedule_hangup(redis, user.id, body.call_id, delay_s=0)
     return await live_talk_service.live_talk_status(redis, user, settings)
 
 

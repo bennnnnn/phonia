@@ -343,19 +343,23 @@ the app shows the store's localized price from the RevenueCat offering.
 
 The phone talks to OpenAI over WebRTC after the server mints a session, so the
 server meters at its own edges: a mint reserves `min(minutes left,
-LIVE_TALK_MAX_SESSION_SECONDS)` (refused under `LIVE_TALK_MIN_SESSION_SECONDS`),
-the session may save turns and use voice tools only for that reservation, the
-phone hangs up when it ends, and `POST /speech/live/end` settles it to the time
-the server measured (never refunding more than was reserved). A phone that
-never reports keeps the whole reservation charged. The global spend counter
+LIVE_TALK_MAX_SESSION_SECONDS)` (refused under `LIVE_TALK_MIN_SESSION_SECONDS`)
+and keeps the session's OpenAI client secret; the phone sends its WebRTC offer
+to `POST /speech/live/connect`, and the server opens the call and keeps its id
+(`modules/speech/live_call.py`). The session may save turns and use voice tools
+only for that reservation. The server hangs the call up on `POST /speech/live/end`
+and, by a delayed `live_talk_hangup` job, when the reservation runs out; once
+OpenAI confirms the hang-up, the end settles to the time the server measured
+(never refunding more than was reserved). Until it confirms, the session keeps
+its whole reservation and the job retries. A phone that never reports keeps the
+whole reservation charged. The global spend counter
 follows the same reservation: a mint adds the reserved minutes at
 `LIVE_TALK_SPEND_USD_PER_MINUTE` ($0.20, `services/quota/spend.py`) and the
 end report gives back the unused part, so saved turns add no spend. A session
 may save one turn per 5 reserved seconds (at least 12) and a user 20 turns a
-minute; past either, `POST /speech/live/persist` answers 429. Known limit: the
-server cannot hang up the OpenAI call itself, so a modified client could keep
-talking past its reservation (nothing is saved, no tools); that time is not
-on the spend counter.
+minute; past either, `POST /speech/live/persist` answers 429. The expiry hang-up
+needs the worker: while it is down, a call may run past its reservation until
+OpenAI's own session limit (nothing is saved, no tools).
 
 ### QA (sandbox / test track)
 

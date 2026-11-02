@@ -5,8 +5,8 @@ import { readRecordingBase64, speechUploadFromUri } from "@/lib/speech/voiceAudi
 import type { LiveTalkStatus } from "@/features/speech/model/liveTalkLogic";
 import type { Message, SearchSource } from "@/lib/api/types";
 
+/** A minted session; its OpenAI secret stays on the server (connect with `connectRealtimeSession`). */
 type RealtimeSessionCredential = {
-  client_secret: string;
   expires_at: number;
   call_id: string;
   model: string;
@@ -46,7 +46,16 @@ export const speechApi = {
         return_messages: true,
       }),
     }),
-  /** Hung up: the server charges the time used and gives the rest back. */
+  /** The WebRTC offer for a minted session: the server opens the OpenAI call and answers with its SDP. */
+  connectRealtimeSession: (token: string, body: { callId: string; sdp: string }, timeoutMs: number) =>
+    request<{ sdp: string }>(
+      "/speech/live/connect",
+      token,
+      { method: "POST", body: JSON.stringify({ call_id: body.callId, sdp: body.sdp }) },
+      true,
+      timeoutMs,
+    ),
+  /** Hung up: the server hangs the OpenAI call up too, charges the time used and gives the rest back. */
   endRealtimeSession: (token: string, callId: string) =>
     request<LiveTalkStatus>("/speech/live/end", token, {
       method: "POST",
