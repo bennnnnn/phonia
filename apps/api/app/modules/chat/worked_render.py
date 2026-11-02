@@ -263,7 +263,11 @@ def render_worked(
         or any(part.formula or part.working or part.answers for part in solution.parts)
     )
     required = _find_rows(solution) if settled else ()
-    if not solution.labelled:
+    # A question asking for several things may come apart at its next law
+    # (``worked_solution.assemble``), so while it streams it is drawn in parts: a part
+    # added later extends what was drawn, never moves it.
+    in_parts = solution.labelled or (streaming and settled and len(solution.required) > 1)
+    if not in_parts:
         part = solution.parts[0] if solution.parts else Part()
         opening = (_given_section(solution, streaming=streaming), required)
         return _part_body(part, layout, opening, ANSWER)
@@ -283,11 +287,16 @@ def _render_in_parts(
     answer. What is asked comes before the parts, so it is lettered by its own order: a
     part that streams in later never rewrites it. While the block streams, each given
     stays where it was written; the shared ones are drawn together once it is whole."""
+    shown = list(solution.parts)
     if streaming:
-        shared, own = list(solution.given), [list(part.given) for part in solution.parts]
+        # A part waits for the answer above it: one written later, with the others at the
+        # end, would land above what was drawn after it.
+        unanswered = next((at for at, part in enumerate(shown) if not part.answers), None)
+        shown = shown if unanswered is None else shown[: unanswered + 1]
+        shared, own = list(solution.given), [list(part.given) for part in shown]
     else:
-        shared, own = _place_givens(solution.given, solution.parts)
-    last = len(solution.parts) - 1
+        shared, own = _place_givens(solution.given, shown)
+    last = len(shown) - 1
     parts = [
         WorkedPart(
             title=part.title
@@ -297,7 +306,7 @@ def _render_in_parts(
             # The last part's where-line waits, while it streams, until its givens are in.
             given=_given_rows(own[index], naming=not streaming or index < last or _started(part)),
         )
-        for index, part in enumerate(solution.parts)
+        for index, part in enumerate(shown)
     ]
     asked = [f"({part_letter(index)}) {row}" for index, row in enumerate(required)]
     complete = not streaming or bool(required or solution.parts)

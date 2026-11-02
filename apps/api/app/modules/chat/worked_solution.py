@@ -209,6 +209,18 @@ class _PartDraft:
         return bool(self.formula or self.working or self.answers)
 
     @property
+    def reached_a_value(self) -> bool:
+        """Its working was carried to a value: substituted into, or answered."""
+        return bool(self.answers) or any(step.kind == "substitution" for step in self.working)
+
+    def computes(self, symbol: str) -> bool:
+        """A line of its working gives ``symbol`` a value (``v_1 = \\frac{100}{5}``)."""
+        target = _bare(symbol)
+        return bool(target) and any(
+            _bare(step.tex.split("=", 1)[0]) == target for step in self.working if "=" in step.tex
+        )
+
+    @property
     def has_content(self) -> bool:
         """A line of its own to show: a part with a label and nothing else is no part."""
         return self.started or bool(self.given)
@@ -254,12 +266,44 @@ def _labelled_part(drafts: list[_PartDraft], current: int, label: PartLabel, *, 
     return len(drafts) - 1
 
 
+def _bare(tex: str) -> str:
+    return re.sub(r"[\s{}$]", "", tex)
+
+
+def _unlabelled_part(
+    drafts: list[_PartDraft], current: int, record: Formula | Step | Answer, asked: int
+) -> int:
+    """The draft an unlabelled record goes to. A question asking for several things is in
+    parts whether or not the model labelled them: a new law after the working reached a
+    value opens the next part, while fewer parts than things asked are open, and an
+    answer goes to the first part not yet answered whose working gave its symbol a value."""
+    if isinstance(record, Formula):
+        opens = drafts[current].reached_a_value and len(drafts) < min(asked, MAX_PARTS)
+        if opens:
+            drafts.append(_PartDraft(formula=record))
+            return len(drafts) - 1
+    if isinstance(record, Answer) and len(drafts) > 1:
+        # Answers written together at the end are the parts' in order.
+        waiting = [
+            at
+            for at, draft in enumerate(drafts)
+            if not draft.answers and (not record.symbol or draft.computes(record.symbol))
+        ]
+        if waiting:
+            drafts[waiting[0]].answers.append(record)
+            return current
+    drafts[current].add(record)
+    return current
+
+
 def assemble(records: list[RecordModel]) -> WorkedSolution:
     """The records in the order written, as one solution. Before the first ``part``, the
     givens and what is asked are the whole question's, and a formula or working is the
     first part's. After a ``part`` record every record is that part's, its givens too, so
     a given one part uses is never mixed with another part's. A part that holds nothing
-    (a label alone) is left out, so the parts shown are lettered in order."""
+    (a label alone) is left out, so the parts shown are lettered in order. With no label,
+    a question asking for several things still comes apart at each new law
+    (``_unlabelled_part``)."""
     given: list[Given] = []
     required: list[Required] = []
     drafts = [_PartDraft()]
@@ -273,9 +317,14 @@ def assemble(records: list[RecordModel]) -> WorkedSolution:
         elif isinstance(record, PartLabel):
             current = _labelled_part(drafts, current, record, first=not labelled)
             labelled = True
-        else:
+        elif labelled or isinstance(record, Given):
             drafts[current].add(record)
+        else:
+            current = _unlabelled_part(drafts, current, record, len(required))
     parts = tuple(draft.part() for draft in drafts if draft.has_content)
     return WorkedSolution(
-        given=tuple(given), required=tuple(required), parts=parts, in_parts=labelled
+        given=tuple(given),
+        required=tuple(required),
+        parts=parts,
+        in_parts=labelled or len(parts) > 1,
     )

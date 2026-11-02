@@ -50,6 +50,13 @@ LIVE = (
     f"{_CAR_GIVEN}\n{_ASKED}\n{_CAR}\npart: a | speed of the car\n"
     f"part: b | speed of the train\n{_TRAIN_GIVEN}\n{_TRAIN}"
 )
+# No label at all (live, 2026-11-01): two laws one after the other, both answers at the end.
+_WORKING = "\n".join(line for line in _CAR.split("\n") if not line.startswith("answer"))
+UNLABELLED = (
+    f"{_CAR_GIVEN}\n{_TRAIN_GIVEN}\n{_ASKED}\n{_WORKING}\n"
+    + "\n".join(line for line in _TRAIN.split("\n") if not line.startswith("answer"))
+    + "\nanswer: v | 20 | m/s\nanswer: v | 30 | m/s"
+)
 
 
 def _laid_out(block: str) -> str:
@@ -62,7 +69,7 @@ def _opening_and_parts(text: str) -> tuple[str, list[str]]:
     return opening, parts.split("\n\n---\n\n")
 
 
-@pytest.mark.parametrize("block", [CONTRACT, GIVENS_FIRST, LIVE])
+@pytest.mark.parametrize("block", [CONTRACT, GIVENS_FIRST, LIVE, UNLABELLED])
 def test_two_questions_are_two_parts_each_with_its_own_givens(block: str) -> None:
     text = _laid_out(block)
     opening, (car, train) = _opening_and_parts(text)
@@ -70,14 +77,29 @@ def test_two_questions_are_two_parts_each_with_its_own_givens(block: str) -> Non
     assert "**Required**  \n(a) $v$ (speed of the car)  \n(b) $v$ (speed of the train)" in opening
     assert car.strip().startswith("**(a) speed of the car**\n\n**Given**  \n$d = 100")
     assert "$t = 5" in car and "where $d$ = distance, $t$ = time" in car
-    assert "$d = 300" not in car
+    assert "$d = 300" not in car and "30\\," not in car
     assert train.startswith("**(b) speed of the train**\n\n**Given**  \n$d = 300")
     assert "$t = 10" in train and "$d = 100" not in train
     assert re.findall(r"\*\*Answer \(([a-z])\)\*\*", text) == ["a", "b"]
+    assert car.rstrip().endswith("$20\\,\\mathrm{m/s}$")
+    assert train.rstrip().endswith("$30\\,\\mathrm{m/s}$")
 
 
 def test_every_shape_is_the_same_layout() -> None:
-    assert _laid_out(CONTRACT) == _laid_out(GIVENS_FIRST) == _laid_out(LIVE)
+    assert (
+        _laid_out(CONTRACT) == _laid_out(GIVENS_FIRST) == _laid_out(LIVE) == _laid_out(UNLABELLED)
+    )
+
+
+def test_one_question_asking_one_thing_stays_whole_whatever_laws_it_uses() -> None:
+    block = (
+        "given: m | 2 | kg\ngiven: a | 3 | m/s^2\nrequired: W | work done\n"
+        "formula: Newton's second law | F = m a\nsubstitution: F = 6\\,\\mathrm{N}\n"
+        "formula: Work | W = F d\nsubstitution: W = 6 \\times 4\nanswer: W | 24 | J"
+    )
+    text = _laid_out(block)
+    assert "**(a)" not in text and "---" not in text
+    assert "**Answer**" in text
 
 
 def test_a_given_every_part_uses_is_given_once() -> None:
@@ -108,6 +130,23 @@ def test_a_letter_named_again_is_that_part_and_an_empty_part_is_left_out() -> No
         ("b", "distance"),
     ]
     assert re.findall(r"\*\*Answer \(([a-z])\)\*\*", text) == ["a", "b"]
+
+
+def test_an_unlabelled_block_in_parts_only_grows_while_it_streams() -> None:
+    accum = StreamAccum()
+    reply_filter = ReplyFilter(accum, PHYSICS)
+    seen: list[str] = []
+    reply = f"```worked\n{UNLABELLED}\n```"
+    for start in range(0, len(reply), 3):
+        if sent := reply_filter.feed(reply[start : start + 3]):
+            accum.shown.append(sent)
+        seen.append("".join(accum.shown))
+    for earlier, later in itertools.pairwise(seen):
+        assert later.startswith(earlier)
+    if tail := reply_filter.flush():
+        accum.shown.append(tail)
+    # Its givens reach their parts once the block is whole; done carries that text.
+    assert "".join(accum.shown).strip() == _laid_out(UNLABELLED)
 
 
 @pytest.mark.parametrize("size", [1, 5, 10_000])
