@@ -16,6 +16,15 @@ function iosUrlSchemeFromClientId(iosClientId: string): string | null {
   return `com.googleusercontent.apps.${trimmed.replace(".apps.googleusercontent.com", "")}`;
 }
 
+/** ML Kit ships its simulator slice for Intel only, and an Apple-silicon iOS 26 simulator
+ * runs no Intel app: a simulator build links it out, and the scanner says the live camera
+ * needs a newer build (the camera is not in a simulator anyway). */
+const SIMULATOR_OMITS = ["react-native-vision-camera-mlkit"];
+
+function simulatorOmits(plugin: NonNullable<ExpoConfig["plugins"]>[number]): boolean {
+  return SIMULATOR_OMITS.includes(Array.isArray(plugin) ? plugin[0] : plugin);
+}
+
 export default ({ config }: ConfigContext): ExpoConfig => {
   const base = appJson.expo as ExpoConfig;
   const buildProfile = releaseProfile(process.env);
@@ -25,7 +34,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     process.env,
   );
   const includeDevClient = includeDevClientPlugin(buildProfile);
-  const appleSignIn = !simulatorWithoutAppleSignIn(buildProfile, process.env);
+  const simulator = simulatorWithoutAppleSignIn(buildProfile, process.env);
+  const appleSignIn = !simulator;
   const sentryPlugin: [string, ReturnType<typeof sentryPluginOptions>] | null =
     process.env.EXPO_PUBLIC_SENTRY_DSN?.trim()
       ? ["@sentry/react-native/expo", sentryPluginOptions(process.env)]
@@ -35,7 +45,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     ...(appleSignIn ? [] : (["./plugins/withoutAppleSignIn.js"] as const)),
     ...(includeDevClient ? (["expo-dev-client"] as const) : []),
     ...(sentryPlugin ? [sentryPlugin] : []),
-    ...(base.plugins ?? []),
+    // A simulator build also leaves out ML Kit (react-native.config.js unlinks it).
+    ...(base.plugins ?? []).filter((plugin) => !simulator || !simulatorOmits(plugin)),
   ];
   const iosUrlScheme = iosUrlSchemeFromClientId(
     process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID ?? "",

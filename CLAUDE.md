@@ -250,7 +250,7 @@ pnpm expo start          # dev; press i / a for iOS / Android
 
 - Run the backend on port 8000 and point the app's `EXPO_PUBLIC_API_URL` at it (use your machine's LAN IP on a physical device, not localhost).
 - Native Google Sign-In requires a dev build (`pnpm expo run:ios` / `run:android`), not Expo Go. Use dev auth in Expo Go.
-- `pnpm expo run:ios` demands a signing certificate even for the Simulator, because Sign in with Apple's entitlement needs one. For everyday work use `./scripts/dev.sh mobile-sim` (Expo Go, no build). For a native build without a certificate, run `pnpm ios:sim` (leaves Sign in with Apple out of that local build; dev login and Google still work).
+- `pnpm expo run:ios` demands a signing certificate even for the Simulator, because Sign in with Apple's entitlement needs one. For everyday work use `./scripts/dev.sh mobile-sim` (Expo Go, no build). For a native build without a certificate, run `pnpm ios:sim` (leaves Sign in with Apple out of that local build; dev login and Google still work). It also leaves ML Kit out: its simulator slice is Intel only and an Apple-silicon iOS 26 Simulator installs no Intel app, so the live scanner says it needs a newer build there (`react-native.config.js`).
 - The HTML/JS preview WebView (`react-native-webview`) is a **native module** — it only works in a dev build. After adding/updating it, rebuild the dev client (`pnpm expo run:ios` / `run:android`); in Expo Go the preview falls back to static HTML (scripts stripped) or "Open in browser".
 
 ## Testing
