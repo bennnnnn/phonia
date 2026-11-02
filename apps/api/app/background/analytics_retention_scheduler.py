@@ -25,6 +25,7 @@ async def run_analytics_retention_cycle(settings: Settings) -> None:
         name="analytics retention",
         lock_key=LOCK_KEY,
         lock_ttl_seconds=lock_ttl_yield_next_tick(settings.analytics_retention_interval_seconds),
+        interval_seconds=settings.analytics_retention_interval_seconds,
         enabled=settings.analytics_event_retention_days > 0,
         fn=_retention_cycle,
         settings=settings,

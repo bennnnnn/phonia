@@ -43,6 +43,7 @@ async def run_email_reminder_cycle(settings: Settings) -> None:
         name="email reminders",
         lock_key=LOCK_KEY,
         lock_ttl_seconds=LOCK_TTL_SECONDS,
+        interval_seconds=INTERVAL_SECONDS,
         enabled=_email_reminders_enabled(settings),
         fn=_email_cycle,
         settings=settings,

@@ -82,6 +82,7 @@ async def run_data_retention_cycle(settings: Settings) -> None:
         name="data retention",
         lock_key=LOCK_KEY,
         lock_ttl_seconds=lock_ttl_yield_next_tick(settings.data_retention_interval_seconds),
+        interval_seconds=settings.data_retention_interval_seconds,
         enabled=settings.data_retention_interval_seconds > 0,
         fn=_retention_cycle,
         settings=settings,
