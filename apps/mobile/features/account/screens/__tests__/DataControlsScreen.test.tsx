@@ -6,7 +6,6 @@ import fixture from "../../../../../../docs/fixtures/error_codes.json";
 import { SharingUnavailableError } from "@/lib/shareUnavailable";
 
 const mockUpdateUser = jest.fn();
-const mockLocationLabel = jest.fn();
 const mockConfirm = jest.fn();
 const mockExport = jest.fn();
 const mockCancelExport = jest.fn();
@@ -58,10 +57,6 @@ jest.mock("@/features/chat/model/chatListCache", () => ({ invalidateChatListCach
 jest.mock("@/lib/reportRecoverableError", () => ({
   reportRecoverableError: (...args: unknown[]) => mockReportError(...args),
 }));
-jest.mock("@/lib/deviceLocation", () => ({
-  getDeviceLocationLabel: (...args: unknown[]) => mockLocationLabel(...args),
-}));
-jest.mock("@/lib/expoRuntime", () => ({ canUseDeviceLocation: () => true }));
 jest.mock("@/ui/controls/StackBackButton", () => ({
   StackBackButton: () => null,
   plainHeaderItems: () => [],
@@ -78,11 +73,11 @@ beforeEach(() => {
   jest.spyOn(Alert, "alert").mockImplementation(() => {});
 });
 
-it("opens with web search (on by default) and location, no explanation lines", async () => {
+it("opens with web search (on by default) and no location switch or explanation lines", async () => {
   const view = await render(<DataControlsScreen />);
   const search = view.getByRole("switch", { name: "settings.web_search" });
   expect(search.props.accessibilityState.checked).toBe(true);
-  expect(view.getByText("settings.use_current_location")).toBeTruthy();
+  expect(view.queryByRole("switch", { name: /location/ })).toBeNull();
   expect(view.queryByText("settings.web_search_summary")).toBeNull();
   expect(view.queryByText("settings.location_summary")).toBeNull();
   // The policy itself lives once, under About.
@@ -93,18 +88,6 @@ it("turns web search off for the account", async () => {
   const view = await render(<DataControlsScreen />);
   await fireEvent.press(view.getByRole("switch", { name: "settings.web_search" }));
   await waitFor(() => expect(mockUpdateUser).toHaveBeenCalledWith({ web_search_enabled: false }));
-});
-
-it("turns location on with the device's place", async () => {
-  mockLocationLabel.mockResolvedValue("Addis Ababa, Ethiopia");
-  const view = await render(<DataControlsScreen />);
-  await fireEvent.press(view.getByRole("switch", { name: "settings.use_current_location" }));
-  await waitFor(() =>
-    expect(mockUpdateUser).toHaveBeenCalledWith({
-      location_enabled: true,
-      location: "Addis Ababa, Ethiopia",
-    }),
-  );
 });
 
 it("clears all chats only after a confirmation that says what stays", async () => {

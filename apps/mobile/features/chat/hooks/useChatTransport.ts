@@ -5,7 +5,6 @@ import NetInfo, { type NetInfoState } from "@react-native-community/netinfo";
 import { useAccountSession } from "@/contexts/accountSession";
 import { chatWebSocketUrl } from "@/lib/api";
 import { accessTokenNeedsRefresh, freshAccessToken } from "@/lib/api/client";
-import type { ClientGeo } from "@/features/chat/model/clientGeo";
 import { getDeviceTimezone } from "@/lib/deviceTimezone";
 import { isNetworkOffline, isNetworkPathChange } from "@/lib/networkStatus";
 import { shouldAbortPriorSse, streamChatMessageSse, streamChatRegenerateSse, type ChatSsePayload } from "@/features/chat/model/sse";
@@ -16,8 +15,6 @@ import { useLatestRef } from "@/lib/latestRef";
 
 type SendSseOptions = {
   attachmentIds?: string[];
-  model?: string | null;
-  clientGeo?: ClientGeo | null;
   ttftTurnId?: string | null;
   /** The message's name from its socket send, so a replay of it runs once. */
   clientMessageId?: string;
@@ -223,8 +220,6 @@ export function useChatTransport({
           chatId,
           content,
           attachmentIds: options?.attachmentIds,
-          model: options?.model,
-          clientGeo: options?.clientGeo,
           ttftTurnId: turnId,
           clientMessageId: options?.clientMessageId,
           signal,
@@ -245,7 +240,7 @@ export function useChatTransport({
   );
 
   const regenerateViaSse = useCallback(
-    async (model?: string | null, clientGeo?: ClientGeo | null) => {
+    async () => {
       const token = getToken();
       if (!token || !chatId) return;
       const signal = beginSseStream();
@@ -253,8 +248,6 @@ export function useChatTransport({
         await streamChatRegenerateSse({
           token,
           chatId,
-          model,
-          clientGeo,
           signal,
           onEvent: (payload) => {
             if (!signal.aborted && sseAbortRef.current?.signal === signal) {

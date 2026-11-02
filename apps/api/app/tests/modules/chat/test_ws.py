@@ -439,15 +439,14 @@ def test_ws_regenerate():
             assert done["type"] == "done"
 
 
-def test_ws_regenerate_passes_client_geo():
+def test_ws_regenerate_passes_the_frames_zone_and_no_location():
     _, tok = _token()
     user = _fake_user()
     chat_id = uuid4()
 
     async def fake_regen(*args, **kwargs):
-        assert kwargs.get("client_location") == "San Francisco, CA"
-        assert kwargs.get("client_latitude") == 37.77
-        assert kwargs.get("client_longitude") == -122.42
+        # The app does not use the device's location: a frame's old fields are dropped.
+        assert "client_location" not in kwargs and "client_latitude" not in kwargs
         # The frame's zone, not the one the socket authenticated with.
         assert kwargs.get("client_timezone") == "America/Los_Angeles"
         yield "nearby"
@@ -706,7 +705,7 @@ def test_ws_invalid_message_payload():
         client = TestClient(app)
         with client.websocket_connect(f"/ws/chats/{chat_id}") as ws:
             ws.send_json({"token": tok})
-            ws.send_json({"type": "message", "content": "hi", "model": "not-a-model"})
+            ws.send_json({"type": "message", "content": "hi", "attachment_ids": "not-a-list"})
             err = ws.receive_json()
             assert err["type"] == "error"
 

@@ -69,20 +69,12 @@ type ChatWsMessageFrame = ChatWsTurnZone & {
   type: "message";
   content: string;
   attachment_ids: string[];
-  model: string | null;
   /** The message's name, the same on every send of it: the server runs one turn per name. */
   client_message_id: string;
-  client_location: string | null;
-  client_latitude: number | null;
-  client_longitude: number | null;
 };
 
 type ChatWsRegenerateFrame = ChatWsTurnZone & {
   type: "regenerate";
-  model: string | null;
-  client_location: string | null;
-  client_latitude: number | null;
-  client_longitude: number | null;
 };
 
 export type ChatWsFallbackSignal =

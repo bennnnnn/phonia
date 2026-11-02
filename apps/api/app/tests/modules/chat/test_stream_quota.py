@@ -41,7 +41,7 @@ def _deps(**fields):
     quota = {"daily_limit_for_user": MagicMock(return_value=100_000), **fields.pop("quota", {})}
     return turn_deps(
         session_factory=_FakeSessionCM,
-        model_choice={"resolve_user_model_override": MagicMock(return_value="smart-chat")},
+        model_choice={"resolve_user_model": MagicMock(return_value="smart-chat")},
         quota=quota,
         **fields,
     )

@@ -597,17 +597,6 @@ describe("useChat transport lifecycle", () => {
     ]));
   });
 
-  it("ignores cancellation from regeneration preparation in a previous view", async () => {
-    const view = await render(<Probe chatId="a" />);
-    const cancelPrevious = current.cancelRegenerateUi;
-    await view.rerender(<Probe chatId="b" />);
-    const socket = await openSocket();
-    await sendAndStream(socket, "current answer");
-    await act(async () => { cancelPrevious(); });
-    expect(current.streaming).toBe(true);
-    expect(getStreamingDraft()?.content).toBe("current answer");
-  });
-
   it("invalidates regeneration preparation when Stop is pressed", async () => {
     await render(<Probe chatId="a" />);
     let isCurrentAttempt: (() => boolean) | void;
@@ -675,8 +664,7 @@ describe("useChat transport lifecycle", () => {
     await act(async () => {
       socket.emit({ type: "done", message_id: "previous-answer", final_content: "previous answer" });
       await current.sendMessage("unsaved follow-up", {
-        model: "smart-chat", attachmentIds: ["file-id"],
-        clientGeo: { label: "Here", latitude: 1, longitude: 2 },
+        attachmentIds: ["file-id"],
       });
       socket.emit({ type: "start" });
       socket.emit({ type: "error", code: "busy", message: "Still finishing" });
@@ -700,7 +688,7 @@ describe("useChat transport lifecycle", () => {
     await render(<Probe chatId="a" />);
     let pending!: Promise<unknown>;
     await act(async () => {
-      pending = current.sendMessage("SSE follow-up", { attachmentIds: ["a1"], model: "smart-chat" });
+      pending = current.sendMessage("SSE follow-up", { attachmentIds: ["a1"] });
       FakeSocket.instances[0].onerror();
       await pending;
     });
@@ -708,7 +696,7 @@ describe("useChat transport lifecycle", () => {
     expect(current.rejectedSend?.content).toBe("SSE follow-up");
     await act(async () => { await current.retryRejectedSend(); });
     expect(streamChatMessageSse).toHaveBeenLastCalledWith(expect.objectContaining({
-      content: "SSE follow-up", attachmentIds: ["a1"], model: "smart-chat",
+      content: "SSE follow-up", attachmentIds: ["a1"],
     }));
   });
 
@@ -864,7 +852,6 @@ describe("useChat transport lifecycle", () => {
     await render(<Probe chatId="a" />);
     const socket = await openSocket();
     const attachmentIds = ["uploaded-id"];
-    const clientGeo = { label: "Original location", latitude: 1, longitude: 2 };
     await act(async () => {
       current.editThread([{
         id: "composer-optimistic", role: "user", content: "attachment question",
@@ -872,7 +859,7 @@ describe("useChat transport lifecycle", () => {
       }], "page_refresh");
       await current.sendMessage("attachment question", {
         skipUserBubble: true, trackSendingMessageId: "composer-optimistic",
-        attachmentIds, clientGeo, localFileUri: "file:///original.pdf",
+        attachmentIds, localFileUri: "file:///original.pdf",
         localFileName: "original.pdf", localFileContentType: "application/pdf",
       });
       socket.emit({ type: "start" });
@@ -880,10 +867,8 @@ describe("useChat transport lifecycle", () => {
     });
     expect(current.messages).toEqual([]);
     attachmentIds[0] = "different-upload";
-    clientGeo.label = "Different location";
     await act(async () => { await current.retryRejectedSend(); });
     expect(socket.send).toHaveBeenLastCalledWith(expect.stringContaining('"attachment_ids":["uploaded-id"]'));
-    expect(socket.send).toHaveBeenLastCalledWith(expect.stringContaining('"client_location":"Original location"'));
     expect(current.messages.filter((message) => message.role === "user")).toEqual([
       expect.objectContaining({ content: "attachment question", local_file_uri: "file:///original.pdf" }),
     ]);

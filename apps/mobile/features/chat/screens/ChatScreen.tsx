@@ -20,10 +20,10 @@ import { DrawerShell } from "@/features/chat/drawer/DrawerShell";
 import { ComposerDraftProvider, useComposerDraftActivity } from "@/features/chat/context/ComposerDraftContext";
 import { ChatReplyProviders } from "@/features/chat/components/ChatReplyProviders";
 import { useAuth } from "@/contexts/AuthContext";
+import { hasPlanFeature } from "@/lib/plan";
 import type { UpgradeSource } from "@/features/billing/components/UpgradeSheet";
 import { useChat } from "@/features/chat/hooks/useChat";
 import { useChatActions } from "@/features/chat/hooks/useChatActions";
-import { useChatComposerState } from "@/features/chat/hooks/useChatComposerState";
 import { useEnsureChatId } from "@/features/chat/hooks/useEnsureChatId";
 import { useChatComposerWiring } from "@/features/chat/hooks/useChatComposerWiring";
 import { useChatDraftWarmup } from "@/features/chat/hooks/useChatDraftWarmup";
@@ -34,7 +34,6 @@ import { useChatRouteLoader } from "@/features/chat/hooks/useChatRouteLoader";
 import { useChatScroll, useScrollHoldForHighlight } from "@/features/chat/hooks/useChatScroll";
 import { useChatSend } from "@/features/chat/hooks/useChatSend";
 import { useDraftChat } from "@/features/chat/hooks/useDraftChat";
-import { useModels } from "@/hooks/useModels";
 import { useNetwork } from "@/contexts/NetworkContext";
 import { useChatErrorHandlers, useChatErrorRecovery, useChatStreamLifecycle } from "@/features/chat/hooks/useChatScreenError";
 import { useQuotaNudge } from "@/features/chat/hooks/useQuotaNudge";
@@ -45,7 +44,7 @@ import { useChatImageGeneration } from "@/features/chat/hooks/useChatImageGenera
 import { useKeyboardInset } from "@/hooks/useKeyboardInset";
 
 function ChatScreen() {
-  const { token, user, updateUser } = useAuth();
+  const { token, user } = useAuth();
   const { t } = useTranslation();
   const C = useTheme();
   const s = useMemo(() => makeChatScreenStyles(C), [C]);
@@ -58,7 +57,8 @@ function ChatScreen() {
   const [chatId, setChatId] = useState<string | null>(null);
   const composerActive = useComposerDraftActivity();
   const draft = useDraftChat({ chatId, intent: composerActive });
-  const { isPaid, autoEnabled, modelEnabledSet, AUTO_MODEL_ID } = useModels();
+  // Paid plans (Plus and Pro) include every model; the server enforces it.
+  const isPaid = hasPlanFeature(user, "all_models");
   const {
     chatError, handleChatError, handleStreamBusy, dismissChatError, dismissBusyNotice, handleRejectedSendChange,
   } = useChatErrorHandlers(isPaid);
@@ -87,7 +87,6 @@ function ChatScreen() {
     retryRejectedSend,
     restoreRejectedAttachmentDraft,
     beginRegenerateUi,
-    cancelRegenerateUi,
     regenerateResponse,
     stopGeneration,
     connect,
@@ -157,13 +156,6 @@ function ChatScreen() {
 
   const { setMenuVisible, actionBanner, dismissActionBanner, handleFeedback, handleSaveEmailDraft } = chatActions;
 
-  const composer = useChatComposerState({
-    autoEnabled,
-    modelEnabledSet,
-    autoModelId: AUTO_MODEL_ID,
-  });
-
-  const { selectedModel } = composer;
   const { isOffline } = useNetwork();
 
   const openUpgradeRef = useRef<((source?: UpgradeSource) => void) | null>(null);
@@ -172,7 +164,7 @@ function ChatScreen() {
     showActionBannerRef.current(t("chat.offline_body"), "cloud-off");
   }, [t]);
 
-  const ensureChatId = useEnsureChatId({ chatId, selectedModel, draft, setChatId, setChatTitle, router });
+  const ensureChatId = useEnsureChatId({ chatId, draft, setChatId, setChatTitle, router });
   const imageGen = useChatImageGeneration({
     token,
     ensureChatId,
@@ -210,9 +202,6 @@ function ChatScreen() {
     sendStart,
     editThread,
     messages,
-    selectedModel,
-    updateUser,
-    locationEnabled: user?.location_enabled === true,
     t,
     onStreamBusy: handleStreamBusy,
     onOfflineBlocked: notifyOfflineBlocked,
@@ -260,11 +249,8 @@ function ChatScreen() {
 
   const { regenerate: handleRegenerate, regenerating } = useChatRegenerate({
     token,
-    messages,
-    updateUser,
     regenerateResponse,
     beginRegenerateUi,
-    cancelRegenerateUi,
   });
   const retryChatError = useChatErrorRecovery({
     error: chatError,
@@ -274,14 +260,12 @@ function ChatScreen() {
     restoreRejectedAttachmentDraft,
     restoreComposerDraft,
     regenerate: handleRegenerate,
-    selectedModel,
   });
 
   const { headerTitleLabel, renderItem } = useChatMessageList({
     messages,
     streaming,
     finalizing,
-    selectedModel,
     highlightedMessageId,
     sendingMessageId,
     setMenuVisible,
@@ -320,7 +304,6 @@ function ChatScreen() {
     dismissActionBanner,
     header: {
       insetsTop: insets.top,
-      router,
       headerTitleLabel,
       titleGenerating,
       chatTitle,
@@ -357,7 +340,6 @@ function ChatScreen() {
     streaming: streamActive,
     replySaving: finalizing,
     sendBusy: routeLoader.historyPending || sendPhase !== "idle",
-    sendStatus: sendPhase === "locating" ? t("chat.locating") : undefined,
     stopGeneration: stopTurn,
     isOffline,
     voice: composerWiring.voice,

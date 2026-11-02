@@ -29,7 +29,6 @@ jest.mock("@/lib/api/client", () => ({
 }));
 jest.mock("@/features/notifications/model/pushNotifications", () => ({ clearPushSyncRecord: jest.fn(async () => undefined) }));
 jest.mock("@/lib/auth", () => ({ getToken: jest.fn(async () => "token") }));
-jest.mock("@/lib/cachedModels", () => ({ clearCachedModels: jest.fn(async () => undefined) }));
 jest.mock("@/lib/syncRecords", () => ({ forgetSyncRecords: jest.fn(async () => undefined) }));
 jest.mock("@/lib/google-auth", () => ({ signOutGoogle: jest.fn(async () => undefined) }));
 jest.mock("@/features/chat/model/composerDraftReset", () => ({ resetComposerDraftsForAccount: jest.fn() }));

@@ -72,7 +72,6 @@ function Cell({ item, streaming = false }: { item: Message; streaming?: boolean 
     messages: [item],
     streaming,
     finalizing: false,
-    selectedModel: "free-chat",
     highlightedMessageId: null,
     sendingMessageId: null,
     setMenuVisible: () => {},

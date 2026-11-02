@@ -21,11 +21,9 @@ export type User = {
   email: string;
   name: string | null;
   avatar_url: string | null;
-  default_model: string;
   plan: PlanId;
   /** What the plan includes (display only; the server checks every request). */
   features?: PlanFeature[];
-  enabled_models: string[] | null;
   /** Three follow-up questions under a reply; on unless the user turned it off. */
   follow_up_suggestions_enabled?: boolean;
   /** Web search and photo lookups (Settings → Data controls); on unless turned off. */
@@ -33,7 +31,6 @@ export type User = {
   /** When the account agreed to what goes to outside AI services; null until it does.
    * Absent only from an older server, which the consent gate lets through. */
   ai_data_consent_at?: string | null;
-  response_tone: string;
   /** How many emoji replies use: "off", "some" (the default) or "more". */
   emoji_use?: string;
   memory_enabled: boolean;
@@ -49,8 +46,6 @@ export type User = {
   reminder_lead_minutes: number;
   locale: string;
   timezone: string;
-  location: string | null;
-  location_enabled: boolean;
   custom_instructions: string | null;
   age: number | null;
   country: string | null;
@@ -67,7 +62,6 @@ export type User = {
 export type Chat = {
   id: string;
   title: string | null;
-  model: string;
   pinned: boolean;
   created_at: string;
   updated_at: string;

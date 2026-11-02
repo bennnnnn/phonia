@@ -21,7 +21,6 @@ function draft(created: string | null) {
 async function setup(chatId: string | null, chatDraft: ReturnType<typeof draft>["value"]) {
   const options = {
     chatId,
-    selectedModel: "free-chat",
     draft: chatDraft,
     setChatId: jest.fn(),
     setChatTitle: jest.fn(),
@@ -44,7 +43,7 @@ it("makes a new chat the open one when none is open", async () => {
   let id: string | null = null;
   await act(async () => { id = await ensureChatId(); });
   expect(id).toBe("new-1");
-  expect(chatDraft.value.prepareDraftChat).toHaveBeenCalledWith("free-chat");
+  expect(chatDraft.value.prepareDraftChat).toHaveBeenCalledWith();
   expect(chatDraft.creatingDuringPrepare()).toBe(true);
   expect(chatDraft.value.creatingRef.current).toBe(false);
   expect(chatDraft.value.skipLoadForChatIdRef.current).toBe("new-1");

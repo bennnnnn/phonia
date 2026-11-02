@@ -34,13 +34,11 @@ _CHAT = str(uuid4())
 # (schema, the field under test, the rest of a valid body)
 PERSISTED_TEXT_FIELDS: list[tuple[type[BaseModel], str, dict[str, Any]]] = [
     (ChatMessageRequest, "content", {}),
-    (ChatMessageRequest, "client_location", {"content": "hi"}),
     (ChatRename, "title", {}),
     (EmailDraftUpdate, "body", {}),
     (EmailDraftUpdate, "subject", {}),
     (UserUpdate, "custom_instructions", {}),
     (UserUpdate, "job", {}),
-    (UserUpdate, "location", {}),
     (AppleAuthRequest, "name", {"id_token": "tok"}),
     (PushTokenIn, "device_id", {"expo_push_token": "ExponentPushToken[x]", "platform": "ios"}),
     (TodoCreate, "content", {}),

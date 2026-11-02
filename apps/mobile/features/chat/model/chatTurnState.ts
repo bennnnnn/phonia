@@ -72,7 +72,6 @@ function onSend(s: ChatTurnState, out: Out, event: Extract<ChatTurnEvent, { type
       trackSendingMessageId: undefined,
       attachmentIds: options?.attachmentIds?.slice(),
       composerDraft: draft ? { text: draft.text, attachment: draft.attachment ? { ...draft.attachment } : null } : undefined,
-      clientGeo: options?.clientGeo ? { ...options.clientGeo } : options?.clientGeo,
     },
   };
   s.ttftTurnId = trackedId;
@@ -412,9 +411,6 @@ export function reduceChatTurn(state: ChatTurnState, event: ChatTurnEvent, now: 
       }
       if (!s.regenerating) onRegenerateUi(s, out, event.messages);
       s.attempt += 1;
-      break;
-    case "regenerate_cancelled":
-      restoreRegenerateBackup(s, out);
       break;
     case "stop":
       onStop(s, out, now);

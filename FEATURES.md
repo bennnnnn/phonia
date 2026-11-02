@@ -560,16 +560,13 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   `entitlements.has_strong_everyday_model`, one switch per plan in `core/settings/plans.py`); it
   keeps photo turns too. Hard and maths turns keep their lanes on every plan. No OpenRouter-auto
   “Max” chip.
-- ✅ **Manual switching** — model selection lives in Settings → Models (settings-only by
-  design; the composer picker was removed to keep the composer single-purpose). Respected
-  per chat turn. With Auto off, every message goes to one model: the screen names it
-  ("Messages use") and lets the user pick it among the models switched on.
+- ✅ **No model choice** — students don't pick models: every turn takes Auto's path over the
+  plan's pool (`modules/chat/model_routing/choice.py`). There is no Models screen, no stored
+  model preference and no per-chat or per-message model.
 - ✅ **Chat settings from natural language** — small allowlist, confirm-then-write
-  (the same card a reminder change gets): model (Flash / Pro / Auto, nicknames like “GPT” → GPT-6 Luna),
-  tone (funny / professional / casual / soft), app language, and appearance
-  (light / dark / system — applied on-device). Respects `enabled_models` + plan.
-  No open settings tool.
-- ✅ **Auto routing** — an **Auto** option (Settings → Models) picks Flash vs Pro per message via a
+  (the same card a reminder change gets): app language and appearance
+  (light / dark / system — applied on-device). No open settings tool.
+- ✅ **Auto routing** — **Auto** picks Flash vs Pro per message via a
   fast heuristic (length, code fences, reasoning keywords). Explicit chat tutoring and substantive
   learning roadmaps use the low-latency fast lane (Qwen3.7 Flash) with strict step/day and tagged-example
   contracts; hard reasoning remains on Pro. Short follow-ups of a hard turn inherit that turn’s tier;
@@ -758,8 +755,8 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
 ## 10. Settings & profile
 - ✅ **Account settings** — the avatar at the top of Settings opens **Profile**: a centered
   avatar with a pencil badge opens the name and photo editor (a camera badge picks and
-  previews a photo; Save profile persists both). Profile also holds age / country / job and
-  use current location. There is no username. Settings → Account shows the email (with how
+  previews a photo; Save profile persists both). Profile also holds age / country / job.
+  The app does not use the device's location. There is no username. Settings → Account shows the email (with how
   you sign in under it), the plan (free opens the upgrade sheet, which also restores a
   purchase; Pro manages the subscription in the store) and today's usage. Persisted on
   `users` and injected into the chat system prompt (see [§6](#6-memory-remembering-the-user)).
@@ -770,17 +767,18 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   app's `ListRow` / `ListGroup`. Rows that open a page show a chevron. Groups carry
   sentence-case headings; current values sit beneath row titles; overview explanations
   stay in accessibility hints. Nested screens omit row icons except connected-app marks.
-  Choice rows (appearance, accent, language, style, tone, voice, speed, reminder lead)
+  Choice rows (appearance, accent, language, emoji, voice, speed, reminder lead)
   open a floating popup — they do **not** expand inside the gray card.
 - ✅ **Experience** — Appearance (System / Light / Dark), Accent color, Language and
   Haptics, all on the Settings page itself. Appearance, accent and haptics are saved on
   the device; Haptics off silences every `lib/haptics` call.
-- ✅ **Personalization** — tone labels, emoji and custom instructions. Stored tone ids stay
-  `soft` / `casual` / `professional` / `funny`. Emoji (`users.emoji_use`: `off` /
+- ✅ **Personalization** — emoji, follow-up questions and custom instructions. There is no
+  tone setting: every reply keeps one casual voice line (`modules/chat/response_tone.VOICE_HINT`).
+  Emoji (`users.emoji_use`: `off` /
   `some` / `more`, every account starts at `some`) is the one emoji rule in the prompt
   (`modules/chat/response_tone.emoji_hint`): a few lead headings and list labels, never in
-  numbers, maths, code, cards, a worked solution, a draft or a painful reply; no tone
-  speaks about emoji. The finalize pass `emoji_use` (`modules/chat/emoji_placement.py`)
+  numbers, maths, code, cards, a worked solution, a draft or a painful reply; the voice
+  line never speaks about emoji. The finalize pass `emoji_use` (`modules/chat/emoji_placement.py`)
   keeps it whatever the model wrote: at A few an emoji moves to the front of its label
   and any in a sentence goes; at None they all go unless the user wrote one. There is no response-length setting:
   each message sets its own ("briefly", "in detail"), and how hard a turn thinks is
@@ -856,7 +854,7 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   `users.ai_data_consent_at` with the sign-in and a new account opens the chat. An account
   without it (from before this, withdrawn, or signed in by a client that sends no flag)
   sees once what goes to which outside service (AI models via OpenRouter, OpenAI voice,
-  Mathpix math photos, Tavily search, optional location) with a privacy-policy link; Agree
+  Mathpix math photos, Tavily search) with a privacy-policy link; Agree
   stores it (`PATCH /auth/me` `ai_data_consent`), Not now signs out to the sign-in page.
   Every signed-in screen waits on it (the root layout's
   `features/auth/components/AiConsentRedirect.tsx` sends it to `app/consent.tsx`); the web
@@ -881,7 +879,7 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   wordmark and 11px stat chips keep their one-off sizes.
 
 **UX decisions from the 2026-09 frontend audit (do not relitigate):**
-- Model selection is **settings-only** (Settings → Models); no composer model picker.
+- There is **no model selection** anywhere: Auto picks every turn's model.
 - User-message copy stays **long-press only** (with a "Long press to copy"
   accessibility hint); no visible copy button on user bubbles.
 - Onboarding keeps a single CTA.
@@ -1257,7 +1255,7 @@ Shipped after the Phase 1/2 code review (and follow-up PRs):
 - ✅ WS handshake IP rate limit before `accept()`; core `user_id` FKs `ON DELETE CASCADE`
 - ✅ Alembic `transaction_per_migration` so future `CREATE INDEX CONCURRENTLY` can use
   `op.get_context().autocommit_block()`
-- ✅ Enum-like CHECK constraints — memories (type, status, sensitivity), users plan and response tone, and message role/feedback. Project, quiz-mode, and item-status checks left with the learning tables.
+- ✅ Enum-like CHECK constraints — memories (type, status, sensitivity), users plan and emoji use, and message role/feedback. Project, quiz-mode, and item-status checks left with the learning tables.
 - ✅ Mobile: in-chat delete syncs drawer + cache; mount chat-load `catch`; memoized contexts;
   removed unused `showContextSummarized`; bootstrap listener cleanup race; draft discard on
   background; a11y labels on key icon-only controls

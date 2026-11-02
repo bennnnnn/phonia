@@ -42,7 +42,7 @@ export function useChatErrorHandlers(isPaid: boolean) {
 /** Keep unsaved-send recovery separate from regeneration of a saved reply. */
 export function useChatErrorRecovery({
   error, blocked, dismiss, retryRejectedSend, restoreRejectedAttachmentDraft,
-  restoreComposerDraft, regenerate, selectedModel,
+  restoreComposerDraft, regenerate,
 }: {
   error: ResolvedChatError | null;
   blocked: boolean;
@@ -50,8 +50,7 @@ export function useChatErrorRecovery({
   retryRejectedSend: () => Promise<boolean>;
   restoreRejectedAttachmentDraft: (restore: (draft: ComposerSendDraft) => boolean) => boolean;
   restoreComposerDraft: (draft: ComposerSendDraft) => boolean;
-  regenerate: (model: string) => unknown;
-  selectedModel: string;
+  regenerate: () => unknown;
 }) {
   return useCallback(() => {
     if (blocked) return;
@@ -66,10 +65,10 @@ export function useChatErrorRecovery({
     }
     if (error?.kind === "generic") {
       dismiss();
-      void regenerate(selectedModel);
+      void regenerate();
     }
   }, [blocked, error?.kind, dismiss, retryRejectedSend, restoreRejectedAttachmentDraft,
-    restoreComposerDraft, regenerate, selectedModel]);
+    restoreComposerDraft, regenerate]);
 }
 
 type StreamLifecycleParams = {

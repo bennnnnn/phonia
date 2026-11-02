@@ -202,7 +202,7 @@ def _photo_deps(search: AsyncMock) -> Any:
         messages={"list_recent": AsyncMock(return_value=[])},
         quota={"daily_limit_for_user": MagicMock(return_value=100_000)},
         plan={
-            "resolve_user_model_override": MagicMock(return_value="free-chat"),
+            "resolve_user_model": MagicMock(return_value="free-chat"),
             "can_use": MagicMock(return_value=False),
         },
         image_search={"search_and_attach_for_chat": search},

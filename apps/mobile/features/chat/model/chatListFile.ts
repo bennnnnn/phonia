@@ -12,19 +12,18 @@ const GROUPS = ["pinned", "today", "yesterday", "last_7_days", "this_month", "ol
 
 function readChat(value: unknown): Chat | null {
   if (typeof value !== "object" || value === null) return null;
-  const { id, title, model, pinned, created_at: createdAt, updated_at: updatedAt } =
+  const { id, title, pinned, created_at: createdAt, updated_at: updatedAt } =
     value as Record<string, unknown>;
   if (
     typeof id !== "string" ||
     (title !== null && typeof title !== "string") ||
-    typeof model !== "string" ||
     typeof pinned !== "boolean" ||
     typeof createdAt !== "string" ||
     typeof updatedAt !== "string"
   ) {
     return null;
   }
-  return { id, title, model, pinned, created_at: createdAt, updated_at: updatedAt };
+  return { id, title, pinned, created_at: createdAt, updated_at: updatedAt };
 }
 
 function readList(value: unknown): ChatList | null {

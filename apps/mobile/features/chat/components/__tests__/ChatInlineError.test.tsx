@@ -14,7 +14,6 @@ jest.mock("react-i18next", () => ({
         "chat.regenerate": "Regenerate",
         "chat.regenerate_a11y": "Regenerate response",
         "chat.restore_draft": "Restore draft",
-        "settings.model": "Models",
         "chat.error_dismiss_a11y": "Dismiss error",
       })[key] ?? key,
   }),
@@ -97,21 +96,6 @@ describe("ChatInlineError", () => {
     expect(view.queryByTestId("chat-error-retry")).toBeNull();
     fireEvent.press(view.getByTestId("chat-error-regenerate"));
     expect(onRetry).toHaveBeenCalledTimes(1);
-  });
-
-  it("opens model selection when the active model is unavailable", async () => {
-    const onChangeModel = jest.fn();
-    const view = await render(
-      <ChatInlineError
-        error={{ kind: "model_unavailable", message: "Pick a different model." }}
-        onChangeModel={onChangeModel}
-        onDismiss={jest.fn()}
-        bottom={20}
-      />,
-    );
-
-    fireEvent.press(view.getByTestId("chat-error-change-model"));
-    expect(onChangeModel).toHaveBeenCalledTimes(1);
   });
 });
 

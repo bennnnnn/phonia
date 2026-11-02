@@ -13,8 +13,7 @@ import { attachmentErrorMessage } from "@/features/attachments/model/attachmentE
 import type { PendingAttachment } from "@/features/attachments/model/attachments";
 import { flushEmailDrafts } from "@/features/drafts/model/emailDraftFlush";
 import type { ImageGenSubmit } from "@/features/images/hooks/useImageGeneration";
-import { resolveClientGeoForQuery } from "@/features/chat/model/resolveClientGeoForQuery";
-import type { Message, User } from "@/lib/api";
+import type { Message } from "@/lib/api";
 
 /** A send whose bubble, and typing dots when they could go up, are on screen. */
 export type PaintedSend = SendTurn & {
@@ -32,7 +31,6 @@ type Options = {
   token: string | null;
   chatId: string | null;
   messages: Message[];
-  selectedModel: string;
   imageGenerating: boolean;
   onGenerateImage?: (request: ImageGenSubmit) => void;
   /**
@@ -41,9 +39,6 @@ type Options = {
    */
   sendMessage: (text: string, opts?: SendMessageOptions) => Promise<boolean>;
   sendStart: SendTurnStart;
-  updateUser: (patch: Partial<User>) => Promise<void>;
-  /** The profile's location switch is already on: the turn need not wait for it to save. */
-  locationEnabled: boolean;
   t: (key: string, options?: Record<string, unknown>) => string;
   pendingAttachmentRef: MutableRefObject<PendingAttachment | null>;
   setPendingAttachment: (value: PendingAttachment | null) => void;
@@ -72,7 +67,7 @@ function dispatchGates(send: PaintedSend, sendStart: SendTurnStart): Promise<unk
  * Where a send goes once its bubble is painted: the server reads whether it is a
  * picture (POST /images/intent) while the bubble is already up, then a picture is
  * handed to image generation under that bubble, and anything else goes to chat
- * once its location, file and drafts are ready. Either way it waits on its
+ * once its file and drafts are ready. Either way it waits on its
  * `dispatchGates` meanwhile. A send stopped or refused on the way takes its bubble
  * and dots back and returns the draft, so nothing is lost or left behind.
  */
@@ -80,13 +75,10 @@ export function useChatSendRoute({
   token,
   chatId,
   messages,
-  selectedModel,
   imageGenerating,
   onGenerateImage,
   sendMessage,
   sendStart,
-  updateUser,
-  locationEnabled,
   t,
   pendingAttachmentRef,
   setPendingAttachment,
@@ -174,17 +166,6 @@ export function useChatSendRoute({
 
       const authToken = token;
       if (!authToken) return giveBack();
-      // The fix goes with the turn. The server reads one only from a user whose
-      // location is on, so only switching it on has to save before the turn goes.
-      const persistLocation = (patch: Partial<User>) => {
-        const saving = updateUser(patch);
-        if (!locationEnabled) return saving;
-        void saving.catch(() => undefined);
-      };
-      const geo = await resolveClientGeoForQuery(authToken, send.text, t, persistLocation);
-      if (!geo.ok || !stillSending()) return giveBack();
-      // The fix is in: "Locating…" gives way to the upload, or to nothing.
-      setSendPhase(attached ? "uploading" : "preparing");
       let attachmentIds: string[] | undefined;
       if (attached) {
         try {
@@ -203,8 +184,6 @@ export function useChatSendRoute({
         attached,
         attachmentIds,
         optimisticId: send.optimisticId,
-        clientGeo: geo.clientGeo,
-        model: selectedModel,
       });
       if (!chatId) return sendToNewChat(send, pending, giveBack);
       const sending = sendMessage(pending.text, pending);
@@ -215,7 +194,7 @@ export function useChatSendRoute({
     },
     [
       chatId, messages, onGenerateImage, imageGenerating, token, sendStart, restoreFailedSend, handToImageGeneration,
-      t, updateUser, locationEnabled, setSendPhase, feedback, selectedModel, sendToNewChat, sendMessage,
+      t, setSendPhase, feedback, sendToNewChat, sendMessage,
       setPendingOutboundId, sendInFlightRef,
     ],
   );

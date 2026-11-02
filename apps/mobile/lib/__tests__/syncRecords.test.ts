@@ -41,21 +41,19 @@ describe("sync records", () => {
     // A push token the service rolled since does not count.
     expect(await recentSyncAt("push", "user-1", 12 * HOUR, "on:99887766", 1_000 + HOUR)).toBeNull();
     expect(await recentSyncAt("push", "user-1", 12 * HOUR, "on:a1b2c3d4", 1_000 + 13 * HOUR)).toBeNull();
-    expect(await recentSyncAt("location", "user-1", 24 * HOUR, "", 1_000 + HOUR)).toBeNull();
   });
 
   it("does not trust a time from a clock that was set back, or a broken file", async () => {
-    await recordSync("location", "user-1", "", 10 * HOUR);
-    expect(await recentSyncAt("location", "user-1", 24 * HOUR, "", 9 * HOUR)).toBeNull();
-    mockFiles.set("file:///cache/recall-synced-location.json", "{not json");
-    expect(await recentSyncAt("location", "user-1", 24 * HOUR, "", 10 * HOUR)).toBeNull();
+    await recordSync("push", "user-1", "", 10 * HOUR);
+    expect(await recentSyncAt("push", "user-1", 24 * HOUR, "", 9 * HOUR)).toBeNull();
+    mockFiles.set("file:///cache/recall-synced-push.json", "{not json");
+    expect(await recentSyncAt("push", "user-1", 24 * HOUR, "", 10 * HOUR)).toBeNull();
   });
 
   it("forgets every record at sign-in and sign-out", async () => {
     await recordSync("push", "user-1", "on:a1b2c3d4");
-    await recordSync("location", "user-1");
     await forgetSyncRecords();
     expect(mockFiles.size).toBe(0);
-    expect(deleteAsync).toHaveBeenCalledTimes(2);
+    expect(deleteAsync).toHaveBeenCalledTimes(1);
   });
 });

@@ -43,8 +43,3 @@ export function isPhysicalDevice(): boolean | null {
     return null;
   }
 }
-
-/** Device GPS is only available in dev/production builds with native Info.plist keys. */
-export function canUseDeviceLocation(): boolean {
-  return !isExpoGo();
-}

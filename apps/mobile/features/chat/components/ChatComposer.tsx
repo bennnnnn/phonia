@@ -2,7 +2,6 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Pressable,
   StyleSheet,
-  Text,
   TextInput,
   useWindowDimensions,
   View,
@@ -72,7 +71,6 @@ function gapFadeColors(bg: string): [string, string] {
 
 // 36 pt row + 4 pt card padding above and below + 6 pt shell air above and below.
 export const COMPOSER_HEIGHT = 56;
-const COMPOSER_STATUS_LINE_HEIGHT = 18;
 
 type Props = {
   visible: boolean;
@@ -81,7 +79,6 @@ type Props = {
   /** A picked file is still being prepared: Send and Attach wait for it. */
   attachPicking?: boolean;
   sendBusy?: boolean;
-  sendStatus?: string;
   pendingAttachment: PendingAttachment | null;
   onRemoveAttachment: () => void;
   onCloseAttachSheet: () => void;
@@ -108,7 +105,6 @@ export const ChatComposer = memo(function ChatComposer({
   streaming,
   attachPicking = false,
   sendBusy = false,
-  sendStatus,
   pendingAttachment,
   onRemoveAttachment,
   onCloseAttachSheet,
@@ -152,8 +148,7 @@ export const ChatComposer = memo(function ChatComposer({
   const mathChromeHeight =
     (math.mathBarOpen ? math.padHeight : 0) +
     (showMathPreview ? MATH_DRAFT_PREVIEW_HEIGHT : 0) +
-    (scanHint ? COMPOSER_SCAN_HINT_HEIGHT : 0) +
-    (sendStatus ? COMPOSER_STATUS_LINE_HEIGHT : 0);
+    (scanHint ? COMPOSER_SCAN_HINT_HEIGHT : 0);
 
   // Kept while the drawer hides the composer, so opening it does not re-lay out the chat.
   useEffect(() => {
@@ -468,16 +463,6 @@ export const ChatComposer = memo(function ChatComposer({
                 {attachButton}
                 {trailingControls}
               </View>
-            ) : null}
-            {sendStatus ? (
-              <Text
-                style={s.sendStatus}
-                testID="composer-send-status"
-                accessibilityRole="text"
-                accessibilityLiveRegion="polite"
-              >
-                {sendStatus}
-              </Text>
             ) : null}
           </View>
           {mathBarOpen && !composerExpanded ? (

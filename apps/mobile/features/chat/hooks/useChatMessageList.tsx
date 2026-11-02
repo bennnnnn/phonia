@@ -19,11 +19,10 @@ type Options = {
   messages: Message[];
   streaming: boolean;
   finalizing: boolean;
-  selectedModel: string;
   highlightedMessageId: string | null;
   sendingMessageId: string | null;
   setMenuVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  regenerateResponse: (model: string) => void | Promise<void>;
+  regenerateResponse: () => void | Promise<void>;
   regenerating?: boolean;
   handleFeedback: (messageId: string, next: "up" | "down" | null) => void;
   onSelectSuggestion?: (prompt: string) => void;
@@ -35,7 +34,6 @@ export function useChatMessageList({
   messages,
   streaming,
   finalizing,
-  selectedModel,
   highlightedMessageId,
   sendingMessageId,
   setMenuVisible,
@@ -68,7 +66,6 @@ export function useChatMessageList({
     () => ({
       emojiUse,
       lastAssistantId,
-      selectedModel,
       highlightedMessageId,
       sendingMessageId,
       onRegenerate: regenerateResponse,
@@ -78,7 +75,6 @@ export function useChatMessageList({
     [
       emojiUse,
       lastAssistantId,
-      selectedModel,
       highlightedMessageId,
       sendingMessageId,
       regenerateResponse,

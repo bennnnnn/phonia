@@ -11,7 +11,6 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { AiConsentRedirect } from "@/features/auth/components/AiConsentRedirect";
 import { ActionFeedbackProvider } from "@/contexts/ActionFeedbackContext";
 import { AppearanceProvider } from "@/contexts/AppearanceContext";
-import { ModelsProvider } from "@/contexts/ModelsContext";
 import { NetworkProvider, useNetwork } from "@/contexts/NetworkContext";
 import { TodosProvider } from "@/features/todos/context/TodosContext";
 import { PushNotificationBootstrap } from "@/features/todos/components/PushNotificationBootstrap";
@@ -124,16 +123,14 @@ export default function RootLayout() {
         <ActionFeedbackProvider>
           <AuthProvider onRestored={markSessionRestored}>
             {fontsReady ? (
-              <ModelsProvider>
-                <TodosProvider>
-                  <NetworkProvider>
-                    <PushNotificationBootstrap />
-                    <AiConsentRedirect />
-                    <RootNavigator />
-                    <DialogHost />
-                  </NetworkProvider>
-                </TodosProvider>
-              </ModelsProvider>
+              <TodosProvider>
+                <NetworkProvider>
+                  <PushNotificationBootstrap />
+                  <AiConsentRedirect />
+                  <RootNavigator />
+                  <DialogHost />
+                </NetworkProvider>
+              </TodosProvider>
             ) : null}
           </AuthProvider>
         </ActionFeedbackProvider>

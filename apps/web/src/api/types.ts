@@ -7,10 +7,8 @@ export type User = {
   email: string;
   name: string | null;
   avatar_url: string | null;
-  default_model: string;
   plan: "free" | "pro";
   response_style: string;
-  response_tone: string;
   memory_enabled: boolean;
   locale: string;
   timezone: string;
@@ -22,7 +20,6 @@ export type User = {
 export type Chat = {
   id: string;
   title: string | null;
-  model: string;
   pinned: boolean;
   created_at: string;
   updated_at: string;

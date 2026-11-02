@@ -21,7 +21,6 @@ def test_create_chat():
     chat = MagicMock(spec=Chat)
     chat.id = uuid4()
     chat.title = None
-    chat.model = "free-chat"
     chat.pinned = False
     chat.created_at = datetime(2024, 1, 1)
     chat.updated_at = datetime(2024, 1, 1)
@@ -33,7 +32,8 @@ def test_create_chat():
             "/chats", headers={"Authorization": "Bearer tok"}, json={"model": "free-chat"}
         )
     assert r.status_code == 201
-    assert r.json()["model"] == "free-chat"
+    # There is no model choice: an older phone's model is ignored and none is returned.
+    assert "model" not in r.json()
     assert "project_id" not in r.json()
     assert "quiz_mode" not in r.json()
 
@@ -46,7 +46,6 @@ def test_create_chat_ignores_retired_project_id():
     chat = MagicMock(spec=Chat)
     chat.id = uuid4()
     chat.title = None
-    chat.model = "free-chat"
     chat.pinned = False
     chat.created_at = datetime(2024, 1, 1)
     chat.updated_at = datetime(2024, 1, 1)

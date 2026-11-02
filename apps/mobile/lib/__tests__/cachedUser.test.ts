@@ -45,18 +45,13 @@ const user: User = {
   email: "a@b.com",
   name: "Alex",
   avatar_url: null,
-  default_model: "smart-chat",
   plan: "free",
-  enabled_models: null,
-  response_tone: "neutral",
   memory_enabled: true,
   push_notifications_enabled: true,
   email_reminders_enabled: false,
   reminder_lead_minutes: 10,
   locale: "en",
   timezone: "UTC",
-  location: null,
-  location_enabled: false,
   custom_instructions: null,
   age: null,
   country: null,
@@ -121,7 +116,7 @@ describe("cachedUser", () => {
     );
   });
 
-  it("does NOT persist email, prefs, location, age, or custom_instructions", async () => {
+  it("does NOT persist email, prefs, age, or custom_instructions", async () => {
     await writeCachedUser(user);
     const written = (writeAsStringAsync as jest.Mock).mock.calls[0][1] as string;
     const parsed = JSON.parse(written) as Record<string, unknown>;
@@ -131,12 +126,10 @@ describe("cachedUser", () => {
     expect(parsed).not.toHaveProperty("email_reminders_enabled");
     expect(parsed).not.toHaveProperty("reminder_lead_minutes");
     expect(parsed).not.toHaveProperty("memory_enabled");
-    expect(parsed).not.toHaveProperty("location");
     expect(parsed).not.toHaveProperty("age");
     expect(parsed).not.toHaveProperty("country");
     expect(parsed).not.toHaveProperty("job");
     expect(parsed).not.toHaveProperty("custom_instructions");
-    expect(parsed).not.toHaveProperty("default_model");
     expect(parsed).not.toHaveProperty("timezone");
   });
 
@@ -207,7 +200,6 @@ describe("cachedUser", () => {
     expect(merged.email).toBe("");
     expect(merged.push_notifications_enabled).toBe(false);
     expect(merged.memory_enabled).toBe(false);
-    expect(merged.location).toBeNull();
     expect(merged.age).toBeNull();
     expect(merged.custom_instructions).toBeNull();
   });

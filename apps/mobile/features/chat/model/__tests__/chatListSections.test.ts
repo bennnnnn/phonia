@@ -26,7 +26,6 @@ describe("chatListSections", () => {
     groups.pinned.push({
       id: "p",
       title: null,
-      model: "free-chat",
       pinned: true,
       created_at: "",
       updated_at: "",
@@ -34,7 +33,6 @@ describe("chatListSections", () => {
     groups.today.push({
       id: "t",
       title: null,
-      model: "free-chat",
       pinned: false,
       created_at: "",
       updated_at: "",
@@ -57,7 +55,7 @@ describe("chatListSections", () => {
 
 
 describe("older chat pages (CLAR-12)", () => {
-  const chat = (id: string) => ({ id, title: id, model: "free-chat", pinned: false, created_at: "2026-01-01T00:00:00Z", updated_at: "2026-01-01T00:00:00Z" });
+  const chat = (id: string) => ({ id, title: id, pinned: false, created_at: "2026-01-01T00:00:00Z", updated_at: "2026-01-01T00:00:00Z" });
 
   it("appends each dated group below what is shown, once, and takes the page's cursor", () => {
     const shown = { ...emptyChatList(), pinned: [chat("p")], older: [chat("a")], next_cursor: "after-a" };

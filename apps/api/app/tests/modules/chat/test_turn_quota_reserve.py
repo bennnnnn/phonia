@@ -295,7 +295,7 @@ async def test_stream_chat_response_at_spend_cap_never_prepares_the_turn(
     release = AsyncMock()
     deps = turn_deps(
         session_factory=FakeSessionCM,
-        model_choice={"resolve_user_model_override": MagicMock(return_value="free-chat")},
+        model_choice={"resolve_user_model": MagicMock(return_value="free-chat")},
         locks={"acquire_lock": AsyncMock(return_value="tok"), "release_lock": release},
     )
     if spend == "capped":

@@ -49,11 +49,7 @@ function chatListPath(cursor?: string): string {
 }
 
 export const chatsApi = {
-  createChat: (token: string, model = "auto") =>
-    request<Chat>("/chats", token, {
-      method: "POST",
-      body: JSON.stringify({ model }),
-    }),
+  createChat: (token: string) => request<Chat>("/chats", token, { method: "POST" }),
   getChat: (token: string, chatId: string) =>
     request<Chat>(`/chats/${chatId}`, token),
   renameChat: (token: string, chatId: string, title: string) =>

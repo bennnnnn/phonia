@@ -49,7 +49,6 @@ async def test_saved_photo_is_private_persistent_and_not_a_chat_attachment(db_se
     await account_lifecycle.update_account(
         db_session,
         user,
-        Settings(_env_file=None),
         {"name": "After", "avatar_url": f"/attachments/{photo.id}/file"},
     )
     user_id, photo_id = user.id, photo.id
@@ -85,7 +84,6 @@ async def test_replaced_photo_can_be_reaped_without_deleting_current_photo(db_se
         await account_lifecycle.update_account(
             db_session,
             user,
-            Settings(_env_file=None),
             {"avatar_url": f"/attachments/{photo.id}/file"},
         )
     orphans = await attachments.list_orphans(db_session, older_than_hours=24)
@@ -105,7 +103,6 @@ async def test_profile_rejects_another_users_photo_without_partial_name_save(db_
         await account_lifecycle.update_account(
             db_session,
             stranger,
-            Settings(_env_file=None),
             {"name": "Bad update", "avatar_url": f"/attachments/{photo.id}/file"},
         )
     saved = await db_session.get(User, stranger_id)

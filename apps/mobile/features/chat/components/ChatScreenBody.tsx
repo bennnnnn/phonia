@@ -64,7 +64,6 @@ export interface ChatScreenComposerProps {
   replySaving: boolean;
   attachPicking: boolean;
   sendBusy: boolean;
-  sendStatus?: string;
   pendingAttachment: PendingAttachment | null;
   onRemoveAttachment: () => void;
   onPickAttachment: () => void;
@@ -99,7 +98,6 @@ export interface ChatScreenChromeProps {
   isPaid: boolean;
   onUpgrade: () => void;
   onRetryChatError: () => void;
-  onChangeModel: () => void;
   onDismissChatError: () => void;
 }
 
@@ -182,7 +180,6 @@ export const ChatScreenBody = memo(function ChatScreenBody({
         streaming={composerShowsStop(composer)}
         attachPicking={composer.attachPicking}
         sendBusy={composer.sendBusy}
-        sendStatus={composer.sendStatus}
         pendingAttachment={composer.pendingAttachment}
         onRemoveAttachment={composer.onRemoveAttachment}
         onCloseAttachSheet={sheets.onCloseAttachSheet}
@@ -262,7 +259,6 @@ const ChatOverlays = memo(function ChatOverlays({
         onUpgrade={!chrome.isPaid ? chrome.onUpgrade : undefined}
         onStop={onStop}
         onRetry={chrome.onRetryChatError}
-        onChangeModel={chrome.onChangeModel}
         onDismiss={chrome.onDismissChatError}
       />
 

@@ -397,13 +397,11 @@ permission. Changing any of it is a native change (bump `version`, new build).
 - **No background audio.** Read-aloud stops when the app
   leaves the foreground, so `expo-audio` has `enableBackgroundPlayback: false`:
   no `UIBackgroundModes` on iOS, no foreground service on Android.
-- **Not declared:** Face ID, Always location and Android media read access
+- **Not declared:** Face ID, location and Android media read access
   (`READ_MEDIA_*`; saving to the gallery is write-only and the photo picker needs
   none), plus `SYSTEM_ALERT_WINDOW` and `BLUETOOTH`
-  (`android.blockedPermissions`). `NSMotionUsageDescription` stays, saying the
-  app does not use motion: `expo-location` links Core Motion, and App Store
-  Connect rejects an upload whose binary uses an API without its purpose string
-  (ITMS-90683).
+  (`android.blockedPermissions`). No location at all: the app does not use the
+  device's location (no `expo-location`, no location or motion purpose strings).
 - **Export compliance:** `ios.config.usesNonExemptEncryption: false` (HTTPS
   only), so App Store Connect does not ask on every build.
 - **Privacy manifest:** `ios.privacyManifests` in `app.json`, which `expo prebuild`
@@ -463,8 +461,6 @@ every row, and the manifest says `NSPrivacyTracking: false`.
 |---|---|---|---|---|
 | Contact Info → Email Address | Yes | No | App Functionality | Google or Apple sign-in; reminder, welcome and receipt emails |
 | Contact Info → Name | Yes | No | App Functionality, Product Personalization | Sign-in and profile name; the greeting and the model's answers use it |
-| Location → Precise Location | Yes | No | App Functionality | A nearby or "where am I" message carries the phone's coordinates; when the phone finds no place name, the label sent is the coordinates to four decimals, which reaches the model and the web search |
-| Location → Coarse Location | Yes | No | App Functionality | The city, region and country saved while Use current location is on |
 | User Content → Photos or Videos | Yes | No | App Functionality | Attached photos, maths scans, the profile photo |
 | User Content → Audio Data | Yes | No | App Functionality | Voice input (sent to OpenAI; Recall keeps the text, not the audio) |
 | User Content → Other User Content | Yes | No | App Functionality, Product Personalization | Messages, chats, memory, to-dos, attached files, custom instructions, thumbs-up/down feedback |

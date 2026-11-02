@@ -49,7 +49,7 @@ def _deps(resolve: MagicMock) -> tuple[Any, Any, Any]:
         users={"get_by_id": AsyncMock(return_value=user)},
         chats={"get_by_id": AsyncMock(return_value=chat), "peek_recent_chat": lambda *_a: chat},
         messages={"list_recent": AsyncMock(return_value=[]), "count_for_chat": AsyncMock()},
-        model_choice={"resolve_user_model_override": resolve},
+        model_choice={"resolve_user_model": resolve},
     )
     return deps, user, chat
 

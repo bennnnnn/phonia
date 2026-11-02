@@ -61,9 +61,4 @@ export const AI_CONSENT_ITEMS: readonly ConsentItem[] = [
     titleKey: "onboarding.consent_search_title",
     bodyKey: "onboarding.consent_search_body",
   },
-  {
-    icon: "map-pin",
-    titleKey: "onboarding.consent_location_title",
-    bodyKey: "onboarding.consent_location_body",
-  },
 ];

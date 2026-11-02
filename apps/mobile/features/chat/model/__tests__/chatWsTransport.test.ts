@@ -89,19 +89,10 @@ describe("socket ids", () => {
 const MESSAGE = {
   content: "hello",
   attachment_ids: [],
-  model: null,
   client_message_id: "name-1",
-  client_location: null,
-  client_latitude: null,
-  client_longitude: null,
 };
 
-const REGENERATE = {
-  model: null,
-  client_location: null,
-  client_latitude: null,
-  client_longitude: null,
-};
+const REGENERATE = {};
 
 function sentFrames(socket: FakeSocket): unknown[] {
   return socket.send.mock.calls.map(([data]) => JSON.parse(data as string));
@@ -147,10 +138,6 @@ describe("ChatWsTransport", () => {
     expect(transport.sendMessage({
       ...MESSAGE,
       attachment_ids: ["attachment"],
-      model: "smart-chat",
-      client_location: "Here",
-      client_latitude: 1,
-      client_longitude: 2,
     })).toBe(true);
     socket.emit({ type: "token", content: "answer" });
 
@@ -160,11 +147,7 @@ describe("ChatWsTransport", () => {
         type: "message",
         content: "hello",
         attachment_ids: ["attachment"],
-        model: "smart-chat",
         client_message_id: "name-1",
-        client_location: "Here",
-        client_latitude: 1,
-        client_longitude: 2,
         client_timezone: "UTC",
       }),
     );

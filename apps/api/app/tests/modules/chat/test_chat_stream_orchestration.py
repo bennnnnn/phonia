@@ -1693,17 +1693,13 @@ async def test_stream_closes_llm_stream_on_cancel(fake_redis, stream_offline_io)
 
 
 @pytest.mark.asyncio
-async def test_stream_places_query_without_location_prompts_to_enable(
-    fake_redis, stream_offline_io
-):
-    """A 'near me' places query with no user.location should yield a deterministic
-    'enable location' instant reply and skip web search (no guessing)."""
+async def test_stream_places_query_asks_for_the_city(fake_redis, stream_offline_io):
+    """A 'near me' places query (the app has no device location) yields a deterministic
+    where-are-you instant reply and skips web search (no guessing)."""
     from app.modules import chat as chat_module
 
     fake_user = MagicMock()
     fake_user.id = MagicMock()
-    fake_user.location = ""  # no location set
-    fake_user.location_enabled = False
 
     fake_chat = MagicMock()
     fake_chat.model = "free-chat"
@@ -1736,59 +1732,8 @@ async def test_stream_places_query_without_location_prompts_to_enable(
         ):
             yielded.append(tok)
 
-    # The instant reply is the enable-location prompt (no guessing "near me").
-    assert any("Settings" in t and "location" in t.lower() for t in yielded), yielded
-
-
-@pytest.mark.asyncio
-async def test_stream_places_query_with_client_location_skips_the_settings_prompt(
-    fake_redis,
-    stream_offline_io,
-):
-    """Opted-in client GPS (no saved profile city) answers, without the settings prompt."""
-    from app.modules import chat as chat_module
-
-    fake_user = MagicMock()
-    fake_user.id = MagicMock()
-    fake_user.location = ""
-    fake_user.location_enabled = True
-
-    fake_chat = MagicMock()
-    fake_chat.model = "free-chat"
-    fake_chat.summary = None
-
-    async def fake_stream(**kwargs):
-        yield "answer"
-
-    with (
-        patch("app.services.quota.reserve_usage_up_to", grant_quota()),
-        patch("app.repositories.users.get_by_id", AsyncMock(return_value=fake_user)),
-        patch("app.repositories.users.update", AsyncMock(return_value=fake_user)),
-        patch.object(chats_repository, "get_by_id", AsyncMock(return_value=fake_chat)),
-        patch.object(messages_repository, "count_for_chat", AsyncMock(return_value=0)),
-        patch.object(messages_repository, "create", AsyncMock()),
-        patch(
-            "app.modules.chat.turn_prep.context.build_prompt_messages",
-            AsyncMock(return_value=[{"role": "system", "content": "sys"}]),
-        ),
-        patch("app.gateways.litellm_gateway.stream_chat_completion", fake_stream),
-        patch("app.services.quota.adjust_usage", AsyncMock()),
-        patch("app.repositories.usage.add_tokens", AsyncMock()),
-        patch.object(chats_repository, "touch_by_id", AsyncMock()),
-        patch("app.core.jobs.enqueue", AsyncMock()),
-    ):
-        yielded: list[str] = []
-        async for tok in chat_module.stream_chat_response(
-            offline_deps(),
-            fake_redis,
-            Settings(max_output_tokens=100, mcp_tool_loop_enabled=False),
-            user_id=fake_user.id,
-            chat_id=MagicMock(),
-            content="best restaurants near me",
-            client_location="San Francisco, CA",
-        ):
-            yielded.append(tok)
-
+    # The instant reply asks for the city (no guessing "near me"), never for a setting.
+    assert any("Tell me the city" in t for t in yielded), yielded
     assert not any("Settings" in t for t in yielded), yielded
 
 
@@ -2137,8 +2082,8 @@ async def test_regenerate_omits_assistant_from_prompt_without_pre_delete(fake_re
 
 
 @pytest.mark.asyncio
-async def test_regenerate_passes_client_geo_to_the_turn(fake_redis):
-    """The device's place reaches the turn a regenerate builds (its searches use it)."""
+async def test_regenerate_passes_the_client_zone_to_the_turn(fake_redis):
+    """The phone's zone reaches the turn a regenerate builds."""
     from app.modules import chat as chat_module
 
     fake_user = MagicMock()
@@ -2200,15 +2145,12 @@ async def test_regenerate_passes_client_geo_to_the_turn(fake_redis):
                 Settings(max_output_tokens=100, mcp_tool_loop_enabled=False),
                 user_id=fake_user.id,
                 chat_id=MagicMock(),
-                client_location="San Francisco, CA",
-                client_latitude=37.77,
-                client_longitude=-122.42,
+                client_timezone="America/Los_Angeles",
             ):
                 pass
 
     request = captured["request"]
-    assert (request.client_latitude, request.client_longitude) == (37.77, -122.42)
-    assert request.client_location == "San Francisco, CA"
+    assert request.client_timezone == "America/Los_Angeles"
 
 
 @pytest.mark.asyncio

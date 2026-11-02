@@ -1,6 +1,6 @@
 /**
  * When a sync the app runs after sign-in last succeeded on this phone (push
- * registration, the location label), per account, so a cold start can skip
+ * registration), per account, so a cold start can skip
  * work done a moment ago instead of repeating it every launch.
  *
  * Kept in the cache directory: no backup or device restore carries a record
@@ -9,15 +9,14 @@
  */
 import { cacheFile } from "@/lib/cache/cacheFile";
 
-type SyncKind = "push" | "location";
+type SyncKind = "push";
 
 type SyncRecord = { account: string; variant: string; at: number };
 
 const pushRecord = cacheFile("recall-synced-push.json");
-const locationRecord = cacheFile("recall-synced-location.json");
 
-function recordFile(kind: SyncKind) {
-  return kind === "push" ? pushRecord : locationRecord;
+function recordFile(_kind: SyncKind) {
+  return pushRecord;
 }
 
 /**
@@ -58,5 +57,5 @@ export function recordSync(
 
 /** Sign-in and sign-out. */
 export async function forgetSyncRecords(): Promise<void> {
-  await Promise.all([pushRecord.clear(), locationRecord.clear()]);
+  await pushRecord.clear();
 }

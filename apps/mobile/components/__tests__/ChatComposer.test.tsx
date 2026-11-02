@@ -191,23 +191,6 @@ describe("ChatComposer math keyboard", () => {
     expect(onSend).toHaveBeenCalledTimes(1);
   });
 
-  it("shows an immediate locating status without clearing the draft", async () => {
-    const { getByTestId } = await render(
-      <DraftHarness input="coffee near me">
-        <ChatComposer
-          {...baseProps}
-          sendBusy
-          sendStatus="chat.locating"
-        />
-      </DraftHarness>,
-    );
-
-    expect(getByTestId("chat-composer-input").props.value).toBe("coffee near me");
-    expect(getByTestId("composer-send-status").props.children).toBe(
-      "chat.locating",
-    );
-  });
-
   it("keeps reporting its size while the drawer hides it, so the chat under the drawer keeps its layout", async () => {
     const onInputFrameExtraChange = jest.fn();
     const onMathChromeHeightChange = jest.fn();
@@ -216,7 +199,6 @@ describe("ChatComposer math keyboard", () => {
         <ChatComposer
           {...baseProps}
           visible={visible}
-          sendStatus="chat.locating"
           onInputFrameExtraChange={onInputFrameExtraChange}
           onMathChromeHeightChange={onMathChromeHeightChange}
         />
@@ -226,7 +208,7 @@ describe("ChatComposer math keyboard", () => {
     const extra = onInputFrameExtraChange.mock.calls.at(-1)?.[0];
     const chrome = onMathChromeHeightChange.mock.calls.at(-1)?.[0];
     expect(extra).toBeGreaterThan(0);
-    expect(chrome).toBeGreaterThan(0);
+    expect(chrome).toBe(0);
     onInputFrameExtraChange.mockClear();
     onMathChromeHeightChange.mockClear();
 

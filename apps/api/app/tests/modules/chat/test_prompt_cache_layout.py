@@ -113,7 +113,7 @@ async def test_the_marked_message_is_the_same_on_every_kind_of_turn_for_one_user
         await _real_prompt("what does a capybara look like?"),
         await _real_prompt("next", _LESSON),
         await _real_prompt("solve 2x + 5 = 17 and explain why each step works"),
-        await _real_prompt("coffee near me", location="Addis Ababa, Ethiopia"),
+        await _real_prompt("coffee near me"),
         await _real_prompt("I work at Uber as a data analyst"),
     ]
     stable = {prompt[0]["content"] for prompt in prompts}
@@ -133,7 +133,7 @@ async def test_the_marked_message_is_the_same_on_every_kind_of_turn_for_one_user
     # What the turns differ in (length, style, profile, place, clock) comes after it.
     assert all(prompt[1]["role"] == "system" for prompt in prompts)
     assert len({prompt[1]["content"] for prompt in prompts}) > len(prompts) // 2
-    for text in ("Response length", "User's first name", "Current local time", "Addis Ababa"):
+    for text in ("Response length", "User's first name", "Current local time"):
         assert all(text not in prompt[0]["content"] for prompt in prompts)
     # The clock comes after the history, never in the rules before it.
     for text in ("Current local time", "Digital clock now"):
@@ -145,13 +145,13 @@ async def test_the_marked_message_is_the_same_on_every_kind_of_turn_for_one_user
     "case",
     [
         # A greeting (lightweight), a slim question, a rich memory turn, a draft that
-        # carries the account email, a nearby ask with the device location, and a maths
+        # carries the account email, a nearby ask, and a maths
         # follow-up that adds its policy.
         _turn("hi", lightweight=True),
         _turn("what is a capybara"),
         {"memory_block": "## Preferences\n- Vegetarian."},
         _turn("write an email to my boss asking for Friday off", rich_context=True),
-        _turn("coffee near me", rich_context=True, prompt_location="Addis Ababa, Ethiopia"),
+        _turn("coffee near me", rich_context=True),
         {
             "history": [["user", "solve 2x + 5 = 17"], ["assistant", "x = 6"], ["user", "how?"]],
             "kwargs": {"query_text": "how?", "current": 2},

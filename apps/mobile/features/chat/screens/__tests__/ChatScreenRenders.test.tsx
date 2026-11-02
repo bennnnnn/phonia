@@ -83,7 +83,6 @@ const mockChat = {
   retryRejectedSend: mockNoop,
   restoreRejectedAttachmentDraft: mockNoop,
   beginRegenerateUi: mockNoop,
-  cancelRegenerateUi: mockNoop,
   regenerateResponse: mockAsyncNoop,
   stopGeneration: mockNoop,
   connect: mockNoop,
@@ -161,8 +160,6 @@ const mockDictation = {
   cancelVoiceInput: mockNoop,
 };
 const mockDraft = { activeChatId: null, draftChatId: null };
-const mockModels = { isPaid: false, autoEnabled: true, modelEnabledSet: new Set<string>(), AUTO_MODEL_ID: "auto" };
-const mockComposerState = { selectedModel: "auto" };
 const mockMessageList = { headerTitleLabel: null, renderItem: () => null };
 const mockRegenerate = { regenerate: mockAsyncNoop, regenerating: false };
 const mockAuth = { token: "token", user: null, updateUser: mockAsyncNoop };
@@ -195,7 +192,6 @@ jest.mock("@/features/chat/hooks/useChat", () => ({
   },
 }));
 jest.mock("@/features/chat/hooks/useChatActions", () => ({ useChatActions: () => mockChatActions }));
-jest.mock("@/features/chat/hooks/useChatComposerState", () => ({ useChatComposerState: () => mockComposerState }));
 jest.mock("@/features/chat/hooks/useComposerDictation", () => ({ useComposerDictation: () => mockDictation }));
 jest.mock("@/features/chat/hooks/useChatDraftWarmup", () => ({ useChatDraftWarmup: () => {} }));
 jest.mock("@/features/chat/hooks/useChatMessageList", () => ({ useChatMessageList: () => mockMessageList }));
@@ -209,7 +205,6 @@ jest.mock("@/features/chat/hooks/useChatSend", () => ({
   },
 }));
 jest.mock("@/features/chat/hooks/useDraftChat", () => ({ useDraftChat: () => mockDraft }));
-jest.mock("@/hooks/useModels", () => ({ useModels: () => mockModels }));
 jest.mock("@/contexts/NetworkContext", () => ({ useNetwork: () => ({ isOffline: false }) }));
 jest.mock("@/features/chat/hooks/useChatScreenError", () => ({
   useChatErrorHandlers: () => mockErrorHandlers,

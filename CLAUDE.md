@@ -119,7 +119,7 @@ What exists in code today. Product caveats: FEATURES.md.
 | Chat history | `modules/chat/` (HTTP `/chats`) | drawer history; `features/chat/api.ts` |
 | Chat stream | `modules/chat/` (`ws_api.py` WebSocket, `stream_api.py` SSE; `stream_entry.py`, `turn_deps.py`, `turn_prep/`, `stream_pipeline.py`, `stream_paths.py`, `finalize_passes.py`, `turn_settle.py`, `post_turn.py`; a picture or photo lookup turn saves through conversation's `turn_record` and chat's `finish_turn`) | `features/chat/` (`screens/ChatScreen.tsx`, `hooks/useChat*.ts`, `components/`, `model/` stream, socket and cache); `app/index.tsx` route only |
 | Memory | `modules/memory/` (HTTP `/memories`, `/memories/documents`, `/memories/instruct`) | `features/memory/`; `app/memory/` routes only (list + `[key]` page) |
-| Models / quota | `routers/models.py`, `models/model_catalog.py`, `services/quota/`; the user's pool in `modules/billing/plan.py`, Auto's pick and the reasoning pass in `modules/chat/model_routing/` | `features/account/screens/ModelsSettingsScreen.tsx` (settings only, no composer picker; with Auto off it names and sets the model messages use) |
+| Models / quota | `routers/models.py` (the paywall names the paid models), `models/model_catalog.py`, `services/quota/`; the plan's pool in `modules/billing/plan.py`, Auto's pick (every turn's; there is no model choice) and the reasoning pass in `modules/chat/model_routing/` | (none: no model setting) |
 | Search | `modules/search/` (HTTP `/search`) | `features/search/`; drawer search |
 | Clarifying questions | `modules/chat/clarify_card.py` (the `clarify` card checked at finalize), `clarify_turn.py` (history line, the turn after a card), `prompt_constants/clarify.py`; [docs/clarify.md](./docs/clarify.md) | `components/rich/ClarifyCard.tsx` (the card), `lib/clarify/clarifyCard.ts` (the sent message, read back onto its card) |
 | Follow-up questions | `modules/chat/related_prompts.py` (after `done`; rules in `related_questions.py`) | `features/suggestions/` (`RelatedPromptLines`) |
@@ -193,7 +193,7 @@ Steps 6–8 are the only ones on the user's critical path. Everything in step 9 
 
 ## Mobile map
 
-Expo Router (`apps/mobile/app/`): Login, Onboarding, Chat (`index`), Memory, Todos/Schedule, Settings (profile, preferences, memory, models, voice, notifications, data-controls (web search, location), security, help, about, licenses; every page builds from `features/account/components/settingsUi.tsx`). **Chat history and search are the drawer** (`features/chat/drawer/`, `ConversationList.tsx`), not standalone screens.
+Expo Router (`apps/mobile/app/`): Login, Onboarding, Chat (`index`), Memory, Todos/Schedule, Settings (profile, preferences, memory, voice, notifications, data-controls (web search), security, help, about, licenses; every page builds from `features/account/components/settingsUi.tsx`). **Chat history and search are the drawer** (`features/chat/drawer/`, `ConversationList.tsx`), not standalone screens.
 
 - Network: `lib/api.ts` barrel → `lib/api/{client,discover,connectivity,analytics,push,types}.ts` plus feature slices (`features/chat/api.ts`, `features/scanner/api.ts`, `features/auth/api.ts`, `features/account/api.ts`, `features/memory/api.ts`, `features/todos/api.ts`, `features/search/api.ts`, `features/attachments/api.ts`, `features/images/api.ts`, `features/speech/api.ts`)
 - Tokens: `expo-secure-store` only

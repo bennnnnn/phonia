@@ -46,7 +46,6 @@ const rowProps = {
   priorUserText: null,
   streamVisualActive: false,
   lastAssistantId: null,
-  selectedModel: "free-chat",
   highlightedMessageId: null,
   sendingMessageId: null,
   onRegenerate: jest.fn(),
@@ -80,7 +79,7 @@ describe("ChatMessageRow", () => {
 
     expect(mockBubbleProps.onRegenerate).toBe(first);
     first?.();
-    expect(onRegenerate).toHaveBeenCalledWith("free-chat");
+    expect(onRegenerate).toHaveBeenCalledWith();
   });
 
   it("reads the live draft only in the row a reply streams into", async () => {

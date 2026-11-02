@@ -2,7 +2,6 @@ import { useCallback, type RefObject } from "react";
 import { randomUUID } from "expo-crypto";
 
 import type { Message } from "@/lib/api";
-import { clientGeoWsFields, type ClientGeo } from "@/features/chat/model/clientGeo";
 import { canRegenerate, headRejectedSend, type ChatTurnEvent, type ChatTurnState } from "@/features/chat/model/chatTurnCore";
 import { whenOpenedPageSettled } from "@/features/chat/model/openedPage";
 import type { ComposerSendDraft, PendingSend, RejectedSend, SendMessageOptions } from "@/features/chat/model/sendLogic";
@@ -69,8 +68,6 @@ export function useChatTurnActions({ token, chatId, isCurrentView, turn, step, m
     step({ type: "send_dispatched", retrying });
     const sseOptions = {
       attachmentIds: options?.attachmentIds,
-      model: options?.model,
-      clientGeo: options?.clientGeo,
       ttftTurnId,
       clientMessageId,
     };
@@ -86,9 +83,7 @@ export function useChatTurnActions({ token, chatId, isCurrentView, turn, step, m
     socket.sendMessage({
       content,
       attachment_ids: options?.attachmentIds ?? [],
-      model: options?.model ?? null,
       client_message_id: clientMessageId,
-      ...clientGeoWsFields(options?.clientGeo),
     });
     return true;
   }, [token, chatId, isCurrentView, turn, step, ensureConnected, sendViaSse, currentSocket]);
@@ -129,11 +124,7 @@ export function useChatTurnActions({ token, chatId, isCurrentView, turn, step, m
     return () => isCurrentView() && turn.current.attempt === attempt;
   }, [isCurrentView, step, messagesRef, turn]);
 
-  const cancelRegenerateUi = useCallback(() => {
-    if (isCurrentView()) step({ type: "regenerate_cancelled" });
-  }, [isCurrentView, step]);
-
-  const regenerateResponse = useCallback(async (model?: string | null, clientGeo?: ClientGeo | null) => {
+  const regenerateResponse = useCallback(async () => {
     if (!token || !chatId || !isCurrentView() || !canRegenerate(turn.current)) return;
     step({ type: "regenerate", messages: messagesRef.current });
     const { attempt } = turn.current;
@@ -141,11 +132,11 @@ export function useChatTurnActions({ token, chatId, isCurrentView, turn, step, m
     if (!isCurrentView() || turn.current.attempt !== attempt) return;
     const socket = currentSocket();
     if (!socket?.isOpen() || socket.shouldUseSse()) {
-      await regenerateViaSse(model, clientGeo);
+      await regenerateViaSse();
       return;
     }
-    step({ type: "fallback_armed", fallback: { transport: socket, retry: () => regenerateViaSse(model, clientGeo) } });
-    socket.sendRegenerate({ model: model ?? null, ...clientGeoWsFields(clientGeo) });
+    step({ type: "fallback_armed", fallback: { transport: socket, retry: () => regenerateViaSse() } });
+    socket.sendRegenerate({});
   }, [token, chatId, isCurrentView, step, messagesRef, turn, ensureConnected, regenerateViaSse, currentSocket]);
 
   const stopGeneration = useCallback(() => {
@@ -157,7 +148,6 @@ export function useChatTurnActions({ token, chatId, isCurrentView, turn, step, m
     retryRejectedSend,
     restoreRejectedAttachmentDraft,
     beginRegenerateUi,
-    cancelRegenerateUi,
     regenerateResponse,
     stopGeneration,
   };

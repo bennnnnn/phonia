@@ -17,18 +17,22 @@ import { AttachmentError } from "@/features/attachments/model/attachmentErrors";
 import { registerEmailDraftFlusher } from "@/features/drafts/model/emailDraftFlush";
 import { notifyWarning, tap } from "@/lib/haptics";
 import * as latency from "@/features/chat/model/latency";
-import {
-  queryNeedsClientGeo,
-  resolveClientGeoForQuery,
-} from "@/features/chat/model/resolveClientGeoForQuery";
 jest.mock("@/lib/auth", () => ({ getSessionGeneration: jest.fn(() => 0) }));
 beforeEach(() => {
   (getSessionGeneration as jest.Mock).mockReturnValue(0);
   dotsUp = true;
 });
 
-const resolveGeo = resolveClientGeoForQuery as jest.Mock;
-const needsGeo = queryNeedsClientGeo as jest.Mock;
+/** Draft flushers registered by a test, removed after it. */
+const holds: (() => void)[] = [];
+afterEach(() => holds.splice(0).forEach((unregister) => unregister()));
+
+/** Holds a painted send at its draft flush until the test releases it (false: refused). */
+function holdAtDraftFlush(): { release: (ok: boolean) => void } {
+  let release: (ok: boolean) => void = () => undefined;
+  holds.push(registerEmailDraftFlusher(() => new Promise((resolve) => { release = resolve; })));
+  return { release: (ok) => release(ok) };
+}
 const uploadAttachment = uploadChatAttachment as jest.Mock;
 
 const inputRef = { current: "hello" };
@@ -103,10 +107,6 @@ jest.mock("@/lib/haptics", () => ({
 }));
 const mockTap = tap as jest.Mock;
 const mockNotifyWarning = notifyWarning as jest.Mock;
-jest.mock("@/features/chat/model/resolveClientGeoForQuery", () => ({
-  queryNeedsClientGeo: jest.fn(() => false),
-  resolveClientGeoForQuery: jest.fn(async () => ({ ok: true, clientGeo: null })),
-}));
 jest.mock("@/lib/scheduleIdle", () => ({
   scheduleIdlePromise: () => Promise.resolve(),
 }));
@@ -141,8 +141,6 @@ function Probe({
   messages = [],
   imageGenerating,
   draft,
-  updateUser = jest.fn(),
-  locationEnabled,
   beforeSend,
 }: {
   offline?: boolean;
@@ -158,8 +156,6 @@ function Probe({
   messages?: Message[];
   imageGenerating?: boolean;
   draft?: Record<string, unknown>;
-  updateUser?: jest.Mock;
-  locationEnabled?: boolean;
   beforeSend?: () => Promise<void>;
 }) {
   const result = useChatSend({
@@ -184,9 +180,6 @@ function Probe({
     sendStart,
     editThread: setMessages,
     messages,
-    selectedModel: "free-chat",
-    updateUser,
-    locationEnabled,
     t: (key) => key,
     onStreamBusy,
     isOffline: offline,
@@ -204,8 +197,6 @@ describe("useChatSend", () => {
     jest.clearAllMocks();
     inputRef.current = "hello";
     mockThreadKey = "new";
-    needsGeo.mockReturnValue(false);
-    resolveGeo.mockResolvedValue({ ok: true, clientGeo: null });
     mockImageIntent.mockResolvedValue(verdict());
   });
 
@@ -507,15 +498,9 @@ describe("useChatSend", () => {
     expect(current.sendPhase).toBe("idle");
   });
 
-  it("paints the user bubble before geo resolves, and sends once it has", async () => {
+  it("paints the user bubble before the drafts save, and sends once they have", async () => {
     inputRef.current = "coffee near me";
-    needsGeo.mockReturnValue(true);
-    let finishGeo: (value: { ok: true; clientGeo: null }) => void = () => undefined;
-    resolveGeo.mockReturnValue(
-      new Promise((resolve) => {
-        finishGeo = resolve;
-      }),
-    );
+    const held = holdAtDraftFlush();
     const setMessages = jest.fn();
     const sendMessage = sent();
     await act(async () => {
@@ -529,15 +514,15 @@ describe("useChatSend", () => {
     });
 
     // The bubble, an empty composer and the dots go up at the tap; the turn
-    // itself waits for the location.
+    // itself waits for the drafts to save.
     expect(setMessages).toHaveBeenCalledTimes(1);
     expect(mockSetInput).toHaveBeenCalledWith("");
     expect(beginDots).toHaveBeenCalledTimes(1);
     expect(sendMessage).not.toHaveBeenCalled();
-    expect(current.sendPhase).toBe("locating");
+    expect(current.sendPhase).toBe("preparing");
 
     await act(async () => {
-      finishGeo({ ok: true, clientGeo: null });
+      held.release(true);
       await sendPromise;
     });
 
@@ -577,35 +562,6 @@ describe("useChatSend", () => {
     });
     expect(setMessages).toHaveBeenCalledTimes(1);
     expect(sendMessage).toHaveBeenCalledTimes(1);
-  });
-
-  it("gives the draft back when geo is cancelled", async () => {
-    inputRef.current = "coffee near me";
-    needsGeo.mockReturnValue(true);
-    resolveGeo.mockResolvedValue({ ok: false });
-    const setMessages = jest.fn((updater) =>
-      typeof updater === "function" ? updater([]) : updater,
-    );
-    const sendMessage = sent();
-    await act(async () => {
-      render(<Probe chatId="chat-1" sendMessage={sendMessage} setMessages={setMessages} />);
-    });
-
-    await act(async () => {
-      await current.handleSend();
-    });
-
-    expect(sendMessage).not.toHaveBeenCalled();
-    // The painted bubble and its dots go; the text is back in the composer.
-    const rows = setMessages.mock.calls.reduce(
-      (prev: Message[], [update]) => (typeof update === "function" ? update(prev) : update),
-      [],
-    );
-    expect(rows).toEqual([]);
-    expect(cancelDots).toHaveBeenCalledTimes(1);
-    expect(mockSetInput).toHaveBeenNthCalledWith(1, "");
-    expect(mockSetInput).toHaveBeenLastCalledWith("coffee near me");
-    expect(current.sendPhase).toBe("idle");
   });
 
   it("clears the composer attachment before upload finishes", async () => {
@@ -740,12 +696,7 @@ describe("useChatSend", () => {
 
   it("stashes a failed send on the originating thread after a switch", async () => {
     mockThreadKey = "chat-1";
-    let finishGeo: (value: { ok: false }) => void = () => undefined;
-    resolveGeo.mockReturnValue(
-      new Promise((resolve) => {
-        finishGeo = resolve;
-      }),
-    );
+    const held = holdAtDraftFlush();
     const view = await act(async () =>
       render(<Probe chatId="chat-1" routeChatId="chat-1" />),
     );
@@ -762,7 +713,7 @@ describe("useChatSend", () => {
     });
 
     await act(async () => {
-      finishGeo({ ok: false });
+      held.release(false);
       await sendPromise;
     });
 
@@ -773,12 +724,7 @@ describe("useChatSend", () => {
   });
 
   it("does not replace a newer draft when the failed send restores", async () => {
-    let finishGeo: (value: { ok: false }) => void = () => undefined;
-    resolveGeo.mockReturnValue(
-      new Promise((resolve) => {
-        finishGeo = resolve;
-      }),
-    );
+    const held = holdAtDraftFlush();
     await act(async () => {
       render(<Probe chatId="chat-1" sendMessage={sent()} />);
     });
@@ -791,7 +737,7 @@ describe("useChatSend", () => {
     inputRef.current = "follow-up";
 
     await act(async () => {
-      finishGeo({ ok: false });
+      held.release(false);
       await sendPromise;
     });
 
@@ -828,8 +774,7 @@ describe("useChatSend", () => {
 
   it("does not dispatch a prepared send after switching chats", async () => {
     mockThreadKey = "chat-1";
-    let finishGeo!: (value: { ok: true; clientGeo: null }) => void;
-    resolveGeo.mockReturnValue(new Promise((resolve) => { finishGeo = resolve; }));
+    const held = holdAtDraftFlush();
     const sendMessage = sent();
     const view = await render(<Probe chatId="chat-1" routeChatId="chat-1" sendMessage={sendMessage} />);
     let sending!: Promise<boolean>;
@@ -840,7 +785,7 @@ describe("useChatSend", () => {
     mockThreadKey = "chat-2";
     await view.rerender(<Probe chatId="chat-2" routeChatId="chat-2" sendMessage={sendMessage} />);
     await act(async () => {
-      finishGeo({ ok: true, clientGeo: null });
+      held.release(true);
       await sending;
     });
     expect(sendMessage).not.toHaveBeenCalled();
@@ -942,85 +887,9 @@ it("retains the uploaded id when the draft flush fails after the upload", async 
   }
 });
 
-it("does not upload when geo fails, and gives the file back", async () => {
-  // Top-level its sit outside the describe's clearAllMocks beforeEach — clear
-  // the upload mock so the previous test's call doesn't leak in.
-  uploadAttachment.mockClear();
-  resolveGeo.mockResolvedValueOnce({ ok: false });
-  await render(<Probe chatId="chat-1" routeChatId="chat-1" />);
-  await act(async () => {
-    current.setPendingAttachment({ localUri: "file://report.pdf", contentType: "application/pdf", fileName: "report.pdf", kind: "file" });
-  });
-  inputRef.current = "hello";
-  await act(async () => { await current.handleSend(); });
-  // Geo comes before the upload, so nothing uploads and the file is back in
-  // the composer for a retry.
-  expect(uploadAttachment).not.toHaveBeenCalled();
-  expect(current.pendingAttachment?.localUri).toBe("file://report.pdf");
-  expect(current.pendingAttachment?.existingAttachmentId).toBeUndefined();
-});
-
-it("does not attach a previous account's picker result", async () => {
-  let finish!: (value: unknown) => void;
-  (pickDocument as jest.Mock).mockReturnValueOnce(new Promise((resolve) => { finish = resolve; }));
-  const view = await render(<Probe chatId="chat-1" routeChatId="chat-1" />);
-  let picking!: Promise<void>;
-  await act(async () => { picking = current.handleAttachmentSheetSelect("file"); });
-  (getSessionGeneration as jest.Mock).mockReturnValue(1);
-  await view.rerender(<Probe chatId="chat-1" routeChatId="chat-1" token="other-account" />);
-  await act(async () => {
-    finish({ localUri: "file://private.pdf", contentType: "application/pdf", fileName: "private.pdf", kind: "file" });
-    await picking;
-  });
-  expect(current.pendingAttachment).toBeNull();
-});
-
-it.each(["newer message", ""])("preserves a newer attachment and draft (%s) when an older upload fails", async (newDraft) => {
-  let fail!: (error: Error) => void;
-  uploadAttachment.mockReturnValueOnce(new Promise((_resolve, reject) => { fail = reject; }));
-  const oldAttachment = { localUri: "file://old.pdf", contentType: "application/pdf", fileName: "old.pdf", kind: "file" as const };
-  const newAttachment = { ...oldAttachment, localUri: "file://new.pdf", fileName: "new.pdf" };
-  await render(<Probe chatId="chat-1" routeChatId="chat-1" />);
-  inputRef.current = "older message";
-  await act(async () => { current.setPendingAttachment(oldAttachment); });
-  let sending!: Promise<boolean>;
-  await act(async () => { sending = current.handleSend(); });
-  inputRef.current = newDraft;
-  await act(async () => { current.setPendingAttachment(newAttachment); });
-  mockSetInput.mockClear();
-  await act(async () => { fail(new Error("upload failed")); await sending; });
-  expect(inputRef.current).toBe(newDraft);
-  expect(mockSetInput).not.toHaveBeenCalled();
-  expect(current.pendingAttachment).toEqual(newAttachment);
-});
-
-it("does not restore the previous account's failed attachment or text", async () => {
-  let fail!: (error: Error) => void;
-  uploadAttachment.mockReturnValueOnce(new Promise((_resolve, reject) => { fail = reject; }));
-  const view = await render(<Probe chatId="chat-1" routeChatId="chat-1" />);
-  await act(async () => {
-    current.setPendingAttachment({ localUri: "file://private.pdf", contentType: "application/pdf", fileName: "private.pdf", kind: "file" });
-  });
-  let sending!: Promise<boolean>;
-  await act(async () => { sending = current.handleSend(); });
-  (getSessionGeneration as jest.Mock).mockReturnValue(1);
-  await view.rerender(<Probe chatId="chat-1" routeChatId="chat-1" token="other-account" />);
-  mockSetInput.mockClear();
-  mockStashFailedDraftForThread.mockClear();
-  mockFeedbackError.mockClear();
-  await act(async () => { fail(new Error("upload failed")); await sending; });
-  expect(current.pendingAttachment).toBeNull();
-  expect(mockSetInput).not.toHaveBeenCalled();
-  expect(mockStashFailedDraftForThread).not.toHaveBeenCalled();
-  expect(mockFeedbackError).not.toHaveBeenCalled();
-  // The local copy goes; the old account's token is not used to cancel anything.
-  expect(mockDiscardDraftAttachment).toHaveBeenCalledWith(null, expect.objectContaining({ localUri: "file://private.pdf" }));
-});
-
 it("continues an attachment send through an access-token refresh in the same session", async () => {
   let finish!: (id: string) => void;
   uploadAttachment.mockReturnValueOnce(new Promise((resolve) => { finish = resolve; }));
-  resolveGeo.mockResolvedValue({ ok: true, clientGeo: null });
   const sendMessage = sent();
   const view = await render(<Probe chatId="chat-1" routeChatId="chat-1" sendMessage={sendMessage} />);
   await act(async () => {
@@ -1094,8 +963,6 @@ describe("useChatSend math scans", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     inputRef.current = "";
-    needsGeo.mockReturnValue(false);
-    resolveGeo.mockResolvedValue({ ok: true, clientGeo: null });
   });
 
   async function settle() {
@@ -1270,8 +1137,6 @@ describe("useChatSend send steps", () => {
     jest.clearAllMocks();
     inputRef.current = "hello";
     mockThreadKey = "chat-1";
-    needsGeo.mockReturnValue(false);
-    resolveGeo.mockResolvedValue({ ok: true, clientGeo: null });
     mockImageIntent.mockResolvedValue(verdict());
   });
 
@@ -1518,7 +1383,7 @@ describe("useChatSend send steps", () => {
     const prepareDraftChat = jest.fn().mockResolvedValue(null);
     await render(<Probe prepareDraftChat={prepareDraftChat} />);
     await send();
-    expect(prepareDraftChat).toHaveBeenCalledWith("free-chat");
+    expect(prepareDraftChat).toHaveBeenCalledWith();
     expect(mockFeedbackError).toHaveBeenCalledWith("chat.error_generic");
     expect(mockSetInput).toHaveBeenLastCalledWith("hello");
     expect(mockSetChatId).not.toHaveBeenCalled();
@@ -1582,13 +1447,9 @@ describe("useChatSend send steps", () => {
   it("dispatches the turn with everything the transport needs", async () => {
     const setMessages = jest.fn();
     const sendMessage = sent();
-    const clientGeo = { latitude: 1, longitude: 2 };
     inputRef.current = "  coffee near me ";
-    needsGeo.mockReturnValue(true);
-    resolveGeo.mockResolvedValue({ ok: true, clientGeo });
     await render(<Probe chatId="chat-1" setMessages={setMessages} sendMessage={sendMessage} />);
     await send();
-    expect(resolveGeo).toHaveBeenCalledWith("token", "coffee near me", expect.any(Function), expect.any(Function));
     const [bubble] = setMessages.mock.calls[0][0]([]);
     expect(bubble).toMatchObject({ id: expect.stringMatching(/^local-/), role: "user", content: "coffee near me" });
     expect(sendMessage).toHaveBeenCalledWith("coffee near me", {
@@ -1601,8 +1462,6 @@ describe("useChatSend send steps", () => {
       localFileUri: null,
       localFileName: null,
       localFileContentType: null,
-      clientGeo,
-      model: "free-chat",
     });
     expect(mockSetInput).toHaveBeenCalledWith("");
     expect(current.pendingOutboundId).toBeNull();
@@ -1725,49 +1584,6 @@ describe("useChatSend send steps", () => {
     expect(sendMessage).toHaveBeenCalledTimes(1);
   });
 
-  it.each([
-    [true, 1],
-    [false, 0],
-  ])("a location question with location already on=%p sends before the profile saves: %p", async (locationEnabled, sentEarly) => {
-    inputRef.current = "coffee near me";
-    needsGeo.mockReturnValue(true);
-    let saved!: () => void;
-    const updateUser = jest.fn(() => new Promise<void>((resolve) => { saved = resolve; }));
-    resolveGeo.mockImplementation(async (_token: string, _text: string, _t: unknown, persist: (patch: object) => unknown) => {
-      await persist({ location: "Oakland, CA", location_enabled: true });
-      return { ok: true, clientGeo: { label: "Oakland, CA", latitude: 1, longitude: 2 } };
-    });
-    const sendMessage = sent();
-    await render(
-      <Probe chatId="chat-1" sendMessage={sendMessage} updateUser={updateUser} locationEnabled={locationEnabled} />,
-    );
-    let sending!: Promise<boolean>;
-    await act(async () => { sending = current.handleSend(); });
-    expect(updateUser).toHaveBeenCalledWith({ location: "Oakland, CA", location_enabled: true });
-    // The fix rides with the turn; only switching location on must save first,
-    // since the server ignores a fix from a user whose location is off.
-    expect(sendMessage).toHaveBeenCalledTimes(sentEarly);
-    await act(async () => { saved(); await sending; });
-    expect(sendMessage).toHaveBeenCalledWith(
-      "coffee near me",
-      expect.objectContaining({ clientGeo: { label: "Oakland, CA", latitude: 1, longitude: 2 } }),
-    );
-  });
-
-  it("does not let a failed background profile save fail the send", async () => {
-    inputRef.current = "coffee near me";
-    needsGeo.mockReturnValue(true);
-    const updateUser = jest.fn(() => Promise.reject(new Error("update failed")));
-    resolveGeo.mockImplementation(async (_token: string, _text: string, _t: unknown, persist: (patch: object) => unknown) => {
-      await persist({ location: "Oakland, CA", location_enabled: true });
-      return { ok: true, clientGeo: null };
-    });
-    const sendMessage = sent();
-    await render(<Probe chatId="chat-1" sendMessage={sendMessage} updateUser={updateUser} locationEnabled />);
-    await send();
-    expect(sendMessage).toHaveBeenCalledTimes(1);
-  });
-
   it("starts the time-to-first-token sample at the tap and marks the bubble's frame", async () => {
     const start = jest.spyOn(latency, "markChatTtftStart");
     const painted = jest.spyOn(latency, "markChatBubblePainted");
@@ -1841,58 +1657,16 @@ describe("useChatSend send steps", () => {
   });
 
   it("says why a given-back draft stays out of a composer that has newer text", async () => {
-    let finishGeo!: (value: { ok: false }) => void;
-    needsGeo.mockReturnValue(true);
-    resolveGeo.mockReturnValue(new Promise((resolve) => { finishGeo = resolve; }));
+    const held = holdAtDraftFlush();
     inputRef.current = "coffee near me";
     await render(<Probe chatId="chat-1" />);
     let sending!: Promise<boolean>;
     await act(async () => { sending = current.handleSend(); });
     inputRef.current = "follow-up";
-    await act(async () => { finishGeo({ ok: false }); await sending; });
+    await act(async () => { held.release(false); await sending; });
     expect(mockSetInput).not.toHaveBeenCalledWith("coffee near me");
     expect(mockFeedbackError).toHaveBeenCalledWith("chat.restore_draft_blocked");
     expect(current.sendPhase).toBe("idle");
   });
 
-  it("drops Locating… once the fix is in, while the turn still waits on the last reply", async () => {
-    needsGeo.mockReturnValue(true);
-    let finishGeo!: (value: { ok: true; clientGeo: null }) => void;
-    resolveGeo.mockReturnValue(new Promise((resolve) => { finishGeo = resolve; }));
-    beginDots.mockReturnValueOnce(null);
-    let replySaved!: () => void;
-    whenReplySettled.mockReturnValueOnce(new Promise<void>((resolve) => { replySaved = resolve; }));
-    inputRef.current = "coffee near me";
-    const sendMessage = sent();
-    await render(<Probe chatId="chat-1" sendMessage={sendMessage} />);
-    let sending!: Promise<boolean>;
-    await act(async () => { sending = current.handleSend(); });
-    expect(current.sendPhase).toBe("locating");
-    await act(async () => { finishGeo({ ok: true, clientGeo: null }); });
-    expect(current.sendPhase).toBe("preparing");
-    expect(sendMessage).not.toHaveBeenCalled();
-    await act(async () => { replySaved(); await sending; });
-    expect(sendMessage).toHaveBeenCalledTimes(1);
-    expect(current.sendPhase).toBe("idle");
-  });
-
-  it("moves from locating to uploading for a geo question with a photo", async () => {
-    let finishGeo!: (value: { ok: true; clientGeo: null }) => void;
-    let finishUpload!: (id: string) => void;
-    needsGeo.mockReturnValue(true);
-    resolveGeo.mockReturnValue(new Promise((resolve) => { finishGeo = resolve; }));
-    uploadAttachment.mockReturnValue(new Promise((resolve) => { finishUpload = resolve; }));
-    inputRef.current = "where is this near me";
-    await render(<Probe chatId="chat-1" />);
-    await act(async () => { current.setPendingAttachment(image); });
-    let sending!: Promise<boolean>;
-    await act(async () => { sending = current.handleSend(); });
-    expect(current.sendPhase).toBe("locating");
-    // The photo left the composer with the bubble.
-    expect(current.pendingAttachment).toBeNull();
-    await act(async () => { finishGeo({ ok: true, clientGeo: null }); });
-    expect(current.sendPhase).toBe("uploading");
-    await act(async () => { finishUpload("att-1"); await sending; });
-    expect(current.sendPhase).toBe("idle");
-  });
 });

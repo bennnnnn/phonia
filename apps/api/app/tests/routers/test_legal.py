@@ -47,7 +47,7 @@ def test_privacy_policy_html() -> None:
         "Fly.io",
         "Resend",
         "Expo",
-        "precise coordinates",
+        "does not use your device",
         "push notification token",
         "How Long We Keep Data",
         "30 days",

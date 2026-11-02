@@ -57,7 +57,7 @@ def _held_lock_deps(*, acquire, release, refresh=None, **fields):
 
 def _plan_and_quota():
     return {
-        "model_choice": {"resolve_user_model_override": MagicMock(return_value="free-chat")},
+        "model_choice": {"resolve_user_model": MagicMock(return_value="free-chat")},
         "quota": {"daily_limit_for_user": MagicMock(return_value=100_000)},
     }
 
@@ -231,7 +231,7 @@ async def test_regenerate_acquires_chatprep_lock():
         patch.object(messages_repository, "count_for_chat", AsyncMock(return_value=2)),
         patch.object(
             model_choice,
-            "resolve_user_model_override",
+            "resolve_user_model",
             return_value="free-chat",
         ),
         patch(

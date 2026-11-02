@@ -59,12 +59,6 @@ export function makeChatComposerStyles(theme: Theme) {
       borderColor: theme.composerBorder,
     },
     inputWrapExpanded: { flex: 1, minHeight: 0 },
-    sendStatus: {
-      marginTop: Space.xxs,
-      marginLeft: Space.xl + Space.xs,
-      ...Type.meta,
-      color: theme.textSecondary,
-    },
     inputRowMain: { flexDirection: "row", alignItems: "flex-end", gap: Space.xs },
     inputRowMainSingleLine: { alignItems: "center" },
     inputRowMainExpanded: { flex: 1, minHeight: 0 },

@@ -52,7 +52,6 @@ const CLEARED_AT_SIGN_OUT: Record<string, string> = {
   "lib/auth.ts#storageQueue": "clearToken",
   "features/chat/model/chatListFile.ts#chatListFile": "invalidateChatListCache",
   "lib/cache/usageCache.ts#resource": "invalidateUsageCache",
-  "lib/cachedModels.ts#cachedModelsFile": "clearCachedModels",
   "lib/cachedUser.ts#cachedUserFile": "clearCachedUser",
   "lib/lesson/quizAttempts.ts#attempts": "clearQuizAttempts",
   "lib/linkPreview.ts#cache": "clearLinkPreviewCache",
@@ -67,7 +66,6 @@ const CLEARED_AT_SIGN_OUT: Record<string, string> = {
   // clearPushSyncRecord sets it back to false.
   "features/notifications/model/pushRegistration.ts#registered": "clearPushSyncRecord",
   "features/chat/model/streamingDraftStore.ts#draft": "publishStreamingDraft",
-  "lib/syncRecords.ts#locationRecord": "forgetSyncRecords",
   "lib/syncRecords.ts#pushRecord": "forgetSyncRecords",
 };
 

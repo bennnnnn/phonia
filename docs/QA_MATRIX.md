@@ -305,7 +305,7 @@ Checks only a release build shows. A dev build carries dev-launcher keys and dif
 |---|------|-----|---------|-------|
 | 20.1 | First mic use (dictation) | ☐ | ☐ | iOS prompt: "Recall uses the microphone so you can dictate messages." Never "Allow Recall to access your microphone". |
 | 20.2 | First camera use: attach a photo, and the maths scanner | ☐ | ☐ | iOS prompt: "Recall uses the camera so you can take photos to attach in chat and scan math problems from your notes or worksheets." |
-| 20.3 | Location question ("where am I?") | ☐ | ☐ | While-in-use prompt only; iOS never offers "Always". No Face ID or Motion prompt anywhere. |
+| 20.3 | Location question ("where am I?") | ☐ | ☐ | No location prompt: the reply says the app does not use the device's location. No Face ID or Motion prompt anywhere. |
 | 20.4 | First launch | ☐ | n/a | No "find and connect to devices on your local network" prompt. |
 | 20.5 | Read-aloud, then press Home | ☐ | ☐ | Read-aloud stops. No audio keeps playing; Android shows no media notification. |
 | 20.6 | Save a chat image (Android 13+), and on an Android 10–12 device | ☐ | ☐ | 13+: saves with no permission prompt. 10–12: the storage prompt appears once, then it saves. Photo attach works with no media permission on 13+. |

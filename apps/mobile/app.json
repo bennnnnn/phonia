@@ -39,22 +39,6 @@
             ]
           },
           {
-            "NSPrivacyCollectedDataType": "NSPrivacyCollectedDataTypePreciseLocation",
-            "NSPrivacyCollectedDataTypeLinked": true,
-            "NSPrivacyCollectedDataTypeTracking": false,
-            "NSPrivacyCollectedDataTypePurposes": [
-              "NSPrivacyCollectedDataTypePurposeAppFunctionality"
-            ]
-          },
-          {
-            "NSPrivacyCollectedDataType": "NSPrivacyCollectedDataTypeCoarseLocation",
-            "NSPrivacyCollectedDataTypeLinked": true,
-            "NSPrivacyCollectedDataTypeTracking": false,
-            "NSPrivacyCollectedDataTypePurposes": [
-              "NSPrivacyCollectedDataTypePurposeAppFunctionality"
-            ]
-          },
-          {
             "NSPrivacyCollectedDataType": "NSPrivacyCollectedDataTypePhotosorVideos",
             "NSPrivacyCollectedDataTypeLinked": true,
             "NSPrivacyCollectedDataTypeTracking": false,
@@ -160,12 +144,10 @@
       },
       "infoPlist": {
         "NSUserNotificationsUsageDescription": "Recall sends reminders for your to-dos.",
-        "NSLocationWhenInUseUsageDescription": "Recall uses your location for local time and to answer where you are.",
         "NSPhotoLibraryUsageDescription": "Recall needs access to your photos so you can attach images in chat.",
         "NSPhotoLibraryAddUsageDescription": "Recall saves generated and chat images to your photo library when you tap Download.",
         "NSCameraUsageDescription": "Recall uses the camera so you can take photos to attach in chat and scan math problems from your notes or worksheets.",
         "NSMicrophoneUsageDescription": "Recall uses the microphone so you can dictate messages.",
-        "NSMotionUsageDescription": "Recall does not use motion or fitness data and never asks for it.",
         "LSApplicationQueriesSchemes": [
           "googlegmail",
           "gmail",
@@ -224,15 +206,6 @@
           "sounds": [
             "./assets/audio/recall_notify.wav"
           ]
-        }
-      ],
-      [
-        "expo-location",
-        {
-          "locationWhenInUsePermission": "Recall uses your location for local time and to answer where you are.",
-          "locationAlwaysAndWhenInUsePermission": false,
-          "locationAlwaysPermission": false,
-          "motionUsagePermission": "Recall does not use motion or fitness data and never asks for it."
         }
       ],
       [

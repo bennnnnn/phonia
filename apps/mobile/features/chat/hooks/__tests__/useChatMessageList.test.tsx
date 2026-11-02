@@ -85,7 +85,6 @@ function Rows({ messages, streaming }: { messages: Message[]; streaming: boolean
     messages,
     streaming,
     finalizing: false,
-    selectedModel: "free-chat",
     highlightedMessageId: null,
     sendingMessageId: null,
     setMenuVisible: () => {},

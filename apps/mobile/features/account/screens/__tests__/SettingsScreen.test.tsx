@@ -43,13 +43,6 @@ jest.mock("@/contexts/AuthContext", () => ({
     updateUser: mockUpdateUser,
   }),
 }));
-jest.mock("@/hooks/useModels", () => ({
-  useModels: () => ({
-    isPaid: mockIsPro,
-    autoEnabled: false,
-    modelEnabledSet: new Set(["free-chat"]),
-  }),
-}));
 jest.mock("@/contexts/AppearanceContext", () => ({
   useAppearance: () => ({ preference: "system", setPreference: mockSetPreference }),
   useAccent: () => ({ accent: "indigo", setAccent: mockSetAccent }),
@@ -116,7 +109,6 @@ describe("settings home", () => {
 
   it.each([
     ["settings.personalization", "/settings/preferences"],
-    ["settings.model", "/settings/models"],
     ["settings.voice", "/settings/voice"],
     ["settings.notifications", "/settings/notifications"],
     ["settings.usage_group", "/settings/usage"],

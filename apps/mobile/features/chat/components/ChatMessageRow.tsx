@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from "react";
+import { memo, useMemo } from "react";
 
 import { useStreamingDraft } from "@/features/chat/context/StreamingDraftContext";
 import { MessageBubble } from "@/features/chat/components/MessageBubble";
@@ -33,10 +33,9 @@ type Props = {
   /** When true, show the image-generation status label instead of chat stream draft. */
   imageGenPending?: boolean;
   lastAssistantId: string | null;
-  selectedModel: string;
   highlightedMessageId: string | null;
   sendingMessageId: string | null;
-  onRegenerate: (model: string) => void;
+  onRegenerate: () => void;
   regenerating?: boolean;
   onFeedback: (messageId: string, next: "up" | "down" | null) => void;
   onRetryImageGen?: () => void;
@@ -51,7 +50,6 @@ export const ChatMessageRow = memo(function ChatMessageRow({
   emojiUse,
   imageGenPending = false,
   lastAssistantId,
-  selectedModel,
   highlightedMessageId,
   sendingMessageId,
   onRegenerate,
@@ -71,9 +69,6 @@ export const ChatMessageRow = memo(function ChatMessageRow({
   const generating = live && streamVisualActive;
   const isLastAssistant = item.role === "assistant" && item.id === lastAssistantId;
 
-  const handleRegenerate = useCallback(() => {
-    onRegenerate(selectedModel);
-  }, [onRegenerate, selectedModel]);
   const stalled = useStreamSilence(liveContent?.length ?? 0, generating && !imageGenPending);
 
   return (
@@ -91,7 +86,7 @@ export const ChatMessageRow = memo(function ChatMessageRow({
         isLastAssistant={isLastAssistant}
         onRegenerate={
           isLastAssistant && !streamVisualActive && !item.image_gen_failure
-            ? handleRegenerate
+            ? onRegenerate
             : undefined
         }
         regenerating={isLastAssistant && regenerating}

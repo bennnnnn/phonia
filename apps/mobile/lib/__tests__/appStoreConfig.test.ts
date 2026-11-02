@@ -9,10 +9,6 @@ import appJson from "../../app.json";
  * in ios.infoPlist, or whichever plugin happens to run last replaces it.
  */
 const USAGE_DESCRIPTION_OPTIONS: Record<string, Record<string, string>> = {
-  "expo-location": {
-    locationWhenInUsePermission: "NSLocationWhenInUseUsageDescription",
-    motionUsagePermission: "NSMotionUsageDescription",
-  },
   "expo-image-picker": {
     photosPermission: "NSPhotoLibraryUsageDescription",
     cameraPermission: "NSCameraUsageDescription",
@@ -53,13 +49,13 @@ describe("app store config", () => {
 
   it("leaves out permissions the app never asks for", () => {
     expect(pluginOptions("expo-secure-store").get("faceIDPermission")).toBe(false);
-    const location = pluginOptions("expo-location");
-    expect(location.get("locationAlwaysPermission")).toBe(false);
-    expect(location.get("locationAlwaysAndWhenInUsePermission")).toBe(false);
     for (const key of [
       "NSFaceIDUsageDescription",
+      // The app does not use the device's location (no expo-location).
+      "NSLocationWhenInUseUsageDescription",
       "NSLocationAlwaysUsageDescription",
       "NSLocationAlwaysAndWhenInUseUsageDescription",
+      "NSMotionUsageDescription",
     ]) {
       expect(infoPlist.has(key)).toBe(false);
     }
@@ -110,11 +106,6 @@ const COLLECTED_DATA: Record<string, { linked: boolean; purposes: readonly strin
   UserID: { linked: true, purposes: ["AppFunctionality", "Analytics"] },
   // This install's id (lib/installationId.ts), sent with the push token and product events.
   DeviceID: { linked: true, purposes: ["AppFunctionality", "Analytics"] },
-  // A nearby or "where am I" message carries the fix's coordinates (features/chat/model/clientGeo.ts), and its
-  // place label is the coordinates to four decimals when the phone finds no place name.
-  PreciseLocation: { linked: true, purposes: ["AppFunctionality"] },
-  // The city, region and country saved while Use current location is on.
-  CoarseLocation: { linked: true, purposes: ["AppFunctionality"] },
   // Attached photos, maths scans and the profile photo.
   PhotosorVideos: { linked: true, purposes: ["AppFunctionality"] },
   // Voice input.

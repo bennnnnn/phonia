@@ -109,7 +109,7 @@ export function useChat(token: string, chatId: string | null) {
   }, []);
 
   const send = useCallback(
-    async (content: string, model = "auto") => {
+    async (content: string) => {
       if (!chatId || !token || !content.trim() || streaming) return;
       setError(null);
       setStatusPhase(null);
@@ -136,7 +136,7 @@ export function useChat(token: string, chatId: string | null) {
         await streamMessage(
           token,
           chatId,
-          { content, model, client_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone },
+          { content, client_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone },
           {
             onEvent: handleStreamEvent,
             onError: handleStreamError,
@@ -157,7 +157,7 @@ export function useChat(token: string, chatId: string | null) {
   );
 
   const regenerate = useCallback(
-    async (model = "auto") => {
+    async () => {
       if (!chatId || !token || streaming) return;
       setError(null);
       setStatusPhase(null);
@@ -184,7 +184,7 @@ export function useChat(token: string, chatId: string | null) {
         await streamRegenerate(
           token,
           chatId,
-          { model, client_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone },
+          { client_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone },
           {
             onEvent: handleStreamEvent,
             onError: handleStreamError,

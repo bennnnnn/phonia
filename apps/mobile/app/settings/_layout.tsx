@@ -20,7 +20,6 @@ export { ScreenErrorBoundary as ErrorBoundary } from "@/components/ScreenErrorBo
 const SETTINGS_PAGES = [
   { name: "profile", title: "settings.profile" },
   { name: "usage", title: "settings.usage_group" },
-  { name: "models", title: "settings.model" },
   { name: "voice", title: "settings.voice" },
   { name: "preferences", title: "settings.personalization" },
   { name: "memory-settings", title: "settings.memory" },

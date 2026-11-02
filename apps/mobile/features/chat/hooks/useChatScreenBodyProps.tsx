@@ -2,7 +2,6 @@ import { useCallback, useLayoutEffect, useMemo, useState, type MutableRefObject,
 import { FlashListRef, ListRenderItemInfo } from "@shopify/flash-list";
 import { type NativeScrollEvent, type NativeSyntheticEvent, type View, type ViewStyle } from "react-native";
 import { type AnimatedStyle, type SharedValue } from "react-native-reanimated";
-import { useRouter } from "expo-router";
 
 import type { UpgradeSource } from "@/features/billing/components/UpgradeSheet";
 import { WhileDrawerClosed } from "@/contexts/DrawerContext";
@@ -26,7 +25,6 @@ import type { ResolvedChatError } from "@/features/chat/model/errorMessage";
 import { openDrawer } from "@/features/chat/drawer/drawer";
 import type { Theme } from "@/lib/theme";
 
-type Router = ReturnType<typeof useRouter>;
 
 type QuotaNudge = {
   show: boolean;
@@ -48,7 +46,6 @@ type UseChatScreenBodyPropsParams = {
   /** Everything needed to render the collapsible ChatHeader (title, nav, menu). */
   header: {
     insetsTop: number;
-    router: Router;
     headerTitleLabel: string | null;
     titleGenerating: boolean;
     chatTitle: string | null;
@@ -105,7 +102,6 @@ type UseChatScreenBodyPropsParams = {
   streaming: boolean;
   replySaving: boolean;
   sendBusy: boolean;
-  sendStatus?: string;
   stopGeneration: () => void;
   isOffline: boolean;
   voice: {
@@ -128,7 +124,6 @@ export function useChatScreenBodyProps({
   dismissActionBanner,
   header: {
     insetsTop,
-    router,
     headerTitleLabel,
     titleGenerating,
     chatTitle,
@@ -181,7 +176,6 @@ export function useChatScreenBodyProps({
   streaming,
   replySaving,
   sendBusy,
-  sendStatus,
   stopGeneration,
   isOffline,
   voice: {
@@ -233,10 +227,6 @@ export function useChatScreenBodyProps({
     openUpgradeSheet("quota");
   }, [quotaDismiss, openUpgradeSheet]);
   const onUpgrade = useCallback(() => openUpgradeSheet("other"), [openUpgradeSheet]);
-  const onChangeModel = useCallback(() => {
-    dismissChatError();
-    router.push("/settings/models");
-  }, [dismissChatError, router]);
   const onAttachmentSource = useCallback(
     (source: AttachmentSource) => {
       void handleAttachmentSheetSelect(source);
@@ -347,7 +337,6 @@ export function useChatScreenBodyProps({
       replySaving,
       attachPicking,
       sendBusy,
-      sendStatus,
       pendingAttachment,
       onRemoveAttachment: removePendingAttachment,
       onPickAttachment: handlePickAttachment,
@@ -370,7 +359,6 @@ export function useChatScreenBodyProps({
       replySaving,
       attachPicking,
       sendBusy,
-      sendStatus,
       pendingAttachment,
       removePendingAttachment,
       handlePickAttachment,
@@ -404,7 +392,6 @@ export function useChatScreenBodyProps({
       isPaid,
       onUpgrade,
       onRetryChatError: retryChatError,
-      onChangeModel,
       onDismissChatError: dismissChatError,
     }),
     [
@@ -421,7 +408,6 @@ export function useChatScreenBodyProps({
       isPaid,
       onUpgrade,
       retryChatError,
-      onChangeModel,
       dismissChatError,
     ],
   );

@@ -28,7 +28,6 @@ import { useSendAttachment } from "@/features/chat/hooks/useSendAttachment";
 import type { SendTurnStart } from "@/features/chat/hooks/useTurnStart";
 import { composerThreadKey } from "@/features/chat/model/composerThreadDraft";
 import type { ImageGenSubmit } from "@/features/images/hooks/useImageGeneration";
-import { queryNeedsClientGeo } from "@/features/chat/model/resolveClientGeoForQuery";
 import { useViewOwner } from "@/features/chat/hooks/useViewOwner";
 import type { EditThread } from "@/features/chat/model/threadEdit";
 import { discardDraftAttachment, type PendingAttachment } from "@/features/attachments/model/attachments";
@@ -40,7 +39,7 @@ import {
 type Router = ReturnType<typeof useRouter>;
 type DraftChat = ReturnType<typeof useDraftChat>;
 type ChatScroll = ReturnType<typeof useChatScroll>;
-type ChatSendPhase = "idle" | "locating" | "preparing" | "uploading" | "creating";
+type ChatSendPhase = "idle" | "preparing" | "uploading" | "creating";
 
 /** False when the chat refused the send before showing it, or Stop took it back before it went out. */
 type SendMessageFn = (text: string, opts?: SendMessageOptions) => Promise<boolean>;
@@ -80,10 +79,6 @@ type Options = {
   editThread: EditThread;
   /** Current transcript — a short follow-up after a picture is worth asking the server about. */
   messages: Message[];
-  selectedModel: string;
-  updateUser: (patch: Partial<import("@/lib/api").User>) => Promise<void>;
-  /** The profile's location switch is on (a location question then need not wait for it to save). */
-  locationEnabled?: boolean;
   t: (key: string, options?: Record<string, unknown>) => string;
   onStreamBusy?: () => void;
   /** Soft offline cue (toast) — prefer over a blocking Alert; draft stays in the composer. */
@@ -111,9 +106,6 @@ export function useChatSend({
   sendStart,
   editThread,
   messages,
-  selectedModel,
-  updateUser,
-  locationEnabled = false,
   t,
   onStreamBusy,
   onOfflineBlocked,
@@ -139,7 +131,7 @@ export function useChatSend({
     pendingAttachment, pendingAttachmentRef, setPendingAttachment, replacePendingAttachment,
     switchAttachmentThread, stashAttachmentForThread, resetAttachmentDrafts,
   } = useSendAttachment(token);
-  const ensureChatId = useEnsureChatId({ chatId, selectedModel, draft, setChatId, setChatTitle, router });
+  const ensureChatId = useEnsureChatId({ chatId, draft, setChatId, setChatTitle, router });
   const [sendPhase, setSendPhase] = useState<ChatSendPhase>("idle");
   const [pendingOutboundId, setPendingOutboundId] = useState<string | null>(null);
   const [pendingSend, setPendingSend] = useState<PendingChatSend | null>(null);
@@ -244,9 +236,7 @@ export function useChatSend({
         localFileUri,
         localFileName,
         localFileContentType,
-        clientGeo,
         composerDraft,
-        model,
       } = pendingSend;
       setPendingSend(null);
       const sending = sendMessage(text, {
@@ -257,8 +247,6 @@ export function useChatSend({
         localFileUri,
         localFileName,
         localFileContentType,
-        model,
-        clientGeo,
         composerDraft,
       });
       setPendingOutboundId(null);
@@ -329,8 +317,7 @@ export function useChatSend({
   );
 
   const routeSend = useChatSendRoute({
-    token, chatId, messages, selectedModel, imageGenerating, onGenerateImage, sendMessage, sendStart, updateUser,
-    locationEnabled, t,
+    token, chatId, messages, imageGenerating, onGenerateImage, sendMessage, sendStart, t,
     pendingAttachmentRef, setPendingAttachment, setPendingOutboundId, sendInFlightRef, setSendPhase,
     restoreFailedSend, sendToNewChat,
   });
@@ -381,7 +368,7 @@ export function useChatSend({
       // Paint first: the bubble, an empty composer and typing dots in this
       // frame, before any network call. Where the turn goes is decided after.
       sendInFlightRef.current = true;
-      setSendPhase(queryNeedsClientGeo(text) ? "locating" : turn.attachment ? "uploading" : "preparing");
+      setSendPhase(turn.attachment ? "uploading" : "preparing");
       const painted = paintUserTurn(text, turn.attachment, tappedAt, leavesComposer);
       await routeSend({ ...turn, ...painted, version });
       return true;

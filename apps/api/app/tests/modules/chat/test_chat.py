@@ -28,7 +28,7 @@ from app.modules.chat.prompt_profile import (
     format_user_profile_block,
     should_include_profile_email,
 )
-from app.modules.chat.turn_prep import resolve_client_geo
+from app.modules.chat.turn_prep import read_geo_ask
 from app.modules.chemistry.reply_policy import CHEMISTRY_FENCE_HINT
 from app.modules.conversation import chats_repository, messages_repository
 from app.modules.turn_reading.personal import is_personal_advice_question, needs_rich_context
@@ -39,38 +39,11 @@ from app.tests.fakes import FakeSessionCM, make_user
 from app.tests.modules.chat.chat_test_support import system_prompt
 
 
-def test_resolve_client_geo_ignores_client_when_location_disabled():
-    user = MagicMock()
-    user.location_enabled = False
-    user.location = "Oakland, CA"
-    geo = resolve_client_geo(
-        user,
-        "Where am I",
-        client_location="San Francisco, CA",
-        client_latitude=37.7,
-        client_longitude=-122.4,
-    )
-    assert geo.user_location is None
-    assert geo.client_lat is None
-    assert geo.client_lng is None
-    assert geo.has_geo_fix is False
-
-
-def test_resolve_client_geo_uses_client_when_location_enabled():
-    user = MagicMock()
-    user.location_enabled = True
-    user.location = "Oakland, CA"
-    geo = resolve_client_geo(
-        user,
-        "Where am I",
-        client_location="Berkeley, CA",
-        client_latitude=37.87,
-        client_longitude=-122.27,
-    )
-    assert geo.user_location == "Berkeley, CA"
-    assert geo.client_lat == 37.87
-    assert geo.client_lng == -122.27
-    assert geo.has_geo_fix is True
+def test_read_geo_ask_reads_the_message_alone():
+    """The app has no device location: a nearby or where-am-I ask is read from its words."""
+    assert read_geo_ask("Where am I").geo_query is True
+    assert read_geo_ask("coffee near me").local_places is True
+    assert read_geo_ask("explain photosynthesis").geo_query is False
 
 
 def test_estimate_tokens_minimum():
@@ -1899,7 +1872,7 @@ async def test_build_prompt_passes_client_timezone():
 
     load_todos.assert_awaited_once()
     assert load_todos.await_args.kwargs["client_timezone"] == "America/New_York"
-    format_time.assert_called_once_with("America/New_York", "en", None)
+    format_time.assert_called_once_with("America/New_York", "en")
 
 
 def test_is_short_letter_answer():
@@ -1916,8 +1889,6 @@ def test_format_user_profile_block_includes_fields():
     user.name = "Ada Lovelace"
     user.email = "ada@example.com"
     user.plan = "pro"
-    user.location = "London"
-    user.location_enabled = True
     user.age = 36
     user.country = "United Kingdom"
     user.job = "Mathematician"
@@ -1925,7 +1896,7 @@ def test_format_user_profile_block_includes_fields():
     assert "Ada Lovelace" in block
     assert "ada@example.com" in block
     assert "Plan: pro" in block
-    assert "London" in block
+    assert "Location:" not in block
     assert "Age: 36" in block
     assert "Country: United Kingdom" in block
     assert "Job: Mathematician" in block

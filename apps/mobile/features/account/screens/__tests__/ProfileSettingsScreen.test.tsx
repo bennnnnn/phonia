@@ -44,8 +44,6 @@ beforeEach(() => {
     age: 54,
     country: "Ethiopia",
     job: null,
-    location: null,
-    location_enabled: false,
   };
   mockUpdateUser.mockResolvedValue(undefined);
   mockPickProfilePhoto.mockResolvedValue(null);
@@ -53,7 +51,7 @@ beforeEach(() => {
   jest.spyOn(Alert, "alert").mockImplementation(() => {});
 });
 
-it("shows the name and the facts about you; location lives under Privacy", async () => {
+it("shows the name and the facts about you, and no location", async () => {
   const { getByText, queryByText } = await render(<ProfileSettingsScreen />);
   expect(getByText("bini")).toBeTruthy();
   expect(getByText("settings.about_you")).toBeTruthy();

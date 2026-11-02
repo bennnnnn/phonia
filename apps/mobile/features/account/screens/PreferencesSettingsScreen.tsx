@@ -12,15 +12,9 @@ import {
 } from "@/features/account/components/settingsUi";
 import { useHaptics } from "@/contexts/AppearanceContext";
 import { useAuth } from "@/contexts/AuthContext";
-import {
-  DEFAULT_RESPONSE_TONE,
-  EMOJI_USE_ORDER,
-  normalizeEmojiUse,
-  normalizeResponseTone,
-  RESPONSE_TONE_ORDER,
-} from "@/lib/responseTone";
+import { EMOJI_USE_ORDER, normalizeEmojiUse } from "@/lib/emojiUse";
 
-/** Settings → Personalization: how replies sound and how many emoji they use. Length follows each message
+/** Settings → Personalization: how many emoji replies use, follow-ups and custom instructions. Length follows each message
  * ("briefly", "in detail"); there is no account-wide length setting. */
 export default function PreferencesSettingsScreen() {
   const { user, updateUser } = useAuth();
@@ -30,7 +24,6 @@ export default function PreferencesSettingsScreen() {
   const [instructionsOpen, setInstructionsOpen] = useState(false);
   const [instructionsText, setInstructionsText] = useState("");
 
-  const selectedTone = normalizeResponseTone(user?.response_tone ?? DEFAULT_RESPONSE_TONE);
   const selectedEmoji = normalizeEmojiUse(user?.emoji_use);
   const saving = action.busy !== null;
 
@@ -55,17 +48,6 @@ export default function PreferencesSettingsScreen() {
     <>
       <SettingsPage>
         <SettingsGroup label={t("settings.chat")}>
-          <SettingsMenuRow
-            title={t("settings.tone")}
-            value={t(`settings.tone_${selectedTone}`)}
-            options={RESPONSE_TONE_ORDER.map((key) => ({ key, label: t(`settings.tone_${key}`) }))}
-            selectedKey={selectedTone}
-            disabled={saving}
-            busy={action.busy === "tone"}
-            onSelect={(tone) =>
-              void action.run("tone", () => updateUser({ response_tone: tone }))
-            }
-          />
           <SettingsMenuRow
             title={t("settings.emoji")}
             value={t(`settings.emoji_${selectedEmoji}`)}

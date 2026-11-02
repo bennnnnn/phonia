@@ -1,5 +1,3 @@
-import type { ClientGeo } from "@/features/chat/model/clientGeo";
-import { clientGeoWsFields } from "@/features/chat/model/clientGeo";
 import { markChatTtftTransport } from "@/features/chat/model/latency";
 import { getDeviceTimezone } from "@/lib/deviceTimezone";
 import { requestSse } from "@/lib/api/client";
@@ -24,8 +22,6 @@ export function shouldAbortPriorSse(
 type StreamChatSseClient = {
   token: string;
   chatId: string;
-  model?: string | null;
-  clientGeo?: ClientGeo | null;
   signal?: AbortSignal;
   /** Optimistic user-message id for the send that opened this stream. */
   ttftTurnId?: string | null;
@@ -55,9 +51,7 @@ async function streamChatSseRequest(
   // network egress point (no bare fetch(getApiUrl()...) here).
   const body = {
     ...extraBody,
-    model: options.model ?? null,
     client_timezone: getDeviceTimezone(),
-    ...clientGeoWsFields(options.clientGeo),
   };
   // Stop aborts this stream; so does a silence past the idle deadline, which then
   // fails it as a drop (not a Stop) so the caller reloads the chat for the reply.

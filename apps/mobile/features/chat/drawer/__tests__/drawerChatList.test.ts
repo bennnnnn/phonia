@@ -23,7 +23,6 @@ function chat(id: string, overrides: Partial<Chat> = {}): Chat {
   return {
     id,
     title: null,
-    model: "free-chat",
     pinned: false,
     created_at: "2026-07-01T12:00:00Z",
     updated_at: "2026-07-01T12:00:00Z",

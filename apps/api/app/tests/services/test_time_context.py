@@ -299,14 +299,10 @@ def test_location_ask_folded_entries_can_match():
         assert time_context._fold_location_ask(entry) == entry, entry
 
 
-def test_format_location_answer_with_city():
-    answer = format_location_answer("Los Angeles, CA, United States", "America/Los_Angeles")
-    assert "Los Angeles" in answer
-
-
-def test_format_location_answer_without_city():
-    answer = format_location_answer(None, "UTC")
-    assert "don't have your location" in answer.lower()
+def test_format_location_answer_says_the_app_has_no_location():
+    answer = format_location_answer("UTC")
+    assert "can't tell where you are" in answer.lower()
+    assert "Settings" not in answer
 
 
 def test_effective_timezone_prefers_client():

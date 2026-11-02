@@ -13,7 +13,7 @@ jest.mock("expo-file-system/legacy", () => ({
 
 const PATH = "/mock-cache/cached-chat-list.json";
 const chat = (id: string, extra: Partial<Chat> = {}): Chat => ({
-  id, title: id, model: "free-chat", pinned: false,
+  id, title: id, pinned: false,
   created_at: "2026-01-01T00:00:00Z", updated_at: "2026-01-01T00:00:00Z", ...extra,
 });
 const list: ChatList = { ...emptyChatList(), pinned: [chat("p", { pinned: true })], today: [chat("t")] };

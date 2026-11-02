@@ -23,7 +23,7 @@ def _deps(*, load_user, load_chat, list_recent):
         users={"get_by_id": load_user},
         chats={"get_by_id": load_chat},
         messages={"list_recent": list_recent, "count_for_chat": AsyncMock(return_value=0)},
-        model_choice={"resolve_user_model_override": lambda *_args, **_kwargs: "free-chat"},
+        model_choice={"resolve_user_model": lambda *_args, **_kwargs: "free-chat"},
     )
 
 
