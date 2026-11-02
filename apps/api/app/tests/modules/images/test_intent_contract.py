@@ -215,7 +215,7 @@ def test_intent_reads_no_chat_but_the_users_own(whose: str) -> None:
             json={"text": "make it blue", "chat_id": str(chat_id)},
         )
     assert response.status_code == 404
-    assert response.json() == {"detail": "Chat not found"}
+    assert response.json() == {"detail": {"code": "not_found", "message": "Chat not found"}}
     get_chat.assert_awaited_once()
     list_recent.assert_not_awaited()
 

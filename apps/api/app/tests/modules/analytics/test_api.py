@@ -68,7 +68,7 @@ def test_record_product_events_maps_property_error_to_422() -> None:
         )
 
     assert response.status_code == 422
-    assert response.json()["detail"] == "Invalid properties"
+    assert response.json()["detail"] == {"code": "invalid", "message": "Invalid properties"}
 
 
 def _post_turn_outcome(app, properties: dict[str, str]):

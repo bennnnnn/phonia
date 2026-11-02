@@ -1063,7 +1063,7 @@ def test_presign_rejected_when_attachments_disabled():
         json={"content_type": "image/png", "size_bytes": 128},
     )
     assert r.status_code == 503
-    assert r.json()["detail"] == "Attachments are disabled"
+    assert r.json()["detail"] == {"code": "unavailable", "message": "Attachments are disabled"}
 
 
 def test_upload_rejected_when_attachments_disabled():
@@ -1077,7 +1077,7 @@ def test_upload_rejected_when_attachments_disabled():
         content=b"\x89PNG\r\n\x1a\n" + b"\x00" * 32,
     )
     assert r.status_code == 503
-    assert r.json()["detail"] == "Attachments are disabled"
+    assert r.json()["detail"] == {"code": "unavailable", "message": "Attachments are disabled"}
 
 
 def test_confirm_rejected_when_attachments_disabled():
@@ -1090,7 +1090,7 @@ def test_confirm_rejected_when_attachments_disabled():
         headers={"Authorization": "Bearer tok"},
     )
     assert r.status_code == 503
-    assert r.json()["detail"] == "Attachments are disabled"
+    assert r.json()["detail"] == {"code": "unavailable", "message": "Attachments are disabled"}
 
 
 def test_cancel_still_allowed_when_attachments_disabled():

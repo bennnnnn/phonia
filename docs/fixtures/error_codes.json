@@ -100,20 +100,24 @@
  },
  "presign_too_large": {
   "status": 422,
-  "detail": [
-   {
-    "type": "less_than_equal",
-    "loc": [
-     "body",
-     "size_bytes"
-    ],
-    "msg": "Input should be less than or equal to 10485760",
-    "input": 10485761,
-    "ctx": {
-     "le": 10485760
+  "detail": {
+   "code": "invalid",
+   "message": "Input should be less than or equal to 10485760",
+   "errors": [
+    {
+     "type": "less_than_equal",
+     "loc": [
+      "body",
+      "size_bytes"
+     ],
+     "msg": "Input should be less than or equal to 10485760",
+     "input": 10485761,
+     "ctx": {
+      "le": 10485760
+     }
     }
-   }
-  ]
+   ]
+  }
  },
  "presign_daily_limit": {
   "status": 429,
