@@ -217,8 +217,8 @@ importers:
         specifier: 2.0.1
         version: 2.0.1(patch_hash=qo6kmmcgj6sr36pfksmq4gzfcm)(ypyfq5jlg34c7hbxcf5xiv5w7u)
       react-native-vision-camera-worklets:
-        specifier: 5.2.3
-        version: 5.2.3(l5aynomfmp7ksn5hpuase5deti)
+        specifier: 5.2.4
+        version: 5.2.4(l5aynomfmp7ksn5hpuase5deti)
       react-native-webrtc:
         specifier: 155.0.1
         version: 155.0.1(react-native@0.86.0(@babel/core@7.29.7)(@react-native/jest-preset@0.86.0(@babel/core@7.29.7)(react@19.3.0))(@react-native/metro-config@0.86.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))
@@ -5115,8 +5115,8 @@ packages:
       '@expo/config-plugins':
         optional: true
 
-  react-native-vision-camera-worklets@5.2.3:
-    resolution: {integrity: sha512-POwjbl1853KFSWYw3/yb3NnRpCWjg7w4dS5LvFVHeMGvPv1Qyu5CCOqYKcB3TUJlg3L4Tn/iBgs0p1NHcCrmxA==}
+  react-native-vision-camera-worklets@5.2.4:
+    resolution: {integrity: sha512-0JXDMCQdM8YTmzm9RddSBTqreafE6EgQSpn4vfp+gTdu/djZFti4NbzKRifl74w4JTkIoLF9SXqbTgz882gB5g==}
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -12046,7 +12046,7 @@ snapshots:
     optionalDependencies:
       '@expo/config-plugins': 57.0.10(typescript@6.0.3)
 
-  react-native-vision-camera-worklets@5.2.3(l5aynomfmp7ksn5hpuase5deti):
+  react-native-vision-camera-worklets@5.2.4(l5aynomfmp7ksn5hpuase5deti):
     dependencies:
       react: 19.3.0
       react-native: 0.86.0(@babel/core@7.29.7)(@react-native/jest-preset@0.86.0(@babel/core@7.29.7)(react@19.3.0))(@react-native/metro-config@0.86.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0)
