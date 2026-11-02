@@ -312,8 +312,7 @@ def test_untitled_parts_mean_what_their_one_record_asks() -> None:
     )
     opening, _parts = _opening_and_parts(_laid_out(block))
     assert (
-        "**Required**  \n(a) $v$ (average speed)  \n(b) $v$ (average speed)  \n"
-        "(c) $t$ (average speed)\n"
+        "**Required**  \n(a) $v$ (average speed)  \n(b) $v$ (average speed)  \n(c) $t$\n"
     ) in opening
 
 

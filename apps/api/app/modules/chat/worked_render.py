@@ -368,8 +368,12 @@ def _asked_by_parts(
         record = asked[index] if index < len(asked) else asked[0] if len(asked) == 1 else None
         # A record's "symbol" in words names every part at once, never this one.
         own = record.symbol if record and not names_nothing(record.symbol) else ""
-        symbol = _answered_symbols(part) or own
-        meaning = part.title or (record.meaning if record else "")
+        answered = _answered_symbols(part)
+        symbol = answered or own
+        # The record's meaning is its own symbol's: a part finding another ("t" under
+        # "v | average speed") is named by its title or by its symbol alone.
+        shared = record is not None and (not answered or tidy_symbol(answered) == tidy_symbol(own))
+        meaning = part.title or (record.meaning if record and shared else "")
         if symbol:
             rows.append(math_line(tidy_symbol(symbol), meaning or None))
         elif meaning:
