@@ -55,6 +55,7 @@ from app.modules.chat.prompt_constants import (
 )
 from app.modules.chat.prompt_constants.multi_part import multi_part_contract
 from app.modules.chat.prompt_constants.reactions import clock_is_relevant
+from app.modules.chat.prompt_constants.tutor import TUTOR_IDENTITY, TUTOR_SAFETY, TUTOR_TEACHING
 from app.modules.chat.prompt_context_hints import integration_hints, lookup_hints, slim_geo_hints
 from app.modules.chat.prompt_format import (
     PromptRule,
@@ -260,7 +261,7 @@ def _advice(turn: PromptTurn) -> list[str]:
 # the turn (its kind, its words, the clock or what was loaded for it).
 STABLE_SECTIONS: tuple[PromptSection, ...] = (
     PromptSection(
-        _always, lambda _t: ["You are Phonia, a helpful personal AI assistant."], name="identity"
+        _always, lambda _t: [TUTOR_IDENTITY, TUTOR_TEACHING, TUTOR_SAFETY], name="identity"
     ),
     PromptSection(
         _always,
