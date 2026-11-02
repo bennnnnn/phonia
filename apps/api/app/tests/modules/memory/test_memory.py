@@ -263,7 +263,7 @@ def test_extract_consolidation_anchors_names_and_orgs():
     anchors = extract_consolidation_anchors(prior)
     assert "bini" in anchors
     assert "hooh" in anchors
-    assert "recall" in anchors
+    assert "phonia" in anchors
     assert "dev@example.com" in anchors
 
 

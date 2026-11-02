@@ -14,7 +14,7 @@ jest.mock("@/lib/haptics", () => ({ tap: jest.fn() }));
 const styles = makeConversationListStyles(lightTheme);
 
 beforeEach(() => {
-  mockUser = { name: "Bini Phonia", avatar_url: null };
+  mockUser = { name: "Bini Recall", avatar_url: null };
   mockToken = "test-token";
 });
 
@@ -39,7 +39,7 @@ it("updates the sidebar photo and its credentials when the account changes", asy
     onSettings={jest.fn()} onNewChat={jest.fn()} />;
   const view = await render(footer());
   mockUser = {
-    name: "Bini Phonia",
+    name: "Bini Recall",
     avatar_url: "/attachments/11111111-1111-4111-8111-111111111111/file",
   };
   mockToken = "refreshed-token";
