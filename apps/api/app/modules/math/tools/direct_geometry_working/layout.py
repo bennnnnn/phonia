@@ -7,8 +7,7 @@ import re
 from collections.abc import Callable, Mapping
 
 from app.modules.math.schemas import GeometryRequest
-from app.services.workout import Workout, math_line, render_workout, solve_for_line
-from app.services.workout import formula_name as law_name
+from app.services.workout import Workout, formula_heading, math_line, render_workout, solve_for_line
 
 # (what was asked, the verified figure's measures, the verified result) -> layout
 Working = Callable[[GeometryRequest, Mapping[str, object], str], str | None]
@@ -74,10 +73,7 @@ def section(
     ``solved`` is the formula rearranged for the unknown (``l = \\frac{A}{w}``): a
     ``Solve for $l$`` line, then that formula, after the others.
     """
-    name = law_name(formula_name)
-    formula_lines = [
-        math_line(formula, name if index == 0 else None) for index, formula in enumerate(formulas)
-    ]
+    formula_lines = [math_line(formula) for formula in formulas]
     if solved is not None:
         formula_lines += [solve_for_line(solved.split(" = ", 1)[0]), math_line(solved)]
     return render_workout(
@@ -85,6 +81,8 @@ def section(
             given=tuple(_labelled_line(line) for line in givens),
             find=(_find_line(find),),
             formula=tuple(formula_lines),
+            # The formula's name heads it ("Circle area formula"), never a note on its line.
+            formula_heading=formula_heading(formula_name),
             substitution=tuple(math_line(line) for line in substitutions),
         )
     )

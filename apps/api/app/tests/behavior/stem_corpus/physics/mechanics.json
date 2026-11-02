@@ -1542,5 +1542,26 @@
    ]
   ],
   "visual": "projectile_motion"
+ },
+ {
+  "id": "fall-reach-09",
+  "area": "free_fall",
+  "prompt": "A ball is dropped from 20 m. What's its speed after 1 s? How long to reach the ground?",
+  "expect": "answer",
+  "answer": [
+   9.81,
+   "m/s"
+  ],
+  "parts": [
+   [
+    9.81,
+    "m/s"
+   ],
+   [
+    2.01928,
+    "s"
+   ]
+  ],
+  "visual": "projectile_motion"
  }
 ]

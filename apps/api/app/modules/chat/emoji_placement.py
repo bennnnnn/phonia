@@ -51,7 +51,7 @@ _LESSON = re.compile(r"^#{1,6}\s.*\bLesson\s+\d", re.MULTILINE)
 _EMOJI_LEAD = rf"(?:(?:{EMOJI.pattern})[ \t]*)?"
 _WORKED_SECTION = re.compile(
     rf"^[^\S\n]*(?:#{{1,4}}[ \t]+)?{_EMOJI_LEAD}\*\*{_EMOJI_LEAD}"
-    rf"(?P<name>Given|{REQUIRED_PATTERN}|Formula|Substitution|Answer|Check)"
+    rf"(?P<name>Given|{REQUIRED_PATTERN}|Solution|Formula|Substitution|Answer|Check)"
     r"(?:\s*\([a-h]\))?\s*:?\*\*",
     re.MULTILINE | re.IGNORECASE,
 )

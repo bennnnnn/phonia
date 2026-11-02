@@ -156,6 +156,11 @@ class SubjectFence(Protocol):
         """``check`` failed or ran out of time: the fences closed and made safe, no solver."""
         ...
 
+    def cards(self, verified: VerifiedSolveBlock) -> tuple[str, ...]:
+        """The fences the subject writes for the block's result: its answer card and its
+        pictures. A question in parts keeps the fences that are one of its parts' own."""
+        ...
+
     def unverified_note(self, text: str) -> str:
         """The reply with the note an answer the subject could not verify carries."""
         ...

@@ -169,7 +169,13 @@ async def test_the_phone_is_sent_the_layout_and_the_reply_saves_with_a_not_check
     )
     assert VERIFIED_ANSWER_MARKER not in saved
     # Every section survives the finalize passes (the prompt-leak pass among them).
-    for heading in ("**Given**", "**Required**", "**Constant velocity**", "**Substitution**"):
+    for heading in (
+        "**Given**",
+        "**Required**",
+        "**Solution**",
+        "**Constant velocity formula**",
+        "**Substitution**",
+    ):
         assert heading in saved
 
 

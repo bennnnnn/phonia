@@ -9,7 +9,7 @@ import pytest
 from app.core.config import Settings
 from app.modules.chat import tool_loop
 from app.modules.physics.catalog import formula_spec
-from app.modules.physics.law_titles import law_title
+from app.modules.physics.law_titles import law_heading
 from app.modules.physics.schemas import PhysicsIntent
 from app.tests.modules.physics.support import (
     build_verified_physics_block,
@@ -193,7 +193,7 @@ def test_phase2_catalog_is_verified_and_uses_structured_working(
     assert reply is not None
     spec = formula_spec(operation)
     assert spec is not None
-    law = f"**{law_title(spec.law_name)}**"
+    law = f"**{law_heading(spec.law_name)}**"
     headings = ["**Given**", "**Required**", law, "**Substitution**", "**Answer**"]
     assert [reply.index(heading) for heading in headings] == sorted(
         reply.index(h) for h in headings

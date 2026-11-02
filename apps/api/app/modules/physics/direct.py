@@ -33,7 +33,7 @@ from app.modules.physics.display import (
 )
 from app.modules.physics.extract import extract_physics_intent
 from app.modules.physics.glossary import given_meaning
-from app.modules.physics.law_titles import law_title
+from app.modules.physics.law_titles import law_heading
 from app.modules.physics.notation import shown
 from app.modules.physics.parts import asks_more_than_answered
 from app.modules.physics.schemas import PhysicsIntent
@@ -43,8 +43,8 @@ from app.modules.physics.working import result_symbol_for
 from app.modules.physics.working_steps import carried_to_answer
 from app.services.glyphs import SUPERSCRIPT_SIGNED
 from app.services.solving import SolveServiceError, VerifiedPhysicsBlock
+from app.services.worked_parts import WorkedPart, render_parts
 from app.services.workout import (
-    ANSWER,
     FORMULA,
     Workout,
     math_line,
@@ -204,7 +204,7 @@ def _formula_rows(
     intent: PhysicsIntent, formulas: list[str], operation: str | None = None
 ) -> list[str]:
     """The governing law's base form, then any rearrangement, as a step: ``Solve for $t$``
-    over the rearranged formula. The law's name is the section's heading (``law_title``),
+    over the rearranged formula. The law's name is the section's heading (``law_heading``),
     so no row repeats it. ``operation`` is one part's, in a question in parts."""
     operation = operation or intent.physics_op or ""
     spec = formula_spec(operation)
@@ -320,7 +320,8 @@ def format_direct_physics_working(verified: VerifiedPhysicsBlock) -> str | None:
     return render_workout(
         Workout(
             given=tuple(given_rows),
-            find=(math_line(find_symbol),),
+            # What is asked, named as the where-line names a given ("$v$ — speed").
+            find=(math_line(find_symbol, _meaning(operation, find_symbol)),),
             formula=tuple(formula_rows),
             substitution=tuple(
                 math_line(row)
@@ -328,7 +329,7 @@ def format_direct_physics_working(verified: VerifiedPhysicsBlock) -> str | None:
                     substitutions, verified.display_answer or verified.canonical_answer
                 )
             ),
-            formula_heading=law_title(spec.law_name) if spec is not None else FORMULA,
+            formula_heading=law_heading(spec.law_name) if spec is not None else FORMULA,
         )
     )
 
@@ -360,37 +361,45 @@ def _solver_fences(verified: VerifiedPhysicsBlock) -> list[dict[str, Any]]:
     return fences
 
 
+def _meaning(operation: str, symbol: str) -> str | None:
+    """What an unknown stands for, from the glossary that names the givens."""
+    spec = formula_spec(operation)
+    return given_meaning(operation, spec.kind if spec is not None else "", symbol)
+
+
 def _format_parts(
     verified: VerifiedPhysicsBlock, intent: PhysicsIntent, given_rows: list[str]
 ) -> str:
     """A question in parts: the givens and what is asked once, then each part worked on
     its own, closed by its own answer card, a hairline between parts."""
-    parts = verified.physics_parts
-    opening = render_workout(
-        Workout(given=tuple(given_rows), find=tuple(math_line(part.symbol) for part in parts)),
-        answer_heading=None,
-    )
-    sections: list[str] = []
-    for letter, part in zip("abcdefgh", parts, strict=False):
+    worked: list[WorkedPart] = []
+    for part in verified.physics_parts:
         spec = formula_spec(part.op)
         rows = _formula_rows(intent, list(part.formulas), part.op)
         if spec is not None:
             params = intent.physics_params or {}
             rows.extend(text_line(f"Assumes {item}.") for item in visible_assumptions(spec, params))
-        worked = render_workout(
+        working = render_workout(
             Workout(
                 formula=tuple(rows),
                 substitution=tuple(
                     math_line(row)
                     for row in carried_to_answer(part.substitutions, part.display_answer)
                 ),
-                formula_heading=law_title(spec.law_name) if spec is not None else FORMULA,
+                formula_heading=law_heading(spec.law_name) if spec is not None else FORMULA,
             ),
-            part.display_answer,
-            answer_heading=f"{ANSWER} ({letter})",
+            answer_heading=None,
         )
-        sections.append(f"**({letter}) {part.title}**\n\n{worked.strip()}")
-    return f"{opening}\n\n" + "\n\n---\n\n".join(sections)
+        worked.append(
+            WorkedPart(
+                title=part.title,
+                working=working,
+                answer=part.display_answer,
+                required=(math_line(part.symbol, _meaning(part.op, part.symbol)),),
+            )
+        )
+    # The one layout every question in parts has (``services/worked_parts``).
+    return render_parts(worked, given_rows)
 
 
 def maybe_direct_physics_reply(

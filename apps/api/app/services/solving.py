@@ -86,6 +86,10 @@ class VerifiedSolveBlock:
     direct_answer_binding: str | None = None
     domain_conditions: tuple[str, ...] = ()
     excluded_values: tuple[str, ...] = ()
+    # A question in parts, each part verified on its own: every part's block, in order.
+    # This block (the first part's) stands for the turn; the fence check keeps each
+    # part's card and pictures (``chat.finalize_subjects``).
+    question_parts: tuple[VerifiedSolveBlock, ...] = ()
 
 
 @dataclass(frozen=True)

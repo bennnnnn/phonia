@@ -7,7 +7,7 @@ import re
 import pytest
 
 from app.core.config import Settings
-from app.modules.physics.law_titles import law_title
+from app.modules.physics.law_titles import law_heading
 from app.modules.physics.schemas import PhysicsIntent
 from app.tests.modules.physics.support import (
     build_verified_physics_block,
@@ -135,7 +135,7 @@ def test_new_catalog_problem_is_verified_and_explained(
     reply = maybe_direct_physics_reply(verified, query)
     assert reply is not None
     # The law's name heads its formulas.
-    law = f"**{law_title(law_name.rstrip(':'))}**"
+    law = f"**{law_heading(law_name.rstrip(':'))}**"
     headings = ["**Given**", "**Required**", law, "**Substitution**", "**Answer**"]
     assert all(reply.count(heading) == 1 for heading in headings)
     assert [reply.index(heading) for heading in headings] == sorted(

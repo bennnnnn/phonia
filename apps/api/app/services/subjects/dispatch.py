@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import re
 from collections.abc import Sequence
+from dataclasses import replace
 from typing import TYPE_CHECKING
 
 from redis.asyncio import Redis
@@ -20,6 +21,7 @@ from app.services.solving import SubjectAugmentation, VerifiedSolveBlock
 from app.services.subjects.order import read_subject_reason
 from app.services.subjects.registry import SubjectName as SubjectName
 from app.services.subjects.registry import SubjectRequest, subject_adapter
+from app.services.worked_parts import parts_in_one_layout
 
 if TYPE_CHECKING:
     from collections.abc import Awaitable, Callable
@@ -192,14 +194,15 @@ async def _solve_parts(
             await read_direct_reply(piece.verified, part, settings)
             for piece, part in zip(pieces, parts, strict=True)
         ]
-        if all(reply is not None for reply in replies):
-            # The first part's block stands for the turn's verified solve (its card, the
-            # trace); the reply holds every part's own.
+        blocks = tuple(piece.verified for piece in pieces if piece.verified is not None)
+        if all(reply is not None for reply in replies) and len(blocks) == len(pieces):
+            # The first part's block stands for the turn's verified solve (the trace); the
+            # reply holds every part's own card, which the fence check holds to its part.
             first = pieces[0]
             return SubjectAugmentation(
                 first.subject,
                 first.prompt_block,
-                first.verified,
+                replace(blocks[0], question_parts=blocks),
                 direct_text=_in_parts(parts, [r or "" for r in replies]),
             )
     verified = next((piece for piece in pieces if piece.verified is not None), None)
@@ -210,8 +213,14 @@ async def _solve_parts(
 
 
 def _in_parts(parts: Sequence[str], replies: Sequence[str]) -> str:
-    """The question in parts: each part's own question, then its worked answer."""
+    """The question in parts, in the one layout every worked answer in parts has
+    (``services/worked_parts``): the givens and what is asked once, then each part's
+    working closed by its own answer card. A reply in another shape keeps the old one:
+    each part's own question, then its reply."""
     shared = _shared_setup(parts)
+    laid_out = parts_in_one_layout([part[len(shared) :] for part in parts], replies)
+    if laid_out is not None:
+        return laid_out
     sections = []
     for index, (part, reply) in enumerate(zip(parts, replies, strict=True)):
         label = chr(ord("a") + index) if index < 26 else str(index + 1)

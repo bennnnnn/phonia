@@ -192,7 +192,7 @@ def test_momentum_direct_reply_uses_the_solver_owned_answer() -> None:
     reply = maybe_direct_physics_reply(block, text)
     assert reply is not None
     assert "**Given**" in reply
-    assert "**Linear momentum**" in reply
+    assert "**Linear momentum formula**" in reply
     assert "**Answer**" in reply
     assert "```answer\n6\\,\\mathrm{kg·m/s}\n```" in reply
 

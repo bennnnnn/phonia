@@ -103,6 +103,12 @@ class PhysicsFence:
 
         return replace_unclosed_physics_fences_safe(text, _physics_block(verified))
 
+    def cards(self, verified: VerifiedSolveBlock) -> tuple[str, ...]:
+        from app.modules.physics.fence import solver_cards
+
+        block = _physics_block(verified)
+        return solver_cards(block) if block is not None else ()
+
     def unverified_note(self, text: str) -> str:
         # An unverified physics turn's note is in its prompt, not under the reply.
         return text

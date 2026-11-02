@@ -71,6 +71,28 @@ def _canonical_specs(verified: VerifiedPhysicsBlock) -> list[dict[str, object]]:
     return specs
 
 
+def _scene_fences(verified: VerifiedPhysicsBlock) -> list[str]:
+    """The solver's pictures: its sampled ```graph and ```simulation scenes."""
+    fences: list[str] = []
+    for spec in _canonical_specs(verified):
+        spec_type = spec.get("type")
+        if spec_type == "answer":
+            continue
+        language = "simulation" if spec_type in SIMULATION_SPEC_TYPES else "graph"
+        fences.append(f"```{language}\n{json.dumps(spec, separators=(',', ':'))}\n```")
+    return fences
+
+
+def solver_cards(verified: VerifiedPhysicsBlock) -> tuple[str, ...]:
+    """The fences physics writes for the block: its answer card (each part's, for a
+    solve in parts) and its pictures."""
+    answers = [part.display_answer for part in verified.physics_parts]
+    if len(answers) < 2:
+        answers = [(verified.display_answer or verified.canonical_answer or "").strip()]
+    cards = [f"```answer\n{answer}\n```" for answer in answers if answer]
+    return (*cards, *_scene_fences(verified))
+
+
 def validate_physics_fences(
     content: str,
     *,
@@ -90,7 +112,6 @@ def validate_physics_fences(
         if had_visual_fence and not cleaned:
             return _DIAGRAM_FAILED
         return cleaned
-    extras: list[str] = []
     answer = (verified.display_answer or verified.canonical_answer or "").strip()
     # A question in parts: each part's card under its own Answer heading. A reply whose
     # part states another value is left as written, with no card claiming either.
@@ -114,12 +135,7 @@ def validate_physics_fences(
         cleaned = land_answer_card(
             cleaned, answer, above=correction_line(answer) if conflict else None
         )
-    for spec in _canonical_specs(verified):
-        spec_type = spec.get("type")
-        if spec_type == "answer":
-            continue
-        language = "simulation" if spec_type in SIMULATION_SPEC_TYPES else "graph"
-        extras.append(f"```{language}\n{json.dumps(spec, separators=(',', ':'))}\n```")
+    extras = _scene_fences(verified)
     if not extras:
         return cleaned
     keep_diagrams = _ASKED_FOR_DIAGRAM.search(user_text) is not None

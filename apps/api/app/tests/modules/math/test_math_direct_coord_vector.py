@@ -5,6 +5,7 @@ import pytest
 from app.core.config import Settings
 from app.modules.math.tools.direct import maybe_direct_math_reply
 from app.modules.math.tools.prompt import build_math_augmentation
+from app.services.workout import as_formula_heading
 
 
 @pytest.mark.asyncio
@@ -31,7 +32,7 @@ async def test_closed_coordinate_vector_asks_return_one_verified_answer(query, a
     assert reply.endswith(f"```answer\n{answer}\n```\n")
     assert reply.count("```answer") == 1
     if any(word in query for word in ("distance", "slope", "midpoint")):
-        assert "**Formula**" in reply and "**Substitution**" in reply
+        assert "**Formula**" in as_formula_heading(reply) and "**Substitution**" in reply
 
 
 @pytest.mark.asyncio

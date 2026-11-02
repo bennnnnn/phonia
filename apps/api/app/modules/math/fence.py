@@ -98,7 +98,7 @@ def _canonical_replacement(
     ``canonical_fences`` (from multiple tool-loop rounds) is matched by type
     so a geometry fence from round 1 isn't lost when round 2 produced a graph
     fence. The primary is searched **alongside** it, not only when it is empty:
-    the other two readers of this pair (`_collect_canonical_specs` and
+    the other two readers of this pair (`collect_canonical_specs` and
     `_solver_fences`) already prepend the primary, and this one treating the
     list as a replacement meant a caller storing only the extras would have its
     primary silently stop matching — which is exactly what happened when a
@@ -252,7 +252,7 @@ def _replace_fence(
     return _graph_fence_body(densified)
 
 
-def _canonical_answer_body(verified: VerifiedMathBlock | None) -> str | None:
+def canonical_answer_body(verified: VerifiedMathBlock | None) -> str | None:
     if verified is None:
         return None
     if verified.response_intent is not None and not verified.response_intent.reveal_answer:
@@ -282,7 +282,7 @@ def _canonical_answer_body(verified: VerifiedMathBlock | None) -> str | None:
     return None
 
 
-def _spec_fence_kind(spec: dict[str, object]) -> str | None:
+def spec_fence_kind(spec: dict[str, object]) -> str | None:
     from app.modules.math.schemas.teaching import TEACHING_TYPES
 
     spec_type = spec.get("type")
@@ -309,7 +309,7 @@ def _markdown_fence(kind: str, body: str) -> str:
     return f"```{kind}\n{body}\n```"
 
 
-def _collect_canonical_specs(verified: VerifiedMathBlock) -> list[dict[str, object]]:
+def collect_canonical_specs(verified: VerifiedMathBlock) -> list[dict[str, object]]:
     specs: list[dict[str, object]] = []
     seen: set[int] = set()
     for spec in [verified.canonical_fence, *(verified.canonical_fences or [])]:
@@ -324,7 +324,7 @@ def _collect_canonical_specs(verified: VerifiedMathBlock) -> list[dict[str, obje
 
 
 def _verified_includes_graph(verified: VerifiedMathBlock) -> bool:
-    return any(_spec_fence_kind(spec) == "graph" for spec in _collect_canonical_specs(verified))
+    return any(spec_fence_kind(spec) == "graph" for spec in collect_canonical_specs(verified))
 
 
 def _append_missing_canonical_fences(
@@ -333,7 +333,7 @@ def _append_missing_canonical_fences(
     """Attach solver-owned fences the model was told not to emit."""
     if verified is None:
         return content
-    answer_body = _canonical_answer_body(verified)
+    answer_body = canonical_answer_body(verified)
     # A reply that asks rather than answers has no answer to decorate, so it
     # gets no pill, no diagram and no chart — not one of the three.
     if reply_asks_instead_of_answering(content, answer_body):
@@ -343,14 +343,14 @@ def _append_missing_canonical_fences(
     if answer_body and correct and stated_verdict(content, answer_body) == "conflict":
         correction = correction_line(answer_body)
 
-    specs = _collect_canonical_specs(verified)
-    geo = next((spec for spec in specs if _spec_fence_kind(spec) == "geometry"), None)
+    specs = collect_canonical_specs(verified)
+    geo = next((spec for spec in specs if spec_fence_kind(spec) == "geometry"), None)
     if geo is not None and not has_closed_fence(content, "geometry"):
         extras.append(_markdown_fence("geometry", json.dumps(geo, separators=(",", ":"))))
-    graph = next((spec for spec in specs if _spec_fence_kind(spec) == "graph"), None)
+    graph = next((spec for spec in specs if spec_fence_kind(spec) == "graph"), None)
     if graph is not None and not has_closed_fence(content, "graph"):
         extras.append(_markdown_fence("graph", json.dumps(graph, separators=(",", ":"))))
-    teaching = next((spec for spec in specs if _spec_fence_kind(spec) == "teach"), None)
+    teaching = next((spec for spec in specs if spec_fence_kind(spec) == "teach"), None)
     answer_only = (
         verified.response_intent is not None and verified.response_intent.mode == "answer_only"
     )
@@ -362,7 +362,7 @@ def _append_missing_canonical_fences(
         and not has_closed_fence(content, "arithmetic")
     ):
         extras.append(_markdown_fence("arithmetic", json.dumps(teaching, separators=(",", ":"))))
-    arithmetic = next((spec for spec in specs if _spec_fence_kind(spec) == "arithmetic"), None)
+    arithmetic = next((spec for spec in specs if spec_fence_kind(spec) == "arithmetic"), None)
     show_working = bool(
         arithmetic is not None
         and verified.response_intent is not None
@@ -498,7 +498,7 @@ def validate_math_fences(
     )
     canonical_fence = scoped_verified.canonical_fence if scoped_verified is not None else None
     canonical_fences = scoped_verified.canonical_fences if scoped_verified is not None else []
-    answer_body = _canonical_answer_body(verified)
+    answer_body = canonical_answer_body(verified)
     withhold_answer = bool(
         verified is not None
         and verified.response_intent is not None

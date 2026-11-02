@@ -4,8 +4,8 @@
  * - `verified: true` — the server checked this value with a solver. It is the only
  *   thing that earns the card's green check; the server strips the line from anything
  *   a model writes, so a reply cannot forge it.
- * - `verified: false` — no solver checked it: the model worked it out. The card says
- *   "Not checked" and draws no check. A card from before November 2026 has neither line.
+ * - `verified: false` — no solver checked it: the model worked it out. The card draws
+ *   no check and no label, in a dashed box. A card from before November 2026 has neither line.
  * - `notation: chemistry` — the body is chemistry text, not LaTeX. Chemistry (and any
  *   later literal subject) keeps formulas, charges, and units as text; treating that
  *   body as algebra rewrites a correct result.

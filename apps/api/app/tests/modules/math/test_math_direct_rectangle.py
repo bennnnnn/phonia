@@ -18,6 +18,7 @@ from app.modules.math.tools.extract import extract_math_intent
 from app.modules.math.tools.prompt import build_math_augmentation
 from app.services.answer_fence import mark_server_answer_fences
 from app.services.solving import VerifiedMathBlock
+from app.services.workout import as_formula_heading
 
 
 @pytest.mark.asyncio
@@ -44,7 +45,7 @@ async def test_rectangle_streams_one_answer_and_exact_diagram_without_model(
     assert reply.count("```answer") == 1 and reply.count("```geometry") == 1
     assert "**Given**" in reply
     assert "**Required**" in reply
-    assert "**Formula**" in reply
+    assert "**Formula**" in as_formula_heading(reply)
     assert "**Substitution**" in reply
     assert "```geometry" in reply
     finalized = validate_math_fences(reply, verified=verified)

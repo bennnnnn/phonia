@@ -300,7 +300,7 @@ def test_speed_law_uses_its_universal_formula_before_any_rearrangement(
     reply = maybe_direct_physics_reply(verified, query)
     assert reply is not None
     assert f"**Required**  \n{find}" in reply
-    assert "**Speed**  \n$v = \\frac{d}{t}$" in reply
+    assert "**Speed formula**  \n$v = \\frac{d}{t}$" in reply
     if rearranged is not None:
         assert rearranged in reply
     assert f"**Substitution**  \n{substitution}" in reply

@@ -236,6 +236,11 @@ def _solver_fences(verified: VerifiedChemistry, *, marked: bool = False) -> list
     return fences
 
 
+def solver_cards(verified: object) -> tuple[str, ...]:
+    """The fences chemistry writes for the block: its answer card, scenes and structure."""
+    return tuple(_solver_fences(verified)) if isinstance(verified, VerifiedChemistry) else ()
+
+
 def _strip_owned_fences(content: str) -> str:
     cleaned = normalize_owned_fences(content, ANSWER_FENCE_LANGS)
     for language in _OWNED_FENCE_LANGS:

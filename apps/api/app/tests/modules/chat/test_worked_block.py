@@ -39,7 +39,8 @@ DISPLACEMENT_LAID_OUT = (
     "**Given**  \n$v = 20\\,\\mathrm{m/s}$  \n$t = 120\\,\\mathrm{s}$  \n"
     "where $v$ = speed, $t$ = time\n\n"
     "**Required**  \n$s$ — displacement\n\n"
-    "**Constant velocity**  \n$s = v t$\n\n"
+    "**Solution**\n\n"
+    "**Constant velocity formula**  \n$s = v t$\n\n"
     "**Substitution**  \n$s = 20 \\times 120$  \n$s = 2400\\,\\mathrm{m}$\n\n"
     "**Answer**\n\n$2400\\,\\mathrm{m}\\ \\text{east}$"
 )
@@ -123,9 +124,11 @@ def test_render_lays_physics_out_as_its_verified_replies() -> None:
     assert render_worked(_solution(DISPLACEMENT), PHYSICS) == DISPLACEMENT_LAID_OUT
 
 
-def test_render_names_the_formula_after_a_dash_and_keeps_the_symbol_elsewhere() -> None:
+def test_render_heads_the_formula_with_its_name_and_keeps_the_symbol_elsewhere() -> None:
     laid_out = render_worked(_solution(DISPLACEMENT), OTHER)
-    assert "**Formula**  \n$s = v t$ — Constant velocity" in laid_out
+    # The name heads the formula ("<name> formula"), never a note beside it.
+    assert "**Constant velocity formula**  \n$s = v t$\n" in laid_out
+    assert "— Constant velocity" not in laid_out
     assert laid_out.endswith("**Answer**\n\n$s = 2400\\,\\mathrm{m}\\ \\text{east}$")
 
 
@@ -134,7 +137,7 @@ def test_render_puts_a_rearrangement_under_its_formula_and_moves_under_steps() -
         "given: d | 100 | m\ngiven: v | 5 | m/s\nrequired: t\nformula: Speed | v = \\frac{d}{t}\n"
         "solve_for: t | t = \\frac{d}{v}\nsubstitution: t = \\frac{100}{5}\nanswer: t | 20 | s"
     )
-    assert "**Formula**  \n$v = \\frac{d}{t}$ — Speed  \nSolve for $t$  \n$t = \\frac{d}{v}$" in (
+    assert "**Speed formula**  \n$v = \\frac{d}{t}$  \nSolve for $t$  \n$t = \\frac{d}{v}$" in (
         render_worked(rearranged, OTHER)
     )
     moves = _solution("step: 2x + 3 = 11 | given\nstep: 2x = 8 | subtract 3\nanswer: x | 4")
@@ -146,7 +149,12 @@ def test_render_puts_a_rearrangement_under_its_formula_and_moves_under_steps() -
 def test_render_lays_a_question_in_parts_out_part_by_part() -> None:
     laid_out = render_worked(_solution(POLES), OTHER)
     assert laid_out.startswith("**Given**  \n$d = 100\\,\\mathrm{m}$")
-    assert "**(a) Distance in centimetres**\n\n**Formula**" in laid_out
+    # One Required naming what each part finds, then Solution, then the parts.
+    assert (
+        "**Required**  \n(a) $d_{cm}$ — distance in centimetres  \n"
+        "(b) $d_{km}$ — distance in kilometres\n\n**Solution**\n\n**(a) Distance" in laid_out
+    )
+    assert "**(a) Distance in centimetres**\n\n**Conversion formula**" in laid_out
     assert "**Answer (a)**\n\n$d_{cm} = 10000\\,\\mathrm{cm}$\n\n---\n\n**(b) Distance" in laid_out
     assert laid_out.endswith("**Answer (b)**\n\n$d_{km} = 0.1\\,\\mathrm{km}$")
 
@@ -245,7 +253,7 @@ def test_a_block_of_no_records_is_shown_as_written() -> None:
 def test_a_block_cut_off_by_the_stream_end_is_laid_out_as_far_as_it_went() -> None:
     cut = DISPLACEMENT.split("substitution:")[0]
     sent, _seen, _accum = _stream(cut, 6)
-    assert sent.strip().endswith("**Constant velocity**  \n$s = v t$")
+    assert sent.strip().endswith("**Constant velocity formula**  \n$s = v t$")
     assert "**Answer**" not in sent
 
 
@@ -335,7 +343,7 @@ def test_a_formula_before_the_first_part_label_is_that_parts() -> None:
     )
     laid_out = render_worked(block, OTHER)
     assert laid_out.count("**(a)") == 1 and laid_out.count("---") == 1
-    assert "**(a) speed**\n\n**Formula**  \n$v = d/t$ — Speed" in laid_out
+    assert "**(a) speed**\n\n**Speed formula**  \n$v = d/t$\n" in laid_out
 
 
 def test_a_rewrite_keeps_the_list_length_and_a_stop_after_it_keeps_the_reply_whole() -> None:

@@ -18,7 +18,7 @@ from app.modules.physics.answer_checks import (
 )
 from app.modules.physics.catalog import formula_spec
 from app.modules.physics.display import conversion_row
-from app.modules.physics.law_titles import law_title
+from app.modules.physics.law_titles import law_heading, law_title
 from app.modules.physics.notation import shown
 from app.modules.physics.schemas import PhysicsIntent
 from app.modules.physics.solver import PhysicsResult, solve_physics
@@ -207,15 +207,15 @@ def _build_physics_block(
             "Copy each verified formula; do not recalculate its numbers."
         )
     spec = formula_spec(intent.physics_op or "")
-    law = law_title(spec.law_name) if spec is not None else None
+    law = law_heading(spec.law_name) if spec is not None else None
     lines.append(
         "Use this user-visible layout for this verified physics solution: "
         f"{PHYSICS_WORKOUT_PROMPT_RULE} Put every equation on its own line. Under Given, list "
         "the supplied quantities with units. Under Required, name the requested quantity. Head "
-        "the formulas with the verified law's name in place of Formula, show its universal/base "
-        "equation first, then any rearrangement for the requested unknown under a `Solve for` "
-        "line. Under Substitution, insert the supplied numbers and copy the verified rows to the "
-        "result. Under Answer, state the verified result exactly once."
+        'the formulas with the verified law\'s heading (its name and "formula"), not Formula; '
+        "show its universal/base equation first, then any rearrangement for the unknown under a "
+        "`Solve for` line. Under Substitution, insert the supplied numbers and copy the verified "
+        "rows to the result. Under Answer, state the verified result exactly once."
     )
     if result.simulation_specs:
         lines.append(NATIVE_VISUAL_RULE)

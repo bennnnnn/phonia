@@ -55,7 +55,7 @@ type Styles = ReturnType<typeof makeStyles>;
 
 /**
  * The card's heading ("Answer", "Answer (a)") and its box. A value no solver checked
- * (`verified: false`) says "Not checked" beside the heading, in a dashed box.
+ * (`verified: false`) sits in a dashed box, with no label and no check.
  */
 function AnswerFrame({
   parsed,
@@ -69,14 +69,11 @@ function AnswerFrame({
   children: ReactNode;
 }) {
   const { t } = useTranslation();
-  const unchecked = parsed.unchecked ? t("rich.answer_not_checked") : null;
   return (
     <View
       style={s.section}
       accessibilityRole="text"
-      accessibilityLabel={
-        t("rich.answer_a11y", { text: spoken }) + (unchecked ? `. ${unchecked}` : "")
-      }
+      accessibilityLabel={t("rich.answer_a11y", { text: spoken })}
     >
       <View style={s.heading}>
         <Text testID="answer-label" style={s.label}>
@@ -84,13 +81,8 @@ function AnswerFrame({
             ? t("rich.answer_part_label", { part: parsed.part })
             : t("rich.answer_label")}
         </Text>
-        {unchecked ? (
-          <Text testID="answer-not-checked" style={s.notChecked}>
-            {unchecked}
-          </Text>
-        ) : null}
       </View>
-      <View testID="answer-box" style={[s.box, unchecked ? s.uncheckedBox : null]}>
+      <View testID="answer-box" style={[s.box, parsed.unchecked ? s.uncheckedBox : null]}>
         {children}
       </View>
     </View>
@@ -104,7 +96,7 @@ function AnswerFrame({
  * Every ```answer fence lands here; the green check after the value is the
  * server's (a body that opens with `verified: true`, see lib/answerNotation.ts)
  * and needs the reply to have settled. A value no solver checked (`verified: false`)
- * says so beside the heading, "Not checked", in a box with a dashed border.
+ * sits in a box with a dashed border, with no label and no check.
  *
  * Light answers stay on native `MathText`. Heavy LaTeX environments
  * (`\begin{cases|matrix|aligned|…}`) render as MathJax-SVG in a slot that
@@ -275,11 +267,6 @@ const makeStyles = (t: Theme) =>
       ...Type.body,
       ...Weight.semibold,
       color: t.assistantText,
-    },
-    // A value no solver checked: a quiet note beside the heading, never a warning.
-    notChecked: {
-      ...Type.caption,
-      color: t.textSecondary,
     },
     uncheckedBox: {
       borderStyle: "dashed",

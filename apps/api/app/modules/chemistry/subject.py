@@ -100,6 +100,11 @@ class ChemistryFence:
 
         return replace_unclosed_chemistry_fences_safe(text, verified)
 
+    def cards(self, verified: VerifiedSolveBlock) -> tuple[str, ...]:
+        from app.modules.chemistry.fence import solver_cards
+
+        return solver_cards(verified)
+
     def unverified_note(self, text: str) -> str:
         from app.modules.chemistry.context import append_unverified_chemistry_note
 

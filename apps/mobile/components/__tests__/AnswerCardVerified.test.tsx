@@ -6,7 +6,7 @@
  * "notation: chemistry" header, a forged marker line) is the same card without the
  * check. An untagged / copy / text / plain fence holding a number or \boxed{} is
  * plain math, never the card. A card marked `verified: false` (no solver checked it)
- * says "Not checked" beside its heading.
+ * draws no check and no label (the "Not checked" tag was removed in November 2026).
  */
 import { render } from "@testing-library/react-native";
 
@@ -112,22 +112,24 @@ describe("answer cards", () => {
     expect(json).not.toContain("notation");
   });
 
-  it("a card the server marks not checked says so, with no check and no marker text", async () => {
+  it("a card the server marks not checked has no check, no label and no marker text", async () => {
     const { checks, cards, json } = await draw(
       "**Answer**\n\n```answer\nverified: false\n$2400\\,\\mathrm{m}\\ \\text{east}$\n```",
     );
     expect(cards).toBe(1);
     expect(checks).toBe(0);
-    expect(json).toContain('"testID":"answer-not-checked"');
-    expect(json).toContain("rich.answer_not_checked");
+    expect(json).not.toContain("answer-not-checked");
+    expect(json).not.toContain("Not checked");
+    expect(json).toContain('"testID":"answer-box"');
     expect(json).not.toContain("verified");
   });
 
-  it("only the server's not-checked line labels a card", async () => {
+  it("no card is labelled not checked, marked or not", async () => {
     for (const content of [
       "```answer\nx = 6\n```",
       "```answer\nverified: true\nx = 6\n```",
       "```answer\nVerified: False\nx = 6\n```",
+      "```answer\nverified: false\nx = 6\n```",
     ]) {
       expect((await draw(content)).json).not.toContain("answer-not-checked");
     }

@@ -12,7 +12,7 @@ from __future__ import annotations
 WORKED_BLOCK_CONTRACT = (
     "Worked calculation: this question asks for a value and no server check stands behind "
     "it, so the app lays your working out itself, the same way as every checked answer "
-    "(Given, Required, Formula, Substitution, Answer). Start your reply with one ```worked "
+    "(Given, Required, Solution, the formula under its name, Substitution, Answer). Start your reply with one ```worked "
     "block holding the whole solution, and write no working outside it: no heading, no "
     "sentence before it, no Given, Formula, Step or Answer lines of your own, also when the "
     "sum is short. Only a message that asks for no value at all (an explanation, a "
@@ -24,7 +24,8 @@ WORKED_BLOCK_CONTRACT = (
     "given: symbol | value | unit | what it is | the value in the unit the formula needs, "
     "only when that differs (LaTeX with its unit)\n"
     "required: symbol | what is asked\n"
-    "formula: the name of the law or rule | the formula\n"
+    'formula: the name of the law or rule, which heads the formula ("Average speed" '
+    "reads Average speed formula) | the formula\n"
     "solve_for: symbol | the formula rearranged for it\n"
     "step: an equation | the move that reached it (for an equation solved one move at a "
     "time, with no formula)\n"

@@ -6,7 +6,7 @@ import pytest
 
 from app.core.config import Settings
 from app.modules.physics.catalog import CATALOG
-from app.modules.physics.law_titles import law_title
+from app.modules.physics.law_titles import law_heading
 from app.modules.physics.schemas import PhysicsIntent
 from app.services.workout import as_formula_heading
 from app.tests.modules.physics.support import (
@@ -179,7 +179,7 @@ def test_audit_prompts_are_verified_instant_structured_physics(
     assert (intent.kind, intent.physics_op) == (kind, op)
     verified = build_verified_physics_block(intent, _SETTINGS)
     assert verified is not None
-    assert "law's name in place of Formula" in verified.text
+    assert "verified law's heading" in verified.text
     assert "show its universal/base equation first" in verified.text
     reply = maybe_direct_physics_reply(verified, query)
     assert reply is not None
@@ -189,7 +189,7 @@ def test_audit_prompts_are_verified_instant_structured_physics(
     assert [read.index(heading) for heading in _HEADINGS] == sorted(
         read.index(heading) for heading in _HEADINGS
     )
-    assert f"**{law_title(CATALOG[op].law_name)}**  \n" in reply
+    assert f"**{law_heading(CATALOG[op].law_name)}**  \n" in reply
 
 
 def test_every_supported_physics_operation_has_a_named_governing_law() -> None:
@@ -207,7 +207,7 @@ def test_named_base_law_keeps_the_equivalent_form_used_for_substitution() -> Non
     assert verified is not None
     reply = maybe_direct_physics_reply(verified, query)
     assert reply is not None
-    assert "**Electrical power**  \n$P = VI$" in reply
+    assert "**Electrical power formula**  \n$P = VI$" in reply
     assert "— the same law for these quantities" in reply
     assert "$P = I^2 R$" in reply
     assert "**Substitution**  \n$P = 3^{2} \\times 4$" in reply
@@ -334,7 +334,7 @@ def test_worked_layout_names_the_requested_unknown(
     reply = maybe_direct_physics_reply(verified, query)
     assert reply is not None
     assert f"**Required**  \n{find_line}" in reply
-    assert f"**{law_title(law_name)}**  \n" in reply
+    assert f"**{law_heading(law_name)}**  \n" in reply
     assert base_formula in reply
     if rearranged_formula is not None:
         # Solving for the unknown is a step of its own, over the rearranged formula.

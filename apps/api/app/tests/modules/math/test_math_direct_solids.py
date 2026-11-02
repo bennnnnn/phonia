@@ -19,6 +19,7 @@ from app.modules.math.tools.extract import extract_math_intent
 from app.modules.math.tools.prompt import build_math_augmentation
 from app.services.answer_fence import mark_server_answer_fences
 from app.services.solving import VerifiedMathBlock
+from app.services.workout import as_formula_heading
 
 _MATRIX = [
     ("cube side 3", "27", "54"),
@@ -53,7 +54,7 @@ async def test_each_closed_solid_emits_one_exact_answer_without_model(
     assert reply is not None
     assert reply.startswith("**Given**  \n")
     assert all(
-        heading in reply
+        heading in as_formula_heading(reply)
         for heading in ("**Required**", "**Formula**", "**Substitution**", "**Answer**")
     )
     # A measure with π in it is shown rounded, and its card says so.
@@ -111,7 +112,7 @@ def test_units_and_existing_numeric_precision_are_preserved(query: str, answer: 
     assert verified.canonical_answer == answer
     reply = maybe_direct_math_reply(verified, query)
     assert reply is not None
-    assert "**Formula**" in reply and "**Substitution**" in reply
+    assert "**Formula**" in as_formula_heading(reply) and "**Substitution**" in reply
     card = rf"\approx {answer}" if re.search("cylinder|cone|sphere", query) else answer
     assert reply.endswith(f"```answer\n{card}\n```\n")
 

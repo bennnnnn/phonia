@@ -18,10 +18,11 @@ from app.modules.chemistry.reply_policy import CHEMISTRY_FENCE_HINT
 # the worked layout's Required heading and its Solve-for step, then with physics'
 # PHYSICS_VELOCITY_NOTATION (initial and final velocity written v_i and v_f), then the
 # ```worked block's contract (prompt_constants.worked), then the calculation layout's rule
-# that multiplication is written \times, never a dot.
+# that multiplication is written \times, never a dot, then the formula headed by its name
+# ("Average speed formula", never the name after the formula) and the Solution heading.
 _RULES = 164
-_RULE_GRAMS = 14342
-_RULE_GRAMS_SHA = "425d6ebc339702d3"
+_RULE_GRAMS = 14419
+_RULE_GRAMS_SHA = "496a49bd990e39fc"
 
 
 def _rules() -> list[str]:

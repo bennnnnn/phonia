@@ -124,6 +124,12 @@ class MathFence:
         canonical = verified.canonical_fence if verified is not None else None
         return replace_unclosed_graph_fence_safe(text, canonical)
 
+    def cards(self, verified: VerifiedSolveBlock) -> tuple[str, ...]:
+        from app.modules.math.cards import solver_cards
+
+        block = _math_block(verified)
+        return solver_cards(block) if block is not None else ()
+
     def unverified_note(self, text: str) -> str:
         from app.modules.math.fence import append_unverified_math_note
 

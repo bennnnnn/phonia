@@ -19,7 +19,6 @@ from app.services.workout import (
     GIVEN,
     REQUIRED,
     Workout,
-    formula_name,
     math_line,
     render_workout,
     split_equality_chain,
@@ -235,7 +234,8 @@ def _collect_formula(step: KeyStep, formulas: list[str], variable: str) -> None:
     lowered = step.label.lower()
     name = next((rule for rule in _RULE_NAMES if rule in lowered), None)
     if step.reason and _RULE_REASON.match(step.reason):
-        line = text_line(step.reason, formula_name(name) if name else None)
+        # A rule's name heads its formula (``formula_sections``): "Product rule".
+        line = text_line(step.reason, name[:1].upper() + name[1:] if name else None)
         same = [index for index, kept in enumerate(formulas) if kept.startswith(step.reason)]
         if not same:
             formulas.append(line)

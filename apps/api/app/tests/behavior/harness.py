@@ -12,8 +12,8 @@ from __future__ import annotations
 
 import json
 from collections.abc import Iterator
-from contextlib import ExitStack, contextmanager
-from dataclasses import dataclass, field
+from contextlib import ExitStack, asynccontextmanager, contextmanager
+from dataclasses import dataclass, field, replace
 from datetime import UTC, datetime
 from types import SimpleNamespace
 from typing import Any
@@ -29,6 +29,7 @@ from app.modules import web_search as web_search_service
 from app.modules.billing import can_use
 from app.modules.chat import prompt_constants as pc
 from app.modules.chat import prompt_memory
+from app.modules.chat.finalize_passes import enrich_final_content
 from app.modules.chat.json_output import JSON_OUTPUT_HINT
 from app.modules.chat.model_routing import choice as model_choice
 from app.modules.chat.model_routing.route import last_user_turn
@@ -55,6 +56,7 @@ from app.modules.chat.stream_paths import run_tool_loop_path
 from app.modules.chat.tool_loop.selection import _search_before_the_model
 from app.modules.chat.turn_deps import default_deps
 from app.modules.chat.turn_intercepts import _chemistry_draws_it, reply_picture_prompt
+from app.modules.chat.turn_outcome import TurnOutcome
 from app.modules.chat.turn_prep.context import (
     build_stream_prompt_context,
     stream_context_from_bundle,
@@ -574,3 +576,36 @@ def mismatches(expect: Expect, route: Route) -> list[str]:
         if hint in route.hints:
             out.append(f"hint {hint!r} present")
     return out
+
+
+@asynccontextmanager
+async def _no_session() -> Any:
+    yield AsyncMock()
+
+
+async def _no_reminders(_session: object, **kwargs: Any) -> tuple[str, int]:
+    return str(kwargs["assistant_text"]), 0
+
+
+async def saved_reply(route: Route, settings: Settings | None = None) -> str:
+    """The route's instant reply as the turn saves it: through the real finalize passes
+    (a subject's fence check among them), with no to-do write. The trace keeps the passes
+    that changed it."""
+    deps = replace(
+        default_deps(),
+        session_factory=_no_session,
+        users=SimpleNamespace(get_by_id=AsyncMock(return_value=None)),
+        todos=SimpleNamespace(materialize_reminder_fences=AsyncMock(side_effect=_no_reminders)),
+    )
+    return await enrich_final_content(
+        deps,
+        AsyncMock(),
+        settings or battery_settings(),
+        route.context,
+        assistant_text=route.instant_text,
+        usage={},
+        outcome=TurnOutcome(),
+        was_cancelled=False,
+        assistant_parts=[route.instant_text],
+        should_cancel=None,
+    )

