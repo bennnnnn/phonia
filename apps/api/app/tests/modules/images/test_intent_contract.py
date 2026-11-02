@@ -278,3 +278,54 @@ def test_intent_refuses_a_malformed_request(payload: dict[str, Any]) -> None:
             "/images/intent", headers={"Authorization": "Bearer tok"}, json=payload
         )
     assert response.status_code == 422
+
+
+# ── Limits ─────────────────────────────────────────────────────────────────
+
+
+def test_intent_is_limited_per_user_and_reads_nothing_past_the_limit() -> None:
+    """Each ask reads the text in the SymPy pool chat turns share; only the global REST
+    limit (240 a minute) bounded it."""
+    from app.modules.images.api import INTENT_ASKS_PER_MINUTE
+
+    nothing = SimpleNamespace(subject=None, lookup_query=None, request=None)
+    with (
+        _client(_user()) as (client, _get_chat, _recent),
+        patch(
+            "app.modules.images.intent.composer_image_intent", MagicMock(return_value=nothing)
+        ) as read,
+    ):
+        responses = [
+            client.post(
+                "/images/intent", headers={"Authorization": "Bearer t"}, json={"text": "a cat"}
+            )
+            for _ in range(INTENT_ASKS_PER_MINUTE + 1)
+        ]
+    assert [r.status_code for r in responses] == [200] * INTENT_ASKS_PER_MINUTE + [429]
+    assert responses[-1].json()["detail"]["code"] == "rate_limited"
+    assert responses[-1].headers["retry-after"] == "60"
+    assert read.call_count == INTENT_ASKS_PER_MINUTE
+    # Another user keeps their own budget.
+    assert _verdict("draw a cat")["generate_prompt"] == "cat"
+
+
+def test_intent_reads_in_the_pool_under_the_users_id() -> None:
+    """The pool runs one job per user id at a time (``core/sympy_executor``): without the
+    id, one user's asks could hold every slot chat turns need."""
+    from app.core.log_context import current_log_ids
+
+    user = _user()
+    seen: list[str | None] = []
+
+    async def read_subject(*_args: Any, **_kwargs: Any) -> None:
+        seen.append(current_log_ids().get("user_id"))
+
+    with (
+        _client(user) as (client, _get_chat, _recent),
+        patch("app.services.subjects.dispatch.read_subject", read_subject),
+    ):
+        response = client.post(
+            "/images/intent", headers={"Authorization": "Bearer t"}, json={"text": "draw a cat"}
+        )
+    assert response.status_code == 200
+    assert seen == [str(user.id)]

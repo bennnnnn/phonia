@@ -4,6 +4,10 @@ from app.core.client_disconnect import ClientLeft, until_client_leaves
 from app.core.config import Settings
 from app.core.consent import get_consented_user
 from app.core.deps import get_settings_dep
+from app.core.log_context import bound_log_ids
+from app.core.rate_limit import allow_request_unless_down
+from app.core.redis import get_redis_client
+from app.exceptions import RateLimitedError
 from app.models.orm import User
 from app.models.schemas.chats import MessageOut
 from app.modules.account import profile as profile_service
@@ -23,6 +27,11 @@ router = APIRouter(prefix="/images", tags=["images"])
 
 # nginx's "client closed request": nobody is there to read it.
 _CLIENT_CLOSED = 499
+# Composer asks a user may make a minute. Each reads the text in the SymPy pool, which
+# chat turns share: only the global REST limit (240 a minute) bounded it. The phone asks
+# only before a send that might be a picture and reads any failure as a plain send.
+INTENT_ASKS_PER_MINUTE = 30
+_INTENT_WINDOW_SECONDS = 60
 
 
 @router.post("/generate", response_model=ImageGenerateOut)
@@ -66,14 +75,27 @@ async def image_intent(
     The phone reads no image intent itself; it asks here before a send that might
     be a picture, and this answers with the chat turn's own reading of the text and
     the chat's recent turns. A chat that is not the user's is not found.
+
+    Limited per user (``INTENT_ASKS_PER_MINUTE``), and its pool read runs under the
+    user's id, so one user's asks take one pool slot at a time (``core/sympy_executor``).
     """
-    verdict = await image_intent_service.composer_intent_for_chat(
-        profile_service.settings_for_user(settings, user),
-        user_id=user.id,
-        text=body.text,
-        chat_id=body.chat_id,
-        image_attached=body.image_attached,
-    )
+    if not await allow_request_unless_down(
+        get_redis_client(),
+        f"rate:images:intent:{user.id}",
+        limit=INTENT_ASKS_PER_MINUTE,
+        window_seconds=_INTENT_WINDOW_SECONDS,
+    ):
+        raise RateLimitedError(
+            "Too many requests. Try again shortly.", retry_after_seconds=_INTENT_WINDOW_SECONDS
+        )
+    with bound_log_ids(user_id=user.id):
+        verdict = await image_intent_service.composer_intent_for_chat(
+            profile_service.settings_for_user(settings, user),
+            user_id=user.id,
+            text=body.text,
+            chat_id=body.chat_id,
+            image_attached=body.image_attached,
+        )
     if verdict is None:
         raise HTTPException(status_code=404, detail="Chat not found")
     request = verdict.request
