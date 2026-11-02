@@ -129,6 +129,11 @@ def chats_by_recency(
     return _chats.group_by_recency(chats, user_timezone=user_timezone, now=now)
 
 
+async def has_messages(session: AsyncSession, chat_id: UUID) -> bool:
+    """Whether the chat holds any message."""
+    return await _messages.chat_has_messages(session, chat_id)
+
+
 async def message_count(session: AsyncSession, chat_id: UUID) -> int:
     """How many messages the chat holds."""
     return await _messages.count_for_chat(session, chat_id)

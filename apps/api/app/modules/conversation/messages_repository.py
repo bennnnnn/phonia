@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import NamedTuple
 from uuid import UUID
 
-from sqlalchemy import ColumnElement, and_, func, or_, select
+from sqlalchemy import ColumnElement, and_, exists, func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.orm import Message
@@ -336,6 +336,12 @@ async def get_for_user(session: AsyncSession, message_id: UUID, user_id: UUID) -
 async def delete_message(session: AsyncSession, message: Message) -> None:
     await session.delete(message)
     await session.commit()
+
+
+async def chat_has_messages(session: AsyncSession, chat_id: UUID) -> bool:
+    """Whether the chat holds any message: stops at the first row, where a count reads all."""
+    result = await session.execute(select(exists().where(Message.chat_id == chat_id)))
+    return bool(result.scalar_one())
 
 
 async def count_for_chat(session: AsyncSession, chat_id: UUID) -> int:

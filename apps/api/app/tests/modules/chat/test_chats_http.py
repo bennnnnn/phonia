@@ -391,8 +391,8 @@ def test_router_delete_chat_404():
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize(("messages", "deleted"), [(0, True), (1, False)])
-async def test_delete_if_empty_keeps_a_chat_with_messages(messages: int, deleted: bool):
+@pytest.mark.parametrize(("messages", "deleted"), [(False, True), (True, False)])
+async def test_delete_if_empty_keeps_a_chat_with_messages(messages: bool, deleted: bool):
     """The phone drops an unused draft in one request (code-health audit NET-13)."""
     from app.modules.chat import service as chats_service
 
@@ -403,7 +403,7 @@ async def test_delete_if_empty_keeps_a_chat_with_messages(messages: int, deleted
     with (
         patch.object(chats_repo, "get_by_id", AsyncMock(return_value=chat)),
         patch.object(chats_repo, "forget_chat"),
-        patch.object(messages_repo, "count_for_chat", AsyncMock(return_value=messages)),
+        patch.object(messages_repo, "chat_has_messages", AsyncMock(return_value=messages)),
     ):
         await chats_service.delete_chat(session, user, uuid4(), settings=Settings(), if_empty=True)
     assert session.delete.await_count == (1 if deleted else 0)

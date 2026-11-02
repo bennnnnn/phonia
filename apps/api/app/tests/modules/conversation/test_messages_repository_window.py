@@ -112,3 +112,13 @@ async def test_another_chats_message_is_no_anchor(db_session):
     _other, other_rows = await _chat_with(db_session, 3)
     with pytest.raises(InvalidCursorError):
         await messages_repo.list_page(db_session, chat.id, limit=10, before_id=other_rows[0].id)
+
+
+@pytest.mark.asyncio
+async def test_chat_has_messages_reads_existence(db_session):
+    chat, rows = await _chat_with(db_session, 2)
+    assert await messages_repo.chat_has_messages(db_session, chat.id) is True
+    for row in rows:
+        await db_session.delete(row)
+    await db_session.commit()
+    assert await messages_repo.chat_has_messages(db_session, chat.id) is False

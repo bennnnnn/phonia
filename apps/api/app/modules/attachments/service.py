@@ -198,6 +198,4 @@ async def delete_user_rows(session: AsyncSession, user_id: UUID) -> list[str]:
     delete commits: the files go only with the rows, never before them. Under the user's
     row lock no attachment can be added between the read and the delete.
     """
-    rows = await _repo.list_for_user(session, user_id)
-    await _repo.delete_all_for_user(session, user_id)
-    return [row.storage_key for row in rows if row.storage_key]
+    return await _repo.delete_all_for_user(session, user_id)

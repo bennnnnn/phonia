@@ -76,12 +76,17 @@ async def list_user_memories(
 
 async def source_chat_titles(
     session: AsyncSession,
+    user_id: UUID,
     memories: Iterable[Memory],
 ) -> dict[UUID, str]:
+    """The titles of the user's chats the facts were learned in; another account's chat
+    is never named, whatever a fact's ``source_chat_id`` says (defence in depth)."""
     chat_ids = {memory.source_chat_id for memory in memories if memory.source_chat_id}
     if not chat_ids:
         return {}
-    result = await session.execute(select(Chat.id, Chat.title).where(Chat.id.in_(chat_ids)))
+    result = await session.execute(
+        select(Chat.id, Chat.title).where(Chat.user_id == user_id, Chat.id.in_(chat_ids))
+    )
     return {row.id: (row.title or "") for row in result.all() if row.title}
 
 

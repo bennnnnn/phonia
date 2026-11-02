@@ -32,7 +32,10 @@ async def list_for_user(
     if not include_superseded:
         filters.append(Memory.status.in_(statuses))
     result = await session.execute(
-        select(Memory).where(*filters).order_by(Memory.type.asc(), Memory.last_confirmed_at.desc())
+        select(Memory)
+        .where(*filters)
+        # The id breaks ties: two facts confirmed in one write kept no fixed order.
+        .order_by(Memory.type.asc(), Memory.last_confirmed_at.desc(), Memory.id.desc())
     )
     return list(result.scalars().all())
 
@@ -50,7 +53,7 @@ async def list_scored_for_user(
     result = await session.execute(
         select(Memory, similarity)
         .where(Memory.user_id == user_id, Memory.status.in_((ACTIVE_STATUS, MUTED_STATUS)))
-        .order_by(Memory.type.asc(), Memory.last_confirmed_at.desc())
+        .order_by(Memory.type.asc(), Memory.last_confirmed_at.desc(), Memory.id.desc())
     )
     return [(memory, _finite(score)) for memory, score in result.all()]
 

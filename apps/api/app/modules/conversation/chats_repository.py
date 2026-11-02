@@ -10,6 +10,7 @@ from sqlalchemy.orm import load_only
 from app.core.timezone import resolve_timezone
 from app.core.ttl_cache import TtlCache
 from app.models.orm import Chat, Message
+from app.repositories.batch_delete import delete_in_batches
 from app.repositories.keyset import after, decode_cursor, encode_cursor, page_of
 
 # Same process just created this chat. The send that follows should not pay
@@ -360,16 +361,23 @@ async def delete_all_for_user(
     *,
     commit: bool = True,
 ) -> int:
-    result = cast(
-        CursorResult[Any],
-        await session.execute(delete(Chat).where(Chat.user_id == user_id)),
+    """Delete every chat of the user; how many.
+
+    The messages go first, then the chats, each in id batches (``batch_delete``): one
+    statement cascading through a heavy account's messages could outrun the command
+    timeout and fail the same way on every retry. One transaction still holds them all.
+    """
+    user_chats = select(Chat.id).where(Chat.user_id == user_id)
+    await delete_in_batches(
+        session, Message.id, select(Message.id).where(Message.chat_id.in_(user_chats))
     )
+    count = await delete_in_batches(session, Chat.id, user_chats)
     if commit:
         await session.commit()
     else:
         await session.flush()
     forget_user_chats(user_id)
-    return int(result.rowcount or 0)
+    return count
 
 
 async def delete_abandoned_drafts(session: AsyncSession, cutoff: datetime, *, limit: int) -> int:

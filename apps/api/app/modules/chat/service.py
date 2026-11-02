@@ -212,7 +212,7 @@ async def delete_chat(
     chat = await conversation_history.get_chat(session, chat_id, user.id)
     if chat is None:
         raise ChatsError("Chat not found", status_code=404)
-    if if_empty and await conversation_history.message_count(session, chat_id):
+    if if_empty and await conversation_history.has_messages(session, chat_id):
         return
     # Do not detach rows or delete bytes — explicit Library delete owns that.
     # attachments.message_id SET NULLs when messages cascade.
