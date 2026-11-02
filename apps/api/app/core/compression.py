@@ -31,7 +31,6 @@ UNCOMPRESSED_PATHS = frozenset(
         "/auth/apple",
         "/auth/dev",
         "/auth/refresh",
-        "/speech/live/session",
         "/speech/tts",
     }
 )
