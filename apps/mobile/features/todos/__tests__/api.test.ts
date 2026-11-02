@@ -13,9 +13,9 @@ it("loads every page before returning the authoritative list", async () => {
   const options = { signal: new AbortController().signal };
   expect((await todosApi.listTodos("token", options)).todos).toHaveLength(1001);
   // Open rows and the last 30 days' completed ones (NET-16).
-  expect(requestRevalidated).toHaveBeenNthCalledWith(1, "/todos/page?limit=1000&completed_days=30", "token", options);
+  expect(requestRevalidated).toHaveBeenNthCalledWith(1, "/todos/page?limit=200&completed_days=30", "token", options);
   expect(requestRevalidated).toHaveBeenNthCalledWith(
-    2, `/todos/page?limit=1000&completed_days=30&cursor=${cursor}`, "token", options,
+    2, `/todos/page?limit=200&completed_days=30&cursor=${cursor}`, "token", options,
   );
 });
 
@@ -66,7 +66,7 @@ it("says when older completed to-dos were left out, and reads every row on reque
     todos: [{ id: "open" }, { id: "old" }],
     olderCompleted: false,
   });
-  expect(jest.mocked(requestRevalidated).mock.calls[1][0]).toBe("/todos/page?limit=1000");
+  expect(jest.mocked(requestRevalidated).mock.calls[1][0]).toBe("/todos/page?limit=200");
 });
 
 it("omits the unsupported project field from normal reminder creation", async () => {
