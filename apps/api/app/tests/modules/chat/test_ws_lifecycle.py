@@ -207,6 +207,7 @@ async def test_an_open_socket_renews_its_lease(fake_redis, monkeypatch) -> None:
     assert renewed > first
 
 
+@pytest.mark.wall_clock
 async def test_a_refused_lease_that_cannot_be_taken_back_stops_counting_soon(
     fake_redis, monkeypatch
 ) -> None:

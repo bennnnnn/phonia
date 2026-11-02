@@ -31,9 +31,16 @@ def _load() -> ModuleType:
 class _Op:
     """Alembic's ``op`` over a catalog of index name -> valid; records each statement."""
 
-    def __init__(self, catalog: dict[str, bool], *, failing: str | None = None) -> None:
+    def __init__(
+        self,
+        catalog: dict[str, bool],
+        *,
+        failing: str | None = None,
+        left_invalid: str | None = None,
+    ) -> None:
         self.catalog = dict(catalog)
         self.failing = failing
+        self.left_invalid = left_invalid
         self.statements: list[str] = []
 
     def get_context(self) -> Any:
@@ -62,7 +69,7 @@ class _Op:
             if name == self.failing:
                 self.catalog[name] = False  # a CONCURRENTLY build that fails leaves it INVALID
                 raise RuntimeError("canceling statement due to statement timeout")
-            self.catalog[name] = True
+            self.catalog[name] = name != self.left_invalid
 
 
 def _run(op: _Op, step: str = "upgrade") -> None:
@@ -98,11 +105,9 @@ def test_a_failed_build_keeps_the_old_attachments_index_and_a_rerun_finishes() -
 
 
 def test_the_old_index_stays_while_its_replacement_is_invalid() -> None:
-    op = _Op({"ix_attachments_user": True, "ix_attachments_user_created": False})
-    migration = _load()
-    # The rebuild is skipped here, so the replacement stays invalid.
-    with patch.object(migration, "op", op), patch.object(migration, "_CREATE", ()):
-        migration.upgrade()
+    op = _Op({"ix_attachments_user": True}, left_invalid="ix_attachments_user_created")
+    _run(op)
+    assert op.catalog["ix_attachments_user_created"] is False
     assert op.catalog["ix_attachments_user"] is True
     assert not any(s.endswith(" ix_attachments_user") for s in op.statements)
 
