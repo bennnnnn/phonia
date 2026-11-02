@@ -8,9 +8,11 @@ read from the refresh token itself; the address keeps a limit only against flood
 * **Per account, 10 a minute.** A phone refreshes once an hour, one refresh at a time
   (the client shares one in flight), so even five signed-in devices that all wake in the
   same minute and each retry once stay under it. A client stuck in a loop stops at 10.
-* **Per IP, 600 a minute.** 36,000 hourly refreshes from one address: a large NAT pool at
-  ten times its average rate, while one host still gets no more than ten tries a second.
-  The global REST limit (240 a minute per unsigned IP) skips this route for that reason.
+* **Per IP, ``refresh_per_ip_per_minute`` (300) a minute.** 18,000 hourly refreshes from
+  one address: a carrier NAT address fronts hundreds of phones, not tens of thousands,
+  so this is many times a busy pool's average rate, while one host gets no more than five
+  tries a second. It was 600. The number is a setting (``core/settings/edge.py``). The
+  global REST limit (240 a minute per unsigned IP) skips this route for that reason.
 
 A token that names no live session (expired, rotated, made up) is counted under a hash
 of itself: the raw token never becomes a Redis key or a log line.
@@ -35,16 +37,15 @@ from app.core.rate_limit import allow_request_unless_down
 from app.modules.account import tokens as tokens_service
 
 PER_ACCOUNT_LIMIT = 10
-PER_IP_LIMIT = 600
 WINDOW_SECONDS = 60
 
 
 async def address_allowed(redis: Redis, request: Request, settings: Settings) -> bool:
-    """Counts a refresh from this address: False past ``PER_IP_LIMIT`` this minute."""
+    """Counts a refresh from this address: False past ``refresh_per_ip_per_minute``."""
     return await allow_request_unless_down(
         redis,
         f"rate:auth:refresh:ip:{client_ip(request, settings)}",
-        limit=PER_IP_LIMIT,
+        limit=settings.refresh_per_ip_per_minute,
         window_seconds=WINDOW_SECONDS,
     )
 

@@ -119,9 +119,9 @@ def test_many_people_behind_one_address_sign_in_until_the_backstop(sign_in):
     """Old limit: the 31st Google sign-in from one address was refused (the 61st with Apple
     mixed in, and the 241st with only the route fixed: the global REST limit)."""
     client = sign_in.client()
-    people = signin_limit.PER_IP_LIMIT + 1
+    people = _SETTINGS.signin_per_ip_per_minute + 1
     codes = [_post(client, ("google", "apple")[i % 2], f"person-{i}") for i in range(people)]
-    assert codes == [200] * signin_limit.PER_IP_LIMIT + [429]
+    assert codes == [200] * _SETTINGS.signin_per_ip_per_minute + [429]
 
 
 def test_one_identitys_burst_is_limited_and_another_identity_is_not(sign_in):
@@ -153,9 +153,10 @@ def test_a_refused_identity_is_verified_but_reaches_no_account_or_session(sign_i
 
 def test_an_address_past_its_backstop_verifies_no_more_tokens(sign_in):
     client = sign_in.client()
-    codes = [_post(client, "google", f"bad-{i}") for i in range(signin_limit.PER_IP_LIMIT + 1)]
-    assert codes == [401] * signin_limit.PER_IP_LIMIT + [429]
-    assert len(sign_in.verified) == signin_limit.PER_IP_LIMIT
+    backstop = _SETTINGS.signin_per_ip_per_minute
+    codes = [_post(client, "google", f"bad-{i}") for i in range(backstop + 1)]
+    assert codes == [401] * _SETTINGS.signin_per_ip_per_minute + [429]
+    assert len(sign_in.verified) == _SETTINGS.signin_per_ip_per_minute
     # A valid token from that address waits too; another address does not.
     assert _post(client, "apple", "person") == 429
     assert _post(sign_in.client(_OTHER_ADDRESS), "apple", "person") == 200
@@ -266,9 +267,21 @@ def test_the_identity_key_is_an_hmac_per_provider_and_secret() -> None:
 
 
 def test_the_limits_are_looser_than_the_old_and_global_ones_and_match_refresh() -> None:
-    assert signin_limit.PER_IP_LIMIT > _GLOBAL_LIMIT > 30
-    assert signin_limit.PER_IDENTITY_LIMIT < signin_limit.PER_IP_LIMIT
-    # With provider keys kept per process a verify is cheap: the address backstop is
-    # refresh's (it was half that while each Google verify fetched Google's certs).
-    assert signin_limit.PER_IP_LIMIT == refresh_limit.PER_IP_LIMIT == 600
+    assert _SETTINGS.signin_per_ip_per_minute > _GLOBAL_LIMIT > 30
+    assert signin_limit.PER_IDENTITY_LIMIT < _SETTINGS.signin_per_ip_per_minute
+    # The address backstop is refresh's, a setting; it was 600 a minute, which let one
+    # host try ten tokens a second.
+    defaults = Settings()
+    assert defaults.signin_per_ip_per_minute == defaults.refresh_per_ip_per_minute == 300
     assert signin_limit.DEV_PER_IP_LIMIT == 30
+
+
+@pytest.mark.parametrize("limit", [2, 5])
+def test_the_address_backstop_follows_its_setting(sign_in, limit):
+    """An operator tightens or loosens the backstop without a deploy of new code."""
+    sign_in.app.dependency_overrides[get_settings_dep] = lambda: _SETTINGS.model_copy(
+        update={"signin_per_ip_per_minute": limit}
+    )
+    client = sign_in.client()
+    codes = [_post(client, "google", f"person-{i}") for i in range(limit + 1)]
+    assert codes == [200] * limit + [429]

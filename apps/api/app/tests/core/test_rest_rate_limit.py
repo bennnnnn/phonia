@@ -132,3 +132,17 @@ def test_client_key_falls_back_to_ip_on_invalid_bearer():
     }
     request = Request(scope)
     assert _client_key(request, settings) == "ip:10.0.0.5"
+
+
+async def test_allow_request_is_a_fixed_window_that_restarts_when_its_key_expires(fake_redis):
+    """The docstring said sliding: the count restarts at the window's end, so a caller
+    may pass ``limit`` just before the reset and ``limit`` again just after it."""
+    from app.core.rate_limit import allow_request
+
+    first = [await allow_request(fake_redis, "rl:t", limit=3, window_seconds=60) for _ in range(4)]
+    assert first == [True, True, True, False]
+    # Later hits never move the window: the TTL is the first hit's (EXPIRE NX).
+    assert 0 < await fake_redis.ttl("rl:t") <= 60
+    await fake_redis.delete("rl:t")  # the window's end
+    again = [await allow_request(fake_redis, "rl:t", limit=3, window_seconds=60) for _ in range(4)]
+    assert again == [True, True, True, False]
