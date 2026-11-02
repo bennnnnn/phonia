@@ -31,7 +31,7 @@ const WS_TURN_EVENT_TYPES = new Set([
 ]);
 
 const WS_OPEN_STATE = 1;
-/** The socket's sign-in was refused (`stream_events.socket_error_payload`): use SSE. */
+/** The socket's sign-in was refused (`ws_limits.socket_error_payload`): use SSE. */
 const WS_UNAUTHORIZED_CODE = "unauthorized";
 
 /** The server closed a socket idle between turns (`ws_limits.WS_IDLE_CLOSE_CODE`). */
