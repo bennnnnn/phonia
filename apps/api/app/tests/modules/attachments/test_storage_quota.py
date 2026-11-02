@@ -19,6 +19,7 @@ from app.repositories import users
 from app.services.quota import counters
 from app.tests.fakes import fake_session, make_user
 
+MIB = 1024**2
 GIB = 1024**3
 
 
@@ -26,9 +27,9 @@ def _user(plan: str = "free") -> Any:
     return make_user(plan=plan)
 
 
-@pytest.mark.parametrize("plan, gib", [("free", 1), ("plus", 10), ("pro", 25)])
-def test_each_plan_has_a_library_total(plan: str, gib: int) -> None:
-    assert allowance(_user(plan), "library_storage_bytes", Settings()) == gib * GIB
+@pytest.mark.parametrize("plan, total", [("free", 400 * MIB), ("plus", GIB), ("pro", 4 * GIB)])
+def test_each_plan_has_a_library_total(plan: str, total: int) -> None:
+    assert allowance(_user(plan), "library_storage_bytes", Settings()) == total
 
 
 async def _presign(user: Any, *, stored: int, size: int) -> AsyncMock:
@@ -54,12 +55,13 @@ async def _presign(user: Any, *, stored: int, size: int) -> AsyncMock:
     "plan, stored, size, room",
     [
         ("free", 0, 1024, True),
-        ("free", GIB - 1024, 1024, True),
-        ("free", GIB - 1024, 1025, False),
-        ("free", 2 * GIB, 1, False),
-        ("plus", 2 * GIB, 1024, True),
-        ("plus", 10 * GIB, 1, False),
-        ("pro", 20 * GIB, 1024, True),
+        ("free", 400 * MIB - 1024, 1024, True),
+        ("free", 400 * MIB - 1024, 1025, False),
+        ("free", GIB, 1, False),
+        ("plus", 500 * MIB, 1024, True),
+        ("plus", GIB, 1, False),
+        ("pro", 3 * GIB, 1024, True),
+        ("pro", 4 * GIB, 1, False),
     ],
 )
 async def test_presign_checks_the_library_total(

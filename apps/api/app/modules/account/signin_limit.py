@@ -12,14 +12,14 @@ same (``refresh_limit.py``).
   under it. A client stuck in a loop, or a Google ID token replayed from many addresses
   (it lives an hour), mints at most 10 sessions a minute. Only a valid token for that
   identity spends it, so no one can lock another person out.
-* **Per IP, ``signin_per_ip_per_minute`` (300) a minute, before the token is verified**,
+* **Per IP, ``signin_per_ip_per_minute`` (500) a minute, before the token is verified**,
   as refresh's. Ten times the old limit and above the global REST one: a lecture hall on
   one campus address, or a crowded carrier address at a launch peak, signs in within the
   minute. It was 600; a verify is cheap (provider keys are kept per process,
   ``gateways/signing_keys.py``: about 0.08 ms of CPU on sign-in's two threads per
-  machine, ``core/blocking.py``), but people sign in once per device, so 300 a minute
-  (18,000 an hour) from one address is still far past any real NAT peak while a single
-  host gets five tries a second. A body that fails validation never gets that far. The
+  machine, ``core/blocking.py``), but people sign in once per device, so 500 a minute
+  (30,000 an hour) from one address is still far past any real NAT peak while a single
+  host gets about eight tries a second. A body that fails validation never gets that far. The
   global REST limit skips these two routes. The number is a setting (``core/settings/edge.py``).
 * **Dev login, 30 a minute per IP**, unchanged and still under the global limit: it
   verifies no token, so there is no identity to key on (the email is the caller's

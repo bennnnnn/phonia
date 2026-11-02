@@ -91,12 +91,11 @@
    "message": "Reading photos is paused for now. Type the problem, or try again later."
   }
  },
- "scan_daily_limit": {
+ "scan_quota_exceeded": {
   "status": 429,
   "detail": {
-   "code": "daily_limit",
-   "message": "You've reached today's photo reading limit. Type the problem, upgrade for more — or try again after midnight UTC.",
-   "feature": "scan_read"
+   "code": "quota_exceeded",
+   "message": "You've used up today's free limit. Upgrade for more — or try again after midnight UTC."
   }
  },
  "scan_busy": {

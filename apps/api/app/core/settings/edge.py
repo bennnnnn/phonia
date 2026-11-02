@@ -17,8 +17,8 @@ class EdgeSettings(BaseModel):
     # before any token is verified (modules/account/signin_limit.py, refresh_limit.py);
     # the real budgets are per identity and per account. Sized for carrier NAT: one
     # address fronts hundreds of phones, each refreshing about once an hour.
-    signin_per_ip_per_minute: int = 300
-    refresh_per_ip_per_minute: int = 300
+    signin_per_ip_per_minute: int = 500
+    refresh_per_ip_per_minute: int = 500
     # Chat WebSockets (modules/chat/ws_limits.py): open sockets per user across all
     # machines (counted in Redis), and seconds idle between turns before a close.
     # 0 disables either.

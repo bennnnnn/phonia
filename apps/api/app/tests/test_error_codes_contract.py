@@ -38,7 +38,7 @@ from app.models.orm import User
 from app.models.schemas.scan import SCAN_MAX_IMAGE_BYTES
 from app.modules.account.email_authority import AccountExistsError
 from app.modules.speech.live_talk import LiveTalkSessionContext
-from app.services.quota import IMAGE_GENERATION_SPEND_CAP_MESSAGE, counters
+from app.services.quota import IMAGE_GENERATION_SPEND_CAP_MESSAGE, counters, daily_limit_for_user
 
 FIXTURE = Path(__file__).resolve().parents[4] / "docs" / "fixtures" / "error_codes.json"
 _AUTH = {"Authorization": "Bearer tok"}
@@ -77,15 +77,15 @@ def _scan(
     body: dict[str, Any],
     *,
     settings: Settings | None = None,
-    at_daily_cap: bool = False,
+    out_of_tokens: bool = False,
     busy: bool = False,
     **redis: bool,
 ) -> Any:
     user = _user()
     fake_redis = _fake_redis()
-    if at_daily_cap:
-        cap = counters.limit("scan_read", user, Settings())
-        asyncio.run(_seed(fake_redis, counters.daily_key("scanread", user.id), cap))
+    if out_of_tokens:
+        cap = daily_limit_for_user(user, Settings())
+        asyncio.run(_seed(fake_redis, counters.daily_key("usage", user.id), cap))
     if busy:
         asyncio.run(_open_reads(fake_redis, f"scan_read_inflight:{user.id}", 2))
     with (
@@ -510,7 +510,7 @@ def _bodies() -> dict[str, dict[str, Any]]:
         "scan_invalid_image": _refusal(_scan({"image_base64": "not base64!"})),
         "scan_rate_limited": _refusal(_scan({"image_base64": _IMAGE}, allowed=False)),
         "scan_spend_cap": _refusal(_scan({"image_base64": _IMAGE}, spend_exceeded=True)),
-        "scan_daily_limit": _refusal(_scan({"image_base64": _IMAGE}, at_daily_cap=True)),
+        "scan_quota_exceeded": _refusal(_scan({"image_base64": _IMAGE}, out_of_tokens=True)),
         "scan_busy": _refusal(_scan({"image_base64": _IMAGE}, busy=True)),
         "scan_not_a_photo": _refusal(
             _scan({"image_base64": base64.b64encode(b"%PDF-1.7").decode()})

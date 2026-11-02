@@ -38,7 +38,6 @@ DAILY_PREFIXES = (
     "tavily",
     "imggen",
     "imgsearch",
-    "scanread",
 )
 
 
@@ -93,8 +92,6 @@ async def _use_quota(redis: Any, user_id: UUID) -> None:
     assert await counters.reserve("image_generation", redis, user, caps)
     for _ in range(2):
         assert await counters.reserve("image_search", redis, user, caps)
-    for _ in range(5):
-        assert await counters.reserve("scan_read", redis, user, caps)
     granted = await quota.reserve_live_talk_seconds(
         redis,
         user_id,
@@ -114,7 +111,6 @@ _USED = {
     "tavily": 4,
     "imggen": 1,
     "imgsearch": 2,
-    "scanread": 5,
 }
 
 

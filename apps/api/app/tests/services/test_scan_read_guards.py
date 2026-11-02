@@ -14,6 +14,7 @@ import pytest
 from app.core.config import Settings
 from app.exceptions import RedisUnavailableError
 from app.models.schemas.scan import SCAN_MAX_IMAGE_BYTES
+from app.services import quota as quota_service
 from app.services import scan_read
 from app.services.quota import counters
 from app.tests.fakes import make_user
@@ -59,37 +60,50 @@ def _redis() -> fakeredis.aioredis.FakeRedis:
 
 
 async def _used_today(redis: Any, user: Any) -> int:
-    value = await redis.get(counters.daily_key("scanread", user.id))
-    return int(value or 0)
+    """The day's chat tokens: a scan's limit is the chat's limit."""
+    return await quota_service.get_daily_usage(redis, str(user.id))
 
 
-@pytest.mark.parametrize("plan, expected", [("free", 20), ("plus", 200), ("pro", 200)])
-def test_scan_reads_have_a_daily_allowance_per_plan(plan: str, expected: int) -> None:
-    assert counters.limit("scan_read", _user(plan), Settings()) == expected
+def test_scan_reads_have_no_daily_count_of_their_own() -> None:
+    assert not any("scan" in field for field in Settings.model_fields if "daily" in field)
+    assert "scan_read" not in counters.COUNTERS
 
 
 @pytest.mark.asyncio
-async def test_a_read_that_ran_keeps_its_daily_slot_and_frees_its_open_slot() -> None:
+async def test_a_read_that_ran_keeps_its_tokens_and_frees_its_open_slot() -> None:
     redis, user = _redis(), _user()
     reader = AsyncMock(side_effect=RuntimeError("provider down"))
     assert await _read(redis, user, _request(), reader=reader) is None
     reader.assert_awaited_once()
-    assert await _used_today(redis, user) == 1
+    assert await _used_today(redis, user) == Settings().scan_read_tokens
     assert await redis.zcard(f"{scan_read.SCAN_IN_FLIGHT_KEY}:{user.id}") == 0
 
 
 @pytest.mark.asyncio
-async def test_at_the_daily_cap_the_body_is_never_read() -> None:
+@pytest.mark.parametrize("plan", ["free", "plus", "pro"])
+async def test_reads_count_against_the_chat_allowance_of_the_plan(plan: str) -> None:
+    redis, user, settings = _redis(), _user(plan), Settings()
+    daily_limit = quota_service.daily_limit_for_user(user, settings)
+    await redis.set(counters.daily_key("usage", user.id), daily_limit - 10)
+    assert await _used_today(redis, user) == daily_limit - 10
+
+    assert await _read(redis, user, _request()) == "2x = 4"
+    # Near the limit a read takes what is left, as a chat turn does.
+    assert await _used_today(redis, user) == daily_limit
+
+
+@pytest.mark.asyncio
+async def test_once_the_chat_allowance_is_spent_the_body_is_never_read() -> None:
     redis, user = _redis(), _user()
-    cap = counters.limit("scan_read", user, Settings())
-    await redis.set(counters.daily_key("scanread", user.id), cap, ex=60)
+    daily_limit = quota_service.daily_limit_for_user(user, Settings())
+    await redis.set(counters.daily_key("usage", user.id), daily_limit)
     request = _request()
     reader = AsyncMock()
     with pytest.raises(scan_read.ScanRefusedError) as refused:
         await _read(redis, user, request, reader=reader)
     assert refused.value.status_code == 429
-    assert refused.value.code == "daily_limit"
-    assert refused.value.fields == {"feature": "scan_read"}
+    assert refused.value.code == "quota_exceeded"  # the chat's own code
+    assert refused.value.message == quota_service.quota_exceeded_message(user)
     request.body.assert_not_awaited()
     reader.assert_not_awaited()
 
@@ -147,7 +161,7 @@ async def test_over_the_hourly_rate_the_body_is_never_read() -> None:
         (b"\xff" * (SCAN_MAX_IMAGE_BYTES + 1), "image_too_large"),
     ],
 )
-async def test_a_refused_photo_gives_its_daily_read_back(data: bytes, code: str) -> None:
+async def test_a_refused_photo_gives_its_tokens_back(data: bytes, code: str) -> None:
     redis, user = _redis(), _user()
     reader = AsyncMock()
     with pytest.raises(scan_read.ScanRefusedError) as refused:
@@ -158,7 +172,7 @@ async def test_a_refused_photo_gives_its_daily_read_back(data: bytes, code: str)
 
 
 @pytest.mark.asyncio
-async def test_the_spend_cap_gives_the_daily_read_back() -> None:
+async def test_the_spend_cap_gives_the_tokens_back() -> None:
     redis, user = _redis(), _user()
     with (
         patch.object(

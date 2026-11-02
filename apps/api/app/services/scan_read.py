@@ -6,9 +6,12 @@ spend after it, so a subject adds a reader here, not a copy of the guard.
 Every read also shares one deadline (``scan_read_deadline_seconds``), which
 the reader spreads over its own steps.
 
-The per-user checks (reads open at once, the hourly rate, the plan's daily
-reads) run before the body is read: a photo is megabytes in memory, and
+The per-user checks (reads open at once, the hourly rate, the day's chat
+tokens) run before the body is read: a photo is megabytes in memory, and
 several at once from one account pushed a machine toward its memory limit.
+A read has no daily count of its own: it takes ``scan_read_tokens`` from the
+chat's daily allowance, and once that is spent it is refused as a chat turn is
+(``quota_exceeded``).
 """
 
 from __future__ import annotations
@@ -20,7 +23,6 @@ import json
 import logging
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
-from datetime import date
 
 from fastapi import Request, status
 from pydantic import ValidationError
@@ -35,7 +37,6 @@ from app.exceptions import DomainError
 from app.models.orm import User
 from app.models.schemas.scan import SCAN_MAX_IMAGE_BYTES, SCAN_MAX_REQUEST_BYTES, ScanPhotoIn
 from app.services import quota as quota_service
-from app.services.quota import counters
 
 logger = logging.getLogger(__name__)
 
@@ -46,6 +47,8 @@ SCAN_SPEND_CAP_MESSAGE = "Reading photos is paused for now. Type the problem, or
 # an hour, so switching subject must not grant a fresh allowance.
 SCAN_RATE_LIMIT_KEY = "scan_read_rl"
 SCAN_IN_FLIGHT_KEY = "scan_read_inflight"
+# The chat's own code for a spent daily allowance: a scan shares that allowance.
+QUOTA_EXCEEDED_CODE = "quota_exceeded"
 # An open read older than this can no longer be running (the deadline is 20 s,
 # plus the upload), so its slot ages out after a crash.
 _IN_FLIGHT_TTL_MARGIN_SECONDS = 40
@@ -113,16 +116,22 @@ async def _check_hourly_rate(redis: Redis, user: User, settings: Settings) -> No
         )
 
 
-async def _reserve_daily_read(redis: Redis, user: User, settings: Settings) -> date:
-    day = await counters.reserve("scan_read", redis, user, settings)
-    if day is None:
+async def _reserve_tokens(redis: Redis, user: User, settings: Settings) -> int:
+    """Take the read's tokens from the day's chat allowance, or what is left of it (as a
+    chat turn near the limit does); refused as a chat turn is once none is left."""
+    reserved = await quota_service.reserve_usage_up_to(
+        redis,
+        str(user.id),
+        settings.scan_read_tokens,
+        daily_limit=quota_service.daily_limit_for_user(user, settings),
+    )
+    if reserved <= 0:
         raise ScanRefusedError(
-            counters.limit_message("scan_read", user),
+            quota_service.quota_exceeded_message(user),
             status_code=status.HTTP_429_TOO_MANY_REQUESTS,
-            code="daily_limit",
-            feature="scan_read",
+            code=QUOTA_EXCEEDED_CODE,
         )
-    return day
+    return reserved
 
 
 async def _checked_photo(request: Request, redis: Redis, settings: Settings) -> ScanPhoto:
@@ -150,8 +159,8 @@ async def read_scan[T](
     among its steps; the read is cut off when the deadline passes. A failed or
     late read is logged, never a 500: the scanner then offers to send the
     photo itself. The spend is recorded either way, because the provider was
-    called, and the day's read stays spent; a refusal before the reader gives
-    the day's read back.
+    called, and the read's tokens stay charged; a refusal before the reader
+    gives them back.
     """
     loop = asyncio.get_running_loop()
     deadline = loop.time() + settings.scan_read_deadline_seconds
@@ -164,11 +173,11 @@ async def read_scan[T](
             ttl_seconds=int(settings.scan_read_deadline_seconds) + _IN_FLIGHT_TTL_MARGIN_SECONDS,
         ):
             await _check_hourly_rate(redis, user, settings)
-            day = await _reserve_daily_read(redis, user, settings)
+            reserved = await _reserve_tokens(redis, user, settings)
             try:
                 photo = await _checked_photo(request, redis, settings)
             except BaseException:
-                await counters.refund("scan_read", redis, user.id, day=day)
+                await quota_service.refund_usage(redis, str(user.id), reserved)
                 raise
             return await _run_reader(read, photo, subject, settings, redis, deadline)
     except InFlightBusyError:

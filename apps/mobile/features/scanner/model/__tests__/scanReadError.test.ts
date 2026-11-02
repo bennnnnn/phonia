@@ -24,7 +24,7 @@ describe("scanFailureMessage", () => {
   });
 
   it.each([
-    ["daily_limit", "chat.scan_daily_limit"],
+    ["quota_exceeded", "chat.quota_exceeded_pro"],
     ["scan_busy", "chat.scan_busy"],
   ])("words the scan's own %s 429 the phone's way", (code, key) => {
     expect(scanFailureMessage(refused(429, { code, message: "Server English." }), t)).toBe(key);

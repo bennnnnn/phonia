@@ -82,7 +82,7 @@ it.each([
   ["scan_too_large", "chat.scan_too_large"],
   ["scan_rate_limited", "chat.scan_rate_limit"],
   ["scan_spend_cap", "chat.scan_spend_cap"],
-  ["scan_daily_limit", "chat.scan_daily_limit"],
+  ["scan_quota_exceeded", "chat.quota_exceeded_pro"],
   ["scan_busy", "chat.scan_busy"],
   ["scan_invalid_image", null],
   // Not a photo (the API sniffs the bytes): the generic could-not-read, as a bad payload.

@@ -20,7 +20,6 @@ type PlanAllowance =
   | "daily_web_searches"
   | "daily_image_searches"
   | "daily_image_generations"
-  | "daily_scan_reads"
   | "daily_speech_transcriptions"
   | "daily_speech_tts"
   | "monthly_live_talk_minutes"

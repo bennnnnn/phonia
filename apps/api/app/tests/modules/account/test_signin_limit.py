@@ -272,7 +272,7 @@ def test_the_limits_are_looser_than_the_old_and_global_ones_and_match_refresh() 
     # The address backstop is refresh's, a setting; it was 600 a minute, which let one
     # host try ten tokens a second.
     defaults = Settings()
-    assert defaults.signin_per_ip_per_minute == defaults.refresh_per_ip_per_minute == 300
+    assert defaults.signin_per_ip_per_minute == defaults.refresh_per_ip_per_minute == 500
     assert signin_limit.DEV_PER_IP_LIMIT == 30
 
 

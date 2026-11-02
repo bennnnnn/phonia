@@ -93,6 +93,10 @@ class StemSettings(BaseModel):
     # below the phone's timeout (SCAN_READ_TIMEOUT_MS in features/scanner/api.ts,
     # this plus 5 s for the upload), so a slow read ends as "could not read".
     scan_read_deadline_seconds: float = 20.0
+    # Chat tokens one read takes from the day's allowance (``daily_token_limit``): the
+    # photo, as a chat turn's image is reserved (``image_attachment_reserve_tokens``),
+    # and the reading the vision model writes. The scan's limit is the chat's limit.
+    scan_read_tokens: int = 2_000
     # Dedicated math OCR (Mathpix). Empty keys keep the Gemini vision path.
     # Images always send metadata.improve_mathpix=false — student homework is
     # not opted into Mathpix QA storage.

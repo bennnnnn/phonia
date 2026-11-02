@@ -13,8 +13,9 @@ const CODE_KEYS: Record<string, string> = {
   not_available: "chat.scan_unavailable",
   image_too_large: "chat.scan_too_large",
   scan_rate_limited: "chat.scan_rate_limit",
-  // The plan's photo reads for the day (its `feature` is `scan_read`: only scans answer it here).
-  daily_limit: "chat.scan_daily_limit",
+  // A scan takes its tokens from the day's chat allowance: spent, it is refused as a chat
+  // turn is. The words name no plan (the scanner does not know it).
+  quota_exceeded: "chat.quota_exceeded_pro",
   // Another read of this account's still open (the phone sends one at a time).
   scan_busy: "chat.scan_busy",
   scan_spend_cap: "chat.scan_spend_cap",

@@ -52,14 +52,6 @@ IMAGE_SEARCH_LIMIT_EXCEEDED_MESSAGE_PAID = (
 )
 IMAGE_SEARCH_SPEND_CAP_MESSAGE = "Photo lookup is temporarily unavailable. Try again later."
 
-SCAN_READ_LIMIT_EXCEEDED_MESSAGE_FREE = (
-    "You've reached today's photo reading limit. "
-    "Type the problem, upgrade for more — or try again after midnight UTC."
-)
-SCAN_READ_LIMIT_EXCEEDED_MESSAGE_PAID = (
-    "You've reached today's photo reading limit. Type the problem, or try again after midnight UTC."
-)
-
 LIVE_TALK_NOT_IN_PLAN_MESSAGE = (
     "Live talk isn't part of your plan. Upgrade to talk with Recall out loud."
 )

@@ -38,7 +38,7 @@ export type ChatOperationContext = {
   mirror?: (patch: Partial<Chat>) => void;
   banner: (message: string, icon: IconName) => void;
   failure: (message: string) => void;
-  t: (key: string) => string;
+  t: (key: string, options?: Record<string, unknown>) => string;
 };
 
 function apply(ctx: ChatOperationContext, chatId: string, patch: Partial<Chat>): void {
@@ -105,7 +105,9 @@ export async function setChatPinned(
     if (!ctx.signedIn()) return;
     apply(ctx, chat.id, { pinned: chat.pinned });
     const full = error instanceof ApiRequestError && error.code === PIN_LIMIT_CODE;
-    if (ctx.shown()) ctx.failure(ctx.t(full ? "chat.pin_limit" : "chat.pin_failed"));
+    // The cap is the server's (its `limit`), so the words never name a stale number.
+    const message = full ? ctx.t("chat.pin_limit", { limit: error.fields.limit }) : ctx.t("chat.pin_failed");
+    if (ctx.shown()) ctx.failure(message);
   } finally {
     release();
   }

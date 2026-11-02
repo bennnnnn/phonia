@@ -71,3 +71,11 @@ async def test_a_pinned_chat_pins_again_and_unpinning_frees_a_place(db_session, 
 
     pinned = await conversation_history.pinned_chats(db_session, user.id)
     assert len(pinned) == _CAP
+
+
+def test_an_account_keeps_at_most_twenty_pinned_chats() -> None:
+    """The plan decision (2026-11-01): 20, not 50; the refusal carries it as ``limit``."""
+    from app.modules.chat.service import PinLimitError
+
+    assert conversation_service.MAX_PINNED_CHATS == 20
+    assert PinLimitError().fields == {"limit": 20}
