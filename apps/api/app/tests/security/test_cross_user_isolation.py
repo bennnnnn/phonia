@@ -23,7 +23,6 @@ from app.models.orm import (
     Message,
     PushToken,
     TodoItem,
-    User,
 )
 
 from .conftest import World

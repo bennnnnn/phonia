@@ -41,9 +41,7 @@ class Attachment(Base):
             "created_at",
             postgresql_where=text("message_id IS NULL"),
         ),
-        CheckConstraint(
-            "source IN ('upload', 'search')", name="ck_attachments_source"
-        ),
+        CheckConstraint("source IN ('upload', 'search')", name="ck_attachments_source"),
     )
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
