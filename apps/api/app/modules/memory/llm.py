@@ -59,6 +59,18 @@ _OP_SHAPE = (
     '"importance": 0.0-1.0, "match_text": "existing fact text if updating"}]}'
 )
 
+_TYPE_MEANINGS = (
+    "Type meanings (the topic usually decides it):\n"
+    "- profile: who the user is. "
+    "A name is theirs only when they claim it ('my name is', 'I'm', "
+    "'call me', 'I go by'). The only name sentence is "
+    "'User's name is John' or 'User's name is John; also goes by X.'\n"
+    "- preference: how they like to learn, communicate, or use the app\n"
+    "- project: a fact in an area, a named course or project of theirs\n"
+    "- fact: stable facts: subjects, struggles, interests, schedule\n"
+    "- focus: current aims and progress: goals, exams, what they are learning now"
+)
+
 # "Reply in Spanish from now on" was saved as a preference and answered an English app in
 # Spanish (2026-10-24): a setting's choice is the setting's.
 SETTING_PREFERENCE_RULE = (
@@ -183,16 +195,7 @@ async def revise_memory_facts(
                 "grouped into documents the user can read. "
                 f"Return ONLY JSON (no markdown): {_OP_SHAPE} .\n"
                 f"{_documents_guide()}\n\n"
-                "Type meanings (the topic usually decides it):\n"
-                "- profile: who the user is. "
-                "A name is theirs only when they claim it ('my name is', 'I'm', "
-                "'call me', 'I go by'). The only name sentence is "
-                "'User's name is John' or 'User's name is John; also goes by X.'\n"
-                "- preference: how they like to learn, communicate, or use the app\n"
-                "- project: a fact in an area, a named course or project of theirs\n"
-                "- fact: stable facts: subjects, struggles, interests, schedule\n"
-                "- focus: current aims and progress: goals, exams, what they are learning "
-                "now\n\n"
+                f"{_TYPE_MEANINGS}\n\n"
                 "Rules:\n"
                 "- Use only what the User lines state or clearly show about the user; "
                 "never assistant inferences, suggestions, or restatements.\n"

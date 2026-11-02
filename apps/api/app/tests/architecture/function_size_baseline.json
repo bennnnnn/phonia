@@ -34,7 +34,7 @@
   "modules/math/tools/school/probability.py::_verified_block_probability": 126,
   "modules/math/tools/school/trig.py::_extract_trig_intent": 184,
   "modules/math/tools/school/trig_equations.py::bounded_equation_block": 107,
-  "modules/memory/llm.py::revise_memory_facts": 112,
+  "modules/memory/llm.py::revise_memory_facts": 110,
   "modules/memory/writes_repository.py::apply_fact_ops": 111,
   "modules/physics/block.py::_build_physics_block": 135,
   "modules/physics/extractors/circuits.py::_extract_circuit_intent": 175,
