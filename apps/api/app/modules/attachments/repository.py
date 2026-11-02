@@ -5,7 +5,6 @@ from uuid import UUID
 
 from sqlalchemy import String, and_, func, literal, or_, select
 from sqlalchemy import cast as sql_cast
-from sqlalchemy import delete as sa_delete
 from sqlalchemy.engine import CursorResult
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import aliased
