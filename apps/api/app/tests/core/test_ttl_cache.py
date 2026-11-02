@@ -78,3 +78,31 @@ def test_ttl_cache_pop_and_drop_where(clock: list[float]):
     assert cache.get(1) == "bob"
     cache.clear()
     assert len(cache) == 0
+
+
+@pytest.mark.parametrize("lru, survivor, evicted", [(True, "a", "b"), (False, "b", "a")])
+def test_ttl_cache_lru_read_keeps_a_hot_key_past_the_cap(
+    clock: list[float], lru: bool, survivor: str, evicted: str
+):
+    cache: TtlCache[str, str] = TtlCache(
+        ttl_seconds=100, max_entries=2, lru=lru, clock=lambda: clock[0]
+    )
+    cache.put("a", "A")
+    cache.put("b", "B")
+    assert cache.get("a") == "A"
+    cache.put("c", "C")
+
+    assert cache.get(survivor) is not None
+    assert cache.get(evicted) is None
+    assert len(cache) == 2
+
+
+def test_ttl_cache_lru_read_does_not_extend_the_ttl(clock: list[float]):
+    cache: TtlCache[str, str] = TtlCache(
+        ttl_seconds=10, max_entries=10, lru=True, clock=lambda: clock[0]
+    )
+    cache.put("k", "v")
+    clock[0] += 9
+    assert cache.get("k") == "v"
+    clock[0] += 2
+    assert cache.get("k") is None
