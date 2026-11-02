@@ -25,6 +25,7 @@ from app.modules.attachments import workflow as attachment_workflow
 @pytest.mark.parametrize("code", ["AccessDenied", "InternalError", "NoSuchBucket"])
 async def test_storage_read_failure_does_not_purge_attachment(code):
     client = MagicMock()
+    client.head_object.return_value = {"ContentLength": 4}
     client.get_object.side_effect = ClientError({"Error": {"Code": code}}, "GetObject")
     with patch("boto3.client", return_value=client):
         gateway = R2StorageGateway(Settings())
@@ -243,7 +244,11 @@ async def test_invalid_confirmation_refunds_only_the_call_that_deleted_row(remov
         verified_at=None,
         created_at=datetime.now(UTC),
     )
-    gateway = MagicMock(read_bytes=AsyncMock(return_value=b"fake"), delete_bytes=AsyncMock())
+    gateway = MagicMock(
+        object_size=AsyncMock(return_value=4),
+        read_bytes=AsyncMock(return_value=b"fake"),
+        delete_bytes=AsyncMock(),
+    )
     with (
         patch.object(
             attachment_workflow.attachments_repo, "get_by_id", AsyncMock(return_value=row)
