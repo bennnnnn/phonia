@@ -40,7 +40,9 @@ async def read_carried_usage(redis: Redis, user_id: UUID) -> CarriedUsage:
     keys = [daily_key(prefix, user_id, day) for prefix in DAILY_COUNTER_PREFIXES]
     values = [_counter_value(raw) for raw in await redis.mget(keys)]
     daily = {
-        prefix: used for prefix, used in zip(DAILY_COUNTER_PREFIXES, values, strict=True) if used > 0
+        prefix: used
+        for prefix, used in zip(DAILY_COUNTER_PREFIXES, values, strict=True)
+        if used > 0
     }
     return CarriedUsage(day=day.isoformat(), daily=daily)
 

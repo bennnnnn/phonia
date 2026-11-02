@@ -58,7 +58,7 @@
   "lib/productAnalytics.ts": 1,
   "lib/sentry.ts": 1,
   "lib/settingsProposal.ts": 1,
-  "lib/speech/voiceAudio.ts": 7,
+  "lib/speech/voiceAudio.ts": 6,
   "lib/webView.ts": 3,
   "lib/zoneReport.ts": 1
 }

@@ -3,7 +3,8 @@
 ``tokens`` is the daily token budget, ``counters`` the per-feature daily caps
 (``counters.reserve("image_search", ...)``), ``carryover`` what account delete hands
 to a new account for the same sign-in or email address, and ``spend`` the global
-daily spend breaker (its counter is ``core/spend_counter``). ``messages`` is the copy a refused request shows.
+daily spend breaker (its counter is ``core/spend_counter``). ``messages`` is the copy a
+refused request shows.
 """
 
 from app.services.quota import counters

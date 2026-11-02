@@ -34,4 +34,3 @@ class SpeechTtsOut(BaseModel):
     content_type: str = "audio/mpeg"
     model: str = "speech-tts-model"
     lead_hash: str | None = None
-
