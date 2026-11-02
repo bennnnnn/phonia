@@ -28,8 +28,10 @@ class EdgeSettings(BaseModel):
     # Request body caps (core/body_limit.py). A declared Content-Length over
     # the cap is refused before any byte is read; a chunked body is counted as
     # it streams. JSON routes stay far below 1 MiB (chat text is 32k chars).
-    # Photo/audio routes (scan read ~10.7 MB, transcribe ~6.7 MB, local
-    # attachment upload 10 MiB) get the upload cap. 0 disables a cap.
+    # Photo/audio routes (transcribe ~6.7 MB, local attachment upload 10 MiB)
+    # get the upload cap; a scan read-back (a <= 4 MB photo as base64, about
+    # 5.4 MB: ``models/schemas/scan.py``) gets the scan cap. 0 disables a cap.
     max_request_body_bytes: int = 1_048_576
     max_upload_request_body_bytes: int = 12 * 1024 * 1024
+    max_scan_request_body_bytes: int = 6 * 1024 * 1024
     support_email: str = ""  # contact on the /legal pages; boot warns while empty

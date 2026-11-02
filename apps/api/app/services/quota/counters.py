@@ -23,6 +23,8 @@ from app.services.quota.messages import (
     IMAGE_LIMIT_EXCEEDED_MESSAGE_PAID,
     IMAGE_SEARCH_LIMIT_EXCEEDED_MESSAGE_FREE,
     IMAGE_SEARCH_LIMIT_EXCEEDED_MESSAGE_PAID,
+    SCAN_READ_LIMIT_EXCEEDED_MESSAGE_FREE,
+    SCAN_READ_LIMIT_EXCEEDED_MESSAGE_PAID,
     SPEECH_LIMIT_EXCEEDED_MESSAGE,
     SPEECH_TTS_LIMIT_EXCEEDED_MESSAGE,
     plan_message,
@@ -164,6 +166,7 @@ CounterName = Literal[
     "tavily_search",
     "image_generation",
     "image_search",
+    "scan_read",
 ]
 
 
@@ -238,6 +241,14 @@ COUNTERS: dict[CounterName, CounterSpec] = {
             IMAGE_SEARCH_LIMIT_EXCEEDED_MESSAGE_FREE,
             IMAGE_SEARCH_LIMIT_EXCEEDED_MESSAGE_PAID,
         ),
+        refund=True,
+    ),
+    # Scan read-backs (OCR plus a vision read). A refusal before the reader is
+    # called gives its slot back; a read that ran, failed or not, keeps it spent.
+    "scan_read": CounterSpec(
+        prefix="scanread",
+        allowance="daily_scan_reads",
+        message=(SCAN_READ_LIMIT_EXCEEDED_MESSAGE_FREE, SCAN_READ_LIMIT_EXCEEDED_MESSAGE_PAID),
         refund=True,
     ),
 }

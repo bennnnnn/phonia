@@ -1,4 +1,4 @@
-"""What each plan allows per day or month, and the global daily spend cap."""
+"""What each plan allows per day, per month or in total, and the global daily spend cap."""
 
 from pydantic import BaseModel
 
@@ -44,6 +44,19 @@ class PlanAllowanceSettings(BaseModel):
     daily_image_searches: int = 15
     daily_image_searches_plus: int = 60
     daily_image_searches_pro: int = 60
+    # Photo read-backs (POST /{math,physics,chemistry}/scan/read) per UTC day. Each
+    # is a paid OCR call and a vision model read; the hourly rate
+    # (``scan_read_rate_limit_per_hour``) alone allowed 1,440 a day on every plan.
+    daily_scan_reads: int = 20
+    daily_scan_reads_plus: int = 200
+    daily_scan_reads_pro: int = 200
+    # Bytes one account may keep in its Library at once (every attachment row:
+    # uploads, the copies a resend makes, generated pictures and reference photos).
+    # Checked at presign; the daily upload counts alone let a free account keep
+    # about 4.5 GB more every month.
+    library_storage_bytes: int = 1 * 1024**3
+    library_storage_bytes_plus: int = 10 * 1024**3
+    library_storage_bytes_pro: int = 25 * 1024**3
 
     # Auto's everyday turns on the stronger model (``ROUTING.everyday_strong``), not
     # the cheap one (``ROUTING.everyday``). Hard and maths turns route as before.

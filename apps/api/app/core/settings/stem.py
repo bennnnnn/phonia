@@ -80,6 +80,10 @@ class StemSettings(BaseModel):
             "scan_read_rate_limit_per_hour", "math_scan_read_rate_limit_per_hour"
         ),
     )
+    # Reads one user may have open at once, every subject together (each holds
+    # its photo, up to 4 MB, in memory while it is read). Checked before the body
+    # is read; the phone sends one at a time. 0 disables the cap.
+    scan_read_max_in_flight: int = 2
     # One read answers within this many seconds of arriving, every reader and
     # fallback included (later steps get what earlier ones left). It stays
     # below the phone's timeout (SCAN_READ_TIMEOUT_MS in features/scanner/api.ts,

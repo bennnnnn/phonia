@@ -10,6 +10,8 @@ answered with 413 before any byte is read, and a body without one (chunked)
 is counted as it streams and stopped one chunk past the limit. A few routes
 legitimately take photos and audio; the app factory passes their path
 patterns as ``upload_paths`` so this module never imports a product module.
+Scan read-backs (``scan_paths``) send one cropped photo and get their own,
+smaller cap, so a scan cannot buffer the attachment upload's 12 MiB.
 """
 
 from __future__ import annotations
@@ -39,12 +41,21 @@ def _declared_length(scope: Scope) -> int | None:
 class RequestBodyLimitMiddleware:
     """Pure ASGI middleware (no BaseHTTPMiddleware buffering)."""
 
-    def __init__(self, app: ASGIApp, *, upload_paths: Iterable[str] = ()) -> None:
+    def __init__(
+        self,
+        app: ASGIApp,
+        *,
+        upload_paths: Iterable[str] = (),
+        scan_paths: Iterable[str] = (),
+    ) -> None:
         self.app = app
         self._upload_paths = tuple(re.compile(pattern) for pattern in upload_paths)
+        self._scan_paths = tuple(re.compile(pattern) for pattern in scan_paths)
 
     def _limit_for(self, path: str) -> int:
         settings = get_settings()
+        if any(pattern.fullmatch(path) for pattern in self._scan_paths):
+            return settings.max_scan_request_body_bytes
         if any(pattern.fullmatch(path) for pattern in self._upload_paths):
             return settings.max_upload_request_body_bytes
         return settings.max_request_body_bytes

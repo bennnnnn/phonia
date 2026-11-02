@@ -23,6 +23,13 @@ describe("scanFailureMessage", () => {
     );
   });
 
+  it.each([
+    ["daily_limit", "chat.scan_daily_limit"],
+    ["scan_busy", "chat.scan_busy"],
+  ])("words the scan's own %s 429 the phone's way", (code, key) => {
+    expect(scanFailureMessage(refused(429, { code, message: "Server English." }), t)).toBe(key);
+  });
+
   it("shows the server's words for another refusal of a named status", () => {
     expect(scanFailureMessage(refused(429, { code: "new_limit", message: "Slow down." }), t)).toBe(
       "Slow down.",

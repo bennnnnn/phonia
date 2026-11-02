@@ -13,6 +13,7 @@ import asyncio
 import base64
 import json
 import os
+import time
 from contextlib import nullcontext
 from pathlib import Path
 from types import SimpleNamespace
@@ -44,6 +45,11 @@ _AUTH = {"Authorization": "Bearer tok"}
 _IMAGE = base64.b64encode(b"\xff\xd8\xff fake jpeg").decode()
 
 
+def _fake_redis() -> fakeredis.aioredis.FakeRedis:
+    """A fresh Redis for the scan's per-user slots, open reads and daily count."""
+    return fakeredis.aioredis.FakeRedis(decode_responses=True)
+
+
 def _client(user: Any, settings: Settings | None = None) -> TestClient:
     async def db() -> Any:
         yield SimpleNamespace(refresh=AsyncMock(), commit=AsyncMock())
@@ -67,9 +73,23 @@ def _refusal(response: Any) -> dict[str, Any]:
     return {"status": response.status_code, "detail": response.json()["detail"]}
 
 
-def _scan(body: dict[str, Any], *, settings: Settings | None = None, **redis: bool) -> Any:
+def _scan(
+    body: dict[str, Any],
+    *,
+    settings: Settings | None = None,
+    at_daily_cap: bool = False,
+    busy: bool = False,
+    **redis: bool,
+) -> Any:
+    user = _user()
+    fake_redis = _fake_redis()
+    if at_daily_cap:
+        cap = counters.limit("scan_read", user, Settings())
+        asyncio.run(_seed(fake_redis, counters.daily_key("scanread", user.id), cap))
+    if busy:
+        asyncio.run(_open_reads(fake_redis, f"scan_read_inflight:{user.id}", 2))
     with (
-        patch("app.services.scan_read.get_redis_client", return_value=MagicMock()),
+        patch("app.services.scan_read.get_redis_client", return_value=fake_redis),
         patch(
             "app.services.scan_read.quota_service.global_spend_exceeded",
             AsyncMock(return_value=redis.get("spend_exceeded", False)),
@@ -81,22 +101,37 @@ def _scan(body: dict[str, Any], *, settings: Settings | None = None, **redis: bo
         ),
         patch("app.core.rest_rate_limit.allow_request", AsyncMock(return_value=True)),
     ):
-        return _client(_user(), settings).post("/math/scan/read", headers=_AUTH, json=body)
+        return _client(user, settings).post("/math/scan/read", headers=_AUTH, json=body)
+
+
+async def _open_reads(redis: Any, key: str, count: int) -> None:
+    await redis.zadd(key, {f"open-{n}": time.time() for n in range(count)})
 
 
 async def _seed(redis: Any, key: str, value: int) -> None:
     await redis.set(key, value, ex=60)
 
 
-def _presign(content_type: str, size_bytes: int, *, at_daily_cap: bool = False) -> Any:
+def _presign(
+    content_type: str,
+    size_bytes: int,
+    *,
+    at_daily_cap: bool = False,
+    library_full: bool = False,
+) -> Any:
     user = _user()
     fake_redis = fakeredis.aioredis.FakeRedis(decode_responses=True)
     if at_daily_cap:
         day = counters.utc_today().isoformat()
         cap = counters.limit("image_upload", user, Settings())
         asyncio.run(_seed(fake_redis, f"imgup:{user.id}:{day}", cap))
+    stored = Settings().library_storage_bytes if library_full else 0
     with (
         patch("app.modules.attachments.upload.get_redis_client", return_value=fake_redis),
+        patch(
+            "app.modules.attachments.storage_quota.stored_bytes",
+            AsyncMock(return_value=stored),
+        ),
     ):
         return _client(user).post(
             "/attachments/presign",
@@ -475,6 +510,11 @@ def _bodies() -> dict[str, dict[str, Any]]:
         "scan_invalid_image": _refusal(_scan({"image_base64": "not base64!"})),
         "scan_rate_limited": _refusal(_scan({"image_base64": _IMAGE}, allowed=False)),
         "scan_spend_cap": _refusal(_scan({"image_base64": _IMAGE}, spend_exceeded=True)),
+        "scan_daily_limit": _refusal(_scan({"image_base64": _IMAGE}, at_daily_cap=True)),
+        "scan_busy": _refusal(_scan({"image_base64": _IMAGE}, busy=True)),
+        "scan_not_a_photo": _refusal(
+            _scan({"image_base64": base64.b64encode(b"%PDF-1.7").decode()})
+        ),
         "presign_unsupported_type": _refusal(_presign("application/x-msdownload", 100)),
         # The schema caps the size: FastAPI's own 422, which the phone reads as too large.
         "presign_too_large": {
@@ -482,6 +522,7 @@ def _bodies() -> dict[str, dict[str, Any]]:
             "detail": too_large.json()["detail"],
         },
         "presign_daily_limit": _refusal(_presign("image/png", 128, at_daily_cap=True)),
+        "presign_storage_full": _refusal(_presign("image/png", 128, library_full=True)),
         "dictation_daily_limit": _refusal(_transcribe(at_daily_cap=True)),
         "dictation_rate_limited": _refusal(_transcribe(allowed=False)),
         # Every voice request at the day's spend cap: dictation, live talk's session and saves.

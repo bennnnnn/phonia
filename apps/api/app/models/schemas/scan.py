@@ -8,8 +8,11 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-# Decoded image cap for a scan read-back; the camera sends a cropped photo.
-SCAN_MAX_IMAGE_BYTES = 8_000_000
+# Decoded image cap for a scan read-back. The phone sends one crop as JPEG at
+# quality 0.8, its long edge at most 2048 px (``features/scanner/model/scanImage.ts``):
+# about 0.3-1.5 MB, and under 4 MB even for a 2048 x 2048 crop of fine detail.
+# ``core/settings/edge.py``'s scan body cap sits just above the request this allows.
+SCAN_MAX_IMAGE_BYTES = 4_000_000
 SCAN_MAX_B64_CHARS = 4 * ((SCAN_MAX_IMAGE_BYTES + 2) // 3)
 SCAN_MAX_REQUEST_BYTES = SCAN_MAX_B64_CHARS + 4096
 
