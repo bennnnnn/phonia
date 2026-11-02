@@ -32,15 +32,6 @@ jest.mock("@/features/speech/components/VoiceMicButton", () => {
   };
 });
 
-jest.mock("@/features/speech/components/LiveTalkButton", () => {
-  const { Pressable } = jest.requireActual("react-native") as typeof import("react-native");
-  return {
-    LiveTalkButton: ({ onPress }: { onPress: () => void }) => (
-      <Pressable testID="live-talk-button" onPress={onPress} />
-    ),
-  };
-});
-
 jest.mock("@/features/attachments/components/ComposerAttachmentPreview", () => ({
   ComposerAttachmentPreview: () => null,
 }));

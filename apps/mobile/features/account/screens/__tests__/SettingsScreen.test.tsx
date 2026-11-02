@@ -54,9 +54,6 @@ jest.mock("@/contexts/AppearanceContext", () => ({
   useAppearance: () => ({ preference: "system", setPreference: mockSetPreference }),
   useAccent: () => ({ accent: "indigo", setAccent: mockSetAccent }),
 }));
-jest.mock("@/features/account/hooks/useLiveTalkMinutes", () => ({
-  useLiveTalkMinutes: () => null,
-}));
 jest.mock("@/features/account/hooks/useUsage", () => ({
   useUsage: () => ({
     usage: { date: "2026-10-14", daily_limit: 100, remaining: 80, input_tokens: 10, output_tokens: 10 },

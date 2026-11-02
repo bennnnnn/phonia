@@ -1,6 +1,6 @@
 /**
  * Settings → Voice → Speed: how fast read-aloud plays, on this device.
- * Live talk speaks at its own pace. Not a secret — a file.
+ * Not a secret — a file.
  */
 import { prefFilePath, readPrefFile, writePrefFile } from "@/lib/filePrefs";
 

@@ -166,7 +166,6 @@ jest.mock("expo-image-manipulator", () => mockNativeModule("expo-image-manipulat
 jest.mock("expo-splash-screen", () => mockNativeModule("expo-splash-screen"));
 jest.mock("expo-font", () => mockNativeModule("expo-font"));
 jest.mock("expo-updates", () => mockNativeModule("expo-updates"));
-jest.mock("react-native-webrtc", () => mockNativeModule("react-native-webrtc"));
 jest.mock("react-native-vision-camera", () => mockNativeModule("react-native-vision-camera"));
 jest.mock("react-native-vision-camera-mlkit", () => mockNativeModule("react-native-vision-camera-mlkit"));
 jest.mock("react-native-vision-camera-worklets", () => mockNativeModule("react-native-vision-camera-worklets"));

@@ -3,7 +3,7 @@ import type { SearchSource } from "@/lib/searchSources";
 
 export type { SearchSource };
 
-/** Voices both read-aloud and live talk speak (the server's UserVoice). */
+/** The voices a user may pick for read-aloud (the server's UserVoice). */
 export type UserVoice =
   | "marin"
   | "cedar"
@@ -41,7 +41,7 @@ export type User = {
   push_notifications_enabled: boolean;
   /** Each push kind's own switch, under the master one. */
   push_reminders_enabled?: boolean;
-  /** Read-aloud and live talk voice; null is the server default. */
+  /** Read-aloud voice; null is the server default. */
   tts_voice?: UserVoice | null;
   email_reminders_enabled?: boolean;
   /** False when the server cannot send email (no provider set up): hide the switch. */

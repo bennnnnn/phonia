@@ -146,17 +146,6 @@ const mockSend = {
   mathScannerOpen: false,
   setMathScannerOpen: mockNoop,
 };
-const mockLiveTalk = {
-  open: mockNoop,
-  close: mockNoop,
-  toggle: mockAsyncNoop,
-  toggleMute: mockNoop,
-  yieldToComposer: mockNoop,
-  visible: false,
-  muted: false,
-  phase: "idle",
-  recording: false,
-};
 const mockErrorHandlers = {
   chatError: null,
   handleChatError: mockNoop,
@@ -202,7 +191,6 @@ jest.mock("@/features/chat/components/ChatComposer", () => ({ COMPOSER_HEIGHT: 5
 jest.mock("@/features/attachments/components/ComposerAttachmentPreview", () => ({
   composerAttachmentExtra: () => 0,
 }));
-jest.mock("@/features/speech/components/LiveTalkOverlay", () => ({ LiveTalkOverlay: () => null }));
 jest.mock("@/features/chat/hooks/useChat", () => ({
   useChat: () => {
     mockChatRenders();
@@ -223,7 +211,6 @@ jest.mock("@/features/chat/hooks/useChatSend", () => ({
     return mockSend;
   },
 }));
-jest.mock("@/features/speech/hooks/useLiveTalk", () => ({ useLiveTalk: () => mockLiveTalk }));
 jest.mock("@/features/chat/hooks/useDraftChat", () => ({ useDraftChat: () => mockDraft }));
 jest.mock("@/hooks/useModels", () => ({ useModels: () => mockModels }));
 jest.mock("@/contexts/NetworkContext", () => ({ useNetwork: () => ({ isOffline: false }) }));

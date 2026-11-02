@@ -47,7 +47,7 @@ it("puts trace headers on our API's requests and on no one else's", async () => 
   for (const url of [
     "https://api.recall.test/chats",
     "https://api.recall.test/chats/1/messages?limit=40",
-    "https://api.openai.com/v1/realtime/calls",
+    "https://third-party.example/v1/calls",
     "https://clients3.google.com/generate_204",
     "https://bucket.r2.cloudflarestorage.com/upload?X-Amz-Signature=x",
     "https://api.recall.test.evil.example/x",

@@ -72,7 +72,6 @@ export function AccountSettingsSection() {
           <SettingsLinkRow
             icon="sparkles"
             title={t("settings.plan_upgrade", { plan: t(planNameKey(nextPlan)) })}
-            subtitle={t("settings.plan_upgrade_live_talk")}
             onPress={() => setUpgradeVisible(true)}
             accent
           />

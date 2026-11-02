@@ -25,10 +25,6 @@ const USAGE_DESCRIPTION_OPTIONS: Record<string, Record<string, string>> = {
   "expo-audio": {
     microphonePermission: "NSMicrophoneUsageDescription",
   },
-  "@config-plugins/react-native-webrtc": {
-    cameraPermission: "NSCameraUsageDescription",
-    microphonePermission: "NSMicrophoneUsageDescription",
-  },
 };
 
 function pluginOptions(name: string): Map<string, unknown> {
@@ -70,7 +66,7 @@ describe("app store config", () => {
   });
 
   it("never plays audio in the background", () => {
-    // Read-aloud stops and Live Talk hangs up when the app leaves the foreground.
+    // Read-aloud stops when the app leaves the foreground.
     expect(pluginOptions("expo-audio").get("enableBackgroundPlayback")).toBe(false);
     expect(infoPlist.has("UIBackgroundModes")).toBe(false);
     expect(appJson.expo.android.blockedPermissions).toEqual(
@@ -121,7 +117,7 @@ const COLLECTED_DATA: Record<string, { linked: boolean; purposes: readonly strin
   CoarseLocation: { linked: true, purposes: ["AppFunctionality"] },
   // Attached photos, maths scans and the profile photo.
   PhotosorVideos: { linked: true, purposes: ["AppFunctionality"] },
-  // Voice input and Live Talk.
+  // Voice input.
   AudioData: { linked: true, purposes: ["AppFunctionality"] },
   // Messages, chats, memory, to-dos, attached files, custom instructions and feedback.
   OtherUserContent: { linked: true, purposes: ["AppFunctionality", "ProductPersonalization"] },

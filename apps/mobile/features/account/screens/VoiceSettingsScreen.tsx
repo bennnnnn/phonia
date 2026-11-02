@@ -26,8 +26,8 @@ import { USER_VOICES, voiceLabel } from "@/features/speech/model/voices";
 const DEFAULT_VOICE = "default";
 
 /**
- * Settings → Voice. The voice is saved on the account and used by read-aloud
- * and live talk; speed and the on-device voice are this phone's.
+ * Settings → Voice. The voice is saved on the account and used by read-aloud;
+ * speed and the on-device voice are this phone's.
  */
 export default function VoiceSettingsScreen() {
   const { user, updateUser } = useAuth();

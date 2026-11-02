@@ -81,8 +81,8 @@ export const UNAVAILABLE_CODE = "unavailable";
 
 /**
  * Recall cannot serve right now: the API's outage code, or a 502, 503 or 504 that names no
- * code (a gateway in front of it). A refusal that names another code is that refusal: live
- * talk's 503 `not_configured` is no outage. Any error with `status` and `code` will do.
+ * code (a gateway in front of it). A refusal that names another code is that refusal, even
+ * a 503. Any error with `status` and `code` will do.
  */
 export function isServiceUnavailable(error: unknown): boolean {
   if (!error || typeof error !== "object") return false;

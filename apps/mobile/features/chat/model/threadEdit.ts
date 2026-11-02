@@ -31,9 +31,7 @@ export type ThreadEditSource =
   /** A send that failed before reaching the server takes its bubble back. */
   | "failed_send_withdrawn"
   /** A picture turn: its bubbles, its result or its failure. */
-  | "image_turn"
-  /** Live talk's spoken turns, written into the chat as they happen. */
-  | "live_talk";
+  | "image_turn";
 
 /** The new list, or how to make it from the newest one. */
 export type ThreadUpdate = SetStateAction<Message[]>;

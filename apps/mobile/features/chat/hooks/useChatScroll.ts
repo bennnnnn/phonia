@@ -231,8 +231,8 @@ export function useChatScroll({
 
   useEffect(() => () => clearScheduledTimeout(keyboardScrollTimerRef), []);
 
-  // No haptic: image generation and live talk call this after every picture and voice
-  // turn. The scroll button plays its own on press (ChatScrollFab).
+  // No haptic: image generation calls this after every picture turn. The scroll button
+  // plays its own on press (ChatScrollFab).
   const scrollToLatest = useCallback(() => {
     listRef.current?.scrollToEnd({ animated: true });
     updateAtBottom(true);

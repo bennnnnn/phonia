@@ -164,7 +164,7 @@
         "NSPhotoLibraryUsageDescription": "Recall needs access to your photos so you can attach images in chat.",
         "NSPhotoLibraryAddUsageDescription": "Recall saves generated and chat images to your photo library when you tap Download.",
         "NSCameraUsageDescription": "Recall uses the camera so you can take photos to attach in chat and scan math problems from your notes or worksheets.",
-        "NSMicrophoneUsageDescription": "Recall uses the microphone so you can dictate messages and talk with Recall in Live Talk.",
+        "NSMicrophoneUsageDescription": "Recall uses the microphone so you can dictate messages.",
         "NSMotionUsageDescription": "Recall does not use motion or fitness data and never asks for it.",
         "LSApplicationQueriesSchemes": [
           "googlegmail",
@@ -240,7 +240,7 @@
         {
           "photosPermission": "Recall needs access to your photos so you can attach images in chat.",
           "cameraPermission": "Recall uses the camera so you can take photos to attach in chat and scan math problems from your notes or worksheets.",
-          "microphonePermission": "Recall uses the microphone so you can dictate messages and talk with Recall in Live Talk."
+          "microphonePermission": "Recall uses the microphone so you can dictate messages."
         }
       ],
       [
@@ -347,15 +347,8 @@
       [
         "expo-audio",
         {
-          "microphonePermission": "Recall uses the microphone so you can dictate messages and talk with Recall in Live Talk.",
+          "microphonePermission": "Recall uses the microphone so you can dictate messages.",
           "enableBackgroundPlayback": false
-        }
-      ],
-      [
-        "@config-plugins/react-native-webrtc",
-        {
-          "microphonePermission": "Recall uses the microphone so you can dictate messages and talk with Recall in Live Talk.",
-          "cameraPermission": "Recall uses the camera so you can take photos to attach in chat and scan math problems from your notes or worksheets."
         }
       ]
     ],

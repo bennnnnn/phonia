@@ -45,11 +45,6 @@ const LAZY_FILES = [
   "features/scanner/components/MathEquationScanner.tsx",
   // The photo viewer: pager, zoom, Download and Share, and the media library.
   "features/attachments/components/AttachmentImageViewer.tsx",
-  // Live Talk: the WebRTC session, its turn state and chimes, and the overlay.
-  "features/speech/model/realtimeVoice.ts",
-  "features/speech/model/realtimeTurnState.ts",
-  "features/speech/model/liveTalkSfx.ts",
-  "features/speech/components/LiveTalkOverlay.tsx",
   // Physics scene parsers that size a placeholder, and the renderers.
   "lib/physics/simulation/index.ts",
   "components/rich/diagrams/spec.ts",

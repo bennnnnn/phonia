@@ -70,12 +70,12 @@ const CATALOG = {
     {
       id: "plus",
       features: ["all_models", "image_generation", "speech_transcription", "speech_tts"],
-      allowances: { daily_image_generations: 10, monthly_live_talk_minutes: 0 },
+      allowances: { daily_image_generations: 10 },
     },
     {
       id: "pro",
-      features: ["all_models", "image_generation", "speech_transcription", "speech_tts", "live_talk"],
-      allowances: { daily_image_generations: 15, monthly_live_talk_minutes: 60 },
+      features: ["all_models", "image_generation", "speech_transcription", "speech_tts"],
+      allowances: { daily_image_generations: 15 },
     },
   ],
 };
@@ -92,7 +92,7 @@ const SUBSCRIBE_PLUS = 'upgrade.subscribe_plan {"plan":"plans.plus"}';
 const SUBSCRIBE_PRO = 'upgrade.subscribe_plan {"plan":"plans.pro"}';
 
 async function openSheet() {
-  const screen = await render(<UpgradeSheet visible onClose={jest.fn()} source="live_talk" />);
+  const screen = await render(<UpgradeSheet visible onClose={jest.fn()} source="voice" />);
   await act(async () => {});
   return screen;
 }
@@ -117,8 +117,7 @@ it("offers free users both plans with store prices and server numbers", async ()
   expect(screen.getByText('upgrade.per_month {"price":"$7.99"}')).toBeOnTheScreen();
   expect(screen.getByText('upgrade.per_month {"price":"$13.99"}')).toBeOnTheScreen();
   expect(screen.getByText('upgrade.feature_images {"count":10}')).toBeOnTheScreen();
-  expect(screen.getByText('upgrade.feature_live_talk {"count":60}')).toBeOnTheScreen();
-  expect(mockTrack).toHaveBeenCalledWith("paywall_viewed", { source: "live_talk" });
+  expect(mockTrack).toHaveBeenCalledWith("paywall_viewed", { source: "voice" });
 });
 
 it("says the store is unavailable, never an empty shop, and reads it again on Retry (CLAR-08)", async () => {

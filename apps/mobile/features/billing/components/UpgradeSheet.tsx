@@ -37,7 +37,7 @@ import { Type, Weight } from "@/lib/type";
 import { IconSize } from "@/ui/icons/sizes";
 import { Radius } from "@/lib/radius";
 
-export type UpgradeSource = "quota" | "model_gate" | "settings" | "voice" | "live_talk" | "other";
+export type UpgradeSource = "quota" | "model_gate" | "settings" | "voice" | "other";
 
 type Props = {
   visible: boolean;
@@ -71,11 +71,6 @@ function planFeatureLines(
   const images = info?.allowances.daily_image_generations;
   if (plan === "pro") {
     lines.push({ icon: "check", text: t("upgrade.everything_in", { plan: t(planNameKey("plus")) }) });
-    const minutes = info?.allowances.monthly_live_talk_minutes;
-    lines.push({
-      icon: "activity",
-      text: minutes ? t("upgrade.feature_live_talk", { count: minutes }) : t("upgrade.feature_live_talk_plain"),
-    });
   } else {
     lines.push({ icon: "zap", text: modelsLine(models, t) });
     lines.push({ icon: "infinity", text: t("upgrade.feature_limits") });

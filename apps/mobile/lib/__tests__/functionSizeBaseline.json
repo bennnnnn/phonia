@@ -102,7 +102,6 @@
   "features/scanner/components/ScannerSubjectSwitcher.tsx::ScannerSubjectSwitcher": 109,
   "features/scanner/hooks/useMathScannerCrop.ts::useMathScannerCrop": 312,
   "features/search/hooks/useDrawerSearch.ts::useDrawerSearch": 127,
-  "features/speech/hooks/useLiveTalk.ts::useLiveTalk": 404,
   "features/speech/hooks/useVoiceInput.ts::useVoiceInput": 219,
   "features/todos/components/TodoDateFields.tsx::TodoDateFields": 209,
   "features/todos/components/TodoEditorSheet.tsx::TodoEditorSheet": 239,

@@ -13,7 +13,6 @@ import { useTheme } from "@/lib/theme";
 import { ChatScreenBody } from "@/features/chat/components/ChatScreenBody";
 import { ChatScreenMenuSheets } from "@/features/chat/components/ChatScreenMenuSheets";
 import { chatMenuSheetProps } from "@/features/chat/components/chatMenuSheetProps";
-import { LazyLiveTalkOverlay } from "@/features/speech/components/LazyLiveTalkOverlay";
 import { makeChatScreenStyles } from "@/features/chat/components/chatScreenStyles";
 import { COMPOSER_HEIGHT } from "@/features/chat/components/ChatComposer";
 import { composerAttachmentExtra } from "@/features/attachments/components/ComposerAttachmentPreview";
@@ -227,11 +226,8 @@ function ChatScreen() {
   });
 
   const { pendingAttachment, sendPhase, attachSheetOpen, handleSend, sendTappedLine, restoreComposerDraft } = send;
-  const composerWiring = useChatComposerWiring({
-    token, user, routeChatId, chatId, send, scroll, ensureChatId, editThread, isOffline, openUpgradeRef,
-    onFirstReplyRef, t,
-  });
-  const { mathChromeExtra, composerInputExtra, liveTalk } = composerWiring;
+  const composerWiring = useChatComposerWiring({ token, user, routeChatId, send, openUpgradeRef, t });
+  const { mathChromeExtra, composerInputExtra } = composerWiring;
 
   useEffect(() => setActiveChatIdGlobal(chatId), [chatId]);
 
@@ -367,7 +363,6 @@ function ChatScreen() {
     stopGeneration: stopTurn,
     isOffline,
     voice: composerWiring.voice,
-    liveTalkSession: composerWiring.liveTalkSession,
   });
   // Bound late for the hooks above, which need them before they exist; set once the render commits.
   useLayoutEffect(() => {
@@ -385,15 +380,6 @@ function ChatScreen() {
     <ChatReplyProviders saveEmailDraft={handleSaveEmailDraft} send={sendTappedLine} busy={streamActive || regenerating}>
       <View style={{ flex: 1 }}>
         <ChatScreenBody {...chatScreenBodyProps} />
-        <LazyLiveTalkOverlay
-          visible={liveTalk.visible}
-          phase={liveTalk.phase}
-          recording={liveTalk.recording}
-          headerInset={layout.headerInset}
-          composerClearance={layout.composerClearance}
-          onToggle={() => void liveTalk.toggle()}
-        />
-
         <ChatScreenMenuSheets menuAnchorRef={menuAnchorRef} {...chatMenuSheetProps(chatActions, { chatTitle, pinned, archived })} />
       </View>
     </ChatReplyProviders>

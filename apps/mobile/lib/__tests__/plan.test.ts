@@ -10,7 +10,6 @@ describe("plan helpers", () => {
   it("reads features from the server when it lists them", () => {
     const user = { plan: "plus", features: ["speech_tts"] };
     expect(hasPlanFeature(user, "speech_tts")).toBe(true);
-    expect(hasPlanFeature(user, "live_talk")).toBe(false);
     expect(hasPlanFeature(user, "all_models")).toBe(false);
   });
 
@@ -18,8 +17,7 @@ describe("plan helpers", () => {
     expect(hasPlanFeature({ plan: "free" }, "speech_transcription")).toBe(false);
     expect(hasPlanFeature({ plan: "free" }, "image_generation")).toBe(true);
     expect(hasPlanFeature({ plan: "plus" }, "speech_transcription")).toBe(true);
-    expect(hasPlanFeature({ plan: "plus" }, "live_talk")).toBe(false);
-    expect(hasPlanFeature({ plan: "pro" }, "live_talk")).toBe(true);
+    expect(hasPlanFeature({ plan: "pro" }, "speech_tts")).toBe(true);
   });
 
   it("offers the next plans up and nothing past the top", () => {

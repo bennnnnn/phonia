@@ -38,11 +38,11 @@ const SENSITIVE_HEADERS = new Set([
   "x-forwarded-authorization",
 ]);
 
-// Bearer tokens, JWTs (our access tokens), Live Talk's ek_ secret, provider keys.
+// Bearer tokens, JWTs (our access tokens), provider keys.
 const SECRET_PATTERNS: readonly RegExp[] = [
   /\bBearer\s+[A-Za-z0-9._~+/=-]+/gi,
   /\beyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]+/g,
-  /\b(?:ek|sk|rk)_[A-Za-z0-9_-]{8,}/g,
+  /\b(?:sk|rk)_[A-Za-z0-9_-]{8,}/g,
 ];
 
 /** Errors can quote what they choked on; keep the start, which says what broke. */
@@ -109,7 +109,7 @@ export function scrubSentryEvent(
 
 /**
  * Requests that carry Sentry's trace headers: our API's, and no one else's. On a phone
- * the SDK's default is every URL, so OpenAI's realtime call, Google's connectivity check
+ * the SDK's default is every URL, so Google's connectivity check
  * and each storage upload carried the DSN's public key, the environment and a trace id
  * (`baggage` and `sentry-trace`, about 200 bytes).
  */
