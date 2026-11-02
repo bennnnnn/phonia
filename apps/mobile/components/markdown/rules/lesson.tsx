@@ -11,6 +11,7 @@ import {
   unwrapSingle,
 } from "@/components/markdown/markdownAstHelpers";
 import type { StyleMap } from "@/components/markdown/markdownContentStyles";
+import { subheadingStyle } from "@/components/markdown/rules/workout";
 import { Radius } from "@/lib/radius";
 import { Space } from "@/lib/space";
 import { DYNAMIC_TYPE_MAX, Type, Weight } from "@/lib/type";
@@ -136,6 +137,48 @@ function stepOperand(label: string): { prefix: string; operand: string; suffix: 
   return null;
 }
 
+/** A step's reason, the rule under its move: smaller and dimmer than the working. */
+function renderLessonReason(
+  key: string,
+  reason: string,
+  styles: StyleMap,
+  t: Theme,
+): React.ReactElement {
+  return (
+    <View
+      testID="lesson-step-reason"
+      // The rule under the step: smaller and dimmer than the working.
+      style={{
+        flexDirection: "row",
+        flexWrap: "wrap",
+        alignItems: "center",
+        marginBottom: Space.xxs,
+      }}
+    >
+      {splitInlineMath(reason).map((part, i) =>
+        part.type === "math" ? (
+          <MathText
+            scrollOverflow
+            key={`${key}-reason-m-${i}`}
+            latex={part.value}
+            textColor={t.textTertiary}
+            fontSize={Type.secondary.fontSize}
+          />
+        ) : (
+          <Text
+            key={`${key}-reason-t-${i}`}
+            style={[styles.text, Type.secondary, { color: t.textTertiary }]}
+            maxFontSizeMultiplier={DYNAMIC_TYPE_MAX}
+            selectable
+          >
+            {part.value}
+          </Text>
+        ),
+      )}
+    </View>
+  );
+}
+
 /** A lesson step: its number in a pill and the move, then the reason and each equation. */
 export function renderLessonStep(
   key: string,
@@ -144,8 +187,13 @@ export function renderLessonStep(
   t: Theme,
 ): React.ReactElement {
   return (
-    // A little extra space above each step so its lines read as one block.
-    <View key={key} testID="lesson-step" style={[styles.paragraphRun, { marginTop: Space.xs }]}>
+    // A numbered move is working inside Solution, with no rule (only Given and Required
+    // have one); a little extra space above it so its lines read as one block.
+    <View
+      key={key}
+      testID="lesson-step"
+      style={[styles.paragraphRun, { marginTop: Space.xs }]}
+    >
       <View
         style={{
           flexDirection: "row",
@@ -184,52 +232,25 @@ export function renderLessonStep(
           {lessonLabelNodes(
             step.label,
             `${key}-label`,
-            [styles.body, styles.text, Weight.semibold, { color: t.assistantText }],
-            t.assistantText,
+            // A heading inside Solution, a level under the sections.
+            subheadingStyle(styles, t),
+            t.textSecondary,
           )}
         </View>
       </View>
       {step.reason || step.formulas.length ? (
         <View testID="lesson-step-formula" style={{ paddingLeft: Space.xl, gap: Space.xxs }}>
-          {step.reason ? (
-            <View
-              testID="lesson-step-reason"
-              // The rule under the step: smaller and dimmer than the working.
-              style={{
-                flexDirection: "row",
-                flexWrap: "wrap",
-                alignItems: "center",
-                marginBottom: Space.xxs,
-              }}
-            >
-              {splitInlineMath(step.reason).map((part, i) =>
-                part.type === "math" ? (
-                  <MathText
-                    scrollOverflow
-                    key={`${key}-reason-m-${i}`}
-                    latex={part.value}
-                    textColor={t.textTertiary}
-                    fontSize={Type.secondary.fontSize}
-                  />
-                ) : (
-                  <Text
-                    key={`${key}-reason-t-${i}`}
-                    style={[styles.text, Type.secondary, { color: t.textTertiary }]}
-                    maxFontSizeMultiplier={DYNAMIC_TYPE_MAX}
-                    selectable
-                  >
-                    {part.value}
-                  </Text>
-                ),
-              )}
-            </View>
-          ) : null}
+          {step.reason ? renderLessonReason(key, step.reason, styles, t) : null}
           {step.formulas.map((formula, i) => (
-            <MathText
-              scrollOverflow
+            // A move's maths is centred, as in every worked section; the reason above it
+            // stays at the left.
+            <View
               key={`${key}-formula-${i}`}
-              latex={formula}
-            />
+              testID="lesson-step-maths"
+              style={{ alignItems: "center", maxWidth: "100%" }}
+            >
+              <MathText scrollOverflow latex={formula} />
+            </View>
           ))}
         </View>
       ) : null}

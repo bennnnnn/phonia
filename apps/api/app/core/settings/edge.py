@@ -13,8 +13,15 @@ class EdgeSettings(BaseModel):
 
     # Per-user/IP REST requests per minute (health + webhooks excluded).
     rest_rate_limit_per_minute: int = 240
-    # Chat WebSockets per machine (modules/chat/ws_limits.py): open sockets per
-    # user, and seconds idle between turns before a close. 0 disables either.
+    # Google/Apple sign-in and token refresh per IP a minute, a flood backstop checked
+    # before any token is verified (modules/account/signin_limit.py, refresh_limit.py);
+    # the real budgets are per identity and per account. Sized for carrier NAT: one
+    # address fronts hundreds of phones, each refreshing about once an hour.
+    signin_per_ip_per_minute: int = 500
+    refresh_per_ip_per_minute: int = 500
+    # Chat WebSockets (modules/chat/ws_limits.py): open sockets per user across all
+    # machines (counted in Redis), and seconds idle between turns before a close.
+    # 0 disables either.
     ws_max_sockets_per_user: int = 5
     ws_idle_timeout_seconds: float = 300.0
     # Seconds a new chat socket has to send its auth frame before it is dropped.
@@ -22,8 +29,10 @@ class EdgeSettings(BaseModel):
     # Request body caps (core/body_limit.py). A declared Content-Length over
     # the cap is refused before any byte is read; a chunked body is counted as
     # it streams. JSON routes stay far below 1 MiB (chat text is 32k chars).
-    # Photo/audio routes (scan read ~10.7 MB, transcribe ~6.7 MB, local
-    # attachment upload 10 MiB) get the upload cap. 0 disables a cap.
+    # Photo/audio routes (transcribe ~6.7 MB, local attachment upload 10 MiB)
+    # get the upload cap; a scan read-back (a <= 4 MB photo as base64, about
+    # 5.4 MB: ``models/schemas/scan.py``) gets the scan cap. 0 disables a cap.
     max_request_body_bytes: int = 1_048_576
     max_upload_request_body_bytes: int = 12 * 1024 * 1024
+    max_scan_request_body_bytes: int = 6 * 1024 * 1024
     support_email: str = ""  # contact on the /legal pages; boot warns while empty

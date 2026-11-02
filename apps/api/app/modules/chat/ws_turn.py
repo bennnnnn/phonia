@@ -45,7 +45,12 @@ from app.modules.chat.stream_events import (
     turn_error_payload,
 )
 from app.modules.chat.turn_outcome import TurnOutcome
-from app.modules.chat.ws_limits import FrameBudget, close_flooding_socket, safe_send_json
+from app.modules.chat.ws_limits import (
+    FrameBudget,
+    close_flooding_socket,
+    safe_send_json,
+    socket_error_payload,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -207,7 +212,7 @@ async def stream_over_ws(
                         # The producer drains on send failure; the reply is saved.
                         await close_flooding_socket(websocket)
                         break
-                    await safe_send_json(websocket, {"type": "error", "message": "Invalid JSON"})
+                    await safe_send_json(websocket, socket_error_payload("invalid_json"))
                     continue
                 if frame_budget is not None and not frame_budget.allow():
                     await close_flooding_socket(websocket)

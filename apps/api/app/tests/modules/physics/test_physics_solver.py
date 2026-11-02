@@ -114,7 +114,35 @@ def test_kinematics_speed_op_is_magnitude() -> None:
     result = physics_solver.solve_kinematics(intent)
     assert abs(result.quantities[0].value - 9.81) < 0.01
     assert result.quantities[0].value > 0
-    assert r"\lvert v_0 - g \cdot t\rvert" in result.answer
+    # A textbook's form, down taken as positive: never |v_0 - g t|.
+    assert result.answer.startswith(r"v = v_0 + g \cdot t = 0 + 9.81 \cdot 1")
+    assert "lvert" not in result.answer
+
+
+@pytest.mark.parametrize(
+    ("v0", "t", "formula", "value"),
+    [
+        (0.0, 1.0, r"v = v_0 + g \cdot t", 9.81),
+        (-5.0, 2.0, r"v = g \cdot t - v_0", 24.62),
+        (20.0, 1.0, r"v = v_0 - g \cdot t", 10.19),
+        (20.0, 3.0, r"v = g \cdot t - v_0", 9.43),
+    ],
+)
+def test_kinematics_speed_is_written_without_bars(
+    v0: float, t: float, formula: str, value: float
+) -> None:
+    intent = PhysicsIntent(
+        kind="kinematics",
+        physics_op="speed",
+        physics_params={"h0": 50.0, "v0": v0, "g": 9.81, "t": t},
+        physics_units={"h0": "m", "v0": "m/s", "g": "m/s^2", "t": "s"},
+        operation="solve",
+    )
+    result = physics_solver.solve_kinematics(intent)
+    assert result.quantities[0].value == pytest.approx(abs(v0 - 9.81 * t))
+    assert result.quantities[0].value == pytest.approx(value, abs=0.01)
+    assert result.formulas == (formula,)
+    assert "lvert" not in result.answer + "".join(result.substitutions)
 
 
 def test_kinematics_thrown_down_latex_parenthesises_negative_v0() -> None:

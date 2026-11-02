@@ -1876,7 +1876,7 @@ async def test_build_prompt_passes_client_timezone():
 
 
 def test_is_short_letter_answer():
-    from app.modules.web_search import is_short_letter_answer
+    from app.modules.web_search.geo_intent import is_short_letter_answer
 
     assert is_short_letter_answer("B") is True
     assert is_short_letter_answer("c.") is True

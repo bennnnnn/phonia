@@ -152,10 +152,6 @@ class ReplyFilter:
         self._start = len(accum.shown)
         self._sent = ""
 
-    @property
-    def worked_blocks(self) -> int:
-        return self._worked.blocks if self._worked is not None else 0
-
     def feed(self, token: str) -> str:
         visible = self._scaffold.feed(token)
         if self._worked is None:

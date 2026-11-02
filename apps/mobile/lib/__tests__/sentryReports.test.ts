@@ -203,3 +203,42 @@ describe("a fence that crashed", () => {
     expect(sdk().captureException).toHaveBeenCalledTimes(2);
   });
 });
+
+describe("a LaTeX command the renderer has no entry for", () => {
+  it("is reported by the native parser with its name alone, never the maths around it", async () => {
+    const { mod, sdk } = await freshSentry();
+    const { subscribeUnknownLatexCommands } = jest.requireActual<typeof import("@/lib/math/latexNames")>(
+      "@/lib/math/latexNames",
+    );
+    const { parseSimpleLatex } = jest.requireActual<typeof import("@/lib/math/latexParse")>(
+      "@/lib/math/latexParse",
+    );
+    const stop = subscribeUnknownLatexCommands(mod.reportUnknownLatexCommandName);
+    parseSimpleLatex("x = \\frobnicate{secret} + 1");
+    stop();
+
+    expect(sdk().captureMessage).toHaveBeenCalledWith("Unknown LaTeX command", {
+      level: "info",
+      tags: { area: "latex_unknown", command: "frobnicate" },
+      fingerprint: ["latex_unknown", "frobnicate"],
+    });
+    expect(JSON.stringify(sdk().captureMessage.mock.calls)).not.toContain("secret");
+  });
+
+  it.each([["has a digit", "foo1"], ["is empty", ""], ["is a sentence", "not a name"]])(
+    "sends nothing when the name %s",
+    async (_case, name) => {
+      const { mod, sdk } = await freshSentry();
+      mod.reportUnknownLatexCommandName(name);
+      expect(sdk().captureMessage).not.toHaveBeenCalled();
+    },
+  );
+
+  it("reports each name once a day, and ten names an hour in all", async () => {
+    jest.useFakeTimers({ now: new Date("2026-11-01T10:00:00Z") });
+    const { mod, sdk } = await freshSentry();
+    for (let i = 0; i < 5; i += 1) mod.reportUnknownLatexCommandName("frobnicate");
+    for (const letter of "abcdefghijklmn") mod.reportUnknownLatexCommandName(`cmd${letter}`);
+    expect(sdk().captureMessage).toHaveBeenCalledTimes(10);
+  });
+});

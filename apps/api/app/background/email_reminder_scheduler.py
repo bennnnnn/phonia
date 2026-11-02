@@ -32,7 +32,7 @@ def _email_reminders_enabled(settings: Settings) -> bool:
 async def _email_cycle(settings: Settings, lock: CycleLock) -> None:
     async with SessionLocal() as session:
         count = await reminder_emails.run_email_reminder_cycle(
-            session, settings, keep_lock=lock.refresh
+            session, settings, keep_lock=lock.refresh, redis=lock.redis
         )
         if count:
             logger.info("Email reminder cycle sent count=%s", count)
@@ -43,6 +43,7 @@ async def run_email_reminder_cycle(settings: Settings) -> None:
         name="email reminders",
         lock_key=LOCK_KEY,
         lock_ttl_seconds=LOCK_TTL_SECONDS,
+        interval_seconds=INTERVAL_SECONDS,
         enabled=_email_reminders_enabled(settings),
         fn=_email_cycle,
         settings=settings,

@@ -44,7 +44,6 @@ class User(Base):
     plan: Mapped[str] = mapped_column(String, default="free", server_default="free")
     # Last processed RevenueCat webhook event_timestamp_ms — ignore older events.
     rc_last_event_at_ms: Mapped[int | None] = mapped_column(BigInteger, nullable=True)
-    response_style: Mapped[str] = mapped_column(String, default="balanced")
     # How many emoji replies use (Settings → Personalization): off, some or more.
     emoji_use: Mapped[str] = mapped_column(String, default="some", server_default="some")
     memory_enabled: Mapped[bool] = mapped_column(Boolean, default=True)

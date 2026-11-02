@@ -47,7 +47,9 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   Results use stable ordering and a consistent page/count database snapshot, and opening
   a message cancels obsolete navigation work.
 - ✅ **Pin** — pin/unpin a chat (chat `⋯` menu + drawer long-press); pinned chats show in a
-  **Pinned** section at the top of the drawer.
+  **Pinned** section at the top of the drawer. At most 20 pinned chats per account
+  (`modules/conversation/pins.py`); one more is refused with `pin_limit`, which the phone
+  words with the server's number.
 - ✅ **Share / Export** — share a conversation as a markdown transcript via the **native OS
   share sheet** (Messages, Mail, Files, …); export a chat as PDF from the in-chat `⋯` menu.
   Chat `⋯` + drawer long-press (share/pin/delete);
@@ -58,7 +60,9 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
 - ✅ **Manage from the drawer** — long-press any chat for **Pin/Unpin · Share · Delete**.
 - ✅ **Library** — drawer **Library** → paginated grid of the user’s verified attachments
   (uploaded images and files — not web lookup / reference photos, which stay on the
-  chat). Tabs: All / Uploaded / Files.
+  chat). Tabs: All / Uploaded / Files. Each account keeps at most 400 MB (free), 1 GiB
+  (Plus) or 4 GiB (Pro) in it, checked at presign (`library_storage_bytes`; over it,
+  409 `storage_full`).
   Search is a case-insensitive substring on filename, MIME type, and the **linked message
   body**. Tap an image for a fullscreen viewer: black page, Close on the
   left, More (⋮) / Download / white Share pill on the right, nothing at the bottom;
@@ -806,7 +810,19 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   return to the foreground). The badge, Home and the editor's Remind at show `notify_at`; for a
   due time the editor has not saved, it asks `GET /todos/reminder-preview`. The phone works out none.
 - ✅ **Email reminders** — opt-in todo-due emails (Resend); Settings
-  toggle; worker scheduler only (welcome + Pro receipt unchanged).
+  toggle; worker scheduler only (welcome + Pro receipt unchanged). Each send of one reminder
+  carries the same `Idempotency-Key`, so a resend after a timeout is not mailed twice; an
+  address Resend refuses (a 4xx but 429) is not tried again, and a timeout, 429 or 5xx waits
+  out a doubling hold (`notifications/send_backoff.py`, Redis) instead of retrying every minute.
+- ✅ **Reminder delivery limits** — reminder pushes go `priority: high` with a `ttl`
+  (`push_reminder_ttl_seconds`, 4 h: a phone off longer never shows it late). A push Expo may
+  have accepted (a read timeout, an unreadable answer) is held 15 min, not resent next minute;
+  a 429 waits its Retry-After and a 5xx backs off; a request Expo refuses as a whole (a 400) is
+  split in halves so one bad token holds back only itself. Push and email cycles send while due
+  reminders remain for `reminder_cycle_budget_seconds` (no fixed page cap); receipts are polled
+  in batches for `push_receipt_poll_budget_seconds`. An account keeps at most
+  `push_tokens_max_per_user` (10) device tokens, newest first; registration is one
+  `INSERT … ON CONFLICT`, so two registrations at once no longer fail one.
 
 ## 11. Navigation & UX
 - ✅ **Drawer** — custom slide-in: search, New chat, chat history, profile + settings.
@@ -1049,7 +1065,7 @@ A consolidated list of what's intentionally **not** (or only partially) in this 
   (`chat_id`); top-k into later turns. **Not** a per-user file library across chats.
   Text-layer extract on prepare; vision OCR on the index job only. File chip shows
   indexing until chunks exist; wrapped inject includes filename.
-- ✅ **Camera math solver** — attach sheet “Solve math with camera” → VisionCamera live frame + adjustable crop + torch / pinch-zoom / photos. On-device ML Kit text recognition runs only inside the live crop and marks the frame ready after repeated stable reads; live frames never hit a paid OCR endpoint. Camera shots are cropped from the live frame immediately (no second crop/Solve step); imported photos retain the adjustable still-image crop. Math then shows **I read this as** (`POST /math/scan/read`: Mathpix, then `vision-chat`, no solve). The student edits the reading if needed and taps **Solve**, which sends it as text through the full math pipeline, or **Send photo**, which sends the crop at once with the checked reading so the turn does not read it again. Physics and chemistry read back the same way through their own readers (`POST /physics/scan/read`, `POST /chemistry/scan/read`: `vision-chat` plain text, no Mathpix kinds); physics turns OCR LaTeX into typed text (`2 × 10^-6 C`, `30°`), and **Solve** sends that text alone, so a photographed physics problem gets the same verified instant reply as a typed one. A physics photo sent with its reading is verified from that reading; one without gets the physics note, never math hints. The three readers share one guard (`services/scan_read.py`: payload limits, spend cap, per-user rate). A refused read (reader off, photo too large, rate limit, spend cap) names itself the same way for every subject (`features/scanner/model/scanReadError.ts`). Biology camera scans send the live crop directly. Mathpix runs only on the captured math crop when `MATHPIX_APP_ID`/`MATHPIX_APP_KEY` are set (`improve_mathpix=false`); SymPy verifies. Camera capture needs a **dev build**. Unverified fall-through is labeled (`Couldn't verify this with SymPy.`) only when the reply contains math.
+- ✅ **Camera math solver** — attach sheet “Solve math with camera” → VisionCamera live frame + adjustable crop + torch / pinch-zoom / photos. On-device ML Kit text recognition runs only inside the live crop and marks the frame ready after repeated stable reads; live frames never hit a paid OCR endpoint. Camera shots are cropped from the live frame immediately (no second crop/Solve step); imported photos retain the adjustable still-image crop. Math then shows **I read this as** (`POST /math/scan/read`: Mathpix, then `vision-chat`, no solve). The student edits the reading if needed and taps **Solve**, which sends it as text through the full math pipeline, or **Send photo**, which sends the crop at once with the checked reading so the turn does not read it again. Physics and chemistry read back the same way through their own readers (`POST /physics/scan/read`, `POST /chemistry/scan/read`: `vision-chat` plain text, no Mathpix kinds); physics turns OCR LaTeX into typed text (`2 × 10^-6 C`, `30°`), and **Solve** sends that text alone, so a photographed physics problem gets the same verified instant reply as a typed one. A physics photo sent with its reading is verified from that reading; one without gets the physics note, never math hints. The three readers share one guard (`services/scan_read.py`: per-user open reads, hourly rate and the day's chat tokens, checked before the body is read; a read takes `scan_read_tokens` from the chat's daily allowance, so the scan's limit is the chat's limit and a spent allowance refuses it with chat's `quota_exceeded`; payload limits and a JPEG/PNG/WebP byte check; spend cap). A refused read (reader off, photo too large, rate limit, chat allowance spent, spend cap) names itself the same way for every subject (`features/scanner/model/scanReadError.ts`). Biology camera scans send the live crop directly. Mathpix runs only on the captured math crop when `MATHPIX_APP_ID`/`MATHPIX_APP_KEY` are set (`improve_mathpix=false`); SymPy verifies. Camera capture needs a **dev build**. Unverified fall-through is labeled (`Couldn't verify this with SymPy.`) only when the reply contains math.
 - ✅ **Web search** — Tavily primary + DuckDuckGo fallback; sources on assistant messages
   (hidden on short A–D replies).
 - ✅ **Structured profile fields** — name / age / country / job (Settings + prompt injection).

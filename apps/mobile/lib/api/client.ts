@@ -12,10 +12,12 @@ import {
 
 import { reportConnectionAnswered, reportConnectionFailure } from "@/lib/api/connectionFailures";
 import { newRequestId, REQUEST_ID_HEADER, responseRequestId } from "@/lib/api/requestId";
+import { shareRefresh } from "@/lib/api/refreshFlight";
+import { accessTokenNeedsRefresh } from "@/lib/api/tokenExpiry";
 import { CONSENT_REQUIRED_CODE, notifyConsentRequired } from "@/lib/api/consentRefusal";
 import type { AuthResult, User } from "@/lib/api/types";
 import { deviceSessionFields } from "@/lib/deviceSession";
-import { noteApiFailure } from "@/lib/sentry";
+import { noteApiFailure, reportFailure } from "@/lib/sentry";
 
 let onUnauthorized: (() => void) | null = null;
 let onTokenRefresh: ((accessToken: string, user?: User) => void) | null = null;
@@ -53,31 +55,6 @@ function requireSession(generation: number): void {
 
 function requireNotAborted(signal?: AbortSignal | null): void {
   if (signal?.aborted) throw abortError();
-}
-
-/**
- * Decode JWT expiry only as a latency hint. Authentication still belongs to
- * the server; unreadable/opaque tokens keep the existing request-then-401
- * behavior instead of being rejected by the client.
- */
-export function accessTokenNeedsRefresh(
-  token: string,
-  nowMs: number = Date.now(),
-  skewMs = 30_000,
-): boolean {
-  try {
-    const parts = token.split(".");
-    if (parts.length !== 3 || parts.some((part) => !part)) return false;
-    const payload = parts[1].replace(/-/g, "+").replace(/_/g, "/");
-    const padded = payload.padEnd(Math.ceil(payload.length / 4) * 4, "=");
-    const claims: unknown = JSON.parse(atob(padded));
-    if (typeof claims !== "object" || claims === null || !("exp" in claims)) return false;
-    const exp = (claims as { exp?: unknown }).exp;
-    if (typeof exp !== "number" || !Number.isFinite(exp)) return false;
-    return exp * 1000 <= nowMs + Math.max(0, skewMs);
-  } catch {
-    return false;
-  }
 }
 
 export const AUTH_FETCH_TIMEOUT_MS = 15_000;
@@ -149,6 +126,25 @@ function replacedToken(token: string, generation: number): string | null {
   return last?.generation === generation && last.token !== token ? last.token : null;
 }
 
+/** One POST /auth/refresh: the new pair, or null when the server refused the token (401).
+ * Any other failure throws; only a refused token may sign the user out. */
+async function askForRefresh(refreshToken: string, signal: AbortSignal, generation: number): Promise<AuthResult | null> {
+  const response = await fetchApi("/auth/refresh", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ refresh_token: refreshToken, ...deviceSessionFields() }),
+    signal,
+  }, generation);
+  if (response.status === 401) return null;
+  if (!response.ok) throw await refusal(response);
+  const data = (await response.json()) as AuthResult;
+  if (!data || typeof data.access_token !== "string" || !data.access_token ||
+    typeof data.refresh_token !== "string" || !data.refresh_token) {
+    throw new Error("Recall returned an invalid sign-in response. Please try again.");
+  }
+  return data;
+}
+
 /** Share refresh within one session. Only an absent/rejected refresh credential
  * returns null; outages and secure storage failures must not sign the user out.
  * One deadline covers the whole refresh, its body and secure storage included: a
@@ -167,27 +163,18 @@ async function refreshAccessToken(): Promise<string | null> {
       refreshRejected = generation;
       return null;
     }
-    const response = await fetchApi("/auth/refresh", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ refresh_token: refreshToken, ...deviceSessionFields() }),
-      signal,
-    }, generation);
+    // Every copy of this module that read the same token joins one request (refreshFlight.ts).
+    const data = await shareRefresh(refreshToken, signal, () => askForRefresh(refreshToken, signal, generation))
+      .catch((error: unknown) => {
+        if (error instanceof ApiRequestError && error.retryAfterMs) {
+          refreshRefused = { generation, until: Date.now() + error.retryAfterMs, error };
+        }
+        throw error;
+      });
     requireSession(generation);
-    if (response.status === 401) {
+    if (!data) {
       refreshRejected = generation;
       return null;
-    }
-    if (!response.ok) {
-      const error = await refusal(response);
-      if (error.retryAfterMs) refreshRefused = { generation, until: Date.now() + error.retryAfterMs, error };
-      throw error;
-    }
-    const data = (await response.json()) as AuthResult;
-    requireSession(generation);
-    if (!data || typeof data.access_token !== "string" || !data.access_token ||
-      typeof data.refresh_token !== "string" || !data.refresh_token) {
-      throw new Error("Recall returned an invalid sign-in response. Please try again.");
     }
     const saved = await setTokenPair(data.access_token, data.refresh_token, generation);
     requireSession(generation);
@@ -220,14 +207,15 @@ export async function freshAccessToken(token: string | null): Promise<string | n
 }
 
 /** `pushToken` is this device's Expo push token: the server forgets it with the session, so
- * the signed-out account's reminders stop reaching this lock screen. */
+ * the signed-out account's reminders stop reaching this lock screen. False when it should be
+ * sent again (no answer, a 5xx: lib/pendingLogout.ts keeps it); a 4xx no retry changes is done. */
 export async function logoutSession(
   token: string,
   refreshToken: string | null,
   pushToken: string | null = null,
-): Promise<void> {
+): Promise<boolean> {
   try {
-    await fetchWithTimeout(apiUrl("/auth/logout"), {
+    const response = await fetchWithTimeout(apiUrl("/auth/logout"), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -238,12 +226,14 @@ export async function logoutSession(
         ...(pushToken ? { expo_push_token: pushToken } : {}),
       }),
     });
-  } catch {
-    /* Server revocation is best-effort; local credential removal is independent. */
+    return response.status < 500;
+  } catch (error) {
+    reportFailure("sign_out", error); // No answer (offline, a timeout) is routine: not reported.
+    return false;
   }
 }
 
-export { ApiRequestError };
+export { accessTokenNeedsRefresh, ApiRequestError };
 
 export function apiUrl(path: string) {
   return `${getApiUrl()}${path}`;

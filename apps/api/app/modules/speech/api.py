@@ -1,6 +1,7 @@
 import base64
 import binascii
 import json
+from collections.abc import Callable
 from datetime import date
 
 from fastapi import APIRouter, Depends, HTTPException, Request, status
@@ -52,11 +53,12 @@ async def _transcribe_bytes(
     data: bytes,
     filename: str,
     language: str | None = None,
+    on_call: Callable[[], None] | None = None,
 ) -> SpeechTranscriptionOut:
     if not settings.speech_transcription_enabled:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not available")
     text = await speech_service.transcribe_audio(
-        settings, data, filename=filename, language=language
+        settings, data, filename=filename, language=language, on_call=on_call
     )
     if text is None:
         raise HTTPException(
@@ -98,7 +100,7 @@ async def synthesize_speech(
         )
         reserved_day = await reserve_day_or_raise("speech_tts", redis, user, settings)
 
-    async with RefundDayOnFailure("speech_tts", redis, user.id, reserved_day):
+    async with RefundDayOnFailure("speech_tts", redis, user.id, reserved_day) as refund:
         alias = speech_service.normalize_tts_alias(body.model)
         result = await speech_service.synthesize_speech(
             settings,
@@ -106,6 +108,7 @@ async def synthesize_speech(
             language=body.language,
             model_alias=alias,
             voice=user.tts_voice,
+            on_call=refund.spend,
         )
         if not result:
             raise HTTPException(
@@ -184,7 +187,9 @@ async def transcribe_speech(
     )
     day = await reserve_day_or_raise("speech_transcription", redis, user, settings)
 
-    async with RefundDayOnFailure("speech_transcription", redis, user.id, day):
-        result = await _transcribe_bytes(settings, data, filename, language)
+    # Once the audio is sent the provider may bill it, so a 502 or a hang-up after
+    # that keeps the slot; only a failure before the call gives it back.
+    async with RefundDayOnFailure("speech_transcription", redis, user.id, day) as refund:
+        result = await _transcribe_bytes(settings, data, filename, language, refund.spend)
         await quota_service.record_voice_spend(redis, quota_service.STT_SPEND_USD)
         return result

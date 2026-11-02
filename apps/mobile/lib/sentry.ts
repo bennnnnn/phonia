@@ -342,6 +342,27 @@ export function reportFenceRefused(fence: FenceId, reason: FenceRefusal): void {
   }, true);
 }
 
+/** A LaTeX command is reported once a day per name, ten an hour in all. */
+const unknownLatexAllowed = reportLimit(24 * HOUR_MS, 10);
+/** A command's name is letters (`\foo`); anything else is not a name and is not sent. */
+const LATEX_COMMAND_NAME = /^[A-Za-z]{1,40}$/;
+
+/**
+ * A reply used a LaTeX command the phone's renderer has no entry for
+ * (`subscribeUnknownLatexCommands`, `lib/math/latexNames.ts`): it drew the argument and
+ * not the command. The report names the command alone, never the maths around it.
+ */
+export function reportUnknownLatexCommandName(name: string): void {
+  if (!LATEX_COMMAND_NAME.test(name) || !unknownLatexAllowed(name)) return;
+  report((Sentry) => {
+    Sentry.captureMessage("Unknown LaTeX command", {
+      level: "info",
+      tags: { area: "latex_unknown", command: name },
+      fingerprint: ["latex_unknown", name],
+    });
+  }, true);
+}
+
 /**
  * Where a user's action failed after the screen handled it (a toast, the draft given
  * back, the page on screen kept).
@@ -355,7 +376,9 @@ export type FailureArea =
   | "paywall_load"
   | "purchase"
   | "purchase_restore"
-  | "purchase_sync";
+  | "purchase_sync"
+  /** The server's half of a sign-out, or the record of one still owed (lib/pendingLogout.ts). */
+  | "sign_out";
 
 /** A handled failure reports once per area and kind every ten minutes, twenty an hour in all. */
 const failureAllowed = reportLimit(10 * 60_000, 20);

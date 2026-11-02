@@ -92,7 +92,7 @@ def test_admin_dlq_denies_when_admin_allowlist_empty():
         client = TestClient(app)
         r = client.get("/admin/dlq", headers={"Authorization": "Bearer tok"})
     assert r.status_code == 403
-    assert "ADMIN_USER_IDS" in r.json()["detail"]
+    assert "ADMIN_USER_IDS" in r.json()["detail"]["message"]
 
 
 def test_admin_dlq_count_is_bounded():

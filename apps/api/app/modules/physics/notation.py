@@ -15,6 +15,8 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 
+from app.services.latex_groups import group_end
+
 # Constant acceleration from a starting velocity u to a final velocity v.
 _START_END: Mapping[str, str] = {"u": "v_i", "v": "v_f"}
 # One body before and after: an impulse, the work done on it, a bounce off a wall.
@@ -48,11 +50,6 @@ _SHOWN: Mapping[str, Mapping[str, str]] = {
 
 # Arguments that are words, not symbols: ``\mathrm{m/s}``, ``\text{ before}``.
 _WORD_ARGUMENTS = frozenset({"text", "mathrm", "textrm", "operatorname", "mbox"})
-
-
-def renamed_operations() -> frozenset[str]:
-    """The operations whose velocities are shown under another symbol."""
-    return frozenset(_SHOWN)
 
 
 def shown(latex: str, operation: str | None) -> str:
@@ -108,21 +105,8 @@ def _command_end(latex: str, start: int) -> int:
         while brace < len(latex) and latex[brace] == " ":
             brace += 1
         if brace < len(latex) and latex[brace] == "{":
-            return _group_end(latex, brace)
+            return group_end(latex, brace)
     return end
-
-
-def _group_end(latex: str, brace: int) -> int:
-    """Past the ``{…}`` group that opens at ``brace``."""
-    depth = 0
-    for index in range(brace, len(latex)):
-        if latex[index] == "{":
-            depth += 1
-        elif latex[index] == "}":
-            depth -= 1
-            if depth == 0:
-                return index + 1
-    return len(latex)
 
 
 def _symbol_end(latex: str, at: int) -> int:
@@ -130,7 +114,7 @@ def _symbol_end(latex: str, at: int) -> int:
     end = at + 1
     if end < len(latex) and latex[end] == "_":
         if end + 1 < len(latex) and latex[end + 1] == "{":
-            end = _group_end(latex, end + 1)
+            end = group_end(latex, end + 1)
         elif end + 1 < len(latex) and latex[end + 1] != "\\":
             end += 2
     while end < len(latex) and latex[end] == "'":

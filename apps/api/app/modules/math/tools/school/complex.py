@@ -115,7 +115,10 @@ def _extract_complex_intent(cleaned: str) -> MathIntent | None:
     expanding = op is None and expr.lower().startswith("expand ")
     if expanding:
         expr = expr[len("expand ") :].lstrip()
-    while True:
+    # Leading words, one after another ("find modulus of 3+4i" is "3+4i").
+    stripped = True
+    while stripped:
+        stripped = False
         for prefix in (
             "what is",
             "what's",
@@ -144,9 +147,8 @@ def _extract_complex_intent(cleaned: str) -> MathIntent | None:
         ):
             if expr.lower().startswith(prefix + " "):
                 expr = expr[len(prefix) :].lstrip()
+                stripped = True
                 break
-        else:
-            break
     # "Simplify 1/i": i is the only letter, so it can only be the imaginary unit.
     if op is None and not has_complex_token and variable_letters(expr) != {"i"}:
         return None

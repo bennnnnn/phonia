@@ -61,7 +61,7 @@ def page_sql():
             column.type = original_type
 
 
-def _seed(sync_session, owner, *, count=1001):
+def _seed(sync_session, owner, *, count=201):
     timestamp = datetime(2026, 9, 4, tzinfo=UTC)
     rows = [
         TodoItem(
@@ -85,7 +85,7 @@ def _seed(sync_session, owner, *, count=1001):
 @pytest.mark.asyncio
 @pytest.mark.parametrize("field", ["checked", "sort_order", "topic"])
 @pytest.mark.parametrize("direction", ["seen_later", "unseen_earlier"])
-async def test_traversal_keeps_all_1001_rows_when_mutable_fields_cross_boundary(
+async def test_traversal_keeps_all_rows_past_one_page_when_mutable_fields_cross_boundary(
     page_sql, field, direction
 ):
     sync_session, session, user = page_sql
@@ -95,7 +95,7 @@ async def test_traversal_keeps_all_1001_rows_when_mutable_fields_cross_boundary(
             row.checked = True
         sync_session.commit()
     first, cursor = await crud.list_todos_page(session, user)
-    assert len(first) == 1000
+    assert len(first) == 200
     assert cursor is not None
     moving = rows[0] if direction == "seen_later" else rows[-1]
     later = {"checked": True, "sort_order": 2, "topic": "Z"}
@@ -250,7 +250,7 @@ async def test_page_route_serializes_cursor(page_sql, page_client):
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
-    "params", [{"cursor": "invalid"}, {"cursor": ""}, {"limit": 0}, {"limit": 1001}]
+    "params", [{"cursor": "invalid"}, {"cursor": ""}, {"limit": 0}, {"limit": 201}, {"limit": 1000}]
 )
 async def test_page_route_rejects_invalid_cursor_and_unbounded_limits(
     page_sql, page_client, params

@@ -430,7 +430,7 @@ async def test_a_turn_handed_to_finalize_is_not_refunded_on_a_later_escape(strea
                 res.reserved_tokens = 500
                 async for _ in stream_entry.stream_and_finalize(
                     deps,
-                    AsyncMock(),
+                    redis_mock(),
                     Settings(max_output_tokens=100, mcp_tool_loop_enabled=False),
                     ctx,
                     should_cancel=None,

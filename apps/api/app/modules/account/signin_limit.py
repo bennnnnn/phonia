@@ -12,13 +12,15 @@ same (``refresh_limit.py``).
   under it. A client stuck in a loop, or a Google ID token replayed from many addresses
   (it lives an hour), mints at most 10 sessions a minute. Only a valid token for that
   identity spends it, so no one can lock another person out.
-* **Per IP, 600 a minute, before the token is verified**, as refresh's. Twenty times the
-  old limit: a lecture hall on one campus address, or a crowded carrier address at a
-  launch peak, signs in within the minute. It was 300 while each Google verify fetched
-  Google's certs; with provider keys kept per process (``gateways/signing_keys.py``) a
-  verify costs about 0.08 ms of CPU on sign-in's two threads per machine
-  (``core/blocking.py``), and a made-up key id at most one fetch per 30 s. A body that
-  fails validation never gets that far. The global REST limit skips these two routes.
+* **Per IP, ``signin_per_ip_per_minute`` (500) a minute, before the token is verified**,
+  as refresh's. Ten times the old limit and above the global REST one: a lecture hall on
+  one campus address, or a crowded carrier address at a launch peak, signs in within the
+  minute. It was 600; a verify is cheap (provider keys are kept per process,
+  ``gateways/signing_keys.py``: about 0.08 ms of CPU on sign-in's two threads per
+  machine, ``core/blocking.py``), but people sign in once per device, so 500 a minute
+  (30,000 an hour) from one address is still far past any real NAT peak while a single
+  host gets about eight tries a second. A body that fails validation never gets that far. The
+  global REST limit skips these two routes. The number is a setting (``core/settings/edge.py``).
 * **Dev login, 30 a minute per IP**, unchanged and still under the global limit: it
   verifies no token, so there is no identity to key on (the email is the caller's
   choice), and it answers loopback callers only, where no carrier NAT sits.
@@ -45,7 +47,6 @@ from app.core.rate_limit import allow_request_unless_down
 from app.modules.account.email_authority import SignInProvider
 
 PER_IDENTITY_LIMIT = 10
-PER_IP_LIMIT = 600
 DEV_PER_IP_LIMIT = 30
 WINDOW_SECONDS = 60
 
@@ -55,11 +56,12 @@ class SignInLimitedError(Exception):
 
 
 async def address_allowed(redis: Redis, request: Request, settings: Settings) -> bool:
-    """Counts a Google or Apple sign-in from this address: False past ``PER_IP_LIMIT``."""
+    """Counts a Google or Apple sign-in from this address: False past
+    ``settings.signin_per_ip_per_minute``."""
     return await allow_request_unless_down(
         redis,
         f"rate:auth:signin:ip:{client_ip(request, settings)}",
-        limit=PER_IP_LIMIT,
+        limit=settings.signin_per_ip_per_minute,
         window_seconds=WINDOW_SECONDS,
     )
 

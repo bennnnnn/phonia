@@ -166,8 +166,16 @@ async def send_purchase_receipt(
     )
 
 
-async def send_todo_reminder(settings: Settings, user: User, *, title: str, content: str) -> bool:
+async def send_todo_reminder(
+    settings: Settings, user: User, *, title: str, content: str, idempotency_key: str
+) -> email_gateway.EmailResult:
+    """One reminder email; what became of it, so the cycle can wait or give up."""
     subject, html, text = build_todo_reminder(user, title=title, content=content)
-    return await email_gateway.send_email(
-        settings, to=user.email, subject=subject, html=html, text=text
+    return await email_gateway.deliver_email(
+        settings,
+        to=user.email,
+        subject=subject,
+        html=html,
+        text=text,
+        idempotency_key=idempotency_key,
     )

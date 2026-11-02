@@ -4,6 +4,11 @@ Every call gets exactly one tool message, in order, so the provider accepts the
 message list. A call over the round's cap, past its deadline, for a tool this turn
 was not offered, or for a trig solve that would drop the user's domain is refused
 in that message and never runs.
+
+Calls to different tools run at once under the round's one deadline; calls to the same
+tool run one after another, in order (a search runs once per turn and its repeats reuse
+the first result; solves share the SymPy pool). What each found merges in call order,
+so the turn's verified fences and sources never depend on which call finished first.
 """
 
 from __future__ import annotations
@@ -16,9 +21,10 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
+from app.core.aio import gather_or_cancel
 from app.core.config import Settings
 from app.gateways.mcp import registry as mcp_registry
-from app.gateways.mcp.base import ToolContext
+from app.gateways.mcp.base import ToolContext, ToolResult
 from app.modules.chat.stream_status import StreamStatusFn, StreamStatusPhase, clip_status_detail
 from app.modules.chat.tool_loop.results import (
     ToolResults,
@@ -36,6 +42,7 @@ _UNMATCHED_TOOL_NOTE = (
     "result is not verified for the user's question. Re-read the user's problem before "
     "using it, and do not call it verified."
 )
+_TIMED_OUT = "Tool round timed out."
 _TRIG_DOMAIN_REFUSAL = (
     "This trig solve cannot verify the domain requested by the user. "
     "No solution was certified. Preserve the requested domain when "
@@ -110,40 +117,108 @@ async def _tool_call_matches_user(
     return isinstance(matched, str) and unreadable(matched, locale) is None
 
 
+@dataclass(frozen=True)
+class _Call:
+    """One call of the round, in the order the model made it."""
+
+    index: int
+    call_id: str
+    name: str
+    raw_args: Any
+    # Its tool message when it must not run; None when it runs.
+    refusal: str | None
+
+
+@dataclass(frozen=True)
+class _Ran:
+    """What one call that ran found, before it merges into the turn's results."""
+
+    content: str
+    result: ToolResult | None = None
+    fence: dict[str, Any] | None = None
+    answer: str | None = None
+    # The call's input was not the user's problem: its fence and answer are not verified.
+    unmatched: bool = False
+
+
 async def execute_calls(
     turn: CallRound,
     tool_calls: list[dict[str, Any]],
     working: list[dict[str, Any]],
     collected: ToolResults,
 ) -> None:
-    """Append one tool message per call, in order, until the turn is cancelled."""
+    """Append one tool message per call, in order; a call a cancel kept from running
+    gets none (the caller trims the unanswered round)."""
+    if turn.cancelled():
+        return
     max_calls = max(1, turn.settings.mcp_tool_loop_max_calls_per_round)
     invoke_deadline = time.monotonic() + turn.ctx.seconds_left(
         turn.settings.mcp_tool_loop_invoke_timeout_seconds
     )
-    announced = False
-    for index, call in enumerate(tool_calls):
-        if turn.cancelled():
-            break
-        fn = call.get("function") or {}
-        name = str(fn.get("name") or "")
-        raw_args = fn.get("arguments") or "{}"
-        refusal = _refusal(
-            turn, name, raw_args, over_cap=index >= max_calls, deadline=invoke_deadline
-        )
-        announced = announced or (refusal is None and _status_for_tool(name) is not None)
-        content = (
-            refusal
-            if refusal is not None
-            else await _run_call_by(invoke_deadline, turn, name, raw_args, collected)
-        )
-        working.append(
-            {"role": "tool", "tool_call_id": str(call.get("id") or name), "content": content}
-        )
+    calls = [
+        _plan(turn, index, call, over_cap=index >= max_calls, deadline=invoke_deadline)
+        for index, call in enumerate(tool_calls)
+    ]
+    runnable = [call for call in calls if call.refusal is None]
+    announced = await _announce(turn, runnable)
+    ran = await _run_round(invoke_deadline, turn, runnable)
+    for call in calls:
+        if call.refusal is not None:
+            content = call.refusal
+        elif call.index in ran:
+            content = await _merge(turn, ran[call.index], collected)
+        else:
+            continue  # cancelled before it ran
+        working.append({"role": "tool", "tool_call_id": call.call_id, "content": content})
     if announced and turn.on_status is not None and collected.terminal_image is None:
         # The tools are done; the model is next. A "Searching — …" label must not
         # keep rotating through that model round. A photo ends the turn itself.
         await turn.on_status("composing")
+
+
+def _plan(
+    turn: CallRound, index: int, call: dict[str, Any], *, over_cap: bool, deadline: float
+) -> _Call:
+    fn = call.get("function") or {}
+    name = str(fn.get("name") or "")
+    raw_args = fn.get("arguments") or "{}"
+    refusal = _refusal(turn, name, raw_args, over_cap=over_cap, deadline=deadline)
+    return _Call(index, str(call.get("id") or name), name, raw_args, refusal)
+
+
+async def _announce(turn: CallRound, runnable: list[_Call]) -> bool:
+    """One status for the round, before its calls start: a picture's when one is drawn
+    (its card shows the wait), else the first call's that has one. Calls running at once
+    each announcing would flicker the label between them."""
+    phased = [call for call in runnable if _status_for_tool(call.name) is not None]
+    if not phased:
+        return False
+    lead = next((call for call in phased if call.name == "generate_image"), phased[0])
+    phase = _status_for_tool(lead.name)
+    if turn.on_status is not None and phase is not None:
+        await turn.on_status(phase, _status_detail_for_tool(lead.name, lead.raw_args))
+    return True
+
+
+async def _run_round(deadline: float, turn: CallRound, runnable: list[_Call]) -> dict[int, _Ran]:
+    """Run the round's calls: each tool's in order, the tools at once. A failure cancels
+    the rest and is raised, as a cancel of the turn is."""
+    by_tool: dict[str, list[_Call]] = {}
+    for call in runnable:
+        by_tool.setdefault(call.name, []).append(call)
+    ran: dict[int, _Ran] = {}
+
+    async def run_tool(calls: list[_Call]) -> None:
+        for call in calls:
+            if turn.cancelled():
+                return
+            if time.monotonic() >= deadline:  # an earlier call of this tool used the round up
+                ran[call.index] = _Ran(_TIMED_OUT)
+                continue
+            ran[call.index] = await _run_call_by(deadline, turn, call.name, call.raw_args)
+
+    await gather_or_cancel(*(run_tool(calls) for calls in by_tool.values()))
+    return ran
 
 
 def _refusal(
@@ -153,7 +228,7 @@ def _refusal(
     if over_cap:
         return "Too many tool calls in one round."
     if time.monotonic() >= deadline:
-        return "Tool round timed out."
+        return _TIMED_OUT
     if name not in turn.offered:
         # A provider can return a call to a tool it was not given.
         # Never run it (e.g. search_image on a multi-part message).
@@ -168,9 +243,7 @@ def _refusal(
     return None
 
 
-async def _run_call_by(
-    deadline: float, turn: CallRound, name: str, raw_args: Any, collected: ToolResults
-) -> str:
+async def _run_call_by(deadline: float, turn: CallRound, name: str, raw_args: Any) -> _Ran:
     """``_run_call``, cut off at the round's deadline.
 
     The deadline used to stop only new calls from starting: a call that started in time
@@ -178,10 +251,10 @@ async def _run_call_by(
     """
     try:
         async with asyncio.timeout(max(0.0, deadline - time.monotonic())):
-            return await _run_call(turn, name, raw_args, collected)
+            return await _run_call(turn, name, raw_args)
     except TimeoutError:
         logger.warning("Tool call timed out tool=%s", name or "(unnamed)")
-        return "Tool round timed out."
+        return _Ran(_TIMED_OUT)
 
 
 async def _draws_asked_curve(
@@ -215,24 +288,30 @@ async def _draws_asked_curve(
     return bool(asked)
 
 
-async def _run_call(turn: CallRound, name: str, raw_args: Any, collected: ToolResults) -> str:
-    """Run one offered call, merge what it found, and return its tool message."""
-    phase = _status_for_tool(name) if name else None
-    if turn.on_status is not None and phase is not None:
-        await turn.on_status(phase, _status_detail_for_tool(name, raw_args))
+async def _run_call(turn: CallRound, name: str, raw_args: Any) -> _Ran:
+    """Run one offered call and check its input against the user's problem."""
     note_tool(name)
     result = await mcp_registry.invoke_validated(name, raw_args, turn.ctx)
-    content = result.content if result else f"Unknown tool: {name}"
-    fence = _canonical_from_tool_result(result) if result else None
-    answer = _canonical_answer_from_tool_result(result) if result else None
+    if result is None:
+        return _Ran(f"Unknown tool: {name}")
+    fence = _canonical_from_tool_result(result)
+    answer = _canonical_answer_from_tool_result(result)
     locale = turn.ctx.user.locale if turn.ctx.user is not None else None
-    if (fence is not None or answer) and not await _tool_call_matches_user(
+    unmatched = (fence is not None or bool(answer)) and not await _tool_call_matches_user(
         raw_args, turn.user_texts, turn.settings, locale
-    ):
+    )
+    return _Ran(result.content, result, fence, answer, unmatched)
+
+
+async def _merge(turn: CallRound, ran: _Ran, collected: ToolResults) -> str:
+    """Merge what one call found, in call order, and return its tool message."""
+    fence, answer, content = ran.fence, ran.answer, ran.content
+    if ran.unmatched:
         # The tool solved what the model typed, not what the user asked: no verified answer.
         if not await _draws_asked_curve(turn, fence, collected):
             fence = None
         answer = None
         content = f"{content}{_UNMATCHED_TOOL_NOTE}"
-    collected.merge(result, fence=fence, answer=answer)
+    if ran.result is not None:
+        collected.merge(ran.result, fence=fence, answer=answer)
     return content

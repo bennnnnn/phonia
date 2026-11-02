@@ -21,6 +21,7 @@ async def test_run_locked_cycle_skips_lock_when_disabled():
             name="test",
             lock_key="k",
             lock_ttl_seconds=60,
+            interval_seconds=60,
             enabled=False,
             fn=fn,
             settings=settings,

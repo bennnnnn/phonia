@@ -7,6 +7,7 @@ from app.core.config import Settings
 from app.exceptions import RedisUnavailableError
 from app.modules.chat.post_turn import enqueue_post_turn_jobs
 from app.modules.chat.turn_prep.context import StreamContext
+from app.tests.job_fakes import patch_job_enqueue
 from app.tests.modules.chat.chat_test_support import turn_deps
 
 
@@ -32,7 +33,7 @@ def _ctx(*, prior_count: int, run_title: bool = True) -> StreamContext:
 @pytest.mark.asyncio
 async def test_default_memory_interval_runs_turn_two():
     ctx = _ctx(prior_count=2)  # turn_number = 2
-    with patch("app.core.jobs.enqueue", AsyncMock()) as enqueue:
+    with patch_job_enqueue() as enqueue:
         await enqueue_post_turn_jobs(
             AsyncMock(),
             Settings(history_compression_enabled=False, chat_history_rag_enabled=False),
@@ -46,7 +47,7 @@ async def test_default_memory_interval_runs_turn_two():
 @pytest.mark.asyncio
 async def test_default_memory_interval_runs_turn_three():
     ctx = _ctx(prior_count=4)  # turn_number = 3
-    with patch("app.core.jobs.enqueue", AsyncMock()) as enqueue:
+    with patch_job_enqueue() as enqueue:
         await enqueue_post_turn_jobs(
             AsyncMock(),
             Settings(history_compression_enabled=False, chat_history_rag_enabled=False),
@@ -69,7 +70,7 @@ async def test_memory_job_strips_attachments_and_drops_assistant():
         "[END UNTRUSTED CONTENT — user attachments]\n"
         "[Image: rx.jpg]"
     )
-    with patch("app.core.jobs.enqueue", AsyncMock()) as enqueue:
+    with patch_job_enqueue() as enqueue:
         await enqueue_post_turn_jobs(
             AsyncMock(),
             Settings(history_compression_enabled=False, chat_history_rag_enabled=False),
@@ -91,7 +92,7 @@ async def test_memory_off_indexes_no_turn_for_past_chat_recall(memory_on):
     ctx = _ctx(prior_count=2)
     ctx.user.memory_enabled = memory_on
     with (
-        patch("app.core.jobs.enqueue", AsyncMock()) as enqueue,
+        patch_job_enqueue() as enqueue,
         patch(
             "app.modules.chat.post_turn.quota_service.global_spend_exceeded",
             AsyncMock(return_value=False),
@@ -113,7 +114,7 @@ async def test_throttled_interval_still_extracts_a_correction():
     """M9: "that's wrong, I'm at Stripe now" updates memory on this turn."""
     ctx = _ctx(prior_count=2)  # turn_number = 2
     ctx.user_message_content = "that's wrong, I'm at Stripe now"
-    with patch("app.core.jobs.enqueue", AsyncMock()) as enqueue:
+    with patch_job_enqueue() as enqueue:
         await enqueue_post_turn_jobs(
             AsyncMock(),
             Settings(
@@ -131,7 +132,7 @@ async def test_throttled_interval_still_extracts_a_correction():
 async def test_throttled_interval_still_extracts_remember_this():
     ctx = _ctx(prior_count=2)  # turn_number = 2
     ctx.user_message_content = "Remember this: I am allergic to peanuts."
-    with patch("app.core.jobs.enqueue", AsyncMock()) as enqueue:
+    with patch_job_enqueue() as enqueue:
         await enqueue_post_turn_jobs(
             AsyncMock(),
             Settings(
@@ -150,7 +151,7 @@ async def test_throttled_interval_still_extracts_remember_this():
 async def test_memory_job_skips_when_user_text_is_only_an_attachment():
     ctx = _ctx(prior_count=0)
     ctx.user_message_content = "[Image: cat.jpg]"
-    with patch("app.core.jobs.enqueue", AsyncMock()) as enqueue:
+    with patch_job_enqueue() as enqueue:
         await enqueue_post_turn_jobs(
             AsyncMock(),
             Settings(history_compression_enabled=False, chat_history_rag_enabled=False),
@@ -174,7 +175,7 @@ _CAPPED_OR_DOWN = [
 async def test_spend_cap_keeps_topic_drops_llm_jobs(spend_read):
     ctx = _ctx(prior_count=0, run_title=True)  # turn 1 would enqueue memory
     with (
-        patch("app.core.jobs.enqueue", AsyncMock()) as enqueue,
+        patch_job_enqueue() as enqueue,
         patch("app.services.quota.global_spend_exceeded", spend_read),
     ):
         await enqueue_post_turn_jobs(
@@ -199,7 +200,7 @@ async def test_day_planning_snapshot_skips_learning_extract():
         "**Reminders**\n- Ggg at 7:00 PM (due today, repeats weekdays)\n\n"
         "**Learning**\n- English vocabulary quiz: 0/10 done"
     )
-    with patch("app.core.jobs.enqueue", AsyncMock()) as enqueue:
+    with patch_job_enqueue() as enqueue:
         await enqueue_post_turn_jobs(
             AsyncMock(),
             Settings(history_compression_enabled=False, chat_history_rag_enabled=False),

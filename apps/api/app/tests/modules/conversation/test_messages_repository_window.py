@@ -10,6 +10,7 @@ from app.models.orm import Message
 from app.modules.conversation import chats_repository as chats_repo
 from app.modules.conversation import messages_repository as messages_repo
 from app.repositories import users as users_repo
+from app.repositories.keyset import InvalidCursorError
 
 
 async def _chat_with(db_session, count: int):
@@ -82,15 +83,42 @@ async def test_pages_after_a_message_reach_the_newest(db_session):
     assert more is False
 
 
+@pytest.mark.parametrize("read", ["before", "after", "around"])
 @pytest.mark.asyncio
-async def test_an_unknown_anchor_is_an_empty_window(db_session):
+async def test_a_missing_anchor_is_an_invalid_cursor(db_session, read):
+    """A regenerate deletes the reply a page was anchored on: an empty last page would
+    tell the phone it reached the start of the chat, so the page link is refused."""
+    chat, rows = await _chat_with(db_session, 3)
+    await db_session.delete(rows[1])
+    await db_session.commit()
+    pages = {
+        "before": lambda: messages_repo.list_page(
+            db_session, chat.id, limit=10, before_id=rows[1].id
+        ),
+        "after": lambda: messages_repo.list_after(
+            db_session, chat.id, limit=10, after_id=rows[1].id
+        ),
+        "around": lambda: messages_repo.list_around(
+            db_session, chat.id, limit=10, around_id=rows[1].id
+        ),
+    }
+    with pytest.raises(InvalidCursorError):
+        await pages[read]()
+
+
+@pytest.mark.asyncio
+async def test_another_chats_message_is_no_anchor(db_session):
     chat, _rows = await _chat_with(db_session, 3)
-    assert await messages_repo.list_around(db_session, chat.id, limit=10, around_id=uuid4()) == (
-        [],
-        False,
-        False,
-    )
-    assert await messages_repo.list_after(db_session, chat.id, limit=10, after_id=uuid4()) == (
-        [],
-        False,
-    )
+    _other, other_rows = await _chat_with(db_session, 3)
+    with pytest.raises(InvalidCursorError):
+        await messages_repo.list_page(db_session, chat.id, limit=10, before_id=other_rows[0].id)
+
+
+@pytest.mark.asyncio
+async def test_chat_has_messages_reads_existence(db_session):
+    chat, rows = await _chat_with(db_session, 2)
+    assert await messages_repo.chat_has_messages(db_session, chat.id) is True
+    for row in rows:
+        await db_session.delete(row)
+    await db_session.commit()
+    assert await messages_repo.chat_has_messages(db_session, chat.id) is False

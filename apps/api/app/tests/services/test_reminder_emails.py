@@ -5,6 +5,7 @@ from uuid import uuid4
 import pytest
 
 from app.core.config import Settings
+from app.gateways.email_gateway import EmailOutcome, EmailResult
 from app.modules.notifications import reminder_email as reminder_emails
 from app.modules.todos.occurrences import TodoEmailSnapshot
 from app.tests.fakes import make_user
@@ -16,6 +17,9 @@ def email_write():
         reminder_emails, "mark_reminder_emailed", AsyncMock(return_value=True)
     ) as write:
         yield write
+
+
+SENT = EmailResult(EmailOutcome.SENT)
 
 
 def _settings(**kwargs: object) -> Settings:
@@ -61,7 +65,7 @@ async def test_process_todo_reminder_emails_sends_and_marks(email_write):
 
     with patch(
         "app.modules.notifications.reminder_email.tx_email.send_todo_reminder",
-        AsyncMock(return_value=True),
+        AsyncMock(return_value=SENT),
     ) as send:
         count = await reminder_emails.process_todo_reminder_emails(session, _settings(), now=now)
 
@@ -93,10 +97,10 @@ async def test_process_todo_reminder_emails_isolates_one_todo_failure(email_writ
     session.execute = AsyncMock(return_value=result)
     session.commit = AsyncMock()
 
-    async def fake_send(settings, user, *, title, content):
+    async def fake_send(settings, user, *, title, content, idempotency_key):
         if user.id == bad_user.id:
             raise RuntimeError("boom: send failed")
-        return True
+        return SENT
 
     with patch(
         "app.modules.notifications.reminder_email.tx_email.send_todo_reminder",
@@ -126,7 +130,7 @@ async def test_process_todo_reminder_emails_localizes_title(email_write):
 
     with patch(
         "app.modules.notifications.reminder_email.tx_email.send_todo_reminder",
-        AsyncMock(return_value=True),
+        AsyncMock(return_value=SENT),
     ) as send:
         await reminder_emails.process_todo_reminder_emails(session, _settings(), now=now)
 
@@ -163,7 +167,7 @@ async def test_process_todo_reminder_emails_skips_quiet_hours():
 
     with patch(
         "app.modules.notifications.reminder_email.tx_email.send_todo_reminder",
-        AsyncMock(return_value=True),
+        AsyncMock(return_value=SENT),
     ) as send:
         count = await reminder_emails.process_todo_reminder_emails(session, _settings(), now=now)
 
@@ -196,7 +200,7 @@ async def test_a_cycle_that_lost_its_lock_stops_sending(email_write):
 
     with patch(
         "app.modules.notifications.reminder_email.tx_email.send_todo_reminder",
-        AsyncMock(return_value=True),
+        AsyncMock(return_value=SENT),
     ) as send:
         count = await reminder_emails.process_todo_reminder_emails(
             session, _settings(), now=now, keep_lock=keep_lock

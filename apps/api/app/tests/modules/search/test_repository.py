@@ -75,6 +75,10 @@ async def test_search_pages_the_merged_union_once():
     assert "offset" not in sql
     assert "(search_hits.created_at, search_hits.chat_id, coalesce(" in sql
     assert "count(" not in sql
+    # A common word sorted every matching body through ORDER BY/LIMIT: the union carries
+    # keys, and the page's bodies are read by id afterwards.
+    assert "messages.content" not in sql.split("from messages")[0]
+    assert "search_hits.content" not in sql
 
 
 @pytest.mark.asyncio

@@ -18,7 +18,7 @@ export function requirePublicApiUrlForReleaseBuild(
 ): void;
 
 /** `pnpm ios:sim` sets RECALL_IOS_SIMULATOR=1: a local simulator build without Sign in
- * with Apple. A release build never drops it. */
+ * with Apple and ML Kit. A release build never drops either. */
 export function simulatorWithoutAppleSignIn(buildProfile: string, env: BuildEnvironment): boolean;
 
 /** Options for `@sentry/react-native/expo`: the org and project its upload step names. */

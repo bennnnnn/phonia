@@ -165,5 +165,7 @@ def test_tts_provider_failure_is_502_and_gives_the_slot_back():
         keys = asyncio.run(fake_redis.keys("tts:*"))
         values = [asyncio.run(fake_redis.get(key)) for key in keys]
     assert failed.status_code == 502
-    assert failed.json() == {"detail": "Could not synthesize speech"}
+    assert failed.json() == {
+        "detail": {"code": "unavailable", "message": "Could not synthesize speech"}
+    }
     assert values == ["0"]

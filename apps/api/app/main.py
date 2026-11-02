@@ -41,9 +41,10 @@ from app.routers import (
 # limit — this only stops a body from being buffered past the cap.
 UPLOAD_BODY_PATHS = (
     r"/speech/transcribe",
-    r"/(math|physics|chemistry)/scan/read",
     r"/attachments/[^/]+/upload",
 )
+# Scan read-backs: one cropped photo, ``max_scan_request_body_bytes``.
+SCAN_BODY_PATHS = (r"/(math|physics|chemistry)/scan/read",)
 
 
 @asynccontextmanager
@@ -76,7 +77,9 @@ def create_app() -> FastAPI:
     # still gets Access-Control-* headers (browsers otherwise report a network
     # error). Security headers wrap the whole stack last. The body cap is
     # innermost so its 413 still carries CORS / request-id / security headers.
-    app.add_middleware(RequestBodyLimitMiddleware, upload_paths=UPLOAD_BODY_PATHS)
+    app.add_middleware(
+        RequestBodyLimitMiddleware, upload_paths=UPLOAD_BODY_PATHS, scan_paths=SCAN_BODY_PATHS
+    )
     app.add_middleware(RestRateLimitMiddleware)
     app.add_middleware(RequestIdMiddleware)
     app.add_middleware(

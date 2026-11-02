@@ -35,6 +35,10 @@ class StemSettings(BaseModel):
     # pool (core/readings.py). Normal messages read in milliseconds; past this the turn
     # reads no subject and the model answers without a verified solve.
     subject_read_timeout_seconds: float = 3.0
+    # Pool slots solves may not fill, kept for those readings (core/sympy_slots.py): with
+    # three workers, solves run two at a time and a reading always finds a slot. A
+    # reading still uses an idle solve slot. 0 shares every slot, as before.
+    sympy_reading_reserved_slots: int = 1
     # modules/math/image_extract.py's vision-chat call is a network round trip, not
     # local synchronous SymPy work — reusing stem_solve_timeout_seconds's 5s
     # budget (sized for CPU-bound solve/integrate) cut off OCR calls that
@@ -71,11 +75,19 @@ class StemSettings(BaseModel):
             "scan_read_rate_limit_per_hour", "math_scan_read_rate_limit_per_hour"
         ),
     )
+    # Reads one user may have open at once, every subject together (each holds
+    # its photo, up to 4 MB, in memory while it is read). Checked before the body
+    # is read; the phone sends one at a time. 0 disables the cap.
+    scan_read_max_in_flight: int = 2
     # One read answers within this many seconds of arriving, every reader and
     # fallback included (later steps get what earlier ones left). It stays
     # below the phone's timeout (SCAN_READ_TIMEOUT_MS in features/scanner/api.ts,
     # this plus 5 s for the upload), so a slow read ends as "could not read".
     scan_read_deadline_seconds: float = 20.0
+    # Chat tokens one read takes from the day's allowance (``daily_token_limit``): the
+    # photo, as a chat turn's image is reserved (``image_attachment_reserve_tokens``),
+    # and the reading the vision model writes. The scan's limit is the chat's limit.
+    scan_read_tokens: int = 2_000
     # Dedicated math OCR (Mathpix). Empty keys keep the Gemini vision path.
     # Images always send metadata.improve_mathpix=false — student homework is
     # not opted into Mathpix QA storage.

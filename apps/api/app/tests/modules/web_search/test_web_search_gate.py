@@ -9,7 +9,7 @@ from __future__ import annotations
 import pytest
 
 from app.core.config import Settings
-from app.modules.web_search import should_web_search
+from app.modules.web_search.detection import should_web_search
 
 _ON = Settings(web_search_enabled=True)
 

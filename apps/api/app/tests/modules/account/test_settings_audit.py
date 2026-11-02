@@ -107,6 +107,24 @@ def test_list_sessions():
     assert r.status_code == 200
     assert r.json()["sessions"][0]["device_label"] == "iPhone"
     assert r.json()["sessions"][0]["current"] is True
+    # Serialized as every response's datetimes are; a naive record time is UTC.
+    assert r.json()["sessions"][0]["created_at"] == "2026-01-01T00:00:00Z"
+    assert r.json()["sessions"][0]["last_seen_at"] == "2026-01-02T00:00:00Z"
+
+
+def test_list_sessions_leaves_out_a_time_that_is_not_one():
+    user = api_user()
+    app = app_with_user(user)
+    app.dependency_overrides[get_redis] = lambda: AsyncMock()
+    rows = [{"id": str(uuid4()), "created_at": "yesterday", "last_seen_at": None}]
+    with patch(
+        "app.modules.account.api.tokens_service.list_sessions",
+        AsyncMock(return_value=rows),
+    ):
+        r = TestClient(app).get("/auth/sessions", headers={"Authorization": "Bearer tok"})
+    assert r.status_code == 200
+    assert r.json()["sessions"][0]["created_at"] is None
+    assert r.json()["sessions"][0]["last_seen_at"] is None
 
 
 def test_list_sessions_answers_an_unchanged_list_with_304():

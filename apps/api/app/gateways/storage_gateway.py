@@ -56,6 +56,10 @@ class StorageGateway(Protocol):
 
     async def read_bytes(self, storage_key: str) -> bytes | None: ...
 
+    async def object_size(self, storage_key: str) -> int | None:
+        """The stored object's byte count without reading it; None when it is gone."""
+        ...
+
     async def delete_bytes(self, storage_key: str) -> None: ...
 
     async def delete_prefix(self, prefix: str) -> int: ...
@@ -111,6 +115,10 @@ class LocalStorageGateway:
     async def read_bytes(self, storage_key: str) -> bytes | None:
         path = self.resolve_local_path(storage_key)
         return path.read_bytes() if path is not None else None
+
+    async def object_size(self, storage_key: str) -> int | None:
+        path = self.resolve_local_path(storage_key)
+        return path.stat().st_size if path is not None else None
 
     async def delete_bytes(self, storage_key: str) -> None:
         try:
@@ -278,6 +286,23 @@ class R2StorageGateway:
         except Exception as exc:
             raise StorageUnavailableError(_R2_UNAVAILABLE) from exc
 
+    async def object_size(self, storage_key: str) -> int | None:
+        # A HEAD: confirm checks the size before it downloads anything.
+        from botocore.exceptions import ClientError
+
+        try:
+            resp = await self._call(self._client.head_object, Bucket=self._bucket, Key=storage_key)
+        except ClientError as exc:
+            if exc.response.get("Error", {}).get("Code") in {"NoSuchKey", "NotFound", "404"}:
+                return None
+            raise StorageUnavailableError(_R2_UNAVAILABLE) from exc
+        except Exception as exc:
+            raise StorageUnavailableError(_R2_UNAVAILABLE) from exc
+        size = resp.get("ContentLength") if isinstance(resp, dict) else None
+        if not isinstance(size, int):
+            raise StorageUnavailableError(_R2_UNAVAILABLE)
+        return size
+
     async def delete_bytes(self, storage_key: str) -> None:
         try:
             await self._call(self._client.delete_object, Bucket=self._bucket, Key=storage_key)
@@ -353,6 +378,9 @@ class UnconfiguredStorageGateway:
         raise StorageUnavailableError(self._msg)
 
     async def read_bytes(self, storage_key: str) -> bytes | None:
+        raise StorageUnavailableError(self._msg)
+
+    async def object_size(self, storage_key: str) -> int | None:
         raise StorageUnavailableError(self._msg)
 
     async def delete_bytes(self, storage_key: str) -> None:

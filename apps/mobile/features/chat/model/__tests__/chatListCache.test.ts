@@ -11,7 +11,7 @@ import {
   invalidateChatListCache,
   isChatListFresh,
   restoreChatList,
-  setChatListCache,
+  seedChatListCacheForTest,
   updateChatListCache,
 } from "@/features/chat/model/chatListCache";
 import { clearStoredChatList, writeStoredChatList } from "@/features/chat/model/chatListFile";
@@ -72,7 +72,7 @@ describe("chatListCache", () => {
   });
 
   it("returns cached list without refetching when fresh", async () => {
-    setChatListCache(sample);
+    seedChatListCacheForTest(sample);
     expect(isChatListFresh()).toBe(true);
     expect(getCachedChatList()).toEqual(sample);
     expect(getChatListFetchedAt()).toEqual(expect.any(Number));
@@ -120,7 +120,7 @@ describe("chatListCache", () => {
   });
 
   it("finds a drawer row without another GET /chats/{id}", () => {
-    setChatListCache({
+    seedChatListCacheForTest({
       ...sample,
       older: [
         {
@@ -155,7 +155,7 @@ it("cannot refill an invalidated cache from an older read", async () => {
 
 it("isolates cached rows, created chat and inflight requests by account session", async () => {
   invalidateChatListCache();
-  setChatListCache(sample);
+  seedChatListCacheForTest(sample);
   rememberCreatedChat(sample.today[0]);
   let finish!: (value: ChatList) => void;
   listChats.mockReturnValueOnce(new Promise((resolve) => { finish = resolve; }));
@@ -170,7 +170,7 @@ it("isolates cached rows, created chat and inflight requests by account session"
 
 it("replays local edits on a late list response while retaining other server rows", async () => {
   invalidateChatListCache();
-  setChatListCache(sample);
+  seedChatListCacheForTest(sample);
   let finish!: (value: ChatList) => void;
   listChats.mockReturnValueOnce(new Promise((resolve) => { finish = resolve; }));
   const read = fetchChatList("token", { force: true });
@@ -192,7 +192,7 @@ it("keeps optimistic first-chat insertion from suppressing the first full list r
 
 
 it("does not return current cached history to a token from an old account", async () => {
-  setChatListCache(sample);
+  seedChatListCacheForTest(sample);
   const { requireTokenSession } = jest.requireMock("@/lib/auth") as { requireTokenSession: jest.Mock };
   requireTokenSession.mockImplementationOnce(() => { throw new Error("old account"); });
   expect(await fetchChatList("old-token")).toEqual({ data: null, error: expect.any(Error) });
@@ -244,7 +244,7 @@ describe("the list kept on disk", () => {
     await invalidateChatListCache();
     mockStored.set("user-1", sample);
     const read = { ...sample, today: [] };
-    setChatListCache(read);
+    seedChatListCacheForTest(read);
     await expect(restoreChatList(token)).resolves.toBe(false);
     expect(getCachedChatList()).toEqual(read);
   });
@@ -287,7 +287,7 @@ describe("older chats (CLAR-12)", () => {
   beforeEach(() => { jest.clearAllMocks(); mockSession = 0; invalidateChatListCache(); });
 
   it("reads the page after the list's cursor and appends it", async () => {
-    setChatListCache({ ...sample, older: [row("o1")], next_cursor: "after-o1" });
+    seedChatListCacheForTest({ ...sample, older: [row("o1")], next_cursor: "after-o1" });
     listOlderChats.mockResolvedValueOnce({ ...sample, today: [], older: [row("o2"), row("o1")], next_cursor: null });
     await fetchOlderChats("token");
     expect(listOlderChats).toHaveBeenCalledWith("token", "after-o1");
@@ -297,22 +297,22 @@ describe("older chats (CLAR-12)", () => {
   });
 
   it("reads nothing once the list holds every chat", async () => {
-    setChatListCache(sample);
+    seedChatListCacheForTest(sample);
     expect(await fetchOlderChats("token")).toBeNull();
     expect(listOlderChats).not.toHaveBeenCalled();
   });
 
   it("drops a page a refresh overtook, and another account's page", async () => {
-    setChatListCache({ ...sample, next_cursor: "after-a" });
+    seedChatListCacheForTest({ ...sample, next_cursor: "after-a" });
     let finish!: (value: ChatList) => void;
     listOlderChats.mockReturnValueOnce(new Promise((resolve) => { finish = resolve; }));
     const reading = fetchOlderChats("token");
-    setChatListCache({ ...sample, next_cursor: "after-b" });
+    seedChatListCacheForTest({ ...sample, next_cursor: "after-b" });
     finish({ ...sample, today: [], older: [row("stale")], next_cursor: null });
     await reading;
     expect(getCachedChatList()?.older).toEqual([]);
 
-    setChatListCache({ ...sample, next_cursor: "after-b" });
+    seedChatListCacheForTest({ ...sample, next_cursor: "after-b" });
     listOlderChats.mockReturnValueOnce(new Promise((resolve) => { finish = resolve; }));
     const late = fetchOlderChats("token");
     mockSession++;

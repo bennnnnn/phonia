@@ -10,6 +10,8 @@ answered with 413 before any byte is read, and a body without one (chunked)
 is counted as it streams and stopped one chunk past the limit. A few routes
 legitimately take photos and audio; the app factory passes their path
 patterns as ``upload_paths`` so this module never imports a product module.
+Scan read-backs (``scan_paths``) send one cropped photo and get their own,
+smaller cap, so a scan cannot buffer the attachment upload's 12 MiB.
 """
 
 from __future__ import annotations
@@ -17,11 +19,13 @@ from __future__ import annotations
 import re
 from collections.abc import Iterable
 
+from fastapi import HTTPException as DetailedHTTPException
 from starlette.exceptions import HTTPException
 from starlette.responses import JSONResponse
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 from app.core.config import get_settings
+from app.exceptions import status_code_name
 
 TOO_LARGE_DETAIL = "Request body too large"
 
@@ -39,12 +43,21 @@ def _declared_length(scope: Scope) -> int | None:
 class RequestBodyLimitMiddleware:
     """Pure ASGI middleware (no BaseHTTPMiddleware buffering)."""
 
-    def __init__(self, app: ASGIApp, *, upload_paths: Iterable[str] = ()) -> None:
+    def __init__(
+        self,
+        app: ASGIApp,
+        *,
+        upload_paths: Iterable[str] = (),
+        scan_paths: Iterable[str] = (),
+    ) -> None:
         self.app = app
         self._upload_paths = tuple(re.compile(pattern) for pattern in upload_paths)
+        self._scan_paths = tuple(re.compile(pattern) for pattern in scan_paths)
 
     def _limit_for(self, path: str) -> int:
         settings = get_settings()
+        if any(pattern.fullmatch(path) for pattern in self._scan_paths):
+            return settings.max_scan_request_body_bytes
         if any(pattern.fullmatch(path) for pattern in self._upload_paths):
             return settings.max_upload_request_body_bytes
         return settings.max_request_body_bytes
@@ -75,7 +88,7 @@ class RequestBodyLimitMiddleware:
                     # FastAPI re-raises HTTPException from body parsing, and a
                     # route's own ``request.body()`` lets it propagate to the
                     # exception middleware, so this becomes a 413 response.
-                    raise HTTPException(status_code=413, detail=TOO_LARGE_DETAIL)
+                    raise DetailedHTTPException(status_code=413, detail=_too_large_detail())
             return message
 
         async def tracking_send(message: Message) -> None:
@@ -92,6 +105,11 @@ class RequestBodyLimitMiddleware:
             await _too_large(scope, receive, send)
 
 
+def _too_large_detail() -> dict[str, str]:
+    """The shared refusal shape, ``{"detail": {"code", "message"}}``, on either path."""
+    return {"code": status_code_name(413), "message": TOO_LARGE_DETAIL}
+
+
 async def _too_large(scope: Scope, receive: Receive, send: Send) -> None:
-    response = JSONResponse({"detail": TOO_LARGE_DETAIL}, status_code=413)
+    response = JSONResponse({"detail": _too_large_detail()}, status_code=413)
     await response(scope, receive, send)

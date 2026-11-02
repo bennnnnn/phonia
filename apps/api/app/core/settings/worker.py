@@ -6,7 +6,12 @@ from pydantic import BaseModel
 class WorkerSettings(BaseModel):
     # Max jobs one worker process runs at once; it keeps reading while a slot
     # is free, so a slow LLM job never holds back compress/topic/todo jobs.
-    jobs_worker_concurrency: int = 8
+    # Jobs spend nearly all their time awaiting a model, holding no database
+    # connection (tests/architecture/test_session_awaits.py), so slots are cheap:
+    # 32 keeps the worker count (and its connections) down at high turn rates.
+    # Multi-call types keep their own caps (``max_running`` in background/handlers.py),
+    # and the worker's database pool is set smaller than its slots in fly.toml.
+    jobs_worker_concurrency: int = 32
     # Hard ceiling on the Redis jobs stream (entries). The soft 10k trim only
     # runs while nothing is pending; one entry left pending by a dead worker
     # used to disable trimming entirely. Past this, the oldest jobs are

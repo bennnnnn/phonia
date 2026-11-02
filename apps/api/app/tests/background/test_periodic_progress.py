@@ -59,6 +59,7 @@ async def test_cycle_progress_keeps_the_loop_alive(
             name=name,
             lock_key=f"lock:{name}",
             lock_ttl_seconds=60,
+            interval_seconds=3600,
             enabled=True,
             fn=body,
             settings=settings,

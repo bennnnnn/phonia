@@ -4,7 +4,6 @@
    "name": "Bini",
    "email": "bini@example.com",
    "plan": "free",
-   "response_style": "balanced",
    "locale": "en",
    "timezone": "Africa/Nairobi",
    "custom_instructions": null,
@@ -1232,9 +1231,6 @@
   },
   {
    "id": "branch:short-code",
-   "user": {
-    "response_style": "short"
-   },
    "history": [
     [
      "user",
@@ -1273,9 +1269,6 @@
   },
   {
    "id": "branch:short-day-learning-plan",
-   "user": {
-    "response_style": "short"
-   },
    "history": [
     [
      "user",
@@ -1310,9 +1303,6 @@
   },
   {
    "id": "branch:short-walkthrough",
-   "user": {
-    "response_style": "short"
-   },
    "history": [
     [
      "user",
@@ -1347,9 +1337,6 @@
   },
   {
    "id": "branch:short-lesson-continue",
-   "user": {
-    "response_style": "short"
-   },
    "history": [
     [
      "user",
@@ -1400,9 +1387,6 @@
   },
   {
    "id": "branch:short-teaching-math",
-   "user": {
-    "response_style": "short"
-   },
    "history": [
     [
      "user",
@@ -1437,9 +1421,6 @@
   },
   {
    "id": "branch:short-rewrite",
-   "user": {
-    "response_style": "short"
-   },
    "history": [
     [
      "user",
@@ -1474,9 +1455,6 @@
   },
   {
    "id": "branch:short-chemistry-followup",
-   "user": {
-    "response_style": "short"
-   },
    "history": [
     [
      "user",

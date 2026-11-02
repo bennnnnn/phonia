@@ -32,7 +32,7 @@ async def process_todo_reminders(
     await advance_recurring_without_device(session, now=now)
     messages: list[push_service.OutboundPush] = []
     after: tuple[datetime, UUID] | None = None
-    for _ in range(push_service.MAX_PUSH_PAGES_PER_CYCLE):
+    while True:
         page = await push_service.collect_push_page(session, now=now, after=after)
         messages.extend(page.messages)
         if page.next_after is None:
@@ -58,16 +58,14 @@ async def run_push_cycle(session: AsyncSession, redis: Redis, settings: Settings
     outbound = await collect_push_outbound(session, settings)
     if not outbound:
         return 0
-    delivered, invalid_tokens, receipt_tickets = await push_service.dispatch_expo(
-        outbound, settings
-    )
-    for token in invalid_tokens:
+    result = await push_service.dispatch_expo(outbound, settings)
+    for token in result.invalid_tokens:
         try:
             await push_service.push_repo.delete_by_token(session, token)
             logger.info("Pruned invalid push token=%s", token[:20])
         except Exception:
             logger.debug("Failed to prune push token", exc_info=True)
-    if receipt_tickets:
-        await push_service.enqueue_push_receipts(redis, receipt_tickets)
-    await push_service.finalize_push_deliveries(session, outbound, delivered)
+    if result.receipt_tickets:
+        await push_service.enqueue_push_receipts(redis, result.receipt_tickets)
+    await push_service.finalize_push_deliveries(session, outbound, result.delivered)
     return len(outbound)

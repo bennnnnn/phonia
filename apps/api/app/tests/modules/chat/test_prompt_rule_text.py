@@ -19,12 +19,15 @@ from app.modules.chemistry.reply_policy import CHEMISTRY_FENCE_HINT
 # PHYSICS_VELOCITY_NOTATION (initial and final velocity written v_i and v_f), then the
 # ```worked block's contract (prompt_constants.worked), then the calculation layout's rule
 # that multiplication is written \times, never a dot, then the formula headed by its name
-# ("Average speed formula", never the name after the formula) and the Solution heading,
-# then the settings line with no model or tone setting, then without AI image generation's
-# copy (its honesty notes and multi-part picture note).
-_RULES = 161
-_RULE_GRAMS = 14116
-_RULE_GRAMS_SHA = "04829cf7f297e968"
+# ("Average speed formula", never the name after the formula) and the Solution heading, then
+# the ```worked contract asking for one `required` per part and each part's givens after its label,
+# then one Given for a question in parts: every given first, a part's own lettered `given (a):`,
+# then nothing after the block restating the answer its card shows; then the settings line with
+# no model or tone setting, then without AI image generation's copy (its honesty notes and
+# multi-part picture note).
+_RULES = 0
+_RULE_GRAMS = 0
+_RULE_GRAMS_SHA = "recompute"
 
 
 def _rules() -> list[str]:

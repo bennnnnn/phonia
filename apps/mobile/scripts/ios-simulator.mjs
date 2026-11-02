@@ -4,7 +4,9 @@
  *
  * Sign in with Apple's entitlement makes Expo demand a development certificate even for a
  * simulator. RECALL_IOS_SIMULATOR=1 leaves it out (app.config.ts); dev login and Google
- * still work. An ios/ folder that still carries the entitlement is regenerated once.
+ * still work. It also leaves out ML Kit, whose simulator slice is Intel only
+ * (react-native.config.js); the live scanner is unavailable there. An ios/ folder that still
+ * carries the entitlement or ML Kit is regenerated once.
  * Extra arguments go to `expo run:ios`: `pnpm ios:sim --device "iPhone 17 Pro Max"`.
  */
 import { spawnSync } from "node:child_process";
@@ -35,8 +37,13 @@ function expo(args) {
   if (result.status !== 0) process.exit(result.status ?? 1);
 }
 
-if (iosHasAppleSignIn()) {
-  console.log("Regenerating ios/ without Sign in with Apple, so the simulator needs no certificate.");
+function iosHasMLKit() {
+  const lock = join(root, "ios", "Podfile.lock");
+  return existsSync(lock) && readFileSync(lock, "utf8").includes("VisionCameraMLKit");
+}
+
+if (iosHasAppleSignIn() || iosHasMLKit()) {
+  console.log("Regenerating ios/ without Sign in with Apple and ML Kit, for the simulator.");
   expo(["prebuild", "--platform", "ios", "--clean"]);
 }
 expo(["run:ios", ...process.argv.slice(2)]);

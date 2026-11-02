@@ -17,7 +17,7 @@ import { isServerMessageId } from "@/lib/serverMessageId";
 import { MESSAGE_PAGE_SIZE } from "@/features/chat/model/constants";
 import { shouldSkipSilentChatRefetch } from "@/features/chat/model/foregroundRefetch";
 import { drawsSame } from "@/features/chat/model/messageMerge";
-import { chatPageReadAt, noteChatPageRead } from "@/features/chat/model/pageReads";
+import { chatPageReadAt, clearChatPageReads, noteChatPageRead } from "@/features/chat/model/pageReads";
 
 export type CachedChatPage = {
   messages: Message[];
@@ -203,6 +203,7 @@ export async function clearAllCachedChatMessages(): Promise<void> {
   chatClearGenerations.clear();
   keptPages.clear();
   unsavedChats.clear();
+  clearChatPageReads();
   backgroundAt = 0;
   cancelSave?.();
   cancelSave = null;

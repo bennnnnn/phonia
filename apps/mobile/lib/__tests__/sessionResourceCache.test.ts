@@ -11,7 +11,7 @@ import {
   fetchChatList,
   getCachedChatList,
   invalidateChatListCache,
-  setChatListCache,
+  seedChatListCacheForTest,
   updateChatListCache,
 } from "@/features/chat/model/chatListCache";
 import {
@@ -20,7 +20,6 @@ import {
   invalidateMemoriesCache,
   setMemoriesCache,
   subscribeMemoriesCache,
-  updateMemoriesCache,
 } from "@/features/memory/model/memoryListCache";
 import {
   fetchMemoryDocuments,
@@ -35,7 +34,7 @@ import {
   getCachedGalleryPage,
   invalidateGalleryCache,
   removeCachedGalleryItem,
-  setGalleryPage,
+  seedGalleryPageForTest,
 } from "@/features/attachments/model/galleryListCache";
 import {
   isExpectedReadFailure,
@@ -111,8 +110,8 @@ type CacheUnderTest = {
   fetch: (force?: boolean) => Promise<ResourceResult<unknown>>;
   ids: (data: unknown) => string[];
   cachedIds: () => string[] | undefined;
-  /** A local edit (a delete), as the screens make it. */
-  remove: (id: string) => void;
+  /** A local edit (a delete), as the screens make it; none for a list no screen edits. */
+  remove?: (id: string) => void;
   invalidate: () => void;
   subscribe?: (listener: () => void) => () => void;
 };
@@ -122,7 +121,7 @@ const caches: CacheUnderTest[] = [
     name: "drawer chats",
     read: api.listChats as jest.Mock,
     response: chatList,
-    seed: (ids) => setChatListCache(chatList(ids)),
+    seed: (ids) => seedChatListCacheForTest(chatList(ids)),
     fetch: (force) => fetchChatList("token", { force }),
     ids: (data) => (data as ChatList).today.map((row) => row.id),
     cachedIds: () => getCachedChatList()?.today.map((row) => row.id),
@@ -142,9 +141,6 @@ const caches: CacheUnderTest[] = [
     fetch: (force) => fetchMemories("token", { force }),
     ids: (data) => (data as Memory[]).map((row) => row.id),
     cachedIds: () => getCachedMemories()?.map((row) => row.id),
-    remove: (id) => {
-      updateMemoriesCache((rows) => rows.filter((row) => row.id !== id));
-    },
     invalidate: invalidateMemoriesCache,
     subscribe: subscribeMemoriesCache,
   },
@@ -166,7 +162,7 @@ const caches: CacheUnderTest[] = [
     name: "Library pages",
     read: api.listAttachments as jest.Mock,
     response: (ids) => ({ items: ids.map(file), next_cursor: null }),
-    seed: (ids) => setGalleryPage("all", "", { items: ids.map(file), hasMore: false }),
+    seed: (ids) => seedGalleryPageForTest("all", "", { items: ids.map(file), hasMore: false }),
     fetch: (force) => fetchGalleryPage("token", "all", "", { force }),
     ids: (data) => (data as { items: AttachmentListItem[] }).items.map((row) => row.id),
     cachedIds: () => getCachedGalleryPage("all", "")?.items.map((row) => row.id),
@@ -217,20 +213,6 @@ describe.each(caches)("$name cache", (cache) => {
     expect(cache.ids(b.data)).toEqual(["a"]);
   });
 
-  it("keeps an edit made while a read runs", async () => {
-    cache.seed(["a"]);
-    const server = deferred();
-    cache.read.mockReturnValueOnce(server.promise);
-    const read = cache.fetch(true);
-    cache.remove("a");
-    server.resolve(cache.response(["a", "b"]));
-    const result = await read;
-
-    expect(result.error).toBeNull();
-    expect(cache.ids(result.data)).toEqual(["b"]);
-    expect(cache.cachedIds()).toEqual(["b"]);
-  });
-
   it("says a first read failed instead of returning a bare null", async () => {
     const failure = new Error("Request failed: 500");
     cache.read.mockRejectedValueOnce(failure);
@@ -251,18 +233,33 @@ describe.each(caches)("$name cache", (cache) => {
   });
 });
 
+describe.each(caches.filter((cache) => cache.remove))("$name local edits", (cache) => {
+  it("keeps an edit made while a read runs", async () => {
+    cache.seed(["a"]);
+    const server = deferred();
+    cache.read.mockReturnValueOnce(server.promise);
+    const read = cache.fetch(true);
+    cache.remove!("a");
+    server.resolve(cache.response(["a", "b"]));
+    const result = await read;
+
+    expect(result.error).toBeNull();
+    expect(cache.ids(result.data)).toEqual(["b"]);
+    expect(cache.cachedIds()).toEqual(["b"]);
+  });
+});
+
 describe.each(caches.filter((cache) => cache.subscribe))("$name subscribers", (cache) => {
-  it("hear a finished read and a local edit, and stop after unsubscribing", async () => {
+  it("hear a finished read and stop after unsubscribing", async () => {
     const changed = jest.fn();
     const unsubscribe = cache.subscribe!(changed);
     cache.read.mockResolvedValueOnce(cache.response(["a", "b"]));
     await cache.fetch(true);
     expect(changed).toHaveBeenCalledTimes(1);
-    cache.remove("a");
-    expect(changed).toHaveBeenCalledTimes(2);
     unsubscribe();
-    cache.remove("b");
-    expect(changed).toHaveBeenCalledTimes(2);
+    cache.read.mockResolvedValueOnce(cache.response(["a"]));
+    await cache.fetch(true);
+    expect(changed).toHaveBeenCalledTimes(1);
   });
 
   it("are not told about a read that lands after sign-out", async () => {
@@ -275,6 +272,18 @@ describe.each(caches.filter((cache) => cache.subscribe))("$name subscribers", (c
     server.resolve(cache.response(["a"]));
     await read;
     expect(changed).not.toHaveBeenCalled();
+    unsubscribe();
+  });
+});
+
+describe.each(caches.filter((cache) => cache.subscribe && cache.remove))("$name subscribers of edits", (cache) => {
+  it("hear a local edit", async () => {
+    cache.read.mockResolvedValueOnce(cache.response(["a", "b"]));
+    await cache.fetch(true);
+    const changed = jest.fn();
+    const unsubscribe = cache.subscribe!(changed);
+    cache.remove!("a");
+    expect(changed).toHaveBeenCalledTimes(1);
     unsubscribe();
   });
 });

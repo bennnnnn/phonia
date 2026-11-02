@@ -24,7 +24,6 @@ export const attachmentsApi = {
     request<{
       attachment_id: string;
       upload_url: string;
-      storage_key: string;
       headers: Record<string, string>;
       api_upload: boolean;
     }>("/attachments/presign", token, {

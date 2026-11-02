@@ -18,7 +18,8 @@ type PlanAllowance =
   | "daily_web_searches"
   | "daily_image_searches"
   | "daily_speech_transcriptions"
-  | "daily_speech_tts";
+  | "daily_speech_tts"
+  | "library_storage_bytes";
 
 export type PlanInfo = {
   id: PlanId;

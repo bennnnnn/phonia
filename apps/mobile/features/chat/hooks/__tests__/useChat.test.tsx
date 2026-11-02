@@ -632,7 +632,7 @@ describe("useChat transport lifecycle", () => {
     const socket = await openSocket();
     await act(async () => {
       await current.sendMessage("first question");
-      socket.emit({ type: "error", message: "Unauthorized" });
+      socket.emit({ type: "error", code: "unauthorized", message: "Unauthorized" });
       socket.onclose();
     });
     expect(streamChatMessageSse).toHaveBeenCalledWith(expect.objectContaining({
@@ -650,7 +650,7 @@ describe("useChat transport lifecycle", () => {
     const socket = await openSocket();
     await sendAndStream(socket);
     await act(async () => {
-      socket.emit({ type: "error", message: "Unauthorized" });
+      socket.emit({ type: "error", code: "unauthorized", message: "Unauthorized" });
     });
     expect(streamChatMessageSse).not.toHaveBeenCalled();
     expect(current.streaming).toBe(false);

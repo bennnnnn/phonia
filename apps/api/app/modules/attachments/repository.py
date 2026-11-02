@@ -5,7 +5,6 @@ from uuid import UUID
 
 from sqlalchemy import String, and_, func, literal, or_, select
 from sqlalchemy import cast as sql_cast
-from sqlalchemy import delete as sa_delete
 from sqlalchemy.engine import CursorResult
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import aliased
@@ -155,14 +154,20 @@ async def get_by_id(
     *,
     for_update: bool = False,
     owner_consented: bool = False,
+    fresh: bool = False,
 ) -> Attachment | None:
+    """``fresh`` overwrites a row this session already holds with the database's: the
+    session keeps loaded rows (``expire_on_commit=False``), so a plain re-read returns
+    the copy it loaded before another request changed it."""
     statement = select(Attachment).where(
         Attachment.id == attachment_id, Attachment.user_id == user_id
     )
     if owner_consented:  # only while the owner has AI data consent (indexing OCRs and embeds)
         statement = statement.join(User).where(User.ai_data_consent_at.is_not(None))
     if for_update:
-        statement = statement.with_for_update().execution_options(populate_existing=True)
+        statement = statement.with_for_update()
+    if for_update or fresh:
+        statement = statement.execution_options(populate_existing=True)
     result = await session.execute(statement)
     return result.scalar_one_or_none()
 
@@ -470,8 +475,3 @@ async def delete_unlinked_returning(
     result = await session.execute(statement.returning(Attachment.storage_key))
     await session.commit()
     return [row[0] for row in result.all()]
-
-
-async def delete_all_for_user(session: AsyncSession, user_id: UUID) -> None:
-    """Every attachment row of the user, bytes or not; no commit."""
-    await session.execute(sa_delete(Attachment).where(Attachment.user_id == user_id))

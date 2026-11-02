@@ -1,4 +1,9 @@
-import { createWsBackoff, WS_RETRY_BASE_MS, WS_RETRY_MAX_MS } from "@/features/chat/model/wsBackoff";
+import {
+  createWsBackoff,
+  WS_CONNECT_TIMEOUT_RETRY_MS,
+  WS_RETRY_BASE_MS,
+  WS_RETRY_MAX_MS,
+} from "@/features/chat/model/wsBackoff";
 import {
   STREAM_IDLE_TIMEOUT_MS,
   WS_ACK_PROBE_MS,
@@ -157,7 +162,7 @@ describe("ChatWsTransport", () => {
     });
   });
 
-  it("sends over SSE after a stalled 900ms handshake, then tries the socket again", async () => {
+  it("sends over SSE after a stalled handshake, then soon tries the socket again", async () => {
     const { socket, sockets, transport, onFallback } = setupTransport();
     const connecting = transport.connect();
 
@@ -175,10 +180,29 @@ describe("ChatWsTransport", () => {
     void transport.connect();
     expect(sockets).toHaveLength(1);
 
+    // One slow handshake is not a broken path: the wait is short.
+    jest.advanceTimersByTime(WS_CONNECT_TIMEOUT_RETRY_MS);
+    expect(transport.shouldUseSse()).toBe(false);
+    const again = transport.connect();
+    expect(sockets).toHaveLength(2);
+
+    // A second stalled handshake in a row waits as any failure does.
+    jest.advanceTimersByTime(WS_CONNECT_TIMEOUT_MS);
+    await again;
+    jest.advanceTimersByTime(WS_RETRY_BASE_MS);
+    expect(transport.shouldUseSse()).toBe(true);
     jest.advanceTimersByTime(WS_RETRY_BASE_MS);
     expect(transport.shouldUseSse()).toBe(false);
-    void transport.connect();
-    expect(sockets).toHaveLength(2);
+  });
+
+  it("opens a handshake that takes longer than a second on a slow network", async () => {
+    const { socket, transport, onFallback } = setupTransport();
+    const connecting = transport.connect();
+    jest.advanceTimersByTime(1_500);
+    socket.open();
+    await connecting;
+    expect(onFallback).not.toHaveBeenCalled();
+    expect(transport.isOpen()).toBe(true);
   });
 
   it("times out an OPEN but silent turn and ignores its late frames", async () => {
@@ -411,7 +435,7 @@ describe("ChatWsTransport", () => {
     const { socket, transport, onPayload, onFallback } = await openTransport();
 
     transport.sendRegenerate(REGENERATE);
-    socket.emit({ type: "error", message: "Unauthorized" });
+    socket.emit({ type: "error", code: "unauthorized", message: "Unauthorized" });
     socket.onclose();
 
     expect(onPayload).not.toHaveBeenCalled();
@@ -419,7 +443,7 @@ describe("ChatWsTransport", () => {
     expect(onFallback).toHaveBeenCalledWith({
       reason: "unauthorized",
       duringTurn: true,
-      payload: { type: "error", message: "Unauthorized" },
+      payload: { type: "error", code: "unauthorized", message: "Unauthorized" },
     });
     // Waiting does not help a refused token: a refreshed one builds a new transport.
     jest.advanceTimersByTime(WS_RETRY_MAX_MS);
@@ -712,7 +736,7 @@ describe("ChatWsTransport outages and the connection check", () => {
     closeWith(stopped.socket, 1006);
 
     const refused = await openTransport(true);
-    refused.socket.emit({ type: "error", message: "Unauthorized" });
+    refused.socket.emit({ type: "error", code: "unauthorized", message: "Unauthorized" });
     closeWith(refused.socket, 1008);
     expect(reported).toBe(0);
   });

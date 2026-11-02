@@ -30,6 +30,8 @@ from typing import Any, TypeVar
 
 from app.core.blocking import run_blocking
 from app.core.log_context import current_log_ids
+from app.core.sympy_slots import OwnerTurns, SlotPool, SympyLane
+from app.core.sympy_slots import WorkerBusyError as WorkerBusyError  # callers import it here
 from app.core.sympy_worker_process import (
     MP_CONTEXT,
     exit_with_parent,
@@ -56,14 +58,6 @@ _SPAWN_WAIT_SECONDS = 20.0
 DEFAULT_SYMPY_RECYCLE_AFTER_JOBS = 500
 
 
-class WorkerBusyError(TimeoutError):
-    """No worker came free within the queue wait: the pool is busy, the job did not run.
-
-    Distinct from the job's own deadline, which kills its worker: a busy pool is worth
-    retrying later, a job that ran too long is not.
-    """
-
-
 def _clamp_workers(max_workers: int) -> int:
     return max(1, min(max_workers, _MAX_SYMPY_WORKERS))
 
@@ -83,6 +77,15 @@ class BoundedSympyExecutor:
         timeout: float,  # noqa: ASYNC109 - we IMPLEMENT the timeout, not consume it
     ) -> _T:
         raise NotImplementedError
+
+    async def run_reading(
+        self,
+        fn: Callable[..., _T],
+        *args: Any,
+        timeout: float,  # noqa: ASYNC109 - we IMPLEMENT the timeout, not consume it
+    ) -> _T:
+        """Run a turn's message reading; an executor without a reading lane runs it as a job."""
+        return await self.run(fn, *args, timeout=timeout)
 
     def set_warmup(self, warmup: Callable[[], None]) -> None:
         """Remember the start-up solve; a slot that restarts runs it first."""
@@ -110,8 +113,11 @@ class ProcessPoolSympyExecutor(BoundedSympyExecutor):
         queue_wait_seconds: float = DEFAULT_SYMPY_QUEUE_WAIT_SECONDS,
         per_user: bool = True,
         recycle_after_jobs: int = DEFAULT_SYMPY_RECYCLE_AFTER_JOBS,
+        reserved_for_readings: int = 0,
     ) -> None:
         self._max_workers = _clamp_workers(max_workers)
+        # Slots solves cannot fill, so slow solves never starve readings (core/sympy_slots).
+        self._reserved_for_readings = reserved_for_readings
         self._recycle_after = max(1, recycle_after_jobs)
         self._jobs = [0] * self._max_workers
         self._queue_wait_seconds = queue_wait_seconds
@@ -124,16 +130,14 @@ class ProcessPoolSympyExecutor(BoundedSympyExecutor):
         # its replacement runs the warmup before the next timed solve.
         self._cold = [True] * self._max_workers
         self._warmup: Callable[[], None] | None = None
-        self._free: asyncio.Queue[int] | None = None
+        self._free: SlotPool | None = None
         # macOS named semaphores leak until reboot. Once ``sem_open`` returns
         # ENOSPC, every later process-pool attempt fails the same way, so the
         # latch stays for this process.
         self._in_process = False
         self._thread_pool: ThreadPoolExecutor | None = None
-        # One slot per user at a time on this machine: three chats sending
-        # pathological expressions held every slot, and every other STEM turn here
-        # fell back to unverified. A user's next solve waits for their running one.
-        self._owner_jobs: dict[str, asyncio.Future[None]] = {}
+        # One solve and one reading per user at a time on this machine (core/sympy_slots).
+        self._owners = OwnerTurns()
         # Jobs a cancelled caller left running, finishing under their own deadline.
         self._draining: set[asyncio.Task[None]] = set()
 
@@ -144,35 +148,21 @@ class ProcessPoolSympyExecutor(BoundedSympyExecutor):
     def set_warmup(self, warmup: Callable[[], None]) -> None:
         self._warmup = warmup
 
-    async def _claim_owner(self, owner: str | None, wait_s: float) -> None:
-        """Wait (up to ``wait_s``) until ``owner`` has no solve running, then hold the turn."""
-        if owner is None:
-            return
-        loop = asyncio.get_running_loop()
-        deadline = loop.time() + wait_s
-        while (running := self._owner_jobs.get(owner)) is not None:
-            remaining = deadline - loop.time()
-            if remaining <= 0:
-                raise WorkerBusyError("SymPy: this user's previous solve is still running")
-            await asyncio.wait_for(asyncio.shield(running), remaining)
-        self._owner_jobs[owner] = loop.create_future()
-
-    def _release_owner(self, owner: str | None) -> None:
-        if owner is None:
-            return
-        running = self._owner_jobs.pop(owner, None)
-        if running is not None and not running.done():
-            running.set_result(None)
+    async def run_reading(
+        self,
+        fn: Callable[..., _T],
+        *args: Any,
+        timeout: float,  # noqa: ASYNC109 - we IMPLEMENT the timeout, not consume it
+    ) -> _T:
+        return await self.run(fn, *args, timeout=timeout, lane="reading")
 
     def free_slots(self) -> int | None:
         return self._max_workers if self._free is None else self._free.qsize()
 
-    def _free_queue(self) -> asyncio.Queue[int]:
+    def _free_queue(self) -> SlotPool:
         q = self._free
         if q is None:
-            q = asyncio.Queue()
-            for i in range(self._max_workers):
-                q.put_nowait(i)
+            q = SlotPool(self._max_workers, reserved_for_readings=self._reserved_for_readings)
             self._free = q
         return q
 
@@ -281,6 +271,7 @@ class ProcessPoolSympyExecutor(BoundedSympyExecutor):
         fn: Callable[..., _T],
         *args: Any,
         timeout: float,  # noqa: ASYNC109 - we IMPLEMENT the timeout, not consume it
+        lane: SympyLane = "solve",
     ) -> _T:
         """Run ``fn`` in a worker; the worker is killed only when the solve overruns.
 
@@ -288,16 +279,19 @@ class ProcessPoolSympyExecutor(BoundedSympyExecutor):
         exception made the next caller wait for a new worker's ~4 s SymPy import. A
         caller cancelled mid-solve (Stop, a closed socket) leaves the job to finish
         under its own deadline in the background, then the slot frees.
+        ``lane`` "reading" may take the reserved slot (``core/sympy_slots.py``), and a
+        user's reading does not wait behind that user's own solve.
         """
-        owner = current_log_ids().get("user_id") if self._per_user else None
+        user = current_log_ids().get("user_id") if self._per_user else None
+        owner = f"{user}:{lane}" if user is not None else None
         t_submit = time.monotonic()
-        await self._claim_owner(owner, self._queue_wait_seconds)
+        await self._owners.claim(owner, self._queue_wait_seconds)
         slot: int | None = None
         handed_off = False
         try:
             remaining_wait = max(0.0, self._queue_wait_seconds - (time.monotonic() - t_submit))
             try:
-                slot = await asyncio.wait_for(self._free_queue().get(), timeout=remaining_wait)
+                slot = await asyncio.wait_for(self._free_queue().get(lane), timeout=remaining_wait)
             except TimeoutError as exc:
                 logger.warning(
                     "sympy queued %.3fs without a free worker slot",
@@ -348,7 +342,7 @@ class ProcessPoolSympyExecutor(BoundedSympyExecutor):
             if not handed_off:
                 if slot is not None:
                     self._release_slot(slot)
-                self._release_owner(owner)
+                self._owners.release(owner)
 
     async def _start(
         self, slot: int, pool: ProcessPoolExecutor, fn: Callable[..., _T], args: tuple[Any, ...]
@@ -395,7 +389,7 @@ class ProcessPoolSympyExecutor(BoundedSympyExecutor):
                 logger.debug("sympy job finished after its caller left", exc_info=True)
             finally:
                 self._release_slot(slot)
-                self._release_owner(owner)
+                self._owners.release(owner)
 
         task = asyncio.get_running_loop().create_task(finish(), name="sympy_finish")
         self._draining.add(task)
@@ -438,6 +432,7 @@ def get_sympy_executor() -> BoundedSympyExecutor:
         _executor = ProcessPoolSympyExecutor(
             max_workers=settings.sympy_max_workers,
             queue_wait_seconds=settings.sympy_queue_wait_seconds,
+            reserved_for_readings=settings.sympy_reading_reserved_slots,
         )
     return _executor
 
@@ -469,13 +464,14 @@ async def warm_sympy_pool(warmup: Callable[[], None]) -> None:
     rotates it to the back of the free-slot queue, which made the first real
     solve select an untouched slot and pay the full spawn/import cost. Submit one
     warmup per slot concurrently so each process is ready before the API reports
-    startup complete.
+    startup complete. They go on the reading lane, which may take every slot (the solve
+    lane cannot reach ``sympy_reading_reserved_slots``, so that worker stayed cold).
     """
     executor = get_sympy_executor()
     executor.set_warmup(warmup)
     # Every slot warms whatever happens to the others; a cold one warms before its first job.
     results = await asyncio.gather(
-        *(executor.run(warmup, timeout=20.0) for _ in range(executor.max_workers)),
+        *(executor.run_reading(warmup, timeout=20.0) for _ in range(executor.max_workers)),
         return_exceptions=True,
     )
     for result in results:
@@ -487,6 +483,7 @@ async def run_sympy[T](
     fn: Callable[..., T],
     *args: Any,
     timeout: float,  # noqa: ASYNC109 - we IMPLEMENT the timeout, not consume it
+    lane: SympyLane = "solve",
 ) -> T:
     """Run a picklable callable in the bounded SymPy pool with a hard timeout.
 
@@ -495,5 +492,9 @@ async def run_sympy[T](
     in that case). Time spent waiting for a free slot does not count toward
     ``timeout`` and does not kill the occupant. Interactive slot wait is capped
     separately (default 2s) so one slow integral cannot stall ``1+1=x``.
+    ``lane="reading"`` is a turn's message reading (``core/readings.py``), which
+    solves cannot crowd out (``core/sympy_slots.py``).
     """
+    if lane == "reading":
+        return await get_sympy_executor().run_reading(fn, *args, timeout=timeout)
     return await get_sympy_executor().run(fn, *args, timeout=timeout)

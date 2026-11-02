@@ -206,14 +206,6 @@ def _cache_key(message_id: str) -> str:
     return _KEY.format(message_id=message_id)
 
 
-async def store_related_prompts(redis: Redis, message_id: str, prompts: list[str]) -> None:
-    await redis.set(
-        _cache_key(message_id),
-        json.dumps(prompts),
-        ex=RELATED_PROMPTS_TTL_SECONDS,
-    )
-
-
 async def forget_related_prompts(redis: Redis, message_ids: Sequence[str]) -> int:
     """Drop cached questions for these replies. Returns how many keys went."""
     removed = 0

@@ -14,6 +14,7 @@ from app.core.config import Settings
 from app.core.jobs import worker
 from app.modules.chat import post_turn
 from app.modules.chat.turn_prep import StreamContext
+from app.tests.job_fakes import patch_job_enqueue
 
 _USER = UUID(int=1)
 _CHAT = UUID(int=2)
@@ -47,7 +48,7 @@ async def _enqueued(ctx: StreamContext, *, spend_capped: bool = False) -> list[t
 
     settings = Settings(history_compression_enabled=True, chat_history_rag_enabled=True)
     with (
-        patch("app.core.jobs.enqueue", enqueue),
+        patch_job_enqueue(enqueue),
         patch(
             "app.modules.chat.post_turn.quota_service.global_spend_exceeded",
             AsyncMock(return_value=spend_capped),

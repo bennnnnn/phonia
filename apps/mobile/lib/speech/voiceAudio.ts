@@ -164,10 +164,18 @@ export async function startVoiceRecording(): Promise<VoiceRecorder | null> {
 
   const recorder = new mod.AudioModule.AudioRecorder({});
   const preset = meteredRecordingOptions(mod.RecordingPresets.HIGH_QUALITY);
-  await recorder.prepareToRecordAsync(
-    preset as Parameters<typeof recorder.prepareToRecordAsync>[0],
-  );
-  recorder.record();
+  try {
+    await recorder.prepareToRecordAsync(
+      preset as Parameters<typeof recorder.prepareToRecordAsync>[0],
+    );
+    recorder.record();
+  } catch (error) {
+    // A busy mic (a call, another app) fails here: free the native recorder and
+    // leave record mode, or read-aloud afterwards plays through the earpiece.
+    releaseRecorder(recorder);
+    await preparePlaybackAudioMode();
+    throw error;
+  }
 
   const listeners = new Set<MeterListener>();
   const tick = setInterval(() => {

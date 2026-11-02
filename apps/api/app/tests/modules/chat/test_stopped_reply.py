@@ -23,6 +23,7 @@ from app.modules.chat.finalize_passes import FINALIZE_PASSES, enrich_final_conte
 from app.modules.chat.stream_accum import StreamAccum, utf16_prefix
 from app.modules.chat.turn_outcome import TurnOutcome
 from app.modules.chat.ws_turn import client_shown_chars
+from app.tests.fakes import redis_mock
 from app.tests.modules.chat.chat_test_support import offline_deps, turn_deps
 
 pytest_plugins = ("app.tests.modules.chat.chat_test_support",)
@@ -198,7 +199,7 @@ async def _stop_after_two_tokens(
         stack.enter_context(patch("app.repositories.users.get_by_id", AsyncMock(return_value=None)))
         async for token in stream_and_finalize(
             offline_deps(),
-            AsyncMock(),
+            redis_mock(),
             Settings(max_output_tokens=100, mcp_tool_loop_enabled=False),
             _stream_ctx(),
             should_cancel=should_cancel,

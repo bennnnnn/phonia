@@ -7,8 +7,7 @@ export type User = {
   email: string;
   name: string | null;
   avatar_url: string | null;
-  plan: "free" | "pro";
-  response_style: string;
+  plan: "free" | "plus" | "pro";
   memory_enabled: boolean;
   locale: string;
   timezone: string;

@@ -77,6 +77,11 @@ async def test_export_includes_profile_all_memory_and_every_owned_record(world: 
 
     [chat] = export["chats"]
     assert chat["messages"][1]["feedback"] == "up"
+    # Each message names its id, so an attachment's message_id joins it to its message.
+    message_ids = {message["id"] for message in chat["messages"]}
+    assert str(data.assistant_message_id) in message_ids
+    linked = [item["message_id"] for item in export["attachments"] if item["message_id"]]
+    assert set(linked) <= message_ids
     [todo] = export["todos"]
     assert todo["content"] == f"buy {data.secret_word}"
     assert "recurrence_rule" in todo

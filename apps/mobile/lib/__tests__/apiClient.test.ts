@@ -257,6 +257,20 @@ describe("api client", () => {
     ]);
   });
 
+  it.each([
+    ["a 204", { ok: true, status: 204 }, true],
+    ["a 401 (the session already ended)", { ok: false, status: 401 }, true],
+    ["a 503", { ok: false, status: 503 }, false],
+  ])("logoutSession says the server dealt with it after %s", async (_name, response, dealt) => {
+    mockFetch.mockResolvedValueOnce(response as unknown as Response);
+    await expect(logoutSession("access", "refresh")).resolves.toBe(dealt);
+  });
+
+  it("logoutSession says it must be sent again when the network fails", async () => {
+    mockFetch.mockRejectedValueOnce(new TypeError("Network request failed"));
+    await expect(logoutSession("access", "refresh")).resolves.toBe(false);
+  });
+
   it("requestRaw omits Authorization when token is null", async () => {
     mockFetch.mockResolvedValueOnce({ ok: true, status: 200 } as unknown as Response);
     await requestRaw("/link-preview?url=x", null);

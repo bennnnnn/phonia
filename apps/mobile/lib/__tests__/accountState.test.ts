@@ -113,6 +113,11 @@ const IN_FLIGHT = [
   "features/speech/model/pronunciation.ts#ttsAbort",
   "features/speech/model/pronunciation.ts#ttsStartLoggedFor",
   "features/speech/model/pronunciation.ts#ttsTapAt",
+  // An ended session's logout still owed to the server, keyed by its own tokens; the next
+  // account never reads it, and it must outlive the sign-out that wrote it.
+  "lib/pendingLogout.ts#hasPending",
+  "lib/pendingLogout.ts#retrying",
+  "lib/pendingLogout.ts#storage",
 ];
 
 /** No account data: phone settings, native modules, players, listeners, counters, lookup tables. */

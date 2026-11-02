@@ -99,9 +99,9 @@ async def test_an_unknown_token_is_limited_under_its_hash(client, fake_redis):
 async def test_many_accounts_behind_one_address_refresh_until_the_backstop(client, fake_redis):
     """Old limit: the 61st phone behind one NAT address was refused (and the 241st by the
     global REST limit). Now every account refreshes until the address's backstop."""
-    tokens = await _signed_in(fake_redis, refresh_limit.PER_IP_LIMIT + 1)
+    tokens = await _signed_in(fake_redis, _SETTINGS.refresh_per_ip_per_minute + 1)
     codes = [_refresh(client, token) for token in tokens]
-    assert codes == [200] * refresh_limit.PER_IP_LIMIT + [429]
+    assert codes == [200] * _SETTINGS.refresh_per_ip_per_minute + [429]
 
 
 @pytest.mark.parametrize("down", ["backstop", "account"])
@@ -124,5 +124,5 @@ def test_a_redis_outage_answers_503_not_a_limit(client, down):
 
 
 def test_the_backstop_is_looser_than_the_old_per_ip_limit_and_the_global_one() -> None:
-    assert refresh_limit.PER_IP_LIMIT > 240 > 60
-    assert refresh_limit.PER_ACCOUNT_LIMIT < refresh_limit.PER_IP_LIMIT
+    assert _SETTINGS.refresh_per_ip_per_minute > 240 > 60
+    assert refresh_limit.PER_ACCOUNT_LIMIT < _SETTINGS.refresh_per_ip_per_minute

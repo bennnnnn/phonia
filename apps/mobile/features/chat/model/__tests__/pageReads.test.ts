@@ -1,4 +1,8 @@
-import { keepCachedChatPage, shouldSkipChatPageRead } from "@/features/chat/model/messageCache";
+import {
+  clearAllCachedChatMessages,
+  keepCachedChatPage,
+  shouldSkipChatPageRead,
+} from "@/features/chat/model/messageCache";
 import { chatPageReadAt, noteChatPageRead } from "@/features/chat/model/pageReads";
 import type { Message } from "@/lib/api";
 
@@ -29,6 +33,13 @@ it("counts a read of the chat's page within the stale window, any path's, by thi
   mockSession = 2;
   expect(await shouldSkipChatPageRead("b")).toBe(false);
   expect(chatPageReadAt("b")).toBeUndefined();
+});
+
+it("forgets every read when the cached threads are cleared at sign-out", async () => {
+  noteChatPageRead("d");
+  expect(chatPageReadAt("d")).toBe(Date.now());
+  await clearAllCachedChatMessages();
+  expect(chatPageReadAt("d")).toBeUndefined();
 });
 
 it("counts the page kept for the chat as this sign-in's read then", async () => {

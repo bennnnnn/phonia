@@ -31,7 +31,8 @@ import {
   stackPushTransition,
   stackUtilityTransition,
 } from "@/lib/stackTransitions";
-import { initMobileSentry } from "@/lib/sentry";
+import { subscribeUnknownLatexCommands } from "@/lib/math/latexNames";
+import { initMobileSentry, reportUnknownLatexCommandName } from "@/lib/sentry";
 import { useTheme } from "@/lib/theme";
 
 // Before the first render: the user's appearance, accent and language.
@@ -107,6 +108,9 @@ export default function RootLayout() {
 
   // Dates follow the phone's zone and 12/24-hour setting as they change.
   useEffect(() => watchPhoneClock(), []);
+
+  // A LaTeX command a reply used that the renderer has no entry for: reported by name.
+  useEffect(() => subscribeUnknownLatexCommands(reportUnknownLatexCommandName), []);
 
   // Work for later in the session, once the launch has settled.
   useEffect(() => {

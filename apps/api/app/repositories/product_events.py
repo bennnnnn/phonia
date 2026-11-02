@@ -30,13 +30,20 @@ async def list_for_user(
     *,
     limit: int,
 ) -> list[ProductEvent]:
+    """The user's newest ``limit`` events, oldest first (the data export).
+
+    The export kept the oldest when an account had more than its cap, leaving out
+    exactly the recent activity a reader looks for.
+    """
     result = await session.execute(
         select(ProductEvent)
         .where(ProductEvent.user_id == user_id)
-        .order_by(ProductEvent.recorded_at.asc())
+        .order_by(ProductEvent.recorded_at.desc(), ProductEvent.id.desc())
         .limit(limit)
     )
-    return list(result.scalars().all())
+    events = list(result.scalars().all())
+    events.reverse()
+    return events
 
 
 def _day_bounds(day: date) -> tuple[datetime, datetime]:

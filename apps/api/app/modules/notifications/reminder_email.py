@@ -8,16 +8,20 @@ receipt emails stay on the Redis jobs stream and are not gated by
 from __future__ import annotations
 
 import logging
+import time
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from uuid import UUID
 
+from redis.asyncio import Redis
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import Settings
+from app.gateways.email_gateway import EmailOutcome
 from app.models.orm import User
 from app.modules.notifications import transactional_email as tx_email
+from app.modules.notifications.send_backoff import SendBackoff, occurrence_key
 from app.modules.todos import (
     EMAIL_REMINDERS,
     TodoEmailSnapshot,
@@ -30,9 +34,9 @@ from app.services.reminder_timing import reminder_title
 
 logger = logging.getLogger(__name__)
 
-# Due to-dos read per page, and pages per cycle; the rest come next minute.
+# Due to-dos read per page; a cycle reads pages until its time budget
+# (``reminder_cycle_budget_seconds``) and the rest come next minute.
 EMAIL_PAGE_ROWS = 200
-MAX_EMAIL_PAGES_PER_CYCLE = 10
 
 
 @dataclass(frozen=True)
@@ -76,32 +80,55 @@ async def process_todo_reminder_emails(
     *,
     now: datetime | None = None,
     keep_lock: Callable[[], Awaitable[bool]] | None = None,
+    backoff: SendBackoff | None = None,
 ) -> int:
     """Send the due reminder emails, a page at a time, marking each right after its send.
 
     ``keep_lock`` refreshes the cycle's lock before each send; once it fails, the cycle
-    stops so a peer that took the lock does not send the same reminders.
+    stops so a peer that took the lock does not send the same reminders. Pages follow
+    while due reminders remain, for ``reminder_cycle_budget_seconds``. ``backoff`` holds
+    a reminder whose send failed for now; one waiting out its hold is passed by.
     """
     now = now or datetime.now(UTC)
+    stop_at = time.monotonic() + settings.reminder_cycle_budget_seconds
     sent = 0
     after: tuple[datetime, UUID] | None = None
-    for _ in range(MAX_EMAIL_PAGES_PER_CYCLE):
+    while True:
         deliveries, after = await _page_deliveries(session, now=now, after=after)
         # This worker owns its session. Release the read transaction before provider IO;
         # every delivery is copied first because rollback expires ORM rows.
         await session.rollback()
+        held = await backoff.held([_key(d) for d in deliveries]) if backoff else set()
         for delivery in deliveries:
+            if _key(delivery) in held:
+                continue
             if keep_lock is not None and not await keep_lock():
                 logger.warning("Email reminder cycle lost its lock; stopping")
                 return sent
-            sent += await _send_one(session, settings, delivery, now)
+            sent += await _send_one(session, settings, delivery, now, backoff)
         if after is None:
+            break
+        if time.monotonic() >= stop_at:
+            logger.info("Email reminder cycle used its time budget; the rest go next cycle")
             break
     return sent
 
 
+def _key(delivery: _TodoEmailDelivery) -> str:
+    return occurrence_key(delivery.occurrence.id, delivery.occurrence.due_at)
+
+
+def _idempotency_key(delivery: _TodoEmailDelivery) -> str:
+    """The same for every send of one occurrence: Resend mails it once."""
+    return f"todo-reminder/{_key(delivery)}"
+
+
 async def _send_one(
-    session: AsyncSession, settings: Settings, delivery: _TodoEmailDelivery, now: datetime
+    session: AsyncSession,
+    settings: Settings,
+    delivery: _TodoEmailDelivery,
+    now: datetime,
+    backoff: SendBackoff | None = None,
 ) -> int:
     occurrence = delivery.occurrence
     try:
@@ -111,10 +138,22 @@ async def _send_one(
             name=delivery.name,
             locale=delivery.locale,
         )
-        ok = await tx_email.send_todo_reminder(
-            settings, recipient, title=delivery.title, content=occurrence.content
+        result = await tx_email.send_todo_reminder(
+            settings,
+            recipient,
+            title=delivery.title,
+            content=occurrence.content,
+            idempotency_key=_idempotency_key(delivery),
         )
-        if not ok:
+        if result.outcome is EmailOutcome.RETRY and backoff is not None:
+            await backoff.hold(_key(delivery), at_least=result.retry_after)
+        if result.outcome is EmailOutcome.REJECTED:
+            # Refused for good (a bad address): stamped as handled, so it is not sent
+            # again every minute until it ages out two days later.
+            logger.warning("Todo reminder email refused; not retried todo_id=%s", occurrence.id)
+            await mark_reminder_emailed(session, occurrence, sent_at=now)
+            await session.commit()
+        if not result.sent:
             return 0
         await mark_reminder_emailed(session, occurrence, sent_at=now)
         await session.commit()
@@ -130,8 +169,12 @@ async def run_email_reminder_cycle(
     settings: Settings,
     *,
     keep_lock: Callable[[], Awaitable[bool]] | None = None,
+    redis: Redis | None = None,
 ) -> int:
     if not settings.email_enabled or not settings.email_reminders_scheduler_enabled:
         return 0
     now = datetime.now(UTC)
-    return await process_todo_reminder_emails(session, settings, now=now, keep_lock=keep_lock)
+    backoff = SendBackoff.for_channel(redis, settings, "email") if redis is not None else None
+    return await process_todo_reminder_emails(
+        session, settings, now=now, keep_lock=keep_lock, backoff=backoff
+    )

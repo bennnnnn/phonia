@@ -393,10 +393,19 @@ describe("markdown render rules", () => {
     expect(getAllByTestId("workout-section")).toHaveLength(2);
     expect(
       getAllByTestId("workout-heading").map((node) => node.props.children),
-    ).toEqual(["Given", "Steps"]);
+    ).toEqual(["Given"]);
+    expect(
+      getAllByTestId("workout-subheading").map((node) => node.props.children),
+    ).toEqual(["Steps"]);
     // A stacked fraction on the last line must not pull the lines into one row.
     expect(getAllByTestId("workout-line")).toHaveLength(3);
-    expect(getAllByTestId("workout-note")).toHaveLength(2);
+    // Each move is a line of its own just above the maths it reached.
+    const steps = getAllByTestId("workout-step");
+    expect(steps).toHaveLength(2);
+    expect(steps[0]!.props.children[0].props.testID).toBe("workout-move");
+    expect(within(steps[0]!).getByTestId("workout-move")).toHaveTextContent(
+      "subtract 3 from both sides",
+    );
     expect(getByText("subtract 3 from both sides")).toBeOnTheScreen();
     expect(queryByText(/\$|\\frac/)).toBeNull();
   });
@@ -419,16 +428,17 @@ describe("markdown render rules", () => {
     ].join("\n");
     const { getAllByTestId, getByTestId, getByText, queryByTestId } =
       await render(<MarkdownContent content={content} />);
-    // The headings stay at the margin. Given and Required sit behind a thin rule; the
-    // working has none but starts at the same edge; the Answer's box needs neither.
+    // The headings stay at the margin. Only Given and Required sit behind a thin rule;
+    // the working (heading and lines) has none, and the Answer's box needs none.
     const bodies = getAllByTestId("workout-body").map((body) =>
       StyleSheet.flatten(body.props.style),
     );
     expect(bodies).toHaveLength(4);
     expect(bodies[0]).toMatchObject({ borderLeftWidth: 2 });
     expect(bodies[1]).toMatchObject({ borderLeftWidth: 2 });
+    const formula = StyleSheet.flatten(getAllByTestId("workout-section")[2]!.props.style);
+    expect(formula.borderLeftWidth).toBeUndefined();
     expect(bodies[2].borderLeftWidth).toBeUndefined();
-    expect(bodies[2].paddingLeft).toBe((bodies[0].paddingLeft as number) + 2);
     expect(bodies[3].borderLeftWidth).toBeUndefined();
     expect(
       StyleSheet.flatten(getByTestId("workout-answer").props.style),
@@ -452,11 +462,8 @@ describe("markdown render rules", () => {
       flexDirection: "row",
     });
     expect(names[1]).toHaveTextContent(/F\s*= force/);
-    // A move's note is pushed to the right edge.
-    const note = getByTestId("workout-note");
-    expect(StyleSheet.flatten(note.props.style)).toMatchObject({
-      marginLeft: "auto",
-    });
+    // A note is a line of its own above its maths, never at the right edge.
+    expect(getByTestId("workout-move")).toHaveTextContent(/second law/);
     expect(getByText(/second law/)).toBeOnTheScreen();
     // A written-out answer sits in its own box.
     expect(
@@ -486,15 +493,20 @@ describe("markdown render rules", () => {
     );
     expect(
       getAllByTestId("workout-heading").map((node) => node.props.children),
-    ).toEqual(["Given", "Required", "Constant acceleration", "Substitution"]);
-    // Laid out like Formula: one row per state, no rule. Solving for the unknown is a
-    // step of its own between the law and its rearrangement, not a note beside it.
+    ).toEqual(["Given", "Required"]);
+    expect(
+      getAllByTestId("workout-subheading").map((node) => node.props.children),
+    ).toEqual(["Constant acceleration", "Substitution"]);
+    // Laid out like Formula: one row per state. Solving for the unknown is a step of its
+    // own between the law and its rearrangement, at the left; the maths is centred.
     const law = getAllByTestId("workout-body")[2]!;
     const lines = within(law).getAllByTestId("workout-line");
     expect(lines).toHaveLength(3);
     expect(lines[1]).toHaveTextContent(/^Solve for\s*a$/);
-    expect(within(law).queryByTestId("workout-note")).toBeNull();
-    expect(StyleSheet.flatten(law.props.style).borderLeftWidth).toBeUndefined();
+    expect(within(lines[1]!).getByTestId("workout-move")).toBeOnTheScreen();
+    expect(StyleSheet.flatten(lines[1]!.props.style).justifyContent).toBe("flex-start");
+    expect(StyleSheet.flatten(lines[0]!.props.style).justifyContent).toBe("center");
+    expect(StyleSheet.flatten(lines[2]!.props.style).justifyContent).toBe("center");
   });
 
   it("heads the working with Solution, its formula by name", async () => {
@@ -508,20 +520,130 @@ describe("markdown render rules", () => {
     const { getAllByTestId } = await render(
       <MarkdownContent content={content} />,
     );
+    // Two levels: Given, Required and Solution are sections; the formula under its name
+    // and Substitution are smaller headings inside Solution.
     expect(
       getAllByTestId("workout-heading").map((node) => node.props.children),
-    ).toEqual([
-      "Given",
-      "Required",
-      "Solution",
+    ).toEqual(["Given", "Required", "Solution"]);
+    const subheadings = getAllByTestId("workout-subheading");
+    expect(subheadings.map((node) => node.props.children)).toEqual([
       "Average speed formula",
       "Substitution",
     ]);
+    const section = StyleSheet.flatten(getAllByTestId("workout-heading")[0]!.props.style);
+    const sub = StyleSheet.flatten(subheadings[0]!.props.style);
+    expect(sub.fontSize as number).toBeLessThan(section.fontSize as number);
+    expect(sub.color).toBe(lightTheme.textSecondary);
     // The formula's name is its heading, never a note beside it.
     expect(getAllByTestId("workout-body")).toHaveLength(4);
     expect(
-      within(getAllByTestId("workout-body")[2]!).queryByTestId("workout-note"),
+      within(getAllByTestId("workout-body")[2]!).queryByTestId("workout-move"),
     ).toBeNull();
+  });
+
+  it.each([
+    ["$v$ (speed of the car)", "(a) $v$ (speed of the car)"],
+    // An older reply wrote the meaning as a move's note; it reads inline too.
+    ["$v$ — speed of the car", "(a) $v$ — speed of the car"],
+  ])(
+    "draws what is asked on one line, its meaning beside it: %s",
+    async (single, lettered) => {
+      const content = [
+        "**Given**  ",
+        String.raw`$d = 100\,\mathrm{m}$  `,
+        "where $d$ = distance",
+        "",
+        "**Required**  ",
+        `${single}  `,
+        lettered,
+      ].join("\n");
+      const { getAllByTestId, queryByTestId } = await render(
+        <MarkdownContent content={content} />,
+      );
+      expect(queryByTestId("workout-note")).toBeNull();
+      const asked = getAllByTestId("workout-asked");
+      expect(asked).toHaveLength(2);
+      expect(StyleSheet.flatten(asked[0]!.props.style)).toMatchObject({
+        flexDirection: "row",
+      });
+      expect(StyleSheet.flatten(asked[0]!.props.style).flexWrap).toBeUndefined();
+      expect(asked[0]).toHaveTextContent(/^v\s*\(speed of the car\)$/);
+      expect(asked[1]).toHaveTextContent(/^\(a\)\s*v\s*\(speed of the car\)$/);
+      // The Given's where-line still names its symbols in secondary ink.
+      expect(getAllByTestId("workout-naming")).toHaveLength(1);
+    },
+  );
+
+  it("draws nothing at the right edge in any worked line", async () => {
+    const content = [
+      "**Given**  ",
+      String.raw`$v = 20\,\mathrm{m/s}$ — east  `,
+      "where $v$ = speed",
+      "",
+      "**Required**  ",
+      "$t$ — time",
+      "",
+      "**Solution**",
+      "",
+      "**Speed formula**  ",
+      String.raw`$v = \frac{d}{t}$ — Speed  `,
+      "Solve for $t$  ",
+      String.raw`$t = \frac{d}{v}$`,
+      "",
+      "**Steps**  ",
+      "$2x = 8$ — subtract 3 from both sides  ",
+      "$x = 4$ — divide both sides by 2",
+      "",
+      "**Answer**  ",
+      "$x = 4$ — the root",
+    ].join("\n");
+    const { toJSON, queryByTestId, getAllByTestId } = await render(
+      <MarkdownContent content={content} />,
+    );
+    expect(queryByTestId("workout-note")).toBeNull();
+    type Node = { props?: { style?: StyleProp<TextStyle> }; children?: unknown[] | null };
+    const rightAligned = (node: unknown): number => {
+      if (!node || typeof node !== "object") return 0;
+      const { props, children } = node as Node;
+      const style = StyleSheet.flatten(props?.style) ?? {};
+      const own =
+        style.marginLeft === "auto" ||
+        style.justifyContent === "flex-end" ||
+        style.textAlign === "right" ||
+        style.alignSelf === "flex-end";
+      return (
+        (own ? 1 : 0) +
+        (children ?? []).reduce<number>((sum, child) => sum + rightAligned(child), 0)
+      );
+    };
+    expect(rightAligned(toJSON())).toBe(0);
+    // A given and what is asked read inline ("v = 20 m/s (east)", "t (time)"); every other
+    // note is a line of its own.
+    expect(getAllByTestId("workout-line")[0]).toHaveTextContent(/\(east\)$/);
+    expect(getAllByTestId("workout-move").map((move) => move.props.testID)).toHaveLength(5);
+  });
+
+  it("centres a line of maths inside Solution and keeps Given and the headings at the left", async () => {
+    const content = [
+      "**Given**  \n$d = 3000\\,\\mathrm{m}$",
+      "**Solution**",
+      "**Average speed formula**  \n$v = \\frac{d}{t}$",
+      "**Answer**  \n$v = 3.33\\,\\mathrm{m/s}$",
+    ].join("\n\n");
+    const { getAllByTestId, getByTestId } = await render(
+      <MarkdownContent content={content} />,
+    );
+    const [given, formula] = getAllByTestId("workout-body");
+    const flat = (node: { props: { style?: StyleProp<TextStyle> } }) =>
+      StyleSheet.flatten(node.props.style);
+    expect(flat(within(formula!).getByTestId("workout-line")).justifyContent).toBe("center");
+    expect(flat(within(given!).getByTestId("workout-line")).justifyContent).toBe("flex-start");
+    expect(flat(getByTestId("workout-subheading")).textAlign).toBeUndefined();
+    // Answer stays a section, its box outside Solution's rule.
+    expect(
+      getAllByTestId("workout-heading").map((node) => node.props.children),
+    ).toEqual(["Given", "Solution", "Answer"]);
+    expect(flat(getByTestId("workout-answer"))).toMatchObject({ alignItems: "center" });
   });
 
   it("rules an older reply's Find like Required", async () => {
@@ -556,7 +678,10 @@ describe("markdown render rules", () => {
     );
     expect(
       getAllByTestId("workout-heading").map((node) => node.props.children),
-    ).toEqual(["Given", "Torque", "Substitution"]);
+    ).toEqual(["Given"]);
+    expect(
+      getAllByTestId("workout-subheading").map((node) => node.props.children),
+    ).toEqual(["Torque", "Substitution"]);
   });
 
   it("sets the parts of a question apart with a hairline, each with its own answer", async () => {
@@ -623,7 +748,10 @@ describe("markdown render rules", () => {
     );
     expect(
       getAllByTestId("workout-heading").map((node) => node.props.children),
-    ).toEqual(["Given", "Constant acceleration", "Substitution"]);
+    ).toEqual(["Given"]);
+    expect(
+      getAllByTestId("workout-subheading").map((node) => node.props.children),
+    ).toEqual(["Constant acceleration", "Substitution"]);
     expect(
       within(getAllByTestId("workout-body")[2]!).getAllByTestId("workout-line"),
     ).toHaveLength(2);
@@ -702,6 +830,34 @@ describe("markdown render rules", () => {
       <MarkdownContent content={"**Given:** $2x + 3 = 11$"} />,
     );
     expect(queryByTestId("workout-section")).toBeNull();
+  });
+
+  it("draws no left rule on any Solution section or lesson step", async () => {
+    const content = [
+      "**Given**  \n$2x + 3 = 11$",
+      "**Required**  \n$x$",
+      "**Solution**",
+      "**1. Subtract 3 from both sides** — Subtraction property of equality  \n$2x + 3 - 3 = 11 - 3$  \n$2x = 8$",
+      "**Substitution**  \n$x = \\frac{8}{2}$",
+      "**Answer**  \n$x = 4$",
+    ].join("\n\n");
+    const { getAllByTestId } = await render(<MarkdownContent content={content} />);
+    const ruled = (node: { props: { style?: StyleProp<TextStyle> } }) =>
+      StyleSheet.flatten(node.props.style)?.borderLeftWidth ?? 0;
+    const bodies = getAllByTestId("workout-body");
+    // Given and Required keep their rule.
+    expect(ruled(bodies[0]!)).toBe(2);
+    expect(ruled(bodies[1]!)).toBe(2);
+    expect(getAllByTestId("lesson-step")).toHaveLength(1);
+    for (const step of getAllByTestId("lesson-step")) {
+      expect(ruled(step)).toBe(0);
+    }
+    for (const section of getAllByTestId("workout-section")) {
+      expect(ruled(section)).toBe(0);
+    }
+    for (const body of bodies.slice(2)) {
+      expect(ruled(body)).toBe(0);
+    }
   });
 
   it("puts a lesson step number in a badge apart from the label", async () => {

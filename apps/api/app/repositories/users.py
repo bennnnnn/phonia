@@ -7,6 +7,7 @@ from sqlalchemy.orm import object_session
 
 from app.core.user_cache import forget_user, publish_change, remember_user
 from app.models.orm import Chat, Message, PushToken, UsageDaily, User
+from app.repositories.batch_delete import delete_in_batches
 
 
 async def get_by_id(session: AsyncSession, user_id: UUID) -> User | None:
@@ -131,12 +132,18 @@ async def delete_user(session: AsyncSession, user_id: UUID, *, commit: bool = Tr
     ``account.lifecycle`` asks each module, under ``lock_for_delete``. Every row is
     deleted explicitly before the user row, so the delete succeeds even for a table
     whose FK to users.id has no ON DELETE CASCADE.
+
+    Messages and chats, the tables that grow with the account, go in id batches
+    (``batch_delete``): no statement outgrows the command timeout, and the caller's one
+    transaction still commits or rolls back the account whole.
     """
     await lock_for_delete(session, user_id)
-    await session.execute(delete(Message).where(Message.user_id == user_id))
+    await delete_in_batches(
+        session, Message.id, select(Message.id).where(Message.user_id == user_id)
+    )
     await session.execute(delete(UsageDaily).where(UsageDaily.user_id == user_id))
     await session.execute(delete(PushToken).where(PushToken.user_id == user_id))
-    await session.execute(delete(Chat).where(Chat.user_id == user_id))
+    await delete_in_batches(session, Chat.id, select(Chat.id).where(Chat.user_id == user_id))
     user = await session.get(User, user_id)
     if user is not None:
         await session.delete(user)

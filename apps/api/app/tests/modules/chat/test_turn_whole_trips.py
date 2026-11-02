@@ -83,29 +83,30 @@ _NEXT_FOLDS = ("memory", "compress", "message_index")
 # every message after the day's first. To update: ``pytest -s`` prints every count.
 # A turn with follow-up questions reads what its chat already showed (one GET,
 # ``related_prompts.shown_in_chat``) and writes both records in one pipeline.
+# The post-turn jobs are queued in one pipeline too (``jobs.enqueue_many``).
 CEILINGS: dict[str, Ceiling] = {
     "greeting": Ceiling(
-        Counts(sql=5, checkouts=3, transactions=3, redis=21, models=1),
+        Counts(sql=5, checkouts=3, transactions=3, redis=19, models=1),
         Counts(sql=10, checkouts=4, transactions=4, redis=18, embeds=1),
         _FIRST,
     ),
     "question": Ceiling(
-        Counts(sql=5, checkouts=3, transactions=3, redis=25, models=2),
+        Counts(sql=5, checkouts=3, transactions=3, redis=23, models=2),
         Counts(sql=12, checkouts=4, transactions=4, redis=21, models=2, embeds=1),
         _FIRST,
     ),
     "follow-up, short chat": Ceiling(
-        Counts(sql=5, checkouts=3, transactions=3, redis=24, models=2),
+        Counts(sql=5, checkouts=3, transactions=3, redis=23, models=2),
         Counts(sql=11, checkouts=3, transactions=3, redis=16, models=1, embeds=1),
         _NEXT,
     ),
     "follow-up, long chat": Ceiling(
-        Counts(sql=8, checkouts=5, transactions=5, redis=27, models=2),
+        Counts(sql=8, checkouts=5, transactions=5, redis=25, models=2),
         Counts(sql=17, checkouts=5, transactions=5, redis=23, models=2, embeds=1),
         _NEXT_FOLDS,
     ),
     "maths": Ceiling(
-        Counts(sql=5, checkouts=3, transactions=3, redis=22, models=2),
+        Counts(sql=5, checkouts=3, transactions=3, redis=20, models=2),
         Counts(sql=12, checkouts=4, transactions=4, redis=21, models=2, embeds=1),
         _FIRST,
     ),
@@ -113,32 +114,32 @@ CEILINGS: dict[str, Ceiling] = {
     # its own cache read, lock and write. A searched reply also gets one claim check (a
     # model call and its spend write) before it saves, so a claim no source made is cut.
     "web search": Ceiling(
-        Counts(sql=5, checkouts=3, transactions=3, redis=35, models=3, searches=2),
+        Counts(sql=5, checkouts=3, transactions=3, redis=33, models=3, searches=2),
         Counts(sql=12, checkouts=4, transactions=4, redis=21, models=2, embeds=1),
         _FIRST,
     ),
     "reminder": Ceiling(
-        Counts(sql=10, checkouts=8, transactions=8, redis=31, models=1, embeds=1),
+        Counts(sql=10, checkouts=8, transactions=8, redis=29, models=1, embeds=1),
         Counts(sql=12, checkouts=4, transactions=4, redis=21, models=2, embeds=1),
         _FIRST,
     ),
     "photo lookup": Ceiling(
-        Counts(sql=6, checkouts=4, transactions=4, redis=28, models=2, searches=1),
+        Counts(sql=6, checkouts=4, transactions=4, redis=26, models=2, searches=1),
         Counts(sql=12, checkouts=4, transactions=4, redis=21, models=2, embeds=1),
         _FIRST,
     ),
     "attachment question": Ceiling(
-        Counts(sql=13, checkouts=8, transactions=8, redis=36, models=2, embeds=1),
+        Counts(sql=13, checkouts=8, transactions=8, redis=34, models=2, embeds=1),
         Counts(sql=13, checkouts=5, transactions=5, redis=25, models=2, embeds=1),
         ("attachment_index", *_FIRST),
     ),
     "regenerate": Ceiling(
-        Counts(sql=10, checkouts=3, transactions=3, redis=28, models=2),
+        Counts(sql=10, checkouts=3, transactions=3, redis=26, models=2),
         Counts(sql=14, checkouts=4, transactions=4, redis=21, models=1, embeds=1),
         _NEXT_FOLDS,
     ),
     "clarify picks": Ceiling(
-        Counts(sql=9, checkouts=7, transactions=7, redis=33, models=2, embeds=1),
+        Counts(sql=9, checkouts=7, transactions=7, redis=32, models=2, embeds=1),
         Counts(sql=11, checkouts=3, transactions=3, redis=16, models=1, embeds=1),
         _NEXT,
     ),
@@ -152,7 +153,8 @@ LIST_CEILINGS: dict[str, Counts] = {
     "/memories/documents": Counts(sql=3, checkouts=1, transactions=1, redis=4),
     "/todos/page": Counts(sql=1, checkouts=1, transactions=1, redis=2),
     "/attachments": Counts(sql=2, checkouts=1, transactions=1, redis=2),
-    "/search?q=Paris": Counts(sql=1, checkouts=1, transactions=1, redis=2),
+    # The page is chosen over sort keys, then its bodies are read by id: two statements.
+    "/search?q=Paris": Counts(sql=2, checkouts=1, transactions=1, redis=2),
 }
 
 # A 1x1 PNG: valid image bytes for an attachment in storage.

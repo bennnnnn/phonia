@@ -51,7 +51,8 @@ function requirePublicApiUrlForReleaseBuild(buildProfile, apiUrl) {
 
 /** `pnpm ios:sim` sets RECALL_IOS_SIMULATOR=1: a local simulator build without Sign in
  * with Apple, whose entitlement makes Expo demand a signing certificate even for a
- * simulator. A release build never drops it. */
+ * simulator, and without ML Kit (an Intel-only simulator slice). A release build never
+ * drops either. */
 function simulatorWithoutAppleSignIn(buildProfile, env) {
   if (env.RECALL_IOS_SIMULATOR?.trim() !== "1") return false;
   if (buildProfile === "production" || buildProfile === "preview") {
