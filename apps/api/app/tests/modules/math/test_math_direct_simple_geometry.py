@@ -18,6 +18,7 @@ from app.modules.math.tools.extract import extract_math_intent
 from app.modules.math.tools.prompt import build_math_augmentation
 from app.services.answer_fence import mark_server_answer_fences
 from app.services.solving import VerifiedMathBlock
+from app.services.workout import as_formula_heading
 
 _CASES = [
     ("Find the area of a square side 3 cm", "square", "9"),
@@ -56,7 +57,11 @@ async def test_complete_geometry_reaches_first_token_without_model(
     reply = maybe_direct_math_reply(verified, query)
     assert reply is not None and reply.endswith("```\n")
     assert reply.count("```answer") == 1 and reply.count("```geometry") == 1
-    assert "**Given**" in reply and "**Formula**" in reply and "**Substitution**" in reply
+    assert (
+        "**Given**" in reply
+        and "**Formula**" in as_formula_heading(reply)
+        and "**Substitution**" in reply
+    )
     assert "```geometry" in reply
     finalized = validate_math_fences(reply, verified=verified)
     assert (

@@ -354,7 +354,7 @@ def test_arc_length_with_sentence_period_uses_the_calculus_application() -> None
     assert intent.school_op == "arc_length"
     assert block.canonical_answer == r"\frac{14}{3}"
     assert reply is not None
-    assert "— Arc length" in reply
+    assert "**Arc length formula**" in reply
     assert "no solution" not in reply.lower()
 
 

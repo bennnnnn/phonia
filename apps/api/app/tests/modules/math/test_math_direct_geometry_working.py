@@ -6,6 +6,7 @@ from app.core.config import Settings
 from app.modules.math.tools.block import _build_verified_block
 from app.modules.math.tools.direct import maybe_direct_math_reply
 from app.modules.math.tools.extract import extract_math_intent
+from app.services.workout import as_formula_heading
 
 
 def _reply(query: str) -> str:
@@ -114,8 +115,9 @@ def test_geometry_formula_and_substitution_are_separate_verified_lines(
     query: str, formula: str, substitution: str
 ) -> None:
     reply = _reply(query)
-    headings = ["**Given**", "**Required**", "**Formula**", "**Substitution**", "**Answer**"]
-    positions = [reply.index(heading) for heading in headings]
+    headings = ["**Given**", "**Required**", "**Solution**", "**Formula**", "**Substitution**"]
+    read = as_formula_heading(reply)
+    positions = [read.index(heading) for heading in [*headings, "**Answer**"]]
     assert positions == sorted(positions)
     assert formula in reply
     assert substitution in reply

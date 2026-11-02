@@ -557,7 +557,6 @@
   "reminders.badge_accessibility": "To-do, {{count}} due today or overdue",
   "rich.answer_a11y": "Answer: {{text}}",
   "rich.answer_label": "Answer",
-  "rich.answer_not_checked": "Not checked",
   "rich.answer_part_label": "Answer ({{part}})",
   "rich.arc_length": "Arc length:",
   "rich.area": "Area:",

@@ -355,8 +355,11 @@ async def test_a_speed_unit_is_written_in_symbols(text: str, unit: str) -> None:
     ("text", "rows"),
     [
         ("perimeter of a rectangle 8 by 5", [r"$l = 8\,\mathrm{units}$", r"$P = 2(8 + 5) = 26$"]),
-        ("circumference of a circle with diameter 10", [r"$C = \pi d$ — Circle circumference"]),
-        ("area of a circle with diameter 10", [r"$A = \pi r^2$ — Circle area"]),
+        (
+            "circumference of a circle with diameter 10",
+            ["**Circle circumference formula**  \n$C = \\pi d$"],
+        ),
+        ("area of a circle with diameter 10", ["**Circle area formula**  \n$A = \\pi r^2$"]),
         (
             "solve sin(x) = 0 for 0 <= x <= 360",
             [r"$x = 180^\circ k$ — substitute the angle", r"$0^\circ \le x \le 360^\circ$"],

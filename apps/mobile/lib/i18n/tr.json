@@ -557,7 +557,6 @@
   "reminders.badge_accessibility": "Yapılacaklar, bugün süresi dolan veya gecikmiş {{count}} öğe",
   "rich.answer_a11y": "Yanıt: {{text}}",
   "rich.answer_label": "Yanıt",
-  "rich.answer_not_checked": "Kontrol edilmedi",
   "rich.answer_part_label": "Yanıt ({{part}})",
   "rich.arc_length": "Yay uzunluğu:",
   "rich.area": "Alan:",

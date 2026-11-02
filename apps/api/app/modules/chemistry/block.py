@@ -10,7 +10,7 @@ from app.modules.chemistry.schemas import ChemistryIntent
 from app.modules.chemistry.solvers import ChemistryResult, solve_chemistry
 from app.modules.chemistry.solvers.display import verified
 from app.services.solving import SolveServiceError, VerifiedSolveBlock
-from app.services.workout import WORKOUT_PROMPT_RULE
+from app.services.workout import WORKOUT_PROMPT_RULE, formula_heading
 
 logger = logging.getLogger(__name__)
 
@@ -38,16 +38,22 @@ def _prompt_text(result: ChemistryResult) -> str:
     given = "\n".join(f"- {item}" for item in result.given)
     substitution = "\n".join(_bullet_rows(item) for item in result.substitution)
     # A procedure (balancing, a table lookup) has a rule, not an equation: its rows are Steps.
-    law, rows = ("Formula", "Steps") if result.method else ("Formula", "Substitution")
+    # A law's name heads its equation (``formula_heading``): "Molar mass formula".
+    if result.method:
+        law, rows, law_line = "Formula", "Steps", f"Formula ({result.formula_name})"
+    else:
+        law = law_line = formula_heading(result.formula_name)
+        rows = "Substitution"
     return (
         f"[{result.title}]\n"
-        f"Use this visible layout: Given, Required, {law}, {rows}, Answer. {WORKOUT_PROMPT_RULE} "
+        f"Use this visible layout: Given, Required, Solution, {law}, {rows}, Answer. "
+        f"{WORKOUT_PROMPT_RULE} "
         "Do not write a prose wall, "
         "do not recalculate, and copy every verified number exactly: its trailing zeros are "
         "significant figures, so never add or drop one.\n"
         f"Given:\n{given}\n"
         f"Required:\n- {result.find}\n"
-        f"{law} ({result.formula_name}):\n{_bullet_rows(result.formula)}\n"
+        f"{law_line}:\n{_bullet_rows(result.formula)}\n"
         f"{rows}:\n{substitution}\n"
         f"Verified answer:\n{_bullet_rows(result.answer)}\n"
         "Use the verified answer verbatim. Do not emit answer, smiles, or chem_scene fences."

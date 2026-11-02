@@ -8,8 +8,20 @@ const REQUIRED_HEADINGS: readonly string[] = ["Required", "Find"];
 export const OPENING_HEADINGS: readonly string[] = ["Given", ...REQUIRED_HEADINGS];
 
 /**
+ * The heading alone between what is asked and the working (November 2026): no lines of its
+ * own, the sections below it are its lines.
+ */
+export const SOLUTION_HEADING = "Solution";
+
+/** **Solution** alone on its line, with an optional trailing colon. */
+export function isSolutionHeading(text: string): boolean {
+  return text.trim().replace(/:$/, "") === SOLUTION_HEADING;
+}
+
+/**
  * The one worked-solution layout the API writes for every subject:
- * **Given**, **Required**, **Formula** (or the law's own name, see `lawHeading`),
+ * **Given**, **Required**, **Solution** (alone, `isSolutionHeading`), the formula under
+ * its name ("**Average speed formula**", see `lawHeading`; **Formula** when unnamed),
  * **Substitution** or **Steps**, **Answer** (**Answer (a)** for one part),
  * each a bold heading on its own line followed by one state per line, with
  * the move as a short note after " — " (`$2x = 8$ — subtract 3`). A rearrangement
@@ -37,12 +49,12 @@ export function isAnswerHeading(heading: string): boolean {
 }
 
 /**
- * A law's own name heads the section of its formulas ("**Constant acceleration**"), so it
+ * A formula's own name heads its section ("**Constant acceleration formula**"), so it
  * is no fixed word: in a worked reply, a short bold line alone over a line of maths.
  */
 export function lawHeading(text: string, firstLine: string): string | null {
   const heading = text.trim();
-  if (!heading || /[.:?!]$/.test(heading) || heading.split(/\s+/).length > 8) return null;
+  if (!heading || /[.:?!]$/.test(heading) || heading.split(/\s+/).length > 10) return null;
   // A numbered move ("1. Subtract 4 from both sides") and a part are their own blocks.
   if (/^\d+[.)]\s/.test(heading) || workoutPart(heading)) return null;
   return /^\$/.test(firstLine.trim()) ? heading : null;

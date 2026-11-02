@@ -219,8 +219,8 @@ CALCULATION_LAYOUT_CONTRACT = (
     "never repeat the expression as the left side of a second row. "
     "Put independent equations on separate rows, never $t_1 = d/60,\\quad t_2 = d/40$. "
     "Trivial one-step arithmetic is one row with no headings; any longer worked "
-    "solution uses the worked-solution layout (Given, Required, Formula, Substitution or "
-    "Steps, Answer). "
+    "solution uses the worked-solution layout (Given, Required, Solution, the formula under "
+    "its name's heading such as Average speed formula, Substitution or Steps, Answer). "
     "Do not force a line break with HTML."
 )
 

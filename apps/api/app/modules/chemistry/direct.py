@@ -11,14 +11,14 @@ from app.modules.chemistry.notation import typeset
 from app.modules.chemistry.solvers.types import ChemistryResult
 from app.services.question_parts import asks_more_parts
 from app.services.student_claim import has_stated_result
-from app.services.workout import Workout, formula_name, render_workout, text_line
+from app.services.workout import Workout, formula_heading, render_workout, text_line
 
 
 def _law_line(result: ChemistryResult, show: Callable[[str], str]) -> str:
-    """A law's equation with its name; a procedure's rule written out."""
+    """A law's equation (its name heads it); a procedure's rule written out."""
     if result.method:
         return text_line(f"{result.formula_name}: {show(result.formula)}")
-    return text_line(show(result.formula), formula_name(result.formula_name))
+    return text_line(show(result.formula))
 
 
 def format_direct_chemistry_reply(verified: VerifiedChemistry) -> str:
@@ -37,6 +37,9 @@ def format_direct_chemistry_reply(verified: VerifiedChemistry) -> str:
         given=tuple(text_line(show(item)) for item in result.given),
         find=(text_line(show(result.find)),),
         formula=(_law_line(result, show),),
+        # A law's name heads its equation ("Molar mass formula"); a procedure's
+        # rule names itself on its line, under **Formula**.
+        formula_heading=formula_heading(None if result.method else result.formula_name),
         # A procedure's rows check its rule (an atom tally, a range); they substitute nothing.
         steps=rows if result.method else (),
         substitution=() if result.method else rows,

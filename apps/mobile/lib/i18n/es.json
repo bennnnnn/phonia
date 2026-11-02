@@ -564,7 +564,6 @@
   "reminders.badge_accessibility": "Tareas, {{count}} para hoy o vencidas",
   "rich.answer_a11y": "Respuesta: {{text}}",
   "rich.answer_label": "Respuesta",
-  "rich.answer_not_checked": "Sin verificar",
   "rich.answer_part_label": "Respuesta ({{part}})",
   "rich.arc_length": "Longitud de arco:",
   "rich.area": "Área:",

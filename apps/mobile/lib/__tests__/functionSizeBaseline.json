@@ -3,7 +3,6 @@
   "components/markdown/markdownContentStyles.ts::makeMdStyles": 101,
   "components/markdown/rules/lists.tsx::listRules": 179,
   "components/markdown/rules/lists.tsx::listRules.list_item": 125,
-  "components/markdown/rules/workout.tsx::renderWorkoutSection": 117,
   "components/rich/AnswerBlock.tsx::AnswerBlock": 146,
   "components/rich/CalculatorBlock.tsx::CalculatorCard": 137,
   "components/rich/CartesianAxes.tsx::CartesianAxes": 159,

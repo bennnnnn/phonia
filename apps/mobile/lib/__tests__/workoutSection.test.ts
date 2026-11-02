@@ -1,5 +1,6 @@
 import {
   isAnswerHeading,
+  isSolutionHeading,
   isWorkedReply,
   lawHeading,
   splitWorkoutNote,
@@ -14,6 +15,18 @@ describe("splitWorkoutNote", () => {
     ["$x > 0$ — domain for $x$", { state: "$x > 0$", note: "domain for $x$" }],
   ])("%s", (line, expected) => {
     expect(splitWorkoutNote(line)).toEqual(expected);
+  });
+});
+
+describe("isSolutionHeading", () => {
+  it.each([
+    ["Solution", true],
+    ["Solution:", true],
+    [" Solution ", true],
+    ["Solutions", false],
+    ["Formula", false],
+  ])("%s", (text, expected) => {
+    expect(isSolutionHeading(text)).toBe(expected);
   });
 });
 

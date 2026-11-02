@@ -20,6 +20,7 @@ from app.modules.chemistry.schemas import ChemistryIntent
 from app.modules.chemistry.solvers import solve_chemistry
 from app.modules.chemistry.solvers.types import format_number
 from app.services.solving import SolveServiceError
+from app.services.workout import as_formula_heading
 from app.tests.modules.chemistry.new_law_cases import NEW_LAW_CASES
 
 PIPELINE_CASES: list[tuple[str, str, str]] = [
@@ -559,10 +560,12 @@ def test_direct_reply_has_scan_friendly_heading_order() -> None:
     assert verified is not None
 
     reply = format_direct_chemistry_reply(verified)
-    headings = ["**Given**", "**Required**", "**Formula**", "**Substitution**", "**Answer**"]
-    positions = [reply.index(heading) for heading in headings]
+    headings = ["**Given**", "**Required**", "**Solution**", "**Formula**", "**Substitution**"]
+    read = as_formula_heading(reply)
+    positions = [read.index(heading) for heading in [*headings, "**Answer**"]]
     assert positions == sorted(positions)
-    assert "pH = −log₁₀[H⁺] — Definition of pH" in reply
+    # The law's name heads its equation, never a note beside it.
+    assert "**Definition of pH formula**  \npH = −log₁₀[H⁺]\n" in reply
     assert reply.count("```answer") == 1
     assert "notation: chemistry\npH = 3.00\n" in reply
     assert "✅" not in reply

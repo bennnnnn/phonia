@@ -16,6 +16,7 @@ from app.modules.chemistry.direct import format_direct_chemistry_reply
 from app.modules.chemistry.extract import extract_chemistry_intent
 from app.modules.chemistry.solvers import solve_chemistry
 from app.modules.chemistry.solvers.types import ChemistryResult
+from app.services.workout import as_formula_heading
 
 
 def _solve(question: str) -> ChemistryResult:
@@ -49,9 +50,11 @@ def test_every_method_is_a_catalog_operation_with_a_rule_not_an_equation() -> No
     ],
 )
 def test_a_procedure_shows_its_rule_and_then_its_steps(question: str, method: bool) -> None:
-    """One layout: the rule or law under Formula; a procedure's tally under Steps."""
+    """One layout: a procedure's rule under Formula, a law under its own name's heading
+    ("Molar mass formula"); a procedure's tally under Steps."""
     reply = _reply(question)
-    assert "**Formula**" in reply
+    assert ("**Formula**" in reply) is method
+    assert "**Formula**" in as_formula_heading(reply)
     assert ("**Steps**" in reply) is method
     assert ("**Substitution**" in reply) is not method
 
@@ -61,7 +64,7 @@ def test_the_model_prompt_names_the_same_sections() -> None:
     assert intent is not None
     verified = build_verified_chemistry(intent)
     assert verified is not None
-    assert "Given, Required, Formula, Steps, Answer" in verified.prompt_text
+    assert "Given, Required, Solution, Formula, Steps, Answer" in verified.prompt_text
     assert "\nSteps:\n" in verified.prompt_text
 
 

@@ -1,15 +1,19 @@
-"""A law's name as the heading over its formulas: **Constant acceleration**, not **Formula**.
+"""A law's name over its formulas: **Constant acceleration formula**, not **Formula**.
 
 The catalog names a law the way a textbook index does ("Kinetic-energy formula",
 "SUVAT constant-acceleration equation"). Over the formula itself, "formula" or
 "equation" says nothing the rows below do not, so the heading keeps what the law
 is about: "Kinetic energy", "Constant acceleration". A law named for itself
-("Snell's law", "Continuity equation", "Stefan-Boltzmann law") keeps its name.
+("Snell's law", "Continuity equation", "Stefan-Boltzmann law") keeps its name. The
+heading over the formulas is that title through the one rule every subject heads a
+formula with (``services.workout.formula_heading``): "Kinetic energy formula".
 """
 
 from __future__ import annotations
 
 import re
+
+from app.services.workout import formula_heading
 
 # Where the rule below reads wrong: a pair of quantities is not one compound noun
 # ("Frequency-period relation" is frequency and period, not a frequency period).
@@ -43,3 +47,10 @@ def law_title(law_name: str) -> str:
     else:
         return name
     return _COMPOUND_HYPHEN.sub(" ", name)
+
+
+def law_heading(law_name: str) -> str:
+    """The heading over a catalog law's formulas: ``Kinetic-energy formula`` →
+    ``Kinetic energy formula``; ``SUVAT constant-acceleration equation`` →
+    ``Constant acceleration formula``; ``Snell's law`` stays."""
+    return formula_heading(law_title(law_name))

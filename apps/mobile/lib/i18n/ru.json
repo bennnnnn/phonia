@@ -571,7 +571,6 @@
   "reminders.badge_accessibility": "Задачи, {{count}} на сегодня или просрочено",
   "rich.answer_a11y": "Ответ: {{text}}",
   "rich.answer_label": "Ответ",
-  "rich.answer_not_checked": "Не проверено",
   "rich.answer_part_label": "Ответ ({{part}})",
   "rich.arc_length": "Длина дуги:",
   "rich.area": "Площадь:",

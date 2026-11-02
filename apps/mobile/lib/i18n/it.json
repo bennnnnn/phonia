@@ -564,7 +564,6 @@
   "reminders.badge_accessibility": "Attività, {{count}} in scadenza oggi o scadute",
   "rich.answer_a11y": "Risposta: {{text}}",
   "rich.answer_label": "Risposta",
-  "rich.answer_not_checked": "Non verificato",
   "rich.answer_part_label": "Risposta ({{part}})",
   "rich.arc_length": "Lunghezza dell’arco:",
   "rich.area": "Area:",

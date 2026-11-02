@@ -557,7 +557,6 @@
   "reminders.badge_accessibility": "Aufgaben, {{count}} heute fällig oder überfällig",
   "rich.answer_a11y": "Antwort: {{text}}",
   "rich.answer_label": "Antwort",
-  "rich.answer_not_checked": "Nicht geprüft",
   "rich.answer_part_label": "Antwort ({{part}})",
   "rich.arc_length": "Bogenlänge:",
   "rich.area": "Fläche:",

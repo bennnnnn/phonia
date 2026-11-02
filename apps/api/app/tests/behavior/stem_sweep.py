@@ -21,7 +21,7 @@ question a student would type, worked independently from the textbook formula
 subject that owns a law both use (gases, Q = mcΔT, half-lives are physics'), so
 its claiming the turn is no misread. ``gap`` marks a known miss: a strict
 expected failure until the fix deletes the line. Every verified physics and
-chemistry reply is also checked for its shape (Given, Required, Formula,
+chemistry reply is also checked for its shape (Given, Required, [Solution,] Formula,
 Substitution, Answer; no calculator notation; no invented zero given), and
 every picture it carries is validated: a ``simulation`` scene against the
 server schema and its own bounds, a ``graph`` for finite points. Its LaTeX is
@@ -56,7 +56,7 @@ import pint
 
 from app.modules.physics.schemas.simulation import SimulationBlockSpec
 from app.services.answer_fence import answer_fence_value
-from app.services.workout import REQUIRED_HEADINGS, as_formula_heading
+from app.services.workout import REQUIRED_HEADINGS, SOLUTION, as_formula_heading
 from app.tests.behavior.harness import Case, Expect, Route, route_case, saved_reply
 from app.tests.behavior.latex_check import latex_problems
 from app.tests.behavior.stem_math_judge import judge_check
@@ -374,7 +374,8 @@ def check_answer(
 # --- judging -------------------------------------------------------------------
 
 # The sections a verified reply carries, in order; a slot may take several names. What is
-# asked is Required, or Find in a reply written the older way.
+# asked is Required, or Find in a reply written the older way. **Solution** (November
+# 2026) is checked apart: an older reply has none (``_solution_out_of_place``).
 _SECTIONS: dict[str, tuple[tuple[str, ...], ...]] = {
     "physics": (
         ("Given",),
@@ -416,10 +417,17 @@ def _given_part(prose: str) -> str:
     return prose if at < 0 else prose[:at]
 
 
+def _solution_out_of_place(prose: str, required: int, formula: int) -> bool:
+    """**Solution** sits after Required and before the formula; a reply with none (one
+    written before November 2026) passes."""
+    at = prose.find(f"**{SOLUTION}**")
+    return at >= 0 and not required < at < formula
+
+
 def check_shape(entry: Entry, reply: str, subject: str = "physics") -> list[Problem]:
     """A worked reply's sections and notation; maths replies are checked for notation only."""
     problems: list[Problem] = []
-    # A physics law heads its formulas by name ("**Constant acceleration**"): its Formula.
+    # A formula is headed by its name ("**Constant acceleration formula**"): its Formula.
     prose = as_formula_heading(_prose(reply))
     if subject == "physics":
         problems.extend(_physics_working(_prose(reply)))
@@ -430,6 +438,8 @@ def check_shape(entry: Entry, reply: str, subject: str = "physics") -> list[Prob
         problems.append(Problem("shape", f"reply has no {', '.join(missing)}"))
     elif positions != sorted(positions):
         problems.append(Problem("shape", "sections out of order"))
+    elif sections and _solution_out_of_place(prose, positions[1], positions[2]):
+        problems.append(Problem("shape", "Solution is not between Required and the formula"))
     if calculator := _CALCULATOR.search(prose):
         problems.append(Problem("shape", f"calculator notation: {calculator.group(0)!r}"))
     if re.search(r"\b(?:nan|inf|None)\b", prose):

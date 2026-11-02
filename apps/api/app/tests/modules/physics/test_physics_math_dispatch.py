@@ -90,7 +90,7 @@ def test_symbolic_power_request_is_not_stolen_by_physics_unit_symbols(symbol: st
     block = build_math_block(intent, _SETTINGS)
     assert block is not None
     assert block.canonical_answer == f"{symbol.lower()}^{{3}}"
-    assert block.direct_reply is not None and "— Power notation" in block.direct_reply
+    assert block.direct_reply is not None and "**Power notation formula**" in block.direct_reply
 
 
 def test_symbolic_power_steps_explain_the_exponent_before_the_answer() -> None:
