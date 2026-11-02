@@ -428,8 +428,8 @@ describe("markdown render rules", () => {
     ].join("\n");
     const { getAllByTestId, getByTestId, getByText, queryByTestId } =
       await render(<MarkdownContent content={content} />);
-    // The headings stay at the margin. Given and Required sit behind a thin rule; the
-    // working (heading and lines) sits behind the same rule; the Answer's box needs none.
+    // The headings stay at the margin. Only Given and Required sit behind a thin rule;
+    // the working (heading and lines) has none, and the Answer's box needs none.
     const bodies = getAllByTestId("workout-body").map((body) =>
       StyleSheet.flatten(body.props.style),
     );
@@ -437,8 +437,8 @@ describe("markdown render rules", () => {
     expect(bodies[0]).toMatchObject({ borderLeftWidth: 2 });
     expect(bodies[1]).toMatchObject({ borderLeftWidth: 2 });
     const formula = StyleSheet.flatten(getAllByTestId("workout-section")[2]!.props.style);
-    expect(formula).toMatchObject({ borderLeftWidth: 2, marginBottom: 0 });
-    expect(formula.paddingLeft).toBe(bodies[0].paddingLeft);
+    expect(formula.borderLeftWidth).toBeUndefined();
+    expect(bodies[2].borderLeftWidth).toBeUndefined();
     expect(bodies[3].borderLeftWidth).toBeUndefined();
     expect(
       StyleSheet.flatten(getByTestId("workout-answer").props.style),
@@ -830,6 +830,34 @@ describe("markdown render rules", () => {
       <MarkdownContent content={"**Given:** $2x + 3 = 11$"} />,
     );
     expect(queryByTestId("workout-section")).toBeNull();
+  });
+
+  it("draws no left rule on any Solution section or lesson step", async () => {
+    const content = [
+      "**Given**  \n$2x + 3 = 11$",
+      "**Required**  \n$x$",
+      "**Solution**",
+      "**1. Subtract 3 from both sides** — Subtraction property of equality  \n$2x + 3 - 3 = 11 - 3$  \n$2x = 8$",
+      "**Substitution**  \n$x = \\frac{8}{2}$",
+      "**Answer**  \n$x = 4$",
+    ].join("\n\n");
+    const { getAllByTestId } = await render(<MarkdownContent content={content} />);
+    const ruled = (node: { props: { style?: StyleProp<TextStyle> } }) =>
+      StyleSheet.flatten(node.props.style)?.borderLeftWidth ?? 0;
+    const bodies = getAllByTestId("workout-body");
+    // Given and Required keep their rule.
+    expect(ruled(bodies[0]!)).toBe(2);
+    expect(ruled(bodies[1]!)).toBe(2);
+    expect(getAllByTestId("lesson-step")).toHaveLength(1);
+    for (const step of getAllByTestId("lesson-step")) {
+      expect(ruled(step)).toBe(0);
+    }
+    for (const section of getAllByTestId("workout-section")) {
+      expect(ruled(section)).toBe(0);
+    }
+    for (const body of bodies.slice(2)) {
+      expect(ruled(body)).toBe(0);
+    }
   });
 
   it("puts a lesson step number in a badge apart from the label", async () => {

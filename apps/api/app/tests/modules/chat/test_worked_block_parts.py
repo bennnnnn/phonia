@@ -17,7 +17,7 @@ import pytest
 
 from app.modules.chat.stream_accum import StreamAccum
 from app.modules.chat.worked_render import WorkedLayout, render_worked
-from app.modules.chat.worked_solution import assemble, read_record
+from app.modules.chat.worked_solution import Given, assemble, read_record
 from app.modules.chat.worked_stream import ReplyFilter
 from app.services.workout import asked_line
 
@@ -35,8 +35,16 @@ _ASKED = "required: v | speed of the car\nrequired: v | speed of the train"
 _CAR_GIVEN = "given: d | 100 | m | distance\ngiven: t | 5 | s | time"
 _TRAIN_GIVEN = "given: d | 300 | m | distance\ngiven: t | 10 | s | time"
 
-# The contract: what is asked first, then each part with its own givens.
+# The contract since 2026-11-02: every given first, a part's own lettered, then what is
+# asked, then each part.
 CONTRACT = (
+    "given (a): d | 100 | m | distance\ngiven (a): t | 5 | s | time\n"
+    "given (b): d | 300 | m | distance\ngiven (b): t | 10 | s | time\n"
+    f"{_ASKED}\npart: a | speed of the car\n{_CAR}\n"
+    f"part: b | speed of the train\n{_TRAIN}"
+)
+# The contract before: what is asked first, then each part with its own givens.
+PART_GIVENS = (
     f"{_ASKED}\npart: a | speed of the car\n{_CAR_GIVEN}\n{_CAR}\n"
     f"part: b | speed of the train\n{_TRAIN_GIVEN}\n{_TRAIN}"
 )
@@ -49,6 +57,20 @@ GIVENS_FIRST = (
 LIVE = (
     f"{_CAR_GIVEN}\n{_ASKED}\n{_CAR}\npart: a | speed of the car\n"
     f"part: b | speed of the train\n{_TRAIN_GIVEN}\n{_TRAIN}"
+)
+# Each part's label after its answer (live, 2026-11-02): what follows is the next part.
+TRAILING = (
+    f"{_CAR_GIVEN}\nrequired: v | speed of the car\n{_CAR}\npart: a | speed of the car\n"
+    f"{_TRAIN_GIVEN}\nrequired: v | speed of the train\n{_TRAIN}\npart: b | speed of the train"
+)
+# The car unlabelled, then the train labelled "a" and every record lettered (a) (live,
+# 2026-11-02): the label names what the second thing asked finds, so it is part (b).
+MISLETTERED = (
+    f"{_CAR_GIVEN}\nrequired: v | speed of the car\n{_CAR}\npart: a | speed of the train\n"
+    + "\n".join(
+        line.replace(":", " (a):", 1)
+        for line in f"{_TRAIN_GIVEN}\nrequired: v | speed of the train\n{_TRAIN}".split("\n")
+    )
 )
 # No label at all (live, 2026-11-01): two laws one after the other, both answers at the end.
 _WORKING = "\n".join(line for line in _CAR.split("\n") if not line.startswith("answer"))
@@ -69,17 +91,26 @@ def _opening_and_parts(text: str) -> tuple[str, list[str]]:
     return opening, parts.split("\n\n---\n\n")
 
 
-@pytest.mark.parametrize("block", [CONTRACT, GIVENS_FIRST, LIVE, UNLABELLED])
-def test_two_questions_are_two_parts_each_with_its_own_givens(block: str) -> None:
+_ONE_GIVEN = (
+    "**Given**  \n(a) $d = 100\\,\\mathrm{m}$  \n(a) $t = 5\\,\\mathrm{s}$  \n"
+    "(b) $d = 300\\,\\mathrm{m}$  \n(b) $t = 10\\,\\mathrm{s}$  \n"
+    "where $d$ = distance, $t$ = time\n\n"
+)
+
+
+@pytest.mark.parametrize(
+    "block", [CONTRACT, PART_GIVENS, GIVENS_FIRST, LIVE, TRAILING, MISLETTERED, UNLABELLED]
+)
+def test_two_questions_have_one_given_lettered_by_part(block: str) -> None:
     text = _laid_out(block)
     opening, (car, train) = _opening_and_parts(text)
-    assert "**Given**" not in opening  # nothing is shared
+    # One Given, every value lettered by the part that uses it; none under a part.
+    assert text.count("**Given**") == 1
+    assert opening.startswith(_ONE_GIVEN)
     assert "**Required**  \n(a) $v$ (speed of the car)  \n(b) $v$ (speed of the train)" in opening
-    assert car.strip().startswith("**(a) speed of the car**\n\n**Given**  \n$d = 100")
-    assert "$t = 5" in car and "where $d$ = distance, $t$ = time" in car
-    assert "$d = 300" not in car and "30\\," not in car
-    assert train.startswith("**(b) speed of the train**\n\n**Given**  \n$d = 300")
-    assert "$t = 10" in train and "$d = 100" not in train
+    assert car.strip().startswith("**(a) speed of the car**\n\n**Average speed formula**")
+    assert "30\\," not in car
+    assert train.startswith("**(b) speed of the train**\n\n**Average speed formula**")
     assert re.findall(r"\*\*Answer \(([a-z])\)\*\*", text) == ["a", "b"]
     assert car.rstrip().endswith("$20\\,\\mathrm{m/s}$")
     assert train.rstrip().endswith("$30\\,\\mathrm{m/s}$")
@@ -92,9 +123,35 @@ def test_parts_with_nothing_asked_still_list_what_each_part_finds() -> None:
 
 
 def test_every_shape_is_the_same_layout() -> None:
-    assert (
-        _laid_out(CONTRACT) == _laid_out(GIVENS_FIRST) == _laid_out(LIVE) == _laid_out(UNLABELLED)
+    shapes = (CONTRACT, PART_GIVENS, GIVENS_FIRST, LIVE, TRAILING, MISLETTERED, UNLABELLED)
+    assert len({_laid_out(block) for block in shapes}) == 1
+
+
+def test_a_symbol_the_parts_name_apart_is_named_once_by_what_they_share() -> None:
+    block = TRAILING.replace("| distance", "| distance for car", 1).replace(
+        "d | 300 | m | distance", "d | 300 | m | distance for train"
     )
+    opening, _parts = _opening_and_parts(_laid_out(block))
+    assert "where $d$ = distance, $t$ = time\n" in opening
+
+
+def test_a_part_titled_with_the_contracts_placeholder_is_named_by_what_is_asked() -> None:
+    text = _laid_out(CONTRACT.replace("part: b | speed of the train", "part: b | what is asked"))
+    assert "**(b) speed of the train**" in text and "what is asked" not in text
+
+
+@pytest.mark.parametrize(
+    ("line", "part"),
+    [
+        ("given (a): t | 1 | s | time", "a"),
+        ("given(B): t | 1 | s", "b"),
+        ("given: (c) t | 1 | s", "c"),
+        ("given: t | 1 | s", ""),
+    ],
+)
+def test_a_given_reads_its_part_letter(line: str, part: str) -> None:
+    record = read_record(line)
+    assert isinstance(record, Given) and record.symbol == "t" and record.part == part
 
 
 def test_one_question_asking_one_thing_stays_whole_whatever_laws_it_uses() -> None:
@@ -117,11 +174,11 @@ def test_a_given_every_part_uses_is_given_once() -> None:
         "formula: Free fall | t = \\sqrt{2h/g}\nanswer: t | 2.02 | s"
     )
     opening, (first, second) = _opening_and_parts(_laid_out(block))
-    assert "$h = 20" in opening and "$g = 9.8" in opening
-    assert "where $h$ = height, $g$ = gravity" in opening
-    assert "$t = 1" not in opening and "$g = " not in first + second
-    assert "**Given**  \n$t = 1\\,\\mathrm{s}$  \nwhere $t$ = time" in first
-    assert "**Given**" not in second
+    assert opening.startswith(
+        "**Given**  \n$h = 20\\,\\mathrm{m}$  \n$g = 9.8\\,\\mathrm{m/s²}$  \n"
+        "(a) $t = 1\\,\\mathrm{s}$  \nwhere $h$ = height, $g$ = gravity, $t$ = time\n"
+    )
+    assert "**Given**" not in first + second
 
 
 def test_a_letter_named_again_is_that_part_and_an_empty_part_is_left_out() -> None:
@@ -136,6 +193,21 @@ def test_a_letter_named_again_is_that_part_and_an_empty_part_is_left_out() -> No
         ("b", "distance"),
     ]
     assert re.findall(r"\*\*Answer \(([a-z])\)\*\*", text) == ["a", "b"]
+
+
+def test_a_first_label_with_no_letter_and_no_matching_ask_is_part_a() -> None:
+    # Review of #2238: "part: 1 | car" names no letter and no ask; it is the first part.
+    block = (
+        "required: v | speed of the car\nrequired: u | speed of the train\n"
+        "part: 1 | car\nformula: Speed | v = d/t\nanswer: v | 20 | m/s\n"
+        "part: 2 | train\nformula: Speed | u = d/t\nanswer: u | 30 | m/s"
+    )
+    records = [read_record(line) for line in block.split("\n")]
+    solution = assemble([r for r in records if r is not None])
+    assert [(part.letter, part.title) for part in solution.parts] == [
+        ("a", "car"),
+        ("b", "train"),
+    ]
 
 
 def test_an_unlabelled_block_in_parts_only_grows_while_it_streams() -> None:
@@ -153,6 +225,21 @@ def test_an_unlabelled_block_in_parts_only_grows_while_it_streams() -> None:
         accum.shown.append(tail)
     # Its givens reach their parts once the block is whole; done carries that text.
     assert "".join(accum.shown).strip() == _laid_out(UNLABELLED)
+
+
+def test_givens_after_a_part_label_reach_the_one_given_when_the_block_is_whole() -> None:
+    # The contract before 2026-11-02: each part's givens after its label. They wait at
+    # the part while it streams, then the finished reply has one Given (done carries it).
+    reply = f"```worked\n{PART_GIVENS}\n```"
+    accum = StreamAccum()
+    reply_filter = ReplyFilter(accum, PHYSICS)
+    for start in range(0, len(reply), 5):
+        if sent := reply_filter.feed(reply[start : start + 5]):
+            accum.shown.append(sent)
+    if tail := reply_filter.flush():
+        accum.shown.append(tail)
+    final = "".join(accum.shown).strip()
+    assert final == _laid_out(PART_GIVENS) and final.count("**Given**") == 1
 
 
 @pytest.mark.parametrize("size", [1, 5, 10_000])
