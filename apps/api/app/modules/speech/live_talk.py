@@ -93,12 +93,6 @@ async def close_realtime_session(redis: Redis, user_id: UUID, session_id: str) -
     )
 
 
-async def realtime_session_open(redis: Redis, user_id: UUID, session_id: str) -> bool:
-    """True while this user's session may still save (its time, or the tail after it)."""
-    token = (session_id or "").strip()
-    return bool(token) and bool(await redis.exists(_realtime_session_key(user_id, token)))
-
-
 async def live_talk_status(redis: Redis, user: User, settings: Settings) -> SpeechLiveStatusOut:
     from app.services import quota as quota_service
 
