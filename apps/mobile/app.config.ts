@@ -22,7 +22,8 @@ function iosUrlSchemeFromClientId(iosClientId: string): string | null {
 const SIMULATOR_OMITS = ["react-native-vision-camera-mlkit"];
 
 function simulatorOmits(plugin: NonNullable<ExpoConfig["plugins"]>[number]): boolean {
-  return SIMULATOR_OMITS.includes(Array.isArray(plugin) ? plugin[0] : plugin);
+  const name: unknown = Array.isArray(plugin) ? plugin[0] : plugin;
+  return typeof name === "string" && SIMULATOR_OMITS.includes(name);
 }
 
 export default ({ config }: ConfigContext): ExpoConfig => {
