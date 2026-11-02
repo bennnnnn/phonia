@@ -50,7 +50,9 @@ kill_timeout = 45
   # a chat frame is at most ~130 KB. --timeout-graceful-shutdown bounds the
   # drain on stop (see kill_timeout). Keep in step with apps/api/Dockerfile.
   app = "sh -c 'exec /opt/venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000 --no-access-log --ws-max-size 1048576 --timeout-graceful-shutdown 30'"
-  worker = "sh -c 'PROCESS_ROLE=worker exec /opt/venv/bin/python -m app.worker_main'"
+  # The worker's pool is 10 + 10 connections, not the app's 20 + 10: its 32 job
+  # slots await models with no connection held (docs/SCALING.md).
+  worker = "sh -c 'PROCESS_ROLE=worker DB_POOL_SIZE=10 DB_MAX_OVERFLOW=10 exec /opt/venv/bin/python -m app.worker_main'"
 
 [http_service]
   internal_port = 8000
