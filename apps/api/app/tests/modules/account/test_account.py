@@ -530,6 +530,43 @@ async def test_build_export_pages_memories():
 
 
 @pytest.mark.asyncio
+async def test_build_export_keeps_the_newest_product_events_past_the_cap(
+    _empty_product_events_for_exports,
+):
+    """The repository hands back the newest cap + 1, oldest first; the oldest goes."""
+    from app.modules.account import export as export_service
+
+    user = MagicMock(id=uuid4(), email="e@x", created_at=datetime(2024, 1, 1))
+    events = []
+    for day in (1, 2, 3):
+        event = MagicMock(properties={}, platform="ios", app_version="1", installation_id="i")
+        event.name = f"event-{day}"
+        event.client_at = event.recorded_at = datetime(2024, 1, day)
+        events.append(event)
+    _empty_product_events_for_exports.return_value = events
+    with (
+        patch.object(export_service, "EXPORT_MAX_PRODUCT_EVENTS", 2),
+        patch(
+            "app.modules.account.export.chat_history.chats_for_export",
+            AsyncMock(return_value=[]),
+        ),
+        patch("app.modules.memory.repository.list_after_id", AsyncMock(return_value=[])),
+        patch(
+            "app.modules.account.export.todos_service.todos_for_export",
+            AsyncMock(return_value=[]),
+        ),
+        patch(
+            "app.modules.account.export.attachments_service.list_for_user",
+            AsyncMock(return_value=[]),
+        ),
+    ):
+        data = await _export(AsyncMock(), user)
+
+    assert [event["name"] for event in data["product_events"]] == ["event-2", "event-3"]
+    assert data["truncated"] == ["product_events"]
+
+
+@pytest.mark.asyncio
 async def test_build_export_caps_memories():
     from app.modules.account import export as export_service
 

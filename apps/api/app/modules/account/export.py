@@ -328,6 +328,20 @@ async def _paged_json(
         on_cut(bool(await read(session, after, 1)))
 
 
+async def _product_event_chunks(
+    user_id: UUID, session_factory: SessionFactory, truncated: list[str]
+) -> list[str]:
+    """The newest product events up to the cap, oldest first, as JSON objects."""
+    async with session_factory() as session:
+        events = await product_events_repo.list_for_user(
+            session, user_id, limit=EXPORT_MAX_PRODUCT_EVENTS + 1
+        )
+        _note_cut(truncated, "product_events", len(events) > EXPORT_MAX_PRODUCT_EVENTS)
+        # The newest cap + 1, oldest first: the one past the cap is the oldest, so it goes.
+        kept = events[-EXPORT_MAX_PRODUCT_EVENTS:]
+        return [json.dumps(_product_event_payload(event)) for event in kept]
+
+
 async def _iter_export_json(
     user: User,
     settings: Settings,
@@ -462,21 +476,7 @@ async def _iter_export_json(
     yield ",".join(device_chunks)
 
     yield '],"product_events":['
-    async with session_factory() as session:
-        product_events = await product_events_repo.list_for_user(
-            session,
-            user.id,
-            limit=EXPORT_MAX_PRODUCT_EVENTS + 1,
-        )
-        _note_cut(truncated, "product_events", len(product_events) > EXPORT_MAX_PRODUCT_EVENTS)
-        product_events = product_events[:EXPORT_MAX_PRODUCT_EVENTS]
-        product_event_chunks = [
-            json.dumps(_product_event_payload(event)) for event in product_events
-        ]
-    for event_index, event_payload in enumerate(product_event_chunks):
-        if event_index:
-            yield ","
-        yield event_payload
+    yield ",".join(await _product_event_chunks(user.id, session_factory, truncated))
 
     # Known only once everything is read, so it closes the file.
     yield f'],"truncated":{json.dumps(truncated)}}}'
