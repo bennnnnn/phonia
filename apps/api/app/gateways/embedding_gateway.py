@@ -3,9 +3,12 @@
 from __future__ import annotations
 
 import asyncio
+import base64
+import binascii
 import hashlib
 import json
 import logging
+import struct
 from typing import Any
 from uuid import UUID
 
@@ -117,9 +120,23 @@ async def embed_many(
     return [vector for batch in results for vector in batch]
 
 
+# Cached query vectors are packed little-endian float32, base64 text (the Redis
+# client decodes replies as str). 1536 dims is 8 KB, against about 30 KB as JSON
+# floats; pgvector stores float4, so nothing is lost that a search would use.
+_PACKED_PREFIX = "f32:"
+_FLOAT32_BYTES = 4
+
+
 def parse_embedding(raw: str | None) -> list[float] | None:
+    """Read a cached vector: packed float32, or the JSON list entries written before it.
+
+    The JSON branch serves entries cached by the release before packed vectors; it
+    can go once ``memory_query_embed_cache_ttl`` has passed after that deploy.
+    """
     if not raw:
         return None
+    if raw.startswith(_PACKED_PREFIX):
+        return _unpack(raw[len(_PACKED_PREFIX) :])
     try:
         data = json.loads(raw)
         if isinstance(data, list):
@@ -129,8 +146,19 @@ def parse_embedding(raw: str | None) -> list[float] | None:
     return None
 
 
+def _unpack(encoded: str) -> list[float] | None:
+    try:
+        packed = base64.b64decode(encoded, validate=True)
+    except (binascii.Error, ValueError):
+        return None
+    if not packed or len(packed) % _FLOAT32_BYTES:
+        return None
+    return list(struct.unpack(f"<{len(packed) // _FLOAT32_BYTES}f", packed))
+
+
 def serialize_embedding(vec: list[float]) -> str:
-    return json.dumps(vec)
+    packed = struct.pack(f"<{len(vec)}f", *vec)
+    return _PACKED_PREFIX + base64.b64encode(packed).decode("ascii")
 
 
 async def get_or_embed_query(
