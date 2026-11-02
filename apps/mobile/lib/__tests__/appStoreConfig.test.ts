@@ -278,3 +278,53 @@ describe("iOS privacy manifest", () => {
     expect(resolved.ios?.privacyManifests).toEqual(manifest);
   });
 });
+
+describe("simulator build", () => {
+  const pluginNames = (env: Record<string, string | undefined>) => {
+    const saved = { ...process.env };
+    Object.assign(process.env, env);
+    try {
+      const resolved = appConfig({
+        projectRoot: "",
+        staticConfigPath: null,
+        packageJsonPath: null,
+        config: {},
+      });
+      return (resolved.plugins ?? []).map((plugin) => (Array.isArray(plugin) ? plugin[0] : plugin));
+    } finally {
+      process.env = saved;
+    }
+  };
+
+  it("leaves ML Kit out of a simulator build only", () => {
+    expect(pluginNames({ RECALL_IOS_SIMULATOR: "1" })).not.toContain(
+      "react-native-vision-camera-mlkit",
+    );
+    expect(pluginNames({ RECALL_IOS_SIMULATOR: undefined })).toContain(
+      "react-native-vision-camera-mlkit",
+    );
+  });
+
+  it("unlinks ML Kit's iOS code in a simulator build only", () => {
+    const load = (simulator: boolean) => {
+      const saved = process.env.RECALL_IOS_SIMULATOR;
+      if (simulator) process.env.RECALL_IOS_SIMULATOR = "1";
+      else delete process.env.RECALL_IOS_SIMULATOR;
+      try {
+        let config: { dependencies?: Record<string, unknown> } = {};
+        jest.isolateModules(() => {
+          // eslint-disable-next-line @typescript-eslint/no-require-imports -- the CLI's config is CommonJS, read afresh for each environment
+          config = require("../../react-native.config.js");
+        });
+        return config;
+      } finally {
+        if (saved === undefined) delete process.env.RECALL_IOS_SIMULATOR;
+        else process.env.RECALL_IOS_SIMULATOR = saved;
+      }
+    };
+    expect(load(true).dependencies).toEqual({
+      "react-native-vision-camera-mlkit": { platforms: { ios: null } },
+    });
+    expect(load(false)).toEqual({});
+  });
+});
