@@ -94,11 +94,6 @@ LIMITS: dict[str, _Limit] = {
         send=lambda c: c.get("/auth/me/export", headers=_AUTH),
         over="export_busy",
     ),
-    "composer image intent": _Limit(
-        send=lambda c: c.post("/images/intent", headers=_AUTH, json={"text": "draw a cat"}),
-        over="rate_limited",
-        redis_at=("app.modules.images.api.get_redis_client",),
-    ),
     "product analytics": _Limit(
         send=lambda c: c.post(
             "/analytics/events",
@@ -172,7 +167,6 @@ def test_every_route_limit_is_listed() -> None:
         "modules/account/signin_limit.py",  # test_signin_limit.py
         "modules/analytics/api.py",  # product events, per minute and per day
         "modules/chat/ws_api.py",  # test_ws_limit_outages.py
-        "modules/images/api.py",  # the composer's image intent
         "modules/link_preview/api.py",
         "modules/memory/api.py",
         "modules/speech/gates.py",  # dictation, read aloud

@@ -151,7 +151,7 @@ async def test_tagged_blocks_never_land_where_the_previous_release_reads(fake_re
 async def test_invalidation_drops_the_previous_releases_blocks_too(fake_redis):
     user_id = uuid4()
     legacy = f"memblock:{user_id}"
-    for suffix in ("", ":x", ":w", ":wx"):
+    for suffix in ("", ":x"):
         await fake_redis.set(f"{legacy}{suffix}", "Likes hiking")
         await fake_redis.set(f"{cache.memory_block_key(user_id)}{suffix}", "0\nLikes hiking")
 

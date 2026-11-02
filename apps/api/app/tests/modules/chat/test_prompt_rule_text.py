@@ -25,9 +25,9 @@ from app.modules.chemistry.reply_policy import CHEMISTRY_FENCE_HINT
 # then nothing after the block restating the answer its card shows; then the settings line with
 # no model or tone setting, then without AI image generation's copy (its honesty notes and
 # multi-part picture note).
-_RULES = 0
-_RULE_GRAMS = 0
-_RULE_GRAMS_SHA = "recompute"
+_RULES = 161
+_RULE_GRAMS = 14235
+_RULE_GRAMS_SHA = "74afe0ca547c61a4"
 
 
 def _rules() -> list[str]:

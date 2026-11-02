@@ -112,11 +112,11 @@ async def test_stored_bytes_sums_every_row_of_the_user_only(db_session) -> None:
     owner, other = await make_user(), await make_user()
     assert await storage_quota.stored_bytes(db_session, owner.id) == 0
     rows = [
-        # A Library upload, a pending upload, a resend's hidden copy, a generated picture.
+        # A Library upload, a pending upload, a resend's hidden copy, a reference photo.
         (owner.id, 1_000, "upload", True, datetime.now(UTC)),
         (owner.id, 2_000, "upload", True, None),
         (owner.id, 3_000, "upload", False, datetime.now(UTC)),
-        (owner.id, 4_000, "generated", True, datetime.now(UTC)),
+        (owner.id, 4_000, "search", True, datetime.now(UTC)),
         (other.id, 9_999, "upload", True, datetime.now(UTC)),
     ]
     for user_id, size, source, visible, verified_at in rows:
