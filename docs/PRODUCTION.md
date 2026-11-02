@@ -20,7 +20,7 @@ or alert on every usage-billed account.
 | Fly.io | API and worker machines | Pay as you go (card on file) | `iad` | Not deployed. `recall-api.fly.dev` answers as an unrelated app, so the name `recall-api` may be taken: pick a free name and update `fly.toml` and the app's `EXPO_PUBLIC_API_URL`. |
 | Cloudflare R2 | Attachments | Pay as you go | Location hint: Eastern North America | Not created. |
 | OpenRouter | Chat models | Prepaid credits with auto top-up | — | Dev key in `apps/api/.env`. |
-| OpenAI | Speech to text, read aloud, live talk | Pay as you go with a monthly limit | — | |
+| OpenAI | Speech to text, read aloud | Pay as you go with a monthly limit | — | |
 | Tavily | Web search, reference photos | A plan sized to search volume | — | |
 | Resend | Transactional email | Free tier until volume needs more; verify the sending domain | — | |
 | RevenueCat | Plus and Pro subscriptions | Free until its revenue threshold | — | |
@@ -200,7 +200,7 @@ exact production web origin and only the headers used by presigned uploads.
 | `GOOGLE_CLIENT_ID` | yes | Google Sign-In (ID-token audience) |
 | `APPLE_TEAM_ID`, `APPLE_KEY_ID`, `APPLE_PRIVATE_KEY` | for App Review 5.1.1(v) | A Sign in with Apple key (Apple Developer → Keys); `APPLE_PRIVATE_KEY` is the `.p8` contents. Account delete revokes the user's Apple grant with it. Unset: delete still works, boot logs a warning |
 | `OPENROUTER_API_KEY` | yes | Chat + composer STT (`gpt-transcribe`) |
-| `OPENAI_API_KEY` | Live Talk only | WebRTC Realtime; OpenRouter has no Realtime API |
+| `OPENAI_API_KEY` | if voice | Voice input and read-aloud call OpenAI directly |
 | `CORS_ORIGINS` | yes | Explicit origins, never `*` |
 | `REVENUECAT_WEBHOOK_AUTH` | yes | Shared secret for the webhook |
 | `REVENUECAT_SECRET_KEY` | yes | REST API; every access change, TRANSFER, plan sync, hourly reconcile |
@@ -208,7 +208,7 @@ exact production web origin and only the headers used by presigned uploads.
 | `REVENUECAT_PLUS_ENTITLEMENT_ID` | no (default `plus`) | Lower paid plan's entitlement |
 | `TAVILY_API_KEY` | if web search | |
 | `TRUST_X_FORWARDED_FOR` | yes (set in `fly.toml` `[env]`) | `true` behind Fly. Unset, every per-IP rate limit keys on Fly's proxy address and becomes one global bucket; production boot logs a warning. |
-| `DAILY_GLOBAL_SPEND_USD` | yes | UTC-day provider $ cap (every model call, images, voice, live talk); must be > 0. At the cap new chat turns are refused: see [Load and abuse limits](#load-and-abuse-limits) |
+| `DAILY_GLOBAL_SPEND_USD` | yes | UTC-day provider $ cap (every model call, images, voice); must be > 0. At the cap new chat turns are refused: see [Load and abuse limits](#load-and-abuse-limits) |
 | R2 vars | yes | See §3 |
 | `RESEND_API_KEY` | if email | Without it nothing is emailed (§8) |
 
@@ -299,7 +299,6 @@ copy change. The server only knows the ids `free`, `plus`, `pro`.
 | Voice input / day | — | 200 | 200 |
 | Natural read-aloud / day | — (phone voice only) | 100 | 100 |
 | AI images / day | 3 | 10 | 15 |
-| Live talk | — | — | 60 min / UTC calendar month |
 
 Every number is a setting in `core/settings/plans.py` (`<NAME>`, `<NAME>_PLUS`,
 `<NAME>_PRO`; see `apps/api/.env.example`). A metered feature belongs to a plan
@@ -339,32 +338,13 @@ the app shows the store's localized price from the RevenueCat offering.
    no rows change), deploy the API, then ship the app build with the new
    offering. An older app build still sees Pro correctly; it does not offer Plus.
 
-### Live talk minutes
-
-The phone talks to OpenAI over WebRTC after the server mints a session, so the
-server meters at its own edges: a mint reserves `min(minutes left,
-LIVE_TALK_MAX_SESSION_SECONDS)` (refused under `LIVE_TALK_MIN_SESSION_SECONDS`),
-the session may save turns and use voice tools only for that reservation, the
-phone hangs up when it ends, and `POST /speech/live/end` settles it to the time
-the server measured (never refunding more than was reserved). A phone that
-never reports keeps the whole reservation charged. The global spend counter
-follows the same reservation: a mint adds the reserved minutes at
-`LIVE_TALK_SPEND_USD_PER_MINUTE` ($0.20, `services/quota/spend.py`) and the
-end report gives back the unused part, so saved turns add no spend. A session
-may save one turn per 5 reserved seconds (at least 12) and a user 20 turns a
-minute; past either, `POST /speech/live/persist` answers 429. Known limit: the
-server cannot hang up the OpenAI call itself, so a modified client could keep
-talking past its reservation (nothing is saved, no tools); that time is not
-on the spend counter.
-
 ### QA (sandbox / test track)
 
-- [ ] Free: mic and live talk open the plans; read-aloud uses the phone voice;
+- [ ] Free: the mic opens the plans; read-aloud uses the phone voice;
       3 AI images, then the limit message
-- [ ] Buy Plus: voice input and read-aloud work, live talk opens the plans,
+- [ ] Buy Plus: voice input and read-aloud work,
       Settings shows Plus and "Upgrade to Pro"
-- [ ] Plus → Pro: one subscription in the store afterwards; live talk works and
-      Settings shows minutes left; a 2-minute call takes about 2 minutes
+- [ ] Plus → Pro: one subscription in the store afterwards; Settings shows Pro
 - [ ] Pro → Plus (store downgrade): Pro until renewal, then Plus
 - [ ] Cancel, let it expire: back to Free on the next request
 - [ ] Refund (support): back to Free; restore on a second device; sign in as a
@@ -412,14 +392,14 @@ permission. Changing any of it is a native change (bump `version`, new build).
 - **iOS purpose strings** live in `ios.infoPlist`, and every config plugin that
   writes the same key carries the same text (`lib/__tests__/appStoreConfig.test.ts`
   checks this), because the plugins' order decides which text wins. One
-  microphone string covers dictation and Live Talk; one camera string covers
+  microphone string covers dictation; one camera string covers
   photo attachments and the maths scanner.
-- **No background audio.** Read-aloud stops and Live Talk hangs up when the app
+- **No background audio.** Read-aloud stops when the app
   leaves the foreground, so `expo-audio` has `enableBackgroundPlayback: false`:
   no `UIBackgroundModes` on iOS, no foreground service on Android.
 - **Not declared:** Face ID, Always location and Android media read access
   (`READ_MEDIA_*`; saving to the gallery is write-only and the photo picker needs
-  none), plus WebRTC's `SYSTEM_ALERT_WINDOW` and `BLUETOOTH`
+  none), plus `SYSTEM_ALERT_WINDOW` and `BLUETOOTH`
   (`android.blockedPermissions`). `NSMotionUsageDescription` stays, saying the
   app does not use motion: `expo-location` links Core Motion, and App Store
   Connect rejects an upload whose binary uses an API without its purpose string
@@ -456,9 +436,8 @@ permission. Changing any of it is a native change (bump `version`, new build).
       Policy and third-party AI processing of chats and voice, with both links
       beside it; that tap is the user's permission for guideline 5.1.2(i), and
       the server records it with the sign-in. Chat, memory, to-dos
-      and the maths scanner work on Free. Voice input and read-aloud need Plus
-      and Live Talk needs Pro: buy them with the sandbox account (no charge)
-      to test the microphone features.
+      and the maths scanner work on Free. Voice input and read-aloud need Plus:
+      buy it with the sandbox account (no charge) to test the microphone features.
 - [ ] **After the first upload**, watch App Store Connect email for
       **ITMS-91053** (the binary uses a required-reason API that no privacy
       manifest declares). If it names an API category, add it with the right
@@ -487,7 +466,7 @@ every row, and the manifest says `NSPrivacyTracking: false`.
 | Location → Precise Location | Yes | No | App Functionality | A nearby or "where am I" message carries the phone's coordinates; when the phone finds no place name, the label sent is the coordinates to four decimals, which reaches the model and the web search |
 | Location → Coarse Location | Yes | No | App Functionality | The city, region and country saved while Use current location is on |
 | User Content → Photos or Videos | Yes | No | App Functionality | Attached photos, maths scans, the profile photo |
-| User Content → Audio Data | Yes | No | App Functionality | Voice input and Live Talk (sent to OpenAI; Recall keeps the text, not the audio) |
+| User Content → Audio Data | Yes | No | App Functionality | Voice input (sent to OpenAI; Recall keeps the text, not the audio) |
 | User Content → Other User Content | Yes | No | App Functionality, Product Personalization | Messages, chats, memory, to-dos, attached files, custom instructions, thumbs-up/down feedback |
 | Identifiers → User ID | Yes | No | App Functionality, Analytics | The account id, also RevenueCat's app user id; product events are stored under it |
 | Identifiers → Device ID | Yes | No | App Functionality, Analytics | This install's id (`lib/installationId.ts`), sent with the push token and product events; the push token |
@@ -709,9 +688,7 @@ UTC day (Redis `spend_musd:<date>`, `core/spend_counter.py`). What adds to it:
   compression, follow-up questions, attachment OCR, embeddings,
   the reference resolver, maths extraction;
 - a fixed price per call for images, photo lookup, scan reads, voice input and
-  read-aloud (`services/quota/spend.py`);
-- live talk by time: the reserved minutes at mint, settled at
-  `POST /speech/live/end` ([§4b](#live-talk-minutes)).
+  read-aloud (`services/quota/spend.py`).
 
 Once the day's total reaches the cap, until 00:00 UTC:
 
@@ -720,7 +697,7 @@ Once the day's total reaches the cap, until 00:00 UTC:
   today, so new messages are paused for everyone. Try again after midnight
   UTC."}`. It has no `quota_exceeded` code, so the phone shows that text and
   not its upgrade prompt (the user's own allowance is not used up);
-- image generation, photo lookup, voice, live talk and scan reads answer 429
+- image generation, photo lookup, voice and scan reads answer 429
   "… temporarily unavailable";
 - background model jobs, the tool loop and follow-up questions are skipped.
 
@@ -751,7 +728,7 @@ Each finalized chat turn logs `turn_cost … est_cost_usd=…` and accumulates
 `usage_daily.est_cost_usd` from catalog prices × **raw** input/output tokens
 (not quota-weighted). Apply migration `0061_usage_daily_est_cost_usd` before
 relying on the column. It holds chat turns only: background model calls,
-images, voice and live talk count on the Redis spend counter
+images and voice count on the Redis spend counter
 ([Spend and daily tokens](#spend-and-daily-tokens)), not here.
 
 **Spend for one user in the current UTC month:**

@@ -221,25 +221,6 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   transcribes via OpenAI `gpt-4o-mini-transcribe`, and injects the transcript as normal text. Plus
   and Pro, **200/day**; on Free the mic opens the plans (the server refuses Free with 403). Not
   available in Expo Go.
-- ✅ **Live talk (Pro)** — waveform on the composer opens a **WebRTC**
-  speech-to-speech session (OpenAI Realtime `gpt-realtime-2.1`). Server VAD
-  ends your turn; the orb never shows “Transcribing…”. Physical devices enable
-  echo cancellation and barge-in; iOS Simulator retains half-duplex. Free and Plus
-  open the plans. Pro: **60 minutes per UTC calendar month**. Each session reserves up to
-  15 minutes at mint (refused under 1 minute left), the phone hangs up when its reservation
-  ends, and `POST /speech/live/end` settles the reservation to the time the server measured
-  (a session that never reports keeps the whole reservation). Settings → Account shows the
-  minutes left. Tap the mic (next to close) to mute so Recall
-  cannot hear you; it turns red. Playback is not paused. No Listening/Speaking
-  labels on screen; screen readers hear each phase (listening, thinking, speaking) as
-  it changes. A denied microphone asks for access with Open Settings. The normal composer stays so you can type and attach in voice mode.
-  Typing a draft hides mute and close so the field uses the full row; they
-  return when the draft is empty. Spoken turns are saved as normal chat
-  messages (what you said + the reply) so they are in the thread when you
-  close. Spoken sessions get the same stored-memory snapshot as text chat
-  plus bounded read-only memory lookup and web search.
-  Search sources use the existing reply chips. The chat header (drawer / ⋮) stays
-  available. Needs `OPENAI_API_KEY` — OpenRouter has no Realtime API.
 - ✅ **Read aloud (TTS)** — defaults to OpenAI **gpt-4o-mini-tts** PCM
   (`POST /speech/tts` lead then rest, rest bound to the lead hash so it cannot steal
   another utterance's unbilled quota) and starts playback on the first sentence.
@@ -872,7 +853,7 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   Every signed-in screen waits on it (the root layout's
   `features/auth/components/AiConsentRedirect.tsx` sends it to `app/consent.tsx`); the web
   client keeps its own consent screen after sign-in. The server holds the same line (`core/consent.py`): a
-  chat turn (WebSocket and SSE), speech (transcribe, read aloud, a live talk key or tool) and a
+  chat turn (WebSocket and SSE), speech (transcribe, read aloud) and a
   scan read-back are refused with `consent_required` (an error frame with
   `user_message_saved: false`, or HTTP 403) until the account agrees, and the phone answers it
   with the consent screen (any feature hands it on with `notifyConsentRequired()`,
@@ -902,9 +883,9 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
 ## 12. Monetization
 - ✅ **Three plans** — `users.plan` is `free` | `plus` | `pro` (display names "Plus" / "Pro"
   live in i18n only, `plans.*`). Free: every model in the free pool, 3 AI images a day, no
-  voice input, no natural read-aloud, no live talk. Plus: every model, Pro-size daily limits,
-  voice input and read-aloud, 10 images a day, no live talk. Pro: everything in Plus, 15
-  images a day and 60 live talk minutes a month. Prices live in the stores; the app shows
+  voice input, no natural read-aloud. Plus: every model, Pro-size daily limits,
+  voice input and read-aloud, 10 images a day. Pro: everything in Plus and 15
+  images a day. Prices live in the stores; the app shows
   the offering's localized price. One place decides: `modules/billing/entitlements.py`.
 - ✅ **Subscriptions (RevenueCat)** — mobile purchase flow via lazy-loaded `react-native-purchases`
   (dev/production builds only; skipped in Expo Go). Two entitlements (`plus`, `pro`; `pro`
@@ -921,7 +902,7 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   every paid row. `GET /billing/plans` gives the paywall each plan's features and numbers.
 - ✅ **Plans sheet** — free sees Plus and Pro side by side; Plus sees the step up to Pro; a
   purchase whose server refresh fails says the plan will update (never "purchase failed").
-  Settings → Account shows the plan, live talk minutes left (Pro) and "Upgrade to Pro" (Plus).
+  Settings → Account shows the plan and "Upgrade to Pro" (Plus).
 - ✅ **Dev plan toggle** — the plans sheet shows **Enable Plus / Enable Pro (dev only)**
   (development builds only; `POST /auth/me/pro-dev?plan=`).
 - 🔜 App Store / Play billing polish, promotional offers, family plans.
@@ -1005,17 +986,14 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   words only Spanish, French, German, Italian, Portuguese or Turkish use; any English to-do
   word keeps a mixed message English. A message with no language of its own ("a las 5",
   "17:00", "sí") follows the user's previous message, then their app language, so the
-  answer to a question asked in Spanish never writes either. Live talk follows the same
-  rule: speech in another language never saves a reminder.
+  answer to a question asked in Spanish never writes either.
 - ✅ **LLM todo sync** — ` ```reminder ` fences and the spoken rules become reminder cards
   (above); with cards off they apply on persist (create + mutations), and a background job
   recovers missed writes from chat (dated items only). The job is off while cards are on,
   since it would write without one. Injects
   Schedule + overdue summary into the system prompt. “What time is my flight / meeting /
   …” loads Schedule on the first turn. Typed “remind me …” also classifies
-  as a Schedule turn. Live Talk injects a compact Schedule snapshot and applies the same
-  clocked “remind me … today/tomorrow at …” persist heuristic (no invented times; tools
-  stay read-only).
+  as a Schedule turn.
 - ✅ **Due dates** — `due_at` on items; mobile date/time picker on Reminders; relative
   labels in prompts (overdue, due today, due in N days); user timezone synced from
   device (`users.timezone`).
@@ -1325,7 +1303,6 @@ magic-byte validation, daily caps). Blobs never live in Postgres.
 | PDF / doc upload + server text extract into prompt | ✅ Text-layer PDFs / DOCX + scanned-PDF OCR (page render → vision) |
 | PDF inline preview (pdf.js WebView, dev build) | ✅ Shipped |
 | Audio in (Whisper STT → composer) | ✅ Shipped (dev build) |
-| Live talk (speech-to-speech, Pro, 60 min/month) | ✅ WebRTC + OpenAI Realtime; physical-device barge-in implemented, live validation pending; Simulator half-duplex |
 | Audio out (read aloud) | ✅ Cloud TTS + device `expo-speech` fallback (no mic required; 502 ≠ API down) |
 | Music generation (composer send + compact inline player) | 🔜 Later (Pro + daily cap; not TTS) |
 | pgvector RAG over **this chat’s** attachments | ✅ Shipped (`attachment_rag`; flag on by default; not a user-wide corpus) |
@@ -1387,7 +1364,7 @@ with durable memory and everyday productivity.
 | Memory that compounds | User facts + past-chat RAG — the namesake |
 | Utility beyond chat | Schedule, reminders |
 | Trust & control | Export, delete account, confirm-before-write cards, quota transparency |
-| Monetize fairly | Free tier with limits; Plus for voice; Pro adds live talk |
+| Monetize fairly | Free tier with limits; Plus for voice |
 
 ### Release plan
 | Phase | Scope | Status |
@@ -1425,7 +1402,6 @@ drawer FTS search ✅.
 | Shipped | Not done |
 |---------|----------|
 | Record → OpenAI `gpt-4o-mini-transcribe` → composer (app-language hint, no-speech gate) | Live provider verification |
-| Live Talk WebRTC + OpenAI `gpt-realtime-2.1` (Pro, 60 min/month; server VAD, physical-device barge-in, bounded read-only tools; Schedule snapshot + clocked reminder persist off audio path). Needs `OPENAI_API_KEY`. | Physical-device echo/interruption checks; heard-word transcript alignment |
 | Device TTS + cloud TTS (`POST /speech/tts` lead/rest JSON, daily caps) | — |
 
 ### Cost guards (recent)
@@ -1435,7 +1411,6 @@ drawer FTS search ✅.
 | Speech transcriptions/day | 0 (not included) | 200 | 200 |
 | Speech TTS (read aloud)/day | 0 (phone voice only) | 100 | 100 |
 | AI images/day | 3 | 10 | 15 |
-| Live talk | not included | not included | 60 min/month |
 | Tavily searches/day | 20 (then DDG only) | 150 | 150 |
 | R1 / smart-chat quota weight | 3.5× token charge | Same | Same |
 

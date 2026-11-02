@@ -13,7 +13,7 @@ Do not review or extend the app from the historical MVP screen list. Use **Domai
 
 ## Golden Rules (read first)
 
-1. **Never put provider API keys in the mobile app.** Keys live only in the backend `.env`. The app talks only to our API, with one exception: live talk sends its WebRTC offer to OpenAI's realtime endpoint with a short-lived client secret the backend mints (`apps/mobile/features/speech/model/realtimeSdp.ts`); the permanent key never leaves the server.
+1. **Never put provider API keys in the mobile app.** Keys live only in the backend `.env`. The app talks only to our API.
 2. **Use product model aliases, never provider names**, in app/business code: `free-chat`, `smart-chat`, `title-model`, `memory-model`. Alias → provider mapping lives in `models/model_catalog.py` (runtime availability: `services/model_health.is_available`) (LiteLLM calls go through `gateways/litellm_gateway.py`).
 3. **Never send full chat history to the model.** Build context from injected memory + the recent window (default hard cap 20 messages; token budget also trims) only.
 4. **Topic generation, memory extraction, and other post-turn work are best-effort background jobs.** They must never raise into the chat request path or block streaming. Enqueue from `modules/chat/post_turn.py` via `core/jobs/`.
@@ -43,7 +43,7 @@ Do not review or extend the app from the historical MVP screen list. Use **Domai
 
 **Owned tool loop, on by default:** module-owned adapters (`web_search`, `sympy`, `generate_image`, `search_image`) register through `gateways/mcp/` and run via `modules/chat/tool_loop/`. `mcp_tool_loop_enabled` defaults to `true` (it is the loop's kill switch: off, nothing searches). Heuristic SymPy still runs before the stream; web search is the loop's. A turn the loop leaves alone offers `web_search` to the reply's own model call (`tool_loop/reply_calls.py`, `reply_search_tool_enabled`): the model answers, or searches and answers in a second call. See `docs/math.md` and `FEATURES.md` §16.
 
-**Not in scope (v1):** execution of non-web code or execution outside the sandboxed preview WebView; multi-user/teams; full duplex / interruptible voice; arbitrary user MCP servers. Attachment RAG, chat-history RAG, and live talk (Pro, monthly minutes) are shipped. `apps/web` is slice 1 only (login + chat SSE); remaining web surfaces are deferred.
+**Not in scope (v1):** execution of non-web code or execution outside the sandboxed preview WebView; multi-user/teams; full duplex / interruptible voice; arbitrary user MCP servers. Attachment RAG and chat-history RAG are shipped. `apps/web` is slice 1 only (login + chat SSE); remaining web surfaces are deferred.
 
 ## Architecture
 
@@ -118,7 +118,7 @@ What exists in code today. Product caveats: FEATURES.md.
 |--------|-----|--------|
 | Auth / account | `modules/account/` (HTTP `/auth`: sign-in, sessions, profile, settings proposals, export, delete); per-request token check in `core/access_tokens.py` | `features/auth/` (login, onboarding), `features/account/` (settings screens); `app/login.tsx`, `onboarding.tsx`, `app/settings/*` routes only |
 | Chat history | `modules/chat/` (HTTP `/chats`) | drawer history; `features/chat/api.ts` |
-| Chat stream | `modules/chat/` (`ws_api.py` WebSocket, `stream_api.py` SSE; `stream_entry.py`, `turn_deps.py`, `turn_prep/`, `stream_pipeline.py`, `stream_paths.py`, `finalize_passes.py`, `turn_settle.py`, `post_turn.py`; a picture, photo lookup or voice turn saves through conversation's `turn_record` and chat's `finish_turn`) | `features/chat/` (`screens/ChatScreen.tsx`, `hooks/useChat*.ts`, `components/`, `model/` stream, socket and cache); `app/index.tsx` route only |
+| Chat stream | `modules/chat/` (`ws_api.py` WebSocket, `stream_api.py` SSE; `stream_entry.py`, `turn_deps.py`, `turn_prep/`, `stream_pipeline.py`, `stream_paths.py`, `finalize_passes.py`, `turn_settle.py`, `post_turn.py`; a picture or photo lookup turn saves through conversation's `turn_record` and chat's `finish_turn`) | `features/chat/` (`screens/ChatScreen.tsx`, `hooks/useChat*.ts`, `components/`, `model/` stream, socket and cache); `app/index.tsx` route only |
 | Memory | `modules/memory/` (HTTP `/memories`, `/memories/documents`, `/memories/instruct`) | `features/memory/`; `app/memory/` routes only (list + `[key]` page) |
 | Models / quota | `routers/models.py`, `models/model_catalog.py`, `services/quota/`; the user's pool in `modules/billing/plan.py`, Auto's pick and the reasoning pass in `modules/chat/model_routing/` | `features/account/screens/ModelsSettingsScreen.tsx` (settings only, no composer picker; with Auto off it names and sets the model messages use) |
 | Search | `modules/search/` (HTTP `/search`) | `features/search/`; drawer search |
@@ -132,7 +132,7 @@ What exists in code today. Product caveats: FEATURES.md.
 | Chat-history RAG | `modules/conversation/history_rag.py` (snippets in `modules/conversation/chunks_repository.py`), `background/message_indexing.py` | (prompt inject only; no extra UI) |
 | Image gen (every plan, daily cap) | `modules/images/` (HTTP `/images/generate`; `/images/intent` answers what a composer send is, read by `intent.py`, the chat turn's own reader) | `features/images/`; composer send only, when `/images/intent` answers a picture (`features/images/model/imageIntentPrefilter.ts` only decides whether to ask) |
 | Reference-photo lookup (free+Pro) | `gateways/image_search_gateway.py` (Tavily), `modules/images/` (`search`, `lookup_intent`, `search_tool`, `answer_photo`: a photo above an answer about something worth seeing) | `features/images/`; a lookup is a chat send, read before image-gen intent by `modules/images/intent.py` |
-| Speech STT/TTS + live talk | `modules/speech/` (HTTP `/speech`) | `features/speech/`; composer mic and live talk |
+| Speech STT/TTS | `modules/speech/` (HTTP `/speech`) | `features/speech/`; composer mic and read-aloud |
 | Web search | `modules/web_search/`, `gateways/web_search_*.py` | source chips under replies |
 | Math (SymPy) | `modules/math/` (`match/`, `tools/`, `solve/`, `fence.py`; HTTP `/math/scan/read`; the SymPy process pool is `core/sympy_executor.py`). Lessons, check my work (`work_check`), word problems (`word_problem`) | `MathText` / `MathView` / `geometry` / `graph`; scanner `features/scanner/` (camera, crop, read-back review) |
 | Physics | `modules/physics/` (`catalog/`, `extractors/`, `solvers/`, `extract.py`, `solver.py`, `block.py`, `direct.py`; HTTP `/physics/scan/read`); its law-catalog engine is shared in `services/law_binding/` | same fences; `simulation` scenes (`components/rich/SimulationBlock.tsx`) and diagrams (`components/rich/diagrams/`: circuit, rays, wave); scanner read-back |
@@ -186,7 +186,7 @@ New chat-loop code → `modules/chat/`. Both transports call `stream_entry.py` w
 8. Persist assistant + usage in a finalize task (`turn_settle.py`)
 9. `enqueue_post_turn_jobs` (`post_turn.POST_TURN_JOBS`, in order) — memory, lesson_progress (after a lesson reply: the chat's one "Learning X: reached Lesson N" memory line, no LLM), topic, compress, message_index (best-effort; must not raise into the stream). A turn's documents get `attachment_index` earlier, as soon as the user's message commits (`turn_prep/persist.py`), so a turn that ends without a reply still indexes them
 
-Steps 6–8 are the only ones on the user's critical path. Everything in step 9 is a durable Redis-Stream job. A turn chat does not stream (a picture or photo intercept, `/images/generate`, live talk) saves its rows through conversation's `turn_record.add_turn_message`, which moves the chat up the drawer, and chat's `finish_turn` (`post_turn.py`) enqueues the same step-9 jobs.
+Steps 6–8 are the only ones on the user's critical path. Everything in step 9 is a durable Redis-Stream job. A turn chat does not stream (a picture or photo intercept, `/images/generate`) saves its rows through conversation's `turn_record.add_turn_message`, which moves the chat up the drawer, and chat's `finish_turn` (`post_turn.py`) enqueues the same step-9 jobs.
 
 **Jobs registered in** `background/handlers.py`: `topic`, `memory`, `memory_consolidate`, `memory_history_scan`, `lesson_progress`, `compress`, `transactional_email`, `attachment_index`, `message_index`, `storage_sweep`, `account_sweep_backstop` (a deleted account's sweep, scheduled inside the delete's transaction; it skips while the account exists).
 
@@ -380,7 +380,7 @@ Neon · Upstash Redis · LiteLLM (OpenRouter) · Google OAuth · Apple Sign-In �
 
 **Database — Neon (serverless Postgres), chosen over Supabase:** we run our own backend, auth (Google/JWT/Apple), and object storage (R2 in production), so we only need a database — not a BaaS bundle (auth/storage/realtime) we wouldn't use. Neon's usage-based pricing + scale-to-zero is cheaper at our scale, branching helps CI/preview, it's plain Postgres (portable, good for the future web client), and `pgvector` runs in the **same DB** for memory embeddings, attachment RAG, and chat-history RAG.
 
-**Shipped beyond the original MVP week:** todos/reminders, attachments + RAG, chat-history RAG, image gen, STT/TTS, live talk, web search, math/physics/geometry/graph, chemistry, rich fences, Pro/RevenueCat, push, Fly `api`/`worker` split, owned MCP tool loop (on by default), web slice 1. Full catalog: FEATURES.md. The dedicated language-learning product and the Google Calendar/Gmail integrations have been removed (migration `0106`).
+**Shipped beyond the original MVP week:** todos/reminders, attachments + RAG, chat-history RAG, image gen, STT/TTS, web search, math/physics/geometry/graph, chemistry, rich fences, Pro/RevenueCat, push, Fly `api`/`worker` split, owned MCP tool loop (on by default), web slice 1. Full catalog: FEATURES.md. The dedicated language-learning product and the Google Calendar/Gmail integrations have been removed (migration `0106`).
 
 **Later:** remaining web slices, user MCP servers, LiteLLM Proxy. Not “missing from CLAUDE.md” — deferred on purpose.
 

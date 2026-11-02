@@ -291,7 +291,7 @@ Use a real model (not `MOCK_LLM_ENABLED`). Memory must be on in Settings.
 | 19.5 | Attach a photo (library and camera) and a PDF | ☐ | Pickers open as popovers or sheets and return the file. |
 | 19.6 | Chat ⋮ → Share, a photo's ⋮ → Save, and export to PDF | ☐ | iPad share sheets need an anchor: the sheet opens from the button and never crashes. |
 | 19.7 | Maths scanner: capture → Solve | ☐ | Camera preview fills the frame in both orientations. |
-| 19.8 | Mic dictation; Live Talk (Pro sandbox) | ☐ | Both prompts show the microphone text from 20.1. |
+| 19.8 | Mic dictation | ☐ | The prompt shows the microphone text from 20.1. |
 | 19.9 | Plan sheet: buy Plus in the sandbox, then restore | ☐ | Prices load; both buttons enabled. |
 | 19.10 | Settings pages and the time and date pickers | ☐ | Dialogs centred; tap targets at least 44 pt. |
 
@@ -303,28 +303,13 @@ Checks only a release build shows. A dev build carries dev-launcher keys and dif
 
 | # | Test | iOS | Android | Notes |
 |---|------|-----|---------|-------|
-| 20.1 | First mic use (dictation) | ☐ | ☐ | iOS prompt: "Recall uses the microphone so you can dictate messages and talk with Recall in Live Talk." Never "Allow Recall to access your microphone". |
+| 20.1 | First mic use (dictation) | ☐ | ☐ | iOS prompt: "Recall uses the microphone so you can dictate messages." Never "Allow Recall to access your microphone". |
 | 20.2 | First camera use: attach a photo, and the maths scanner | ☐ | ☐ | iOS prompt: "Recall uses the camera so you can take photos to attach in chat and scan math problems from your notes or worksheets." |
 | 20.3 | Location question ("where am I?") | ☐ | ☐ | While-in-use prompt only; iOS never offers "Always". No Face ID or Motion prompt anywhere. |
 | 20.4 | First launch | ☐ | n/a | No "find and connect to devices on your local network" prompt. |
-| 20.5 | Read-aloud, then press Home; start Live Talk, then press Home | ☐ | ☐ | Read-aloud stops; Live Talk hangs up. No audio keeps playing; Android shows no media notification. |
+| 20.5 | Read-aloud, then press Home | ☐ | ☐ | Read-aloud stops. No audio keeps playing; Android shows no media notification. |
 | 20.6 | Save a chat image (Android 13+), and on an Android 10–12 device | ☐ | ☐ | 13+: saves with no permission prompt. 10–12: the storage prompt appears once, then it saves. Photo attach works with no media permission on 13+. |
 | 20.7 | App Store Connect / Play Console processing | ☐ | ☐ | No ITMS-90683 or ITMS-91053 email; Play shows no foreground-service or photo/video permission declaration request. |
-
----
-
-## 21. Live Talk (Pro, dev build on a physical device)
-
-FEATURES calls device barge-in a release gate. Simulator Live Talk is half-duplex.
-
-| # | Test | iOS | Android | Notes |
-|---|------|-----|---------|-------|
-| 21.1 | Start | ☐ | ☐ | Pro account: tap the waveform. Start chime, then the orb; say a sentence and Recall answers aloud. Close: both turns are in the chat as messages. |
-| 21.2 | Mute | ☐ | ☐ | Tap the mic: it turns red and Recall does not hear you; tap again and it does. |
-| 21.3 | Barge-in | ☐ | ☐ | Talk over Recall while it speaks: playback stops at once, the cut reply reads "Generation stopped.", and your new turn is answered. |
-| 21.4 | Airplane mode mid-session | ☐ | ☐ | Turn airplane mode on while Recall talks: an error shows and no audio keeps playing; close Live Talk. Back online: the turns so far are in the chat, and Settings → Account minutes dropped by at most the session's reservation (15 min; a session whose end never reached the server keeps it). |
-| 21.5 | Microphone denied | ☐ | ☐ | Turn Recall's microphone off in system Settings, start Live Talk: "Microphone access needed" with Open Settings (opens Recall's settings page), never "needs a dev build"; no minutes are used. |
-| 21.6 | VoiceOver / TalkBack | ☐ | ☐ | The orb reads "Live talk, listening" / "Live talk, thinking" (hint "Cancel waiting") / "Live talk, Recall is speaking", and each change is announced. There is still no Listening/Speaking text on screen. |
 
 ---
 

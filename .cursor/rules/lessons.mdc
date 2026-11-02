@@ -408,53 +408,6 @@ Skip obvious UI polish (colors, icon choice, spacing, copy). Format each as
   `Image` + Bearer headers, but `downloadAsync` / `createDownloadResumable`
   cannot pull authed `/attachments/{id}/file`. Fetch bytes (`fetchAttachmentBase64`)
   and `writeAsStringAsync` Base64 into the cache, then share the `file://` URI.
-- **Live Talk UI chime silenced the mic / GPT Audio.** `setAudioModeAsync`
-  before WebRTC `getUserMedia` leaves Simulator capture dead. A leftover
-  `createAudioPlayer` also keeps the session in playback, so the assistant
-  has no speaker. Play the open chime from `open()`, `remove()` the player,
-  then connect; close WebRTC before the end chime. Overlay animation only
-  — never `setAudioModeAsync` for those cues.
-- **Live Talk echo loop, mid-sentence cuts, then 34s of silence.** Simulator
-  RemoteIO has no AEC, so speaker audio is VAD’d as the user; `create_response:
-  true` starts a new reply from that echo. `response.done` is not end of
-  playback. A client `session.update` of nested `audio.input` replaced the
-  input object and killed VAD. Mint `create_response`/`interrupt_response`
-  false with threshold 0.5; never `session.update` from the app; unmute on
-  `output_audio_buffer.stopped` + 500ms tail, not `response.done`.
-- **Live Talk overlay up, no answer after a reload.** Fast Refresh kept
-  `visible` and dropped the WebRTC peer, so the UI looked live with no mic.
-  Reset the overlay on mount when there is no session. Do not let expo-audio
-  `setAudioModeAsync` run before getUserMedia after TTS — capture stays silent.
-- **Live Talk connected then went silent.** `useEffect(() => close, [close])`
-  re-ran whenever `close`’s identity changed (status / new chat id) and tore
-  down the WebRTC peer right after `setRemoteDescription`. Unmount-only
-  cleanup via a `close` ref; keep the session unless open-generation changed.
-- **Live talk device TTS stole GPT Audio.** Client spoke the transcript
-  with expo-speech as soon as assistant text arrived, which blocked clip
-  playback (`playbackStarted`). Play GPT Audio clips as the voice; device
-  TTS only if no clip arrives. Do not start Siri on assistant SSE.
-- **Live talk “fixed” clip waits and still spoke late / not at all.** Server
-  PCM was ready in ~1s (`play()` logged at ~150ms) but expo-audio file
-  splices stayed silent on simulator; Whisper also returned empty on 6s
-  WAVs. Speak the assistant transcript with expo-speech when clips are
-  not the voice yet; do not skip STS when Whisper hears nothing.
-- **Live talk still spoke after ~60s though the API had PCM in ~1s.**
-  Clips play strictly in series and waited up to 20s each when
-  `didJustFinish` / duration never arrived. Cap each splice to the WAV
-  length (max 2.5s) and treat `playing` false as finished.
-- **Live talk cancel left an empty chat after a spoken turn.** No-speech
-  timeout uploaded silence (Whisper empty, no user SSE). Cancel bumped
-  sessionGen so later events were dropped, and skip-load never GET
-  `/messages`. Do not upload when the meter never heard speech; fail closed
-  on empty Whisper; persist the user row as soon as Whisper returns; keep
-  transcript events after cancel and refetch if the stream aborts.
-- **Live talk spoke after ~60s, crackled, user line appeared late, stayed
-  Untitled.** Whisper + GPT Audio shared the OpenRouter key (STS waited on
-  the 60s transcribe timeout). Tiny WAV splices + `didJustFinish` misses
-  clicked; wrapping a provider WAV as PCM was static. User SSE came after
-  audio; first-turn `handleFirstReply` used React `chatId` still null so
-  the topic poll never ran. Whisper first, unwrap WAV to PCM, clip wait
-  from the WAV duration, pass the ensured chat id into title poll.
 - **TTS rest stole another utterance's quota.** Follow-up Redis key was
   `user_id` only, so a second speak's `rest` consumed the first lead's
   unbilled budget. Store `clips:chars:lead_hash`; rest must send that hash
@@ -464,20 +417,6 @@ Skip obvious UI polish (colors, icon choice, spacing, copy). Format each as
   Stop *is* abort (close the fetch). New chat / leave must not `abort()`; latch
   `chatId` so leftover events cannot paint the next thread. Register the SSE
   producer with `register_inflight_stream` so `GET /messages` can wait like WS.
-- **Live talk abort skipped refund.** `body_iter` refunded in `except Exception`;
-  abort is `CancelledError` / `GeneratorExit`. Settle in `finally`: no audio →
-  refund; audio → clear pending + persist. Unsupported containers fail closed
-  (no Whisper+TTS echo). Client abort before the first `audio` event hits
-  `POST /live/refund`.
-- **Live talk waited 20s and left no chat.** `/speech/live/speak` drained the
-  full OpenRouter SSE, wrapped one WAV, then JSON; the client ignored
-  `transcript`. Stream WAV clips as PCM arrives, Whisper the user in
-  parallel, persist both sides as chat rows, play clips as they land.
-- **Live talk hid the chat hamburger.** Full-screen `Modal` is a new window, so
-  ChatHeader under it cannot open the drawer. In-tree overlay with `top:
-  headerInset` and `bottom: composerClearance` (0 header inset while the
-  drawer is open) so type/attach still work. Mute is the mic next to close
-  (red = model cannot hear); not the orb.
 - **Gallery `GET /attachments/{id}/file` 404 after a reboot.** List 200s from Neon, then each thumb 404s. Cause: local backend defaulted to `/tmp/recall-attachments`; macOS wipes `/tmp`, rows stay. Fix: store under `~/.recall/attachments` (`expanduser`); omit local rows whose blob is gone from the gallery list; log `attachment blob missing on disk` on `/file`.
 - **Repeat on New reminder did nothing.** Nested `AppSheet` is a second RN
   `Modal`; iOS will not present it over the add-reminder sheet. Put the
@@ -754,7 +693,6 @@ Skip obvious UI polish (colors, icon choice, spacing, copy). Format each as
   fences off the prompt; store them on `canonical_*` and append in
   `validate_math_fences`.
 - **Hard physics word problems stayed on DeepSeek Chat, and free Auto threw away smart-chat.** `needs_symbolic` only flags solver-supported templates (digit + drop/projectile/F=ma/energy), so incline/momentum/escape-velocity never escalated. Separately, when Auto wanted `smart-chat` and the free pool had none, `_pick_smart_from_pool` fell through to cheapest (`free-chat`) instead of strongest (`glm-4-flash`). Keep the solver gate on `needs_symbolic`; add a routing-only physics-homework cue; when the preferred tier is missing pick strongest in-pool; sort `chat_fallback_models` by tier proximity to the primary, then price.
-- **Live talk `POST /speech/live/speak` 502.** OpenAI `gpt-audio-mini` rejects `audio.format=wav` when `stream=true` (only `pcm16`) and only accepts `wav`/`mp3` input — Expo’s default m4a 400s. Stream pcm16 and wrap WAV; record LINEARPCM wav for live talk (composer mic can stay m4a for Whisper).
 - **Physics solver existed but free-fall stayed unverified; KE gained fake height.**
   The pre-stream gate had no physics cues, and a length regex matched `m` inside
   `m/s`. Gate supported templates explicitly; use unit-suffix boundaries and
