@@ -42,7 +42,7 @@ class Attachment(Base):
             postgresql_where=text("message_id IS NULL"),
         ),
         CheckConstraint(
-            "source IN ('upload', 'generated', 'search')", name="ck_attachments_source"
+            "source IN ('upload', 'search')", name="ck_attachments_source"
         ),
     )
 
