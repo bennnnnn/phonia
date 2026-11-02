@@ -12,7 +12,6 @@ import pytest
 from app.modules.chemistry.laws import LAWS
 from app.modules.chemistry.model_read import (
     chemistry_menu,
-    chemistry_needs_formula,
     chemistry_read_intent,
 )
 from app.services.law_binding.model_read import Stated
@@ -65,7 +64,6 @@ def test_every_bound_law_reads_back_but_the_named_ones() -> None:
 
 
 def test_a_law_about_a_substance_needs_its_formula() -> None:
-    assert chemistry_needs_formula("strong_acid_ph")
     stated = [Stated("concentration", 0.01, "mol/L")]
     assert chemistry_read_intent("strong_acid_ph", stated, None) is None
     # A weak acid is not the strong acid the law is about.

@@ -14,9 +14,10 @@ from pydantic import BaseModel
 from app.core.config import Settings
 from app.gateways import structured_completion
 from app.modules.chat.turn_prep.model_read_shadow import start_model_read_shadow
-from app.modules.chat.turn_trace import begin_turn_trace, emit_turn_trace, plain_record, turn_record
+from app.modules.chat.turn_trace import begin_turn_trace, emit_turn_trace, turn_record
 from app.modules.model_reader.schemas import GivenRead, LawRead, RouteRead
 from app.services import quota as quota_service
+from app.tests.turn_trace_support import plain_record
 
 _SPEED = "A car travels 120 m in 8 s. What is its average speed?"
 _ON: dict[str, Any] = {"model_reader_shadow_enabled": True, "model_reader_shadow_rate": 1.0}

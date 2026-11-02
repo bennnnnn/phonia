@@ -11,7 +11,6 @@ from redis.asyncio import Redis
 from app.core.config import Settings
 from app.core.sympy_executor import run_sympy
 from app.gateways import pubchem_gateway
-from app.modules import chemistry as chemistry_service
 from app.modules.chemistry.block import (
     VerifiedChemistry,
     build_verified_chemistry,
@@ -29,7 +28,7 @@ from app.modules.chemistry.request import (
     is_chemistry_question,
 )
 from app.modules.chemistry.schemas import ChemistryIntent
-from app.modules.chemistry.smiles import MAX_SMILES_LENGTH
+from app.modules.chemistry.smiles import MAX_SMILES_LENGTH, compute_descriptors
 from app.services.question_parts import ONE_PART_NOTE, asks_more_parts
 from app.services.workout import SELF_CHECK_PROMPT_RULE, WORKOUT_PROMPT_RULE
 
@@ -138,7 +137,7 @@ def _stoichiometry_ratio_hint(content: str) -> str | None:
 
 def _descriptor_block(smiles: str) -> str | None:
     try:
-        desc = chemistry_service.compute_descriptors(smiles)
+        desc = compute_descriptors(smiles)
     except Exception:
         logger.info("descriptor context failed for %r", smiles, exc_info=True)
         return None

@@ -1989,12 +1989,6 @@ async def test_regenerate_keeps_assistant_when_stream_empty(fake_redis):
         )
         stack.enter_context(
             patch(
-                "app.modules.web_search.is_short_letter_answer",
-                MagicMock(return_value=False),
-            )
-        )
-        stack.enter_context(
-            patch(
                 "app.modules.web_search.is_places_list_query",
                 MagicMock(return_value=False),
             )

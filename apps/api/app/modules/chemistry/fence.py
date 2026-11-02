@@ -12,11 +12,15 @@ import json
 import logging
 import re
 
-from app.modules import chemistry as chemistry_service
 from app.modules.chemistry.block import VerifiedChemistry
 from app.modules.chemistry.notation import typeset, typeset_json
 from app.modules.chemistry.schemas.scene import dump_scene
-from app.modules.chemistry.smiles import drawing_smiles
+from app.modules.chemistry.smiles import (
+    MoleculeProperties,
+    drawing_smiles,
+    generate_3d_coordinates,
+    validate_smiles,
+)
 from app.services.answer_check import correction_line, stated_verdict
 from app.services.answer_fence import (
     ANSWER_FENCE_LANGS,
@@ -58,7 +62,7 @@ def _extract_smiles_from_fence(body: str) -> tuple[str | None, str]:
         if not raw or len(raw) > 500:
             continue
         try:
-            props = chemistry_service.validate_smiles(raw)
+            props = validate_smiles(raw)
         except Exception as exc:
             # Not the line, nor the traceback: a validation error quotes its input.
             logger.info(
@@ -85,13 +89,13 @@ def _smiles_fence(smiles: str, caption: str = "") -> str:
     return f"```smiles\n{body}\n```"
 
 
-def _read_fence(body: str) -> tuple[chemistry_service.MoleculeProperties | None, str]:
+def _read_fence(body: str) -> tuple[MoleculeProperties | None, str]:
     """The validated molecule in a fence body and its caption; None when it cannot be read."""
     smiles, caption = _extract_smiles_from_fence(body)
     if smiles is None:
         return None, caption
     try:
-        props = chemistry_service.validate_smiles(smiles)
+        props = validate_smiles(smiles)
     except Exception:
         logger.info("chemistry fence validation failed for %r", smiles, exc_info=True)
         return None, caption
@@ -120,7 +124,7 @@ def _attach_molecule3d(body: str) -> tuple[str, bool]:
         return f"```smiles\n{body}```\n", False
     smiles_fence = _smiles_fence(props.smiles, caption)
     try:
-        coords = chemistry_service.generate_3d_coordinates(props.smiles)
+        coords = generate_3d_coordinates(props.smiles)
         if coords.sdf:
             title = props.formula or caption or "Molecule"
             mol3d_fence = f"\n```molecule3d\n{coords.sdf.rstrip()}\n{title}\n```\n"

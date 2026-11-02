@@ -43,8 +43,8 @@ from app.modules.chat.turn_trace import (
     note_subject,
     note_teaching,
     note_tool,
-    plain_record,
 )
+from app.tests.turn_trace_support import plain_record
 
 _SECRET = "my bank password is hunter2 and I live at 12 Elm St"
 _ALLOWED_KEYS = {
