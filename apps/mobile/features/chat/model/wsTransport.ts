@@ -217,7 +217,7 @@ export class ChatWsTransport {
     this.connectTimer = setTimeout(() => {
       if (!this.isCurrentSocket(socket)) return;
       this.socket = null;
-      this.backoff.fail();
+      this.backoff.fail("connect_timeout");
       this.finishConnect();
       this.options.onFallback({
         reason: "connect_timeout",

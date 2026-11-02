@@ -15,7 +15,7 @@ import { newRequestId, REQUEST_ID_HEADER, responseRequestId } from "@/lib/api/re
 import { CONSENT_REQUIRED_CODE, notifyConsentRequired } from "@/lib/api/consentRefusal";
 import type { AuthResult, User } from "@/lib/api/types";
 import { deviceSessionFields } from "@/lib/deviceSession";
-import { noteApiFailure } from "@/lib/sentry";
+import { noteApiFailure, reportFailure } from "@/lib/sentry";
 
 let onUnauthorized: (() => void) | null = null;
 let onTokenRefresh: ((accessToken: string, user?: User) => void) | null = null;
@@ -220,14 +220,15 @@ export async function freshAccessToken(token: string | null): Promise<string | n
 }
 
 /** `pushToken` is this device's Expo push token: the server forgets it with the session, so
- * the signed-out account's reminders stop reaching this lock screen. */
+ * the signed-out account's reminders stop reaching this lock screen. False when it should be
+ * sent again (no answer, a 5xx: lib/pendingLogout.ts keeps it); a 4xx no retry changes is done. */
 export async function logoutSession(
   token: string,
   refreshToken: string | null,
   pushToken: string | null = null,
-): Promise<void> {
+): Promise<boolean> {
   try {
-    await fetchWithTimeout(apiUrl("/auth/logout"), {
+    const response = await fetchWithTimeout(apiUrl("/auth/logout"), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -238,8 +239,10 @@ export async function logoutSession(
         ...(pushToken ? { expo_push_token: pushToken } : {}),
       }),
     });
-  } catch {
-    /* Server revocation is best-effort; local credential removal is independent. */
+    return response.status < 500;
+  } catch (error) {
+    reportFailure("sign_out", error); // No answer (offline, a timeout) is routine: not reported.
+    return false;
   }
 }
 

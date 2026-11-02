@@ -1,9 +1,12 @@
 /**
  * Max wait for the WebSocket handshake before sends go over SSE.
- * A healthy socket should open well inside this budget; a proxy/network path
- * that silently drops WS must not add a multi-second penalty before SSE.
+ * A healthy socket opens well inside this budget, and the eager connect starts it
+ * when the chat opens, so a send rarely waits on it. It still covers a handshake's
+ * round trips on high-latency cellular (a tighter budget failed there and pushed
+ * the chat onto SSE), while a path that silently drops WS costs one send this long
+ * before SSE (the backoff then keeps later sends off the socket).
  */
-export const WS_CONNECT_TIMEOUT_MS = 900;
+export const WS_CONNECT_TIMEOUT_MS = 2_500;
 
 /**
  * Start the eager socket almost immediately after a chat becomes active so

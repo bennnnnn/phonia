@@ -44,7 +44,8 @@ export function symbolGlyph(name: string): string {
 
 const unknownNames = createListenerSet<[name: string]>();
 
-/** Hear every command name the native parser could not place. */
+/** Hear every command name the native parser could not place. The app reports each to
+ * Sentry by name alone (`reportUnknownLatexCommandName`, subscribed in `app/_layout.tsx`). */
 export const subscribeUnknownLatexCommands = unknownNames.subscribe;
 
 export function reportUnknownLatexCommand(name: string): void {

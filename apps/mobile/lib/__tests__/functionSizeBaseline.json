@@ -28,7 +28,7 @@
   "components/rich/skia/SkiaGraphExplorer.tsx::SkiaGraphCanvas": 296,
   "components/rich/skia/SkiaInequalityGraphChart.tsx::SkiaInequalityGraphChart": 209,
   "components/rich/skia/SkiaNumberLineChart.tsx::SkiaNumberLineChart": 149,
-  "contexts/AuthContext.tsx::AuthProvider": 354,
+  "contexts/AuthContext.tsx::AuthProvider": 348,
   "contexts/ModelsContext.tsx::ModelsProvider": 126,
   "features/account/hooks/useProfileEditor.ts::useProfileEditor": 158,
   "features/account/screens/ArchivedChatsScreen.tsx::ArchivedChatsScreen": 114,

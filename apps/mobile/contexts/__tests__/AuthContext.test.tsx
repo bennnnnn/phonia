@@ -45,6 +45,15 @@ jest.mock("@/lib/signOutCleanup", () => ({ clearSignedOutAccount: jest.fn() }));
 jest.mock("@/lib/sentry", () => ({ reportCorruptSessionCleared: jest.fn() }));
 jest.mock("@/lib/syncRecords", () => ({ forgetSyncRecords: jest.fn(async () => undefined) }));
 jest.mock("@/features/notifications/model/pushNotifications", () => ({ devicePushToken: jest.fn(async () => null) }));
+// The owed-logout queue is lib/pendingLogout.test.ts's: here it hands the logout straight on.
+jest.mock("@/lib/pendingLogout", () => ({
+  endServerSession: async (logout: Promise<{ accessToken: string; refreshToken: string | null; pushToken: string | null }>) => {
+    const { logoutSession: send } = jest.requireMock("@/lib/api");
+    const entry = await logout;
+    await send(entry.accessToken, entry.refreshToken, entry.pushToken);
+  },
+  watchPendingLogouts: jest.fn(() => () => {}),
+}));
 jest.mock("@/ui/overlay/dialogs", () => ({ confirmDialog: jest.fn(async () => true) }));
 
 const userA = { id: "account-a", name: "Alice", locale: "en" } as User;
@@ -439,6 +448,16 @@ it("hands the server this device's push token with the logout", async () => {
   await act(async () => { await current.signOut(); });
   await act(async () => { for (let i = 0; i < 10; i += 1) await Promise.resolve(); });
   expect(logoutSession).toHaveBeenCalledWith("access-a", "refresh-a", "ExponentPushToken[this-phone]");
+});
+
+it("sends an owed logout at start, reading this device's push token on demand", async () => {
+  const { watchPendingLogouts } = jest.requireMock("@/lib/pendingLogout");
+  const { devicePushToken } = jest.requireMock("@/features/notifications/model/pushNotifications");
+  devicePushToken.mockResolvedValueOnce("ExponentPushToken[this-phone]");
+  await mount();
+  expect(watchPendingLogouts).toHaveBeenCalledTimes(1);
+  const readPushToken = watchPendingLogouts.mock.calls[0][0] as () => Promise<string | null>;
+  await expect(readPushToken()).resolves.toBe("ExponentPushToken[this-phone]");
 });
 
 it("still logs out when the push token cannot be read", async () => {
