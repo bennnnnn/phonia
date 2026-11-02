@@ -1,0 +1,1443 @@
+[
+  {
+    "id": "ht-001",
+    "area": "lookalike",
+    "prompt": "how do you add fractions with different denominators",
+    "history": [],
+    "reply": "To add fractions with different denominators, rewrite them over a **common denominator** first.\n\n**Steps**\n1. Find the least common denominator (LCD) — the smallest number both denominators divide into.\n2. Convert each fraction so it has the LCD as its denominator (multiply top and bottom by the same number).\n3. Add the numerators and keep the denominator.\n4. Simplify if you can.\n\n**Example:** $\\frac{2}{3} + \\frac{1}{4}$\n\n- The LCD of 3 and 4 is 12.\n- $\\frac{2}{3} = \\frac{8}{12}$ and $\\frac{1}{4} = \\frac{3}{12}$\n- $\\frac{8}{12} + \\frac{3}{12} = \\frac{11}{12}$\n\nSo $\\frac{2}{3} + \\frac{1}{4} = \\frac{11}{12}$.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-002",
+    "area": "lookalike",
+    "prompt": "Can you add 5 + 9 the same way?",
+    "history": [
+      [
+        "user",
+        "what is 7 + 8? show me the make-ten trick"
+      ],
+      [
+        "assistant",
+        "**7 + 8 = 15**\n\nUsing the make-ten trick:\n1. 7 needs **3** more to make 10.\n2. Take 3 from the 8 → the 8 becomes **5**.\n3. Now it's 10 + 5 = **15**."
+      ]
+    ],
+    "reply": "Sure!\n\n**5 + 9 = 14**\n\nUsing the make-ten trick, start from the number closest to 10:\n1. 9 needs **1** more to make 10.\n2. Take 1 from the 5 → the 5 becomes **4**.\n3. Now it's 10 + 4 = **14**.\n\nTip: always build the ten from the number that's closest to 10 — that way you move the smallest amount.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-003",
+    "area": "lookalike",
+    "prompt": "add salt to pasta water before or after it boils?",
+    "history": [],
+    "reply": "**After it boils** (or at least once it's very hot) is the usual advice.\n\n- **Why:** salt dissolves faster in hot water, and salt sitting in cold water on the bottom of a stainless-steel pot can leave small pits over time.\n- **Myth check:** salt doesn't meaningfully speed up or slow down boiling — the amount you use raises the boiling point by only a fraction of a degree.\n- **How much:** roughly **1–1½ tablespoons of salt per 4 liters** of water (about 10 g per liter). The water should taste pleasantly salty, like a mild soup.\n\nAdd the salt, let it come back to a rolling boil, then add the pasta.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-004",
+    "area": "todo",
+    "prompt": "remind me to call the insurance company friday at 9am",
+    "history": [],
+    "reply": "Set: Call the insurance company — Friday, Oct 16, 9:00 AM.",
+    "expect": "save"
+  },
+  {
+    "id": "ht-005",
+    "area": "lookalike",
+    "prompt": "Add more garlic",
+    "history": [
+      [
+        "user",
+        "quick shiro wat recipe for 2 pls"
+      ],
+      [
+        "assistant",
+        "**Quick Shiro Wat (serves 2)**\n\n**Ingredients**\n- 1 red onion, finely chopped\n- 2 garlic cloves, minced\n- 3 tbsp oil (or niter kibbeh)\n- 1 tomato, chopped\n- ½ cup shiro powder\n- 2 cups water\n- Salt to taste\n\n**Steps**\n1. Cook the onion dry in a pot for 3–4 minutes, then add the oil.\n2. Add the garlic and tomato; cook until soft.\n3. Whisk in the shiro powder gradually with the water.\n4. Simmer 10–15 minutes, stirring, until thick and glossy. Salt to taste.\n\nServe with injera."
+      ]
+    ],
+    "reply": "Here's the garlic-forward version:\n\n**Garlicky Shiro Wat (serves 2)**\n\n**Ingredients**\n- 1 red onion, finely chopped\n- **5 garlic cloves** — 4 minced, 1 grated for the end\n- 3 tbsp oil (or niter kibbeh)\n- 1 tomato, chopped\n- ½ cup shiro powder\n- 2 cups water\n- Salt to taste\n\n**Steps**\n1. Cook the onion dry for 3–4 minutes, then add the oil.\n2. Add the **4 minced cloves** and cook for 1 minute until fragrant (don't let it brown).\n3. Add the tomato and cook until soft.\n4. Whisk in the shiro powder gradually with the water.\n5. Simmer 10–15 minutes, stirring, until thick and glossy.\n6. Stir in the **grated clove** in the last minute for a sharp, fresh garlic hit. Salt to taste.\n\nIf you really love garlic, a spoon of *awaze* on the side goes great with it.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-006",
+    "area": "lookalike",
+    "prompt": "how do i add a column to an existing postgres table",
+    "history": [],
+    "reply": "Use `ALTER TABLE ... ADD COLUMN`:\n\n```sql\nALTER TABLE users ADD COLUMN phone_number VARCHAR(20);\n```\n\n**With a default value:**\n```sql\nALTER TABLE users\n  ADD COLUMN is_active BOOLEAN NOT NULL DEFAULT true;\n```\nSince PostgreSQL 11, adding a column with a constant default is instant — it doesn't rewrite the whole table.\n\n**Only if it doesn't exist yet:**\n```sql\nALTER TABLE users ADD COLUMN IF NOT EXISTS phone_number VARCHAR(20);\n```\n\n**Adding a NOT NULL column (no default) to a table that already has rows** — do it in steps:\n```sql\nALTER TABLE users ADD COLUMN country_code TEXT;                     -- 1. nullable\nUPDATE users SET country_code = 'ET' WHERE country_code IS NULL;    -- 2. backfill\nALTER TABLE users ALTER COLUMN country_code SET NOT NULL;           -- 3. enforce\n```\n\nIf you use Alembic, Django or another migration tool, generate a migration instead of running the SQL by hand.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-007",
+    "area": "todo",
+    "prompt": "set a reminder for tomorrow at 6pm to pick up my laundry",
+    "history": [],
+    "reply": "Done — I'll remind you tomorrow evening.\n\n```reminder\n{\"title\": \"Pick up laundry\", \"due_at\": \"2026-10-15T18:00:00+03:00\"}\n```",
+    "expect": "save"
+  },
+  {
+    "id": "ht-008",
+    "area": "lookalike",
+    "prompt": "now add a conclusion",
+    "history": [
+      [
+        "user",
+        "write a short essay on why addis ababa needs more green spaces, intro + 2 body paragraphs, no conclusion yet"
+      ],
+      [
+        "assistant",
+        "**Why Addis Ababa Needs More Green Spaces**\n\nAddis Ababa is growing faster than almost any city in Africa. New roads, condominiums and office towers rise every year, but the parks and trees that make a city livable have not kept pace.\n\nGreen spaces make a city healthier. Trees filter dust and exhaust from the air, cool streets during the dry season, and absorb rain that would otherwise flood low-lying neighborhoods. The new riverside corridors show how much cleaner and calmer a street feels once it is planted.\n\nParks also bring people together. In a city where many families live in small apartments, a shaded place to walk, play football or sit with friends is not a luxury. It gives children somewhere safe to play and gives neighbors a reason to meet."
+      ]
+    ],
+    "reply": "Here's a conclusion that ties the two body paragraphs together:\n\n---\n\nAddis Ababa's growth is something to be proud of, but a city is more than its buildings. Green spaces protect residents' health, soften the effects of flooding and heat, and give people a shared place to rest and connect. If the city plants trees and protects parks with the same energy it puts into roads and towers, it can become not only bigger, but better to live in. The time to make room for green is now — before the last open spaces are built over.\n\n---\n\nWant me to make it shorter, or end with a specific call to action (for the city administration or for residents)?",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-009",
+    "area": "lookalike",
+    "prompt": "remind me what mitosis is again 😅",
+    "history": [],
+    "reply": "No worries! **Mitosis** is how one cell divides into **two genetically identical daughter cells**. Your body uses it to grow and to repair or replace cells.\n\n**The phases (PMAT):**\n1. **Prophase** – chromosomes condense and become visible; the nuclear envelope starts to break down; spindle fibers form.\n2. **Metaphase** – chromosomes line up along the middle of the cell (the metaphase plate).\n3. **Anaphase** – sister chromatids are pulled apart to opposite ends of the cell.\n4. **Telophase** – new nuclear envelopes form around each set of chromosomes.\n\nThen **cytokinesis** splits the cytoplasm, giving two cells.\n\n**Key facts:**\n- The daughter cells have the same chromosome number as the parent (in humans, 46 → 46).\n- Compare with **meiosis**, which makes four non-identical cells with half the chromosomes (eggs and sperm).",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-010",
+    "area": "todo",
+    "prompt": "add submit the quarterly report to my reminders for friday 9am",
+    "history": [],
+    "reply": "Set: Submit the quarterly report — Friday, Oct 16, 9:00 AM.",
+    "expect": "save"
+  },
+  {
+    "id": "ht-011",
+    "area": "lookalike",
+    "prompt": "you remind me of my old physics teacher lol",
+    "history": [],
+    "reply": "Ha, I'll take that as a compliment — I hope it means I explain things clearly, and not that I hand out surprise quizzes 😄\n\nWhat was your physics teacher like? And if there's a topic from back then you'd like to revisit, I'm happy to help.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-012",
+    "area": "lookalike",
+    "prompt": "this reminds me — whats the difference between affect and effect",
+    "history": [],
+    "reply": "Good one — it trips up a lot of people.\n\n- **Affect** is usually a **verb**: to influence something.\n  - *The rain **affected** the traffic.*\n- **Effect** is usually a **noun**: the result of a change.\n  - *The rain had a big **effect** on the traffic.*\n\n**Memory trick:** **A**ffect = **A**ction (verb), **E**ffect = **E**nd result (noun).\n\n**Less common uses:**\n- *Effect* as a verb means \"to bring about\": *The new manager **effected** real change.*\n- *Affect* as a noun is a psychology term for visible emotion: *The patient had a flat **affect**.*",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-013",
+    "area": "todo",
+    "prompt": "can you remind me at 7pm tomorrow to take my meds",
+    "history": [],
+    "reply": "Of course 💊\n\n```reminder\n{\"title\": \"Take my meds\", \"due_at\": \"2026-10-15T19:00:00+03:00\"}\n```",
+    "expect": "save"
+  },
+  {
+    "id": "ht-014",
+    "area": "lookalike",
+    "prompt": "wait remind me where it happens again? and how many times per glucose",
+    "history": [
+      [
+        "user",
+        "explain the krebs cycle simply"
+      ],
+      [
+        "assistant",
+        "The **Krebs cycle** (citric acid cycle) is the stage of cellular respiration that finishes breaking down glucose.\n\n- It happens in the **mitochondrial matrix**.\n- Acetyl-CoA (2 carbons) joins oxaloacetate (4 carbons) to make citrate (6 carbons).\n- Over a series of steps, citrate is broken back down to oxaloacetate, releasing **2 CO₂**.\n- Each turn makes **3 NADH, 1 FADH₂ and 1 ATP (or GTP)**.\n- The cycle turns **twice per glucose**.\n\nThe NADH and FADH₂ then carry electrons to the electron transport chain, where most of the ATP is made."
+      ]
+    ],
+    "reply": "- **Where:** in the **mitochondrial matrix** — the fluid inside the inner membrane of the mitochondria.\n- **How many times:** **twice per glucose**. Glycolysis splits one glucose into two pyruvates, and each pyruvate becomes one acetyl-CoA that enters the cycle.\n\nSo per glucose, the Krebs cycle gives you **6 NADH, 2 FADH₂, 2 ATP and 4 CO₂**.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-015",
+    "area": "lookalike",
+    "prompt": "don't remind me about the exam lol i'm already stressed 😩",
+    "history": [],
+    "reply": "Deal — no exam talk unless you bring it up 🙂\n\nStress before an exam is really normal. A few quick things that take the edge off:\n\n- **Breathe slowly for one minute:** in for 4, hold for 4, out for 6.\n- **Shrink the task:** pick just one topic for 25 minutes, then take a break.\n- **Move a bit:** a 10-minute walk genuinely lowers stress.\n- **Protect your sleep:** a rested brain recalls more than a crammed one.\n\nWant to just talk about something else for a while?",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-016",
+    "area": "lookalike",
+    "prompt": "remind me why i should stretch every day",
+    "history": [],
+    "reply": "Here are the main reasons daily stretching is worth it:\n\n1. **Flexibility and range of motion** – muscles and joints stay mobile, so everyday movements (bending, reaching, climbing stairs) feel easier.\n2. **Less stiffness from sitting** – long hours of sitting tighten your hip flexors and hamstrings; stretching counteracts that and can ease lower-back discomfort.\n3. **Better posture** – opening the chest and shoulders helps undo the hunched phone/laptop posture.\n4. **Feeling less tight after workouts** – gentle stretching helps you cool down and loosen up.\n5. **Stress relief** – slow stretching with deep breathing calms your nervous system.\n\n**How much is enough:** 5–10 minutes a day, holding each stretch for about 20–30 seconds without bouncing. Consistency matters more than intensity.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-017",
+    "area": "todo",
+    "prompt": "remind me tmrw 8am buy injera",
+    "history": [],
+    "reply": "Set: Buy injera — Thursday, Oct 15, 8:00 AM.",
+    "expect": "save"
+  },
+  {
+    "id": "ht-018",
+    "area": "lookalike",
+    "prompt": "whats a good way to remind myself to drink water without using an app",
+    "history": [],
+    "reply": "A few low-tech tricks that actually work:\n\n- **Use a marked bottle** – draw lines on a 1-liter bottle with target times (10am, 12pm, 3pm, 5pm). You can see at a glance if you're behind.\n- **Habit-stack it** – drink a glass every time you do something you already do daily: after brushing your teeth, before each meal, when you sit down at your desk.\n- **Keep water in sight** – a bottle on your desk gets sipped far more than one in the kitchen.\n- **Rubber-band method** – put 4–5 rubber bands around your bottle and move one to your wrist each time you finish and refill it.\n- **Water before buna** – one glass of water first, then your coffee.\n\nPale-yellow urine is a simple check that you're drinking enough.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-019",
+    "area": "lookalike",
+    "prompt": "can you remind me what the capital of australia is? i always say sydney",
+    "history": [],
+    "reply": "It's **Canberra** — not Sydney! 🇦🇺\n\nYou're in good company; lots of people guess Sydney (the biggest city) or Melbourne. Canberra was purpose-built as the capital in the early 1900s as a compromise between those two rival cities, and Parliament moved there in 1927.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-020",
+    "area": "todo",
+    "prompt": "pls remind me on monday at 2:30pm to email professor haile about the project",
+    "history": [],
+    "reply": "```reminder\n{\"title\": \"Email Professor Haile about the project\", \"due_at\": \"2026-10-19T14:30:00+03:00\"}\n```",
+    "expect": "save"
+  },
+  {
+    "id": "ht-021",
+    "area": "lookalike",
+    "prompt": "mark it out of 20 like a teacher would",
+    "history": [
+      [
+        "user",
+        "here's my essay for english class:\n\nSocial media has changed how young people communicate. On one hand it helps us stay connected with friends and family who live far away. My cousin lives in Toronto and we talk every day on Telegram. On the other hand, many teenagers spend too much time scrolling and it effects their sleep and grades. In conclusion social media is good and bad and we should use it carefully."
+      ],
+      [
+        "assistant",
+        "Thanks for sharing it! Would you like feedback, a grade, or help improving it?"
+      ]
+    ],
+    "reply": "**Mark: 11/20**\n\n| Criterion | Score | Comments |\n|---|---|---|\n| Ideas & argument | 3/5 | A clear two-sided view, but each side has only one brief point. |\n| Evidence & examples | 3/5 | The cousin-in-Toronto example is good and personal; the negative side needs an example too. |\n| Structure | 2/5 | Everything is in one paragraph. Split it into an intro, two body paragraphs and a conclusion. |\n| Language & mechanics | 3/5 | Mostly clear. \"it **effects** their sleep\" should be \"**affects**\". Add a comma after \"In conclusion\". |\n\n**To push it to 16+:**\n1. Open with a thesis that takes a position, e.g. *\"Social media helps young people stay connected, but only when it's used in moderation.\"*\n2. Give each side its own paragraph with 2–3 points.\n3. Add a concrete detail for the downsides (e.g., late-night scrolling and sleep).\n4. Make the conclusion say something new — a recommendation, not just a repeat.\n\nWant me to show you a revised version?",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-022",
+    "area": "lookalike",
+    "prompt": "how do i mark something as important in apple notes?",
+    "history": [],
+    "reply": "Apple Notes doesn't have a single \"important\" flag, but there are a few good ways to do it:\n\n1. **Pin the note** – swipe right on the note in the list (or long-press → **Pin Note**). Pinned notes stay at the top.\n2. **Add a tag** – type `#important` anywhere in the note. Tap the tag in the folder list to see all your important notes together.\n3. **Make a Smart Folder** – create a new folder, choose **Make into Smart Folder**, and filter by the `#important` tag.\n4. **Highlight text inside a note** – select the text, tap **Aa**, and pick one of the color options (iOS 18 and later).\n\nPinning plus a tag is usually the quickest combo.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-023",
+    "area": "todo",
+    "prompt": "reminder: renew my passport, oct 20 at 10am",
+    "history": [],
+    "reply": "Set: Renew my passport — Tuesday, Oct 20, 10:00 AM.",
+    "expect": "save"
+  },
+  {
+    "id": "ht-024",
+    "area": "lookalike",
+    "prompt": "Mark the rest days in bold",
+    "history": [
+      [
+        "user",
+        "give me a 7 day beginner bodyweight plan"
+      ],
+      [
+        "assistant",
+        "**7-day beginner bodyweight plan**\n\n- Day 1: Squats 3×12, push-ups 3×8, plank 3×20s\n- Day 2: 20-min brisk walk\n- Day 3: Lunges 3×10 each leg, incline push-ups 3×10, glute bridges 3×12\n- Day 4: Rest\n- Day 5: Squats 3×15, push-ups 3×10, plank 3×30s\n- Day 6: 30-min walk or light jog\n- Day 7: Rest"
+      ]
+    ],
+    "reply": "**7-day beginner bodyweight plan**\n\n- Day 1: Squats 3×12, push-ups 3×8, plank 3×20s\n- Day 2: 20-min brisk walk\n- Day 3: Lunges 3×10 each leg, incline push-ups 3×10, glute bridges 3×12\n- **Day 4: Rest** 😴\n- Day 5: Squats 3×15, push-ups 3×10, plank 3×30s\n- Day 6: 30-min walk or light jog\n- **Day 7: Rest** 😴",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-025",
+    "area": "lookalike",
+    "prompt": "finish the story: the old man walked into the forest and",
+    "history": [],
+    "reply": "…the old man walked into the forest and did not look back.\n\nThe path was one he had not taken in forty years, but his feet remembered it: the bent fig tree, the stream that sang over flat stones, the clearing where the light fell like water. He carried nothing but a small tin box.\n\nIn the clearing stood a single wild olive, much taller now. He knelt at its roots and began to dig with his hands. The soil was soft. Soon his fingers found the edge of another tin box, rusted and green.\n\nInside were two things: a child's drawing of a house, and a note in his own young handwriting — *\"Come back when you're ready to forgive him.\"*\n\nThe old man sat for a long time. Then he opened the box he had brought, placed his brother's photograph beside the drawing, closed both lids, and buried them together.\n\nWhen he walked out of the forest, the evening birds were singing, and for the first time in years, he was humming along.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-026",
+    "area": "todo",
+    "prompt": "remind me tonight at 9 to text selam happy birthday 🎂",
+    "history": [],
+    "reply": "Cute! 🎂\n\n```reminder\n{\"title\": \"Text Selam happy birthday\", \"due_at\": \"2026-10-14T21:00:00+03:00\"}\n```",
+    "expect": "save"
+  },
+  {
+    "id": "ht-027",
+    "area": "lookalike",
+    "prompt": "complete the sentence: If I had known you were coming, I ___",
+    "history": [],
+    "reply": "**If I had known you were coming, I would have baked a cake.**\n\nOther natural endings:\n- …I **would have cleaned** the house.\n- …I **would have picked** you up from the airport.\n- …I **wouldn't have gone** out.\n\n**Grammar note:** this is the **third conditional**, used for imagined past situations:\n> If + **had + past participle**, … **would have + past participle**",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-028",
+    "area": "lookalike",
+    "prompt": "complete the square for x^2 + 6x + 5",
+    "history": [],
+    "reply": "$$x^2 + 6x + 5$$\n\n1. Take half the coefficient of $x$ and square it: $\\frac{6}{2} = 3$, and $3^2 = 9$.\n2. Add and subtract 9:\n$$x^2 + 6x + 9 - 9 + 5$$\n3. Group the perfect square:\n$$(x + 3)^2 - 4$$\n\n**Answer:** $x^2 + 6x + 5 = (x + 3)^2 - 4$\n\nThis tells you the parabola's **vertex is at $(-3, -4)$**. Setting it to zero: $(x + 3)^2 = 4 \\Rightarrow x + 3 = \\pm 2$, so $x = -1$ or $x = -5$.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-029",
+    "area": "todo",
+    "prompt": "set a reminder saturday 11am - meet abel at tomoca",
+    "history": [],
+    "reply": "Set: Meet Abel at Tomoca — Saturday, Oct 17, 11:00 AM. ☕",
+    "expect": "save"
+  },
+  {
+    "id": "ht-030",
+    "area": "lookalike",
+    "prompt": "i finished reading Fikir Eske Mekabir 📖 what should i read next?",
+    "history": [],
+    "reply": "Nice — *Fikir Eske Mekabir* is a big read, congrats! 📚 Depending on what you loved about it:\n\n**More Ethiopian classics (Amharic)**\n- **ወንጀለኛው ዳኛ (Wonjelegnaw Dagna)** – Haddis Alemayehu again, a sharp story about justice and corruption.\n- **ኦሮማይ (Oromay)** – Bealu Girma; a gripping, politically daring novel set during the Derg era.\n- **አደፍርስ (Adefris)** – Dagnachew Worku; experimental and very different in style.\n\n**Ethiopian stories in English**\n- **The Shadow King** – Maaza Mengiste; women fighters during the Italian invasion.\n- **Beneath the Lion's Gaze** – Maaza Mengiste; a family during the 1974 revolution.\n- **The Beautiful Things That Heaven Bears** – Dinaw Mengestu; an Ethiopian immigrant's life in Washington, D.C.\n\nIf it was the sweeping love story that hooked you, I'd start with *The Shadow King*. Want something in a totally different genre instead?",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-031",
+    "area": "lookalike",
+    "prompt": "yes help me finish it",
+    "history": [
+      [
+        "user",
+        "help me write a cover letter for a junior data analyst role at a bank in addis. i studied statistics at AAU and did an internship at a telecom company"
+      ],
+      [
+        "assistant",
+        "Here's a start:\n\nDear Hiring Manager,\n\nI am writing to apply for the Junior Data Analyst position at your bank. I recently graduated with a BSc in Statistics from Addis Ababa University, where I developed a strong foundation in data analysis, probability and statistical modeling.\n\nDuring my internship at a telecom company, I cleaned and analyzed customer usage data in Excel and Python, and built weekly dashboards that helped the team track churn.\n\nWant me to continue with why you want this job, your skills, and a closing?"
+      ]
+    ],
+    "reply": "Here's the full letter with the remaining sections added:\n\n---\n\nDear Hiring Manager,\n\nI am writing to apply for the Junior Data Analyst position at your bank. I recently graduated with a BSc in Statistics from Addis Ababa University, where I developed a strong foundation in data analysis, probability and statistical modeling.\n\nDuring my internship at a telecom company, I cleaned and analyzed customer usage data in Excel and Python, and built weekly dashboards that helped the team track churn. One analysis I led identified a group of high-value prepaid customers at risk of leaving, which the marketing team used to design a targeted retention offer.\n\nI am excited about this role because banking in Ethiopia is changing quickly. With mobile banking, digital payments and new competition, good decisions depend more than ever on good data, and I would welcome the chance to help your team understand customer behavior, monitor risk and measure the impact of new products.\n\nI bring solid skills in **Excel, SQL and Python (pandas)**, experience building dashboards, and the ability to explain findings clearly to non-technical colleagues. I am a fast learner, careful with details, and comfortable working to deadlines.\n\nThank you for considering my application. I would be glad to discuss how I can contribute to your analytics team and am available for an interview at your convenience.\n\nSincerely,\nBini\n[Phone] · [Email] · [LinkedIn]\n\n---\n\n**Tip:** replace \"your bank\" with the bank's name, and if the job ad mentions specific tools (e.g., Power BI), name them in the skills paragraph.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-032",
+    "area": "lookalike",
+    "prompt": "did u finish? it cut off",
+    "history": [
+      [
+        "user",
+        "steps to apply for a schengen visa from addis"
+      ],
+      [
+        "assistant",
+        "Here's the general process:\n\n1. **Pick the right embassy** – apply to the country where you'll spend the most nights (or the one you enter first if it's equal).\n2. **Choose the visa type** – usually a short-stay Type C visa (tourism, business, family visit).\n3. **Gather documents** – passport (valid 3+ months after your return, with 2 blank pages), application form, 2 photos, travel insurance (at least €30,000 coverage), flight reservation, hotel booking or invitation letter, bank statements (last 3–6 months), employment letter or proof of studies.\n4. **Book your appointment** – most countries use VFS Global or"
+      ]
+    ],
+    "reply": "Sorry about that — here's the rest, picking up from step 4:\n\n4. **Book your appointment** – most Schengen countries use **VFS Global** or **TLScontact** in Addis Ababa; a few take applications directly at the embassy (check its website). Book early — slots can fill up weeks ahead, especially before summer.\n5. **Pay the visa fee** – **€90** for adults (€45 for children aged 6–12), plus the service center's fee.\n6. **Attend the appointment** – submit your documents and give biometrics (fingerprints and photo).\n7. **Wait for a decision** – usually **15 calendar days**, but it can take up to 45 days in some cases.\n8. **Collect your passport** – check that the visa dates, number of entries and allowed days match your trip.\n\n**Tips:** apply at least 3–4 weeks before you travel (you can apply up to 6 months ahead), keep your story consistent across all documents, and show strong ties to Ethiopia (job, studies, family, property).",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-033",
+    "area": "todo",
+    "prompt": "ok remind me to book the appointment thursday at 10am",
+    "history": [
+      [
+        "user",
+        "how do i renew my ethiopian passport in addis"
+      ],
+      [
+        "assistant",
+        "Passport renewal is handled by the **Immigration and Citizenship Service (ICS)**:\n\n1. **Apply online** on the ICS portal — fill in the renewal form and choose an appointment date.\n2. **Pay the fee** online (via telebirr or a bank) and keep the receipt.\n3. **Bring your documents** to the appointment: your old passport, a valid Kebele or Fayda ID, and the payment receipt.\n4. **Give biometrics** (photo and fingerprints) at the office.\n5. **Collect the new passport** on the date you're given, or choose express service if it's available.\n\nAppointment slots can fill up, so it's worth booking soon."
+      ]
+    ],
+    "reply": "Set: Book the passport renewal appointment — Thursday, Oct 15, 10:00 AM.",
+    "expect": "save"
+  },
+  {
+    "id": "ht-034",
+    "area": "lookalike",
+    "prompt": "how do i delete a git branch locally and remotely",
+    "history": [],
+    "reply": "**Delete locally:**\n```bash\ngit branch -d feature/login     # safe: only works if it's merged\ngit branch -D feature/login     # force delete, even if unmerged\n```\n\n**Delete on the remote (e.g. GitHub):**\n```bash\ngit push origin --delete feature/login\n```\n\n**Clean up stale remote-tracking branches on your other machines:**\n```bash\ngit fetch --prune\n```\n\nNote: you can't delete the branch you're currently on — switch first with `git switch main`.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-035",
+    "area": "lookalike",
+    "prompt": "remove duplicates from a list in python but keep the order",
+    "history": [],
+    "reply": "Use `dict.fromkeys()` — dictionaries keep insertion order (Python 3.7+):\n\n```python\nitems = [3, 1, 3, 2, 1, 5]\nunique = list(dict.fromkeys(items))\nprint(unique)  # [3, 1, 2, 5]\n```\n\nIf you need a custom key (e.g., case-insensitive), use a loop with a `seen` set:\n\n```python\ndef dedupe(items, key=None):\n    seen = set()\n    result = []\n    for item in items:\n        k = key(item) if key else item\n        if k not in seen:\n            seen.add(k)\n            result.append(item)\n    return result\n\nnames = [\"Abel\", \"abel\", \"Sara\"]\nprint(dedupe(names, key=str.lower))  # ['Abel', 'Sara']\n```\n\nAvoid `list(set(items))` here — sets don't keep the original order.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-036",
+    "area": "todo",
+    "prompt": "add 'pay electricity bill' to my to-do list for sunday at 5pm",
+    "history": [],
+    "reply": "Added ⚡\n\n```reminder\n{\"title\": \"Pay electricity bill\", \"due_at\": \"2026-10-18T17:00:00+03:00\"}\n```",
+    "expect": "save"
+  },
+  {
+    "id": "ht-037",
+    "area": "lookalike",
+    "prompt": "remove the last paragraph",
+    "history": [
+      [
+        "user",
+        "write 3 short paragraphs about the ethiopian coffee ceremony for my blog"
+      ],
+      [
+        "assistant",
+        "The Ethiopian coffee ceremony, or *buna*, is more than a way to make coffee — it is a ritual of hospitality. Guests are welcomed with the scent of burning frankincense, and fresh grass is often scattered on the floor.\n\nThe host roasts green beans in a flat pan over charcoal, then walks the smoking pan around so everyone can enjoy the aroma. The beans are ground by hand and brewed in a clay pot called a *jebena*.\n\nCoffee is served in three rounds: *abol*, *tona* and *baraka*. Leaving before the third round is considered impolite, because the last cup is said to bring a blessing."
+      ]
+    ],
+    "reply": "Here it is with the last paragraph removed:\n\nThe Ethiopian coffee ceremony, or *buna*, is more than a way to make coffee — it is a ritual of hospitality. Guests are welcomed with the scent of burning frankincense, and fresh grass is often scattered on the floor.\n\nThe host roasts green beans in a flat pan over charcoal, then walks the smoking pan around so everyone can enjoy the aroma. The beans are ground by hand and brewed in a clay pot called a *jebena*.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-038",
+    "area": "lookalike",
+    "prompt": "remove the gym days, i'll just run outside",
+    "history": [
+      [
+        "user",
+        "make me a simple weekly workout plan, i can do 4 days"
+      ],
+      [
+        "assistant",
+        "**Weekly plan (4 days)**\n\n- **Monday – Gym:** upper body (push-ups, dumbbell press, rows), 45 min\n- **Tuesday – Run:** 30 min easy pace\n- **Wednesday – Rest**\n- **Thursday – Gym:** lower body (squats, lunges, deadlifts), 45 min\n- **Friday – Rest**\n- **Saturday – Run:** 5 km, steady pace\n- **Sunday – Rest**"
+      ]
+    ],
+    "reply": "Here's a running-only version that still keeps 4 active days:\n\n**Weekly plan (running, 4 days)**\n\n- **Monday – Easy run:** 30 min at a comfortable, conversational pace\n- **Tuesday – Rest**\n- **Wednesday – Intervals:** 10 min warm-up, then 6 × (1 min fast / 2 min easy), 5 min cool-down\n- **Thursday – Rest** (or a 20-min walk)\n- **Friday – Easy run + bodyweight:** 25 min easy, then 3 rounds of 15 squats, 10 push-ups and a 30-sec plank\n- **Saturday – Long run:** 5–7 km at a steady pace\n- **Sunday – Rest**\n\nI added a short bodyweight circuit on Friday so you don't lose all your strength work — skip it if you want pure running. Addis sits at about 2,355 m, so keep the easy runs truly easy at first.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-039",
+    "area": "todo",
+    "prompt": "remind me next wednesday at noon to call grandma",
+    "history": [],
+    "reply": "Set: Call grandma — Wednesday, Oct 21, 12:00 PM.",
+    "expect": "save"
+  },
+  {
+    "id": "ht-040",
+    "area": "lookalike",
+    "prompt": "move the paragraph about climate to the top",
+    "history": [
+      [
+        "user",
+        "can you write my personal statement intro for environmental engineering, 3 short paragraphs"
+      ],
+      [
+        "assistant",
+        "I grew up in Dessie, where my grandmother kept a small garden behind our house. Helping her collect rainwater for it taught me early that water is precious and that small systems can make a big difference.\n\nAt university, I want to build the skills to design those systems at scale — clean water supply, waste treatment and sustainable infrastructure for growing cities like Addis Ababa.\n\nClimate change has made this work urgent. In recent years I have watched droughts and floods hit the same regions within months, and I want to be part of the generation of engineers who help communities adapt."
+      ]
+    ],
+    "reply": "Here it is with the climate paragraph first. I tweaked the opening of the second paragraph so the flow still works:\n\nClimate change has made this work urgent. In recent years I have watched droughts and floods hit the same regions within months, and I want to be part of the generation of engineers who help communities adapt.\n\nMy interest started long before I knew the word \"engineering.\" I grew up in Dessie, where my grandmother kept a small garden behind our house. Helping her collect rainwater for it taught me early that water is precious and that small systems can make a big difference.\n\nAt university, I want to build the skills to design those systems at scale — clean water supply, waste treatment and sustainable infrastructure for growing cities like Addis Ababa.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-041",
+    "area": "lookalike",
+    "prompt": "how do i move to canada as a software engineer from ethiopia",
+    "history": [],
+    "reply": "The most common routes for an Ethiopian software engineer:\n\n**1. Express Entry (Federal Skilled Worker Program)** — the main route\n- You create a profile and are ranked by the **Comprehensive Ranking System (CRS)** on age, education, language and work experience.\n- You need at least **1 year of continuous skilled work experience**, an **IELTS General Training or CELPIP** result (aim for CLB 9+ in every skill for a strong score), and an **Educational Credential Assessment (ECA)** of your degree (e.g., from WES).\n- You must show settlement funds (unless you have a valid job offer).\n- High scorers receive an **Invitation to Apply (ITA)** for permanent residence.\n\n**2. Provincial Nominee Programs (PNP)** — provinces such as Ontario, British Columbia, Alberta and Saskatchewan run tech-focused streams. A provincial nomination adds 600 CRS points.\n\n**3. Work permit with a job offer** — a Canadian employer hires you (often through an LMIA; the Global Talent Stream is a fast track for many tech roles). Canadian work experience then strengthens a later PR application.\n\n**4. Study route** — a master's in Canada → Post-Graduation Work Permit → PR. More expensive, but predictable for younger applicants.\n\n**Practical next steps**\n1. Take IELTS General Training and aim high — language scores move your CRS more than almost anything else.\n2. Get your degree assessed (ECA).\n3. Use the official CRS calculator on canada.ca to see where you stand.\n4. Apply to remote-friendly Canadian companies in parallel — a job offer opens faster paths.\n\nAlways check canada.ca for the current rules — draw sizes and cut-off scores change often.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-042",
+    "area": "todo",
+    "prompt": "remind me to buy a gift for my sister",
+    "history": [],
+    "reply": "Sure! When should I remind you to buy a gift for your sister? Give me a day and a time — for example, \"Saturday at 10am\".",
+    "expect": "ask_time"
+  },
+  {
+    "id": "ht-043",
+    "area": "lookalike",
+    "prompt": "Move day 2 to Sunday",
+    "history": [
+      [
+        "user",
+        "plan a 3 day weekend in bahir dar, fri to sun"
+      ],
+      [
+        "assistant",
+        "**Bahir Dar – 3 days**\n\n**Day 1 (Fri):** Fly in and check in near the lakeside. Afternoon walk along the Lake Tana promenade, sunset at Bezawit Hill.\n\n**Day 2 (Sat):** Day trip to the **Blue Nile Falls** (Tis Abay), about 30 km away — leave early, hike to the viewpoint and cross the old Portuguese bridge.\n\n**Day 3 (Sun):** Morning boat trip to the **Lake Tana monasteries** (Ura Kidane Mehret on the Zege Peninsula), lunch with fresh fish, then fly back in the evening."
+      ]
+    ],
+    "reply": "Here's the swapped version — monasteries on Saturday, Blue Nile Falls on Sunday:\n\n**Bahir Dar – 3 days**\n\n**Day 1 (Fri):** Fly in and check in near the lakeside. Afternoon walk along the Lake Tana promenade, sunset at Bezawit Hill.\n\n**Day 2 (Sat):** Morning boat trip to the **Lake Tana monasteries** (Ura Kidane Mehret on the Zege Peninsula), lunch with fresh fish, relaxed evening in town.\n\n**Day 3 (Sun):** Early day trip to the **Blue Nile Falls** (Tis Abay), about 30 km away — hike to the viewpoint and cross the old Portuguese bridge, then head to the airport.\n\n**Heads-up:** with the falls on your last day, book an **evening flight** and leave Bahir Dar by about 7 AM so you have plenty of margin. Also, the falls are often much weaker than in photos because of the hydropower dam upstream — they're strongest in the rainy season (July–September).",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-044",
+    "area": "lookalike",
+    "prompt": "what's the schedule for the 2030 world cup? where is it even",
+    "history": [],
+    "reply": "**2030 FIFA World Cup — what we know so far**\n\n- **Hosts:** **Morocco, Spain and Portugal**.\n- **Centenary matches:** to mark 100 years since the first World Cup (Uruguay, 1930), the three opening matches will be played in **Uruguay, Argentina and Paraguay**.\n- **Format:** 48 teams and 104 matches, the same as 2026.\n- **Timing:** expected in **June–July 2030**.\n\nThe detailed match-by-match schedule and venue assignments haven't been published yet — FIFA usually releases them a couple of years before the tournament.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-045",
+    "area": "todo",
+    "prompt": "set a reminder to renew my driving license next week",
+    "history": [],
+    "reply": "Which day and time next week should I remind you to renew your driving license?",
+    "expect": "ask_time"
+  },
+  {
+    "id": "ht-046",
+    "area": "lookalike",
+    "prompt": "make me a study schedule for my physics exam next thursday, i'm only free after 5pm on weekdays",
+    "history": [],
+    "reply": "Here's a plan for an exam on **Thursday, Oct 22** (if you meant tomorrow, tell me and I'll compress it):\n\n| Day | Time | Focus |\n|---|---|---|\n| Wed, Oct 14 | 5:30–7:00 PM | List the topics, skim notes, mark weak spots |\n| Thu, Oct 15 | 5:30–7:30 PM | Kinematics + practice problems |\n| Fri, Oct 16 | 5:30–7:30 PM | Newton's laws and forces |\n| Sat, Oct 17 | 9:00 AM–12:00 PM | Work, energy and power |\n| | 2:00–4:00 PM | Mixed problem set |\n| Sun, Oct 18 | 9:00 AM–12:00 PM | Momentum and collisions |\n| | 2:00–3:30 PM | Review the week's mistakes |\n| Mon, Oct 19 | 5:30–7:30 PM | Weakest topic, round 2 |\n| Tue, Oct 20 | 5:30–8:00 PM | **Full past paper, timed** |\n| Wed, Oct 21 | 5:30–7:00 PM | Light review: formula sheet + mistakes only. Sleep early. |\n\n**Tips**\n- Study in 50-minute blocks with 10-minute breaks.\n- Do problems, not just reading — physics exams test application.\n- Keep a one-page formula sheet and add to it every session.\n\nSend me your actual syllabus topics and I'll swap them in.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-047",
+    "area": "lookalike",
+    "prompt": "Add a break at 3pm",
+    "history": [
+      [
+        "user",
+        "make me a study plan for saturday 9am to 6pm, chemistry and math"
+      ],
+      [
+        "assistant",
+        "**Saturday study plan**\n\n- **9:00–10:30** Chemistry: stoichiometry review\n- **10:30–10:45** Break\n- **10:45–12:15** Math: quadratic functions practice\n- **12:15–1:00** Lunch\n- **1:00–2:30** Chemistry: chemical bonding\n- **2:30–4:30** Math: past paper questions\n- **4:30–6:00** Mixed review + flashcards"
+      ]
+    ],
+    "reply": "Here's the updated plan with a break at 3:00:\n\n**Saturday study plan**\n\n- **9:00–10:30** Chemistry: stoichiometry review\n- **10:30–10:45** Break\n- **10:45–12:15** Math: quadratic functions practice\n- **12:15–1:00** Lunch\n- **1:00–2:30** Chemistry: chemical bonding\n- **2:30–3:00** Math: past paper questions (part 1)\n- **3:00–3:15** ☕ **Break**\n- **3:15–4:45** Math: past paper questions (part 2)\n- **4:45–6:00** Mixed review + flashcards\n\nThe past-paper block keeps its full 2 hours; the final review is 15 minutes shorter to make room.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-048",
+    "area": "lookalike",
+    "prompt": "packing list for lalibela in october",
+    "history": [],
+    "reply": "October is a great time for Lalibela — the rains have ended, the hills are green and the days are sunny. At about 2,500 m, nights get cold.\n\n**Clothes**\n- Light layers for the day (T-shirts, a long-sleeve shirt)\n- A warm fleece or jacket for evenings and early mornings (it can drop to around 10 °C)\n- Comfortable trousers or a long skirt — knees and shoulders covered for the churches\n- A scarf or shawl (women usually cover their hair inside churches)\n- **Easy slip-on shoes** — you take them off at every church\n- Socks you don't mind walking in on church floors\n- Sturdy walking shoes for the trenches and steps\n\n**Gear**\n- Small flashlight or headlamp for dark passages and church interiors\n- Sunscreen, sunglasses and a hat — the sun is strong at altitude\n- Reusable water bottle\n- Day pack\n- Power bank (power cuts happen)\n\n**Documents & money**\n- ID / passport\n- Cash in birr — guides, small shops and tips are mostly cash\n- Flight tickets and hotel booking\n\n**Health**\n- Basic meds (painkillers, stomach meds, something for altitude headaches)\n- Hand sanitizer and tissues\n\nMid-October is calmer than the Meskel (late September) and Genna (January 7) crowds, so it's a good time to go.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-049",
+    "area": "todo",
+    "prompt": "can you remind me to call the plumber tomorrow",
+    "history": [],
+    "reply": "What time tomorrow (Thursday, Oct 15) should I remind you to call the plumber?",
+    "expect": "ask_time"
+  },
+  {
+    "id": "ht-050",
+    "area": "lookalike",
+    "prompt": "list 5 fruits high in vitamin c",
+    "history": [],
+    "reply": "Here are 5 fruits high in vitamin C (approximate amount per 100 g):\n\n1. **Guava** – ~228 mg\n2. **Kiwi** – ~93 mg\n3. **Papaya** – ~61 mg\n4. **Strawberries** – ~59 mg\n5. **Oranges** – ~53 mg\n\nAdults need about **75–90 mg a day**, so a single guava covers more than double that. Guava and papaya are easy to find in Addis markets, too.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-051",
+    "area": "lookalike",
+    "prompt": "can you make it a checklist?",
+    "history": [
+      [
+        "user",
+        "tips for deep cleaning my kitchen this weekend"
+      ],
+      [
+        "assistant",
+        "Here's a good order to work in:\n\n1. Clear the counters and declutter.\n2. Clean top to bottom: cabinet tops, shelves, then counters.\n3. Degrease the stove and range hood.\n4. Clean the inside of the microwave (steam a bowl of water and lemon first).\n5. Empty and wipe the fridge; toss expired food.\n6. Scrub the sink and faucet.\n7. Wipe cabinet fronts and handles.\n8. Sweep and mop the floor last.\n9. Take out the trash and wash the bin."
+      ]
+    ],
+    "reply": "**Kitchen deep-clean checklist**\n\n- [ ] Clear the counters and declutter\n- [ ] Clean top to bottom: cabinet tops and shelves, then counters\n- [ ] Degrease the stove and range hood\n- [ ] Clean inside the microwave (steam a bowl of water and lemon first)\n- [ ] Empty and wipe the fridge; toss expired food\n- [ ] Scrub the sink and faucet\n- [ ] Wipe cabinet fronts and handles\n- [ ] Sweep and mop the floor\n- [ ] Take out the trash and wash the bin",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-052",
+    "area": "todo",
+    "prompt": "add 'finish the slides' to my reminders",
+    "history": [],
+    "reply": "When should I remind you to finish the slides? Tell me a day and a time.",
+    "expect": "ask_time"
+  },
+  {
+    "id": "ht-053",
+    "area": "lookalike",
+    "prompt": "build a simple todo app in react with hooks",
+    "history": [],
+    "reply": "Here's a minimal todo app using `useState`:\n\n```jsx\nimport { useState } from \"react\";\n\nexport default function TodoApp() {\n  const [todos, setTodos] = useState([]);\n  const [text, setText] = useState(\"\");\n\n  function addTodo(e) {\n    e.preventDefault();\n    const trimmed = text.trim();\n    if (!trimmed) return;\n    setTodos([...todos, { id: Date.now(), text: trimmed, done: false }]);\n    setText(\"\");\n  }\n\n  function toggleTodo(id) {\n    setTodos(todos.map((t) => (t.id === id ? { ...t, done: !t.done } : t)));\n  }\n\n  return (\n    <div style={{ maxWidth: 400, margin: \"2rem auto\", fontFamily: \"sans-serif\" }}>\n      <h1>My Todos</h1>\n      <form onSubmit={addTodo}>\n        <input\n          value={text}\n          onChange={(e) => setText(e.target.value)}\n          placeholder=\"What needs doing?\"\n        />\n        <button type=\"submit\">Add</button>\n      </form>\n      <ul>\n        {todos.map((t) => (\n          <li key={t.id}>\n            <label style={{ textDecoration: t.done ? \"line-through\" : \"none\" }}>\n              <input type=\"checkbox\" checked={t.done} onChange={() => toggleTodo(t.id)} />\n              {t.text}\n            </label>\n          </li>\n        ))}\n      </ul>\n      <p>{todos.filter((t) => !t.done).length} left</p>\n    </div>\n  );\n}\n```\n\n**How it works**\n- `todos` holds the list; `text` holds the input value (a controlled input).\n- `addTodo` creates a new object and replaces the array — never mutate state directly.\n- `toggleTodo` flips `done` with `map`, which returns a new array.\n\n**Next steps:** add a delete button, filters (All / Active / Done), or save to `localStorage` with `useEffect`.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-054",
+    "area": "lookalike",
+    "prompt": "Add a delete button to each task",
+    "history": [
+      [
+        "user",
+        "build a simple todo app in react with hooks"
+      ],
+      [
+        "assistant",
+        "```jsx\nimport { useState } from \"react\";\n\nexport default function TodoApp() {\n  const [todos, setTodos] = useState([]);\n  const [text, setText] = useState(\"\");\n\n  function addTodo(e) {\n    e.preventDefault();\n    if (!text.trim()) return;\n    setTodos([...todos, { id: Date.now(), text: text.trim(), done: false }]);\n    setText(\"\");\n  }\n\n  function toggleTodo(id) {\n    setTodos(todos.map((t) => (t.id === id ? { ...t, done: !t.done } : t)));\n  }\n\n  return (\n    <div>\n      <form onSubmit={addTodo}>\n        <input value={text} onChange={(e) => setText(e.target.value)} />\n        <button type=\"submit\">Add</button>\n      </form>\n      <ul>\n        {todos.map((t) => (\n          <li key={t.id}>\n            <input type=\"checkbox\" checked={t.done} onChange={() => toggleTodo(t.id)} />\n            {t.text}\n          </li>\n        ))}\n      </ul>\n    </div>\n  );\n}\n```\n\n`todos` holds the list, `addTodo` appends a new item, and `toggleTodo` flips its `done` flag."
+      ]
+    ],
+    "reply": "Add a `deleteTodo` function that filters the task out, and a button in each `<li>`:\n\n```jsx\nimport { useState } from \"react\";\n\nexport default function TodoApp() {\n  const [todos, setTodos] = useState([]);\n  const [text, setText] = useState(\"\");\n\n  function addTodo(e) {\n    e.preventDefault();\n    if (!text.trim()) return;\n    setTodos([...todos, { id: Date.now(), text: text.trim(), done: false }]);\n    setText(\"\");\n  }\n\n  function toggleTodo(id) {\n    setTodos(todos.map((t) => (t.id === id ? { ...t, done: !t.done } : t)));\n  }\n\n  function deleteTodo(id) {\n    setTodos(todos.filter((t) => t.id !== id));\n  }\n\n  return (\n    <div>\n      <form onSubmit={addTodo}>\n        <input value={text} onChange={(e) => setText(e.target.value)} />\n        <button type=\"submit\">Add</button>\n      </form>\n      <ul>\n        {todos.map((t) => (\n          <li key={t.id}>\n            <input type=\"checkbox\" checked={t.done} onChange={() => toggleTodo(t.id)} />\n            {t.text}\n            <button onClick={() => deleteTodo(t.id)} aria-label={`Delete ${t.text}`}>\n              ✕\n            </button>\n          </li>\n        ))}\n      </ul>\n    </div>\n  );\n}\n```\n\n**What changed**\n- `deleteTodo` uses `filter` to return a new array without that task.\n- Each `<li>` gets a ✕ button; the arrow function passes the right `id`.\n- `aria-label` makes the button readable by screen readers.\n\nWant a confirm step before deleting, or an \"undo\" toast?",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-055",
+    "area": "todo",
+    "prompt": "remind me about the parent-teacher meeting on friday",
+    "history": [],
+    "reply": "What time on Friday (Oct 16) should I remind you about the parent-teacher meeting?",
+    "expect": "ask_time"
+  },
+  {
+    "id": "ht-056",
+    "area": "lookalike",
+    "prompt": "what are TODO comments and should i leave them in production code?",
+    "history": [],
+    "reply": "**TODO comments** are notes developers leave in code to flag unfinished work:\n\n```python\n# TODO: handle users who have no email address\ndef send_welcome(user):\n    ...\n```\n\nRelated tags: `FIXME` (known bug), `HACK` (ugly workaround), `NOTE` (explanation).\n\n**Is it OK to ship them?** Yes — comments don't change how the code runs — but they shouldn't pile up. Good practice:\n\n- **Make them actionable:** say *what* and *why*, and ideally link a ticket: `# TODO(bini): retry on timeout — see #142`.\n- **Track them:** most editors can list them (VS Code's *Todo Tree* extension, the JetBrains TODO window).\n- **Lint them:** ESLint's `no-warning-comments` or Ruff's `TD`/`FIX` rules can flag TODOs that have no ticket.\n- **Don't hide real bugs:** if it can hurt users, it belongs in your issue tracker, not only in a comment.\n\nA handful of well-labeled TODOs is normal; hundreds of stale ones are a code-health smell.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-057",
+    "area": "lookalike",
+    "prompt": "write a python function that runs a task every day at 6pm",
+    "history": [],
+    "reply": "The simplest way is the `schedule` library:\n\n```bash\npip install schedule\n```\n\n```python\nimport time\nimport schedule\n\ndef job():\n    print(\"Running the daily task...\")\n    # your code here, e.g. send a report\n\nschedule.every().day.at(\"18:00\").do(job)\n\nwhile True:\n    schedule.run_pending()\n    time.sleep(30)\n```\n\nThis uses your machine's local time. To pin it to a specific timezone (e.g., Addis Ababa):\n\n```python\nschedule.every().day.at(\"18:00\", \"Africa/Addis_Ababa\").do(job)\n```\n\n(The timezone argument needs `pip install pytz`.)\n\n**For production**, the script has to stay running. Alternatives:\n- **cron** (Linux/macOS): `0 18 * * * /usr/bin/python3 /path/to/script.py`\n- **APScheduler** if it runs inside a web app\n- **Windows Task Scheduler** on Windows",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-058",
+    "area": "todo",
+    "prompt": "mark call mom as done",
+    "history": [],
+    "reply": "Done — **Call mom** is marked complete. ✅",
+    "expect": "change"
+  },
+  {
+    "id": "ht-059",
+    "area": "lookalike",
+    "prompt": "cron expression for every monday at 9am",
+    "history": [],
+    "reply": "```\n0 9 * * 1\n```\n\n| Field | Value | Meaning |\n|---|---|---|\n| Minute | `0` | at minute 0 |\n| Hour | `9` | 9 AM |\n| Day of month | `*` | any |\n| Month | `*` | any |\n| Day of week | `1` | Monday (0 or 7 = Sunday) |\n\nCron uses the server's timezone. If your server runs on UTC and you want 9 AM in Addis Ababa (UTC+3), use `0 6 * * 1` — or set `CRON_TZ=Africa/Addis_Ababa` if your cron supports it.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-060",
+    "area": "lookalike",
+    "prompt": "how do i set up python on windows",
+    "history": [],
+    "reply": "**1. Download**\n- Go to **python.org/downloads** and get the latest Python 3 installer for Windows.\n\n**2. Install**\n- Run the installer and **tick \"Add python.exe to PATH\"** at the bottom of the first screen (important!).\n- Click **Install Now**.\n\n**3. Check it works**\nOpen **Command Prompt** or PowerShell and run:\n```powershell\npython --version\npip --version\n```\n\n**4. Make a project with a virtual environment**\n```powershell\nmkdir myproject\ncd myproject\npython -m venv .venv\n.venv\\Scripts\\activate\npip install requests\n```\n\n**5. Get an editor**\n- Install **VS Code** and its **Python** extension, open your folder, and select the `.venv` interpreter.\n\n**Troubleshooting:** if typing `python` opens the Microsoft Store, reinstall with \"Add to PATH\" ticked or turn off the python *App execution aliases* in Windows Settings. The `py` launcher (`py --version`) also works.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-061",
+    "area": "lookalike",
+    "prompt": "how do you set the table for a formal dinner",
+    "history": [],
+    "reply": "**Formal table setting (from the diner's point of view):**\n\n**Center**\n- A **charger** (large base plate) with the **dinner plate** on top; the soup bowl or first-course plate sits on it when served.\n- The **napkin** folded on the plate or to the left of the forks.\n\n**Left of the plate (forks)**\n- From the outside in: **fish/appetizer fork → salad fork → dinner fork** (if salad comes after the main, the salad fork goes closest to the plate).\n\n**Right of the plate (knives and spoons)**\n- From the plate outward: **dinner knife** (blade facing the plate) → **fish knife** → **soup spoon** on the far right.\n\n**Above the plate**\n- **Dessert spoon and fork** laid horizontally (spoon handle pointing right, fork handle pointing left).\n\n**Top right (glasses)**\n- **Water glass** above the knives, then the **red** and **white wine** glasses (and a champagne flute if needed) in order of use.\n\n**Top left**\n- **Bread plate** with a small **butter knife** laid across it.\n\n**Rule of thumb:** guests use cutlery from the **outside in**, one course at a time. Only set what you'll actually serve.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-062",
+    "area": "todo",
+    "prompt": "delete the dentist appointment reminder",
+    "history": [],
+    "reply": "Deleted the **Dentist appointment** reminder.",
+    "expect": "change"
+  },
+  {
+    "id": "ht-063",
+    "area": "lookalike",
+    "prompt": "if i set x = 4 in 3x + 2y = 20 what's y",
+    "history": [],
+    "reply": "Substitute $x = 4$:\n\n$$3(4) + 2y = 20$$\n$$12 + 2y = 20$$\n$$2y = 8$$\n$$y = 4$$\n\n**Answer:** $y = 4$, so the point $(4, 4)$ lies on the line.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-064",
+    "area": "lookalike",
+    "prompt": "how do i set a reminder in excel so rows turn red when the due date passes?",
+    "history": [],
+    "reply": "Excel can't pop up an alert on its own, but **Conditional Formatting** can highlight overdue rows automatically.\n\nSay your due dates are in **column C** starting at row 2, and your data runs from column A to E:\n\n1. Select the range, e.g. **A2:E200**.\n2. Go to **Home → Conditional Formatting → New Rule**.\n3. Choose **\"Use a formula to determine which cells to format\"**.\n4. Enter:\n   ```\n   =AND($C2<>\"\", $C2<TODAY())\n   ```\n5. Click **Format → Fill**, pick red, then **OK**.\n\nThe `$C` locks the column so the whole row turns red, and `TODAY()` updates every time the file opens.\n\n**Extras**\n- **Due in the next 3 days → yellow:** add another rule with `=AND($C2>=TODAY(), $C2<=TODAY()+3)`.\n- **Skip finished tasks:** if column E says \"Done\", use `=AND($C2<TODAY(), $E2<>\"Done\")`.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-065",
+    "area": "todo",
+    "prompt": "move gym to saturday at 7am",
+    "history": [],
+    "reply": "Moved **Gym** to Saturday, Oct 17, 7:00 AM. 💪",
+    "expect": "change"
+  },
+  {
+    "id": "ht-066",
+    "area": "lookalike",
+    "prompt": "i run every day at 6am, is that healthy?",
+    "history": [],
+    "reply": "Running every day can be healthy — it depends on **how hard** and **how far** you run, and how well you recover.\n\n**When it's fine**\n- Most of your runs are **easy** (you can talk in full sentences).\n- You built up gradually, without big jumps in weekly distance.\n- You feel fresh, sleep well and don't have nagging pains.\n\n**Watch out for**\n- **Overuse injuries:** shin splints, knee or Achilles pain, stress fractures — these usually come from too much, too soon, with no recovery.\n- **Constant tiredness, poor sleep, or a resting heart rate higher than usual** — signs you need more rest.\n\n**About the 6 AM part**\n- Morning running is great for consistency.\n- Warm up for 5–10 minutes — muscles are stiffer early, and Addis mornings are cool.\n- A small snack (a banana, a few dates) helps if you run longer than about 45 minutes.\n- Make sure you still get **7–9 hours of sleep**; an early run shouldn't cost you sleep.\n\n**A balanced week:** mostly easy runs, one harder session (intervals or tempo), one longer run, and at least one very easy or rest day.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-067",
+    "area": "lookalike",
+    "prompt": "my exam is tomorrow at 9am, help me revise photosynthesis fast",
+    "history": [],
+    "reply": "You've got this — here's a fast, exam-ready review. 🌱\n\n**1. The big picture**\nPlants convert light energy into chemical energy (glucose):\n\n$$6CO_2 + 6H_2O \\xrightarrow{\\text{light}} C_6H_{12}O_6 + 6O_2$$\n\nIt happens in the **chloroplasts**, where **chlorophyll** absorbs light (mostly red and blue; green is reflected).\n\n**2. Two stages**\n\n| | Light-dependent reactions | Light-independent (Calvin cycle) |\n|---|---|---|\n| Where | Thylakoid membranes | Stroma |\n| Needs | Light, water | CO₂, ATP, NADPH |\n| Produces | ATP, NADPH, **O₂** (from splitting water) | **Glucose** (via G3P) |\n\n**3. Limiting factors**\n- **Light intensity**, **CO₂ concentration** and **temperature** — the rate is limited by whichever is in shortest supply. Too hot, and enzymes denature so the rate drops.\n\n**4. Classic exam traps**\n- The O₂ released comes from **water**, not CO₂.\n- The Calvin cycle doesn't use light directly, but it depends on ATP and NADPH from the light reactions.\n- Plants also **respire all the time**, day and night.\n\n**Quick self-test**\n1. Where does the Calvin cycle happen?\n2. What does the light-dependent stage produce?\n3. Name three limiting factors.\n\n*(Answers: the stroma; ATP, NADPH and O₂; light, CO₂ and temperature.)*\n\nGet a good night's sleep — it helps memory more than late cramming. Good luck tomorrow! 🍀",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-068",
+    "area": "todo",
+    "prompt": "i paid rent, check it off",
+    "history": [],
+    "reply": "Nice — **Pay rent** is checked off. ✅",
+    "expect": "change"
+  },
+  {
+    "id": "ht-069",
+    "area": "lookalike",
+    "prompt": "i have a job interview friday at 10am for a junior data analyst role, what questions should i expect",
+    "history": [],
+    "reply": "Good luck! For a **junior data analyst** role, expect a mix of these:\n\n**Technical**\n1. **SQL:** \"Write a query to find the top 5 customers by total purchases.\" Know `JOIN`, `GROUP BY`, `HAVING` and window functions like `ROW_NUMBER()`.\n2. **Excel:** XLOOKUP/VLOOKUP, pivot tables, conditional formatting.\n3. **Statistics:** mean vs. median (and when to use each), standard deviation, correlation vs. causation, what a p-value means.\n4. **Data cleaning:** \"How would you handle missing values or duplicates?\"\n5. **Visualization:** \"Which chart would you use to show sales over time?\" (a line chart) — maybe Power BI or Tableau questions.\n\n**Case / problem-solving**\n- \"Sales dropped 15% last month — how would you investigate?\" Walk through it: check the data quality, segment by region/product/channel, compare with seasonality, then form hypotheses.\n\n**Behavioral**\n- Tell me about yourself.\n- Describe a project where you analyzed data — what was the impact?\n- How do you explain findings to non-technical people?\n- Tell me about a mistake you made and what you learned.\n\n**Prep checklist**\n- Prepare 2–3 project stories using **STAR** (Situation, Task, Action, Result).\n- Practice a couple of SQL questions out loud.\n- Research the company and have 2 questions ready for them (e.g., \"What does a typical week look like for this team?\").\n\nWant to do a quick mock interview now?",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-070",
+    "area": "lookalike",
+    "prompt": "my flight leaves tomorrow at 6pm from bole, how early should i get to the airport? it's international",
+    "history": [],
+    "reply": "For an **international flight at 6:00 PM**, aim to be at **Bole by about 3:00 PM** — 3 hours before departure.\n\nWhy that much time:\n- **Security at the terminal entrance** — there's a screening before you even reach check-in, and the line can be long.\n- **Check-in** usually closes about **60 minutes before departure** for international flights.\n- **Immigration and a second security check** before the gates.\n- **Addis traffic** — late afternoon on Bole Road can crawl, so leave home with extra margin.\n\n**Quick checklist**\n- Passport (and visa, if needed)\n- Online check-in done (it opens 24 hours before)\n- Bags within the weight limits\n- Liquids under 100 ml in a clear bag\n\nSafe travels! ✈️",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-071",
+    "area": "todo",
+    "prompt": "done with the read reminder ✅",
+    "history": [],
+    "reply": "Marked **Read** as done. 📚",
+    "expect": "change"
+  },
+  {
+    "id": "ht-072",
+    "area": "lookalike",
+    "prompt": "the meeting is at 3pm EST, what time is that in addis?",
+    "history": [],
+    "reply": "**3:00 PM Eastern = 10:00 PM in Addis Ababa** (same day).\n\nRight now (mid-October) the US East Coast is on **daylight time (EDT, UTC−4)**, and Addis is on **EAT (UTC+3)** — a **7-hour** difference.\n\n> If the time is truly EST (UTC−5) — for example after US clocks fall back on **Sunday, Nov 1, 2026** — it becomes **11:00 PM** in Addis.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-073",
+    "area": "lookalike",
+    "prompt": "I need to read 3 chapters by friday 5pm, how should I split them?",
+    "history": [],
+    "reply": "You have about two days (today is Wednesday), so split it so each session is manageable and you keep a buffer:\n\n| When | What |\n|---|---|\n| **Wed evening** | Chapter 1 + jot down 3–5 key points |\n| **Thu (morning or evening)** | Chapter 2 + key points |\n| **Fri morning** | Chapter 3 |\n| **Fri, by 4 PM** | 30-minute review of all your notes |\n\n**Tips**\n- Check page counts first — if one chapter is much longer, split it across two sessions.\n- Skim the headings and summary before reading for detail.\n- Write a 2–3 sentence summary after each chapter; it makes Friday's review much faster.\n\nThat leaves you an hour of slack before 5 PM in case anything runs over.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-074",
+    "area": "todo",
+    "prompt": "push water the plants to tomorrow at 6pm",
+    "history": [],
+    "reply": "Moved **Water the plants** to tomorrow, Thursday, Oct 15, 6:00 PM. 🪴",
+    "expect": "change"
+  },
+  {
+    "id": "ht-075",
+    "area": "lookalike",
+    "prompt": "how do you say 'see you tomorrow at 6pm' in amharic",
+    "history": [],
+    "reply": "**ነገ ከቀኑ 12 ሰዓት እንገናኝ።**\n*(Nege kekenu asra-hulet se'at inigenagn.)*\n\n**Why \"12\" and not \"6\"?** Ethiopia uses its own clock, which starts counting at sunrise (6 AM = 12 o'clock, 7 AM = 1 o'clock). So:\n\n- 6 PM international = **12 o'clock \"of the day\"** (ከቀኑ 12 ሰዓት)\n- 7 PM = ከምሽቱ 1 ሰዓት (1 o'clock in the evening)\n\nIf there's any chance of confusion, add the international time: **ነገ ከቀኑ 12 ሰዓት (6:00 PM) እንገናኝ።**",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-076",
+    "area": "lookalike",
+    "prompt": "i went to the gym today 💪 what should i eat after leg day",
+    "history": [],
+    "reply": "Nice work! 💪 After leg day, aim for **protein + carbs within a couple of hours**:\n\n**Good post-workout options**\n- **Eggs** (enkulal firfir, or 2–3 boiled eggs) with injera or bread\n- **Lean tibs** with injera or rice\n- **Misir or shiro wot** with injera — lentils and chickpeas add plant protein\n- **Ergo (yogurt) with banana and honey**\n- **Milk or a protein shake** if you're on the go\n\n**Rough targets**\n- **Protein:** about 20–40 g to help muscle repair\n- **Carbs:** refill the energy you used — legs are big muscles\n- **Water:** drink extra, especially at altitude\n\nExpect some soreness (DOMS) tomorrow or the day after — light walking and stretching help.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-077",
+    "area": "lookalike",
+    "prompt": "dentist appointment tomorrow for a filling, is it normal to be this nervous?",
+    "history": [],
+    "reply": "Yes, completely normal — dental anxiety is one of the most common fears there is. The good news: **fillings are routine and usually quick (20–60 minutes)**.\n\n**What to expect**\n1. The dentist numbs the area with a local anesthetic — a small pinch, then numbness.\n2. They remove the decay with a drill (you'll feel vibration and pressure, not pain).\n3. They fill and shape the tooth, then check your bite.\n4. The numbness wears off in 2–4 hours.\n\n**Things that help**\n- **Tell the dentist you're nervous** — they can go slower and explain each step.\n- **Agree on a stop signal**, like raising your hand.\n- **Bring headphones** and play music or a podcast.\n- **Breathe slowly:** in for 4, out for 6.\n- **Eat a light meal beforehand**, since you shouldn't chew on the numb side for a few hours after.\n\nYou'll probably be surprised how fast it's over. 🦷",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-078",
+    "area": "todo",
+    "prompt": "reopen call mom, i didn't actually reach her",
+    "history": [],
+    "reply": "Reopened **Call mom** — it's back on your list.",
+    "expect": "change"
+  },
+  {
+    "id": "ht-079",
+    "area": "lookalike",
+    "prompt": "i paid rent twice this month by mistake 🤦 how do i ask my landlord for it back without making it awkward",
+    "history": [],
+    "reply": "That happens more than you'd think — keep it friendly and factual. Here's a message you can send:\n\n> Hi [Name], hope you're well! I just noticed I accidentally sent October's rent twice — once on [date] and again on [date], [amount] birr each time. Could you please send the extra payment back to the same account when you have a chance? Or, if it's easier, we can count it toward November's rent. Thanks so much!\n\n**Tips**\n- **Attach proof** — screenshots of both transfers (bank or telebirr receipts).\n- **Offer the option** of applying it to next month; many landlords prefer that.\n- **Follow up politely** after a week if you don't hear back.\n- **Keep it in writing** so there's a record either way.\n\nWant me to translate the message into Amharic?",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-080",
+    "area": "lookalike",
+    "prompt": "ok i'll call mom tonight, can you make the opening softer?",
+    "history": [
+      [
+        "user",
+        "how do i tell my mom i'm moving to hawassa for a job? she'll be upset"
+      ],
+      [
+        "assistant",
+        "Here's a simple way to approach it:\n\n**Opening:** \"Mom, I have news: I'm moving to Hawassa next month for a job.\"\n\n**Explain why:** the role, what it means for your career, and that you thought about it carefully.\n\n**Acknowledge her feelings:** \"I know this is hard to hear, and I'll miss you too.\"\n\n**Make a plan to stay close:** weekly calls, visiting on holidays, and inviting her to visit you.\n\nGive her time to react — she may need a day or two to get used to the idea."
+      ]
+    ],
+    "reply": "Of course. Here are a few softer openings — pick whichever sounds most like you:\n\n1. **Warm lead-in:**\n   > \"Emaye, do you have a few minutes? Something good happened, and I wanted you to be the first to know.\"\n\n2. **Start with gratitude:**\n   > \"Mom, so much of what I've worked for, I owe to you. I've been offered a job I'm really excited about — it's in Hawassa.\"\n\n3. **Invite her in:**\n   > \"I'd love your blessing on something. I've been offered a job, and it means moving to Hawassa for a while.\"\n\n**Tips for the call**\n- Call when she's relaxed, not in the middle of something.\n- Lead with what excites you, then the move.\n- Pause and let her respond — don't rush to fill the silence.\n- End with a concrete promise, like \"I'll come home for Genna.\"\n\nGood luck tonight — it will likely go better than you expect. ❤️",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-081",
+    "area": "todo",
+    "prompt": "what's on my to-do list?",
+    "history": [],
+    "reply": "Here's what's on your list:\n\n- Call mom\n- Dentist appointment\n- Gym\n- Pay rent\n- Read\n- Water the plants\n\nWant to mark any of these as done or move one?",
+    "expect": "read"
+  },
+  {
+    "id": "ht-082",
+    "area": "lookalike",
+    "prompt": "remind me again how much water each time?",
+    "history": [
+      [
+        "user",
+        "how often should i water a snake plant"
+      ],
+      [
+        "assistant",
+        "Snake plants (Sansevieria) like to dry out between waterings.\n\n- **Every 2–3 weeks** in warm, bright conditions\n- **Every 4–6 weeks** when it's cooler or the plant is in lower light\n- Only water when the soil is **completely dry** — stick a finger about 5 cm in to check.\n\nOverwatering (root rot) is the most common way they die."
+      ]
+    ],
+    "reply": "When you do water, **water thoroughly**:\n\n- Pour slowly over the soil until water **starts draining out of the bottom holes** — for a typical 15–20 cm pot, that's roughly **250–500 ml (1–2 cups)**.\n- **Empty the saucer** after 10–15 minutes so the roots don't sit in water.\n- Water the soil, not the center of the leaf rosette.\n\nSo: **soak deeply, then let it dry out completely** before the next watering. If the pot has no drainage hole, use much less water or repot it — sitting water is the #1 cause of root rot.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-083",
+    "area": "lookalike",
+    "prompt": "thanks! also what documents do i need to open a savings account at CBE?",
+    "history": [
+      [
+        "user",
+        "remind me to call the bank friday at 9am"
+      ],
+      [
+        "assistant",
+        "Set: Call the bank — Friday, Oct 16, 9:00 AM."
+      ]
+    ],
+    "reply": "To open a personal savings account at **Commercial Bank of Ethiopia (CBE)**, you'll typically need:\n\n**Required**\n- **A valid ID** — Kebele ID, **Fayda** national ID, passport or driving license\n- **Passport-size photos** — some branches still ask for 1–2\n- **An initial deposit** — a small minimum that varies by account type\n\n**Often asked for**\n- Your **phone number**, for SMS alerts and CBE Birr / mobile banking\n- **Address details** (sub-city, woreda, house number)\n\n**Tips**\n- Bring the **original ID plus a photocopy**.\n- Ask about **mobile banking and a debit card** in the same visit.\n- Requirements can vary slightly between branches, so a quick call ahead helps — and you already have a reminder set for that call. 😉",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-084",
+    "area": "todo",
+    "prompt": "what reminders do i have",
+    "history": [],
+    "reply": "You have 6 open reminders:\n\n1. **Call mom**\n2. **Dentist appointment**\n3. **Gym**\n4. **Pay rent**\n5. **Read**\n6. **Water the plants**",
+    "expect": "read"
+  },
+  {
+    "id": "ht-085",
+    "area": "lookalike",
+    "prompt": "is it gonna rain tomorrow evening? i have gym at 6pm",
+    "history": [],
+    "reply": "Here's the forecast for **Addis Ababa, tomorrow (Thursday, Oct 15)**:\n\n- **Daytime:** partly cloudy, high around **23 °C**\n- **Evening (5–8 PM):** mostly dry, about a **15% chance** of a light shower, around **17 °C**\n- **Wind:** light breeze\n\nLooks fine for your 6 PM gym session — maybe bring a light jacket for the walk home, since it cools down quickly after sunset. 🌤️",
+    "expect": "search",
+    "location": "Addis Ababa, Ethiopia"
+  },
+  {
+    "id": "ht-086",
+    "area": "lookalike",
+    "prompt": "how do you say 'remind me' in amharic",
+    "history": [],
+    "reply": "**\"Remind me\"** in Amharic is **አስታውሰኝ** (*astawsegn*) when speaking to a man, and **አስታውሺኝ** (*astawshign*) when speaking to a woman.\n\nExamples:\n- **ነገ አስታውሰኝ።** (*Nege astawsegn.*) — \"Remind me tomorrow.\"\n- **እባክህ አስታውሰኝ።** (*Ebakih astawsegn.*) — \"Please remind me.\" (to a man)\n- **እባክሽ አስታውሺኝ።** (*Ebakish astawshign.*) — \"Please remind me.\" (to a woman)\n\nThe root verb is **አስታወሰ** (*astawese*) — \"to remind.\"",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-087",
+    "area": "todo",
+    "prompt": "any reminders due this week?",
+    "history": [],
+    "reply": "Here are your open reminders:\n\n- Call mom\n- Dentist appointment\n- Gym\n- Pay rent\n- Read\n- Water the plants\n\nTell me if you'd like to reschedule any of them.",
+    "expect": "read"
+  },
+  {
+    "id": "ht-088",
+    "area": "lookalike",
+    "prompt": "translate 'set an alarm for 6am' to french",
+    "history": [],
+    "reply": "**\"Set an alarm for 6am\"** in French:\n\n- **Mets un réveil à 6 h.** — informal (to a friend)\n- **Mettez un réveil à 6 h.** — formal or plural\n- **Règle une alarme pour 6 h du matin.** — also common, a bit more explicit\n\nFrench usually writes times as **6 h** (or 06:00), and *du matin* makes it clear it's AM.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-089",
+    "area": "lookalike",
+    "prompt": "whats the difference between reminders and calendar events on iphone",
+    "history": [],
+    "reply": "**Reminders** are for *tasks*; **Calendar events** are for *blocks of time*.\n\n| | Reminders app | Calendar app |\n|---|---|---|\n| Best for | Things to do (buy milk, pay a bill) | Things that happen at a time (meeting, class) |\n| Time | Optional due date/time | Start and end time |\n| Completion | You check it off | It just passes when it ends |\n| If you miss it | Stays overdue until done | Slips into the past |\n| Extras | Subtasks, lists, tags, location alerts, shared lists | Invitees, location, travel time, video links |\n\n**Rule of thumb:** if it *takes up time* with a start and an end, use Calendar. If it just *needs to get done*, use Reminders.\n\nSince iOS 18, reminders with a due date can also show up in the Calendar app, so you can see both in one place.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-090",
+    "area": "todo",
+    "prompt": "show me my reminders pls",
+    "history": [],
+    "reply": "Your reminders:\n\n- 📞 Call mom\n- 🦷 Dentist appointment\n- 💪 Gym\n- 🏠 Pay rent\n- 📖 Read\n- 🪴 Water the plants",
+    "expect": "read"
+  },
+  {
+    "id": "ht-091",
+    "area": "todo",
+    "prompt": "ok last thing, what's on my to do list right now?",
+    "history": [],
+    "reply": "Here is what's on your To-Do list right now:\n\n1. **Practice list comprehensions** 🐍\n   Due: Monday, October 26, 2026 at 7:00 PM",
+    "expect": "read"
+  },
+  {
+    "id": "ht-092",
+    "area": "todo",
+    "prompt": "hmm are you sure? check my to-do list again",
+    "history": [],
+    "reply": "After checking, it looks like there's only one active task: **Practice list comprehensions**.",
+    "expect": "read"
+  },
+  {
+    "id": "ht-093",
+    "area": "lookalike",
+    "prompt": "things to do in lisbon? i'm there for 4 days",
+    "history": [],
+    "reply": "Four days in Lisbon is plenty: Alfama and the castle, Belém's monastery and tower, a day trip to Sintra, and the riverside at sunset.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-094",
+    "area": "lookalike",
+    "prompt": "what's on my list for the party? i need ideas",
+    "history": [],
+    "reply": "For a party list: snacks, drinks, cups and plates, a playlist and a few games.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-095",
+    "area": "lookalike",
+    "prompt": "check my todo list app for bugs",
+    "history": [],
+    "reply": "Two bugs: `toggle` mutates state in place, and the `key` is the array index.\n\n```tsx\nsetTodos(prev => prev.map(t => t.id === id ? {...t, done: !t.done} : t))\n```",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-096",
+    "area": "lookalike",
+    "prompt": "read my todo list code and tell me what's wrong",
+    "history": [],
+    "reply": "The bug is on line 12: you mutate `todos` directly. Use a copy instead.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-097",
+    "area": "lookalike",
+    "prompt": "Is Monday a holiday? what's on my schedule",
+    "history": [],
+    "reply": "Monday isn't a public holiday. On your list: call mom, gym and pay rent.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-098",
+    "area": "todo",
+    "prompt": "what's on my to-do list? push gym to friday",
+    "history": [],
+    "reply": "Moving gym to Friday.\n\n```reminder\n{\"action\": \"set_due\", \"title\": \"gym\", \"due_at\": \"2026-10-16T18:00:00+03:00\"}\n```",
+    "expect": "change"
+  },
+  {
+    "id": "ht-099",
+    "area": "lookalike",
+    "prompt": "yes",
+    "history": [
+      [
+        "user",
+        "how do I balance redox equations?"
+      ],
+      [
+        "assistant",
+        "Nice work on that one. Would you like a reminder of the key steps for balancing redox equations?"
+      ]
+    ],
+    "reply": "Sure!\n\n1. Count the atoms on each side.\n2. When electrons are removed from an atom, it becomes a cation.\n3. Check that the charge is balanced.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-100",
+    "area": "lookalike",
+    "prompt": "yes",
+    "history": [
+      [
+        "user",
+        "build me a todo app"
+      ],
+      [
+        "assistant",
+        "Here's the skeleton. Should I add error handling to the reminder service?"
+      ]
+    ],
+    "reply": "Sure, here's how:\n\n```py\n@app.post('/reminders')\ndef create(): ...\n```\nI moved the handler into `routes.py`.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-101",
+    "area": "lookalike",
+    "prompt": "Make me a study schedule for tomorrow from 9am to 5pm",
+    "history": [],
+    "reply": "Here's your day:\n\n- 9:00 AM: Calculus\n- 12:30 PM: Lunch\n- 1:30 PM: Physics\n\nSet a reminder for 12:30 PM so you actually stop for lunch.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-102",
+    "area": "lookalike",
+    "prompt": "can you add milk to my Apple Reminders?",
+    "history": [],
+    "reply": "Good catch. I can't add reminders to Apple Reminders directly, but you can share a list from the Reminders app: tap the list, then Share.",
+    "expect": "answer",
+    "gap": "an add to another app's list (Apple Reminders) is asked when, as on main; a grocery add needs no time"
+  },
+  {
+    "id": "ht-103",
+    "area": "lookalike",
+    "prompt": "how do I get a reminder when I arrive at the grocery store?",
+    "history": [],
+    "reply": "I can't set reminders that trigger when you arrive somewhere, but your iPhone can: open the Reminders app, tap the reminder, turn on Location and pick the store.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-104",
+    "area": "lookalike",
+    "prompt": "can reminders here repeat every other tuesday?",
+    "history": [],
+    "reply": "Repeats can be daily, weekdays, weekly or monthly. I can't set reminders that repeat every other Tuesday yet, so make two weekly ones a week apart and delete the extra.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-105",
+    "area": "todo",
+    "prompt": "7pm tomorrow",
+    "history": [
+      [
+        "user",
+        "can you remind me about the python practice again? i don't think i saved it"
+      ],
+      [
+        "assistant",
+        "When should I remind you?"
+      ]
+    ],
+    "reply": "Got it, I'll set a reminder for tomorrow at 7:00 PM to practice Python.",
+    "expect": "save"
+  },
+  {
+    "id": "ht-106",
+    "area": "todo",
+    "prompt": "tomorrow at 5pm",
+    "history": [
+      [
+        "user",
+        "remind me to call mom"
+      ],
+      [
+        "assistant",
+        "When should I remind you?"
+      ]
+    ],
+    "reply": "Sure, tomorrow at 5 PM it is.",
+    "expect": "save"
+  },
+  {
+    "id": "ht-107",
+    "area": "lookalike",
+    "prompt": "tomorrow at 5pm works for the meeting",
+    "history": [
+      [
+        "user",
+        "when is a good time for a team meeting this week?"
+      ],
+      [
+        "assistant",
+        "Tuesday or Wednesday afternoon tends to work. When would suit you?"
+      ]
+    ],
+    "reply": "Great, tomorrow at 5 PM it is. Want an agenda?",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-108",
+    "area": "todo",
+    "prompt": "tomorrow at 10am",
+    "history": [
+      [
+        "user",
+        "can you remind me to call the dentist? i always forget"
+      ],
+      [
+        "assistant",
+        "Sure thing! 🦷 To set that up, when would you like to be reminded? (e.g., this Friday at 10 AM, or every Monday morning?)"
+      ]
+    ],
+    "reply": "```reminder\nCall the dentist tomorrow at 10:00 AM EDT\n</reminder>\n\nI've set that for Monday, October 26, 2026, at 10:00 AM. 📅",
+    "expect": "save"
+  },
+  {
+    "id": "ht-109",
+    "area": "lookalike",
+    "prompt": "friday at 9",
+    "history": [
+      [
+        "user",
+        "remind me to study"
+      ],
+      [
+        "assistant",
+        "Good idea. When is your exam?"
+      ]
+    ],
+    "reply": "Friday at 9 gives you four days. Want a study plan for each one?",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-110",
+    "area": "todo",
+    "prompt": "yes",
+    "history": [
+      [
+        "user",
+        "I need to call the bank about my card"
+      ],
+      [
+        "assistant",
+        "You can call the number on the back of the card.\n\nWould you like me to set a reminder for tomorrow at 10am?"
+      ]
+    ],
+    "reply": "Great, I'll set that up for you!",
+    "expect": "save",
+    "gap": "a yes to an offered reminder gets no card unless the model writes the fence"
+  },
+  {
+    "id": "ht-111",
+    "area": "todo",
+    "prompt": "yes",
+    "history": [
+      [
+        "user",
+        "My flight to Lisbon is friday at 6pm, what should I pack?"
+      ],
+      [
+        "assistant",
+        "Pack light layers, a rain jacket and comfortable shoes.\n\nWant me to set a reminder to check in online?"
+      ]
+    ],
+    "reply": "Sure, when would you like to be reminded? Check-in usually opens 24 hours before.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-112",
+    "area": "todo",
+    "prompt": "yes",
+    "history": [
+      [
+        "user",
+        "I'm hosting a dinner party saturday at 7pm, what should I cook?"
+      ],
+      [
+        "assistant",
+        "Try a roast chicken with lemon potatoes and a green salad.\n\nWant me to add the ingredients to your shopping list?"
+      ]
+    ],
+    "reply": "Here's your shopping list:\n\n- 1 whole chicken\n- 2 lemons\n- 1 kg potatoes\n- mixed greens\n- olive oil",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-113",
+    "area": "todo",
+    "prompt": "yes",
+    "history": [
+      [
+        "user",
+        "I usually wake up at 6am, how can I build a running habit?"
+      ],
+      [
+        "assistant",
+        "Start with 20 minutes three times a week.\n\nWould you like me to set a reminder to stretch?"
+      ]
+    ],
+    "reply": "Sure! When would you like to be reminded to stretch?",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-114",
+    "area": "todo",
+    "prompt": "yes",
+    "history": [
+      [
+        "user",
+        "i have a dentist appointment on thursday at 3pm, i always forget these things"
+      ],
+      [
+        "assistant",
+        "No problem!\n\nDo you want me to set a reminder for you?"
+      ]
+    ],
+    "reply": "I'll set a reminder for you now!",
+    "expect": "save",
+    "gap": "a yes to an offer that names no time gets no card unless the model writes the fence"
+  },
+  {
+    "id": "ht-115",
+    "area": "code",
+    "prompt": "yes",
+    "history": [
+      [
+        "user",
+        "build a react booking form that defaults to 9am tomorrow"
+      ],
+      [
+        "assistant",
+        "Here's the form:\n\n```tsx\nexport function BookingForm() { return <form>...</form> }\n```\n\nShould I add a reminder field to the form?"
+      ]
+    ],
+    "reply": "Sure! I've added a reminder field:\n\n```tsx\n<input type=\"datetime-local\" name=\"remindAt\" />\n```\n\nIt stores the time as an ISO string.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-116",
+    "area": "code",
+    "prompt": "sure",
+    "history": [
+      [
+        "user",
+        "write a cron job that runs every day at 9am and emails my team"
+      ],
+      [
+        "assistant",
+        "```python\nschedule.every().day.at('09:00').do(send)\n```\n\nShould I create a reminders table too?"
+      ]
+    ],
+    "reply": "Here it is:\n\n```sql\nCREATE TABLE reminders (id uuid primary key, remind_at timestamptz);\n```",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-117",
+    "area": "code",
+    "prompt": "yes",
+    "history": [
+      [
+        "user",
+        "my sale ends friday at 5pm, make my landing page more engaging"
+      ],
+      [
+        "assistant",
+        "Here are three ideas.\n\nWant me to add a reminder banner to the hero?"
+      ]
+    ],
+    "reply": "Sure, I've added a reminder banner:\n\n```html\n<div class=\"banner\">Sale ends Friday at 5pm</div>\n```",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-118",
+    "area": "code",
+    "prompt": "9am every day",
+    "history": [
+      [
+        "user",
+        "add a daily digest notification to my flask app"
+      ],
+      [
+        "assistant",
+        "Here's the job:\n\n```python\ndef send_digest(): ...\n```\n\nWhat time should the digest notification be sent?"
+      ]
+    ],
+    "reply": "Here's the schedule:\n\n```python\nscheduler.add_job(send_digest, 'cron', hour=9)\n```\n\nIt runs at 9:00 every day.",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-119",
+    "area": "code",
+    "prompt": "every monday at 8am",
+    "history": [
+      [
+        "user",
+        "add a cron job that sends reminder emails"
+      ],
+      [
+        "assistant",
+        "Sure, here's a skeleton:\n\n```python\ndef send(): ...\n```\n\nWhen should the reminder emails go out?"
+      ]
+    ],
+    "reply": "Here's the crontab line:\n\n```\n0 8 * * 1 python send.py\n```",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-120",
+    "area": "todo",
+    "prompt": "next tuesday at 3pm",
+    "history": [
+      [
+        "user",
+        "remind me to book a dentist appointment"
+      ],
+      [
+        "assistant",
+        "Sure! When do you want to schedule the appointment itself?"
+      ]
+    ],
+    "reply": "Got it, Tuesday at 3pm for the appointment. When should I remind you to book it?",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-121",
+    "area": "todo",
+    "prompt": "6:30am",
+    "history": [
+      [
+        "user",
+        "add an alarm to my morning routine plan"
+      ],
+      [
+        "assistant",
+        "Here's your routine:\n\n- Wake up\n- Stretch\n- Breakfast\n\nWhat time should I set it for?"
+      ]
+    ],
+    "reply": "Updated routine:\n\n- 6:30 AM: Alarm, wake up\n- 6:40 AM: Stretch\n- 7:00 AM: Breakfast",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-122",
+    "area": "todo",
+    "prompt": "tomorrow at 10am",
+    "history": [
+      [
+        "user",
+        "can you remind me to call the dentist? i always forget"
+      ],
+      [
+        "assistant",
+        "Of course! When would you like to be reminded? (e.g., this Friday at 10 AM)"
+      ]
+    ],
+    "reply": "Got it!",
+    "expect": "save"
+  },
+  {
+    "id": "ht-123",
+    "area": "todo",
+    "prompt": "friday at 6pm",
+    "history": [
+      [
+        "user",
+        "remind me to pay rent"
+      ],
+      [
+        "assistant",
+        "Sure. What time should I set it for?"
+      ]
+    ],
+    "reply": "Okay!",
+    "expect": "save"
+  },
+  {
+    "id": "ht-124",
+    "area": "code",
+    "prompt": "at 5pm",
+    "history": [
+      [
+        "user",
+        "add a step to the deploy script that alerts the team"
+      ],
+      [
+        "assistant",
+        "Added the Slack step.\n\nWhen should the alert go out?"
+      ]
+    ],
+    "reply": "Updated:\n\n```bash\nif [ $(date +%H) -ge 17 ]; then notify; fi\n```",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-125",
+    "area": "todo",
+    "prompt": "tomorrow at 7am",
+    "history": [
+      [
+        "user",
+        "add a 20 minute run to my workout plan"
+      ],
+      [
+        "assistant",
+        "Here's the updated plan:\n\n- Mon: run\n- Wed: weights\n\nWhen would you like to schedule the run?"
+      ]
+    ],
+    "reply": "Done, the run is now Thursday 7am:\n\n- Thu 7:00 AM: 20-minute run\n- Wed: weights",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-126",
+    "area": "todo",
+    "prompt": "next tuesday at 2pm",
+    "history": [
+      [
+        "user",
+        "remind me to prepare for my interview"
+      ],
+      [
+        "assistant",
+        "Happy to help! When is the interview scheduled? I can set the reminder a day before."
+      ]
+    ],
+    "reply": "Great, I'll remind you Monday at 2pm to prepare.\n\n```reminder\n{\"action\": \"add\", \"title\": \"Prepare for interview\", \"due_at\": \"2026-10-19T14:00:00+03:00\"}\n```",
+    "expect": "save"
+  },
+  {
+    "id": "ht-127",
+    "area": "todo",
+    "prompt": "friday at 6am",
+    "history": [
+      [
+        "user",
+        "remind me to check in for my flight"
+      ],
+      [
+        "assistant",
+        "Sure! When is your flight scheduled to depart? Check-in usually opens 24 hours before."
+      ]
+    ],
+    "reply": "Then check-in opens Thursday at 6am. When should I remind you?",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-128",
+    "area": "todo",
+    "prompt": "8am",
+    "history": [
+      [
+        "user",
+        "remind me to refill my prescription"
+      ],
+      [
+        "assistant",
+        "Sure. What time do you usually take your pills, so I can schedule it around that?"
+      ]
+    ],
+    "reply": "Got it, you take them at 8am. When should I remind you to refill?",
+    "expect": "answer"
+  },
+  {
+    "id": "ht-129",
+    "area": "todo",
+    "prompt": "Can you remind me to stretch? Every day at 3pm",
+    "history": [],
+    "reply": "Sure!",
+    "expect": "save"
+  }
+]

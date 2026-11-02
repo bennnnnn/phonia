@@ -1,0 +1,89 @@
+name: Mobile CI
+
+on:
+  # main only. A pull request's commits are checked by its pull_request run below; a
+  # push to its branch that touched these paths ran the same jobs a second time. The
+  # deploy gate (scripts/require-green-ci.sh) reads only main's push runs.
+  push:
+    branches: [main]
+    paths:
+      - "apps/mobile/**"
+      # Phone tests read the shared fixtures and the API's behaviour-sweep replies.
+      - "docs/fixtures/**"
+      - "apps/api/app/tests/behavior/sweep_corpus/**"
+      - "scripts/check_file_sizes.py"
+      - "scripts/file_size_baseline.json"
+      - ".github/workflows/mobile-ci.yml"
+  # Every pull request, so the required checks always report. The jobs skip
+  # themselves when nothing they check changed (a skipped job counts as passed).
+  pull_request:
+
+# A new push to a pull request stops the run it replaces: its result no longer
+# counts and it held a runner for up to half an hour. Runs on main are never
+# cancelled; the deploy gate reads each of main's commits.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: apps/mobile
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      run: ${{ steps.diff.outputs.run }}
+    steps:
+      - id: diff
+        working-directory: .
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          run=true
+          if [ -n "$PR" ] && files=$(gh pr diff "$PR" --repo "$GITHUB_REPOSITORY" --name-only); then
+            echo "$files" | grep -qE '^(apps/mobile/|docs/fixtures/|apps/api/app/tests/behavior/sweep_corpus/|scripts/(check_file_sizes\.py|file_size_baseline\.json)$|\.github/workflows/mobile-ci\.yml$)' || run=false
+          fi
+          echo "run=$run" >> "$GITHUB_OUTPUT"
+
+  mobile:
+    needs: changes
+    if: needs.changes.outputs.run == 'true'
+    runs-on: ubuntu-latest
+    # A hung run fails here instead of holding a runner for GitHub's six hours. A
+    # passing run takes up to 30 minutes; a limit at 30 cut those off to run again.
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: apps/mobile/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: File sizes
+        run: python3 ../../scripts/check_file_sizes.py mobile
+
+      - name: Unit tests
+        run: pnpm test

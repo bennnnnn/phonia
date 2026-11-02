@@ -1,0 +1,172 @@
+[
+  {
+    "modules": [
+      "app.core.logging",
+      "app.core.request_id"
+    ],
+    "imports": 2
+  },
+  {
+    "modules": [
+      "app.gateways.litellm_gateway",
+      "app.gateways.structured_completion",
+      "app.gateways.text_completion",
+      "app.gateways.tool_completion",
+      "app.gateways.vision_completion"
+    ],
+    "imports": 9
+  },
+  {
+    "modules": [
+      "app.modules.chat.model_routing.route",
+      "app.modules.chat.model_routing.thinking"
+    ],
+    "imports": 2
+  },
+  {
+    "modules": [
+      "app.modules.chemistry.binding",
+      "app.modules.chemistry.extractors.atom_particles",
+      "app.modules.chemistry.extractors.described",
+      "app.modules.chemistry.extractors.equations",
+      "app.modules.chemistry.extractors.parsing",
+      "app.modules.chemistry.extractors.reaction_ask",
+      "app.modules.chemistry.extractors.stoichiometry",
+      "app.modules.chemistry.particle_cues",
+      "app.modules.chemistry.request",
+      "app.modules.chemistry.sig_figs",
+      "app.modules.chemistry.solvers.display",
+      "app.modules.chemistry.solvers.half_reaction"
+    ],
+    "imports": 21
+  },
+  {
+    "modules": [
+      "app.modules.images.gen_intent",
+      "app.modules.images.gen_intent_second"
+    ],
+    "imports": 2
+  },
+  {
+    "modules": [
+      "app.modules.math.followup",
+      "app.modules.math.followup_what_if",
+      "app.modules.math.tools",
+      "app.modules.math.tools.direct",
+      "app.modules.math.tools.prompt"
+    ],
+    "imports": 9
+  },
+  {
+    "modules": [
+      "app.modules.math.formulas",
+      "app.modules.math.school",
+      "app.modules.math.solve",
+      "app.modules.math.solve.discrete",
+      "app.modules.math.solve.extract_eq",
+      "app.modules.math.solve.graph"
+    ],
+    "imports": 11
+  },
+  {
+    "modules": [
+      "app.modules.math.image_extract",
+      "app.modules.math.ocr"
+    ],
+    "imports": 2
+  },
+  {
+    "modules": [
+      "app.modules.math.match",
+      "app.modules.math.match.needs",
+      "app.modules.math.tools.block",
+      "app.modules.math.tools.block.calculus",
+      "app.modules.math.tools.block.derivatives",
+      "app.modules.math.tools.direct_arithmetic",
+      "app.modules.math.tools.direct_counting",
+      "app.modules.math.tools.extractors.calculus",
+      "app.modules.math.tools.extractors.calculus_applications",
+      "app.modules.math.tools.extractors.detection",
+      "app.modules.math.tools.extractors.geometry",
+      "app.modules.math.tools.school",
+      "app.modules.math.tools.school.algebra_facts",
+      "app.modules.math.tools.school.arithmetic",
+      "app.modules.math.tools.school.arithmetic_expression",
+      "app.modules.math.tools.school.bag_draws",
+      "app.modules.math.tools.school.calculus",
+      "app.modules.math.tools.school.charges",
+      "app.modules.math.tools.school.complex",
+      "app.modules.math.tools.school.coordinate",
+      "app.modules.math.tools.school.curve_points",
+      "app.modules.math.tools.school.equation_features",
+      "app.modules.math.tools.school.equation_features.forms",
+      "app.modules.math.tools.school.equation_features.lines",
+      "app.modules.math.tools.school.equation_features.quadratics",
+      "app.modules.math.tools.school.equation_features.sinusoids",
+      "app.modules.math.tools.school.equation_features.solvers",
+      "app.modules.math.tools.school.fractions",
+      "app.modules.math.tools.school.function_value",
+      "app.modules.math.tools.school.geometry_facts",
+      "app.modules.math.tools.school.geometry_measures",
+      "app.modules.math.tools.school.geometry_measures.coordinates",
+      "app.modules.math.tools.school.interest",
+      "app.modules.math.tools.school.number_facts",
+      "app.modules.math.tools.school.percentages",
+      "app.modules.math.tools.school.probability",
+      "app.modules.math.tools.school.probability_formulas",
+      "app.modules.math.tools.school.rates",
+      "app.modules.math.tools.school.ratios",
+      "app.modules.math.tools.school.rounding",
+      "app.modules.math.tools.school.sequences",
+      "app.modules.math.tools.school.sets",
+      "app.modules.math.tools.school.shopping",
+      "app.modules.math.tools.school.single_draw",
+      "app.modules.math.tools.school.statistics",
+      "app.modules.math.tools.school.teaching",
+      "app.modules.math.tools.school.trig",
+      "app.modules.math.tools.school.trig_equations",
+      "app.modules.math.tools.school.units",
+      "app.modules.math.tools.school.vectors"
+    ],
+    "imports": 123
+  },
+  {
+    "modules": [
+      "app.modules.math.solve.equations",
+      "app.modules.math.solve.key_steps",
+      "app.modules.math.solve.key_steps_special"
+    ],
+    "imports": 4
+  },
+  {
+    "modules": [
+      "app.modules.math.tools.direct_calculus",
+      "app.modules.math.tools.direct_newton",
+      "app.modules.math.tools.extract",
+      "app.modules.math.tools.extractors.algebra",
+      "app.modules.math.tools.graph_followup"
+    ],
+    "imports": 6
+  },
+  {
+    "modules": [
+      "app.modules.math.tools.word_problem",
+      "app.modules.math.tools.word_templates"
+    ],
+    "imports": 2
+  },
+  {
+    "modules": [
+      "app.modules.physics.extract",
+      "app.modules.physics.split_parts"
+    ],
+    "imports": 2
+  },
+  {
+    "modules": [
+      "app.modules.web_search.detection",
+      "app.modules.web_search.subject"
+    ],
+    "imports": 2
+  }
+]

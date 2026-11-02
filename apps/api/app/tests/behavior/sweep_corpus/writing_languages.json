@@ -1,0 +1,951 @@
+[
+ {
+  "id": "w2-001",
+  "area": "translation",
+  "prompt": "how do you say 'see you tomorrow at 6' in amharic",
+  "history": [],
+  "reply": "In Amharic you'd say:\n\n**ነገ ማታ 12 ሰዓት እንገናኝ።**\n*Nege mata asra-hulet se'at inigenagn.*\n\nNote the time: Amharic speakers usually use the Ethiopian clock, which starts counting at 6 AM. So **6 PM** is **12 ሰዓት ማታ** (\"12 o'clock in the evening\").\n\nIf you mean **6 in the morning**, say:\n\n**ነገ ጠዋት 12 ሰዓት እንገናኝ።**\n*Nege tewat asra-hulet se'at inigenagn.*\n\nTo avoid any mix-up with someone who might read it as the international clock, you can add **በፈረንጅ** (*be-ferenj*, \"in European time\"): **ነገ በፈረንጅ 6 ሰዓት እንገናኝ።**",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-002",
+  "area": "translation",
+  "prompt": "selam endet neh",
+  "history": [],
+  "reply": "Selam Bini! Dehna negn, egziabher yimesgen 🙏 Ante endet neh?\n\nሰላም! ደህና ነኝ፣ እግዚአብሔር ይመስገን። አንተስ እንዴት ነህ?\n\n*(Hi! I'm fine, thank God. And how are you?)*\n\nMin lirdah? — What can I help you with today?",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-003",
+  "area": "short",
+  "prompt": "betam amesegnalehu",
+  "history": [
+   [
+    "user",
+    "help me write a short condolence message in amharic for my coworker Hirut, her father passed away"
+   ],
+   [
+    "assistant",
+    "Here's a short, respectful message:\n\n**ውድ ሂሩት፣**\n**የአባትሽን ሞት በመስማቴ በጣም አዝኛለሁ። እግዚአብሔር ነፍሳቸውን በአፀደ ገነት ያኑርልን፤ ለአንቺና ለቤተሰብሽ መጽናናትን ይስጣችሁ።**\n\n*Dear Hirut, I was very sad to hear of your father's passing. May God rest his soul in paradise, and may He give you and your family comfort.*\n\nIf you'd like it more formal (for example, from the whole office), I can adjust it."
+   ]
+  ],
+  "reply": "ምንም አይደለም! (*Minim aydelem!*) 🙏\n\nI hope the message brings Hirut and her family a little comfort. If you'd like a slightly longer version for a card, or one signed from the whole office, just tell me.",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-004",
+  "area": "reminders",
+  "prompt": "remind me to send the invitation tomorrow at 9am",
+  "history": [
+   [
+    "user",
+    "write a short whatsapp invitation for my mom's 60th birthday lunch, sunday oct 25 at 1pm at Yod Abyssinia"
+   ],
+   [
+    "assistant",
+    "🎉 **You're invited!** 🎉\n\nWe're celebrating **Mom's 60th birthday** with a family lunch, and it wouldn't be the same without you! ❤️\n\n📅 **Sunday, October 25**\n🕐 **1:00 PM**\n📍 **Yod Abyssinia**\n\nPlease let me know by Thursday if you can come so we can book the table. 🙏"
+   ]
+  ],
+  "reply": "Set: send the invitation — Thursday, Oct 15, 9:00 AM.",
+  "expect": "save"
+ },
+ {
+  "id": "w2-005",
+  "area": "translation",
+  "prompt": "translate to afaan oromo: thank you all for coming to my graduation, it means a lot to me",
+  "history": [],
+  "reply": "**Afaan Oromoo:**\n\n> Ayyaana eebba kootii irratti waan argamtaniif hunda keessan baay'ee galatoomaa. Kun naaf baay'ee guddaa dha.\n\n*Literally: \"Thank you all very much for being present at my graduation celebration. This is very big for me.\"*\n\nFor a lighter, everyday version (good for a WhatsApp group):\n\n> Hundi keessan eebba koo irratti waan dhuftaniif galatoomaa! Baay'een gammade. 🎓\n\n*(\"Thanks to all of you for coming to my graduation! I was so happy.\")*\n\n**Galatoomaa** is the plural/respectful \"thank you\", so it works for a whole group.",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-006",
+  "area": "translation",
+  "prompt": "show me what 'happy new year' looks like in tigrinya, its for my insta story",
+  "history": [],
+  "reply": "Here it is in Tigrinya (Ge'ez script):\n\n## ርሑስ ሓድሽ ዓመት!\n*Rihus hadish amet!* — \"Happy New Year!\"\n\nA few options for your story:\n\n- **ርሑስ ሓድሽ ዓመት! ✨** — simple and classic\n- **ርሑስ ሓድሽ ዓመት፣ ዓመት ሰላምን ጥዕናን ይኹነልና!** — *\"Happy New Year — may it be a year of peace and health for us!\"*\n- **ርሑስ በዓል! 🎉** — *\"Happy holiday!\"* (works for any celebration)\n\nTip: Tigrinya uses the same Ge'ez script as Amharic, so copy-paste it straight into Instagram — the story text tool displays it fine.",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-007",
+  "area": "translation",
+  "prompt": "how do i say how are you and thank you in tigrinya? meeting my girlfriends family on sunday and i want to impress them",
+  "history": [],
+  "reply": "Nice — they'll really appreciate the effort! Here are the essentials:\n\n**\"How are you?\"**\n\n| Tigrinya | Pronunciation | When to use |\n|---|---|---|\n| ከመይ ኣለኹም? | *kemey alekhum?* | plural / respectful — best for her parents and elders |\n| ከመይ ኣለኻ? | *kemey alekha?* | to one man (e.g. her brother) |\n| ከመይ ኣለኺ? | *kemey alekhi?* | to one woman (e.g. her sister) |\n\n**\"Thank you\"**\n- **የቐንየለይ** — *yekenyeley* — \"thank you\"\n- **ብጣዕሚ የቐንየለይ** — *bita'mi yekenyeley* — \"thank you very much\"\n\n**If they ask how you are**\n- **ጽቡቕ እየ፣ የቐንየለይ** — *tsibuq eye, yekenyeley* — \"I'm fine, thank you\"\n\nTip: greet her parents with the plural **ከመይ ኣለኹም** even if you're speaking to just one of them — it's the respectful form. Good luck on Sunday! 🙂",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-008",
+  "area": "translation",
+  "prompt": "translate to french pls: Dear Mrs. Laurent, I will send the signed contract tomorrow at 10am. Best regards, Bini",
+  "history": [],
+  "reply": "Here it is in French:\n\n> Chère Madame Laurent,\n>\n> Je vous enverrai le contrat signé demain à 10 h.\n>\n> Cordialement,\n> Bini\n\nNotes:\n- **Chère Madame Laurent** is polite and standard; for a very formal letter you can open with just **Madame,**.\n- French writes the time as **10 h** (or 10h00) instead of \"10am\".\n- **Cordialement** is the usual \"Best regards\" in professional emails.",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-009",
+  "area": "reminders",
+  "prompt": "remind me friday at 8am to wish Selam happy birthday",
+  "history": [],
+  "reply": "```reminder\n{\"title\": \"Wish Selam happy birthday\", \"due_at\": \"2026-10-16T08:00:00+03:00\"}\n```",
+  "expect": "save"
+ },
+ {
+  "id": "w2-010",
+  "area": "translation",
+  "prompt": "translate into arabic: Eid mubarak to you and your family, may Allah accept your prayers",
+  "history": [],
+  "reply": "**عيد مبارك لك ولعائلتك، وتقبّل الله صلاتكم ودعاءكم.**\n\n*ʿĪd mubārak laka wa-li-ʿā'ilatik, wa-taqabbala-llāhu ṣalātakum wa-duʿā'akum.*\n\nA couple of notes:\n- Writing to a woman? Use **لكِ ولعائلتكِ** (*laki wa-li-ʿā'ilatiki*).\n- The most traditional Eid blessing is **تقبّل الله منّا ومنكم** (*taqabbala-llāhu minnā wa-minkum* — \"May God accept from us and from you\"). You could use it for the second half:\n\n> عيد مبارك لك ولعائلتك، تقبّل الله منّا ومنكم 🌙",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-011",
+  "area": "translation",
+  "prompt": "como se dice 'te espero en la entrada a las 7' en ingles",
+  "history": [],
+  "reply": "Se dice:\n\n**\"I'll wait for you at the entrance at 7.\"**\n\nOtras opciones naturales, según el contexto:\n- **\"I'll meet you at the entrance at 7.\"** — la más común si van a encontrarse ahí.\n- **\"See you at the entrance at 7!\"** — más informal, ideal para un mensaje de texto.\n\nSi quieres dejar clara la hora: *at 7 p.m.* (de la tarde/noche) o *at 7 a.m.* (de la mañana).",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-012",
+  "area": "translation",
+  "prompt": "translate to spanish for my landlord: the rent will be 2 days late this month, I'll pay on the 3rd. sorry for the trouble",
+  "history": [],
+  "reply": "Aquí tienes:\n\n> Hola, quería avisarle que este mes el pago del alquiler se retrasará dos días. Le pagaré el día 3. Disculpe las molestias.\n\nI used **usted** (*le*, *disculpe*), which is the polite form for a landlord. If you're on casual terms with them:\n\n> Hola, te aviso que este mes el alquiler se va a retrasar dos días. Te pago el día 3. ¡Perdona las molestias!",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-013",
+  "area": "reminders",
+  "prompt": "perfect. can u remind me sunday 6pm to post it on insta",
+  "history": [
+   [
+    "user",
+    "short insta caption for buna house, we just added a new macchiato menu"
+   ],
+   [
+    "assistant",
+    "> New on the menu: macchiatos, Buna House style ☕✨ Smooth, strong, and made the way Addis likes it. Come taste the difference!\n>\n> #BunaHouse #Macchiato #AddisCafe #EthiopianCoffee"
+   ]
+  ],
+  "reply": "Set: post the Buna House caption on Instagram — Sunday, Oct 18, 6:00 PM.",
+  "expect": "save"
+ },
+ {
+  "id": "w2-014",
+  "area": "translation",
+  "prompt": "translate to amharic: congratulations on your wedding! wishing you both a lifetime of love and happiness",
+  "history": [],
+  "reply": "**እንኳን ደስ አላችሁ! በትዳራችሁ የፍቅርና የደስታ ዘመን እንዲሆንላችሁ እመኛለሁ።**\n\n*Inkwan des alachihu! Be-tidarachihu ye-fiqir-ina ye-desta zemen indihonlachihu imegnalehu.*\n\nA common blessing you can add at the end:\n\n**ፈጣሪ ይባርካችሁ፤ ጋብቻችሁ የተባረከ ይሁን!**\n*Fetari yibarkachihu; gabichachihu yetebareke yihun!* — \"May God bless you; may your marriage be blessed!\"\n\nI used the plural **-አችሁ** form so it's addressed to both of them.",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-015",
+  "area": "translation",
+  "prompt": "how do i write 'enkuan des alesh' in amharic letters? its for my sister's graduation card",
+  "history": [],
+  "reply": "**እንኳን ደስ አለሽ!**\n\nThat's the feminine form (to one woman), so it's perfect for your sister. A full line for the card:\n\n**እንኳን ደስ አለሽ! በምርቃትሽ በጣም ኮርቼብሻለሁ። 🎓**\n*Inkwan des alesh! Be-mirqatish betam korchibishalehu.*\n— \"Congratulations! I'm so proud of you on your graduation.\"\n\nOther forms, in case you need them:\n- **እንኳን ደስ አለህ** — to a man\n- **እንኳን ደስ አላችሁ** — to several people, or respectfully",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-016",
+  "area": "translation",
+  "prompt": "how do u say good morning and what time is it in oromo",
+  "history": [],
+  "reply": "Here you go in Afaan Oromoo:\n\n**Good morning**\n- **Akkam bulte?** — to one person (*lit.* \"How did you spend the night?\")\n- **Akkam bultan?** — to several people, or respectfully to an elder\n- Usual answer: **Nagaa, galatoomi. Ati hoo?** — \"Fine (in peace), thanks. And you?\"\n\n**What time is it?**\n- **Sa'aatiin meeqa?** — \"What time is it?\"\n- Answer pattern: **Sa'aatii sadii** — \"It's 3 o'clock\"\n\nHeads up: like Amharic speakers, Oromo speakers usually tell time on the Ethiopian clock, so *sa'aatii sadii* in the morning means **9 AM** on the international clock.",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-017",
+  "area": "translation",
+  "prompt": "now in afaan oromo pls",
+  "history": [
+   [
+    "user",
+    "translate to amharic: You're invited to our housewarming on Sunday at 2pm. Come hungry!"
+   ],
+   [
+    "assistant",
+    "**እሁድ ከቀኑ 8 ሰዓት ለቤት ምርቃታችን ተጋብዛችኋል። ሆዳችሁን አዘጋጅታችሁ ኑ! 😄**\n\n*Ihud keqenu 8 se'at le-bet mirqatachin tegabzachihuwal. Hodachihun azegajitachihu nu!*\n\nNotes:\n- **2 PM = 8 ሰዓት** on the Ethiopian clock (**ከቀኑ** = \"in the daytime/afternoon\").\n- \"Come hungry\" doesn't translate word for word, so I used *\"get your stomachs ready and come!\"* — it keeps the playful tone.\n- I used the plural **ተጋብዛችኋል** so it works for a group message."
+   ]
+  ],
+  "reply": "**Afaan Oromoo:**\n\n> Dilbata sa'aatii 8 waaree booda ayyaana eebba mana keenya haaraatiif isin affeerra. Garaa qopheeffadhaa dhufaa! 😄\n\n*Literally: \"We invite you to our new-home blessing celebration on Sunday at 8 o'clock in the afternoon. Get your stomachs ready and come!\"*\n\nNotes:\n- Like the Amharic version, this uses the Ethiopian clock: **sa'aatii 8 waaree booda = 2 PM**.\n- **Isin** is the plural/respectful \"you\", so it works for the whole group.",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-018",
+  "area": "reminders",
+  "prompt": "remind me to send the condolence message to yonas",
+  "history": [],
+  "reply": "Sure — when should I remind you to send the condolence message to Yonas?",
+  "expect": "ask_time"
+ },
+ {
+  "id": "w2-019",
+  "area": "translation",
+  "prompt": "c'est correct ça? 'Je vous rappelle que la réunion est demain à 14h'",
+  "history": [],
+  "reply": "Oui, la phrase est correcte ✅\n\n**« Je vous rappelle que la réunion est demain à 14h. »**\n\nQuelques variantes, selon le ton :\n- **Plus soutenu :** « Je vous rappelle que la réunion aura lieu demain à 14 h. »\n- **Plus léger, pour des collègues :** « Petit rappel : la réunion, c'est demain à 14h ! »\n\nDétail typographique : en français soigné, on met une espace entre le chiffre et le « h » (**14 h**), mais **14h** est très courant dans les e-mails.",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-020",
+  "area": "translation",
+  "prompt": "translate: 'No olvides que la cena es el sábado a las 8, trae postre'",
+  "history": [],
+  "reply": "**\"Don't forget that dinner is on Saturday at 8 — bring dessert.\"**\n\nOr more casually, like a text: *\"Don't forget, dinner's Saturday at 8! Bring dessert.\"*\n\n(*Trae* is the informal \"you\" command, so it's written to a friend or family member.)",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-021",
+  "area": "translation",
+  "prompt": "what does 'لا تنسى تدفع الإيجار بكرة' mean",
+  "history": [],
+  "reply": "It means **\"Don't forget to pay the rent tomorrow.\"**\n\nWord by word:\n- **لا تنسى** (*lā tinsā*) — don't forget\n- **تدفع** (*tidfaʿ*) — (to) pay\n- **الإيجار** (*il-ījār*) — the rent\n- **بكرة** (*bukra*) — tomorrow\n\nIt's colloquial Arabic (Egyptian/Levantine style) — *bukra* and dropping *an* before *tidfaʿ* are spoken forms. In Modern Standard Arabic it would be **لا تنسَ أن تدفع الإيجار غدًا**.",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-022",
+  "area": "reminders",
+  "prompt": "remind me tomorrow to post the job ad on linkedin",
+  "history": [],
+  "reply": "What time tomorrow (Thursday, Oct 15) should I remind you to post the job ad on LinkedIn?",
+  "expect": "ask_time"
+ },
+ {
+  "id": "w2-023",
+  "area": "translation",
+  "prompt": "what does 'አደራ እንዳትረሳ' mean? my mom sent it after telling me about the family dinner",
+  "history": [],
+  "reply": "**አደራ እንዳትረሳ** (*adera indatresa*) means roughly **\"Please, don't you forget!\"** — with a lot of mom-energy behind it 😄\n\n- **አደራ** (*adera*) — literally something entrusted to you; in speech it means *\"I'm counting on you / please, I beg you\"*.\n- **እንዳትረሳ** (*indatresa*) — \"(so that) you don't forget\", addressed to a man.\n\nSo she's saying: *\"I'm trusting you on this — don't forget the dinner!\"*\n\nA sweet reply you could send: **እሺ እማ፣ አልረሳም! 😊** (*Ishi Ima, alresam!* — \"Okay Mom, I won't forget!\")",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-024",
+  "area": "translation",
+  "prompt": "how do i say 'remind me to call you when i land' in amharic",
+  "history": [],
+  "reply": "**ስደርስ እንድደውልልህ አስታውሰኝ።**\n*Siders indidewlilih astawsegn.*\n\nThat's addressed to a man. Other forms:\n- To a woman: **ስደርስ እንድደውልልሽ አስታውሺኝ።** (*indidewlilish astawshign*)\n- Respectful / to several people: **ስደርስ እንድደውልላችሁ አስታውሱኝ።**\n\nFor \"when I land\" you could literally say **አውሮፕላኑ ሲያርፍ** (*awroplanu siyarf*, \"when the plane lands\"), but **ስደርስ** (\"when I arrive\") is what people naturally say.",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-025",
+  "area": "social",
+  "prompt": "write an instagram caption for my coffee shop's grand opening this saturday at 7pm, add hashtags. shop is called Buna House",
+  "history": [],
+  "reply": "Here are a few options ☕\n\n**1. Warm & welcoming**\n> The wait is over! ☕✨ Buna House opens its doors this **Saturday, Oct 17 at 7 PM**. Come for the coffee ceremony, stay for the good company. See you there! 🫶\n\n**2. Short & punchy**\n> Fresh roast. New home. Grand opening this Saturday at 7 PM. ☕\n\n**3. Playful**\n> Your new favorite corner of Addis is almost here 👀 Grand opening this Saturday at 7 PM — come say selam and grab your first cup! ☕\n\n**Hashtags:**\n#BunaHouse #GrandOpening #AddisAbaba #EthiopianCoffee #CoffeeCeremony #AddisCafe #CoffeeLovers #BunaTime #SupportLocal\n\nTip: put the hashtags in the first comment if you want the caption itself to look cleaner.",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-026",
+  "area": "social",
+  "prompt": "linkedin post: we're hiring a junior backend dev in addis (python/fastapi), apply by oct 30, send cv to jobs@ourcompany.com",
+  "history": [],
+  "reply": "Here's a LinkedIn post you can use:\n\n---\n\n🚀 **We're hiring: Junior Backend Developer (Addis Ababa)**\n\nWe're growing our engineering team and looking for a junior backend developer who loves building clean, reliable APIs.\n\n**What you'll do**\n- Build and maintain backend services in **Python** with **FastAPI**\n- Work with databases, write tests, and help ship features end to end\n- Learn from experienced engineers through code reviews and pairing\n\n**What we're looking for**\n- Solid Python fundamentals\n- Some experience with FastAPI, Django, or Flask (projects and internships count!)\n- Basic knowledge of SQL and Git\n- Curiosity and a willingness to learn\n\n📍 **Location:** Addis Ababa\n📅 **Apply by:** October 30\n📩 **How to apply:** Send your CV to **jobs@ourcompany.com** with the subject \"Junior Backend Developer\"\n\nKnow someone who'd be a great fit? Tag them or share this post 🙌\n\n#Hiring #BackendDeveloper #Python #FastAPI #AddisAbaba #EthiopiaJobs #TechJobs\n\n---\n\nWant me to add salary range, work mode (on-site/hybrid), or a short line about what your company does?",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-027",
+  "area": "memory",
+  "prompt": "remember that my wife's name is Meron, use it when you write messages for me",
+  "history": [],
+  "reply": "Got it — I'll remember that your wife's name is Meron and use it when I write messages for you. ❤️",
+  "expect": "memory"
+ },
+ {
+  "id": "w2-028",
+  "area": "social",
+  "prompt": "tiktok caption for my vid of my grandma making injera, something funny",
+  "history": [],
+  "reply": "Here are some options 😄\n\n1. **Grandma doesn't measure. Grandma just *knows*.** 🫓\n2. Me: \"Can you teach me the recipe?\" Grandma: \"Just add enough teff.\" *Enough?? HOW MUCH IS ENOUGH* 😭\n3. 40 years of experience vs. my one burnt attempt 🫠 #injera\n4. POV: you asked grandma for the recipe and got a lecture, a blessing, and zero measurements 🙏\n5. She's not cooking, she's performing. 🫓🔥\n\nHashtags to go with it: #injera #ethiopianfood #habeshatiktok #grandmaskitchen #ethiopiantiktok\n\nMy pick: **#2** — it's relatable and works great with a video where she pours the batter without looking.",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-029",
+  "area": "social",
+  "prompt": "tweet announcing our community clean-up this saturday 7am at meskel square, under 280 chars",
+  "history": [],
+  "reply": "Here you go:\n\n> 🧹🌍 Addis, let's clean up together! Join our community clean-up this Saturday at 7 AM at Meskel Square. Gloves and bags provided — just bring your energy (and a friend). #CleanAddis #AddisAbaba\n\nThat's about 200 characters, so you have room to tag partner organizations or add a photo.",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-030",
+  "area": "social",
+  "prompt": "give me 15 hashtags for my food blog post about doro wat",
+  "history": [],
+  "reply": "Here are 15, mixing big and niche tags:\n\n1. #DoroWat\n2. #DoroWot\n3. #EthiopianFood\n4. #EthiopianCuisine\n5. #HabeshaFood\n6. #Injera\n7. #Berbere\n8. #NiterKibbeh\n9. #AfricanFood\n10. #EthiopianRecipes\n11. #StewSeason\n12. #HolidayFood\n13. #FoodBlogger\n14. #HomeCooking\n15. #AddisEats\n\nTip: on Instagram, put 5–8 of the most specific ones (like #DoroWat, #Berbere, #HabeshaFood) in the caption and the rest in a comment — niche tags tend to bring more engaged readers than the huge ones.",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-031",
+  "area": "memory",
+  "prompt": "forget that my boss is mr tesfaye, i changed jobs last month",
+  "history": [],
+  "reply": "Done — I've forgotten that your boss is Mr. Tesfaye. Congrats on the new job! 🎉 If you'd like, tell me your new manager's name and I'll remember that instead.",
+  "expect": "memory"
+ },
+ {
+  "id": "w2-032",
+  "area": "social",
+  "prompt": "draw up a job post for a part time cashier at our supermarket in bole, shifts 2pm to 10pm, pay negotiable",
+  "history": [],
+  "reply": "**Job Opening: Part-Time Cashier — Bole, Addis Ababa** 🛒\n\nWe're looking for a friendly, reliable **part-time cashier** to join our supermarket team in Bole.\n\n**Shift:** 2:00 PM – 10:00 PM (days to be agreed)\n**Pay:** Negotiable, based on experience\n\n**Responsibilities**\n- Serve customers quickly and politely at the checkout\n- Handle cash, card, and mobile payments (telebirr, CBE Birr) accurately\n- Keep the checkout area clean and organized\n- Help with restocking and price checks when needed\n\n**Requirements**\n- Good basic math and attention to detail\n- Friendly attitude and good communication in Amharic (English is a plus)\n- Previous cashier or retail experience is an advantage, but not required\n- Able to work evening shifts\n\n**How to apply**\nCome to the store with your CV and ID, or call/send your CV to **[phone / email]**.\n\nWant a shorter version for a Facebook post or a printable sign for the shop window?",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-033",
+  "area": "social",
+  "prompt": "facebook post inviting everyone to our church's charity bazaar on sunday oct 25 from 10am to 4pm",
+  "history": [],
+  "reply": "Here's a post you can share:\n\n---\n\n💛 **You're Invited: Charity Bazaar!** 💛\n\nJoin us for our church's **Charity Bazaar** — a day of food, fellowship, and giving back to our community!\n\n📅 **Sunday, October 25**\n🕙 **10:00 AM – 4:00 PM**\n📍 **[Church name & address]**\n\n🍲 Homemade food and coffee\n👗 Clothes, crafts, and household items\n🎲 Games and activities for kids\n\nAll proceeds go to supporting families in need in our community. Come shop, eat, and bring your friends and family — every birr makes a difference! 🙏\n\nPlease share this post so more people can join us!\n\n---\n\nWant me to add a line for people who'd like to donate items or volunteer?",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-034",
+  "area": "social",
+  "prompt": "add hashtags but not too many",
+  "history": [
+   [
+    "user",
+    "insta caption for my sunset pic from entoto, short"
+   ],
+   [
+    "assistant",
+    "Here are a few:\n\n1. Chasing the last light over Addis 🌅\n2. Entoto evenings hit different.\n3. Above the city, below the gold. ✨\n4. Sunset from the hills, city lights loading…"
+   ]
+  ],
+  "reply": "Here's #2 with a small set of hashtags:\n\n> Entoto evenings hit different. 🌅\n>\n> #Entoto #AddisAbaba #EthiopiaSunset #GoldenHour #VisitEthiopia\n\nFive is a good number — enough to get found, not so many it looks spammy. Want the hashtags on one of the other captions instead?",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-035",
+  "area": "messages",
+  "prompt": "write a whatsapp msg to the family group that dinner is at my place sunday at 1pm, everyone bring something",
+  "history": [],
+  "reply": "Here you go:\n\n> Selam family! 👋 Dinner is at my place this **Sunday (Oct 18) at 1 PM** 🍲\n>\n> Everyone please bring something — a dish, drinks, dessert, or bread. Reply here with what you're bringing so we don't end up with five plates of shiro 😄\n>\n> Can't wait to see you all! ❤️\n\nWant me to add the address or a version in Amharic?",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-036",
+  "area": "settings",
+  "prompt": "change the app language to amharic",
+  "history": [],
+  "reply": "You can change the app language in Settings → Language.",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-037",
+  "area": "messages",
+  "prompt": "text my wife I'll be home at 8",
+  "history": [],
+  "reply": "I can't send texts from here, but here's one you can copy:\n\n> Hey love ❤️ I'll be home around 8 tonight. Need me to grab anything on the way?\n\nOr short and sweet:\n\n> Home by 8 😘",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-038",
+  "area": "messages",
+  "prompt": "tell my team the meeting moved to Friday at 10",
+  "history": [],
+  "reply": "Here's a message you can post in your team chat or send by email:\n\n> Hi team, quick update: our meeting has been **moved to Friday (Oct 16) at 10:00 AM**. Same room/link as before. Please update your calendars — thanks!\n\nWant me to add the reason for the change or the agenda?",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-039",
+  "area": "messages",
+  "prompt": "msg to my landlord the water's been off since yesterday morning, can he send someone today",
+  "history": [],
+  "reply": "Here's a polite but clear message:\n\n> Good morning,\n>\n> I wanted to let you know that the water in my apartment has been off since yesterday morning. Could you please send someone to check it today? It's making cooking and cleaning very difficult.\n>\n> Please let me know what time they can come so I can make sure someone is home.\n>\n> Thank you,\n> Bini\n\nWant an Amharic version as well?",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-040",
+  "area": "settings",
+  "prompt": "from now on i want warmer replies, change my tone setting to warm",
+  "history": [],
+  "reply": "You can change the tone in Settings → Personalization.",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-041",
+  "area": "messages",
+  "prompt": "message to my boss asking for next friday off for my cousin's wedding",
+  "history": [],
+  "reply": "Here's a short, professional message:\n\n> Hi [Boss's name],\n>\n> I'd like to request a day off next **Friday, October 23**, to attend my cousin's wedding. I'll make sure my tasks are up to date before then and can hand anything urgent over to [colleague] while I'm out.\n>\n> Please let me know if that works.\n>\n> Thank you,\n> Bini\n\nIf your workplace uses a leave form or HR system, you can paste the same text there too.",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-042",
+  "area": "messages",
+  "prompt": "write a note to my son's teacher ms tigist that i'll pick him up early tomorrow at 11:30 for a doctor's appointment",
+  "history": [],
+  "reply": "Here's a note you can send or put in his bag:\n\n> Dear Ms. Tigist,\n>\n> I'd like to let you know that I will pick up my son early tomorrow, **Thursday, October 15, at 11:30 AM**, for a doctor's appointment.\n>\n> Please let me know if there is any classwork or homework he should catch up on.\n>\n> Thank you for your understanding.\n>\n> Best regards,\n> Bini\n\nIf you tell me your son's name, I'll add it so the note is clearer.",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-043",
+  "area": "messages",
+  "prompt": "condolence message for my friend yonas, his mom passed away last night. short, for whatsapp",
+  "history": [],
+  "reply": "I'm sorry about your friend's loss. Here's a short message:\n\n> Yonas, I'm so sorry to hear about your mom. She was such a warm and kind person. I'm thinking of you and your family, and I'm here for anything you need. 🙏\n\nIf you'd prefer to write in Amharic:\n\n> ዮናስ፣ የእናትህን ሞት በመስማቴ በጣም አዝኛለሁ። እግዚአብሔር ነፍሳቸውን በአፀደ ገነት ያኑርልን፤ ለአንተና ለቤተሰብህ መጽናናትን ይስጣችሁ። ማንኛውም ነገር ብትፈልግ እዚህ ነኝ። 🙏\n\n*(Yonas, I'm very sad to hear about your mother's passing. May God rest her soul in paradise and give you and your family comfort. I'm here if you need anything.)*",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-044",
+  "area": "settings",
+  "prompt": "switch to dark mode pls, writing in bed and the screen is blinding",
+  "history": [],
+  "reply": "Done — switched to **dark mode**. 🌙 Easier on the eyes now!",
+  "expect": "settings"
+ },
+ {
+  "id": "w2-045",
+  "area": "messages",
+  "prompt": "wedding wishes for my cousin liya and her husband nahom, something sweet for the card",
+  "history": [],
+  "reply": "Here are a few options for the card 💍\n\n**1. Sweet & classic**\n> Dear Liya & Nahom,\n> Congratulations on your wedding! May your home always be full of love, laughter, and endless cups of coffee shared together. Wishing you a lifetime of happiness. ❤️\n\n**2. Short & heartfelt**\n> Liya & Nahom — watching you two find each other has been a joy. Here's to a love that grows deeper every year. Congratulations!\n\n**3. With a blessing**\n> To Liya & Nahom: May God bless your marriage with patience, kindness, and a love that never fades. So happy for you both!\n\nSign it with something like *\"With love, Bini\"* — and if you'd like, I can add a line in Amharic too.",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-046",
+  "area": "messages",
+  "prompt": "birthday wishes for my boss, professional but warm",
+  "history": [],
+  "reply": "Here are a few options:\n\n**1. Warm & professional**\n> Happy birthday, [Name]! Thank you for your guidance and support — it makes a real difference to the whole team. Wishing you a wonderful year ahead!\n\n**2. Short (for a card or team chat)**\n> Happy birthday! Wishing you a great day and a successful year ahead. 🎉\n\n**3. A bit more personal**\n> Happy birthday, [Name]! I've learned so much working with you this year. I hope you get to take a break from the inbox today and celebrate properly!\n\nOption 1 is the safest if it's going in a shared card from the team.",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-047",
+  "area": "messages",
+  "prompt": "write an apology text to my sister, i missed her graduation ceremony because my flight got delayed",
+  "history": [],
+  "reply": "Here's a heartfelt one:\n\n> Mimi, I'm so, so sorry I missed your graduation 😞 My flight got delayed and I couldn't make it in time no matter what I tried. I hate that I wasn't there to see you walk — you worked so hard for this and I'm incredibly proud of you. Let me make it up to you: dinner on me this weekend, your choice of place? ❤️🎓\n\nI used \"Mimi\" as a placeholder nickname — swap in her name or what you usually call her.",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-048",
+  "area": "messages",
+  "prompt": "create an invitation for my daughter Ruth's 5th birthday party, saturday oct 24 at 3pm at our house in CMC",
+  "history": [],
+  "reply": "🎈 **You're Invited!** 🎈\n\n**Ruth is turning 5!** 🎂\n\nPlease join us for a fun afternoon of games, cake, and celebration!\n\n📅 **Saturday, October 24**\n🕒 **3:00 PM**\n📍 **Our home, CMC**\n\nLittle friends and their families are welcome 💕\nPlease let us know if you can come!\n\n---\n\nWant me to add your phone number for RSVPs, a theme (like princesses or animals), or an Amharic version for grandparents?",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-049",
+  "area": "photos",
+  "prompt": "show me a real photo of a habesha kemis with a tilet border, i want to describe it right in my caption",
+  "history": [],
+  "reply": "Here are some real photos of habesha kemis with tilet borders 👗\n\nWhat to notice for your caption:\n- **The kemis** is usually white or off-white handwoven cotton (*shemma*), ankle-length and flowing.\n- **The tilet** is the colorful woven band — down the front, along the hem, and often at the cuffs and neckline. The patterns are geometric (crosses, diamonds, zigzags), in gold, green, red, or soft pastel threads.\n- It's often worn with a matching **netela** (a light shawl) with the same tilet edge.\n\nCaption idea: *\"White shemma, gold tilet, and a whole lot of culture ✨\"*",
+  "expect": "photo"
+ },
+ {
+  "id": "w2-050",
+  "area": "messages",
+  "prompt": "now remind everyone in the group that rent is due on the 1st",
+  "history": [
+   [
+    "user",
+    "i manage the whatsapp group for our shared apartment. write a short friendly msg saying the new cleaning schedule is pinned"
+   ],
+   [
+    "assistant",
+    "Here you go:\n\n> Hey everyone! 🧽✨ The new cleaning schedule is pinned at the top of the group. Please check which week is yours and swap with someone directly if it doesn't work for you. Thanks for keeping our place nice! 🏠"
+   ]
+  ],
+  "reply": "Here's a friendly reminder you can post in the group:\n\n> Hi everyone 👋 Just a quick reminder that **rent is due on the 1st** (Sunday, Nov 1). Please send your share by then so we can pay the landlord on time. Thanks so much! 🏠🙏\n\nWant me to add how to pay (bank account, telebirr) or the amount per person?",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-051",
+  "area": "messages",
+  "prompt": "short sms to my mom saying i cant talk rn but ill call her tonight after 9",
+  "history": [],
+  "reply": "> Hi Mom, I'm busy right now and can't talk, but I'll call you tonight after 9. Love you ❤️\n\nOr in Amharic:\n\n> እማ፣ አሁን ስራ ላይ ስለሆንኩ ማውራት አልችልም። ማታ ከ3 ሰዓት በኋላ እደውልልሻለሁ። ❤️\n\n(9 PM is **3 ሰዓት ማታ** on the Ethiopian clock.)",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-052",
+  "area": "messages",
+  "prompt": "write a text to the group reminding everyone the bus leaves at 6:30am tomorrow, dont be late or we leave without you lol",
+  "history": [],
+  "reply": "Here you go 😄\n\n> 🚌 **Reminder!** The bus leaves **tomorrow (Thursday) at 6:30 AM sharp**.\n>\n> Please be there by 6:15 — we're not waiting for anyone, so set two alarms 😅 Late = left behind!\n>\n> See you bright and early! ☀️\n\nWant me to add the pickup spot or a packing checklist?",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-053",
+  "area": "image_gen",
+  "prompt": "generate an image for my coffee shop's opening post: a jebena pouring coffee into small cups, warm morning light, minimal style",
+  "history": [],
+  "reply": "Here's your image: a clay jebena pouring coffee into small white sini cups on a wooden tray, soft warm morning light from the side, with a clean, minimal cream background ☕\n\nWant a square version for the feed or a vertical one for stories?",
+  "expect": "image_gen"
+ },
+ {
+  "id": "w2-054",
+  "area": "edits",
+  "prompt": "make it shorter",
+  "history": [
+   [
+    "user",
+    "write an email to my boss mr bekele explaining the Q3 report will be 3 days late because the finance data came in late"
+   ],
+   [
+    "assistant",
+    "**Subject:** Q3 Report — Revised Delivery Date\n\nHi Mr. Bekele,\n\nI wanted to let you know that the Q3 report will be about three days later than planned. The finance team's data arrived later than expected, and I need a little more time to reconcile the figures and make sure the numbers are accurate.\n\nI now expect to send you the full report by **Monday, October 19**. In the meantime, I'm happy to share a summary of the preliminary findings if that would be helpful for any upcoming meetings.\n\nI apologize for the delay and appreciate your understanding. Please let me know if you have any questions or if a different timeline would work better.\n\nBest regards,\nBini"
+   ]
+  ],
+  "reply": "**Subject:** Q3 Report — New Date\n\nHi Mr. Bekele,\n\nThe Q3 report will be about three days late — the finance data came in later than expected and I need time to verify the figures. I'll send it by **Monday, October 19**, and can share a quick summary before then if that helps.\n\nSorry for the delay, and thanks for understanding.\n\nBest,\nBini",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-055",
+  "area": "edits",
+  "prompt": "add the address",
+  "history": [
+   [
+    "user",
+    "write a whatsapp invite for my housewarming on saturday oct 24 from 4pm. its at my new place in gerji, behind unity university, the blue gate"
+   ],
+   [
+    "assistant",
+    "🏡 **You're invited!**\n\nHey everyone! I finally moved into my new place and I'd love to celebrate with you. Join me for a housewarming on **Saturday, Oct 24, from 4 PM**. There'll be food, coffee, and good company ☕🍲\n\nLet me know if you can make it! 🙌"
+   ]
+  ],
+  "reply": "🏡 **You're invited!**\n\nHey everyone! I finally moved into my new place and I'd love to celebrate with you. Join me for a housewarming on **Saturday, Oct 24, from 4 PM**. There'll be food, coffee, and good company ☕🍲\n\n📍 **Where:** Gerji, behind Unity University — look for the **blue gate**\n\nLet me know if you can make it! 🙌\n\nTip: drop a WhatsApp location pin right after the message — it makes it much easier for people who haven't been to Gerji.",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-056",
+  "area": "edits",
+  "prompt": "add that the party starts at 7pm",
+  "history": [
+   [
+    "user",
+    "write a msg to my friends about a surprise party for Hanna on friday, she can't find out!!"
+   ],
+   [
+    "assistant",
+    "🤫 **Top secret — Hanna's surprise party!**\n\nHey everyone! We're throwing a surprise party for Hanna this **Friday (Oct 16)**, and we'd love for you to be there 🎉\n\nKeep it quiet — she has NO idea. Don't post anything, don't mention it, and if she asks what you're doing Friday… you're busy 😄\n\nReply here (not in the main group!) so I know you're coming. 🎈"
+   ]
+  ],
+  "reply": "🤫 **Top secret — Hanna's surprise party!**\n\nHey everyone! We're throwing a surprise party for Hanna this **Friday (Oct 16) at 7 PM**, and we'd love for you to be there 🎉\n\nPlease try to arrive by **6:45** so we're all hidden before she walks in!\n\nKeep it quiet — she has NO idea. Don't post anything, don't mention it, and if she asks what you're doing Friday… you're busy 😄\n\nReply here (not in the main group!) so I know you're coming. 🎈",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-057",
+  "area": "edits",
+  "prompt": "remove the second paragraph",
+  "history": [
+   [
+    "user",
+    "write a short email to go with my CV for a junior accountant job at a logistics company. I have a BA in accounting and a 1 year internship at an audit firm"
+   ],
+   [
+    "assistant",
+    "Subject: Application for Junior Accountant Position – Bini\n\nDear Hiring Manager,\n\nI am writing to apply for the Junior Accountant position at your company. I hold a BA in Accounting and recently completed a one-year internship at an audit firm, where I supported financial statement reviews, reconciliations, and month-end closing.\n\nDuring my internship, I developed strong attention to detail and became comfortable working with accounting software and large spreadsheets. I also learned how to communicate clearly with clients and meet tight deadlines during audit season.\n\nI would welcome the opportunity to bring these skills to your finance team. My CV is attached, and I am available for an interview at your convenience. Thank you for your time and consideration.\n\nBest regards,\nBini"
+   ]
+  ],
+  "reply": "Subject: Application for Junior Accountant Position – Bini\n\nDear Hiring Manager,\n\nI am writing to apply for the Junior Accountant position at your company. I hold a BA in Accounting and recently completed a one-year internship at an audit firm, where I supported financial statement reviews, reconciliations, and month-end closing.\n\nI would welcome the opportunity to bring these skills to your finance team. My CV is attached, and I am available for an interview at your convenience. Thank you for your time and consideration.\n\nBest regards,\nBini",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-058",
+  "area": "search",
+  "prompt": "what hashtags are trending on tiktok in ethiopia this week? want to use them on my video",
+  "history": [],
+  "reply": "Here's what's showing up most on Ethiopian TikTok this week, based on current trend trackers and top posts:\n\n**Broad, high-traffic**\n- #ethiopiantiktok\n- #habeshatiktok\n- #ethiopia\n- #addisababa\n\n**Food & culture**\n- #ethiopianfood\n- #injera\n- #buna (coffee ceremony clips are doing well)\n\n**Music & dance**\n- #eskista\n- #ethiopianmusic\n\nTip: combine 2–3 of the big tags with 2–3 that match your video exactly — the niche ones help TikTok show it to the right people. Trends shift quickly, so check the TikTok Discover tab right before you post.",
+  "expect": "search"
+ },
+ {
+  "id": "w2-059",
+  "area": "edits",
+  "prompt": "move the date to sunday",
+  "history": [
+   [
+    "user",
+    "write an invite for my sister's baby shower, saturday oct 17 at 2pm at our mom's house in ayat"
+   ],
+   [
+    "assistant",
+    "🍼 **You're Invited to a Baby Shower!** 💕\n\nPlease join us as we celebrate my sister and her little one on the way!\n\n📅 **Saturday, October 17**\n🕑 **2:00 PM**\n📍 **Mom's house, Ayat**\n\nCome for the food, games, and lots of love. Kindly let me know if you can make it! 🎀"
+   ]
+  ],
+  "reply": "🍼 **You're Invited to a Baby Shower!** 💕\n\nPlease join us as we celebrate my sister and her little one on the way!\n\n📅 **Sunday, October 18**\n🕑 **2:00 PM**\n📍 **Mom's house, Ayat**\n\nCome for the food, games, and lots of love. Kindly let me know if you can make it! 🎀",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-060",
+  "area": "edits",
+  "prompt": "mark it urgent",
+  "history": [
+   [
+    "user",
+    "write an email to the building manager that the elevator has been broken for 3 days and my dad who's 78 lives on the 6th floor"
+   ],
+   [
+    "assistant",
+    "**Subject:** Elevator Out of Service for 3 Days\n\nDear Building Manager,\n\nI'm writing to let you know that the elevator in our building has been out of service for three days now. My father, who is 78 years old, lives on the 6th floor and cannot safely use the stairs. He has effectively been unable to leave his apartment since it broke down.\n\nCould you please let me know when the elevator will be repaired? If the repair will take longer, I'd appreciate knowing what temporary help is available for elderly residents.\n\nThank you for your attention to this.\n\nKind regards,\nBini"
+   ]
+  ],
+  "reply": "**Subject: URGENT — Elevator Out of Service for 3 Days (Elderly Resident on 6th Floor)**\n\nDear Building Manager,\n\n**This needs urgent attention.** The elevator in our building has been out of service for three days now. My father, who is 78 years old, lives on the 6th floor and cannot safely use the stairs. He has effectively been unable to leave his apartment since it broke down.\n\nCould you please arrange for the elevator to be repaired **as soon as possible**, and let me know today when the technician is expected? If the repair will take longer, I'd appreciate knowing what temporary help is available for elderly residents.\n\nThank you for your prompt attention.\n\nKind regards,\nBini",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-061",
+  "area": "edits",
+  "prompt": "change the time to 5pm",
+  "history": [
+   [
+    "user",
+    "slack msg: team sync moved to thursday 3pm, room 4B, bring your sprint updates"
+   ],
+   [
+    "assistant",
+    "Hey team 👋 Heads up: our **team sync is moving to Thursday at 3:00 PM** in **Room 4B**. Please come ready with your sprint updates. Thanks!"
+   ]
+  ],
+  "reply": "Hey team 👋 Heads up: our **team sync is moving to Thursday at 5:00 PM** in **Room 4B**. Please come ready with your sprint updates. Thanks!",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-062",
+  "area": "search",
+  "prompt": "whats the dollar to birr exchange rate today? im writing a post about prices",
+  "history": [],
+  "reply": "Here's today's rate (Wednesday, Oct 14, 2026), from the banks' published daily rates:\n\n- **Commercial Bank of Ethiopia:** roughly **157 ETB buying / 160 ETB selling** per US dollar\n- Private banks are within a birr or two of that\n\nSince the birr floats now, the rate changes daily — for your post, it's best to say something like *\"about 158 birr to the dollar as of mid-October\"* and link or name the bank you used as your source.",
+  "expect": "search"
+ },
+ {
+  "id": "w2-063",
+  "area": "edits",
+  "prompt": "make it sound less formal",
+  "history": [
+   [
+    "user",
+    "write a text to my friend dawit asking to borrow his car on saturday"
+   ],
+   [
+    "assistant",
+    "> Dear Dawit,\n>\n> I hope this message finds you well. I am writing to ask whether it would be possible to borrow your car this Saturday, as I need to run several errands and assist my cousin with moving some belongings. I would, of course, refuel the vehicle and return it to you by the evening.\n>\n> Please let me know at your earliest convenience whether this would be acceptable.\n>\n> Kind regards,\n> Bini"
+   ]
+  ],
+  "reply": "> Hey Dawit! 👋 Any chance I could borrow your car on Saturday? I need to run a few errands and help my cousin move some stuff. I'll fill up the tank and have it back to you by evening. Totally fine if not! 🙏",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-064",
+  "area": "edits",
+  "prompt": "set the tone to warm",
+  "history": [
+   [
+    "user",
+    "write a thank you note for my neighbor tsehay who watered the plants and fed the cat while i was away for 2 weeks"
+   ],
+   [
+    "assistant",
+    "Dear Tsehay,\n\nThank you for watering the plants and feeding the cat during my two-week absence. Your assistance was appreciated.\n\nRegards,\nBini"
+   ]
+  ],
+  "reply": "Dear Tsehay,\n\nThank you SO much for looking after everything while I was away! 🌿 Coming home to happy, green plants and a well-fed (and very spoiled-looking) cat was the best welcome I could have asked for.\n\nTwo weeks is a long time, and I really appreciate you taking care of things so generously. I'm lucky to have a neighbor like you. Please come over for coffee this week — it's the least I can do! ☕\n\nWith gratitude,\nBini",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-065",
+  "area": "edits",
+  "prompt": "use a darker tone",
+  "history": [
+   [
+    "user",
+    "write a 100 word story about an old lighthouse keeper"
+   ],
+   [
+    "assistant",
+    "**The Keeper**\n\nEvery night for forty years, Elias climbed the ninety-nine steps and lit the lamp. The ships never thanked him, but he didn't mind. He liked to imagine the sailors out there, steering home by his little star.\n\nWhen the town council told him the lighthouse would be automated, he nodded and said nothing. On his last night, he polished the glass one final time and sat watching the beam sweep the sea.\n\nFar out on the water, a fishing boat flashed its lights three times.\n\nElias smiled. Someone had noticed after all."
+   ]
+  ],
+  "reply": "**The Last Light**\n\nEvery night for forty years, Elias climbed the ninety-nine steps and lit the lamp. The ships never thanked him. Most nights, there were no ships at all.\n\nThe town below had emptied years ago — the fishermen drowned or gone, the windows dark like missing teeth. Still, he climbed.\n\nTonight the lamp sputtered. Elias struck match after match with shaking hands as the fog pressed against the glass, thick and patient, as if it had been waiting for him to fail.\n\nSomewhere out in the black water, a bell rang once.\n\nThen the light went out, and nobody came to light it again.",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-066",
+  "area": "edits",
+  "prompt": "add a line in amharic at the end",
+  "history": [
+   [
+    "user",
+    "birthday message for my grandma who is turning 85"
+   ],
+   [
+    "assistant",
+    "Happy 85th birthday, Grandma! 🎂❤️\n\nThank you for every story, every prayer, and every cup of coffee you've made for all of us. Your love holds this whole family together. We are so blessed to celebrate you today and every day.\n\nWith all my love,\nBini"
+   ]
+  ],
+  "reply": "Happy 85th birthday, Grandma! 🎂❤️\n\nThank you for every story, every prayer, and every cup of coffee you've made for all of us. Your love holds this whole family together. We are so blessed to celebrate you today and every day.\n\nWith all my love,\nBini\n\n**እንኳን ተወለድሽ እማማ! እግዚአብሔር እድሜና ጤና ይስጥሽ። 🙏**\n*(Inkwan tewoledsh Emama! Egziabher idmena tena yistish.)* — \"Happy birthday, Grandma! May God give you long life and health.\"\n\nI used **እማማ** (*Emama*), a loving way to address a grandmother — swap in whatever you usually call her (like **አያቴ**, *ayate*).",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-067",
+  "area": "time",
+  "prompt": "whats today's date? need it at the top of the letter",
+  "history": [],
+  "reply": "Today is **Wednesday, October 14, 2026**.",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-068",
+  "area": "edits",
+  "prompt": "dont forget to mention the dress code, its traditional / habesha clothes",
+  "history": [
+   [
+    "user",
+    "write an invitation for our office end of year dinner, dec 18 at 6:30pm at the grand hall in bole, rsvp to HR by dec 11"
+   ],
+   [
+    "assistant",
+    "✨ **You're Invited: End-of-Year Dinner** ✨\n\nDear colleagues,\n\nLet's celebrate a great year together! Please join us for our annual end-of-year dinner.\n\n📅 **Friday, December 18**\n🕡 **6:30 PM**\n📍 **The Grand Hall, Bole**\n\nThere will be dinner, music, and a few surprises along the way. Please confirm your attendance with HR by **December 11**.\n\nWe look forward to celebrating with you! 🎉"
+   ]
+  ],
+  "reply": "✨ **You're Invited: End-of-Year Dinner** ✨\n\nDear colleagues,\n\nLet's celebrate a great year together! Please join us for our annual end-of-year dinner.\n\n📅 **Friday, December 18**\n🕡 **6:30 PM**\n📍 **The Grand Hall, Bole**\n\n👗 **Dress code: Traditional / Habesha attire** — bring out your best kemis, netela, and gabi!\n\nThere will be dinner, music, and a few surprises along the way. Please confirm your attendance with HR by **December 11**.\n\nWe look forward to celebrating with you! 🎉",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-069",
+  "area": "edits",
+  "prompt": "remember to include that kids are welcome",
+  "history": [
+   [
+    "user",
+    "write a msg inviting our neighbors to a picnic at entoto park sunday oct 25 from 11am, bring a dish to share"
+   ],
+   [
+    "assistant",
+    "> Hi neighbors! 🌳☀️ We're organizing a picnic at **Entoto Park** this **Sunday, October 25, from 11 AM**, and we'd love for you to join us!\n>\n> Bring a dish to share, a blanket, and your appetite.\n>\n> Let us know if you're coming so we can plan the food. See you there! 🧺"
+   ]
+  ],
+  "reply": "Here's the updated message:\n\n> Hi neighbors! 🌳☀️ We're organizing a picnic at **Entoto Park** this **Sunday, October 25, from 11 AM**, and we'd love for you to join us!\n>\n> Bring a dish to share, a blanket, and your appetite. **Kids are very welcome** — there's plenty of space for them to run around, so bring the whole family! 👨‍👩‍👧‍👦\n>\n> Let us know if you're coming so we can plan the food. See you there! 🧺",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-070",
+  "area": "edits",
+  "prompt": "forget the last part, just say I'll be late",
+  "history": [
+   [
+    "user",
+    "write a msg to my study group that i can't make it tonight because of work, and that i'll send my notes tomorrow"
+   ],
+   [
+    "assistant",
+    "> Hey everyone, sorry — I can't make it tonight, work ran really late 😩 I'll send you my notes from chapter 6 tomorrow so we stay on track. Good luck tonight!"
+   ]
+  ],
+  "reply": "> Hey everyone, heads up — work is running long, so I'll be a bit late tonight. Go ahead and start without me, I'll catch up when I get there! 🙏",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-071",
+  "area": "todos",
+  "prompt": "what reminders do i have? want to tell my boss what my week looks like",
+  "history": [],
+  "reply": "Here's what's on your list:\n\n- **Call mom**\n- **Dentist appointment**\n- **Gym**\n- **Pay rent**\n- **Read**\n- **Water the plants**\n\nFor your boss, the **dentist appointment** is probably the only one worth mentioning, since it may take time out of your workday. Want me to help write that message?",
+  "expect": "read"
+ },
+ {
+  "id": "w2-072",
+  "area": "edits",
+  "prompt": "make it light and fun",
+  "history": [
+   [
+    "user",
+    "write an office announcement for a potluck lunch this friday at 12:30 in the break room, people should sign up with what they bring"
+   ],
+   [
+    "assistant",
+    "**Subject: Office Potluck Lunch — Friday, October 16**\n\nDear all,\n\nWe are pleased to announce that an office potluck lunch will be held this Friday, October 16, at 12:30 PM in the break room.\n\nAll staff are invited to contribute a dish. To ensure a balanced selection, please record your contribution on the sign-up sheet posted in the break room.\n\nWe look forward to your participation.\n\nRegards,\nAdministration"
+   ]
+  ],
+  "reply": "🍲🎉 **Potluck Friday is happening!** 🎉🍲\n\nHey team! This **Friday at 12:30 PM** we're turning the break room into the best restaurant in town — and YOU are the chef 👩‍🍳👨‍🍳\n\nBring a dish you love (grandma's recipe, your famous salad, or \"I bought it but I'm proud of it\" — all welcome 😄). Drop what you're bringing in the sign-up sheet so we don't end up with 12 bowls of rice.\n\nCome hungry, leave happy! 🥳",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-073",
+  "area": "edits",
+  "prompt": "switch it to english, he actually reads english better",
+  "history": [
+   [
+    "user",
+    "ለአከራዬ መልዕክት ጻፍልኝ፣ የዚህን ወር ኪራይ እስከ ሰኞ እንዲጠብቀኝ"
+   ],
+   [
+    "assistant",
+    "ይኸው፦\n\n> ሰላም ጤና ይስጥልኝ፣\n>\n> የዚህ ወር ኪራይ ትንሽ እንደሚዘገይ ለማሳወቅ ፈልጌ ነው። እባክዎ እስከ **ሰኞ** ድረስ ቢጠብቁኝ? ሰኞ ሙሉ ክፍያውን ያለምንም ችግር እከፍላለሁ።\n>\n> ስለ መዘግየቱ ይቅርታ እጠይቃለሁ፤ ስለ ትዕግስትዎ አመሰግናለሁ።\n>\n> ቢኒ\n\nየአክብሮት ቃላትን (እርስዎ) ተጠቅሜያለሁ።"
+   ]
+  ],
+  "reply": "Here's the English version:\n\n> Hello,\n>\n> I hope you are doing well. I wanted to let you know that this month's rent will be slightly delayed. Could you please give me until **Monday**? I will pay the full amount on Monday without fail.\n>\n> I'm sorry for the inconvenience, and thank you for your understanding.\n>\n> Bini",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-074",
+  "area": "short",
+  "prompt": "🙏",
+  "history": [
+   [
+    "user",
+    "short blessing msg for my friends Abel and Mahlet, they just had a baby boy"
+   ],
+   [
+    "assistant",
+    "> Congratulations, Abel and Mahlet! 💙 Welcome to the world, little one. May God bless your son with health, joy, and a long life, and fill your home with even more love. So happy for you both! 👶🙏"
+   ]
+  ],
+  "reply": "You're very welcome 🙏 Congratulations again to your friends on their little one — I'm sure they'll love the message. If you'd like a version for a card or in Amharic, just let me know.",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-075",
+  "area": "short",
+  "prompt": "lol",
+  "history": [
+   [
+    "user",
+    "caption for a video of my cat knocking my coffee off the table"
+   ],
+   [
+    "assistant",
+    "Here are a few:\n\n1. Not a single ounce of remorse. ☕🐈\n2. He looked me in the eye. He knew. He did it anyway.\n3. Coffee: 0. Cat: undefeated.\n4. My morning routine, brought to you by chaos 🐾"
+   ]
+  ],
+  "reply": "😄 Glad it made you laugh! Want a couple more in the same style, or is that one a keeper?",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-076",
+  "area": "todos",
+  "prompt": "mark call mom as done, i just sent her the whatsapp msg instead",
+  "history": [],
+  "reply": "Done — marked **call mom** as complete ✅",
+  "expect": "change"
+ },
+ {
+  "id": "w2-077",
+  "area": "short",
+  "prompt": "ok thanks",
+  "history": [
+   [
+    "user",
+    "how do i say 'i'm on my way' in amharic"
+   ],
+   [
+    "assistant",
+    "**እየመጣሁ ነው።**\n*Iyemetahu new.* — literally \"I am coming.\"\n\nIt works for anyone you're texting, male or female. If you want to add \"I'll be there soon\": **እየመጣሁ ነው፣ ቶሎ እደርሳለሁ።** (*Iyemetahu new, tolo idersalehu.*)"
+   ]
+  ],
+  "reply": "You're welcome! 🙂 One more you might like: **መንገድ ላይ ነኝ** (*menged lay negn*) — \"I'm on the road\" — which people use a lot when they're on their way.",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-078",
+  "area": "short",
+  "prompt": "😂😂",
+  "history": [
+   [
+    "user",
+    "funny birthday msg for my brother kaleb, he's turning 30 and keeps complaining he's old"
+   ],
+   [
+    "assistant",
+    "> Happy 30th, Kaleb! 🎉 Don't worry, you're not old — you're just *vintage*. Like fine wine, cheese, and that knee that now makes a noise every time you stand up. 😂 Love you, old man! Enjoy your day (and take a nap after, you've earned it). 🎂👴"
+   ]
+  ],
+  "reply": "😂 Kaleb's going to pretend to be offended and then screenshot it for everyone. Want me to make a slightly gentler version for the family group, just in case grandma reads it?",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-079",
+  "area": "short",
+  "prompt": "👍",
+  "history": [
+   [
+    "user",
+    "translate to spanish: thanks for the invite, I'll be there on saturday with my wife"
+   ],
+   [
+    "assistant",
+    "> ¡Gracias por la invitación! Estaré allí el sábado con mi esposa.\n\nOr a bit warmer: **\"¡Muchas gracias por invitarnos! El sábado nos vemos, voy con mi esposa.\"**"
+   ]
+  ],
+  "reply": "👍 Anytime! If they reply in Spanish and you need help understanding it, just paste it here.",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-080",
+  "area": "todos",
+  "prompt": "move pay rent to nov 1 at 9am",
+  "history": [],
+  "reply": "Moved: **pay rent** — Sunday, Nov 1, 9:00 AM.",
+  "expect": "change"
+ },
+ {
+  "id": "w2-081",
+  "area": "writing",
+  "prompt": "escríbele a mi jefe un correo diciendo que mañana llegaré tarde a las 10 por una cita médica",
+  "history": [],
+  "reply": "```email\nAsunto: Llegada tarde mañana\n\nHola Sara:\n\nMañana tengo una cita médica, así que llegaré a la oficina hacia las 10.\n\nGracias,\nBini\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-082",
+  "area": "writing",
+  "prompt": "hazlo más corto",
+  "history": [
+   [
+    "user",
+    "escribe un correo a mi jefe pidiendo el viernes libre"
+   ],
+   [
+    "assistant",
+    "```email\nAsunto: Viernes libre\n\nHola Sara:\n\n¿Podría tomarme este viernes libre por un evento familiar? Dejaré mis tareas al día el jueves.\n\nGracias,\nBini\n```"
+   ]
+  ],
+  "reply": "```email\nAsunto: Viernes libre\n\nHola Sara:\n\n¿Puedo tomarme el viernes libre?\n\nGracias,\nBini\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-083",
+  "area": "writing",
+  "prompt": "añade que vuelvo el lunes a las 9",
+  "history": [
+   [
+    "user",
+    "escribe un correo a mi jefe pidiendo el viernes libre"
+   ],
+   [
+    "assistant",
+    "```email\nAsunto: Viernes libre\n\nHola Sara:\n\n¿Podría tomarme este viernes libre por un evento familiar? Dejaré mis tareas al día el jueves.\n\nGracias,\nBini\n```"
+   ]
+  ],
+  "reply": "```email\nAsunto: Viernes libre\n\nHola Sara:\n\n¿Podría tomarme este viernes libre por un evento familiar? Vuelvo el lunes a las 9.\n\nGracias,\nBini\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-084",
+  "area": "writing",
+  "prompt": "écris un email à mon patron pour demander mon vendredi",
+  "history": [],
+  "reply": "```email\nObjet : Demande de congé vendredi\n\nBonjour Sara,\n\nPourrais-je prendre ce vendredi ? Mon travail de la semaine sera terminé jeudi.\n\nMerci,\nBini\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-085",
+  "area": "writing",
+  "prompt": "Schreib meinem Vermieter eine Nachricht, dass die Heizung seit gestern kaputt ist",
+  "history": [],
+  "reply": "```message\nHallo Herr Weber, die Heizung in meiner Wohnung ist seit gestern kaputt. Könnten Sie bitte jemanden vorbeischicken? Danke!\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "w2-086",
+  "area": "writing",
+  "prompt": "ev sahibime kaloriferin bozulduğunu söyleyen bir mesaj yaz",
+  "history": [],
+  "reply": "```message\nMerhaba, dairemdeki kalorifer bozuldu. Bu hafta birini gönderebilir misiniz? Teşekkürler!\n```",
+  "expect": "answer"
+ }
+]

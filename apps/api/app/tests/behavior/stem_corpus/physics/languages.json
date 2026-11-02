@@ -1,0 +1,18 @@
+[
+  {"id": "lang-fr-parallel", "area": "language", "prompt": "Deux résistances de 10 ohms sont en parallèle sous 5 V, courant total ?", "expect": "decline", "note": "was 0.5 A, one resistor: 'deux' unread (right: 1 A); the readers read English: a card only from a question they read whole (2026-11-01 baseline)"},
+  {"id": "lang-es-parallel", "area": "language", "prompt": "Dos resistencias de 10 ohmios están en paralelo a 5 V, ¿cuál es la corriente total?", "expect": "decline"},
+  {"id": "lang-fr-parallel-digit", "area": "language", "prompt": "2 résistances de 10 ohms, 5 V", "expect": "decline", "note": "a word after a number is a unit only when short (Claude review): résistances is French"},
+  {"id": "lang-es-ohm", "area": "language", "prompt": "¿Qué voltaje se necesita para hacer pasar 2 A a través de una resistencia de 15 Ω?", "expect": "decline", "note": "the card was right (30 V); another language gets none"},
+  {"id": "lang-fr-ohm", "area": "language", "prompt": "Quelle tension faut-il pour faire passer 2 A à travers une résistance de 15 Ω ?", "expect": "decline"},
+  {"id": "lang-am-ohm", "area": "language", "prompt": "2 A ን በ15 Ω ተከላካይ ውስጥ ለማስገደድ ምን ያህል ቮልቴጅ ያስፈልጋል?", "expect": "decline"},
+  {"id": "lang-ru-ohm", "area": "language", "prompt": "Какое напряжение нужно, чтобы через резистор 15 Ω шёл ток 2 A?", "expect": "decline"},
+  {"id": "lang-en-ohm", "area": "language", "prompt": "What voltage drives 2 A through a 15 Ω resistor?", "expect": "answer", "answer": [30, "V"], "note": "the English question keeps its card"},
+  {"id": "lang-en-ohm-fr-user", "area": "language", "prompt": "What voltage drives 2 A through a 15 Ω resistor?", "expect": "answer", "answer": [30, "V"], "locale": "fr", "note": "English from a French-language app keeps it too"},
+  {"id": "lang-en-name", "area": "language", "prompt": "José pushes a 20 kg box with a net force of 50 N. what is its acceleration?", "expect": "answer", "answer": [2.5, "m/s^2"], "note": "an accented name is no other language"},
+  {"id": "lang-en-micro", "area": "language", "prompt": "a 5 µF capacitor is charged to 12 V. how much energy does it store?", "expect": "answer", "answer": [0.00036, "J"]},
+  {"id": "num-space-groups", "area": "number marks", "prompt": "a car of mass 1 200 kg moves at 20 m/s. what is its kinetic energy?", "expect": "decline", "note": "was 40 000 J for 200 kg: '1 200' read as 1 and 200 (right: 240 000 J)"},
+  {"id": "num-es-dot-groups", "area": "number marks", "prompt": "a 1.500 kg car moves at 20 m/s. what is its kinetic energy?", "expect": "decline", "locale": "es", "note": "1.500 is 1500 where a dot groups thousands; was 300 J for 1.5 kg"},
+  {"id": "num-en-comma-groups", "area": "number marks", "prompt": "a 1,500 kg car moves at 20 m/s. what is its kinetic energy?", "expect": "answer", "answer": [300000, "J"]},
+  {"id": "lang-en-particles", "area": "language", "prompt": "de Broglie et al. wavelength electron 1e6 m/s", "expect": "answer", "answer": [7.27389e-10, "m"], "note": "name particles alone are names"},
+  {"id": "num-space-unit", "area": "number marks", "prompt": "The Moon is 384 400 km from Earth. How long does light take to travel that distance?", "expect": "decline", "note": "spaced groups before a unit are one number (Claude review): read as 400 km"}
+]

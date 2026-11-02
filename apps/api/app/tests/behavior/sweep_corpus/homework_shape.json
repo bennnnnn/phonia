@@ -1,0 +1,202 @@
+[
+ {
+  "id": "hs-001",
+  "area": "money lesson",
+  "prompt": "A loan of $20,000 at 6% for 5 years. What is the monthly payment?",
+  "history": [],
+  "reply": "**Given**\nLoan: $20,000; rate: 6% a year; term: 5 years\n\n**Formula**\n$M = P\\frac{r(1+r)^n}{(1+r)^n-1}$\n\n**Substitution**\n$M = 20{,}000\\frac{0.005(1.005)^{60}}{(1.005)^{60}-1}$\n\n**Answer**\nThe monthly payment is **$386.66**.",
+  "expect": "answer"
+ },
+ {
+  "id": "hs-002",
+  "area": "money lesson",
+  "prompt": "Suppose you borrow $10,000 at 5% for 3 years. What is your monthly payment?",
+  "history": [],
+  "reply": "**Given**\nLoan: $10,000; rate: 5%; term: 3 years\n\n**Answer**\nThe monthly payment is **$299.71**.",
+  "expect": "answer"
+ },
+ {
+  "id": "hs-003",
+  "area": "money lesson",
+  "prompt": "Tom has a credit card balance of $3,000 at 18% APR and pays $100 a month. How long until it is paid off?",
+  "history": [],
+  "reply": "**Given**\nBalance: $3,000; APR: 18%; payment: $100 a month\n\n**Answer**\nIt takes about **41 months** to pay off.",
+  "expect": "answer"
+ },
+ {
+  "id": "hs-004",
+  "area": "money everyday",
+  "prompt": "Ato Alula deposited Birr 3,000 in a saving account that pays 6% interest rate per year. What is the amount at the end of 7 years?",
+  "history": [],
+  "reply": "**Given**\nStart: Birr 3,000; rate: 6%; time: 7 years\n\n**Answer**\nThe amount is **Birr 4,559.89**.",
+  "expect": "answer"
+ },
+ {
+  "id": "hs-005",
+  "area": "money lesson",
+  "prompt": "Chase offers a car loan at 7% for $30,000 over 5 years. What's the payment?",
+  "history": [],
+  "reply": "**Given**\nLoan: $30,000; rate: 7%; term: 5 years\n\n**Answer**\nThe monthly payment is **$594.04**.",
+  "expect": "answer"
+ },
+ {
+  "id": "hs-010",
+  "area": "money everyday",
+  "prompt": "My sister wants to buy a house for $400,000 at 6.5% for 30 years. What would her payment be?",
+  "history": [],
+  "reply": "About **$2,528.27** a month over 30 years.",
+  "expect": "answer"
+ },
+ {
+  "id": "hs-011",
+  "area": "money everyday",
+  "prompt": "Our company took a loan of $500,000 at 8% over 10 years. What is the payment?",
+  "history": [],
+  "reply": "The payment is about **$6,066.38** a month.",
+  "expect": "answer"
+ },
+ {
+  "id": "hs-012",
+  "area": "money everyday",
+  "prompt": "A customer at my shop wants a $5,000 loan at 10% for 2 years. Payment?",
+  "history": [],
+  "reply": "About **$230.72** a month.",
+  "expect": "answer"
+ },
+ {
+  "id": "hs-013",
+  "area": "money everyday",
+  "prompt": "The business has a $500,000 loan at 8% over 10 years. Should the owner pay it off early?",
+  "history": [],
+  "reply": "The payment is about **$6,066.38** a month; paying early saves interest if there is no penalty.",
+  "expect": "answer"
+ },
+ {
+  "id": "hs-014",
+  "area": "money lesson",
+  "prompt": "Ato Alula deposited Birr 3,000 in a saving account that pays 6% interest rate per year, compounded quarterly. What is the amount of interest obtained at the end of seven years?",
+  "history": [],
+  "reply": "**Given**\nStart: Birr 3,000; rate: 6%; compounded quarterly; time: 7 years\n\n**Answer**\nThe interest is **Birr 1,551.67**.",
+  "expect": "answer"
+ },
+ {
+  "id": "hs-015",
+  "area": "money everyday",
+  "prompt": "I have $5,000 on my credit card at 22% APR and pay $200 a month. How long until it's paid off?",
+  "history": [],
+  "reply": "About **34 months**, paying about $1,800 in interest.",
+  "expect": "answer"
+ },
+ {
+  "id": "hs-016",
+  "area": "money everyday",
+  "prompt": "Hey, what would a $15,000 car loan at 9% for 48 months cost per month?",
+  "history": [],
+  "reply": "About **$373.28** a month over 48 months.",
+  "expect": "answer"
+ },
+ {
+  "id": "hs-017",
+  "area": "money everyday",
+  "prompt": "Mortgage $300k at 6.5% 30 years payment?",
+  "history": [],
+  "reply": "About **$1,896.20** a month.",
+  "expect": "answer"
+ },
+ {
+  "id": "hs-018",
+  "area": "money everyday",
+  "prompt": "Rahul pays Rs 1,000 a month into a recurring deposit at 7% for 3 years. Find the maturity value.",
+  "history": [],
+  "reply": "About **Rs 39,930** at maturity, compounded monthly (assumed).",
+  "expect": "answer"
+ },
+ {
+  "id": "hs-019",
+  "area": "money everyday",
+  "prompt": "If you deposit $200 at the end of each month at 6% compounded monthly for 5 years, how much will you have?",
+  "history": [],
+  "reply": "About **$13,954.01** after 5 years.",
+  "expect": "answer"
+ },
+ {
+  "id": "hs-020",
+  "area": "emoji homework",
+  "prompt": "Which of the following is a mixture?\nA. Water\nB. Salt\nC. Sugar\nD. Milk",
+  "history": [],
+  "reply": "The answer is D.\n\n- 💧 **D. Milk** — water, fats and proteins mixed together.\n- 🧂 **B. Salt** — a compound, not a mixture.",
+  "expect": "answer"
+ },
+ {
+  "id": "hs-021",
+  "area": "emoji homework",
+  "prompt": "The process by which green plants make their own food is called ________.",
+  "history": [],
+  "reply": "The blank is photosynthesis.\n\n- 🌱 **Photosynthesis** — plants make glucose from light.\n- ☀️ **Light** — the energy it runs on.",
+  "expect": "answer"
+ },
+ {
+  "id": "hs-030",
+  "area": "emoji lookalike",
+  "prompt": "Calculate the tip on $80 at 20% 🍕",
+  "history": [],
+  "reply": "Here's the bill:\n\n- 🍕 **Tip:** $16\n- 💵 **Total:** $96",
+  "expect": "answer"
+ },
+ {
+  "id": "hs-031",
+  "area": "emoji lookalike",
+  "prompt": "Party for 12 kids, 3 slices each, 8 slices per pizza — how many pizzas? 🍕",
+  "history": [],
+  "reply": "Here's the count:\n\n- 🍕 **Slices:** 36\n- 📦 **Pizzas:** 5 (4.5 rounded up)",
+  "expect": "answer"
+ },
+ {
+  "id": "hs-032",
+  "area": "emoji lookalike",
+  "prompt": "Estimate how long a road trip from LA to Vegas takes",
+  "history": [],
+  "reply": "Roughly:\n\n- 🚗 **Driving:** about 4 hours\n- 🛣️ **Distance:** 270 miles on I-15",
+  "expect": "answer"
+ },
+ {
+  "id": "hs-033",
+  "area": "emoji lookalike",
+  "prompt": "any tips for my weekend trip to Rome?",
+  "history": [],
+  "reply": "A few tips:\n\n- 🎟️ **Book the Colosseum ahead** — tickets sell out.\n- 🚶 **Walk** — the centre is small.",
+  "expect": "answer"
+ },
+ {
+  "id": "hs-034",
+  "area": "emoji lookalike",
+  "prompt": "We're 4 people splitting a $120 dinner, how much each? 🎉",
+  "history": [],
+  "reply": "The split:\n\n- 🎉 **Each:** $30\n- 🧾 **Total:** $120",
+  "expect": "answer"
+ },
+ {
+  "id": "hs-035",
+  "area": "emoji lookalike",
+  "prompt": "so......",
+  "history": [],
+  "reply": "Fair enough. A couple of ways to go:\n\n- 💬 **Talk it through** — tell me what's up.\n- 🎲 **Something random** — I'll pick a topic.",
+  "expect": "answer"
+ },
+ {
+  "id": "hs-036",
+  "area": "emoji lookalike",
+  "prompt": "lol ok ___ whatever",
+  "history": [],
+  "reply": "No worries:\n\n- 😌 **Skip it** — we can drop it.\n- 🔁 **Come back later** — whenever you like.",
+  "expect": "answer"
+ },
+ {
+  "id": "hs-037",
+  "area": "emoji lookalike",
+  "prompt": "Trip ideas.......... Paris or Rome?",
+  "history": [],
+  "reply": "Both are great:\n\n- 🏛️ **Rome** — history at every corner.\n- 🥐 **Paris** — art, cafés and food.",
+  "expect": "answer"
+ }
+]

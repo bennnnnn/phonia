@@ -1,0 +1,181 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`layoutSimulationScene lays out a collision scene as before 1`] = `
+"radii: [10.56,7.92]
+boxAngles: [null,null]
+tracks: [[{"px":50.4,"py":77.24},{"px":103.2,"py":77.24},{"px":156,"py":77.24},{"px":169.2,"py":77.24},{"px":182.4,"py":77.24}],[{"px":174.48,"py":79.88},{"px":174.48,"py":79.88},{"px":174.48,"py":79.88},{"px":222,"py":79.88},{"px":269.52,"py":79.88}]]
+closed: [false,false]
+maxSpeed: 52.8
+floorY: 87.8
+obstacles: []
+vectors: []
+bodyLabels: [{"side":"above","dx":-13.2,"dy":-16.56,"width":26.4},{"side":"below","dx":-13.2,"dy":22.72,"width":26.4}]
+angles: []
+arrowLabels: []
+solids: []
+planet: null
+tethers: []
+pulley: null
+restLines: []
+strobes: [[],[]]"
+`;
+
+exports[`layoutSimulationScene lays out a free_body scene as before 1`] = `
+"radii: [11.52,9.6]
+boxAngles: [0,0]
+tracks: [[{"px":136.8,"py":139.2},{"px":136.8,"py":146.88},{"px":136.8,"py":162.24},{"px":136.8,"py":185.28}],[{"px":175.2,"py":158.4},{"px":175.2,"py":150.72},{"px":175.2,"py":135.36},{"px":175.2,"py":112.32}]]
+closed: [false,false]
+maxSpeed: 0
+floorY: null
+obstacles: []
+vectors: [{"from":{"px":136.8,"py":127.68},"tip":{"px":136.8,"py":79.68},"head":7,"body":0,"label":{"text":"T","x":125.5,"y":71.48,"box":{"x":125.5,"y":62.68,"width":6.6,"height":11}},"ride":{"ux":0,"uy":-1,"desired":48,"labelWidth":6.6,"mid":false,"side":1,"beside":0,"dx":-8,"dy":0}},{"from":{"px":175.2,"py":148.8},"tip":{"px":175.2,"py":100.8},"head":7,"body":1,"label":{"text":"T","x":179.9,"y":92.6,"box":{"x":179.9,"y":83.8,"width":6.6,"height":11}},"ride":{"ux":0,"uy":-1,"desired":48,"labelWidth":6.6,"mid":false,"side":1,"beside":0,"dx":8,"dy":0}},{"from":{"px":113.76,"py":139.2},"tip":{"px":113.76,"py":187.2},"head":7,"body":0,"label":{"text":"a","x":118.46,"y":202,"box":{"x":118.46,"y":193.2,"width":6.6,"height":11}},"ride":{"ux":0,"uy":1,"desired":48,"labelWidth":6.6,"mid":false,"side":1,"beside":0,"dx":8,"dy":0}}]
+bodyLabels: [{"side":"above-left","dx":-38.15,"dy":-13.95,"width":26.4},{"side":"right","dx":15.6,"dy":3.3,"width":26.4}]
+angles: []
+arrowLabels: []
+solids: []
+planet: null
+tethers: [{"anchor":{"px":136.8,"py":62.4},"body":0,"support":null},{"anchor":{"px":175.2,"py":62.4},"body":1,"support":null}]
+pulley: {"centre":{"px":156,"py":62.4},"radius":19.2,"rope":{"points":31,"first":{"px":136.8,"py":62.4},"last":{"px":175.2,"py":62.4}}}
+restLines: []
+strobes: [[],[]]"
+`;
+
+exports[`layoutSimulationScene lays out a incline scene as before 1`] = `
+"radii: [14.67]
+boxAngles: [0.52]
+tracks: [[{"px":82.67,"py":82.67},{"px":108.19,"py":97.33},{"px":133.41,"py":112},{"px":158.93,"py":126.67},{"px":184.16,"py":141.33}]]
+closed: [false]
+maxSpeed: 0
+floorY: 170.67
+obstacles: []
+vectors: []
+bodyLabels: [{"side":"right","dx":26.04,"dy":3.3,"width":26.4}]
+angles: [{"vertex":{"px":205.87,"py":170.67},"radius":26.74,"arc":{"points":9,"first":{"px":182.71,"py":157.3},"last":{"px":179.13,"py":170.67}},"head":null,"label":{"text":"30°","x":153.73,"y":184.65,"box":{"x":153.73,"y":175.85,"width":19.8,"height":11}}}]
+arrowLabels: [{"body":0,"kind":"normal","text":"N","width":6.6,"beside":0,"dx":0,"dy":0},{"body":0,"kind":"friction","text":"f","width":6.6,"beside":0,"dx":0,"dy":0}]
+solids: []
+planet: null
+tethers: []
+pulley: null
+restLines: []
+strobes: [[]]"
+`;
+
+exports[`layoutSimulationScene lays out a lever scene as before 1`] = `
+"radii: []
+boxAngles: []
+tracks: []
+closed: []
+maxSpeed: 0
+floorY: null
+obstacles: []
+vectors: [{"from":{"px":76.8,"py":103.2},"tip":{"px":76.8,"py":135.2},"head":7,"body":null,"label":{"text":"20 N","x":63.6,"y":150,"box":{"x":63.6,"y":141.2,"width":26.4,"height":11}},"ride":null},{"from":{"px":208.8,"py":103.2},"tip":{"px":208.8,"py":151.2},"head":7,"body":null,"label":{"text":"30 N","x":195.6,"y":166,"box":{"x":195.6,"y":157.2,"width":26.4,"height":11}},"ride":null}]
+bodyLabels: []
+angles: [{"vertex":{"px":156,"py":103.2},"radius":26,"arc":{"points":29,"first":{"px":133.48,"py":90.2},"last":{"px":176.13,"py":86.75}},"head":{"tip":{"px":178.52,"py":90.2},"ux":0.5,"uy":0.87,"size":7},"label":{"text":"M","x":152.7,"y":69,"box":{"x":152.7,"y":60.2,"width":6.6,"height":11}}}]
+arrowLabels: []
+solids: []
+planet: null
+tethers: []
+pulley: null
+restLines: []
+strobes: []"
+`;
+
+exports[`layoutSimulationScene lays out a orbit scene as before 1`] = `
+"radii: [4.8]
+boxAngles: [null]
+tracks: [{"points":9,"first":{"px":228,"py":120},"last":{"px":228,"py":120}}]
+closed: [true]
+maxSpeed: 50.91
+floorY: null
+obstacles: []
+vectors: []
+bodyLabels: [null]
+angles: []
+arrowLabels: [{"body":0,"kind":"centripetal","text":"F","width":6.6,"beside":0,"dx":0,"dy":0}]
+solids: []
+planet: {"centre":{"px":156,"py":120},"radius":24,"label":{"text":"Earth","x":139.5,"y":158.8,"box":{"x":139.5,"y":150,"width":33,"height":11}}}
+tethers: []
+pulley: null
+restLines: []
+strobes: [[]]"
+`;
+
+exports[`layoutSimulationScene lays out a pendulum scene as before 1`] = `
+"radii: [12.8]
+boxAngles: [null]
+tracks: [[{"px":205.85,"py":173.9},{"px":181.43,"py":181.45},{"px":130.57,"py":181.45},{"px":106.15,"py":173.9},{"px":130.57,"py":181.45},{"px":181.43,"py":181.45},{"px":205.85,"py":173.9}]]
+closed: [true]
+maxSpeed: 37.83
+floorY: null
+obstacles: []
+vectors: []
+bodyLabels: [{"side":"below-right","dx":12.65,"dy":21.45,"width":19.8}]
+angles: [{"vertex":{"px":156,"py":56},"radius":35.03,"arc":[{"px":156,"py":91.03},{"px":158.33,"py":90.95},{"px":160.65,"py":90.72},{"px":162.95,"py":90.33},{"px":165.22,"py":89.79},{"px":167.45,"py":89.1},{"px":169.63,"py":88.27}],"head":null,"label":{"text":"θ","x":184.04,"y":105.44,"box":{"x":184.04,"y":96.64,"width":6.6,"height":11}}}]
+arrowLabels: [{"body":0,"kind":"gravity","text":"mg","width":13.2,"beside":0,"dx":12,"dy":0}]
+solids: []
+planet: null
+tethers: [{"anchor":{"px":156,"py":56},"body":0,"support":{"bar":{"x1":144,"y1":56,"x2":168,"y2":56},"hatches":[{"x1":146.4,"y1":56,"x2":141.4,"y2":51},{"x1":151.2,"y1":56,"x2":146.2,"y2":51},{"x1":156,"y1":56,"x2":151,"y2":51},{"x1":160.8,"y1":56,"x2":155.8,"y2":51},{"x1":165.6,"y1":56,"x2":160.6,"y2":51}]}}]
+pulley: null
+restLines: [{"x1":156,"y1":56,"x2":156,"y2":184}]
+strobes: [[{"px":205.85,"py":173.9},{"px":106.15,"py":173.9},{"px":205.85,"py":173.9}]]"
+`;
+
+exports[`layoutSimulationScene lays out a projectile_motion scene as before 1`] = `
+"radii: [4]
+boxAngles: [null]
+tracks: [[{"px":46,"py":79},{"px":82.67,"py":52.6},{"px":119.33,"py":39.4},{"px":156,"py":39.4},{"px":192.67,"py":52.6},{"px":229.33,"py":79},{"px":266,"py":115.67}]]
+closed: [false]
+maxSpeed: 51.85
+floorY: 119.33
+obstacles: [{"x":24,"y":82.67,"width":29.33,"height":36.67}]
+vectors: [{"from":{"px":31.33,"py":119.33},"tip":{"px":31.33,"py":82.67},"head":7,"body":null,"label":{"text":"h = 5 m","x":4,"y":132.3,"box":{"x":4,"y":123.5,"width":46.2,"height":11}},"ride":null}]
+bodyLabels: [{"side":"above-right","dx":6.43,"dy":-8.63,"width":26.4}]
+angles: []
+arrowLabels: [{"body":0,"kind":"velocity","text":"v","width":6.6,"beside":0,"dx":0,"dy":0},{"body":0,"kind":"gravity","text":"mg","width":13.2,"beside":0,"dx":0,"dy":6}]
+solids: [{"box":{"x":24,"y":82.67,"width":29.33,"height":36.67},"label":{"text":"table","x":28,"y":95.47,"box":{"x":28,"y":86.67,"width":33,"height":11}}}]
+planet: null
+tethers: []
+pulley: null
+restLines: []
+strobes: [[{"px":46,"py":79},{"px":119.33,"py":39.4},{"px":192.67,"py":52.6},{"px":266,"py":115.67}]]"
+`;
+
+exports[`layoutSimulationScene lays out a spring scene as before 1`] = `
+"radii: [17.6]
+boxAngles: [0]
+tracks: [[{"px":229.33,"py":94.4},{"px":185.33,"py":94.4},{"px":141.33,"py":94.4},{"px":185.33,"py":94.4},{"px":229.33,"py":94.4}]]
+closed: [false]
+maxSpeed: 0
+floorY: 112
+obstacles: []
+vectors: []
+bodyLabels: [null]
+angles: []
+arrowLabels: []
+solids: []
+planet: null
+tethers: []
+pulley: null
+restLines: []
+strobes: [[]]"
+`;
+
+exports[`layoutSimulationScene lays out a vector_sum scene as before 1`] = `
+"radii: []
+boxAngles: []
+tracks: []
+closed: []
+maxSpeed: 0
+floorY: null
+obstacles: []
+vectors: [{"from":{"px":92,"py":184},"tip":{"px":188,"py":184},"head":7,"body":null,"label":{"text":"3 N","x":130.1,"y":198.8,"box":{"x":130.1,"y":190,"width":19.8,"height":11}},"ride":null},{"from":{"px":188,"py":184},"tip":{"px":188,"py":56},"head":7,"body":null,"label":{"text":"4 N","x":194,"y":123.3,"box":{"x":194,"y":114.5,"width":19.8,"height":11}},"ride":null},{"from":{"px":92,"py":184},"tip":{"px":188,"py":56},"head":7,"body":null,"label":{"text":"5 N","x":186.73,"y":47.8,"box":{"x":186.73,"y":39,"width":19.8,"height":11}},"ride":null}]
+bodyLabels: []
+angles: [{"vertex":{"px":92,"py":184},"radius":26,"arc":{"points":15,"first":{"px":118,"py":184},"last":{"px":107.6,"py":163.2}},"head":null,"label":{"text":"53.1°","x":119.52,"y":167.29,"box":{"x":119.52,"y":158.49,"width":33,"height":11}}}]
+arrowLabels: []
+solids: []
+planet: null
+tethers: []
+pulley: null
+restLines: []
+strobes: []"
+`;

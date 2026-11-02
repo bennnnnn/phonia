@@ -1,0 +1,177 @@
+[
+  {
+    "name": "a greeting's wave at A few",
+    "level": "some",
+    "user_wrote_emoji": false,
+    "text": "Hey bini 👋",
+    "expected": "Hey bini"
+  },
+  {
+    "name": "a greeting's wave at None",
+    "level": "off",
+    "user_wrote_emoji": false,
+    "text": "Hey bini 👋 How's it going?",
+    "expected": "Hey bini. How's it going?"
+  },
+  {
+    "name": "a greeting's wave at Lots",
+    "level": "more",
+    "user_wrote_emoji": false,
+    "text": "Hey bini 👋",
+    "expected": "Hey bini 👋"
+  },
+  {
+    "name": "None mirrors the user's emoji",
+    "level": "off",
+    "user_wrote_emoji": true,
+    "text": "Hey bini 👋",
+    "expected": "Hey bini 👋"
+  },
+  {
+    "name": "a list at A few",
+    "level": "some",
+    "user_wrote_emoji": false,
+    "text": "Here are the main perks:\n\n*   **Temperature control** — water is the fuel for that system 🌡️\n*   **🧠 Brain power** — Even mild dehydration hurts focus\n*   **Kidney cleanup** — Water helps your kidneys filter waste 🚽 and flush it out.\n    - nested **Detail 🔬** point\n\nWant me to look up how much you should drink? 💧",
+    "expected": "Here are the main perks:\n\n*   🌡️ **Temperature control** — water is the fuel for that system\n*   🧠 **Brain power** — Even mild dehydration hurts focus\n*   🚽 **Kidney cleanup** — Water helps your kidneys filter waste and flush it out.\n    - 🔬 nested **Detail** point\n\nWant me to look up how much you should drink?"
+  },
+  {
+    "name": "a list at None",
+    "level": "off",
+    "user_wrote_emoji": false,
+    "text": "Here are the main perks:\n\n*   **Temperature control** — water is the fuel for that system 🌡️\n*   **🧠 Brain power** — Even mild dehydration hurts focus\n*   **Kidney cleanup** — Water helps your kidneys filter waste 🚽 and flush it out.\n    - nested **Detail 🔬** point\n\nWant me to look up how much you should drink? 💧",
+    "expected": "Here are the main perks:\n\n*   **Temperature control** — water is the fuel for that system\n*   **Brain power** — Even mild dehydration hurts focus\n*   **Kidney cleanup** — Water helps your kidneys filter waste and flush it out.\n    - nested **Detail** point\n\nWant me to look up how much you should drink?"
+  },
+  {
+    "name": "a list at Lots",
+    "level": "more",
+    "user_wrote_emoji": false,
+    "text": "Here are the main perks:\n\n*   **Temperature control** — water is the fuel for that system 🌡️\n*   **🧠 Brain power** — Even mild dehydration hurts focus\n*   **Kidney cleanup** — Water helps your kidneys filter waste 🚽 and flush it out.\n    - nested **Detail 🔬** point\n\nWant me to look up how much you should drink? 💧",
+    "expected": "Here are the main perks:\n\n*   **Temperature control** — water is the fuel for that system 🌡️\n*   **🧠 Brain power** — Even mild dehydration hurts focus\n*   **Kidney cleanup** — Water helps your kidneys filter waste 🚽 and flush it out.\n    - nested **Detail 🔬** point\n\nWant me to look up how much you should drink? 💧"
+  },
+  {
+    "name": "an opening line at A few",
+    "level": "some",
+    "user_wrote_emoji": false,
+    "text": "🌊 Hydration matters.",
+    "expected": "Hydration matters."
+  },
+  {
+    "name": "a heading's flag at A few",
+    "level": "some",
+    "user_wrote_emoji": false,
+    "text": "### Singapore 🇸🇬",
+    "expected": "### 🇸🇬 Singapore"
+  },
+  {
+    "name": "a bold label at A few",
+    "level": "some",
+    "user_wrote_emoji": false,
+    "text": "**Low taxes 💰** — Singapore",
+    "expected": "💰 **Low taxes** — Singapore"
+  },
+  {
+    "name": "a callout at A few",
+    "level": "some",
+    "user_wrote_emoji": false,
+    "text": "> Note: drink up 💧",
+    "expected": "> Note: drink up"
+  },
+  {
+    "name": "a numbered item at A few",
+    "level": "some",
+    "user_wrote_emoji": false,
+    "text": "1. **Sleep** — rest well 😴.",
+    "expected": "1. 😴 **Sleep** — rest well."
+  },
+  {
+    "name": "an item keeps its first emoji",
+    "level": "some",
+    "user_wrote_emoji": false,
+    "text": "- 💧 **Water** — and more 🚰",
+    "expected": "- 💧 **Water** — and more"
+  },
+  {
+    "name": "an unknown level is A few",
+    "level": "",
+    "user_wrote_emoji": false,
+    "text": "Hey bini 👋",
+    "expected": "Hey bini"
+  },
+  {
+    "name": "a clarify card is a fence",
+    "level": "some",
+    "user_wrote_emoji": false,
+    "text": "```clarify\n{\"options\": [\"💰 Money\", \"🌿 Life\"]}\n```",
+    "expected": "```clarify\n{\"options\": [\"💰 Money\", \"🌿 Life\"]}\n```"
+  },
+  {
+    "name": "inline code",
+    "level": "some",
+    "user_wrote_emoji": false,
+    "text": "Use `print(\"🐍\")` to print it.",
+    "expected": "Use `print(\"🐍\")` to print it."
+  },
+  {
+    "name": "a table row",
+    "level": "some",
+    "user_wrote_emoji": false,
+    "text": "| Country | Tax |\n|---|---|\n| UAE ✅ | 0% |",
+    "expected": "| Country | Tax |\n|---|---|\n| UAE ✅ | 0% |"
+  },
+  {
+    "name": "a lesson",
+    "level": "some",
+    "user_wrote_emoji": false,
+    "text": "### Lesson 1: Lists 🐍\n\nCorrect! 🎉 A list holds items.",
+    "expected": "### Lesson 1: Lists 🐍\n\nCorrect! 🎉 A list holds items."
+  },
+  {
+    "name": "no emoji",
+    "level": "some",
+    "user_wrote_emoji": false,
+    "text": "No emoji here.",
+    "expected": "No emoji here."
+  },
+  {
+    "name": "an emoji between two sentences becomes a full stop",
+    "level": "some",
+    "user_wrote_emoji": false,
+    "text": "Hey bini 👋 How's your Friday going? 🌙",
+    "expected": "Hey bini. How's your Friday going?"
+  },
+  {
+    "name": "a cheer between two sentences",
+    "level": "some",
+    "user_wrote_emoji": false,
+    "text": "Great job 🎉 You nailed it.",
+    "expected": "Great job. You nailed it."
+  },
+  {
+    "name": "a word that leads on keeps the sentence",
+    "level": "some",
+    "user_wrote_emoji": false,
+    "text": "We flew to 🗼 Paris",
+    "expected": "We flew to Paris"
+  },
+  {
+    "name": "a flag before a name keeps the sentence",
+    "level": "some",
+    "user_wrote_emoji": false,
+    "text": "Visit 🇯🇵 Japan soon",
+    "expected": "Visit Japan soon"
+  },
+  {
+    "name": "punctuation already there",
+    "level": "some",
+    "user_wrote_emoji": false,
+    "text": "Hey bini! 👋 How's it going?",
+    "expected": "Hey bini! How's it going?"
+  },
+  {
+    "name": "a lower-case word goes on the sentence",
+    "level": "off",
+    "user_wrote_emoji": false,
+    "text": "Thanks 😊 see you",
+    "expected": "Thanks see you"
+  }
+]

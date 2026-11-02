@@ -1,0 +1,982 @@
+[
+  {
+    "id": "l2-001",
+    "area": "todo",
+    "prompt": "remimd me to pay electric bill fri 6pm",
+    "history": [],
+    "reply": "Set: pay electric bill — Friday, Oct 16, 6:00 PM. ⚡",
+    "expect": "save"
+  },
+  {
+    "id": "l2-002",
+    "area": "todo",
+    "prompt": "pls remind me 2 call dad at 7 tonight",
+    "history": [],
+    "reply": "Set: call dad — today, Oct 14, 7:00 PM. 📞",
+    "expect": "save"
+  },
+  {
+    "id": "l2-003",
+    "area": "todo",
+    "prompt": "reminder 4 dentist next tues 3pm",
+    "history": [],
+    "reply": "```reminder\n{\"title\": \"Dentist\", \"due_at\": \"2026-10-20T15:00:00+03:00\"}\n```\nGot it — I'll remind you about the dentist on **Tuesday, Oct 20 at 3:00 PM**.\n\nYou also still have a **dentist appointment** reminder for tomorrow (Thursday) at 3:00 PM. Want me to remove that one if it was rescheduled?",
+    "expect": "save"
+  },
+  {
+    "id": "l2-004",
+    "area": "todo",
+    "prompt": "add to my reminders: pick up kids 4:30pm tomorrow",
+    "history": [],
+    "reply": "```reminder\n{\"title\": \"Pick up kids\", \"due_at\": \"2026-10-15T16:30:00+03:00\"}\n```\nAdded — **pick up kids** tomorrow, Thursday, Oct 15 at 4:30 PM.",
+    "expect": "save"
+  },
+  {
+    "id": "l2-005",
+    "area": "todo",
+    "prompt": "every monday at 8am remind me to take out the trash",
+    "history": [],
+    "reply": "Set: take out the trash — every Monday at 8:00 AM, starting Monday, Oct 19. 🗑️",
+    "expect": "save"
+  },
+  {
+    "id": "l2-006",
+    "area": "todo",
+    "prompt": "remind me to call Getachew ነገ at 10am",
+    "history": [],
+    "reply": "Set: call Getachew — tomorrow (ነገ), Thursday, Oct 15, 10:00 AM.",
+    "expect": "save"
+  },
+  {
+    "id": "l2-007",
+    "area": "todo",
+    "prompt": "sat 9am wash the car. remind me",
+    "history": [],
+    "reply": "Set: wash the car — Saturday, Oct 17, 9:00 AM. 🚗",
+    "expect": "save"
+  },
+  {
+    "id": "l2-008",
+    "area": "todo",
+    "prompt": "dont let me forget to send the rent receipt to my landlord friday 5pm",
+    "history": [],
+    "reply": "```reminder\n{\"title\": \"Send rent receipt to landlord\", \"due_at\": \"2026-10-16T17:00:00+03:00\"}\n```\nWon't let you forget — I'll remind you on **Friday, Oct 16 at 5:00 PM**.",
+    "expect": "save"
+  },
+  {
+    "id": "l2-009",
+    "area": "todo",
+    "prompt": "set a reminder for my meds at 9pm every night",
+    "history": [],
+    "reply": "Set: take meds — every night at 9:00 PM, starting tonight (Wed, Oct 14). 💊",
+    "expect": "save"
+  },
+  {
+    "id": "l2-010",
+    "area": "todo",
+    "prompt": "remind me to buy injera on the way home",
+    "history": [],
+    "reply": "Sure! What time do you usually head home? Give me a time and I'll remind you to pick up injera.",
+    "expect": "ask_time"
+  },
+  {
+    "id": "l2-011",
+    "area": "todo",
+    "prompt": "can u remind me abt the water bill",
+    "history": [],
+    "reply": "Of course — when should I remind you about the water bill? A day and time works, like \"Friday at 9am\".",
+    "expect": "ask_time"
+  },
+  {
+    "id": "l2-012",
+    "area": "todo",
+    "prompt": "remind me tmrw to renew my kebele id",
+    "history": [],
+    "reply": "Will do — what time tomorrow (Thursday, Oct 15) should I remind you to renew your kebele ID?",
+    "expect": "ask_time"
+  },
+  {
+    "id": "l2-013",
+    "area": "todo",
+    "prompt": "pls add 'return library books' to my reminders",
+    "history": [],
+    "reply": "Sure — when should I remind you to return the library books? Tell me a day and time.",
+    "expect": "ask_time"
+  },
+  {
+    "id": "l2-014",
+    "area": "todo",
+    "prompt": "what do i have on my reminders",
+    "history": [],
+    "reply": "Here are your reminders:\n\n1. **call mom** — today, Oct 14, 6:00 PM\n2. **read** — tonight, Oct 14, 9:00 PM\n3. **gym** — Thu, Oct 15, 6:00 AM\n4. **dentist appointment** — Thu, Oct 15, 3:00 PM\n5. **water the plants** — Sat, Oct 17, 8:00 AM\n6. **pay rent** — Sun, Nov 1, 9:00 AM",
+    "expect": "read"
+  },
+  {
+    "id": "l2-015",
+    "area": "todo",
+    "prompt": "any todos for today?",
+    "history": [],
+    "reply": "Two for today:\n\n- **call mom** — 6:00 PM\n- **read** — 9:00 PM\n\nTomorrow is busier: **gym** at 6:00 AM and your **dentist appointment** at 3:00 PM.",
+    "expect": "read"
+  },
+  {
+    "id": "l2-016",
+    "area": "todo",
+    "prompt": "wat reminders do i have this week",
+    "history": [],
+    "reply": "Here's your week:\n\n- **Today (Wed, Oct 14)** — **call mom** at 6:00 PM, **read** at 9:00 PM\n- **Thu, Oct 15** — **gym** at 6:00 AM, **dentist appointment** at 3:00 PM\n- **Sat, Oct 17** — **water the plants** at 8:00 AM\n\nAfter that: **pay rent** on Sunday, Nov 1 at 9:00 AM.",
+    "expect": "read"
+  },
+  {
+    "id": "l2-017",
+    "area": "todo",
+    "prompt": "delete",
+    "history": [
+      [
+        "user",
+        "whens my gym reminder"
+      ],
+      [
+        "assistant",
+        "Your **gym** reminder is set for tomorrow, Thursday, Oct 15 at 6:00 AM."
+      ]
+    ],
+    "reply": "Deleted: **gym**.",
+    "expect": "change"
+  },
+  {
+    "id": "l2-018",
+    "area": "todo",
+    "prompt": "mark pay rent as done",
+    "history": [],
+    "reply": "Done ✅ Marked **pay rent** as complete.",
+    "expect": "change"
+  },
+  {
+    "id": "l2-019",
+    "area": "todo",
+    "prompt": "i watered the plants already, tick it off",
+    "history": [],
+    "reply": "Nice 🌱 Marked **water the plants** as done.",
+    "expect": "change"
+  },
+  {
+    "id": "l2-020",
+    "area": "todo",
+    "prompt": "the second one",
+    "history": [
+      [
+        "user",
+        "delete one of my reminders"
+      ],
+      [
+        "assistant",
+        "Sure — which one?\n\n1. **call mom** — today, Oct 14, 6:00 PM\n2. **read** — tonight, Oct 14, 9:00 PM\n3. **gym** — Thu, Oct 15, 6:00 AM\n4. **dentist appointment** — Thu, Oct 15, 3:00 PM\n5. **water the plants** — Sat, Oct 17, 8:00 AM\n6. **pay rent** — Sun, Nov 1, 9:00 AM"
+      ]
+    ],
+    "reply": "Deleted: **read** (tonight, 9:00 PM).",
+    "expect": "change"
+  },
+  {
+    "id": "l2-021",
+    "area": "todo",
+    "prompt": "yes do it",
+    "history": [
+      [
+        "user",
+        "i quit the gym last week, too expensive"
+      ],
+      [
+        "assistant",
+        "Fair enough — gym fees add up fast. Want me to delete your **gym** reminder so it stops nagging you?"
+      ]
+    ],
+    "reply": "Deleted: **gym**. If you start working out at home, I can set a reminder for that instead.",
+    "expect": "change"
+  },
+  {
+    "id": "l2-022",
+    "area": "todo",
+    "prompt": "same time",
+    "history": [
+      [
+        "user",
+        "move gym to friday"
+      ],
+      [
+        "assistant",
+        "Sure — what time on Friday? It's currently set for 6:00 AM tomorrow."
+      ]
+    ],
+    "reply": "Moved: **gym** — Friday, Oct 16, 6:00 AM.",
+    "expect": "change"
+  },
+  {
+    "id": "l2-023",
+    "area": "todo",
+    "prompt": "tomorrow instead",
+    "history": [
+      [
+        "user",
+        "whens my read reminder"
+      ],
+      [
+        "assistant",
+        "**read** is set for tonight at 9:00 PM."
+      ]
+    ],
+    "reply": "Moved: **read** — tomorrow, Thursday, Oct 15, 9:00 PM.",
+    "expect": "change"
+  },
+  {
+    "id": "l2-024",
+    "area": "todo",
+    "prompt": "no, friday",
+    "history": [
+      [
+        "user",
+        "push pay rent to thursday"
+      ],
+      [
+        "assistant",
+        "Moved: **pay rent** — Thursday, Oct 15, 9:00 AM."
+      ]
+    ],
+    "reply": "Moved: **pay rent** — Friday, Oct 16, 9:00 AM.",
+    "expect": "change"
+  },
+  {
+    "id": "l2-025",
+    "area": "todo",
+    "prompt": "done ✅ just talked to her",
+    "history": [
+      [
+        "user",
+        "whats next on my reminders"
+      ],
+      [
+        "assistant",
+        "Next up: **call mom** — today at 6:00 PM."
+      ]
+    ],
+    "reply": "Marked **call mom** as done. Hope she's doing well! 💛",
+    "expect": "change"
+  },
+  {
+    "id": "l2-026",
+    "area": "todo",
+    "prompt": "wait cancel that, i only did the balcony ones",
+    "history": [
+      [
+        "user",
+        "watered the plants"
+      ],
+      [
+        "assistant",
+        "Marked **water the plants** as done. 🌱"
+      ]
+    ],
+    "reply": "No problem — **water the plants** is open again (Saturday, Oct 17, 8:00 AM).",
+    "expect": "change"
+  },
+  {
+    "id": "l2-027",
+    "area": "todo",
+    "prompt": "never mind, he just called me",
+    "history": [
+      [
+        "user",
+        "remind me to call the plumber"
+      ],
+      [
+        "assistant",
+        "Sure — when should I remind you to call the plumber?"
+      ]
+    ],
+    "reply": "Perfect timing! I won't set anything then. Hope the fix goes smoothly 🔧",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-028",
+    "area": "todo",
+    "prompt": "thx 🙏",
+    "history": [
+      [
+        "user",
+        "remind me to pick up my suit from the tailor saturday 11am"
+      ],
+      [
+        "assistant",
+        "Set: pick up suit from tailor — Saturday, Oct 17, 11:00 AM."
+      ]
+    ],
+    "reply": "Anytime! Enjoy the suit 👔",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-029",
+    "area": "todo",
+    "prompt": "ok cool, thats a lot for one week lol",
+    "history": [
+      [
+        "user",
+        "what do i have on my reminders"
+      ],
+      [
+        "assistant",
+        "Here are your reminders:\n\n1. **call mom** — today, Oct 14, 6:00 PM\n2. **read** — tonight, Oct 14, 9:00 PM\n3. **gym** — Thu, Oct 15, 6:00 AM\n4. **dentist appointment** — Thu, Oct 15, 3:00 PM\n5. **water the plants** — Sat, Oct 17, 8:00 AM\n6. **pay rent** — Sun, Nov 1, 9:00 AM"
+      ]
+    ],
+    "reply": "It's a full one, but it's spread out pretty well 😄 Tonight is just a call and some reading, tomorrow is the busy day with the gym and the dentist, and then you're mostly clear until the plants on Saturday. Rent isn't until November 1st. You've got this 💪",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-030",
+    "area": "todo",
+    "prompt": "never mind, ill keep them as they are",
+    "history": [
+      [
+        "user",
+        "i need to move one of my reminders"
+      ],
+      [
+        "assistant",
+        "Sure — which one, and to when?"
+      ]
+    ],
+    "reply": "No problem — nothing changed. Your reminders stay exactly as they are 👍",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-031",
+    "area": "lists",
+    "prompt": "make a packing list for Bahir Dar",
+    "history": [],
+    "reply": "Here's a packing list for Bahir Dar 🌊 (October is just after the rainy season — warm days around 25 °C, cooler evenings, maybe the odd shower):\n\n**Clothes**\n- Light t-shirts / shirts\n- 1–2 pairs of comfortable trousers\n- A light sweater or jacket for evenings by the lake\n- Comfortable walking shoes + sandals\n- Hat or cap\n\n**Lake Tana & Blue Nile Falls**\n- Quick-dry towel\n- Swimsuit (some hotels have pools)\n- Insect repellent — mosquitoes are common near the lake\n- Small waterproof bag for your phone on the boat trip\n- Compact umbrella or rain jacket\n\n**Documents & money**\n- Passport or Kebele ID\n- Cash in birr (smaller places and boat operators often prefer cash)\n- Bank card\n\n**Toiletries & health**\n- Toothbrush, toothpaste, deodorant\n- Any medication you take\n- Small first-aid kit (plasters, painkillers, ORS sachets)\n\n**Tech**\n- Phone charger + power bank\n- Earphones\n\nHow many days are you going for? I can adjust the quantities.",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-032",
+    "area": "lists",
+    "prompt": "add sunscreen to the list",
+    "history": [
+      [
+        "user",
+        "make a packing list for Bahir Dar"
+      ],
+      [
+        "assistant",
+        "Here's a packing list for Bahir Dar 🌊 (October is just after the rainy season — warm days around 25 °C, cooler evenings, maybe the odd shower):\n\n**Clothes**\n- Light t-shirts / shirts\n- 1–2 pairs of comfortable trousers\n- A light sweater or jacket for evenings by the lake\n- Comfortable walking shoes + sandals\n- Hat or cap\n\n**Lake Tana & Blue Nile Falls**\n- Quick-dry towel\n- Swimsuit (some hotels have pools)\n- Insect repellent — mosquitoes are common near the lake\n- Small waterproof bag for your phone on the boat trip\n- Compact umbrella or rain jacket\n\n**Documents & money**\n- Passport or Kebele ID\n- Cash in birr (smaller places and boat operators often prefer cash)\n- Bank card\n\n**Toiletries & health**\n- Toothbrush, toothpaste, deodorant\n- Any medication you take\n- Small first-aid kit (plasters, painkillers, ORS sachets)\n\n**Tech**\n- Phone charger + power bank\n- Earphones\n\nHow many days are you going for? I can adjust the quantities."
+      ]
+    ],
+    "reply": "Added ☀️ — good call, the sun at Bahir Dar's altitude (~1,800 m) is stronger than it feels, especially out on the lake.\n\n**Toiletries & health**\n- Toothbrush, toothpaste, deodorant\n- **Sunscreen (SPF 30+)**\n- Any medication you take\n- Small first-aid kit (plasters, painkillers, ORS sachets)\n\nWant me to add lip balm with SPF too?",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-033",
+    "area": "lists",
+    "prompt": "remove the towel",
+    "history": [
+      [
+        "user",
+        "make a packing list for Bahir Dar"
+      ],
+      [
+        "assistant",
+        "Here's a packing list for Bahir Dar 🌊 (October is just after the rainy season — warm days around 25 °C, cooler evenings, maybe the odd shower):\n\n**Clothes**\n- Light t-shirts / shirts\n- 1–2 pairs of comfortable trousers\n- A light sweater or jacket for evenings by the lake\n- Comfortable walking shoes + sandals\n- Hat or cap\n\n**Lake Tana & Blue Nile Falls**\n- Quick-dry towel\n- Swimsuit (some hotels have pools)\n- Insect repellent — mosquitoes are common near the lake\n- Small waterproof bag for your phone on the boat trip\n- Compact umbrella or rain jacket\n\n**Documents & money**\n- Passport or Kebele ID\n- Cash in birr (smaller places and boat operators often prefer cash)\n- Bank card\n\n**Toiletries & health**\n- Toothbrush, toothpaste, deodorant\n- Any medication you take\n- Small first-aid kit (plasters, painkillers, ORS sachets)\n\n**Tech**\n- Phone charger + power bank\n- Earphones\n\nHow many days are you going for? I can adjust the quantities."
+      ],
+      [
+        "user",
+        "add sunscreen to the list"
+      ],
+      [
+        "assistant",
+        "Added ☀️ — good call, the sun at Bahir Dar's altitude (~1,800 m) is stronger than it feels, especially out on the lake.\n\n**Toiletries & health**\n- Toothbrush, toothpaste, deodorant\n- **Sunscreen (SPF 30+)**\n- Any medication you take\n- Small first-aid kit (plasters, painkillers, ORS sachets)\n\nWant me to add lip balm with SPF too?"
+      ]
+    ],
+    "reply": "Done — the towel's off the list. Most hotels in Bahir Dar provide towels anyway.\n\n**Lake Tana & Blue Nile Falls**\n- Swimsuit (some hotels have pools)\n- Insect repellent — mosquitoes are common near the lake\n- Small waterproof bag for your phone on the boat trip\n- Compact umbrella or rain jacket",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-034",
+    "area": "lists",
+    "prompt": "mark the passport as packed",
+    "history": [
+      [
+        "user",
+        "make a packing list for Bahir Dar"
+      ],
+      [
+        "assistant",
+        "Here's a packing list for Bahir Dar 🌊 (October is just after the rainy season — warm days around 25 °C, cooler evenings, maybe the odd shower):\n\n**Clothes**\n- Light t-shirts / shirts\n- 1–2 pairs of comfortable trousers\n- A light sweater or jacket for evenings by the lake\n- Comfortable walking shoes + sandals\n- Hat or cap\n\n**Lake Tana & Blue Nile Falls**\n- Quick-dry towel\n- Swimsuit (some hotels have pools)\n- Insect repellent — mosquitoes are common near the lake\n- Small waterproof bag for your phone on the boat trip\n- Compact umbrella or rain jacket\n\n**Documents & money**\n- Passport or Kebele ID\n- Cash in birr (smaller places and boat operators often prefer cash)\n- Bank card\n\n**Toiletries & health**\n- Toothbrush, toothpaste, deodorant\n- Any medication you take\n- Small first-aid kit (plasters, painkillers, ORS sachets)\n\n**Tech**\n- Phone charger + power bank\n- Earphones\n\nHow many days are you going for? I can adjust the quantities."
+      ]
+    ],
+    "reply": "✅ Got it.\n\n**Documents & money**\n- ~~Passport or Kebele ID~~ ✅ packed\n- Cash in birr\n- Bank card\n\nTell me what else goes in the bag and I'll tick it off as you go.",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-035",
+    "area": "lists",
+    "prompt": "delete the eggs, i have them already",
+    "history": [
+      [
+        "user",
+        "make me a shopping list for doro wat for 6 people"
+      ],
+      [
+        "assistant",
+        "Here's your shopping list for doro wat (serves 6):\n\n**Meat & eggs**\n- 1 whole chicken (~1.5 kg), skinned and cut into 12 pieces\n- 8 eggs\n\n**Produce**\n- 2 kg red onions\n- 1 head of garlic\n- 1 thumb-sized piece of ginger\n- 2 lemons (for washing the chicken)\n\n**Spices & fat**\n- 1 cup berbere\n- 1 cup niter kibbeh (spiced butter)\n- 1 tsp korerima (optional)\n- Salt\n\n**To serve**\n- 12–15 injera\n- Ayib (fresh cheese), optional"
+      ]
+    ],
+    "reply": "Done — eggs removed 🥚\n\n**Meat**\n- 1 whole chicken (~1.5 kg), skinned and cut into 12 pieces\n\n**Produce**\n- 2 kg red onions\n- 1 head of garlic\n- 1 thumb-sized piece of ginger\n- 2 lemons\n\n**Spices & fat**\n- 1 cup berbere\n- 1 cup niter kibbeh\n- 1 tsp korerima (optional)\n- Salt\n\n**To serve**\n- 12–15 injera\n- Ayib, optional\n\nJust check you've got about 8 at home so everyone gets one in their wat.",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-036",
+    "area": "lists",
+    "prompt": "cross off the onions and garlic got them",
+    "history": [
+      [
+        "user",
+        "make me a shopping list for doro wat for 6 people"
+      ],
+      [
+        "assistant",
+        "Here's your shopping list for doro wat (serves 6):\n\n**Meat & eggs**\n- 1 whole chicken (~1.5 kg), skinned and cut into 12 pieces\n- 8 eggs\n\n**Produce**\n- 2 kg red onions\n- 1 head of garlic\n- 1 thumb-sized piece of ginger\n- 2 lemons (for washing the chicken)\n\n**Spices & fat**\n- 1 cup berbere\n- 1 cup niter kibbeh (spiced butter)\n- 1 tsp korerima (optional)\n- Salt\n\n**To serve**\n- 12–15 injera\n- Ayib (fresh cheese), optional"
+      ]
+    ],
+    "reply": "Nice, crossed off:\n\n**Produce**\n- ~~2 kg red onions~~ ✅\n- ~~1 head of garlic~~ ✅\n- 1 thumb-sized piece of ginger\n- 2 lemons\n\n**Still to buy:** chicken, 8 eggs, ginger, lemons, berbere, niter kibbeh, korerima (optional), salt, injera and ayib (optional).",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-037",
+    "area": "lists",
+    "prompt": "yes do it",
+    "history": [
+      [
+        "user",
+        "how do i make shiro for 2"
+      ],
+      [
+        "assistant",
+        "Here's a simple shiro wat for 2:\n\n**Ingredients**\n- 1 medium red onion, finely chopped\n- 2 cloves garlic, minced\n- 2 tbsp oil or niter kibbeh\n- 1 small tomato, chopped (optional)\n- 4 tbsp shiro powder\n- 1½ cups water\n- Salt to taste\n- 1 green chili, sliced (optional)\n\n**Steps**\n1. Cook the onion in the oil over medium heat until soft and golden, about 8 minutes.\n2. Add the garlic (and tomato) and cook 2 more minutes.\n3. Pour in the water and bring to a simmer.\n4. Whisk in the shiro powder a spoonful at a time so it doesn't clump.\n5. Simmer on low for 10–15 minutes, stirring often, until thick and glossy. Add a splash of water if it gets too thick.\n6. Salt to taste, top with the chili, and serve hot with injera.\n\nWant me to scale this up for 6 people?"
+      ]
+    ],
+    "reply": "Here it is for 6 people (×3):\n\n**Ingredients**\n- 3 medium red onions, finely chopped\n- 6 cloves garlic, minced\n- 6 tbsp (about ⅓ cup) oil or niter kibbeh\n- 2–3 small tomatoes, chopped (optional)\n- 12 tbsp (¾ cup) shiro powder\n- 4½ cups water\n- Salt to taste\n- 2–3 green chilies, sliced (optional)\n\n**What changes with a bigger batch**\n- Use a wider pot so the onions brown instead of steaming — give them 12–15 minutes.\n- Add the shiro gradually and keep whisking; a bigger batch clumps more easily.\n- Simmer 15–20 minutes. It keeps thickening as it sits, so keep a little hot water nearby.\n\nServe with about 6–8 injera.",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-038",
+    "area": "lists",
+    "prompt": "done",
+    "history": [
+      [
+        "user",
+        "walk me through making doro wat step by step, one step at a time"
+      ],
+      [
+        "assistant",
+        "**Step 1:** Put the finely chopped onions (no oil yet) in a heavy pot over medium-low heat. Stir often and let them cook down until soft and jammy, about 20–30 minutes. If they start sticking, add a splash of water.\n\nTell me when they're soft and I'll give you the next step."
+      ]
+    ],
+    "reply": "Great 👌\n\n**Step 2:** Add the niter kibbeh and let it melt into the onions, then stir in the garlic and ginger. Cook for 3–4 minutes until fragrant.\n\n**Step 3:** Add the berbere a little at a time, stirring constantly. Let it cook into the onion base on low for 10–15 minutes — it should darken and smell rich, not burnt. Add a splash of water whenever it looks dry.\n\nTell me when the sauce looks deep red and glossy, and we'll add the chicken.",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-039",
+    "area": "lists",
+    "prompt": "the second one",
+    "history": [
+      [
+        "user",
+        "give me 3 bedtime story ideas for my 5 yo daughter"
+      ],
+      [
+        "assistant",
+        "Here are 3 ideas:\n\n1. **The Moon Who Lost Her Glow** — the moon feels too dim to shine, and the stars teach her that everyone takes turns being bright.\n2. **Tiki the Tortoise Goes to Lake Tana** — a slow little tortoise sets off to see the big lake, makes friends with a pelican and a fisherman's boy, and learns that slow and steady still gets you there.\n3. **The Cloud Who Wanted to Be Rain** — a tiny cloud is scared to let go of its raindrops until it sees how happy the thirsty flowers are.\n\nWant me to write one of them out?"
+      ]
+    ],
+    "reply": "# Tiki the Tortoise Goes to Lake Tana 🐢\n\nOnce upon a time, in a green garden at the edge of a village, there lived a little tortoise named Tiki. Every evening the birds flew over Tiki's garden and talked about Lake Tana — a lake so big you couldn't see the other side.\n\n\"I want to see it too,\" said Tiki. The birds laughed kindly. \"But Tiki, you are so slow!\"\n\nTiki smiled. \"Slow is still moving.\"\n\nSo the next morning, Tiki set off. He walked past the coffee bushes, past the sleepy goats, and over a little hill. By lunchtime his legs were tired, so he rested under a big fig tree.\n\nThat afternoon, dark clouds rolled in. Thunder grumbled and rain poured down. Tiki pulled his head into his shell and waited. \"Even storms end,\" he told himself. And sure enough, the sun came back out, and the whole world smelled fresh.\n\nNear the water, Tiki met a pelican named Pele. \"Where are you going, little one?\"\n\n\"To see Lake Tana!\" said Tiki.\n\nPele flapped his big wings. \"Then follow me — it's just past those reeds.\"\n\nAt the edge of the reeds, a fisherman's boy named Dawit was mending his net. He saw Tiki and gently lifted him onto a flat, warm rock so he could see over the grass.\n\nAnd there it was. Lake Tana stretched out silver and blue, all the way to the sky. Little papyrus boats floated on the water, and the evening sun made everything golden.\n\n\"I made it,\" Tiki whispered.\n\n\"You did,\" said Pele. \"Slow and steady, all the way.\"\n\nThat night, Tiki fell asleep on the warm rock, listening to the water — dreaming of his next big adventure.\n\n**The end.** 🌙",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-040",
+    "area": "lists",
+    "prompt": "make it shorter and delete the part with the storm",
+    "history": [
+      [
+        "user",
+        "give me 3 bedtime story ideas for my 5 yo daughter"
+      ],
+      [
+        "assistant",
+        "Here are 3 ideas:\n\n1. **The Moon Who Lost Her Glow** — the moon feels too dim to shine, and the stars teach her that everyone takes turns being bright.\n2. **Tiki the Tortoise Goes to Lake Tana** — a slow little tortoise sets off to see the big lake, makes friends with a pelican and a fisherman's boy, and learns that slow and steady still gets you there.\n3. **The Cloud Who Wanted to Be Rain** — a tiny cloud is scared to let go of its raindrops until it sees how happy the thirsty flowers are.\n\nWant me to write one of them out?"
+      ],
+      [
+        "user",
+        "the second one"
+      ],
+      [
+        "assistant",
+        "# Tiki the Tortoise Goes to Lake Tana 🐢\n\nOnce upon a time, in a green garden at the edge of a village, there lived a little tortoise named Tiki. Every evening the birds flew over Tiki's garden and talked about Lake Tana — a lake so big you couldn't see the other side.\n\n\"I want to see it too,\" said Tiki. The birds laughed kindly. \"But Tiki, you are so slow!\"\n\nTiki smiled. \"Slow is still moving.\"\n\nSo the next morning, Tiki set off. He walked past the coffee bushes, past the sleepy goats, and over a little hill. By lunchtime his legs were tired, so he rested under a big fig tree.\n\nThat afternoon, dark clouds rolled in. Thunder grumbled and rain poured down. Tiki pulled his head into his shell and waited. \"Even storms end,\" he told himself. And sure enough, the sun came back out, and the whole world smelled fresh.\n\nNear the water, Tiki met a pelican named Pele. \"Where are you going, little one?\"\n\n\"To see Lake Tana!\" said Tiki.\n\nPele flapped his big wings. \"Then follow me — it's just past those reeds.\"\n\nAt the edge of the reeds, a fisherman's boy named Dawit was mending his net. He saw Tiki and gently lifted him onto a flat, warm rock so he could see over the grass.\n\nAnd there it was. Lake Tana stretched out silver and blue, all the way to the sky. Little papyrus boats floated on the water, and the evening sun made everything golden.\n\n\"I made it,\" Tiki whispered.\n\n\"You did,\" said Pele. \"Slow and steady, all the way.\"\n\nThat night, Tiki fell asleep on the warm rock, listening to the water — dreaming of his next big adventure.\n\n**The end.** 🌙"
+      ]
+    ],
+    "reply": "# Tiki the Tortoise Goes to Lake Tana 🐢\n\nTiki was a little tortoise who lived in a green garden. Every evening the birds talked about Lake Tana, a lake so big you couldn't see the other side.\n\n\"I want to see it too,\" said Tiki.\n\n\"But you're so slow!\" laughed the birds.\n\nTiki smiled. \"Slow is still moving.\"\n\nSo off he went — past the coffee bushes, past the sleepy goats, over a little hill. Near the water he met Pele the pelican, who showed him the way through the reeds, and a fisherman's boy named Dawit lifted him onto a warm rock so he could see.\n\nAnd there it was: Lake Tana, silver and blue all the way to the sky.\n\n\"I made it,\" Tiki whispered.\n\n\"Slow and steady,\" said Pele.\n\nTiki fell asleep on the warm rock, listening to the water. **The end.** 🌙",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-041",
+    "area": "lists",
+    "prompt": "delete the comments",
+    "history": [
+      [
+        "user",
+        "python function to remove duplicates from a list but keep order"
+      ],
+      [
+        "assistant",
+        "Here's a function that removes duplicates while keeping the original order:\n\n```python\ndef dedupe(items):\n    # Track what we've already seen\n    seen = set()\n    result = []\n    for item in items:\n        # Only keep the first occurrence\n        if item not in seen:\n            seen.add(item)\n            result.append(item)\n    return result\n\n\n# Example\nprint(dedupe([3, 1, 3, 2, 1]))  # [3, 1, 2]\n```\n\nIf your items are hashable, there's also a one-liner: `list(dict.fromkeys(items))` — dicts keep insertion order in Python 3.7+."
+      ]
+    ],
+    "reply": "```python\ndef dedupe(items):\n    seen = set()\n    result = []\n    for item in items:\n        if item not in seen:\n            seen.add(item)\n            result.append(item)\n    return result\n\n\nprint(dedupe([3, 1, 3, 2, 1]))\n```",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-042",
+    "area": "lists",
+    "prompt": "move it to the right",
+    "history": [
+      [
+        "user",
+        "how do i center a button in a div"
+      ],
+      [
+        "assistant",
+        "Flexbox is the easiest way:\n\n```css\n.container {\n  display: flex;\n  justify-content: center; /* horizontal */\n  align-items: center;     /* vertical */\n  height: 200px;\n}\n```\n\n```html\n<div class=\"container\">\n  <button>Click me</button>\n</div>\n```"
+      ]
+    ],
+    "reply": "Change `justify-content` to `flex-end`:\n\n```css\n.container {\n  display: flex;\n  justify-content: flex-end; /* pushes the button to the right */\n  align-items: center;\n  height: 200px;\n  padding-right: 16px;       /* optional breathing room from the edge */\n}\n```\n\nIf the container holds other items and you only want the button pushed right, leave the container alone and give the button `margin-left: auto;` instead.",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-043",
+    "area": "lists",
+    "prompt": "move the monastery hike to day 1 morning",
+    "history": [
+      [
+        "user",
+        "plan 2 days in Lalibela"
+      ],
+      [
+        "assistant",
+        "Here's a 2-day Lalibela plan:\n\n**Day 1 — Northern group**\n- Morning: Bete Medhane Alem (the largest rock-hewn church), then Bete Maryam, Bete Meskel, Bete Denagel and the twin churches Bete Golgotha & Bete Mikael.\n- Lunch in town.\n- Afternoon: Bete Giyorgis — the cross-shaped church, best in the softer late-afternoon light.\n- Sunset: dinner at Ben Abeba with views over the valley.\n\n**Day 2 — Eastern group & beyond**\n- Early morning: Eastern group — Bete Amanuel, Bete Merkorios, Bete Abba Libanos and Bete Gabriel-Rufael, including the dark tunnel walk.\n- Late morning: hike or mule ride up to Asheten Maryam monastery (about 2–3 hours round trip) for big views.\n- Afternoon: rest, coffee ceremony, souvenir shopping.\n\n**Tips:** buy the multi-day church ticket, hire a licensed local guide, wear shoes you can slip off easily, and bring a headlamp for the tunnels."
+      ]
+    ],
+    "reply": "Sure — here's the reshuffled plan:\n\n**Day 1**\n- Early morning: hike or mule ride up to Asheten Maryam monastery (2–3 hours round trip) — cooler air and clear views first thing.\n- Late morning: rest and lunch in town.\n- Afternoon: Northern group — Bete Medhane Alem, Bete Maryam, Bete Meskel, Bete Denagel, Bete Golgotha & Bete Mikael.\n- Sunset: dinner at Ben Abeba.\n\n**Day 2**\n- Morning: Eastern group — Bete Amanuel, Bete Merkorios, Bete Abba Libanos and Bete Gabriel-Rufael, including the tunnel walk.\n- Late afternoon: Bete Giyorgis in the soft light.\n- Evening: coffee ceremony and souvenir shopping.\n\nDay 1 is now the heavier day on your legs, so bring water and good shoes for the climb.",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-044",
+    "area": "lists",
+    "prompt": "actually move it all to sunday, same times",
+    "history": [
+      [
+        "user",
+        "plan my saturday: gym at 8, shola market, laundry, coffee w selam at 4"
+      ],
+      [
+        "assistant",
+        "Here's a relaxed Saturday:\n\n- **8:00 – 9:30** Gym\n- **9:30 – 10:30** Shower + breakfast\n- **10:30 – 12:30** Shola market (go before midday, when it gets busiest)\n- **12:30 – 1:30** Lunch\n- **1:30 – 3:30** Laundry\n- **4:00** Coffee with Selam ☕\n- **Evening** Free"
+      ]
+    ],
+    "reply": "No problem — same plan, now on **Sunday, Oct 18**:\n\n- **8:00 – 9:30** Gym\n- **9:30 – 10:30** Shower + breakfast\n- **10:30 – 12:30** Shola market\n- **12:30 – 1:30** Lunch\n- **1:30 – 3:30** Laundry\n- **4:00** Coffee with Selam ☕\n- **Evening** Free\n\nTwo things to double-check: that your gym is open Sunday mornings (some keep shorter hours), and that Selam is free Sunday at 4. Saturday's now wide open 🎉",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-045",
+    "area": "lists",
+    "prompt": "tomorrow instead",
+    "history": [
+      [
+        "user",
+        "write a text to my boss saying i'll send the report today by 5pm"
+      ],
+      [
+        "assistant",
+        "Here's a short one:\n\n> Hi [Boss's name], just a heads-up — I'll have the report over to you today by 5 PM. Let me know if you need anything specific included. Thanks!"
+      ]
+    ],
+    "reply": "Here you go:\n\n> Hi [Boss's name], quick update — I need a little more time to get the report right, so I'll have it over to you by **tomorrow at 5 PM**. Let me know if that's a problem or if there's anything you need sooner. Thanks!",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-046",
+    "area": "lists",
+    "prompt": "no, friday",
+    "history": [
+      [
+        "user",
+        "draft a whatsapp invite for my bday dinner thursday 7pm at Yod Abyssinia"
+      ],
+      [
+        "assistant",
+        "Here's a draft:\n\n> Hey everyone! 🎉 I'm celebrating my birthday with dinner on **Thursday at 7 PM** at **Yod Abyssinia**. Good food, music and dancing — would love for you to be there! Please let me know by tonight so I can book the table 🙏"
+      ]
+    ],
+    "reply": "Updated:\n\n> Hey everyone! 🎉 I'm celebrating my birthday with dinner on **Friday (Oct 16) at 7 PM** at **Yod Abyssinia**. Good food, music and dancing — would love for you to be there! Please let me know by Thursday so I can book the table 🙏",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-047",
+    "area": "lists",
+    "prompt": "same time for 10 eggs?",
+    "history": [
+      [
+        "user",
+        "how long to boil eggs for a jammy yolk?"
+      ],
+      [
+        "assistant",
+        "For a jammy yolk, lower the eggs into water that's already at a rolling boil and cook for **6½–7 minutes**, then move them straight into ice-cold water for 2 minutes to stop the cooking. 6 minutes gives a runnier center; 8 minutes is almost set."
+      ]
+    ],
+    "reply": "Pretty much, yes — the time is per egg, not per batch. A few things matter more with 10:\n\n- **Use a big pot** with plenty of water so the eggs sit in a single layer.\n- **Keep it boiling.** Ten cold eggs knock the temperature down; if the water stops boiling for more than a few seconds, add about 30 seconds.\n- **Start the timer once they're all in**, and lower them in quickly with a slotted spoon.\n- **Ice bath for all of them** straight away so none keep cooking.\n\nAt Addis's altitude (~2,350 m) water boils at around 92 °C, so if they come out a bit underdone, go up to 7½ minutes.",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-048",
+    "area": "lists",
+    "prompt": "never mind, my brother is giving me his old one",
+    "history": [
+      [
+        "user",
+        "help me pick a laptop"
+      ],
+      [
+        "assistant",
+        "Happy to help! A few quick questions:\n\n1. What's your budget?\n2. What will you mostly use it for — school/office work, design, coding, gaming?\n3. Any preference between Windows and Mac?"
+      ]
+    ],
+    "reply": "Nice, a free laptop! 🎉 A few things worth doing when you get it:\n\n- **Have him back up and sign out** of his accounts (Apple ID / Microsoft / Google), then do a full reset so it's clean for you.\n- **Check the battery health** — older laptops often need a new battery more than a new laptop.\n- **Install all updates** before you put your files on it.\n- **If it feels slow**, an SSD or extra RAM is a cheap upgrade that makes a huge difference.\n\nIf you tell me the model, I can tell you whether it's worth upgrading.",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-049",
+    "area": "lists",
+    "prompt": "all of them",
+    "history": [
+      [
+        "user",
+        "give me 5 english idioms with meanings"
+      ],
+      [
+        "assistant",
+        "1. **Break the ice** — to start a conversation in an awkward situation.\n2. **Hit the sack** — to go to bed.\n3. **Under the weather** — feeling a bit sick.\n4. **Piece of cake** — something very easy.\n5. **Cost an arm and a leg** — to be very expensive.\n\nWant example sentences for any of these?"
+      ]
+    ],
+    "reply": "Here's one example for each:\n\n1. **Break the ice** — \"On the first day, our teacher played a game to *break the ice*.\"\n2. **Hit the sack** — \"I'm exhausted, I'm going to *hit the sack* early tonight.\"\n3. **Under the weather** — \"I won't come in today, I'm feeling a bit *under the weather*.\"\n4. **Piece of cake** — \"The exam was a *piece of cake* — I finished in 20 minutes.\"\n5. **Cost an arm and a leg** — \"That new phone *cost an arm and a leg*.\"",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-050",
+    "area": "lists",
+    "prompt": "cancel that, i meant afaan oromo",
+    "history": [
+      [
+        "user",
+        "translate 'I'll be 10 minutes late' to amharic"
+      ],
+      [
+        "assistant",
+        "**አስር ደቂቃ አረፍዳለሁ።**\n*(asir deqiqa arefdalehu)*"
+      ]
+    ],
+    "reply": "No problem! In Afaan Oromo:\n\n**Daqiiqaa kudhan booda nan ga'a.**\n*(Literally: \"I'll arrive in ten minutes.\")*\n\nThat's how most people would text it. To add a \"sorry\", start with **Dhiifama,** …",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-051",
+    "area": "lists",
+    "prompt": "delete",
+    "history": [
+      [
+        "user",
+        "write a tweet about addis traffic"
+      ],
+      [
+        "assistant",
+        "Here's one:\n\n> Left Bole at 5:30, reached Piassa at 7:10. Could've walked, honestly. Addis traffic is a whole personality 😮‍💨🚗 #Addis\n\nWant me to keep the hashtag at the end or delete it?"
+      ]
+    ],
+    "reply": "> Left Bole at 5:30, reached Piassa at 7:10. Could've walked, honestly. Addis traffic is a whole personality 😮‍💨🚗",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-052",
+    "area": "lists",
+    "prompt": "yes pls",
+    "history": [
+      [
+        "user",
+        "my monthly expenses: rent 15000 birr, food 8000, transport 2500, phone 600"
+      ],
+      [
+        "assistant",
+        "That comes to **26,100 birr** a month. Rent is the biggest chunk by far — more than half. Want me to put this in a table with percentages?"
+      ]
+    ],
+    "reply": "| Expense | Birr / month | Share |\n|---|---:|---:|\n| Rent | 15,000 | 57.5% |\n| Food | 8,000 | 30.7% |\n| Transport | 2,500 | 9.6% |\n| Phone | 600 | 2.3% |\n| **Total** | **26,100** | **100%** |\n\nRent and food together are almost 90% of your spending, so that's where any savings would make the biggest difference.",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-053",
+    "area": "lists",
+    "prompt": "move call the bank first, the lines are shorter in the morning",
+    "history": [
+      [
+        "user",
+        "help me order my day: laundry, call the bank, finish slides, groceries"
+      ],
+      [
+        "assistant",
+        "Here's an order that front-loads the focused work:\n\n1. **Finish slides** — 9:00–11:30 (do it while your brain is fresh)\n2. **Laundry** — start a load at 11:30, hang it during lunch\n3. **Call the bank** — 2:00 PM\n4. **Groceries** — 5:00 PM on your way back"
+      ]
+    ],
+    "reply": "Good thinking — here's the new order:\n\n1. **Call the bank** — as soon as they open\n2. **Finish slides** — 9:00–11:30\n3. **Laundry** — start a load at 11:30, hang it during lunch\n4. **Groceries** — 5:00 PM on your way back\n\nHave your account number and ID ready before you call so it's quick.",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-054",
+    "area": "lists",
+    "prompt": "mark the first 3 as done and show whats left",
+    "history": [
+      [
+        "user",
+        "write me a to-do list for moving apartments next week"
+      ],
+      [
+        "assistant",
+        "Here's a moving checklist:\n\n1. Confirm the moving date and book a truck or movers\n2. Collect boxes, tape and markers\n3. Pack things you don't use daily (books, extra kitchenware, winter clothes)\n4. Tell your landlord and arrange the deposit return\n5. Transfer or set up electricity, water and internet at the new place\n6. Update your address with the bank and at work\n7. Pack an essentials bag (chargers, toiletries, documents, a change of clothes)\n8. Clean the old apartment and take photos for the deposit"
+      ]
+    ],
+    "reply": "Nice progress! 💪\n\n- ~~Confirm the moving date and book a truck or movers~~ ✅\n- ~~Collect boxes, tape and markers~~ ✅\n- ~~Pack things you don't use daily~~ ✅\n\n**Still to do:**\n\n4. Tell your landlord and arrange the deposit return\n5. Transfer or set up electricity, water and internet at the new place\n6. Update your address with the bank and at work\n7. Pack an essentials bag (chargers, toiletries, documents, a change of clothes)\n8. Clean the old apartment and take photos for the deposit\n\nThe landlord and utilities are the time-sensitive ones — I'd tackle those next.",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-055",
+    "area": "lookalike",
+    "prompt": "my mom always reminds me to drink water 😂 is 8 glasses a day actually a thing",
+    "history": [],
+    "reply": "Your mom's on the right track, even if \"8 glasses\" is a bit of a myth 😄\n\n- **There's no single magic number.** The 8×8 rule isn't based on strong science — needs depend on your size, activity and the weather.\n- **A common guideline** is about 2.7 litres a day for women and 3.7 for men from *all* sources, and roughly a fifth of that comes from food (fruit, soups, tea, wat).\n- **Easy check:** if your urine is pale yellow and you rarely feel thirsty, you're probably fine.\n- **Drink more** when it's hot, when you exercise, or when you're sick.\n\nAt Addis's altitude you also lose a bit more water just breathing, so a bottle on your desk isn't a bad idea. Tell your mom she wins this one 💧",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-056",
+    "area": "lookalike",
+    "prompt": "I set an alarm but slept through it again 😩",
+    "history": [],
+    "reply": "Ugh, the worst. A few things that actually help:\n\n1. **Put the phone across the room** so you have to get up to turn it off.\n2. **Kill the snooze habit** — snoozing teaches your brain the first alarm doesn't count.\n3. **Use a louder or different sound**, or stack a second alarm 5 minutes later.\n4. **Let light in** — open the curtains or turn on a lamp right away; light tells your body it's morning.\n5. **Protect your sleep** — if you're getting less than ~7 hours, your body will fight the alarm. Try a consistent bedtime, even on weekends.\n\nIf you're sleeping 8+ hours and still can't wake up most days, it's worth mentioning to a doctor — sometimes it's sleep apnea or something similar.",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-057",
+    "area": "lookalike",
+    "prompt": "dark chocolate or milk chocolate?",
+    "history": [],
+    "reply": "Dark, if you're asking me 🍫\n\n- **Dark (70%+)** — richer, less sweet, a bit bitter, and has more cocoa (antioxidants, iron, magnesium). A couple of squares feels satisfying.\n- **Milk** — creamier, sweeter, nostalgic. Perfect when you want comfort rather than \"fancy\".\n\nHonest answer: dark for a slow treat with coffee, milk for a movie night. Which camp are you in?",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-058",
+    "area": "lookalike",
+    "prompt": "I keep forgetting names, any tricks?",
+    "history": [],
+    "reply": "Totally normal — names are hard because they're random labels. A few tricks that work:\n\n1. **Say it back right away:** \"Nice to meet you, Hana.\" Repeating it once locks it in.\n2. **Use it once more** in the conversation, and again when you say goodbye.\n3. **Link it to something vivid:** *Selam* with a peace sign, *Dawit* with a slingshot, *Mike* holding a microphone.\n4. **Connect it to someone you know** with the same name.\n5. **Ask about it:** \"Is that spelled with an *e* or an *a*?\" — the extra attention helps.\n6. **Write it down** afterwards with one detail (\"Meron — works at the bank, has twins\").\n\nAnd if you blank anyway, \"Sorry, remind me your name?\" is completely fine — most people forget too.",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-059",
+    "area": "lookalike",
+    "prompt": "search me, I have no idea lol",
+    "history": [
+      [
+        "user",
+        "my nephew asked me why the sky is blue"
+      ],
+      [
+        "assistant",
+        "Ha, the classic question! 😄 What did you tell him?"
+      ]
+    ],
+    "reply": "Haha, fair — it's a tricky one! Here's the kid-friendly version:\n\nSunlight looks white, but it's actually all the colors mixed together. When sunlight hits the tiny bits of air high up in the sky, the **blue light gets bounced around much more** than the other colors, because blue travels in shorter, choppier waves. So wherever you look up, you're seeing blue light that's been scattered all over the sky. 🌤️\n\n**Bonus for when he asks \"why are sunsets orange?\":** at sunset the light travels through much more air to reach us, so most of the blue gets scattered away before it arrives — leaving the oranges and reds.\n\n(The grown-up name for this is *Rayleigh scattering*, if he wants to impress his teacher.)",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-060",
+    "area": "lookalike",
+    "prompt": "my calendar is a mess this week, any tips?",
+    "history": [],
+    "reply": "Been there. A quick way to get it back under control:\n\n1. **Brain-dump first.** List every meeting, deadline and errand for the week in one place.\n2. **Mark the non-negotiables** — things with a hard time or other people involved.\n3. **Cut or move one thing per day.** Ask \"does this have to be this week?\" Usually something can slide.\n4. **Batch similar tasks** — calls back-to-back, errands in one trip.\n5. **Leave buffers.** 15 minutes between meetings saves you from running late all day (especially with Addis traffic).\n6. **Protect one focus block** — even 90 minutes for your most important task.\n7. **Plan tomorrow tonight** — 5 minutes before bed to look ahead.\n\nWant to paste what's on it? I can help you sort out what to move.",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-061",
+    "area": "lookalike",
+    "prompt": "the light mode on my phone hurts my eyes",
+    "history": [],
+    "reply": "Bright white screens can definitely be rough, especially at night. A few fixes:\n\n- **Turn on dark mode for the whole phone:**\n  - *iPhone:* Settings → Display & Brightness → **Dark**\n  - *Android:* Settings → Display → **Dark theme**\n- **Use Night Shift / Eye comfort** to warm the colors in the evening.\n- **Turn on auto-brightness**, or lower brightness indoors.\n- **Bump up text size** so you're not squinting.\n- **Take breaks** with the 20-20-20 rule: every 20 minutes, look at something 20 feet away for 20 seconds.\n\nIf your eyes hurt even with all that, it's worth a quick check with an eye doctor. And if you want Recall itself in dark mode, just tell me.",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-062",
+    "area": "lookalike",
+    "prompt": "remind me what the capital of Australia is again",
+    "history": [],
+    "reply": "It's **Canberra** 🇦🇺 — not Sydney, which catches a lot of people out. Canberra was purpose-built as a compromise between Sydney and Melbourne, which both wanted the title.",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-063",
+    "area": "lookalike",
+    "prompt": "how do you say 'remind me later' in Amharic",
+    "history": [],
+    "reply": "**በኋላ አስታውሰኝ** — *(be'hwala astawsegn)*\n\n- **በኋላ** = later\n- **አስታውሰኝ** = remind me (to a man)\n\nTo a woman: **በኋላ አስታውሺኝ** *(be'hwala astawshign)*. More politely, to an elder: **በኋላ ያስታውሱኝ** *(be'hwala yastawsugn)*.",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-064",
+    "area": "lookalike",
+    "prompt": "translate to amharic: remind me to call you tomorrow at 6",
+    "history": [],
+    "reply": "**ነገ 12 ሰዓት ላይ እንድደውልልህ አስታውሰኝ።**\n*(nege 12 se'at lay indidewlilih astawsegn)*\n\nA couple of notes:\n\n- **Time:** if you mean 6 PM, that's **12 ሰዓት** on the Ethiopian clock (ከምሽቱ 12 ሰዓት). If you mean 6 AM, say **ከጠዋቱ 12 ሰዓት**. If you're writing to someone who uses the international clock, just write \"6 PM\" to avoid confusion.\n- **Gender:** this version is to a man. To a woman: **ነገ 12 ሰዓት ላይ እንድደውልልሽ አስታውሺኝ።**",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-065",
+    "area": "lookalike",
+    "prompt": "should i pay rent before or after payday? landlord is chill",
+    "history": [],
+    "reply": "If you can, **pay it right after payday** — even with a chill landlord. A few reasons:\n\n- **Rent comes off the top.** Paying it first means you never accidentally spend money that was meant for rent.\n- **Chill landlords stay chill** when you're consistent. It also helps if you ever need a favor (a repair, a late month, a good reference).\n- **If payday falls after the due date**, ask to move the due date a few days later. Most landlords will agree if you explain once and then stick to it.\n\nPaying *before* payday only makes sense if you have a buffer in savings — otherwise you risk running short on food and transport before the salary lands.",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-066",
+    "area": "lookalike",
+    "prompt": "how often should i water the plants in winter, its a snake plant and a pothos",
+    "history": [],
+    "reply": "Both need **less** water in the cooler, darker months:\n\n**Snake plant** 🌵\n- About **every 3–4 weeks**, sometimes less.\n- Only water when the soil is completely dry all the way down. Overwatering (root rot) is the #1 way people kill them.\n\n**Pothos** 🌿\n- About **every 1–2 weeks**.\n- Water when the top 2–3 cm of soil is dry. Droopy leaves mean it's thirsty; yellow leaves usually mean too much water.\n\n**Tips for both:** water thoroughly until it drains out the bottom, empty the saucer, and use the finger test rather than a fixed schedule. In Addis's dry season the air is drier, so the pothos might want a bit more than the snake plant.",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-067",
+    "area": "lookalike",
+    "prompt": "call mom or text her? we had a fight yesterday",
+    "history": [],
+    "reply": "I'd lean toward **calling** — but it depends a little on how heated it got.\n\n- **Call if** things have cooled down and you want to make up. Tone gets lost in text, and hearing your voice shows you care more than a message does.\n- **Text first if** you're both still raw. Something short and warm opens the door without pressure, like:\n  > \"Hi Mom, I've been thinking about yesterday. I'm sorry it got heated. Can I call you later?\"\n\nThen follow up with the call. Whatever happened, starting with \"I love you, I'm sorry it went that way\" (even if you still disagree) usually goes a long way 💛",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-068",
+    "area": "lookalike",
+    "prompt": "what should i read next, loved atomic habits",
+    "history": [],
+    "reply": "If you liked *Atomic Habits*, you'll probably enjoy:\n\n1. **Tiny Habits** — BJ Fogg. The research behind starting ridiculously small; very practical.\n2. **The Power of Habit** — Charles Duhigg. More stories and science on how habits form in people and companies.\n3. **Deep Work** — Cal Newport. How to focus in a distracted world.\n4. **Essentialism** — Greg McKeown. Doing less, but better.\n5. **Four Thousand Weeks** — Oliver Burkeman. A refreshing, more philosophical take on time and productivity.\n\nIf you want one pick: **Deep Work** if you want to get more done, **Four Thousand Weeks** if you want to stress less about it.",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-069",
+    "area": "lookalike",
+    "prompt": "tone down this message pls: 'I've told you THREE times the invoice is late. Fix it today.'",
+    "history": [],
+    "reply": "Here's a calmer version that's still clear:\n\n> Hi, just following up again on the invoice — it's still showing as overdue on our side. Could you take a look and get it sorted today? Let me know if anything is holding it up. Thanks!\n\nIf you want it a bit firmer:\n\n> Hi, this is my third follow-up on the overdue invoice. Please resolve it by end of day today, or let me know what's blocking it so we can sort it out.",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-070",
+    "area": "lookalike",
+    "prompt": "is it rude to remind a friend they owe you money? its been 2 months",
+    "history": [],
+    "reply": "Not rude at all — two months is a very reasonable time to bring it up. Most people genuinely forget, and asking is better than quietly resenting it.\n\n**Keep it light and specific:**\n> \"Hey! Just a reminder about the 2,000 birr from last month 🙂 No rush, but could you send it this week?\"\n\n**Tips:**\n- Mention the amount so there's no awkward back-and-forth.\n- Make it easy: share your account number or telebirr details.\n- If money is tight for them, offer to split it into two payments.\n\nIf they keep dodging after a couple of friendly reminders, that tells you something — and it's fine to stop lending to that friend.",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-071",
+    "area": "lookalike",
+    "prompt": "how do i set a reminder on my iphone without siri",
+    "history": [],
+    "reply": "Use the built-in **Reminders** app:\n\n1. Open **Reminders**.\n2. Tap **New Reminder** (bottom-left) and type what you need to remember.\n3. Tap the **ⓘ** next to it.\n4. Turn on **Date** and **Time** and pick when you want it.\n5. Optional: set **Repeat** for recurring ones, or **Location** to get reminded when you arrive or leave somewhere.\n6. Tap **Done**.\n\nMake sure notifications are on for Reminders in **Settings → Notifications → Reminders**, or it'll go off silently.",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-072",
+    "area": "lookalike",
+    "prompt": "draw a conclusion from this: our cafe sales went up 20% after we cut prices by 10%",
+    "history": [],
+    "reply": "It depends on what \"sales\" means — that changes the conclusion a lot:\n\n**If sales = number of items sold (+20%):**\nRevenue = 0.9 × 1.2 = **1.08 → about 8% more revenue**. That's good, but check profit: each item now earns less, and you're making 20% more of them (more ingredients, more staff time). If your margin per item was thin, profit may have barely moved or even dropped.\n\n**If sales = revenue (+20%):**\nThat's a strong result — you'd be selling about **33% more items** (1.2 ÷ 0.9). Customers are clearly price-sensitive.\n\n**Before concluding the price cut caused it, check:**\n- Seasonality or holidays in that period\n- Any marketing, new menu items or nearby competitor changes\n- Whether new customers are coming back or just trying it once\n\n**Conclusion so far:** demand looks price-sensitive, but whether the cut was *worth it* comes down to profit per item, not sales alone. If you share your average margin, I can work out the break-even.",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-073",
+    "area": "lookalike",
+    "prompt": "my boss said 'remind me friday' about my raise, should i email him friday morning or wait for him to bring it up?",
+    "history": [],
+    "reply": "**Email him Friday morning** — he literally asked you to. Waiting for him to bring it up risks it slipping, and following up shows you're organized and serious.\n\nKeep it short and friendly:\n\n> **Subject:** Following up on our conversation\n>\n> Hi [Name], as you suggested, I wanted to follow up on our conversation about my salary review. Would you have 15 minutes today or early next week to discuss it? Thanks!\n\nSend it around 9–10 AM, before his day fills up. And have your key wins from the past year ready in case he says \"sure, let's talk now.\"",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-074",
+    "area": "chitchat",
+    "prompt": "show me some love lol",
+    "history": [],
+    "reply": "Sending you a big virtual hug 🤗💛 You're doing better than you think, Bini — and you've got great taste in chat apps 😄\n\nRough day, or just in the mood for some good vibes?",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-075",
+    "area": "chitchat",
+    "prompt": "what's new with you",
+    "history": [],
+    "reply": "Not much on my side — no weekends, no coffee, just conversations 😄 I'm always up for whatever you've got though.\n\nWhat's new with *you*? Anything fun planned for the rest of the week?",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-076",
+    "area": "chitchat",
+    "prompt": "time flies, can't believe it's almost november",
+    "history": [],
+    "reply": "Right?! October is already half gone 😅 It feels like the year speeds up once September hits.\n\nAnything you want to get done before the year wraps up? It's a good moment to pick one or two things and make the last couple of months count.",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-077",
+    "area": "chitchat",
+    "prompt": "ugh forgot my umbrella today and its pouring",
+    "history": [],
+    "reply": "Oh no ☔ The classic move — sunny morning, then the sky opens up.\n\nA few ways to survive it:\n- **Wait it out** if you can — afternoon downpours often pass in 20–40 minutes.\n- **Grab a cheap umbrella** from a nearby shop or street vendor.\n- **Plastic bag over your phone and bag** if you have to make a run for it.\n\nNext time: a small foldable umbrella that lives permanently in your bag. Stay dry!",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-078",
+    "area": "chitchat",
+    "prompt": "do you remember things or do you forget everything after we talk?",
+    "history": [],
+    "reply": "A bit of both! 🙂\n\n- **Within a chat**, I can see the recent messages, so I follow the conversation.\n- **Across chats**, I keep a small set of facts about you — things like your preferences or projects — so I don't have to ask the same things every time.\n- **You're in control:** say \"remember that…\" to add something, or \"forget that…\" to remove it, and you can see or edit everything in **Memory** in the app.\n\nI don't keep a word-for-word copy of every conversation in my head, so if you want me to hold on to something specific, just tell me.",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-079",
+    "area": "chitchat",
+    "prompt": "i'm so done with this week 😩",
+    "history": [],
+    "reply": "And it's only Wednesday 😅 Sounds like it's been a lot.\n\nWant to vent about it, or would it help to look at what's left and figure out what can wait until next week? Either way, maybe treat yourself to something small tonight — a good meal, an early night, your favorite show. You've earned it 💛",
+    "expect": "answer"
+  },
+  {
+    "id": "l2-080",
+    "area": "chitchat",
+    "prompt": "picture me at 80, what would i be doing lol",
+    "history": [],
+    "reply": "Okay, picture this 😄\n\nYou, at 80, sitting on a sunny balcony in Addis with a perfectly brewed buna, telling your grandkids \"back in my day, we had to *type* to our AI.\" You're still the one everyone calls for tech help, you've got opinions about the Lakers (or Saint George), and you've just beaten someone half your age at cards.\n\nStill sharp, still a little sarcastic, and absolutely the first to say \"I told you so.\"\n\nWhat do *you* hope you'll be doing?",
+    "expect": "answer"
+  }
+]

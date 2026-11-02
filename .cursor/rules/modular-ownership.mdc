@@ -1,0 +1,25 @@
+---
+description: Product ownership boundaries for the Recall modular monolith
+alwaysApply: true
+---
+
+# Modular ownership
+
+- Backend product domains live in `apps/api/app/modules/<domain>/`. A module owns its HTTP
+  surface, service logic, persistence models, schemas, jobs/schedulers, and tool adapter.
+- Backend module tests are grouped in `apps/api/app/tests/modules/<domain>/` while the shared
+  pytest fixtures remain centralized.
+- Backend infrastructure lives in `core/`, `gateways/`, and `repositories/`. Those layers must
+  not import `app.modules`; composition roots may connect modules to infrastructure.
+- Import another module through its smallest explicit public surface. Do not reach through to
+  private helpers or move generic infrastructure into a product module.
+- Compatibility imports may temporarily preserve an old path, but they contain no behavior and
+  new code never imports them.
+- Mobile product code lives in `apps/mobile/features/<feature>/`: screens, components, hooks,
+  state/model helpers, API slice, and tests. `apps/mobile/app/` contains Expo routes only.
+- Feature API slices use the shared request client and are composed into `apps/mobile/lib/api.ts`.
+  Screens and components never issue raw network requests.
+- `platform/` and `ui/` are dependency leaves: they never import product features. Shared code
+  must be genuinely reused and must not become a miscellaneous feature dump.
+- Preserve behavior while moving ownership: move, add compatibility seams where required, run
+  the feature tests, then remove old paths in a separate small change.

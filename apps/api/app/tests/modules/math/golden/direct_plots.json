@@ -1,0 +1,66 @@
+[
+  {
+    "prompt": "Plot the point (2,3)",
+    "reply": "```answer\n(2, 3)\n```\n\n```graph\n{\"type\":\"function\",\"expr\":\"(2, 3)\",\"variable\":\"x\",\"x_min\":-3.0,\"x_max\":7.0,\"domain_explicit\":false,\"x\":null,\"y_min\":null,\"y_max\":null,\"a\":null,\"b\":null,\"c\":null,\"comparator\":null,\"title\":\"Point (2, 3)\",\"points\":[[2.0,3.0]],\"segments\":[],\"holes\":[],\"expr2\":null,\"variable2\":null,\"points2\":null,\"segments2\":null,\"holes2\":null,\"label\":null,\"label2\":null,\"intervals\":[],\"x_label\":null,\"y_label\":null,\"trajectory_type\":null}\n```\n"
+  },
+  {
+    "prompt": "Mark point (-2,3.5)",
+    "reply": "```answer\n(-2, 3.5)\n```\n\n```graph\n{\"type\":\"function\",\"expr\":\"(-2, 3.5)\",\"variable\":\"x\",\"x_min\":-7.0,\"x_max\":3.0,\"domain_explicit\":false,\"x\":null,\"y_min\":null,\"y_max\":null,\"a\":null,\"b\":null,\"c\":null,\"comparator\":null,\"title\":\"Point (-2, 3.5)\",\"points\":[[-2.0,3.5]],\"segments\":[],\"holes\":[],\"expr2\":null,\"variable2\":null,\"points2\":null,\"segments2\":null,\"holes2\":null,\"label\":null,\"label2\":null,\"intervals\":[],\"x_label\":null,\"y_label\":null,\"trajectory_type\":null}\n```\n"
+  },
+  {
+    "prompt": "Please graph the point (0,0).",
+    "reply": "```answer\n(0, 0)\n```\n\n```graph\n{\"type\":\"function\",\"expr\":\"(0, 0)\",\"variable\":\"x\",\"x_min\":-5.0,\"x_max\":5.0,\"domain_explicit\":false,\"x\":null,\"y_min\":null,\"y_max\":null,\"a\":null,\"b\":null,\"c\":null,\"comparator\":null,\"title\":\"Point (0, 0)\",\"points\":[[0.0,0.0]],\"segments\":[],\"holes\":[],\"expr2\":null,\"variable2\":null,\"points2\":null,\"segments2\":null,\"holes2\":null,\"label\":null,\"label2\":null,\"intervals\":[],\"x_label\":null,\"y_label\":null,\"trajectory_type\":null}\n```\n"
+  },
+  {
+    "prompt": "Show the point (1.5, -4)",
+    "reply": "```answer\n(1.5, -4)\n```\n\n```graph\n{\"type\":\"function\",\"expr\":\"(1.5, -4)\",\"variable\":\"x\",\"x_min\":-3.5,\"x_max\":6.5,\"domain_explicit\":false,\"x\":null,\"y_min\":null,\"y_max\":null,\"a\":null,\"b\":null,\"c\":null,\"comparator\":null,\"title\":\"Point (1.5, -4)\",\"points\":[[1.5,-4.0]],\"segments\":[],\"holes\":[],\"expr2\":null,\"variable2\":null,\"points2\":null,\"segments2\":null,\"holes2\":null,\"label\":null,\"label2\":null,\"intervals\":[],\"x_label\":null,\"y_label\":null,\"trajectory_type\":null}\n```\n"
+  },
+  {
+    "prompt": "plot point 2, 3",
+    "reply": "```answer\n(2, 3)\n```\n\n```graph\n{\"type\":\"function\",\"expr\":\"(2, 3)\",\"variable\":\"x\",\"x_min\":-3.0,\"x_max\":7.0,\"domain_explicit\":false,\"x\":null,\"y_min\":null,\"y_max\":null,\"a\":null,\"b\":null,\"c\":null,\"comparator\":null,\"title\":\"Point (2, 3)\",\"points\":[[2.0,3.0]],\"segments\":[],\"holes\":[],\"expr2\":null,\"variable2\":null,\"points2\":null,\"segments2\":null,\"holes2\":null,\"label\":null,\"label2\":null,\"intervals\":[],\"x_label\":null,\"y_label\":null,\"trajectory_type\":null}\n```\n"
+  },
+  {
+    "prompt": "Plot the point ( 2 , 3 )?",
+    "reply": "```answer\n(2, 3)\n```\n\n```graph\n{\"type\":\"function\",\"expr\":\"(2, 3)\",\"variable\":\"x\",\"x_min\":-3.0,\"x_max\":7.0,\"domain_explicit\":false,\"x\":null,\"y_min\":null,\"y_max\":null,\"a\":null,\"b\":null,\"c\":null,\"comparator\":null,\"title\":\"Point (2, 3)\",\"points\":[[2.0,3.0]],\"segments\":[],\"holes\":[],\"expr2\":null,\"variable2\":null,\"points2\":null,\"segments2\":null,\"holes2\":null,\"label\":null,\"label2\":null,\"intervals\":[],\"x_label\":null,\"y_label\":null,\"trajectory_type\":null}\n```\n"
+  },
+  {
+    "prompt": "Plot the point (2.0, 3)",
+    "reply": "```answer\n(2, 3)\n```\n\n```graph\n{\"type\":\"function\",\"expr\":\"(2, 3)\",\"variable\":\"x\",\"x_min\":-3.0,\"x_max\":7.0,\"domain_explicit\":false,\"x\":null,\"y_min\":null,\"y_max\":null,\"a\":null,\"b\":null,\"c\":null,\"comparator\":null,\"title\":\"Point (2, 3)\",\"points\":[[2.0,3.0]],\"segments\":[],\"holes\":[],\"expr2\":null,\"variable2\":null,\"points2\":null,\"segments2\":null,\"holes2\":null,\"label\":null,\"label2\":null,\"intervals\":[],\"x_label\":null,\"y_label\":null,\"trajectory_type\":null}\n```\n"
+  },
+  {
+    "prompt": "Plot x=4",
+    "reply": "```graph\n{\"type\":\"vertical\",\"expr\":\"x = 4\",\"variable\":\"x\",\"x_min\":0.0,\"x_max\":10.0,\"domain_explicit\":false,\"x\":4.0,\"y_min\":-10.0,\"y_max\":10.0,\"a\":null,\"b\":null,\"c\":null,\"comparator\":null,\"title\":\"x = 4\",\"points\":[[4.0,-10.0],[4.0,10.0]],\"segments\":[],\"holes\":[],\"expr2\":null,\"variable2\":null,\"points2\":null,\"segments2\":null,\"holes2\":null,\"label\":null,\"label2\":null,\"intervals\":[],\"x_label\":null,\"y_label\":null,\"trajectory_type\":null}\n```\n"
+  },
+  {
+    "prompt": "Graph x=-3",
+    "reply": "```graph\n{\"type\":\"vertical\",\"expr\":\"x = -3\",\"variable\":\"x\",\"x_min\":-10.0,\"x_max\":0.0,\"domain_explicit\":false,\"x\":-3.0,\"y_min\":-10.0,\"y_max\":10.0,\"a\":null,\"b\":null,\"c\":null,\"comparator\":null,\"title\":\"x = -3\",\"points\":[[-3.0,-10.0],[-3.0,10.0]],\"segments\":[],\"holes\":[],\"expr2\":null,\"variable2\":null,\"points2\":null,\"segments2\":null,\"holes2\":null,\"label\":null,\"label2\":null,\"intervals\":[],\"x_label\":null,\"y_label\":null,\"trajectory_type\":null}\n```\n"
+  },
+  {
+    "prompt": "Graph the line x=0",
+    "reply": "```graph\n{\"type\":\"vertical\",\"expr\":\"x = 0\",\"variable\":\"x\",\"x_min\":-5.0,\"x_max\":5.0,\"domain_explicit\":false,\"x\":0.0,\"y_min\":-10.0,\"y_max\":10.0,\"a\":null,\"b\":null,\"c\":null,\"comparator\":null,\"title\":\"x = 0\",\"points\":[[0.0,-10.0],[0.0,10.0]],\"segments\":[],\"holes\":[],\"expr2\":null,\"variable2\":null,\"points2\":null,\"segments2\":null,\"holes2\":null,\"label\":null,\"label2\":null,\"intervals\":[],\"x_label\":null,\"y_label\":null,\"trajectory_type\":null}\n```\n"
+  },
+  {
+    "prompt": "plot the vertical line x = 2.5",
+    "reply": "```graph\n{\"type\":\"vertical\",\"expr\":\"x = 2.5\",\"variable\":\"x\",\"x_min\":0.0,\"x_max\":10.0,\"domain_explicit\":false,\"x\":2.5,\"y_min\":-10.0,\"y_max\":10.0,\"a\":null,\"b\":null,\"c\":null,\"comparator\":null,\"title\":\"x = 2.5\",\"points\":[[2.5,-10.0],[2.5,10.0]],\"segments\":[],\"holes\":[],\"expr2\":null,\"variable2\":null,\"points2\":null,\"segments2\":null,\"holes2\":null,\"label\":null,\"label2\":null,\"intervals\":[],\"x_label\":null,\"y_label\":null,\"trajectory_type\":null}\n```\n"
+  },
+  {
+    "prompt": "Plot the point (2,3) and explain the coordinates",
+    "reply": null
+  },
+  {
+    "prompt": "Plot the point (2.3)",
+    "reply": null
+  },
+  {
+    "prompt": "Plot the point $(2,3)$",
+    "reply": null
+  },
+  {
+    "prompt": "Plot the point (2,3). Use a grid.",
+    "reply": null
+  },
+  {
+    "prompt": "Plot x=4 and explain why it is vertical",
+    "reply": null
+  }
+]

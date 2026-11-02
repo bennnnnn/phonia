@@ -1,0 +1,1567 @@
+[
+ {
+  "id": "kin-01",
+  "area": "kinematics",
+  "prompt": "a car goes from 0 to 24 m/s in 6 seconds. what is its acceleration?",
+  "expect": "answer",
+  "answer": [
+   4.0,
+   "m/s^2"
+  ]
+ },
+ {
+  "id": "kin-02",
+  "area": "kinematics",
+  "prompt": "A bus accelerates from rest at 1.5 m/s² for 12 s. What is its final speed?",
+  "expect": "answer",
+  "answer": [
+   18.0,
+   "m/s"
+  ]
+ },
+ {
+  "id": "kin-03",
+  "area": "kinematics",
+  "prompt": "A bus accelerates from rest at 1.5 m/s^2 for 12 s. How far does it go?",
+  "expect": "answer",
+  "answer": [
+   108.0,
+   "m"
+  ]
+ },
+ {
+  "id": "kin-04",
+  "area": "kinematics",
+  "prompt": "A train moving at 30 m/s brakes to a stop in 20 s. What is the deceleration?",
+  "expect": "answer",
+  "answer": [
+   1.5,
+   "m/s^2"
+  ]
+ },
+ {
+  "id": "kin-05",
+  "area": "kinematics",
+  "prompt": "A train moving at 30 m/s brakes uniformly to a stop in 20 s. How far does it travel while braking?",
+  "expect": "answer",
+  "answer": [
+   300.0,
+   "m"
+  ]
+ },
+ {
+  "id": "kin-06",
+  "area": "kinematics",
+  "prompt": "how long does it take to drive 240 km at 80 km/h",
+  "expect": "answer",
+  "answer": [
+   3.0,
+   "h"
+  ]
+ },
+ {
+  "id": "kin-07",
+  "area": "kinematics",
+  "prompt": "I walked 3 km in 45 minutes. What was my average speed in km/h?",
+  "expect": "answer",
+  "answer": [
+   4.0,
+   "km/h"
+  ]
+ },
+ {
+  "id": "kin-08",
+  "area": "kinematics",
+  "prompt": "A sprinter runs 100 m in 9.8 s. What is her average speed?",
+  "expect": "answer",
+  "answer": [
+   10.2041,
+   "m/s"
+  ]
+ },
+ {
+  "id": "kin-09",
+  "area": "kinematics",
+  "prompt": "Convert 72 km/h to m/s.",
+  "expect": "answer",
+  "answer": [
+   20.0,
+   "m/s"
+  ]
+ },
+ {
+  "id": "kin-10",
+  "area": "kinematics",
+  "prompt": "A car traveling at 15 m/s accelerates at 2 m/s^2 for 5 s. What is its final velocity?",
+  "expect": "answer",
+  "answer": [
+   25.0,
+   "m/s"
+  ]
+ },
+ {
+  "id": "kin-11",
+  "area": "kinematics",
+  "prompt": "A car traveling at 15 m/s accelerates at 2 m/s^2 for 5 s. How far does it travel in that time?",
+  "expect": "answer",
+  "answer": [
+   100.0,
+   "m"
+  ]
+ },
+ {
+  "id": "kin-12",
+  "area": "kinematics",
+  "prompt": "A plane needs 60 m/s to take off and accelerates at 3 m/s^2 from rest. How long must the runway be?",
+  "expect": "answer",
+  "answer": [
+   600.0,
+   "m"
+  ]
+ },
+ {
+  "id": "kin-13",
+  "area": "kinematics",
+  "prompt": "A plane needs 60 m/s to take off and accelerates from rest at 3 m/s^2. How long does it take to reach takeoff speed?",
+  "expect": "answer",
+  "answer": [
+   20.0,
+   "s"
+  ]
+ },
+ {
+  "id": "kin-14",
+  "area": "kinematics",
+  "prompt": "A cyclist slows from 12 m/s to 4 m/s over 40 m. What is the acceleration?",
+  "expect": "answer",
+  "answer": [
+   -1.6,
+   "m/s^2"
+  ]
+ },
+ {
+  "id": "kin-15",
+  "area": "kinematics",
+  "prompt": "An object starts at 8 m/s and accelerates at -2 m/s^2. How long until it stops?",
+  "expect": "answer",
+  "answer": [
+   4.0,
+   "s"
+  ]
+ },
+ {
+  "id": "kin-16",
+  "area": "kinematics",
+  "prompt": "A car moving at 25 m/s slams on the brakes and decelerates at 5 m/s^2. What is the stopping distance?",
+  "expect": "answer",
+  "answer": [
+   62.5,
+   "m"
+  ]
+ },
+ {
+  "id": "kin-17",
+  "area": "kinematics",
+  "prompt": "a skateboarder rolls down a hill starting from rest and reaches 9 m/s after 3 s. what's the acceleration",
+  "expect": "answer",
+  "answer": [
+   3.0,
+   "m/s^2"
+  ]
+ },
+ {
+  "id": "kin-18",
+  "area": "kinematics",
+  "prompt": "A rocket accelerates from rest at 20 m/s^2 for 10 s. What speed does it reach?",
+  "expect": "answer",
+  "answer": [
+   200.0,
+   "m/s"
+  ]
+ },
+ {
+  "id": "kin-19",
+  "area": "kinematics",
+  "prompt": "Light travels at 3 x 10^8 m/s. How long does it take light to travel 1.5 x 10^11 m from the Sun to Earth?",
+  "expect": "answer",
+  "answer": [
+   500.0,
+   "s"
+  ]
+ },
+ {
+  "id": "kin-20",
+  "area": "kinematics",
+  "prompt": "How far does sound travel in 2.5 s if its speed is 343 m/s?",
+  "expect": "answer",
+  "answer": [
+   857.5,
+   "m"
+  ]
+ },
+ {
+  "id": "kin-21",
+  "area": "kinematics",
+  "prompt": "A car covers 90 m in 6 s while accelerating uniformly from rest. Find its acceleration.",
+  "expect": "answer",
+  "answer": [
+   5.0,
+   "m/s^2"
+  ]
+ },
+ {
+  "id": "kin-22",
+  "area": "kinematics",
+  "prompt": "A runner accelerates from 2 m/s to 8 m/s in 3 seconds. Find the distance covered.",
+  "expect": "answer",
+  "answer": [
+   15.0,
+   "m"
+  ]
+ },
+ {
+  "id": "kin-23",
+  "area": "kinematics",
+  "prompt": "Pls help: a motorbike accelerates from 10 m/s to 30 m/s over a distance of 200 m. What is its acceleration?",
+  "expect": "answer",
+  "answer": [
+   2.0,
+   "m/s^2"
+  ]
+ },
+ {
+  "id": "kin-24",
+  "area": "kinematics",
+  "prompt": "A car travels at 54 km/h. How many metres does it cover in 10 s?",
+  "expect": "answer",
+  "answer": [
+   150.0,
+   "m"
+  ]
+ },
+ {
+  "id": "kin-25",
+  "area": "kinematics",
+  "prompt": "A snail moves at 0.002 m/s. How long does it take to cross a 1.2 m path?",
+  "expect": "answer",
+  "answer": [
+   600.0,
+   "s"
+  ]
+ },
+ {
+  "id": "fall-01",
+  "area": "free_fall",
+  "prompt": "If I drop a rock off a 20 m cliff, how long until it hits the bottom?",
+  "expect": "answer",
+  "answer": [
+   2.01928,
+   "s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "fall-02",
+  "area": "free_fall",
+  "prompt": "A coin is dropped from a 125 m tall building. How fast is it moving when it hits the ground?",
+  "expect": "answer",
+  "answer": [
+   49.5227,
+   "m/s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "fall-03",
+  "area": "free_fall",
+  "prompt": "a ball is thrown straight up at 12 m/s. how high does it go",
+  "expect": "answer",
+  "answer": [
+   7.33945,
+   "m"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "fall-04",
+  "area": "free_fall",
+  "prompt": "A ball is thrown straight up at 12 m/s. How long until it reaches the top?",
+  "expect": "answer",
+  "answer": [
+   1.22324,
+   "s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "fall-05",
+  "area": "free_fall",
+  "prompt": "A ball is thrown vertically upward at 12 m/s. How long is it in the air before it returns to the thrower's hand?",
+  "expect": "answer",
+  "answer": [
+   2.44648,
+   "s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "fall-06",
+  "area": "free_fall",
+  "prompt": "An apple falls from a tree and lands 0.8 s later. How high was the apple?",
+  "expect": "answer",
+  "answer": [
+   3.1392,
+   "m"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "fall-07",
+  "area": "free_fall",
+  "prompt": "A stone is dropped down a well and hits the water after 2.2 s. How deep is the well (ignore the sound delay)?",
+  "expect": "answer",
+  "answer": [
+   23.7402,
+   "m"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "fall-08",
+  "area": "free_fall",
+  "prompt": "An object is dropped from rest. What is its speed after falling for 4 s?",
+  "expect": "answer",
+  "answer": [
+   39.24,
+   "m/s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "fall-09",
+  "area": "free_fall",
+  "prompt": "A ball is dropped from 10 m on the Moon where g = 1.62 m/s^2. How long does it take to land?",
+  "expect": "answer",
+  "answer": [
+   3.51364,
+   "s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "fall-10",
+  "area": "free_fall",
+  "prompt": "Using g = 10 m/s^2, how far does an object fall from rest in 3 s?",
+  "expect": "answer",
+  "answer": [
+   45.0,
+   "m"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "fall-11",
+  "area": "free_fall",
+  "prompt": "A diver steps off a 10 m platform. With what speed does she hit the water?",
+  "expect": "answer",
+  "answer": [
+   14.0071,
+   "m/s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "fall-12",
+  "area": "free_fall",
+  "prompt": "A rock is thrown downward at 5 m/s from a 30 m cliff. How fast is it going when it hits the ground?",
+  "expect": "answer",
+  "answer": [
+   24.771,
+   "m/s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "fall-13",
+  "area": "free_fall",
+  "prompt": "A rocket is launched straight up at 50 m/s. What is its maximum height?",
+  "expect": "answer",
+  "answer": [
+   127.421,
+   "m"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "proj-01",
+  "area": "projectile",
+  "prompt": "A soccer ball is kicked at 20 m/s at 30° above the ground. How far does it travel?",
+  "expect": "answer",
+  "answer": [
+   35.3119,
+   "m"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "proj-02",
+  "area": "projectile",
+  "prompt": "A ball is launched at 15 m/s at 45 degrees. What is its range?",
+  "expect": "answer",
+  "answer": [
+   22.9358,
+   "m"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "proj-03",
+  "area": "projectile",
+  "prompt": "A ball is launched at 15 m/s at 45 degrees. What is its maximum height?",
+  "expect": "answer",
+  "answer": [
+   5.73394,
+   "m"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "proj-04",
+  "area": "projectile",
+  "prompt": "A ball is launched at 15 m/s at 45 degrees. How long is it in the air?",
+  "expect": "answer",
+  "answer": [
+   2.16241,
+   "s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "proj-05",
+  "area": "projectile",
+  "prompt": "A cannonball is fired at 100 m/s at 60° above horizontal. Find the time of flight.",
+  "expect": "answer",
+  "answer": [
+   17.656,
+   "s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "proj-06",
+  "area": "projectile",
+  "prompt": "A ball rolls off a table 1.2 m high at 3 m/s. How far from the table does it land?",
+  "expect": "answer",
+  "answer": [
+   1.48386,
+   "m"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "proj-07",
+  "area": "projectile",
+  "prompt": "A ball rolls off a 1.2 m high table with a speed of 3 m/s. How long does it take to hit the floor?",
+  "expect": "answer",
+  "answer": [
+   0.494619,
+   "s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "proj-08",
+  "area": "projectile",
+  "prompt": "A stone is thrown horizontally at 8 m/s from the top of a 45 m cliff. How far from the base does it land?",
+  "expect": "answer",
+  "answer": [
+   24.2313,
+   "m"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "proj-09",
+  "area": "projectile",
+  "prompt": "A javelin is thrown at 28 m/s at an angle of 35°. Find the horizontal distance it travels.",
+  "expect": "answer",
+  "answer": [
+   75.0988,
+   "m"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "proj-10",
+  "area": "projectile",
+  "prompt": "a golf ball is hit at 40 m/s at 20 degrees. how high does it go",
+  "expect": "answer",
+  "answer": [
+   9.53947,
+   "m"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "proj-11",
+  "area": "projectile",
+  "prompt": "A plane flying horizontally at 70 m/s drops a package from 200 m. How far ahead does the package land?",
+  "expect": "answer",
+  "answer": [
+   446.986,
+   "m"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "proj-12",
+  "area": "projectile",
+  "prompt": "A basketball is shot at 9 m/s at 50° from the ground. What is its maximum height?",
+  "expect": "answer",
+  "answer": [
+   2.42267,
+   "m"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "force-01",
+  "area": "forces",
+  "prompt": "What force is needed to accelerate a 1200 kg car at 3 m/s^2?",
+  "expect": "answer",
+  "answer": [
+   3600.0,
+   "N"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "force-02",
+  "area": "forces",
+  "prompt": "A 2 kg box is pushed with a net force of 10 N. What is its acceleration?",
+  "expect": "answer",
+  "answer": [
+   5.0,
+   "m/s^2"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "force-03",
+  "area": "forces",
+  "prompt": "What is the weight of a 70 kg person on Earth?",
+  "expect": "answer",
+  "answer": [
+   686.7,
+   "N"
+  ]
+ },
+ {
+  "id": "force-04",
+  "area": "forces",
+  "prompt": "What is the weight of a 70 kg astronaut on the Moon (g = 1.62 m/s^2)?",
+  "expect": "answer",
+  "answer": [
+   113.4,
+   "N"
+  ]
+ },
+ {
+  "id": "force-05",
+  "area": "forces",
+  "prompt": "A 50 N force accelerates a box at 2.5 m/s^2. What is the mass of the box?",
+  "expect": "answer",
+  "answer": [
+   20.0,
+   "kg"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "force-06",
+  "area": "forces",
+  "prompt": "Two forces of 30 N and 40 N act on an object at right angles. What is the resultant force?",
+  "expect": "answer",
+  "answer": [
+   50.0,
+   "N"
+  ],
+  "visual": "vector_sum"
+ },
+ {
+  "id": "force-07",
+  "area": "forces",
+  "prompt": "A 10 kg box is pulled with 50 N to the right and 20 N to the left. What is its acceleration?",
+  "expect": "answer",
+  "answer": [
+   3.0,
+   "m/s^2"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "force-08",
+  "area": "forces",
+  "prompt": "A 1500 kg car brakes from 20 m/s to rest in 4 s. What is the average braking force?",
+  "expect": "answer",
+  "answer": [
+   7500.0,
+   "N"
+  ]
+ },
+ {
+  "id": "force-09",
+  "area": "forces",
+  "prompt": "An elevator of mass 800 kg accelerates upward at 2 m/s^2. What is the tension in the cable?",
+  "expect": "answer",
+  "answer": [
+   9448.0,
+   "N"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "force-10",
+  "area": "forces",
+  "prompt": "Two masses of 3 kg and 5 kg hang over a frictionless pulley. What is the acceleration of the system?",
+  "expect": "answer",
+  "answer": [
+   2.4525,
+   "m/s^2"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "force-11",
+  "area": "forces",
+  "prompt": "Two masses, 3 kg and 5 kg, hang on either side of a light pulley (an Atwood machine). Find the tension in the string.",
+  "expect": "answer",
+  "answer": [
+   36.7875,
+   "N"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "force-12",
+  "area": "forces",
+  "prompt": "A 4 kg mass hangs from a rope. What is the tension in the rope?",
+  "expect": "answer",
+  "answer": [
+   39.24,
+   "N"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "force-13",
+  "area": "forces",
+  "prompt": "A 60 kg skydiver falls at constant (terminal) velocity. What is the air resistance on her?",
+  "expect": "answer",
+  "answer": [
+   588.6,
+   "N"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "force-14",
+  "area": "forces",
+  "prompt": "A net force of 200 N acts on a 40 kg sled. Starting from rest, how fast is it moving after 5 s?",
+  "expect": "answer",
+  "answer": [
+   25.0,
+   "m/s"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "fric-01",
+  "area": "friction",
+  "prompt": "A 10 kg box sits on a floor with coefficient of kinetic friction 0.3. What is the friction force when it slides?",
+  "expect": "answer",
+  "answer": [
+   29.43,
+   "N"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "fric-02",
+  "area": "friction",
+  "prompt": "A 20 kg crate is pushed across the floor with a 100 N force. The coefficient of kinetic friction is 0.25. What is its acceleration?",
+  "expect": "answer",
+  "answer": [
+   2.5475,
+   "m/s^2"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "fric-03",
+  "area": "friction",
+  "prompt": "What minimum force is needed to start moving a 50 kg desk if the coefficient of static friction is 0.4?",
+  "expect": "answer",
+  "answer": [
+   196.2,
+   "N"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "fric-04",
+  "area": "friction",
+  "prompt": "A block slides down a frictionless incline at 30°. What is its acceleration?",
+  "expect": "answer",
+  "answer": [
+   4.905,
+   "m/s^2"
+  ],
+  "visual": "incline"
+ },
+ {
+  "id": "fric-05",
+  "area": "friction",
+  "prompt": "A 5 kg block slides down a 25 degree frictionless ramp. What is its acceleration?",
+  "expect": "answer",
+  "answer": [
+   4.14589,
+   "m/s^2"
+  ],
+  "visual": "incline"
+ },
+ {
+  "id": "fric-06",
+  "area": "friction",
+  "prompt": "A 4 kg block is on a 35° incline with coefficient of kinetic friction 0.2. What is its acceleration down the slope?",
+  "expect": "answer",
+  "answer": [
+   4.01961,
+   "m/s^2"
+  ],
+  "visual": "incline"
+ },
+ {
+  "id": "fric-07",
+  "area": "friction",
+  "prompt": "A 5 kg block rests on a 30 degree incline. What is the normal force?",
+  "expect": "answer",
+  "answer": [
+   42.4785,
+   "N"
+  ],
+  "visual": "incline"
+ },
+ {
+  "id": "fric-08",
+  "area": "friction",
+  "prompt": "A 12 kg box rests on a ramp inclined at 20°. What is the friction force holding it in place?",
+  "expect": "answer",
+  "answer": [
+   40.2626,
+   "N"
+  ],
+  "visual": "incline"
+ },
+ {
+  "id": "fric-09",
+  "area": "friction",
+  "prompt": "A hockey puck slides on ice at 10 m/s and the coefficient of friction is 0.05. How far does it slide before stopping?",
+  "expect": "answer",
+  "answer": [
+   101.937,
+   "m"
+  ]
+ },
+ {
+  "id": "fric-10",
+  "area": "friction",
+  "prompt": "A car's tires have a coefficient of friction of 0.7 with the road. What is the maximum deceleration?",
+  "expect": "answer",
+  "answer": [
+   6.867,
+   "m/s^2"
+  ]
+ },
+ {
+  "id": "fric-11",
+  "area": "friction",
+  "prompt": "what is the component of gravity along a 40 degree slope for a 3 kg mass",
+  "expect": "answer",
+  "answer": [
+   18.9172,
+   "N"
+  ],
+  "visual": "incline"
+ },
+ {
+  "id": "en-01",
+  "area": "energy",
+  "prompt": "What is the kinetic energy of a 1000 kg car moving at 20 m/s?",
+  "expect": "answer",
+  "answer": [
+   200000.0,
+   "J"
+  ]
+ },
+ {
+  "id": "en-02",
+  "area": "energy",
+  "prompt": "How much gravitational potential energy does a 2 kg book gain when lifted 1.5 m?",
+  "expect": "answer",
+  "answer": [
+   29.43,
+   "J"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "en-03",
+  "area": "energy",
+  "prompt": "A 60 kg hiker climbs a 300 m hill. How much potential energy does she gain?",
+  "expect": "answer",
+  "answer": [
+   176580.0,
+   "J"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "en-04",
+  "area": "energy",
+  "prompt": "How much work is done pushing a box 5 m with a force of 40 N?",
+  "expect": "answer",
+  "answer": [
+   200.0,
+   "J"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "en-05",
+  "area": "energy",
+  "prompt": "A force of 80 N pulls a sled 10 m at an angle of 30° to the horizontal. How much work is done?",
+  "expect": "answer",
+  "answer": [
+   692.82,
+   "J"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "en-06",
+  "area": "energy",
+  "prompt": "A motor lifts a 100 kg load 12 m in 8 s. What is its power output?",
+  "expect": "answer",
+  "answer": [
+   1471.5,
+   "W"
+  ]
+ },
+ {
+  "id": "en-07",
+  "area": "energy",
+  "prompt": "A 1200 W hair dryer runs for 10 minutes. How much energy does it use?",
+  "expect": "answer",
+  "answer": [
+   720000.0,
+   "J"
+  ]
+ },
+ {
+  "id": "en-08",
+  "area": "energy",
+  "prompt": "A ball is dropped from 5 m. Using energy conservation, what is its speed at the bottom?",
+  "expect": "answer",
+  "answer": [
+   9.90454,
+   "m/s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "en-09",
+  "area": "energy",
+  "prompt": "A roller coaster starts from rest at the top of a 45 m hill. What is its speed at the bottom if friction is negligible?",
+  "expect": "answer",
+  "answer": [
+   29.7136,
+   "m/s"
+  ]
+ },
+ {
+  "id": "en-10",
+  "area": "energy",
+  "prompt": "A 0.5 kg ball moving at 8 m/s has how much kinetic energy?",
+  "expect": "answer",
+  "answer": [
+   16.0,
+   "J"
+  ]
+ },
+ {
+  "id": "en-11",
+  "area": "energy",
+  "prompt": "A car's kinetic energy is 250 kJ and its mass is 1250 kg. How fast is it going?",
+  "expect": "answer",
+  "answer": [
+   20.0,
+   "m/s"
+  ]
+ },
+ {
+  "id": "en-12",
+  "area": "energy",
+  "prompt": "A pendulum bob is released from 0.2 m above its lowest point. How fast does it move at the bottom?",
+  "expect": "answer",
+  "answer": [
+   1.98091,
+   "m/s"
+  ]
+ },
+ {
+  "id": "en-13",
+  "area": "energy",
+  "prompt": "A machine does 4500 J of work in 15 s. What is its power?",
+  "expect": "answer",
+  "answer": [
+   300.0,
+   "W"
+  ]
+ },
+ {
+  "id": "en-14",
+  "area": "energy",
+  "prompt": "A light bulb converts 60 J of electrical energy into 9 J of light. What is its efficiency?",
+  "expect": "answer",
+  "answer": [
+   15.0,
+   "%"
+  ]
+ },
+ {
+  "id": "en-15",
+  "area": "energy",
+  "prompt": "A spring with k = 400 N/m is compressed 0.1 m. How much elastic potential energy is stored?",
+  "expect": "answer",
+  "answer": [
+   2.0,
+   "J"
+  ]
+ },
+ {
+  "id": "en-16",
+  "area": "energy",
+  "prompt": "A 70 kg climber does how much work against gravity climbing 4 m of stairs?",
+  "expect": "answer",
+  "answer": [
+   2746.8,
+   "J"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "en-17",
+  "area": "energy",
+  "prompt": "A 2 kg cart moving at 3 m/s compresses a spring of constant 200 N/m. What is the maximum compression?",
+  "expect": "answer",
+  "answer": [
+   0.3,
+   "m"
+  ],
+  "visual": "spring"
+ },
+ {
+  "id": "mom-01",
+  "area": "momentum",
+  "prompt": "What is the momentum of a 0.15 kg baseball thrown at 40 m/s?",
+  "expect": "answer",
+  "answer": [
+   6.0,
+   "kg*m/s"
+  ]
+ },
+ {
+  "id": "mom-02",
+  "area": "momentum",
+  "prompt": "A 2 kg cart moving at 3 m/s hits a stationary 1 kg cart and they stick together. What is their speed after the collision?",
+  "expect": "answer",
+  "answer": [
+   2.0,
+   "m/s"
+  ],
+  "visual": "collision"
+ },
+ {
+  "id": "mom-03",
+  "area": "momentum",
+  "prompt": "A 1000 kg car moving at 20 m/s collides with a stationary 1500 kg car and they lock together. What is their common velocity?",
+  "expect": "answer",
+  "answer": [
+   8.0,
+   "m/s"
+  ],
+  "visual": "collision"
+ },
+ {
+  "id": "mom-04",
+  "area": "momentum",
+  "prompt": "A 50 g bullet is fired from a 4 kg rifle at 400 m/s. What is the recoil speed of the rifle?",
+  "expect": "answer",
+  "answer": [
+   5.0,
+   "m/s"
+  ],
+  "visual": "collision"
+ },
+ {
+  "id": "mom-05",
+  "area": "momentum",
+  "prompt": "A 0.4 kg ball hits a wall at 10 m/s and bounces back at 8 m/s. What is the impulse on the ball?",
+  "expect": "answer",
+  "answer": [
+   7.2,
+   "N*s"
+  ]
+ },
+ {
+  "id": "mom-06",
+  "area": "momentum",
+  "prompt": "A force of 500 N acts on a ball for 0.02 s. What impulse does it give?",
+  "expect": "answer",
+  "answer": [
+   10.0,
+   "N*s"
+  ]
+ },
+ {
+  "id": "mom-07",
+  "area": "momentum",
+  "prompt": "A 0.2 kg ball's velocity changes from 0 to 25 m/s in 0.01 s when kicked. What is the average force?",
+  "expect": "answer",
+  "answer": [
+   500.0,
+   "N"
+  ]
+ },
+ {
+  "id": "mom-08",
+  "area": "momentum",
+  "prompt": "An ice skater of 60 kg pushes off another skater of 40 kg. If the first moves away at 2 m/s, how fast does the second move?",
+  "expect": "answer",
+  "answer": [
+   3.0,
+   "m/s"
+  ],
+  "visual": "collision"
+ },
+ {
+  "id": "mom-09",
+  "area": "momentum",
+  "prompt": "A 3 kg ball moving at 4 m/s makes an elastic head-on collision with a stationary 3 kg ball. What is the speed of the second ball afterwards?",
+  "expect": "answer",
+  "answer": [
+   4.0,
+   "m/s"
+  ],
+  "visual": "collision"
+ },
+ {
+  "id": "circ-01",
+  "area": "circular",
+  "prompt": "A car goes around a curve of radius 50 m at 15 m/s. What is its centripetal acceleration?",
+  "expect": "answer",
+  "answer": [
+   4.5,
+   "m/s^2"
+  ],
+  "visual": "orbit"
+ },
+ {
+  "id": "circ-02",
+  "area": "circular",
+  "prompt": "A 0.5 kg ball on a string is swung in a circle of radius 1.2 m at 6 m/s. What is the tension (ignore gravity)?",
+  "expect": "answer",
+  "answer": [
+   15.0,
+   "N"
+  ],
+  "visual": "orbit"
+ },
+ {
+  "id": "circ-03",
+  "area": "circular",
+  "prompt": "A wheel turns at 120 rpm. What is its period?",
+  "expect": "answer",
+  "answer": [
+   0.5,
+   "s"
+  ]
+ },
+ {
+  "id": "circ-04",
+  "area": "circular",
+  "prompt": "A satellite orbits at 7800 m/s at a radius of 6.7 x 10^6 m. What is its centripetal acceleration?",
+  "expect": "answer",
+  "answer": [
+   9.0806,
+   "m/s^2"
+  ],
+  "visual": "orbit"
+ },
+ {
+  "id": "circ-05",
+  "area": "circular",
+  "prompt": "A 1000 kg car rounds a curve of radius 40 m at 12 m/s. What centripetal force is required?",
+  "expect": "answer",
+  "answer": [
+   3600.0,
+   "N"
+  ],
+  "visual": "orbit"
+ },
+ {
+  "id": "grav-01",
+  "area": "gravitation",
+  "prompt": "What is the gravitational force between two 1000 kg masses 2 m apart?",
+  "expect": "answer",
+  "answer": [
+   1.6685e-05,
+   "N"
+  ]
+ },
+ {
+  "id": "grav-02",
+  "area": "gravitation",
+  "prompt": "What is the escape velocity from Earth?",
+  "expect": "answer",
+  "answer": [
+   11185.7,
+   "m/s"
+  ]
+ },
+ {
+  "id": "grav-03",
+  "area": "gravitation",
+  "prompt": "What is the acceleration due to gravity on Mars?",
+  "expect": "answer",
+  "answer": [
+   3.72775,
+   "m/s^2"
+  ]
+ },
+ {
+  "id": "grav-04",
+  "area": "gravitation",
+  "prompt": "Find the orbital speed of a satellite 400 km above Earth's surface.",
+  "expect": "answer",
+  "answer": [
+   7672.32,
+   "m/s"
+  ],
+  "visual": "orbit"
+ },
+ {
+  "id": "grav-05",
+  "area": "gravitation",
+  "prompt": "How long does it take the ISS to orbit Earth at an altitude of 400 km?",
+  "expect": "answer",
+  "answer": [
+   5545.06,
+   "s"
+  ],
+  "visual": "orbit"
+ },
+ {
+  "id": "torq-01",
+  "area": "torque",
+  "prompt": "A 20 N force is applied 0.3 m from a door hinge, perpendicular to the door. What is the torque?",
+  "expect": "answer",
+  "answer": [
+   6.0,
+   "N*m"
+  ],
+  "visual": "lever"
+ },
+ {
+  "id": "torq-02",
+  "area": "torque",
+  "prompt": "A child of 30 kg sits 2 m from the pivot of a seesaw. How far from the pivot must a 40 kg child sit to balance it?",
+  "expect": "answer",
+  "answer": [
+   1.5,
+   "m"
+  ],
+  "visual": "lever"
+ },
+ {
+  "id": "torq-03",
+  "area": "torque",
+  "prompt": "A wrench 0.25 m long is pushed with 80 N at its end. What torque is produced?",
+  "expect": "answer",
+  "answer": [
+   20.0,
+   "N*m"
+  ],
+  "visual": "lever"
+ },
+ {
+  "id": "torq-04",
+  "area": "torque",
+  "prompt": "A 500 N weight is placed 0.4 m from a lever's pivot. What force is needed 2 m from the pivot on the other side to balance it?",
+  "expect": "answer",
+  "answer": [
+   100.0,
+   "N"
+  ],
+  "visual": "lever"
+ },
+ {
+  "id": "torq-05",
+  "area": "torque",
+  "prompt": "A 15 N force acts at 0.5 m from a pivot at 60° to the lever arm. What is the torque?",
+  "expect": "answer",
+  "answer": [
+   6.49519,
+   "N*m"
+  ],
+  "visual": "lever"
+ },
+ {
+  "id": "osc-01",
+  "area": "oscillations",
+  "prompt": "A spring stretches 0.05 m when a 2 kg mass hangs from it. What is the spring constant?",
+  "expect": "answer",
+  "answer": [
+   392.4,
+   "N/m"
+  ]
+ },
+ {
+  "id": "osc-02",
+  "area": "oscillations",
+  "prompt": "What force stretches a spring with k = 250 N/m by 8 cm?",
+  "expect": "answer",
+  "answer": [
+   20.0,
+   "N"
+  ]
+ },
+ {
+  "id": "osc-03",
+  "area": "oscillations",
+  "prompt": "A 0.5 kg mass on a spring with k = 200 N/m oscillates. What is the period?",
+  "expect": "answer",
+  "answer": [
+   0.314159,
+   "s"
+  ],
+  "visual": "spring"
+ },
+ {
+  "id": "osc-04",
+  "area": "oscillations",
+  "prompt": "What is the period of a simple pendulum 1.5 m long?",
+  "expect": "answer",
+  "answer": [
+   2.45692,
+   "s"
+  ],
+  "visual": "pendulum"
+ },
+ {
+  "id": "osc-05",
+  "area": "oscillations",
+  "prompt": "How long should a pendulum be to have a period of 2 s?",
+  "expect": "answer",
+  "answer": [
+   0.993961,
+   "m"
+  ],
+  "visual": "pendulum"
+ },
+ {
+  "id": "osc-06",
+  "area": "oscillations",
+  "prompt": "A mass on a spring completes 20 oscillations in 8 s. What is its frequency?",
+  "expect": "answer",
+  "answer": [
+   2.5,
+   "Hz"
+  ]
+ },
+ {
+  "id": "osc-07",
+  "area": "oscillations",
+  "prompt": "A 2 kg mass oscillates on a spring of constant 50 N/m. What is its frequency?",
+  "expect": "answer",
+  "answer": [
+   0.795775,
+   "Hz"
+  ],
+  "visual": "spring"
+ },
+ {
+  "id": "ex-01",
+  "area": "explain",
+  "prompt": "Why do objects fall at the same rate in a vacuum?",
+  "expect": "explain"
+ },
+ {
+  "id": "ex-02",
+  "area": "explain",
+  "prompt": "what's the difference between speed and velocity",
+  "expect": "explain"
+ },
+ {
+  "id": "ex-03",
+  "area": "explain",
+  "prompt": "Explain Newton's third law with an example.",
+  "expect": "explain"
+ },
+ {
+  "id": "ex-04",
+  "area": "explain",
+  "prompt": "Why does a car skid on ice?",
+  "expect": "explain"
+ },
+ {
+  "id": "ex-05",
+  "area": "explain",
+  "prompt": "What is inertia?",
+  "expect": "explain"
+ },
+ {
+  "id": "ex-06",
+  "area": "explain",
+  "prompt": "How does a seatbelt protect you in a crash? Explain using momentum.",
+  "expect": "explain"
+ },
+ {
+  "id": "ex-07",
+  "area": "explain",
+  "prompt": "Why do astronauts feel weightless in orbit?",
+  "expect": "explain"
+ },
+ {
+  "id": "ex-08",
+  "area": "explain",
+  "prompt": "Can you explain what centripetal force is in simple terms?",
+  "expect": "explain"
+ },
+ {
+  "id": "dec-01",
+  "area": "decline",
+  "prompt": "A car accelerates for 5 s. How far does it go?",
+  "expect": "decline",
+  "note": "no speed or acceleration"
+ },
+ {
+  "id": "dec-02",
+  "area": "decline",
+  "prompt": "A ball is thrown at 20 m/s. How far does it go?",
+  "expect": "decline",
+  "note": "no angle and no height"
+ },
+ {
+  "id": "dec-03",
+  "area": "decline",
+  "prompt": "Two cars collide. What is their speed after?",
+  "expect": "decline",
+  "note": "no masses or speeds"
+ },
+ {
+  "id": "dec-04",
+  "area": "decline",
+  "prompt": "A box is pushed with 50 N. What is its acceleration?",
+  "expect": "decline",
+  "note": "no mass"
+ },
+ {
+  "id": "units-typed-01",
+  "area": "forces",
+  "prompt": "A 10 kg toy car accelerates at 2 m/s2. What net force acts on it?",
+  "expect": "answer",
+  "answer": [
+   20.0,
+   "N"
+  ],
+  "visual": "free_body",
+  "note": "power typed bare"
+ },
+ {
+  "id": "units-typed-02",
+  "area": "forces",
+  "prompt": "A 4 kg box accelerates at 3 m s-2. What net force acts on it?",
+  "expect": "answer",
+  "answer": [
+   12.0,
+   "N"
+  ],
+  "visual": "free_body",
+  "note": "power as a product, typed bare"
+ },
+ {
+  "id": "units-typed-03",
+  "area": "forces",
+  "prompt": "A 4 kg box accelerates at 3 m s⁻². What net force acts on it?",
+  "expect": "answer",
+  "answer": [
+   12.0,
+   "N"
+  ],
+  "visual": "free_body",
+  "note": "power as a product, superscript"
+ },
+ {
+  "id": "units-typed-04",
+  "area": "kinematics",
+  "prompt": "A car travels 100 m at 20 m s-1. How long does it take?",
+  "expect": "answer",
+  "answer": [
+   5.0,
+   "s"
+  ],
+  "note": "speed as a product of powers"
+ },
+ {
+  "id": "units-typed-05",
+  "area": "pressure",
+  "prompt": "A force of 600 N acts on an area of 3 m2. Find the pressure.",
+  "expect": "answer",
+  "answer": [
+   200.0,
+   "Pa"
+  ],
+  "note": "area typed bare"
+ },
+ {
+  "id": "fall-reach-01",
+  "area": "free_fall",
+  "prompt": "A ball is dropped from a height of 20 m. How long does it take to reach the ground?",
+  "expect": "answer",
+  "answer": [
+   2.01928,
+   "s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "fall-reach-02",
+  "area": "free_fall",
+  "prompt": "A stone falls from the top of a cliff 45 m high. How long does it take to reach the bottom?",
+  "expect": "answer",
+  "answer": [
+   3.02891,
+   "s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "fall-reach-03",
+  "area": "free_fall",
+  "prompt": "A coin is dropped from a height of 1.8 m. How long does it take to reach the floor?",
+  "expect": "answer",
+  "answer": [
+   0.60578,
+   "s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "fall-reach-04",
+  "area": "free_fall",
+  "prompt": "A rock is dropped from a bridge 30 m above the river. How long does it take to reach the water?",
+  "expect": "answer",
+  "answer": [
+   2.4731,
+   "s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "fall-reach-05",
+  "area": "free_fall",
+  "prompt": "If a ball is dropped from 10 m, how long does it take to get to the ground?",
+  "expect": "answer",
+  "answer": [
+   1.42784,
+   "s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "fall-reach-06",
+  "area": "free_fall",
+  "prompt": "A stone is dropped down a well and hits the water after 2 s. How far down is the water?",
+  "expect": "answer",
+  "answer": [
+   19.62,
+   "m"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "fall-reach-07",
+  "area": "free_fall",
+  "prompt": "A ball is dropped from 20 m. What is its speed after 1 s? How long does it take to reach the ground?",
+  "expect": "answer",
+  "answer": [
+   9.81,
+   "m/s"
+  ],
+  "parts": [
+   [
+    9.81,
+    "m/s"
+   ],
+   [
+    2.01928,
+    "s"
+   ]
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "fall-reach-08",
+  "area": "free_fall",
+  "prompt": "A ball is thrown up at 15 m/s. How high does it go? How long does it take to reach the top?",
+  "expect": "answer",
+  "answer": [
+   11.46789,
+   "m"
+  ],
+  "parts": [
+   [
+    11.46789,
+    "m"
+   ],
+   [
+    1.52905,
+    "s"
+   ]
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "fall-reach-09",
+  "area": "free_fall",
+  "prompt": "A ball is dropped from 20 m. What's its speed after 1 s? How long to reach the ground?",
+  "expect": "answer",
+  "answer": [
+   9.81,
+   "m/s"
+  ],
+  "parts": [
+   [
+    9.81,
+    "m/s"
+   ],
+   [
+    2.01928,
+    "s"
+   ]
+  ],
+  "visual": "projectile_motion"
+ }
+]

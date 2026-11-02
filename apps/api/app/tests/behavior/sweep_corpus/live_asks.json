@@ -1,0 +1,454 @@
+[
+ {
+  "id": "lva-001",
+  "area": "search",
+  "prompt": "Perfect. totally unrelated but did the bears win today",
+  "reply": "The Bears didn't play today; they beat the Patriots on Thursday.",
+  "expect": "search",
+  "gap": "a question after \"but\" reads as a statement; the model gets the turn, and \"can't you look it up?\" then searches"
+ },
+ {
+  "id": "lva-002",
+  "area": "search",
+  "prompt": "did the bears win today?",
+  "reply": "The Bears didn't play today.",
+  "expect": "search"
+ },
+ {
+  "id": "lva-003",
+  "area": "search",
+  "prompt": "did the bears win last night?",
+  "reply": "Yes, they beat the Patriots 24-17 on Thursday.",
+  "expect": "search"
+ },
+ {
+  "id": "lva-004",
+  "area": "search",
+  "prompt": "how did the bulls do last night?",
+  "reply": "The Bulls lost 112-104 to the Knicks.",
+  "expect": "search"
+ },
+ {
+  "id": "lva-005",
+  "area": "search",
+  "prompt": "did man city lose today?",
+  "reply": "Man City lost 2-1 to Arsenal.",
+  "expect": "search"
+ },
+ {
+  "id": "lva-006",
+  "area": "search",
+  "prompt": "Can’t you look it up? You looked up the weather",
+  "history": [
+   [
+    "user",
+    "did the bears win today"
+   ],
+   [
+    "assistant",
+    "I don't have real-time sports results in my memory, so I can't confirm if the Bears won today. You'll need to check a live sports app."
+   ]
+  ],
+  "reply": "The Bears beat the Patriots on Thursday.",
+  "expect": "search"
+ },
+ {
+  "id": "lva-007",
+  "area": "chitchat",
+  "prompt": "did you win",
+  "reply": "I don't play games, but I'm happy to help with yours!",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-008",
+  "area": "chitchat",
+  "prompt": "did it work",
+  "reply": "Glad to hear it! Let me know if anything else comes up.",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-009",
+  "area": "chitchat",
+  "prompt": "i love you but did you eat",
+  "reply": "Ha, I don't eat, but thanks for asking. Did you?",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-010",
+  "area": "chitchat",
+  "prompt": "did the plan work out",
+  "reply": "I hope it did! How did it go?",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-011",
+  "area": "chitchat",
+  "prompt": "lol but did he really say that",
+  "reply": "It sounds like he did, from what you told me.",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-012",
+  "area": "chitchat",
+  "prompt": "did i win",
+  "reply": "I can't tell from here what you entered. What was it?",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-013",
+  "area": "chitchat",
+  "prompt": "great job today but did you know that",
+  "reply": "Know what? Tell me more.",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-014",
+  "area": "statement",
+  "prompt": "Went to the gym today but was too tired to finish",
+  "reply": "That happens! Rest up.",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-015",
+  "area": "statement",
+  "prompt": "Tried the new recipe today but did not have enough flour",
+  "reply": "Oh no! Next time.",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-016",
+  "area": "statement",
+  "prompt": "Watched the game today but was bored",
+  "reply": "Some games drag.",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-017",
+  "area": "statement",
+  "prompt": "The meeting went well today but will need a follow-up",
+  "reply": "Great, want help planning it?",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-018",
+  "area": "chitchat",
+  "prompt": "did the kids draw on the wall",
+  "reply": "Sounds like it might be time for some washable markers!",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-019",
+  "area": "chitchat",
+  "prompt": "how did the interview do",
+  "reply": "I don't know, how did it go?",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-020",
+  "area": "chitchat",
+  "prompt": "did the hero win in the end",
+  "history": [
+   [
+    "user",
+    "tell me a short story about a knight and a dragon"
+   ],
+   [
+    "assistant",
+    "Sir Aldric rode to the mountain where the dragon slept..."
+   ]
+  ],
+  "reply": "Yes, Sir Aldric won by outsmarting the dragon.",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-021",
+  "area": "chitchat",
+  "prompt": "how did the soup do",
+  "reply": "I hope it turned out well!",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-022",
+  "area": "chitchat",
+  "prompt": "did the egg beat well",
+  "reply": "Whisk until frothy.",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-023",
+  "area": "math",
+  "prompt": "Team A won 3 games out of 5. did the team win more than half?",
+  "reply": "3/5 = 60%, so yes.",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-024",
+  "area": "math",
+  "prompt": "If a team wins 60% of 20 games, did the team lose more than 7?",
+  "reply": "It lost 8, so yes.",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-025",
+  "area": "physics",
+  "prompt": "did the beat frequency increase when the second tuning fork was tuned higher?",
+  "reply": "It depends on which fork was higher.",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-026",
+  "area": "physics",
+  "prompt": "Two tuning forks at 440 Hz and 444 Hz sound together. did the beat frequency change when one was tuned to 446 Hz?",
+  "reply": "It went from 4 Hz to 6 Hz.",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-027",
+  "area": "chitchat",
+  "prompt": "what do you think the theme is",
+  "history": [
+   [
+    "user",
+    "did the hero win in the end"
+   ],
+   [
+    "assistant",
+    "Yes, Sir Aldric won by outsmarting the dragon."
+   ]
+  ],
+  "reply": "Courage over strength.",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-028",
+  "area": "math",
+  "prompt": "In a game, Alice rolls a 5 and Bob rolls a 3. Did Alice win?",
+  "reply": "Yes, 5 > 3.",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-029",
+  "area": "math",
+  "prompt": "Alice and Bob play a game where the first to 10 wins. Alice has 7, Bob has 10. Did Alice lose?",
+  "reply": "Yes, Bob reached 10 first.",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-030",
+  "area": "math",
+  "prompt": "A chess club played 8 matches on Saturday and lost 3. Did the club lose more than a third?",
+  "reply": "3/8 = 37.5%, so yes.",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-031",
+  "area": "math",
+  "prompt": "In the Monty Hall game, did the contestant win by switching?",
+  "reply": "Switching wins 2/3 of the time.",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-032",
+  "area": "math",
+  "prompt": "A coin is flipped in a game: heads Alice wins, tails Bob wins. It lands tails. Did Bob win?",
+  "reply": "Yes.",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-033",
+  "area": "chitchat",
+  "prompt": "In the book, did harry win the quidditch match?",
+  "reply": "Yes, Gryffindor won when Harry caught the Snitch.",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-034",
+  "area": "chitchat",
+  "prompt": "In my D&D game tonight, did the rogue win the duel?",
+  "reply": "You'd know better than me! How did it go?",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-035",
+  "area": "chitchat",
+  "prompt": "did dad win the poker game",
+  "reply": "I don't know, did he?",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-036",
+  "area": "chitchat",
+  "prompt": "did auntie win at cards tonight",
+  "reply": "I hope so!",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-037",
+  "area": "chitchat",
+  "prompt": "how did the bread do tonight",
+  "history": [
+   [
+    "user",
+    "I'm baking sourdough for the first time"
+   ],
+   [
+    "assistant",
+    "Exciting! Keep the dough warm while it proofs."
+   ]
+  ],
+  "reply": "Tell me how it turned out!",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-038",
+  "area": "chitchat",
+  "prompt": "In a game of tic-tac-toe, did X win?",
+  "history": [
+   [
+    "user",
+    "X | O | X\nO | X | O\nX | . | ."
+   ],
+   [
+    "assistant",
+    "That's a tic-tac-toe board."
+   ]
+  ],
+  "reply": "Yes, X has a diagonal.",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-039",
+  "area": "search",
+  "prompt": "did the warriors win tonight",
+  "reply": "Yes, 112-104.",
+  "expect": "search"
+ },
+ {
+  "id": "lva-040",
+  "area": "search",
+  "prompt": "did the chiefs win the playoffs",
+  "reply": "Yes.",
+  "expect": "search"
+ },
+ {
+  "id": "lva-041",
+  "area": "statement",
+  "prompt": "Stayed home today but did the taxes",
+  "reply": "Productive! Nice work.",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-042",
+  "area": "statement",
+  "prompt": "Had a great day today but did the laundry all evening",
+  "reply": "A full day!",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-043",
+  "area": "statement",
+  "prompt": "Skipped the gym today but did a long walk instead",
+  "reply": "Walking counts!",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-044",
+  "area": "statement",
+  "prompt": "Got up late today but did a great workout",
+  "reply": "Nice!",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-045",
+  "area": "statement",
+  "prompt": "Tired today but did the work anyway",
+  "reply": "Proud of you.",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-046",
+  "area": "statement",
+  "prompt": "Rough day today but did some work on the garden",
+  "reply": "Gardening helps.",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-047",
+  "area": "statement",
+  "prompt": "Slow day today but did a pass over the essay",
+  "reply": "Good progress.",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-048",
+  "area": "statement",
+  "prompt": "Saw the doctor today but what she said was confusing",
+  "reply": "Want to talk it through?",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-049",
+  "area": "statement",
+  "prompt": "Watched the game last night but what happened at the end was crazy",
+  "reply": "Sounds wild!",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-050",
+  "area": "statement",
+  "prompt": "Got the test back today but where I lost points is a mystery",
+  "reply": "Want to go over it?",
+  "expect": "answer"
+ },
+ {
+  "id": "lva-051",
+  "area": "search",
+  "prompt": "Can't you look it up?",
+  "history": [
+   [
+    "user",
+    "did the bears win today"
+   ],
+   [
+    "assistant",
+    "I don't have real-time sports results."
+   ]
+  ],
+  "reply": "The Bears won 24-17.",
+  "expect": "search"
+ },
+ {
+  "id": "lva-052",
+  "area": "search",
+  "prompt": "Can’t you look it up? You looked up the weather",
+  "history": [
+   [
+    "user",
+    "Perfect. totally unrelated but did the bears win today"
+   ],
+   [
+    "assistant",
+    "I don't have real-time sports results."
+   ]
+  ],
+  "reply": "The Bears won 24-17.",
+  "expect": "search"
+ },
+ {
+  "id": "lva-053",
+  "area": "search",
+  "prompt": "cant u just google it",
+  "history": [
+   [
+    "user",
+    "who is the mayor of chicago"
+   ],
+   [
+    "assistant",
+    "I'm not sure who holds it right now."
+   ]
+  ],
+  "reply": "It's Brandon Johnson.",
+  "expect": "search"
+ }
+]

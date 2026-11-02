@@ -1,0 +1,47 @@
+[
+ {
+  "id": "ckd-001",
+  "area": "clock lookalike",
+  "history": [
+   [
+    "user",
+    "whats the weather gonna be like here tomorrow, should i bring a jacket"
+   ],
+   [
+    "assistant",
+    "I don't have your location yet, so I can't answer that for where you are.\n\nTell me the city, or turn on **Location** in **Settings** (or allow location when prompted)."
+   ]
+  ],
+  "prompt": "I told you, chicago",
+  "reply": "I don't have access to real-time information, so I can't tell you tomorrow's weather in Chicago.",
+  "expect": "answer"
+ },
+ {
+  "id": "ckd-002",
+  "area": "clock lookalike",
+  "prompt": "did the bears win today",
+  "reply": "I don't have access to real-time sports scores, so I can't tell you if the Bears won today.",
+  "expect": "answer"
+ },
+ {
+  "id": "ckd-003",
+  "area": "clock lookalike",
+  "prompt": "whats bitcoin at right now",
+  "reply": "I don't have access to real-time prices, so check an exchange for the current price.",
+  "expect": "answer"
+ },
+ {
+  "id": "ckd-004",
+  "area": "clock lookalike",
+  "prompt": "what time is my flight tomorrow",
+  "reply": "I can't tell you the exact time of your flight. Check your airline's app or confirmation email.",
+  "expect": "answer"
+ },
+ {
+  "id": "ckd-005",
+  "area": "clock lookalike",
+  "prompt": "what time is it in tokyo",
+  "reply": "I don't have access to a clock for Tokyo right now.",
+  "expect": "answer"
+ }
+]

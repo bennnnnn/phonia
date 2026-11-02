@@ -1,0 +1,436 @@
+[
+ {
+  "id": "ci-001",
+  "area": "chemistry",
+  "prompt": "what is the molar mass of H₂SO₄",
+  "reply": "**Answer:** M(H₂SO₄) = 2(1.008) + 32.06 + 4(15.999) = **98.07 g/mol**",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-002",
+  "area": "chemistry",
+  "prompt": "molar mass of CuSO₄·5H₂O?",
+  "reply": "Copper(II) sulfate pentahydrate: 159.60 g/mol for CuSO₄ plus 5 × 18.015 g/mol of water gives **249.68 g/mol**.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-003",
+  "area": "chemistry",
+  "prompt": "What is the molar mass of CuSO4.5H2O?",
+  "reply": "The water of crystallization counts: 159.60 + 5(18.015) = **249.68 g/mol**.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-004",
+  "area": "chemistry",
+  "prompt": "whats the ph of 0.10 M acetic acid, Ka = 1.8 x 10^-5",
+  "reply": "Acetic acid is weak, so solve x²/(0.10 − x) = 1.8 × 10⁻⁵: x = 1.33 × 10⁻³ M, and **pH = 2.88**.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-005",
+  "area": "chemistry",
+  "prompt": "Find the pH of 0.10 M CH₃COOH, Ka = 1.8 x 10^-5",
+  "reply": "[H⁺] = 1.33 × 10⁻³ M from the weak-acid quadratic, so **pH = 2.88**.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-006",
+  "area": "chemistry",
+  "prompt": "how many oxygen atoms are in 2.0 mol of CO₂",
+  "reply": "Each CO₂ has 2 O atoms: N(O) = 2.0 mol × 2 × 6.022 × 10²³ mol⁻¹ = **2.4 × 10²⁴ atoms**.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-007",
+  "area": "chemistry",
+  "prompt": "how many moles of oxygen atoms are in 2.0 mol of H2SO4",
+  "reply": "Each H₂SO₄ has 4 O atoms, so n(O) = 2.0 × 4 = **8.0 mol**.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-008",
+  "area": "chemistry",
+  "prompt": "Al + HCl = AlCl3 + H2 balance pls",
+  "reply": "**2 Al + 6 HCl → 2 AlCl₃ + 3 H₂**",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-009",
+  "area": "chemistry",
+  "prompt": "the pool ph is 7.8, is that too high?",
+  "reply": "A little. Pools are usually kept between 7.2 and 7.6; at 7.8 chlorine works less well. Add a pH reducer (sodium bisulfate) and retest in a few hours.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-010",
+  "area": "chitchat",
+  "prompt": "our team has great chemistry this season",
+  "reply": "That makes a huge difference! When a team clicks, everything from passing to defense gets easier. Who's been the standout?",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-011",
+  "area": "math",
+  "prompt": "the room is 12 x 10 ft, how much paint do I need for the floor?",
+  "reply": "The floor is 12 × 10 = 120 sq ft. Floor paint covers about 300–400 sq ft per gallon, so **one gallon** is plenty for one coat.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-012",
+  "area": "chitchat",
+  "prompt": "H2O2 hair bleach tips",
+  "reply": "- Do a strand test first.\n- Use 3% for gentle lightening; stronger can damage hair.\n- Keep it off your scalp and wear gloves.\n- Deep-condition afterwards.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-013",
+  "area": "chitchat",
+  "prompt": "call me back later, my ph is 0412 555 123",
+  "reply": "I can't make calls, but I can set a reminder for you to call someone back. Want me to do that?",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-014",
+  "area": "chitchat",
+  "prompt": "PH is the country code for the Philippines, right?",
+  "reply": "Yes. PH is the ISO country code for the Philippines, and its internet domain is .ph.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-015",
+  "area": "chitchat",
+  "prompt": "Balance my week: work = gym + sleep, what am I missing?",
+  "reply": "Friends and downtime! A balanced week usually has some time for people you like and something that isn't work or recovery.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-016",
+  "area": "math",
+  "prompt": "rent = 1200 + 400 utilities, balance it against my 2500 salary",
+  "reply": "Rent and utilities are 1,600, so 2,500 − 1,600 = **900** is left each month for everything else.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-017",
+  "area": "code",
+  "prompt": "version 2.5 of the app crashes on Android, how do I get logs?",
+  "reply": "Connect the phone and run `adb logcat`, then reproduce the crash. Filter with `adb logcat *:E` to see only errors.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-018",
+  "area": "chitchat",
+  "prompt": "I have 3 M followers and want 5 M by May, any tips?",
+  "reply": "Post consistently, collaborate with creators your size, and double down on the formats that already work for you.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-019",
+  "area": "math",
+  "prompt": "solve x² - 5x + 6 = 0",
+  "reply": "Factor: (x − 2)(x − 3) = 0, so **x = 2 or x = 3**.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-020",
+  "area": "math",
+  "prompt": "what is 3.2 x 10^4 times 2?",
+  "reply": "3.2 × 10⁴ × 2 = **6.4 × 10⁴** (64,000).",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-021",
+  "area": "chitchat",
+  "prompt": "my NaCl lab got a 4.5/5, happy with that",
+  "reply": "Nice work, 4.5 out of 5 is a great score!",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-022",
+  "area": "writing",
+  "prompt": "Dear Ms. Smith, thanks for the 2.0 update. Can you make this email sound friendlier?",
+  "reply": "Hi Ms. Smith,\n\nThank you so much for the 2.0 update, it's great to see!\n\nBest,",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-023",
+  "area": "chemistry",
+  "prompt": "Ok so chem hw. how much water do i get if i burn like 4g of h2",
+  "reply": "2H₂ + O₂ → 2H₂O. 4 g of H₂ is 1.98 mol, which makes 1.98 mol of water: **36 g**.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-024",
+  "area": "chemistry",
+  "prompt": "how many grams of CO2 are made when 10.0 g of propane burns",
+  "reply": "C₃H₈ + 5O₂ → 3CO₂ + 4H₂O, so 0.227 mol of propane makes 0.680 mol of CO₂: **29.9 g**.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-025",
+  "area": "chemistry",
+  "prompt": "4 g of H2 reacts with excess O2. what mass of water is produced?",
+  "reply": "Each mole of H₂ makes a mole of water: 4 g / 2.016 g/mol × 18.015 g/mol = **36 g**.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-026",
+  "area": "chemistry lookalike",
+  "prompt": "i burned my hand on the stove, how do i treat it",
+  "reply": "Run it under cool (not cold) water for 10–20 minutes, then cover it loosely with a clean non-stick dressing. See a doctor if it blisters badly or is larger than your palm.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-027",
+  "area": "chemistry lookalike",
+  "prompt": "burn 500 calories a day",
+  "reply": "A 30–45 minute run, a brisk hour-long walk or a cycling session usually burns around 500 calories. Want a weekly plan?",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-028",
+  "area": "chemistry lookalike",
+  "prompt": "how many calories does burning 4 g of fat release",
+  "reply": "Fat gives about 9 kcal per gram, so 4 g is roughly **36 kcal**.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-029",
+  "area": "chemistry lookalike",
+  "prompt": "how much water should I drink if I burn 600 calories running",
+  "reply": "Aim for about 0.5–1 L during and after the run, more in heat; drink until your urine is pale.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-030",
+  "area": "chemistry lookalike",
+  "prompt": "water and oil don't react, why?",
+  "reply": "They don't react because neither has anything to give the other; they also don't mix, since water is polar and oil isn't.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-031",
+  "area": "chemistry lookalike",
+  "prompt": "hydrogen bonding in water",
+  "reply": "Each water molecule's O–H hydrogen is attracted to a lone pair on a neighbour's oxygen, which is why water has a high boiling point.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-032",
+  "area": "chemistry lookalike",
+  "prompt": "what happens when sodium reacts with water",
+  "reply": "Sodium fizzes across the surface, making sodium hydroxide and hydrogen gas: 2Na + 2H₂O → 2NaOH + H₂. The heat can ignite the hydrogen.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-033",
+  "area": "chemistry lookalike",
+  "prompt": "write an essay about combustion in car engines",
+  "reply": "**Combustion in Car Engines**\n\nInside every petrol engine, a fuel-air mixture is compressed and ignited, and the expanding gases push the pistons down.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-034",
+  "area": "chemistry lookalike",
+  "prompt": "how much water do i need to drink if i burn 200 g of sugar running",
+  "reply": "Roughly 0.5–1 L for an hour's run, more in heat. Sip before you're thirsty.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-035",
+  "area": "chemistry lookalike",
+  "prompt": "if I burn 100 g of glucose on a run how much water should i drink",
+  "reply": "Drink to thirst and aim for pale urine; about 400–800 mL an hour is typical while running.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-036",
+  "area": "chemistry lookalike",
+  "prompt": "how much oxygen do i need to breathe to burn 100 g of glucose",
+  "reply": "Your body doesn't ration it that way: you breathe faster as you work harder, and your lungs supply what your muscles use.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-037",
+  "area": "chemistry lookalike",
+  "prompt": "how much co2 do i exhale if i burn 100 g of glucose",
+  "reply": "Roughly 150 g of CO₂ over the time it takes your body to use it, spread across many breaths.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-038",
+  "area": "chemistry",
+  "prompt": "Why is water bent tho, co2 isnt",
+  "reply": "Water's oxygen has two lone pairs, which push the two O–H bonds into a bent shape (104.5°). CO₂'s carbon has none, so its two C=O bonds point opposite ways: linear, 180°.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-039",
+  "area": "chemistry",
+  "prompt": "is nh3 polar",
+  "reply": "Yes. Ammonia is trigonal pyramidal with a lone pair on N, so its bond dipoles don't cancel.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-040",
+  "area": "chemistry",
+  "prompt": "Can u show me both",
+  "history": [
+   [
+    "user",
+    "Why is water bent tho, co2 isnt"
+   ],
+   [
+    "assistant",
+    "**Answer**\n\n```answer\nverified: true\nnotation: chemistry\nH₂O: bent, 104.5°, polar\nCO₂: linear, 180°, nonpolar\n```"
+   ]
+  ],
+  "reply": "Here are both molecules: bent water and linear carbon dioxide.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-041",
+  "area": "chemistry",
+  "prompt": "lol no the molecules",
+  "history": [
+   [
+    "user",
+    "Why is water bent tho, co2 isnt"
+   ],
+   [
+    "assistant",
+    "**Answer**\n\n```answer\nverified: true\nnotation: chemistry\nH₂O: bent, 104.5°, polar\nCO₂: linear, 180°, nonpolar\n```"
+   ],
+   [
+    "user",
+    "Can u show me both"
+   ],
+   [
+    "assistant",
+    "**Answer**\n\n```answer\nverified: true\nnotation: chemistry\nH₂O: bent, 104.5°, polar\nCO₂: linear, 180°, nonpolar\n```"
+   ]
+  ],
+  "reply": "Here they are, drawn: water (bent) and carbon dioxide (linear).",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-042",
+  "area": "chemistry lookalike",
+  "prompt": "what shape is the earth",
+  "reply": "An oblate spheroid: nearly a sphere, slightly flattened at the poles.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-043",
+  "area": "chemistry lookalike",
+  "prompt": "the pipe is bent",
+  "reply": "If it's a water pipe, check for leaks at the bend; a plumber can replace the section.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-044",
+  "area": "chemistry lookalike",
+  "prompt": "bent over backwards for my boss",
+  "reply": "That sounds exhausting. Want help setting some boundaries?",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-045",
+  "area": "chemistry lookalike",
+  "prompt": "my phone is bent",
+  "reply": "Stop using it if the battery bulges; otherwise a repair shop can check the frame.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-046",
+  "area": "chemistry lookalike",
+  "prompt": "co2 levels are rising",
+  "reply": "Yes: atmospheric CO₂ passed 420 ppm, up from about 280 ppm before industrialisation.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-047",
+  "area": "chemistry lookalike",
+  "prompt": "is co2 bad",
+  "reply": "In the air we breathe at normal levels it's harmless; the problem is the extra CO₂ warming the climate.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-048",
+  "area": "chemistry lookalike",
+  "prompt": "shape of my nose",
+  "reply": "Nose shapes vary a lot: Roman, Greek, button, and many in between. All are normal!",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-049",
+  "area": "chemistry lookalike",
+  "prompt": "what shape is a stop sign",
+  "reply": "An octagon: eight sides.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-050",
+  "area": "chemistry lookalike",
+  "prompt": "why is the tower of pisa leaning",
+  "reply": "Its foundation sits on soft, uneven soil that sank on one side during construction.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-051",
+  "area": "chemistry lookalike",
+  "prompt": "what is the bond angle in a bond portfolio",
+  "reply": "There's no 'bond angle' in finance; maybe you mean duration or convexity?",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-052",
+  "area": "chemistry lookalike",
+  "prompt": "The Shape of Water",
+  "reply": "Guillermo del Toro's 2017 film: a mute cleaner at a 1960s lab falls for the captive amphibian man. It won Best Picture.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-053",
+  "area": "chemistry lookalike",
+  "prompt": "the shape of water",
+  "reply": "Do you mean the 2017 film? It's a Cold War romance between a cleaner and an amphibian creature, and it won four Oscars.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-054",
+  "area": "chemistry lookalike",
+  "prompt": "ok so the shape of water",
+  "reply": "Great pick — del Toro's fairy tale won Best Picture in 2018. Want a spoiler-free summary?",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-055",
+  "area": "chemistry lookalike",
+  "prompt": "is calcium chloride polar",
+  "reply": "Calcium chloride is an ionic compound, so 'polar molecule' doesn't really apply: it's a lattice of Ca²⁺ and Cl⁻ ions.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-056",
+  "area": "chemistry lookalike",
+  "prompt": "what shape is CaCl2",
+  "reply": "CaCl₂ is ionic: in the solid it forms a lattice, not a discrete linear molecule.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-057",
+  "area": "chemistry lookalike",
+  "prompt": "what shape is SiO2",
+  "reply": "SiO₂ is a network solid: each Si sits in a tetrahedron of four O atoms, each O bridging two Si.",
+  "expect": "answer"
+ },
+ {
+  "id": "ci-058",
+  "area": "chemistry lookalike",
+  "prompt": "is PCl3F2 polar",
+  "reply": "It depends on the arrangement: with both F atoms axial (the usual structure) the dipoles cancel and it's nonpolar.",
+  "expect": "answer"
+ }
+]

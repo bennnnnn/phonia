@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+#
+# Fast pre-commit gate: lint + format the API (the most common CI breakage).
+# Heavier checks (mypy, pytest, mobile) live in ./scripts/check.sh and CI.
+#
+# Enable once:  git config core.hooksPath .githooks
+set -uo pipefail
+
+ROOT="$(git rev-parse --show-toplevel)"
+
+if command -v uv >/dev/null 2>&1; then
+  echo "pre-commit: ruff check + format (apps/api)"
+  if ! (cd "$ROOT/apps/api" && uv run ruff check . && uv run ruff format --check .); then
+    echo "pre-commit failed. Fix with:"
+    echo "  (cd apps/api && uv run ruff check --fix . && uv run ruff format .)"
+    exit 1
+  fi
+fi

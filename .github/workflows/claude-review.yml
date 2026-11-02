@@ -1,0 +1,106 @@
+name: Claude Review
+
+# Claude reviews a pull request when it gets the `review` label: one pass on Sonnet that
+# reads the change and the code around it (read-only) and posts each problem it can trigger
+# with a concrete input or sequence (a wrong result, a crash, a hang, a race, a security
+# hole, a clear CLAUDE.md violation), as inline comments from the Claude GitHub App. It never
+# approves, blocks or pushes, and it is not a required check. To review again, remove the
+# label and add it back.
+#
+# 2026-11-01: it had been told to flag only logic wrong "whatever the input" and could read
+# only the diff, so it passed edge-case bugs Copilot then found on #2178 (counts above 20,
+# a 10^1000 overflow, a comma before "each"). It now names the input that breaks the code.
+#
+# Needs one repository secret: CLAUDE_CODE_OAUTH_TOKEN (your Claude plan; create it with
+# `claude setup-token`) or ANTHROPIC_API_KEY (billed per token). Until one is set, and on
+# Dependabot and fork pull requests (which get no secrets), the steps skip.
+
+on:
+  pull_request:
+    types: [labeled]
+
+permissions:
+  contents: read
+
+# The label is in the key: the run for any other label (its job skipped) is made before its
+# `if` is read, and in one group with a review it would cancel it.
+concurrency:
+  group: claude-review-${{ github.event.pull_request.number }}-${{ github.event.label.name }}
+  cancel-in-progress: true
+
+jobs:
+  review:
+    # Each label's run is its own check: another label added later makes a skipped
+    # "claude review (bug)" check, never one that hides the review's own result.
+    name: claude review (${{ github.event.label.name }})
+    if: ${{ github.event.label.name == 'review' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      pull-requests: read
+      issues: read
+      # Exchanged for the Claude GitHub App's token, which posts the comments.
+      id-token: write
+    env:
+      HAS_CLAUDE_AUTH: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN != '' || secrets.ANTHROPIC_API_KEY != '' }}
+    steps:
+      - uses: actions/checkout@v7
+        if: env.HAS_CLAUDE_AUTH == 'true'
+        with:
+          fetch-depth: 1
+
+      # Third-party code in a job that holds a model credential: pinned to a commit.
+      - uses: anthropics/claude-code-action@d70510b174a1244958df0b03166a54912811f3e6 # v1.0.264
+        id: claude
+        if: env.HAS_CLAUDE_AUTH == 'true'
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            Review pull request ${{ github.repository }}#${{ github.event.pull_request.number }} once.
+
+            Work through these steps; do not decide before step 4.
+            1. Read the PR with `gh pr view` and `gh pr diff`, and the CLAUDE.md files in the
+               directories above the changed files.
+            2. For EVERY function or rule the diff adds or changes: Read it in full with Read
+               (not just the diff hunk), then Grep for at least one caller and Read it, and
+               Read the test file that covers it.
+            3. For each of those functions, write down three inputs that stress it (edge
+               values, empty or unusual text, punctuation, large/negative/huge numbers, units
+               and prefixes, a second call or a cancelled task, the wrong order of two events)
+               and work out from the code what each returns. Compare with what it should do.
+            4. Only then decide.
+
+            Report a problem only when you can name a concrete input or sequence that makes
+            the changed code give a wrong result, raise, hang, leak or lose data, or a caller
+            or test it breaks or silently stops covering, a security hole, or a clear CLAUDE.md
+            violation (quote the rule). Post each one once with
+            mcp__github_inline_comment__create_inline_comment (confirmed: true): the triggering
+            input or sequence, what happens, what should happen, and the fix. Do not flag
+            style, naming, wording, missing tests on their own, problems that were there before
+            this pull request, or anything lint, mypy or CI already catches.
+
+            Finish with one `gh pr comment` that lists every function you checked and, for
+            each, the inputs you tried and what they gave, then either "Claude review: N
+            issues posted." or "Claude review: no issues found." A review that did not read
+            and try every changed function is not a review.
+          claude_args: >-
+            --model sonnet --max-turns 80
+            --allowedTools "Read,Grep,Glob,mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*)"
+
+      # A green check must mean a review ran (2026-11-01). The action skips itself, and the
+      # job would still pass, when this file on the pull request's branch differs from
+      # main's; and with no credential (a fork or Dependabot pull request gets no secrets)
+      # every step skips. Both fail here instead.
+      - name: Fail when the review did not run
+        if: ${{ !cancelled() && steps.claude.outputs.conclusion != 'success' }}
+        env:
+          CONCLUSION: ${{ steps.claude.outputs.conclusion }}
+        run: |
+          if [ "$HAS_CLAUDE_AUTH" != "true" ]; then
+            echo "::error::Claude review did not run: no Claude credential here (a fork or Dependabot pull request gets no secrets, or CLAUDE_CODE_OAUTH_TOKEN is unset)."
+          else
+            echo "::error::Claude review did not run (conclusion: '${CONCLUSION:-skipped}'). If this branch is older than the last change to .github/workflows/claude-review.yml, merge main into it, then remove and re-add the review label."
+          fi
+          exit 1

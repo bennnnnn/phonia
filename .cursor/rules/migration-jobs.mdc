@@ -1,0 +1,21 @@
+---
+description: Remaining jobs — module migrations in order
+alwaysApply: true
+---
+
+# Migration job list
+
+Do these in order. One pull request each. Do not start the next row until the
+previous one is merged and its head branch is deleted. When a row lands, delete
+it from this file in that pull request.
+
+## Now
+
+Every planned migration has landed: chat (history, stream, turn prep) is
+`modules/chat/` and mobile chat is `features/chat/`. Add a row here before
+starting a new one.
+
+## Do not pick up instead
+
+- Deleting compatibility shims before that domain's callers use the module path.
+- Gray answer-chip draft (#1318), scanner CV, or subject-split leftovers.

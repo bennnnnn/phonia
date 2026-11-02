@@ -1,0 +1,177 @@
+{
+  "_doc": "Files over 500 lines (docs/ENGINEERING_STANDARDS.md). 'lines' is a ceiling: the file may shrink, never grow. Tickets are in docs/ENGINEERING_STANDARDS_TICKETS.md. After a split, run scripts/check_file_sizes.py --update.",
+  "files": {
+    "apps/api/app/modules/chat/calculation_layout.py": {
+      "lines": 539,
+      "why": "Over 500 before the standards; one algorithm, held to its twin by docs/fixtures/presentation_cases.json (ES-06); split by responsibility after the ticketed files"
+    },
+    "apps/api/app/modules/chemistry/catalog.py": {
+      "lines": 530,
+      "why": "Exception: The one operation list (CLAUDE.md names it so)"
+    },
+    "apps/api/app/modules/chemistry/extractors/amounts.py": {
+      "lines": 555,
+      "why": "Over 500 before the standards; split by responsibility after the ticketed files"
+    },
+    "apps/api/app/modules/chemistry/formula_bindings.py": {
+      "lines": 699,
+      "why": "Over 500 before the standards; split by responsibility after the ticketed files"
+    },
+    "apps/api/app/modules/chemistry/formula_laws.py": {
+      "lines": 754,
+      "why": "Exception: One row per one-line law, by design (\"a new law of this kind is one entry\")"
+    },
+    "apps/api/app/modules/chemistry/laws.py": {
+      "lines": 524,
+      "why": "Over 500 before the standards; split by responsibility after the ticketed files"
+    },
+    "apps/api/app/modules/chemistry/request.py": {
+      "lines": 563,
+      "why": "Over 500 before the standards; split by responsibility after the ticketed files"
+    },
+    "apps/api/app/modules/chemistry/stated_bindings.py": {
+      "lines": 566,
+      "why": "Exception: Binding catalog; all data"
+    },
+    "apps/api/app/modules/chemistry/stated_laws.py": {
+      "lines": 534,
+      "why": "Exception: Law catalog; all data"
+    },
+    "apps/api/app/modules/images/gen_intent_words.py": {
+      "lines": 517,
+      "why": "Exception: The image-intent word lists, one word per line (data); the matchers are gen_intent.py"
+    },
+    "apps/api/app/modules/math/fence.py": {
+      "lines": 610,
+      "why": "Over 500 before the standards; tracked in ES-22"
+    },
+    "apps/api/app/modules/math/match/calculus.py": {
+      "lines": 601,
+      "why": "Over 500 before the standards; tracked in ES-40"
+    },
+    "apps/api/app/modules/math/match/discrete.py": {
+      "lines": 573,
+      "why": "Over 500 before the standards; tracked in ES-09"
+    },
+    "apps/api/app/modules/math/match/graph.py": {
+      "lines": 636,
+      "why": "Over 500 before the standards; split by responsibility after the ticketed files"
+    },
+    "apps/api/app/modules/math/solve/graph.py": {
+      "lines": 550,
+      "why": "Over 500 before the standards; split by responsibility after the ticketed files"
+    },
+    "apps/api/app/modules/math/solve/key_steps.py": {
+      "lines": 657,
+      "why": "Over 500 before the standards; tracked in ES-39"
+    },
+    "apps/api/app/modules/math/solve/traces.py": {
+      "lines": 626,
+      "why": "Over 500 before the standards; tracked in ES-39"
+    },
+    "apps/api/app/modules/math/solve/work_slips.py": {
+      "lines": 656,
+      "why": "Over 500 before the standards; split by responsibility after the ticketed files"
+    },
+    "apps/api/app/modules/math/tool.py": {
+      "lines": 645,
+      "why": "Over 500 before the standards; split by responsibility after the ticketed files"
+    },
+    "apps/api/app/modules/math/tools/block/geometry.py": {
+      "lines": 504,
+      "why": "Over 500 before the standards; split by responsibility after the ticketed files"
+    },
+    "apps/api/app/modules/math/tools/extractors/geometry.py": {
+      "lines": 600,
+      "why": "Over 500 before the standards; split by responsibility after the ticketed files"
+    },
+    "apps/api/app/modules/math/tools/school/curve_points.py": {
+      "lines": 568,
+      "why": "Over 500 before the standards; tracked in ES-09"
+    },
+    "apps/api/app/modules/physics/catalog/energy.py": {
+      "lines": 587,
+      "why": "Exception: Law catalog; all data"
+    },
+    "apps/api/app/modules/physics/catalog/kinematics.py": {
+      "lines": 561,
+      "why": "Exception: Law catalog; all data"
+    },
+    "apps/api/app/modules/physics/catalog/magnetism.py": {
+      "lines": 607,
+      "why": "Exception: Law catalog; all data"
+    },
+    "apps/api/app/modules/physics/catalog/optics.py": {
+      "lines": 579,
+      "why": "Exception: One `SPECS` table of law declarations (573 lines of data; wave optics is wave_optics.py)"
+    },
+    "apps/api/app/modules/physics/catalog/quantum.py": {
+      "lines": 569,
+      "why": "Exception: Law catalog; 93% data"
+    },
+    "apps/api/app/modules/physics/catalog/thermal.py": {
+      "lines": 670,
+      "why": "Exception: Law catalog; 92% data"
+    },
+    "apps/api/app/modules/physics/catalog/waves.py": {
+      "lines": 603,
+      "why": "Exception: Law catalog; all data"
+    },
+    "apps/api/app/modules/physics/schemas/simulation.py": {
+      "lines": 576,
+      "why": "Exception: Pydantic wire schema for the `simulation` fence v2 (425 lines of model classes)"
+    },
+    "apps/api/app/modules/todos/spoken_change.py": {
+      "lines": 511,
+      "why": "Over 500 before the standards; ES-12 split the readers out. What is left is the move and adjust parsers (see the cleanup PR)"
+    },
+    "apps/api/app/services/answer_check.py": {
+      "lines": 595,
+      "why": "Over 500 before the standards; tracked in ES-01"
+    },
+    "apps/api/app/services/answer_fence.py": {
+      "lines": 516,
+      "why": "Over 500 before the standards; split by responsibility after the ticketed files"
+    },
+    "apps/api/app/services/time_context.py": {
+      "lines": 571,
+      "why": "Over 500 before the standards; tracked in ES-04"
+    },
+    "apps/mobile/features/chat/components/ChatComposer.tsx": {
+      "lines": 556,
+      "why": "Over 500 before the standards; split by responsibility after the ticketed files"
+    },
+    "apps/mobile/features/chat/components/MathDraftPreview.tsx": {
+      "lines": 675,
+      "why": "Over 500 before the standards; ES-38 split DraftPiece; split by responsibility after the ticketed files"
+    },
+    "apps/mobile/features/scanner/components/MathEquationScanner.tsx": {
+      "lines": 509,
+      "why": "Over 500 before the standards; split by responsibility after the ticketed files"
+    },
+    "apps/mobile/lib/codeTokenize.ts": {
+      "lines": 517,
+      "why": "Exception: Prism grammar registration: Metro needs about 47 literal `require`s in one module"
+    },
+    "apps/mobile/lib/markdown/calculationLayout.ts": {
+      "lines": 519,
+      "why": "Over 500 before the standards; one algorithm, held to its twin by docs/fixtures/presentation_cases.json (ES-06); split by responsibility after the ticketed files"
+    },
+    "apps/mobile/lib/math/draftSlots.ts": {
+      "lines": 559,
+      "why": "Exception: One draft-node parser and editor"
+    },
+    "apps/mobile/lib/math/keyboardCatalog.ts": {
+      "lines": 545,
+      "why": "Exception: Key and accessibility tables (321 lines of data)"
+    },
+    "apps/mobile/lib/math/latexParse.ts": {
+      "lines": 508,
+      "why": "Exception: One parser; ES-38 split its one long function"
+    },
+    "apps/mobile/lib/physics/optics.ts": {
+      "lines": 599,
+      "why": "Exception: One diagram's parsing and pure geometry; tested by `optics.test.ts`"
+    }
+  }
+}

@@ -1,0 +1,1243 @@
+[
+ {
+  "id": "cc-001",
+  "area": "chitchat",
+  "prompt": "hi",
+  "reply": "Hi! 👋 What's on your mind today?",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-002",
+  "area": "chitchat",
+  "prompt": "hey 👋",
+  "reply": "Hey there! 👋 How's your day going? Anything I can help with?",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-003",
+  "area": "chitchat",
+  "prompt": "good morning",
+  "reply": "Good morning! ☀️ Hope you slept well. What's on the agenda today?",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-004",
+  "area": "chitchat",
+  "prompt": "how are you",
+  "reply": "I'm doing great, thanks for asking! 😊 How about you — how's your week going so far?",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-005",
+  "area": "chitchat",
+  "prompt": "lol",
+  "history": [
+   [
+    "user",
+    "tell me a joke"
+   ],
+   [
+    "assistant",
+    "Why don't scientists trust atoms?\n\nBecause they make up everything. ⚛️"
+   ]
+  ],
+  "reply": "Glad that one landed 😄 Want another? I've got plenty of terrible science puns.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-006",
+  "area": "chitchat",
+  "prompt": "thanks!",
+  "history": [
+   [
+    "user",
+    "what's the capital of Australia?"
+   ],
+   [
+    "assistant",
+    "It's **Canberra** — not Sydney, which surprises a lot of people! Canberra was purpose-built as a compromise between Sydney and Melbourne and became the capital in 1913."
+   ]
+  ],
+  "reply": "You're welcome! 🙌 Let me know if you have any other trivia questions.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-007",
+  "area": "chitchat",
+  "prompt": "ok",
+  "history": [
+   [
+    "user",
+    "I think I'm gonna call it a night"
+   ],
+   [
+    "assistant",
+    "Good call — get some rest! Want to pick up the essay outline tomorrow?"
+   ]
+  ],
+  "reply": "Sounds good. Sleep well! 🌙 We can pick the outline back up tomorrow whenever you're ready.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-008",
+  "area": "chitchat",
+  "prompt": "yes",
+  "history": [
+   [
+    "user",
+    "write me a haiku about autumn"
+   ],
+   [
+    "assistant",
+    "Crisp leaves drift and fall\nAmber light on quiet streets\nThe year exhales slow\n\nWant another one, maybe a bit funnier?"
+   ]
+  ],
+  "reply": "Here's a sillier one:\n\nPumpkin spice again\nMy wallet weeps, my latte\nTastes like October 🎃",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-009",
+  "area": "chitchat",
+  "prompt": "no it's perfect, thank you!!",
+  "history": [
+   [
+    "user",
+    "can you write a short toast for my sister's wedding?"
+   ],
+   [
+    "assistant",
+    "Here's a short one:\n\n> \"For those who don't know me, I'm Emma's sister — which means I've known her the longest and have the most embarrassing stories. Don't worry, Emma, I'll save those for later. 😄\n>\n> Watching you and Daniel together, it's obvious you bring out the best in each other. He laughs at your terrible jokes, and you pretend not to notice that he can't cook. That's real love.\n>\n> So please raise your glasses: to Emma and Daniel — may your life together be full of laughter, adventure, and takeout. Cheers! 🥂\"\n\nWant me to make it longer or add a personal story?"
+   ]
+  ],
+  "reply": "Yay, I'm so glad! 🥂 You're going to do great — just take a breath, smile, and enjoy the moment. Congrats to Emma and Daniel!",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-010",
+  "area": "chitchat",
+  "prompt": "tell me a joke",
+  "reply": "Why do programmers prefer dark mode?\n\nBecause light attracts bugs. 🐛",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-011",
+  "area": "chitchat",
+  "prompt": "I'm stressed about my exam tomorrow",
+  "reply": "That's completely normal — the night before is often the worst part. A few things that genuinely help:\n\n1. **Do a light review, not a cram.** Skim your summary notes or flashcards for 30–45 minutes, then stop.\n2. **Set your alarm and lay out what you need** (ID, pens, calculator, water) tonight so the morning is calm.\n3. **Get to bed at a reasonable time.** Sleep consolidates what you've studied — it's worth more than an extra hour of review.\n4. **Breathe.** If anxiety spikes, try box breathing: in for 4, hold for 4, out for 4, hold for 4.\n\nYou've prepared for this. What's the exam on? I can quiz you on a few key topics if that would help.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-012",
+  "area": "chitchat",
+  "prompt": "what can you do",
+  "reply": "Quite a lot! Here are the highlights:\n\n- **Chat & explain** — questions, brainstorming, writing, editing, translation\n- **Remember you** — your preferences, projects, and context carry across chats\n- **Math, physics & chemistry** — step-by-step solutions, graphs, and diagrams\n- **Code** — write, debug, and explain code in most languages\n- **Search the web** for up-to-date info, with sources\n- **To-dos & reminders** — I can add tasks and remind you about them\n- **Images** — look up reference photos, or generate images (Pro)\n\nWhat would you like to start with?",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-013",
+  "area": "chitchat",
+  "prompt": "who are you",
+  "reply": "I'm Recall — a personal AI assistant that remembers your preferences and context across chats, so you don't have to repeat yourself. I can help with questions, writing, code, math, planning, and more. What can I help you with?",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-014",
+  "area": "chitchat",
+  "prompt": "tell me about yourself",
+  "reply": "I'm Recall, a personal AI assistant. A few things that make me a bit different:\n\n- **I remember things** you tell me — your preferences, projects, and goals — so each chat picks up with context instead of starting from zero.\n- **I'm good with STEM** — I can solve math step by step, draw graphs, and work through physics and chemistry problems.\n- **I can keep you organized** with to-dos and reminders, and connect to your Google Calendar if you want.\n\nYou can see (and edit) everything I remember about you in **Settings → Memory**. What would you like to talk about?",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-015",
+  "area": "chitchat",
+  "prompt": "😂😂😂",
+  "reply": "Haha 😄 What's so funny? Share the joke!",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-016",
+  "area": "chitchat",
+  "prompt": "hola, ¿cómo estás?",
+  "reply": "¡Hola! Estoy muy bien, gracias por preguntar 😊 ¿Y tú? ¿En qué te puedo ayudar hoy?",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-017",
+  "area": "chitchat",
+  "prompt": "bonjour ! tu peux m'aider à pratiquer mon français ?",
+  "reply": "Bien sûr ! 🇫🇷 Avec plaisir. On peut discuter de ce que tu veux — ta journée, tes loisirs, tes projets. Je corrigerai doucement tes erreurs au fur et à mesure.\n\nPour commencer : **qu'est-ce que tu as fait ce week-end ?**",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-018",
+  "area": "chitchat",
+  "prompt": "我今天好累",
+  "reply": "辛苦了！😌 今天发生了什么事吗？如果你想聊聊，我在这里听。也可以早点休息，喝杯热茶，好好放松一下。",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-019",
+  "area": "chitchat",
+  "prompt": "Guten Morgen! Wie geht's?",
+  "reply": "Guten Morgen! ☀️ Mir geht's gut, danke! Und dir? Was steht heute bei dir an?",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-020",
+  "area": "chitchat",
+  "prompt": "maybe later lol",
+  "history": [
+   [
+    "user",
+    "I'm so nervous for my interview tomorrow at 10am"
+   ],
+   [
+    "assistant",
+    "That's totally normal — nerves mean you care! 💪 You've got this. Want to do a quick mock interview right now? I can ask you a few common questions and give feedback."
+   ]
+  ],
+  "reply": "Totally fine 😄 I'm here whenever you want to practice. Either way, lay out your outfit tonight, get a good night's sleep, and you'll walk in ready tomorrow. Good luck! 🍀",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-021",
+  "area": "chitchat",
+  "prompt": "I finally finished my thesis!!",
+  "reply": "CONGRATULATIONS! 🎉🎓 That's a massive achievement — months (years?) of work, done. Take a moment to actually celebrate before you jump to the next thing. What was it on?",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-022",
+  "area": "chitchat",
+  "prompt": "I got the job!!! 🎉",
+  "reply": "No way — congratulations!! 🎉🥳 That's amazing news. All that prep paid off. When do you start?",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-023",
+  "area": "chitchat",
+  "prompt": "can you make me laugh",
+  "reply": "I'll try 😄\n\nI told my wife she was drawing her eyebrows too high.\n\nShe looked surprised.\n\n…Want another? I have a whole list, and they only get worse.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-024",
+  "area": "chitchat",
+  "prompt": "I'm bored",
+  "reply": "Let's fix that! A few ideas, depending on your energy level:\n\n- **Low effort:** make a playlist for a mood you've never made one for (\"rainy Tuesday in Tokyo\")\n- **Medium:** set a 20-minute timer and learn something random — how bridges are built, why cats purr\n- **Creative:** write a six-word story\n- **Active:** go for a walk and take one photo of something interesting\n\nOr we could play a game — 20 questions, riddles, or trivia?",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-025",
+  "area": "chitchat",
+  "prompt": "can you add some emojis to your replies? 😄",
+  "reply": "Absolutely! 🎉✨ I'll sprinkle in more emojis from now on 😄🙌 Let me know if it gets to be too much 😅",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-026",
+  "area": "chitchat",
+  "prompt": "Tell me a short bedtime story about a cat who wants to move to the moon",
+  "reply": "Once upon a time, a small grey cat named Pepper decided she wanted to move to the moon. 🌙\n\nEvery night at bedtime, she sat on the windowsill and stared at it. It looked soft and round and perfectly warm — like the world's biggest bowl of milk.\n\nSo Pepper made a plan. She stacked up a cushion, a book, and a very confused houseplant, and jumped as high as she could. She landed on the rug. She tried again from the bookshelf. She landed on the sofa.\n\nTired and a little grumpy, she curled up in a patch of silver light on the floor. And as her eyes got heavy, she noticed something: the moonlight was right there, wrapped around her like a blanket.\n\n\"Oh,\" thought Pepper. \"I don't have to move to the moon. It comes to visit me every night.\"\n\nAnd she purred herself to sleep. 🐈💤\n\n*The end.*",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-027",
+  "area": "chitchat",
+  "prompt": "what day is it today?",
+  "reply": "Today is **Wednesday, October 14, 2026**. 📅",
+  "expect": "instant"
+ },
+ {
+  "id": "cc-028",
+  "area": "chitchat",
+  "prompt": "yes please",
+  "history": [
+   [
+    "user",
+    "I just adopted a kitten!"
+   ],
+   [
+    "assistant",
+    "Congrats!! 🐱 What does she look like? Want help picking a name?"
+   ]
+  ],
+  "reply": "Yay! Here are some ideas:\n\n- **Classic:** Luna, Milo, Cleo, Oliver\n- **Food-inspired:** Mochi, Biscuit, Nacho, Pickles\n- **Fancy:** Duchess, Sir Whiskers, Penelope\n- **Nerdy:** Pixel, Byte, Gizmo\n\nIf you tell me her color and personality, I can narrow it down!",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-029",
+  "area": "chitchat",
+  "prompt": "finish this sentence: the best advice I ever got was...",
+  "reply": "…\"done is better than perfect.\" 🙂\n\nIt's simple, but it's saved a lot of people from polishing things forever instead of shipping them. What's the best advice *you've* ever gotten?",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-030",
+  "area": "personal",
+  "prompt": "how do I get up at 6am every day?",
+  "reply": "Getting up at 6am consistently is mostly about what happens the night before. Here's what works:\n\n1. **Shift gradually.** Move your wake-up time 15 minutes earlier every 3–4 days instead of jumping straight to 6am.\n2. **Fix your bedtime.** For 7.5–8 hours of sleep, aim to be in bed by 10–10:30pm.\n3. **Put your alarm across the room** so you have to get up to turn it off.\n4. **Get light immediately.** Open the curtains or step outside — morning light resets your body clock.\n5. **Keep the same schedule every day**, weekends included (within an hour).\n6. **Give yourself a reason to get up** — a good coffee, a walk, 20 minutes of reading.\n\nThe first week is the hardest; after about 2–3 weeks your body starts waking up on its own.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-031",
+  "area": "personal",
+  "prompt": "should I buy or lease a car?",
+  "reply": "It depends on how much you drive and how long you keep cars:\n\n| | **Buy** | **Lease** |\n|---|---|---|\n| Monthly cost | Higher (if financed) | Lower |\n| Long-term cost | Lower — you own it after payoff | Higher — you're always paying |\n| Mileage limits | None | Usually 10–15k miles/year |\n| Customization | Anything you want | Restricted |\n| New car every few years | No | Yes |\n\n**Buy if** you drive a lot, keep cars 6+ years, or want to stop having a car payment eventually.\n\n**Lease if** you drive under ~12k miles/year, want a new car every 3 years, and prefer predictable costs.\n\nFor most people, buying a reliable 2–3-year-old used car is the cheapest option overall. How many miles do you drive per year?",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-032",
+  "area": "personal",
+  "prompt": "how do I get motivated when I'm completely burned out?",
+  "reply": "First: burnout isn't a motivation problem, so trying to \"push through\" usually makes it worse. A few things that actually help:\n\n1. **Lower the bar on purpose.** Pick one small, concrete task per day and count it as a win.\n2. **Protect recovery time.** Sleep, food, and time outside aren't optional extras right now — they're the fix.\n3. **Find the drain.** Is it workload, lack of control, feeling unappreciated, or a mismatch with your values? The cause shapes the solution.\n4. **Say no to one thing** this week. Even small boundaries rebuild a sense of control.\n5. **Reconnect with why.** Remind yourself what you used to enjoy about the work, or what you're working toward.\n6. **Talk to someone.** A friend, manager, or therapist — burnout thrives in isolation.\n\nIf you've felt this way for weeks, dread every day, or it's affecting your sleep or health, it's worth talking to a doctor. What's been draining you the most lately?",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-033",
+  "area": "personal",
+  "prompt": "how do I make a habit stick?",
+  "reply": "A few research-backed tricks:\n\n1. **Make it tiny.** Start with a version so small it feels silly — 2 push-ups, 1 page, 2 minutes of meditation.\n2. **Stack it** onto something you already do: \"After I put the kettle on, I'll stretch.\"\n3. **Make it obvious.** Put your running shoes by the door; put the book on your pillow.\n4. **Track it.** A simple checkmark on a calendar is surprisingly motivating — don't break the chain.\n5. **Never miss twice.** Missing one day is fine; missing two starts a new (bad) habit.\n6. **Reward yourself right after**, so your brain links the habit to something good.\n\nIt usually takes around 2 months (not 21 days) for a habit to feel automatic. What habit are you trying to build?",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-034",
+  "area": "personal",
+  "prompt": "help me set some goals for the rest of this year, I feel like I've drifted",
+  "reply": "Totally normal — and with about 11 weeks left in 2026, it's a great time for a reset. Let's keep it simple:\n\n**1. Pick 2–3 areas** that matter most right now (e.g. health, career, money, relationships, a hobby).\n\n**2. Turn each into one specific goal** you can finish by December 31:\n\n| Area | Vague | Specific |\n|---|---|---|\n| Health | \"Get fit\" | Run 3×/week and finish a 10K in December |\n| Career | \"Learn more\" | Complete the AWS Cloud Practitioner cert by Dec 20 |\n| Money | \"Save more\" | Put $300/month into savings in November and December |\n\n**3. Choose a weekly action** for each — what will you actually do on Monday?\n\n**4. Review every Sunday** for 10 minutes: what worked, what didn't, what to change.\n\nFewer goals done well beats a long list you abandon. Which areas feel most important to you right now?",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-035",
+  "area": "personal",
+  "prompt": "remind me why sleep matters",
+  "reply": "Sleep does a lot more than make you feel rested:\n\n- **Memory and learning** — your brain consolidates what you learned during the day, especially during deep and REM sleep.\n- **Brain \"cleanup\"** — the glymphatic system clears out waste products (including proteins linked to Alzheimer's) mostly while you sleep.\n- **Mood** — even one short night makes you more irritable and reactive; chronic poor sleep is strongly linked to anxiety and depression.\n- **Immune system** — people who sleep under 6 hours are significantly more likely to catch a cold when exposed.\n- **Metabolism and appetite** — sleep loss raises hunger hormones and makes you crave sugary food.\n- **Heart health** — chronic short sleep is associated with higher blood pressure and heart disease risk.\n- **Focus and safety** — 17–19 hours awake impairs reaction time about as much as being legally drunk.\n\nMost adults need **7–9 hours**. Consistency matters too — going to bed and getting up at the same time every day helps more than catching up on weekends.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-036",
+  "area": "personal",
+  "prompt": "remember that I'm vegetarian",
+  "reply": "Got it! 🥦 I'll keep in mind that you're vegetarian — recipe ideas, restaurant picks, and meal plans will be meat-free from now on. Do you eat eggs and dairy, or should I avoid those too?",
+  "expect": "memory"
+ },
+ {
+  "id": "cc-037",
+  "area": "personal",
+  "prompt": "what do you know about me?",
+  "reply": "Here's what I remember about you:\n\n- You're **vegetarian** (you eat eggs and dairy)\n- You work as a **frontend developer**, mostly in React and TypeScript\n- You live in **Austin, TX**\n- You're **training for a half marathon** in the spring\n- You're learning **Spanish**\n\nYou can view, edit, or delete any of this in **Settings → Memory**. Anything you'd like me to update?",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-038",
+  "area": "personal",
+  "prompt": "how do I ask for a raise?",
+  "reply": "Preparation is most of the work. Here's how to approach it:\n\n1. **Know your market rate.** Check Levels.fyi, Glassdoor, or industry salary surveys for your role, level, and city.\n2. **Collect your wins.** Projects you led, numbers you moved, responsibilities you took on since your last raise. Concrete beats vague.\n3. **Pick your timing.** Ideally right after a big win or a few weeks before budget planning — not in the middle of a crisis.\n4. **Ask for a meeting specifically about compensation** so your manager isn't caught off guard.\n5. **Lead with value, then the number:**\n   > \"Over the last year I've taken on X and delivered Y. Based on that and market data for similar roles, I'd like to discuss moving my salary to $Z.\"\n6. **Name a specific number**, slightly above what you'd accept.\n7. **If the answer is \"not now,\"** ask: \"What would I need to achieve to get there, and can we revisit in 3 months?\" — and get it in writing.\n\nWant help drafting what you'll say?",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-039",
+  "area": "personal",
+  "prompt": "my partner and I keep fighting about chores, any advice?",
+  "reply": "This is one of the most common things couples fight about — and it's usually less about the dishes and more about feeling the load isn't fair. A few things that help:\n\n- **Make the invisible work visible.** Sit down together and make a shared list of *everything* — including planning meals, remembering birthdays, and booking appointments.\n- **Divide by ownership, not tasks.** \"You own laundry, start to finish\" works better than \"can you help with laundry?\"\n- **Agree on standards.** \"Clean\" means different things to different people; decide what's good enough.\n- **Put the list somewhere visible**, like the fridge or a shared notes app.\n- **Set a short weekly check-in** — 15 minutes on Sunday to adjust, before resentment builds.\n- **Talk about it when you're calm**, not mid-argument with a sink full of dishes.\n\nUse \"I\" statements: \"I feel overwhelmed when I come home to a messy kitchen\" lands much better than \"you never clean.\" Would it help to plan how to bring it up?",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-040",
+  "area": "personal",
+  "prompt": "is it bad to drink coffee after 3pm?",
+  "reply": "For a lot of people, yes. Caffeine has a half-life of about **5–6 hours**, so if you have a coffee at 3pm, roughly half of it is still in your system at 8–9pm, and about a quarter is still there around 2am.\n\nEven if you fall asleep fine, late caffeine can reduce **deep sleep**, so you wake up less rested without realizing why.\n\nGeneral guidance:\n\n- Try to have your last coffee **8+ hours before bed** (so around 2pm if you sleep at 10pm)\n- Switch to decaf or herbal tea in the afternoon\n- Sensitivity varies a lot by genetics — some people truly aren't affected\n\nAn easy experiment: cut afternoon coffee for a week and see if you sleep better.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-041",
+  "area": "personal",
+  "prompt": "I want to change careers to UX design at 32. Is it too late?",
+  "reply": "Not at all. 32 is a really common age to switch into UX — plenty of designers come from teaching, psychology, marketing, retail, or engineering, and that background is often an advantage because UX is about understanding people.\n\nA realistic path:\n\n1. **Learn the fundamentals** (2–3 months): Google's UX Design Certificate, *The Design of Everyday Things*, and Figma tutorials.\n2. **Build 3 case studies** that show your process — research, wireframes, testing, iteration — not just pretty screens.\n3. **Use your current experience.** Redesign a tool from your current industry; it makes you stand out.\n4. **Get real feedback** from designers on ADPList (free mentorship) or at local UX meetups.\n5. **Look for bridge roles** — UX research assistant, product ops, or a UX project at your current job.\n\nHonest caveat: the junior market is competitive right now, so expect the transition to take 6–12 months. What do you do currently? I can suggest how to frame it.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-042",
+  "area": "personal",
+  "prompt": "my lower back hurts after sitting all day at my desk, what can I do?",
+  "reply": "That's really common with desk work. Some things that usually help:\n\n**Setup**\n- Feet flat on the floor, knees roughly at hip height\n- Screen at eye level, about an arm's length away\n- A small cushion or rolled towel to support the curve of your lower back\n\n**Movement**\n- Stand up and move every 30–45 minutes — even 1–2 minutes counts. A recurring timer helps.\n- A few stretches during the day: cat-cow, knee-to-chest, and a gentle seated twist\n- Walk at lunch if you can\n\n**Strength**\n- Weak glutes and core are a common culprit. Bridges, bird-dogs, and planks 3×/week make a big difference over a month or two.\n\n**See a doctor or physio** if the pain spreads down your leg, comes with numbness or weakness, follows an injury, or doesn't improve after a few weeks.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-043",
+  "area": "personal",
+  "prompt": "what should I put in my resume summary?",
+  "reply": "Keep it to **2–3 sentences** that answer: who you are, what you're great at, and what you're looking for. Skip generic phrases like \"hard-working team player.\"\n\nA simple formula:\n\n> **[Title] with [X years] of experience in [area]. [Biggest strength or achievement, with a number]. [What you're looking for / the value you bring].**\n\nExamples:\n\n- *Frontend engineer with 5 years of experience building React apps. Led a redesign that cut page load time by 40% and increased sign-ups 18%. Looking to bring performance-focused UI work to a product-led team.*\n- *Operations coordinator with 3 years in logistics. Streamlined a scheduling process that saved 10 hours a week across a team of 12.*\n\nTailor it to each job posting by echoing 2–3 keywords from the description. Want me to write one for you? Tell me your role and a couple of wins.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-044",
+  "area": "personal",
+  "prompt": "add some variety to my workouts, I only ever run",
+  "reply": "Running is a great base! Here's how to mix things up without losing your running fitness:\n\n**Strength (2×/week, 30–40 min)** — the biggest upgrade for runners\n- Goblet squats, 3×10\n- Romanian deadlifts, 3×10\n- Lunges, 3×10 per leg\n- Push-ups, 3×max\n- Plank, 3×45 sec\n\n**Cross-training (1×/week)** — cycling, swimming, or rowing to build fitness with less impact\n\n**Mobility (10 min, most days)** — hip flexor stretches, hamstring stretches, foam rolling\n\n**Change up your runs** — replace one easy run with intervals (e.g. 6×400m fast with 90 sec rest) or a hilly route\n\nA sample week:\n\n| Mon | Tue | Wed | Thu | Fri | Sat | Sun |\n|---|---|---|---|---|---|---|\n| Easy run | Strength | Intervals | Swim/bike | Strength | Long run | Rest |\n\nDo you have access to a gym, or should I keep it bodyweight-only?",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-045",
+  "area": "personal",
+  "prompt": "make a grocery list for a vegetarian week of dinners",
+  "reply": "Here's a list for 5 dinners for two — **chickpea curry, veggie stir-fry, black bean tacos, pesto pasta, and a halloumi traybake** — plus pantry staples:\n\n**Produce**\n- 2 onions, 1 head of garlic, 1 knob of ginger\n- 3 bell peppers, 1 head of broccoli, 2 zucchini\n- 1 bag of spinach, 1 bag of salad greens\n- 2 limes, 1 lemon, 1 avocado\n- 1 punnet of cherry tomatoes, fresh cilantro and basil\n\n**Protein & dairy**\n- 1 block of firm tofu\n- 1 block of halloumi\n- Cheddar or Monterey Jack, plain yogurt or sour cream\n- 6 eggs\n\n**Pantry**\n- 2 cans of chickpeas, 2 cans of black beans\n- 1 can of coconut milk, 1 can of chopped tomatoes\n- Basmati rice, pasta, tortillas\n- Pesto, soy sauce, curry paste, cumin, chili flakes\n\nWant the recipes too, or should I scale it for more people?",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-046",
+  "area": "personal",
+  "prompt": "put together a 3-day itinerary for Lisbon",
+  "reply": "Here's a relaxed 3-day plan:\n\n**Day 1 — Alfama & Baixa**\n- Morning: São Jorge Castle for views over the city\n- Wander down through Alfama's alleys; stop at Miradouro de Santa Luzia\n- Lunch: grilled sardines at a tasca\n- Afternoon: Praça do Comércio and Rua Augusta\n- Evening: fado dinner in Alfama 🎶\n\n**Day 2 — Belém**\n- Morning: Jerónimos Monastery (go early to beat the line)\n- Pastéis de Belém — the original custard tarts 🥧\n- Belém Tower and the MAAT museum along the river\n- Evening: sunset drinks at a rooftop bar in Bairro Alto\n\n**Day 3 — LX Factory & Príncipe Real**\n- Morning: LX Factory for shops, cafés, and street art\n- Lunch: Time Out Market\n- Afternoon: Príncipe Real gardens and boutiques\n- Evening: dinner and the view from Miradouro de São Pedro de Alcântara\n\n**Tips:** get a Viva Viagem card for the metro and trams, wear comfy shoes (it's very hilly), and ride Tram 28 early in the morning before it's packed.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-047",
+  "area": "personal",
+  "prompt": "get me some ideas for my wife's 30th birthday",
+  "reply": "Happy almost-30th to her! 🎉 A few directions, depending on what she loves:\n\n**Experiences**\n- A surprise weekend away somewhere she's always wanted to go\n- A tasting-menu dinner at a restaurant she's been eyeing\n- A hot-air balloon ride, or a sunrise hike with breakfast at the top\n\n**Sentimental**\n- \"30 reasons I love you\" — a jar of notes or a small book\n- Letters from 30 friends and family, collected in secret\n- A photo book of your years together\n\n**Party**\n- A dinner party with her closest friends and a theme (her favorite decade, a destination)\n- A surprise brunch — easier to keep secret than an evening party\n\n**Gifts**\n- An upgrade of something she uses every day (great headphones, a nice bag, jewelry)\n- A class she's mentioned wanting to try — pottery, cooking, dance\n\nWhat's she into? I can narrow it down.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-048",
+  "area": "personal",
+  "prompt": "set a budget for me: I take home $4,200 a month",
+  "reply": "Here's a starting budget using the **50/30/20** rule:\n\n| Category | % | Monthly |\n|---|---|---|\n| **Needs** (rent, utilities, groceries, insurance, transport, minimum debt payments) | 50% | $2,100 |\n| **Wants** (eating out, subscriptions, hobbies, travel) | 30% | $1,260 |\n| **Savings & debt** (emergency fund, retirement, extra debt payments) | 20% | $840 |\n\nSuggested order for the savings bucket:\n\n1. Build a **$1,000 starter emergency fund**\n2. Get any **employer 401(k) match**\n3. Pay off **high-interest debt** (credit cards)\n4. Grow the emergency fund to **3–6 months of expenses**\n5. Invest for retirement and longer-term goals\n\nIf your rent alone is over ~$1,500, needs will likely exceed 50% — that's common in expensive cities. Tell me your rent and fixed bills and I'll tailor it.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-049",
+  "area": "personal",
+  "prompt": "remind me how compound interest works",
+  "reply": "Compound interest means you earn interest on your **interest**, not just on the money you put in.\n\n**Formula:**\n\n$$A = P\\left(1 + \\frac{r}{n}\\right)^{nt}$$\n\n- $P$ = principal (starting amount)\n- $r$ = annual interest rate (as a decimal)\n- $n$ = times compounded per year\n- $t$ = years\n\n**Example:** \\$10,000 at 7% compounded yearly:\n\n| Year | Balance |\n|---|---|\n| 0 | \\$10,000 |\n| 1 | \\$10,700 |\n| 10 | \\$19,672 |\n| 20 | \\$38,697 |\n| 30 | \\$76,123 |\n\nThe growth speeds up over time because each year's interest is calculated on a bigger balance. Quick rule of thumb — the **Rule of 72**: divide 72 by the rate to estimate how many years it takes to double (72 ÷ 7 ≈ 10 years).",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-050",
+  "area": "personal",
+  "prompt": "mark my words, I'm going to run a marathon next year",
+  "reply": "I love this energy! 🏃‍♀️ Consider them marked.\n\nA few things to set you up for success:\n\n- **Pick the race now.** Having a date on the calendar makes it real — spring or fall races give you the best weather for training.\n- **Build a base first.** If you're not running regularly yet, aim to comfortably run 3×/week for 30 minutes before starting a plan.\n- **Use a proven plan.** Most first-timers do well with a 16–20 week program (Hal Higdon's Novice 1 is a classic).\n- **Increase slowly** — no more than ~10% more mileage per week.\n- **Invest in good shoes** from a running store that will watch you run.\n\nHow much are you running right now? I can sketch out a timeline from here to race day.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-051",
+  "area": "personal",
+  "prompt": "how do I tell my boss I need tomorrow off? it's kind of last minute",
+  "reply": "Keep it short, honest, and focused on how work will be covered. You don't need to over-explain. Something like:\n\n> Hi Sarah,\n>\n> I need to take a personal day tomorrow (Thursday). Sorry for the short notice. I've finished the slides for Friday's review, and Jamal has agreed to cover the 10am client call. I'll be reachable by text if anything urgent comes up.\n>\n> Thanks for understanding!\n\nTips:\n- **Send it as early as possible** — today, not tomorrow morning.\n- **Mention coverage** for anything time-sensitive.\n- If it's for health or a family emergency, it's fine to just say \"personal\" or \"family matter\" — you don't owe details.\n\nWant me to adjust the tone for your workplace (more formal, or more casual for Slack)?",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-052",
+  "area": "personal",
+  "prompt": "I keep forgetting to take my vitamins, any tips?",
+  "reply": "This is a classic habit-stacking problem. A few things that work well:\n\n- **Attach it to something you never skip** — take them right after brushing your teeth or with your morning coffee.\n- **Put the bottle where you'll see it**, like next to the coffee maker or your toothbrush (out of reach of kids, of course).\n- **Use a weekly pill organizer** — you can see at a glance whether you've taken today's.\n- **Take them with food** — many vitamins (like D and multivitamins) absorb better with a meal anyway.\n\nIf you'd like, I can also set up a daily reminder for you — just tell me what time works.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-053",
+  "area": "personal",
+  "prompt": "how do I stop procrastinating?",
+  "reply": "Procrastination is usually about avoiding a feeling (boredom, anxiety, uncertainty), not laziness. So the trick is making starting feel easier:\n\n1. **Shrink the first step.** Not \"write the report\" — \"open the doc and write one bad sentence.\"\n2. **Use a 25-minute timer** (Pomodoro). Anyone can do 25 minutes; momentum usually takes over.\n3. **Decide the night before** what your first task is tomorrow, so you don't burn willpower choosing.\n4. **Remove friction for the right thing, add it for the wrong thing.** Close the tabs, put your phone in another room, log out of social apps.\n5. **Be specific about when.** \"I'll do it at 2pm at my desk\" beats \"I'll do it later.\"\n6. **Forgive yourself.** People who forgive past procrastination tend to procrastinate less next time.\n\nWhat's the task you're putting off right now? We can break it down together.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-054",
+  "area": "personal",
+  "prompt": "make it shorter",
+  "history": [
+   [
+    "user",
+    "Can you write an email to my landlord about the broken heater?"
+   ],
+   [
+    "assistant",
+    "Here's a draft:\n\n**Subject:** Heater not working — Apt 4B\n\nHi Mr. Patel,\n\nI hope you're doing well. I wanted to let you know that the heater in my apartment (4B) stopped working on Sunday evening. I've checked the thermostat and the breaker, and both seem fine, but the unit isn't producing any heat. With temperatures dropping below freezing at night this week, it's becoming quite uncomfortable.\n\nCould you arrange for someone to take a look as soon as possible? I'm available most days after 5pm, and I'm happy to give access while I'm at work if needed.\n\nThank you for your help — I appreciate it.\n\nBest regards,\nMaya Chen"
+   ]
+  ],
+  "reply": "**Subject:** Heater not working — Apt 4B\n\nHi Mr. Patel,\n\nThe heater in 4B stopped working on Sunday. The thermostat and breaker look fine, but there's no heat, and it's getting below freezing at night. Could you send someone to fix it as soon as possible? I'm home after 5pm, or I can give access during the day.\n\nThanks,\nMaya",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-055",
+  "area": "personal",
+  "prompt": "move leg day to friday",
+  "history": [
+   [
+    "user",
+    "give me a 4-day gym split"
+   ],
+   [
+    "assistant",
+    "Here's a simple upper/lower split:\n\n| Day | Focus |\n|---|---|\n| **Monday** | Upper body (push) — bench press, overhead press, triceps |\n| **Tuesday** | Lower body — squats, Romanian deadlifts, lunges, calves |\n| **Thursday** | Upper body (pull) — rows, pull-ups, biceps |\n| **Friday** | Full body + core — deadlifts, dips, planks |\n\nRest on Wednesday and the weekend."
+   ]
+  ],
+  "reply": "Updated! Here's the plan with leg day moved to Friday:\n\n| Day | Focus |\n|---|---|\n| **Monday** | Upper body (push) — bench press, overhead press, triceps |\n| **Tuesday** | Full body + core — deadlifts, dips, planks |\n| **Thursday** | Upper body (pull) — rows, pull-ups, biceps |\n| **Friday** | Lower body — squats, Romanian deadlifts, lunges, calves |\n\nI swapped it with the full-body day so the order still alternates. One heads-up: Tuesday now has deadlifts, so keep them moderate — you want fresh legs for Friday's squats.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-056",
+  "area": "personal",
+  "prompt": "remove the mushrooms, I hate them",
+  "history": [
+   [
+    "user",
+    "plan 5 vegetarian dinners for this week"
+   ],
+   [
+    "assistant",
+    "- **Mon:** Mushroom risotto with peas\n- **Tue:** Black bean tacos with pickled onions\n- **Wed:** Chickpea & spinach curry\n- **Thu:** Stuffed peppers with rice, beans, and mushrooms\n- **Fri:** Homemade pizza night 🍕"
+   ]
+  ],
+  "reply": "Done — no more mushrooms! 🍄🚫 Here's the updated plan:\n\n- **Mon:** Butternut squash risotto with sage\n- **Tue:** Black bean tacos with pickled onions\n- **Wed:** Chickpea & spinach curry\n- **Thu:** Stuffed peppers with rice, black beans, corn, and cheddar\n- **Fri:** Homemade pizza night 🍕 (try peppers, olives, and caramelized onions)",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-057",
+  "area": "personal",
+  "prompt": "add a day trip to Sintra",
+  "history": [
+   [
+    "user",
+    "put together a 3-day itinerary for Lisbon"
+   ],
+   [
+    "assistant",
+    "Here's a relaxed 3-day plan:\n\n**Day 1 — Alfama & Baixa**\n- Morning: São Jorge Castle for views over the city\n- Wander down through Alfama's alleys; stop at Miradouro de Santa Luzia\n- Lunch: grilled sardines at a tasca\n- Afternoon: Praça do Comércio and Rua Augusta\n- Evening: fado dinner in Alfama 🎶\n\n**Day 2 — Belém**\n- Morning: Jerónimos Monastery (go early to beat the line)\n- Pastéis de Belém — the original custard tarts 🥧\n- Belém Tower and the MAAT museum along the river\n- Evening: sunset drinks at a rooftop bar in Bairro Alto\n\n**Day 3 — LX Factory & Príncipe Real**\n- Morning: LX Factory for shops, cafés, and street art\n- Lunch: Time Out Market\n- Afternoon: Príncipe Real gardens and boutiques\n- Evening: dinner and the view from Miradouro de São Pedro de Alcântara\n\n**Tips:** get a Viva Viagem card for the metro and trams, wear comfy shoes (it's very hilly), and ride Tram 28 early in the morning before it's packed."
+   ]
+  ],
+  "reply": "Added: **Day 4 — Sintra** 🏰\n\n- **8:30am** — Train from Rossio station (about 40 minutes; runs every 20 minutes)\n- **9:30am** — Pena Palace — book a timed ticket online and go first thing, it gets very busy\n- **12:00pm** — Walk down to the Moorish Castle for views over the whole region\n- **1:30pm** — Lunch in the old town; try a *travesseiro* at Piriquita\n- **3:00pm** — Quinta da Regaleira and its spiral Initiation Well\n- **6:00pm** — Train back to Lisbon\n\n**Tips:** wear good walking shoes (it's steep), and use the 434 bus between the sights rather than walking uphill. If you'd rather rest, Day 4 could be a beach day in Cascais instead.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-058",
+  "area": "personal",
+  "prompt": "set savings to 25% instead",
+  "history": [
+   [
+    "user",
+    "set a budget for me: I take home $4,200 a month"
+   ],
+   [
+    "assistant",
+    "Here's a starting budget using the **50/30/20** rule:\n\n| Category | % | Monthly |\n|---|---|---|\n| **Needs** (rent, utilities, groceries, insurance, transport, minimum debt payments) | 50% | $2,100 |\n| **Wants** (eating out, subscriptions, hobbies, travel) | 30% | $1,260 |\n| **Savings & debt** (emergency fund, retirement, extra debt payments) | 20% | $840 |\n\nSuggested order for the savings bucket:\n\n1. Build a **$1,000 starter emergency fund**\n2. Get any **employer 401(k) match**\n3. Pay off **high-interest debt** (credit cards)\n4. Grow the emergency fund to **3–6 months of expenses**\n5. Invest for retirement and longer-term goals\n\nIf your rent alone is over ~$1,500, needs will likely exceed 50% — that's common in expensive cities. Tell me your rent and fixed bills and I'll tailor it."
+   ]
+  ],
+  "reply": "Set: savings at 25% ($1,050/month). To make room, I took the extra 5% out of wants:\n\n| Category | % | Monthly |\n|---|---|---|\n| **Needs** | 50% | $2,100 |\n| **Wants** | 25% | $1,050 |\n| **Savings & debt** | 25% | $1,050 |\n\nAt $1,050/month you'd have about **$12,600 saved in a year** (before interest) — enough for a solid emergency fund for most people. Tip: set up an automatic transfer on payday so you never see the money in checking.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-059",
+  "area": "personal",
+  "prompt": "change the start time to 7pm",
+  "history": [
+   [
+    "user",
+    "make me a weekday study schedule for my chemistry final"
+   ],
+   [
+    "assistant",
+    "Here's a plan for the next two weeks:\n\n| Day | Time | Focus |\n|---|---|---|\n| Mon | 6:00–8:00pm | Stoichiometry & reactions |\n| Tue | 6:00–8:00pm | Thermochemistry |\n| Wed | 6:00–8:00pm | Equilibrium |\n| Thu | 6:00–8:00pm | Acids & bases |\n| Fri | 6:00–7:00pm | Practice problems (mixed) |\n\nTake a 10-minute break halfway through each session."
+   ]
+  ],
+  "reply": "Changed to 7pm — here's the updated schedule:\n\n| Day | Time | Focus |\n|---|---|---|\n| Mon | 7:00–9:00pm | Stoichiometry & reactions |\n| Tue | 7:00–9:00pm | Thermochemistry |\n| Wed | 7:00–9:00pm | Equilibrium |\n| Thu | 7:00–9:00pm | Acids & bases |\n| Fri | 7:00–8:00pm | Practice problems (mixed) |\n\nStill take a 10-minute break around 8pm. If 9pm feels late for focused work, you could trim Monday–Thursday to 90 minutes each.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-060",
+  "area": "personal",
+  "prompt": "what if the salary was the same though?",
+  "history": [
+   [
+    "user",
+    "should I take the job offer in Denver? it's 10% more pay but I'd have to relocate from Chicago"
+   ],
+   [
+    "assistant",
+    "It's a solid offer, but 10% might be less than it looks:\n\n**Pros**\n- Higher salary and a fresh start\n- Great outdoor lifestyle 🏔️\n- Possibly a better role or company — is it a step up?\n\n**Cons**\n- Moving costs and the hassle of relocating\n- Leaving your friends and support network in Chicago\n- Overall cost of living is similar, but housing in Denver can be pricier\n\nThe biggest question: **is the job itself better**, or is it mainly the money?"
+   ]
+  ],
+  "reply": "Then it really comes down to everything *except* money — which honestly makes the decision clearer:\n\n**Take it if:**\n- The role is a real step up (bigger scope, better title, stronger team, more growth)\n- You're excited about living in Denver specifically — hiking, skiing, sunshine, a change of pace\n- You feel stuck in Chicago and want a fresh start\n\n**Stay if:**\n- The job is roughly a lateral move\n- Your friends, family, or partner are a big part of your happiness in Chicago\n- You'd mainly be moving for the novelty\n\nA useful gut check: imagine you've accepted and it's moving day. Do you feel relief and excitement, or dread? And with equal pay, you have room to negotiate — ask them to cover relocation costs or add a signing bonus.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-061",
+  "area": "personal",
+  "prompt": "make it funnier",
+  "history": [
+   [
+    "user",
+    "help me write a birthday message for my dad, he's turning 60"
+   ],
+   [
+    "assistant",
+    "Happy 60th birthday, Dad! 🎉\n\nThank you for everything you've taught me — how to fix a flat tire, how to make the perfect pancakes, and how to stay calm when things go sideways. I'm so grateful to have you in my corner. Here's to many more adventures together.\n\nLove you lots! ❤️"
+   ]
+  ],
+  "reply": "Happy 60th birthday, Dad! 🎉\n\nCongratulations on officially reaching the age where you're allowed to tell the same story three times at dinner — not that you ever needed permission. 😄\n\nThank you for teaching me how to fix a flat tire, make the perfect pancakes, and turn off every light in the house \"because we're not paying to light up the whole neighborhood.\"\n\nYou're not old, you're *vintage*. Here's to many more years of terrible puns and thermostat supervision.\n\nLove you lots! ❤️",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-062",
+  "area": "personal",
+  "prompt": "3 days, at home",
+  "history": [
+   [
+    "user",
+    "I want to start working out but I have no idea where to begin"
+   ],
+   [
+    "assistant",
+    "Love that you're starting! 💪 A couple of quick questions so I can make a plan that fits:\n\n1. How many days a week can you realistically work out?\n2. Do you have access to a gym, or would you be training at home?"
+   ]
+  ],
+  "reply": "Perfect — 3 days at home is plenty to make real progress. Here's a beginner full-body plan, about 30 minutes each:\n\n**Monday, Wednesday, Friday**\n\n| Exercise | Sets × Reps |\n|---|---|\n| Bodyweight squats | 3 × 12 |\n| Push-ups (on knees if needed) | 3 × 8–10 |\n| Glute bridges | 3 × 12 |\n| Reverse lunges | 3 × 8 per leg |\n| Plank | 3 × 20–30 sec |\n| Superman holds | 3 × 10 |\n\nRest 60 seconds between sets. Start each session with 5 minutes of marching in place, arm circles, and leg swings.\n\n**Progression:** when the last set feels easy, add 2 reps or slow down the movement. After 4–6 weeks, a pair of adjustable dumbbells will open up a lot more exercises.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-063",
+  "area": "personal",
+  "prompt": "both. should I move? I don't speak German and all my friends are here",
+  "history": [
+   [
+    "user",
+    "I just got a job offer in Berlin!"
+   ],
+   [
+    "assistant",
+    "Congratulations!! 🎉 That's huge. How are you feeling about it — excited, nervous, a bit of both?"
+   ]
+  ],
+  "reply": "Both is exactly the right feeling for a decision this big. A few things to think through:\n\n**The language**\n- Berlin is one of the easiest European cities to live in without German, especially in tech, startups, and international companies.\n- Bureaucracy (registering your address, taxes, residence permits) is the hardest part — many employers help with relocation.\n- Starting German classes before you go makes daily life much nicer and helps you feel at home faster.\n\n**Your friends**\n- This is the real cost, and it's okay to take it seriously.\n- Berlin has a huge international community — it's easier to build a new circle there than in most cities.\n- Think about how often you'd realistically visit home, and what flights would cost.\n\n**Questions to ask yourself**\n- Would you regret *not* going in five years?\n- Is the job a genuine step forward for your career?\n- Could you treat it as a 2-year adventure rather than forever?\n\nWhere would you be moving from? That changes a lot about visits and cost of living.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-064",
+  "area": "code",
+  "prompt": "how do I remove duplicates from a list in python?",
+  "reply": "Two common ways, depending on whether order matters:\n\n```python\nitems = [3, 1, 3, 2, 1, 2]\n\n# Keep the original order (Python 3.7+)\nunique = list(dict.fromkeys(items))\nprint(unique)  # [3, 1, 2]\n\n# Order doesn't matter\nunique = list(set(items))\n```\n\n`dict.fromkeys` is usually the best choice: it's O(n), preserves order, and reads clearly. If your items aren't hashable (e.g. a list of lists), fall back to a loop:\n\n```python\nunique = []\nfor x in items:\n    if x not in unique:\n        unique.append(x)\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-065",
+  "area": "code",
+  "prompt": "add a column to a pandas dataframe",
+  "reply": "There are a few ways to add a column to a pandas DataFrame:\n\n```python\nimport pandas as pd\n\ndf = pd.DataFrame({\"name\": [\"Ana\", \"Ben\"], \"price\": [10.0, 24.5]})\n\n# 1. Constant value\ndf[\"currency\"] = \"USD\"\n\n# 2. Computed from other columns\ndf[\"price_with_tax\"] = df[\"price\"] * 1.08\n\n# 3. At a specific position\ndf.insert(1, \"id\", [101, 102])\n\n# 4. Without mutating the original (handy in method chains)\ndf2 = df.assign(discounted=lambda d: d[\"price\"] * 0.9)\n```\n\n`df[\"col\"] = ...` is the most common. Use `insert` when column order matters and `assign` when you want to chain operations.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-066",
+  "area": "code",
+  "prompt": "get the last element of an array in javascript",
+  "reply": "The modern way is `Array.prototype.at()`:\n\n```javascript\nconst arr = [10, 20, 30];\n\narr.at(-1);            // 30\narr[arr.length - 1];   // 30 — works everywhere, including older browsers\n```\n\nBoth return `undefined` for an empty array. Avoid `arr.pop()` unless you actually want to remove the element — it mutates the array.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-067",
+  "area": "code",
+  "prompt": "how do I set up a React project with Vite?",
+  "reply": "Vite is the quickest way to set up a new React project:\n\n```bash\nnpm create vite@latest my-app -- --template react-ts\ncd my-app\nnpm install\nnpm run dev\n```\n\nThat gives you React + TypeScript with hot reload at `http://localhost:5173`. Use `--template react` instead if you want plain JavaScript.\n\nA few things worth adding next:\n\n- **ESLint + Prettier** for consistent formatting\n- **React Router** (`npm install react-router-dom`) if you need multiple pages\n- **Vitest** for tests — it shares Vite's config, so setup is minimal",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-068",
+  "area": "code",
+  "prompt": "how do I delete a git branch locally and remotely?",
+  "reply": "```bash\n# Delete a local branch (only if it's merged)\ngit branch -d feature/login\n\n# Force-delete a local branch, even if unmerged\ngit branch -D feature/login\n\n# Delete the branch on the remote\ngit push origin --delete feature/login\n```\n\nYou can't delete the branch you're currently on — switch first with `git switch main`. To clean up local references to branches that were deleted on the remote, run `git fetch --prune`.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-069",
+  "area": "code",
+  "prompt": "move a file in bash",
+  "reply": "Use `mv`:\n\n```bash\n# Move a file into a directory\nmv report.pdf ~/Documents/\n\n# Move and rename at the same time\nmv report.pdf ~/Documents/q3-report.pdf\n\n# Don't overwrite if the destination already exists\nmv -n report.pdf ~/Documents/\n```\n\nTo move several files and log each one:\n\n```bash\nfor f in *.pdf; do\n  mv -- \"$f\" archive/ && echo \"Moved: $f\"\ndone\n```\n\n`mv` also renames files — moving within the same directory is just a rename.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-070",
+  "area": "code",
+  "prompt": "complete this function:\n\n```python\ndef is_palindrome(s: str) -> bool:\n    # ignore case and anything that isn't a letter or digit\n    ...\n```",
+  "reply": "```python\ndef is_palindrome(s: str) -> bool:\n    # ignore case and anything that isn't a letter or digit\n    cleaned = [c.lower() for c in s if c.isalnum()]\n    return cleaned == cleaned[::-1]\n```\n\n```python\nis_palindrome(\"A man, a plan, a canal: Panama\")  # True\nis_palindrome(\"hello\")                           # False\n```\n\nThis is O(n) time and space. If you need O(1) extra space, use two pointers that walk inward from both ends and skip non-alphanumeric characters.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-071",
+  "area": "code",
+  "prompt": "finish this regex to match an email address: ^[\\w.+-]+@",
+  "reply": "Here's a completed version:\n\n```regex\n^[\\w.+-]+@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*\\.[A-Za-z]{2,}$\n```\n\nHow it breaks down:\n\n- `^[\\w.+-]+` — the local part (letters, digits, `_`, `.`, `+`, `-`)\n- `@` — the at sign\n- `[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*` — the domain and any subdomains\n- `\\.[A-Za-z]{2,}$` — a top-level domain of at least 2 letters\n\nIn Python:\n\n```python\nimport re\n\nEMAIL_RE = re.compile(r\"^[\\w.+-]+@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*\\.[A-Za-z]{2,}$\")\nEMAIL_RE.match(\"ana.lopez+news@mail.example.com\")  # match\n```\n\nNo practical regex fully implements the email RFC, so for real validation the only reliable check is sending a confirmation email.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-072",
+  "area": "code",
+  "prompt": "make this loop faster:\n\n```python\ntotal = 0\nfor i in range(len(xs)):\n    total += xs[i] * 2\n```",
+  "reply": "The loop does an index lookup and a multiply on every iteration. You can let Python do the work in C instead:\n\n```python\ntotal = 2 * sum(xs)\n```\n\nSince every element is doubled, you can sum first and multiply once. If `xs` is large and numeric, NumPy is faster still:\n\n```python\nimport numpy as np\n\ntotal = 2 * np.asarray(xs).sum()\n```\n\nRough timing for 1,000,000 ints: the original loop ~80 ms, `2 * sum(xs)` ~5 ms, NumPy ~1 ms (if the array already exists).",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-073",
+  "area": "code",
+  "prompt": "how do I put a breakpoint in python?",
+  "reply": "Since Python 3.7 you can just call the built-in `breakpoint()`:\n\n```python\ndef total_price(items):\n    subtotal = sum(i.price for i in items)\n    breakpoint()  # execution pauses here and drops into pdb\n    return subtotal * 1.08\n```\n\nUseful pdb commands once you're paused:\n\n| Command | What it does |\n|---|---|\n| `n` | next line |\n| `s` | step into a function |\n| `c` | continue until the next breakpoint |\n| `p expr` | print an expression |\n| `l` | list the surrounding code |\n| `q` | quit |\n\nIn VS Code or PyCharm you can also click in the gutter to set a breakpoint without changing the code. Set `PYTHONBREAKPOINT=0` to disable all `breakpoint()` calls without removing them.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-074",
+  "area": "code",
+  "prompt": "how do I schedule a cron job every day at 6pm?",
+  "reply": "Open your crontab with `crontab -e` and add:\n\n```bash\n0 18 * * * /home/you/scripts/report.sh >> /home/you/logs/report.log 2>&1\n```\n\nThe five fields are minute, hour, day of month, month, and day of week, so `0 18 * * *` means **every day at 6:00pm**. A few tips:\n\n- Cron uses the server's time zone — check it with `timedatectl`.\n- Use absolute paths; cron runs with a minimal `PATH`.\n- Make the script executable: `chmod +x report.sh`.\n- `crontab -l` lists your current jobs.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-075",
+  "area": "code",
+  "prompt": "write a reminder app in Python",
+  "reply": "Here's a small command-line reminder app. It waits until the time you give it, then prints the reminder and shows a desktop notification if `plyer` is installed:\n\n```python\nimport argparse\nimport time\nfrom datetime import datetime, timedelta\n\n\ndef parse_time(value: str) -> datetime:\n    now = datetime.now()\n    target = datetime.combine(now.date(), datetime.strptime(value, \"%H:%M\").time())\n    if target <= now:\n        target += timedelta(days=1)  # time already passed today -> tomorrow\n    return target\n\n\ndef notify(message: str) -> None:\n    try:\n        from plyer import notification\n\n        notification.notify(title=\"Reminder\", message=message)\n    except ImportError:\n        pass\n    print(f\"⏰ Reminder: {message}\")\n\n\ndef main() -> None:\n    parser = argparse.ArgumentParser(description=\"Simple reminder app\")\n    parser.add_argument(\"time\", help=\"time in 24h format, e.g. 18:30\")\n    parser.add_argument(\"message\", help=\"what to remind you about\")\n    args = parser.parse_args()\n\n    when = parse_time(args.time)\n    print(f\"Set reminder for {when:%a %H:%M}: {args.message}\")\n    time.sleep((when - datetime.now()).total_seconds())\n    notify(args.message)\n\n\nif __name__ == \"__main__\":\n    main()\n```\n\nUsage:\n\n```bash\npython remind.py 18:30 \"Call mom\"\n# Set reminder for Wed 18:30: Call mom\n```\n\nNext steps if you want to grow it: store reminders in SQLite so they survive restarts, and support repeats like \"every day at 9am\".",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-076",
+  "area": "code",
+  "prompt": "remind me what a closure is",
+  "reply": "A **closure** is a function that remembers the variables from the scope where it was created, even after that scope has finished running.\n\n```javascript\nfunction makeCounter() {\n  let count = 0;           // lives in makeCounter's scope\n  return function () {\n    count += 1;            // still has access to `count`\n    return count;\n  };\n}\n\nconst counter = makeCounter();\ncounter(); // 1\ncounter(); // 2\n```\n\n`makeCounter` has already returned, but the inner function keeps `count` alive — that \"remembered environment\" is the closure.\n\nCommon uses:\n\n- **Private state** (like the counter above)\n- **Callbacks and event handlers** that need context\n- **Function factories**, e.g. `const add5 = makeAdder(5)`\n\nThe same idea exists in Python, where inner functions can read variables from the enclosing function (and modify them with `nonlocal`).",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-077",
+  "area": "code",
+  "prompt": "how do I add an index to a postgres column?",
+  "reply": "```sql\nCREATE INDEX idx_orders_customer_id ON orders (customer_id);\n```\n\nOn a big table in production, build it without blocking writes:\n\n```sql\nCREATE INDEX CONCURRENTLY idx_orders_customer_id ON orders (customer_id);\n```\n\nA few variations:\n\n```sql\n-- Unique index\nCREATE UNIQUE INDEX idx_users_email ON users (email);\n\n-- Composite index (column order matters: filter on the first column)\nCREATE INDEX idx_orders_customer_created ON orders (customer_id, created_at DESC);\n\n-- Partial index\nCREATE INDEX idx_orders_pending ON orders (created_at) WHERE status = 'pending';\n```\n\nCheck that it's used with `EXPLAIN ANALYZE SELECT ...`. Note that `CONCURRENTLY` can't run inside a transaction block.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-078",
+  "area": "code",
+  "prompt": "how do I get tomorrow's date in python?",
+  "reply": "Add a `timedelta` of one day:\n\n```python\nfrom datetime import date, datetime, timedelta\n\ntomorrow = date.today() + timedelta(days=1)\nprint(tomorrow)              # 2026-10-15\nprint(tomorrow.isoformat())  # '2026-10-15'\n\n# With a time component (e.g. tomorrow at 9am)\ntomorrow_9am = datetime.combine(tomorrow, datetime.min.time()).replace(hour=9)\nprint(tomorrow_9am)          # 2026-10-15 09:00:00\n```\n\nIf you care about time zones, use `datetime.now(ZoneInfo(\"Europe/Berlin\"))` from the `zoneinfo` module instead of `date.today()`.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-079",
+  "area": "code",
+  "prompt": "SQL to delete rows older than 30 days",
+  "reply": "PostgreSQL:\n\n```sql\nDELETE FROM events\nWHERE created_at < now() - INTERVAL '30 days';\n```\n\nMySQL:\n\n```sql\nDELETE FROM events\nWHERE created_at < NOW() - INTERVAL 30 DAY;\n```\n\nSQLite:\n\n```sql\nDELETE FROM events\nWHERE created_at < datetime('now', '-30 days');\n```\n\nBefore running it for real, swap `DELETE` for `SELECT COUNT(*)` to see how many rows it will remove. On very large tables, delete in batches to avoid long locks.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-080",
+  "area": "code",
+  "prompt": "how do I update a row in SQL?",
+  "reply": "Use `UPDATE ... SET ... WHERE`:\n\n```sql\nUPDATE users\nSET email = 'ana@example.com',\n    updated_at = now()\nWHERE id = 42;\n```\n\n**Always include a `WHERE` clause** — without it, every row in the table gets updated. A safe habit is to run the matching `SELECT` first:\n\n```sql\nSELECT * FROM users WHERE id = 42;\n```\n\nIn PostgreSQL you can also see what changed with `RETURNING`:\n\n```sql\nUPDATE users SET plan = 'pro' WHERE id = 42 RETURNING id, plan;\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-081",
+  "area": "code",
+  "prompt": "git: how do I change the last commit message?",
+  "reply": "If you haven't pushed yet:\n\n```bash\ngit commit --amend -m \"Fix login redirect loop\"\n```\n\nOr run `git commit --amend` without `-m` to edit the message in your editor.\n\nIf you already pushed, you'll need to force-push, which rewrites history on the remote:\n\n```bash\ngit push --force-with-lease\n```\n\nOnly do that on branches nobody else is working on. `--force-with-lease` is safer than `--force` because it refuses to overwrite commits you haven't seen.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-082",
+  "area": "code",
+  "prompt": "how do I set a timeout on fetch in JS?",
+  "reply": "Modern browsers and Node 18+ support `AbortSignal.timeout()`:\n\n```javascript\ntry {\n  const res = await fetch(\"https://api.example.com/data\", {\n    signal: AbortSignal.timeout(5000), // 5 seconds\n  });\n  const data = await res.json();\n} catch (err) {\n  if (err.name === \"TimeoutError\") {\n    console.error(\"Request timed out\");\n  } else {\n    throw err;\n  }\n}\n```\n\nFor older environments, use an `AbortController` with `setTimeout`:\n\n```javascript\nconst controller = new AbortController();\nconst timer = setTimeout(() => controller.abort(), 5000);\ntry {\n  const res = await fetch(url, { signal: controller.signal });\n} finally {\n  clearTimeout(timer);\n}\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-083",
+  "area": "code",
+  "prompt": "how do I add a todo item to a list in React state?",
+  "reply": "Create a new array instead of mutating the old one:\n\n```tsx\nimport { useState } from \"react\";\n\ntype Todo = { id: number; text: string; done: boolean };\n\nexport function TodoList() {\n  const [todos, setTodos] = useState<Todo[]>([]);\n  const [text, setText] = useState(\"\");\n\n  function addTodo() {\n    if (!text.trim()) return;\n    setTodos((prev) => [...prev, { id: Date.now(), text, done: false }]);\n    setText(\"\");\n  }\n\n  return (\n    <div>\n      <input value={text} onChange={(e) => setText(e.target.value)} />\n      <button onClick={addTodo}>Add</button>\n      <ul>\n        {todos.map((t) => (\n          <li key={t.id}>{t.text}</li>\n        ))}\n      </ul>\n    </div>\n  );\n}\n```\n\nThe key part is `setTodos((prev) => [...prev, newItem])`. Calling `todos.push(...)` won't trigger a re-render because React compares state by reference.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-084",
+  "area": "code",
+  "prompt": "how do I mark a function as deprecated in TypeScript?",
+  "reply": "Use the JSDoc `@deprecated` tag:\n\n```typescript\n/**\n * @deprecated Use `fetchUserById` instead. Will be removed in v3.\n */\nexport function getUser(id: string) {\n  return fetchUserById(id);\n}\n```\n\nEditors like VS Code will show ~~getUser~~ with a strikethrough wherever it's called, and the message appears on hover. To fail the build on usage, enable the `@typescript-eslint/no-deprecated` lint rule.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-085",
+  "area": "code",
+  "prompt": "how do I put a file in S3 with boto3?",
+  "reply": "With boto3 you can use `upload_file` (handles large files and multipart for you) or `put_object` (for bytes already in memory):\n\n```python\nimport boto3\n\ns3 = boto3.client(\"s3\")\n\n# From a file on disk\ns3.upload_file(\"report.pdf\", \"my-bucket\", \"reports/2026/report.pdf\")\n\n# From bytes / a string\ns3.put_object(\n    Bucket=\"my-bucket\",\n    Key=\"notes/hello.txt\",\n    Body=b\"Hello, S3!\",\n    ContentType=\"text/plain\",\n)\n```\n\nCredentials come from the usual places — environment variables, `~/.aws/credentials`, or an IAM role. Don't hard-code keys in the script.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-086",
+  "area": "code",
+  "prompt": "how do I change the default branch from master to main?",
+  "reply": "1. Rename the branch locally and push it:\n\n```bash\ngit branch -m master main\ngit push -u origin main\n```\n\n2. On GitHub, go to **Settings → Branches** and switch the default branch to `main`.\n\n3. Delete the old branch on the remote:\n\n```bash\ngit push origin --delete master\n```\n\nOnce the default is changed to `main`, anyone with an existing clone should run:\n\n```bash\ngit branch -m master main\ngit fetch origin\ngit branch -u origin/main main\ngit remote set-head origin -a\n```\n\nAlso update any CI configs or deploy scripts that still reference `master`.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-087",
+  "area": "code",
+  "prompt": "how do I finish a merge after resolving conflicts?",
+  "reply": "Once you've fixed the conflict markers in each file:\n\n```bash\ngit add path/to/fixed_file.py   # mark each conflict as resolved\ngit status                      # make sure nothing is left \"both modified\"\ngit merge --continue            # or: git commit\n```\n\nGit opens your editor with a pre-filled merge message — save and close it to complete the merge.\n\nIf it's going badly and you want to start over:\n\n```bash\ngit merge --abort\n```\n\nTip: `git diff --check` catches any leftover `<<<<<<<` markers before you commit.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-088",
+  "area": "code",
+  "prompt": "write a bash script that backs up my Documents folder every night at 2am",
+  "reply": "**1. The backup script** (`~/bin/backup-docs.sh`):\n\n```bash\n#!/usr/bin/env bash\nset -euo pipefail\n\nSRC=\"$HOME/Documents\"\nDEST=\"/mnt/backup/documents\"\nSTAMP=$(date +%Y-%m-%d)\n\nmkdir -p \"$DEST\"\ntar -czf \"$DEST/documents-$STAMP.tar.gz\" -C \"$(dirname \"$SRC\")\" \"$(basename \"$SRC\")\"\n\n# keep only the 14 most recent backups\nls -1t \"$DEST\"/documents-*.tar.gz | tail -n +15 | xargs -r rm --\n\necho \"$(date '+%F %T') backup complete: documents-$STAMP.tar.gz\"\n```\n\nMake it executable:\n\n```bash\nchmod +x ~/bin/backup-docs.sh\n```\n\n**2. Schedule it** with `crontab -e`:\n\n```bash\n0 2 * * * $HOME/bin/backup-docs.sh >> $HOME/backup.log 2>&1\n```\n\nThat runs every night at 2:00am. If your machine is often asleep at that hour, `anacron` (Linux) or a `launchd` job (macOS) will run it the next time it wakes up.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-089",
+  "area": "code",
+  "prompt": "regex for 24-hour times like 18:30",
+  "reply": "```regex\n^([01]\\d|2[0-3]):[0-5]\\d$\n```\n\n- `[01]\\d` — hours 00 to 19\n- `2[0-3]` — hours 20 to 23\n- `:[0-5]\\d` — minutes 00 to 59\n\nSo it matches `18:30`, `00:00`, and `23:59`, but not `24:00`, `7:30`, or `18:60`. To also allow a single-digit hour like `7:30`, use:\n\n```regex\n^([01]?\\d|2[0-3]):[0-5]\\d$\n```\n\nIn JavaScript:\n\n```javascript\n/^([01]\\d|2[0-3]):[0-5]\\d$/.test(\"18:30\"); // true\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-090",
+  "area": "code",
+  "prompt": "tell me a bit about the history of Python",
+  "reply": "Here's the short version:\n\n- **Created:** 1991, by Guido van Rossum at CWI in the Netherlands\n- **Name:** after *Monty Python's Flying Circus*, not the snake 🐍\n- **Python 2.0 (2000):** list comprehensions, cycle-detecting garbage collection\n- **Python 3.0 (2008):** a deliberately backwards-incompatible cleanup (`print()` became a function, strings became Unicode by default)\n- **Python 2 end of life:** January 1, 2020\n- **Governance:** Guido stepped down as \"Benevolent Dictator For Life\" in 2018; a five-person Steering Council has led the language since\n\nRecent releases have focused on speed (3.11 was ~25% faster than 3.10) and an optional free-threaded build without the GIL (3.13+). Today it's one of the most popular languages in the world, especially for data science, ML, and scripting.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-091",
+  "area": "code",
+  "prompt": "how do I create a table in sqlite with python?",
+  "reply": "Use the built-in `sqlite3` module:\n\n```python\nimport sqlite3\n\nconn = sqlite3.connect(\"app.db\")\ncur = conn.cursor()\n\ncur.execute(\n    '''\n    CREATE TABLE IF NOT EXISTS users (\n        id INTEGER PRIMARY KEY AUTOINCREMENT,\n        name TEXT NOT NULL,\n        email TEXT UNIQUE,\n        created_at TEXT DEFAULT CURRENT_TIMESTAMP\n    )\n    '''\n)\nconn.commit()\nprint(\"Created: users\")\n\ncur.execute(\"INSERT INTO users (name, email) VALUES (?, ?)\", (\"Ana\", \"ana@example.com\"))\nconn.commit()\nconn.close()\n```\n\n`IF NOT EXISTS` makes the script safe to re-run. Always use `?` placeholders for values instead of f-strings to avoid SQL injection.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-092",
+  "area": "code",
+  "prompt": "how do I remove a key from a dict in python?",
+  "reply": "A few options:\n\n```python\nuser = {\"name\": \"Ana\", \"age\": 31, \"temp\": True}\n\n# 1. del — raises KeyError if the key is missing\ndel user[\"temp\"]\n\n# 2. pop — returns the value; pass a default to avoid KeyError\nage = user.pop(\"age\", None)\n\n# 3. Build a new dict without certain keys (original untouched)\nclean = {k: v for k, v in user.items() if k not in {\"temp\", \"age\"}}\n```\n\nUse `pop(key, None)` when you're not sure the key exists — it's the safest one-liner.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-093",
+  "area": "code",
+  "prompt": "add error handling",
+  "history": [
+   [
+    "user",
+    "write a python function that downloads a file from a URL"
+   ],
+   [
+    "assistant",
+    "```python\nimport requests\n\n\ndef download(url: str, path: str) -> None:\n    resp = requests.get(url)\n    with open(path, \"wb\") as f:\n        f.write(resp.content)\n```"
+   ]
+  ],
+  "reply": "I've added error handling for network failures, bad HTTP status codes, timeouts, and file write errors. It also streams the download so large files don't fill up memory:\n\n```python\nimport logging\n\nimport requests\n\nlog = logging.getLogger(__name__)\n\n\ndef download(url: str, path: str, timeout: float = 10.0) -> bool:\n    try:\n        with requests.get(url, stream=True, timeout=timeout) as resp:\n            resp.raise_for_status()\n            with open(path, \"wb\") as f:\n                for chunk in resp.iter_content(chunk_size=8192):\n                    f.write(chunk)\n    except requests.Timeout:\n        log.error(\"Timed out downloading %s\", url)\n        return False\n    except requests.HTTPError as e:\n        log.error(\"HTTP %s for %s\", e.response.status_code, url)\n        return False\n    except requests.RequestException as e:\n        log.error(\"Network error for %s: %s\", url, e)\n        return False\n    except OSError as e:\n        log.error(\"Could not write %s: %s\", path, e)\n        return False\n    return True\n```\n\nIt now returns `True`/`False` instead of raising, so callers can decide whether to retry.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-094",
+  "area": "code",
+  "prompt": "now delete the print statements",
+  "history": [
+   [
+    "user",
+    "why is this so slow?\n\n```python\ndef load(rows):\n    out = []\n    for r in rows:\n        print(\"processing\", r)\n        out.append(transform(r))\n        print(\"done\", r)\n    return out\n```"
+   ],
+   [
+    "assistant",
+    "The `print` calls are the main cost — writing to the terminal twice per row is slow, especially with thousands of rows. `transform` itself looks fine. A list comprehension would also be a little faster than calling `append` in a loop."
+   ]
+  ],
+  "reply": "Done: removed both `print` statements and switched to a list comprehension:\n\n```python\ndef load(rows):\n    return [transform(r) for r in rows]\n```\n\nIf you still want progress output for long runs, use `tqdm` instead of printing every row:\n\n```python\nfrom tqdm import tqdm\n\n\ndef load(rows):\n    return [transform(r) for r in tqdm(rows)]\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-095",
+  "area": "code",
+  "prompt": "make it async",
+  "history": [
+   [
+    "user",
+    "fetch a list of URLs and return their status codes in python"
+   ],
+   [
+    "assistant",
+    "```python\nimport requests\n\n\ndef get_statuses(urls):\n    return {url: requests.get(url, timeout=10).status_code for url in urls}\n```"
+   ]
+  ],
+  "reply": "Here's an async version with `httpx` that fetches all URLs concurrently:\n\n```python\nimport asyncio\n\nimport httpx\n\n\nasync def get_statuses(urls: list[str]) -> dict[str, int | None]:\n    async with httpx.AsyncClient(timeout=10) as client:\n\n        async def fetch(url: str) -> tuple[str, int | None]:\n            try:\n                resp = await client.get(url)\n                return url, resp.status_code\n            except httpx.HTTPError:\n                return url, None\n\n        results = await asyncio.gather(*(fetch(u) for u in urls))\n    return dict(results)\n\n\nif __name__ == \"__main__\":\n    urls = [\"https://example.com\", \"https://httpbin.org/status/404\"]\n    print(asyncio.run(get_statuses(urls)))\n```\n\nInstall it with `pip install httpx`. For hundreds of URLs, add an `asyncio.Semaphore` to cap concurrency so you don't overwhelm the servers.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-096",
+  "area": "code",
+  "prompt": "change it to TypeScript",
+  "history": [
+   [
+    "user",
+    "write a debounce function in JS"
+   ],
+   [
+    "assistant",
+    "```javascript\nfunction debounce(fn, wait) {\n  let timer;\n  return function (...args) {\n    clearTimeout(timer);\n    timer = setTimeout(() => fn.apply(this, args), wait);\n  };\n}\n```"
+   ]
+  ],
+  "reply": "Here's the TypeScript version, with the argument types of the original function preserved:\n\n```typescript\nexport function debounce<T extends (...args: any[]) => void>(\n  fn: T,\n  wait: number,\n): (...args: Parameters<T>) => void {\n  let timer: ReturnType<typeof setTimeout> | undefined;\n  return function (this: ThisParameterType<T>, ...args: Parameters<T>) {\n    clearTimeout(timer);\n    timer = setTimeout(() => fn.apply(this, args), wait);\n  };\n}\n```\n\nUsage:\n\n```typescript\nconst onResize = debounce((width: number) => console.log(width), 200);\nonResize(1024);   // ✅\nonResize(\"wide\"); // ❌ type error\n```\n\n`ReturnType<typeof setTimeout>` keeps it working in both the browser and Node, where timers have different types.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-097",
+  "area": "code",
+  "prompt": "set the timeout to 30s",
+  "history": [
+   [
+    "user",
+    "how do I call an API with requests and parse the JSON?"
+   ],
+   [
+    "assistant",
+    "```python\nimport requests\n\nresp = requests.get(\"https://api.example.com/items\", timeout=5)\nresp.raise_for_status()\nitems = resp.json()\n```\n\n`raise_for_status()` turns 4xx/5xx responses into exceptions so you don't accidentally parse an error page."
+   ]
+  ],
+  "reply": "Set the timeout to 30 seconds:\n\n```python\nimport requests\n\nresp = requests.get(\"https://api.example.com/items\", timeout=30)\nresp.raise_for_status()\nitems = resp.json()\n```\n\nYou can also set the connect and read timeouts separately — e.g. `timeout=(5, 30)` fails fast if the server is unreachable but still allows 30s for a slow response.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-098",
+  "area": "code",
+  "prompt": "yes",
+  "history": [
+   [
+    "user",
+    "how do I read a csv in python"
+   ],
+   [
+    "assistant",
+    "```python\nimport csv\n\nwith open(\"data.csv\", newline=\"\") as f:\n    reader = csv.reader(f)\n    for row in reader:\n        print(row)\n```\n\nWant me to show how to skip the header row too?"
+   ]
+  ],
+  "reply": "Sure! Two ways:\n\n**1. Skip it with `next()`:**\n\n```python\nimport csv\n\nwith open(\"data.csv\", newline=\"\") as f:\n    reader = csv.reader(f)\n    header = next(reader)  # read and skip the first row\n    for row in reader:\n        print(row)\n```\n\n**2. Use `DictReader`**, which uses the header row for keys automatically:\n\n```python\nwith open(\"data.csv\", newline=\"\") as f:\n    for row in csv.DictReader(f):\n        print(row[\"name\"], row[\"email\"])\n```\n\n`DictReader` is usually nicer — your code refers to columns by name instead of by index.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-099",
+  "area": "code",
+  "prompt": "add a where clause for active users only",
+  "history": [
+   [
+    "user",
+    "SQL to get each user with their number of orders"
+   ],
+   [
+    "assistant",
+    "```sql\nSELECT u.id, u.name, COUNT(o.id) AS order_count\nFROM users u\nLEFT JOIN orders o ON o.user_id = u.id\nGROUP BY u.id, u.name\nORDER BY order_count DESC;\n```"
+   ]
+  ],
+  "reply": "```sql\nSELECT u.id, u.name, COUNT(o.id) AS order_count\nFROM users u\nLEFT JOIN orders o ON o.user_id = u.id\nWHERE u.status = 'active'\nGROUP BY u.id, u.name\nORDER BY order_count DESC;\n```\n\nThe `WHERE` goes before `GROUP BY` and filters users before counting. I assumed a `status` column — if it's a boolean, use `WHERE u.is_active` instead. Users with zero orders are still included thanks to the `LEFT JOIN`.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-100",
+  "area": "code",
+  "prompt": "move the fetch into a custom hook",
+  "history": [
+   [
+    "user",
+    "React component that loads a user profile"
+   ],
+   [
+    "assistant",
+    "```tsx\nexport function Profile({ id }: { id: string }) {\n  const [user, setUser] = useState<User | null>(null);\n  useEffect(() => {\n    fetch(`/api/users/${id}`).then((r) => r.json()).then(setUser);\n  }, [id]);\n  if (!user) return <p>Loading…</p>;\n  return <h1>{user.name}</h1>;\n}\n```"
+   ]
+  ],
+  "reply": "Here's the fetch moved into a reusable `useUser` hook, with loading and error state:\n\n```tsx\nimport { useEffect, useState } from \"react\";\n\nexport function useUser(id: string) {\n  const [user, setUser] = useState<User | null>(null);\n  const [error, setError] = useState<Error | null>(null);\n\n  useEffect(() => {\n    let cancelled = false;\n    fetch(`/api/users/${id}`)\n      .then((r) => {\n        if (!r.ok) throw new Error(`HTTP ${r.status}`);\n        return r.json();\n      })\n      .then((data) => !cancelled && setUser(data))\n      .catch((e) => !cancelled && setError(e));\n    return () => {\n      cancelled = true;\n    };\n  }, [id]);\n\n  return { user, error, loading: !user && !error };\n}\n```\n\n```tsx\nexport function Profile({ id }: { id: string }) {\n  const { user, error, loading } = useUser(id);\n  if (loading) return <p>Loading…</p>;\n  if (error) return <p>Something went wrong.</p>;\n  return <h1>{user!.name}</h1>;\n}\n```\n\nThe `cancelled` flag prevents setting state after the component unmounts or `id` changes mid-request.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-101",
+  "area": "code",
+  "prompt": "change it to 7am on weekdays",
+  "history": [
+   [
+    "user",
+    "cron expression for every day at 6pm"
+   ],
+   [
+    "assistant",
+    "```bash\n0 18 * * * /path/to/script.sh\n```\n\nThat runs the script every day at 6:00pm (server time)."
+   ]
+  ],
+  "reply": "Changed to 7am, Monday through Friday:\n\n```bash\n0 7 * * 1-5 /path/to/script.sh\n```\n\nThe last field is day of week: `1-5` means Monday to Friday (`0` or `7` is Sunday). For weekends only, use `0 7 * * 6,0`.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-102",
+  "area": "code",
+  "prompt": "now mark items as complete when clicked",
+  "history": [
+   [
+    "user",
+    "simple todo list component in React with TypeScript"
+   ],
+   [
+    "assistant",
+    "```tsx\nimport { useState } from \"react\";\n\ntype Todo = { id: number; text: string; done: boolean };\n\nexport function TodoList() {\n  const [todos, setTodos] = useState<Todo[]>([]);\n  const [text, setText] = useState(\"\");\n\n  function addTodo() {\n    if (!text.trim()) return;\n    setTodos((prev) => [...prev, { id: Date.now(), text, done: false }]);\n    setText(\"\");\n  }\n\n  return (\n    <div>\n      <input value={text} onChange={(e) => setText(e.target.value)} />\n      <button onClick={addTodo}>Add</button>\n      <ul>\n        {todos.map((t) => (\n          <li key={t.id}>{t.text}</li>\n        ))}\n      </ul>\n    </div>\n  );\n}\n```"
+   ]
+  ],
+  "reply": "Add a `toggle` function that flips `done` for the clicked item, and style completed items with a strikethrough:\n\n```tsx\nfunction toggle(id: number) {\n  setTodos((prev) =>\n    prev.map((t) => (t.id === id ? { ...t, done: !t.done } : t)),\n  );\n}\n\n// in the JSX\n<ul>\n  {todos.map((t) => (\n    <li\n      key={t.id}\n      onClick={() => toggle(t.id)}\n      style={{\n        textDecoration: t.done ? \"line-through\" : \"none\",\n        cursor: \"pointer\",\n      }}\n    >\n      {t.text}\n    </li>\n  ))}\n</ul>\n```\n\nClicking an item marks it complete; clicking again un-marks it. If you'd rather use a checkbox, render `<input type=\"checkbox\" checked={t.done} onChange={() => toggle(t.id)} />` inside each `<li>`.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-103",
+  "area": "code",
+  "prompt": "thanks! 🙏",
+  "history": [
+   [
+    "user",
+    "regex to match a US zip code"
+   ],
+   [
+    "assistant",
+    "```regex\n^\\d{5}(-\\d{4})?$\n```\n\nMatches `12345` and `12345-6789`, but not `1234` or `12345-67`."
+   ]
+  ],
+  "reply": "You're welcome! Happy coding 🚀",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-104",
+  "area": "code",
+  "prompt": "Can you add 3 + 4 using the same method?",
+  "history": [
+   [
+    "user",
+    "how do I write a python function that adds two numbers?"
+   ],
+   [
+    "assistant",
+    "```python\ndef add(a, b):\n    return a + b\n\nprint(add(10, 5))  # 15\n```\n\n`add` takes two arguments and returns their sum. It works for ints, floats, and even strings (which get concatenated)."
+   ]
+  ],
+  "reply": "Sure! Using the same `add` function:\n\n```python\ndef add(a, b):\n    return a + b\n\nprint(add(3, 4))  # 7\n```\n\n**3 + 4 = 7**",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-105",
+  "area": "code",
+  "prompt": "make it run every day at 9am",
+  "history": [
+   [
+    "user",
+    "write a python script that emails me a summary of my unread GitHub notifications"
+   ],
+   [
+    "assistant",
+    "```python\nimport os\nimport smtplib\nfrom email.message import EmailMessage\n\nimport requests\n\nTOKEN = os.environ[\"GITHUB_TOKEN\"]\n\n\ndef unread_notifications() -> list[dict]:\n    resp = requests.get(\n        \"https://api.github.com/notifications\",\n        headers={\"Authorization\": f\"Bearer {TOKEN}\"},\n        timeout=10,\n    )\n    resp.raise_for_status()\n    return resp.json()\n\n\ndef send_summary(items: list[dict]) -> None:\n    msg = EmailMessage()\n    msg[\"Subject\"] = f\"{len(items)} unread GitHub notifications\"\n    msg[\"From\"] = msg[\"To\"] = os.environ[\"EMAIL\"]\n    msg.set_content(\"\\n\".join(f\"- {n['subject']['title']}\" for n in items))\n    with smtplib.SMTP_SSL(\"smtp.gmail.com\", 465) as smtp:\n        smtp.login(os.environ[\"EMAIL\"], os.environ[\"EMAIL_APP_PASSWORD\"])\n        smtp.send_message(msg)\n\n\nif __name__ == \"__main__\":\n    send_summary(unread_notifications())\n```\n\nSave it as `digest.py`. For Gmail you'll need an app password, not your normal password."
+   ]
+  ],
+  "reply": "The simplest option is cron. Run `crontab -e` and add:\n\n```bash\n0 9 * * * cd /home/you/gh-digest && /usr/bin/python3 digest.py >> digest.log 2>&1\n```\n\nCron doesn't load your shell profile, so define the environment variables at the top of the crontab (or have the script load a `.env` file):\n\n```bash\nGITHUB_TOKEN=ghp_xxx\nEMAIL=you@example.com\nEMAIL_APP_PASSWORD=xxxx\n0 9 * * * cd /home/you/gh-digest && /usr/bin/python3 digest.py >> digest.log 2>&1\n```\n\nIf you'd rather keep it all in Python, use the `schedule` library:\n\n```python\nimport time\n\nimport schedule\n\nschedule.every().day.at(\"09:00\").do(lambda: send_summary(unread_notifications()))\n\nwhile True:\n    schedule.run_pending()\n    time.sleep(60)\n```\n\nCron is more reliable, though — the `schedule` loop stops if the process dies or the machine reboots.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-106",
+  "area": "code",
+  "prompt": "add a created_at column",
+  "history": [
+   [
+    "user",
+    "create a postgres table for blog posts"
+   ],
+   [
+    "assistant",
+    "```sql\nCREATE TABLE posts (\n    id BIGSERIAL PRIMARY KEY,\n    title TEXT NOT NULL,\n    body TEXT NOT NULL,\n    author_id BIGINT NOT NULL REFERENCES users(id)\n);\n```"
+   ]
+  ],
+  "reply": "If you're still writing the table definition:\n\n```sql\nCREATE TABLE posts (\n    id BIGSERIAL PRIMARY KEY,\n    title TEXT NOT NULL,\n    body TEXT NOT NULL,\n    author_id BIGINT NOT NULL REFERENCES users(id),\n    created_at TIMESTAMPTZ NOT NULL DEFAULT now()\n);\n```\n\nIf the table already exists:\n\n```sql\nALTER TABLE posts\nADD COLUMN created_at TIMESTAMPTZ NOT NULL DEFAULT now();\n```\n\nExisting rows get the time the migration ran. Use `TIMESTAMPTZ` rather than `TIMESTAMP` so values are stored in UTC and converted correctly for each client's time zone.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-107",
+  "area": "code",
+  "prompt": "rename it to get_user_by_id and add type hints",
+  "history": [
+   [
+    "user",
+    "function to find a user in a list by id"
+   ],
+   [
+    "assistant",
+    "```python\ndef get(users, id):\n    for u in users:\n        if u[\"id\"] == id:\n            return u\n    return None\n```"
+   ]
+  ],
+  "reply": "Updated! Renamed and typed:\n\n```python\nfrom typing import Any\n\n\ndef get_user_by_id(users: list[dict[str, Any]], user_id: int) -> dict[str, Any] | None:\n    for user in users:\n        if user[\"id\"] == user_id:\n            return user\n    return None\n```\n\nI also renamed the `id` parameter to `user_id`, since `id` shadows Python's built-in `id()` function. If you look users up often, build a dict once — `users_by_id = {u[\"id\"]: u for u in users}` — for O(1) lookups.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-108",
+  "area": "code",
+  "prompt": "ok and what if I already pushed it?",
+  "history": [
+   [
+    "user",
+    "how do I undo my last commit?"
+   ],
+   [
+    "assistant",
+    "If you want to keep the changes in your working tree:\n\n```bash\ngit reset --soft HEAD~1\n```\n\nUse `--hard` instead of `--soft` to throw the changes away entirely."
+   ]
+  ],
+  "reply": "Then it's safer to **revert** instead of reset, so you don't rewrite history other people may have pulled:\n\n```bash\ngit revert HEAD\ngit push\n```\n\n`git revert` creates a new commit that undoes the last one, and the history stays intact.\n\nIf you're sure nobody else has pulled the branch (e.g. it's your own feature branch), you can reset and force-push:\n\n```bash\ngit reset --hard HEAD~1\ngit push --force-with-lease\n```\n\nNever force-push to a shared branch like `main`.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-109",
+  "area": "code",
+  "prompt": "how do I change the port?",
+  "history": [
+   [
+    "user",
+    "how do I run a FastAPI app?"
+   ],
+   [
+    "assistant",
+    "```bash\npip install \"fastapi[standard]\"\nfastapi dev main.py\n```\n\nThat starts a dev server with auto-reload at http://127.0.0.1:8000. In production, run `fastapi run main.py` or `uvicorn main:app --host 0.0.0.0` instead."
+   ]
+  ],
+  "reply": "Pass `--port`:\n\n```bash\nfastapi dev main.py --port 8080\n# or with uvicorn directly\nuvicorn main:app --reload --port 8080\n```\n\nIf you start the server from Python:\n\n```python\nimport uvicorn\n\nif __name__ == \"__main__\":\n    uvicorn.run(\"main:app\", host=\"127.0.0.1\", port=8080, reload=True)\n```\n\nThe app will then be at http://127.0.0.1:8080. In Docker, remember to update the `EXPOSE` line and the port mapping too (e.g. `-p 8080:8080`).",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-110",
+  "area": "code",
+  "prompt": "how do I mark it as skipped on Windows only?",
+  "history": [
+   [
+    "user",
+    "how do I write a test in pytest?"
+   ],
+   [
+    "assistant",
+    "```python\n# test_text_utils.py\nfrom text_utils import slugify\n\n\ndef test_slugify_basic():\n    assert slugify(\"Hello World\") == \"hello-world\"\n```\n\nName the file `test_*.py` and the function `test_*`, then run it with `pytest -q`."
+   ]
+  ],
+  "reply": "Use `pytest.mark.skipif`:\n\n```python\nimport sys\n\nimport pytest\n\nfrom text_utils import slugify\n\n\n@pytest.mark.skipif(sys.platform == \"win32\", reason=\"path handling differs on Windows\")\ndef test_slugify_basic():\n    assert slugify(\"Hello World\") == \"hello-world\"\n```\n\nTo skip unconditionally, use `@pytest.mark.skip(reason=\"...\")`. Skipped tests show up as `s` in the output; run `pytest -rs` to see the reasons.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-111",
+  "area": "code",
+  "prompt": "Explain this code line by line, then show the value of total after each iteration:\ntotal = 0\nfor n in [2, 4, 6]:\n    total += n\nprint(total)",
+  "history": [],
+  "reply": "Here's what each line does, then how `total` changes on each pass.\n\n### 1. The code\n\n```python\ntotal = 0\nfor n in [2, 4, 6]:\n    total += n\nprint(total)\n```\n\n### 2. Explain each line\n\n**Line 1:** `total = 0`\n\n- Creates a variable called `total`.\n- Sets its starting value to `0`.\n\n**Line 2:** `for n in [2, 4, 6]:`\n\n- Starts a loop over the list `[2, 4, 6]`.\n- On each pass, `n` takes the next value.\n\n**Line 3:** `total += n`\n\n- Adds `n` to `total`.\n- It is shorthand for:\n\n```python\ntotal = total + n\n```\n\n**Line 4:** `print(total)`\n\n- Runs once, after the loop ends.\n\n### 3. Value of total after each iteration\n\n```steps\n1. **Iteration 1: `n = 2`**\n`total = 0 + 2 = 2`\n2. **Iteration 2: `n = 4`**\n`total = 2 + 4 = 6`\n3. **Iteration 3: `n = 6`**\n`total = 6 + 6 = 12`\n```\n\n**Output:**\n\n```text\n12\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-112",
+  "area": "code",
+  "prompt": "Explain this code line by line, then show the value of total after each iteration: total = 0 for n in [2, 4, 6]: total += n print(total)",
+  "history": [],
+  "reply": "Here's what each line does, then how `total` changes on each pass.\n\n### 1. The code\n\n```python\ntotal = 0\nfor n in [2, 4, 6]:\n    total += n\nprint(total)\n```\n\n### 2. Explain each line\n\n**Line 1:** `total = 0`\n\n- Creates a variable called `total`.\n- Sets its starting value to `0`.\n\n**Line 2:** `for n in [2, 4, 6]:`\n\n- Starts a loop over the list `[2, 4, 6]`.\n- On each pass, `n` takes the next value.\n\n**Line 3:** `total += n`\n\n- Adds `n` to `total`.\n- It is shorthand for:\n\n```python\ntotal = total + n\n```\n\n**Line 4:** `print(total)`\n\n- Runs once, after the loop ends.\n\n### 3. Value of total after each iteration\n\n```steps\n1. **Iteration 1: `n = 2`**\n`total = 0 + 2 = 2`\n2. **Iteration 2: `n = 4`**\n`total = 2 + 4 = 6`\n3. **Iteration 3: `n = 6`**\n`total = 6 + 6 = 12`\n```\n\n**Output:**\n\n```text\n12\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-113",
+  "area": "code",
+  "prompt": "Why does this code fail, and how would you fix it? numbers = [1, 2, 3] print(numbers[3])",
+  "history": [],
+  "reply": "This code fails with an `IndexError` on line 2.\n\n### Why it fails\n\n- `numbers` has three items, at indexes `0`, `1` and `2`.\n- `numbers[3]` asks for a fourth item, which does not exist.\n\n### The fix\n\n```python\nnumbers = [1, 2, 3]\nprint(numbers[2])  # the last item is at index 2\n```\n\n- `numbers[-1]` also gets the last item, whatever the length.\n\n**Output:**\n\n```text\n3\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-114",
+  "area": "code",
+  "prompt": "What does this Java code print? int sum = 0; for (int i = 1; i <= 3; i++) { sum += i; } System.out.println(sum);",
+  "history": [],
+  "reply": "It adds `1`, `2` and `3` to `sum`, then prints it.\n\n### 1. The code\n\n```java\nint sum = 0;\nfor (int i = 1; i <= 3; i++) {\n    sum += i;\n}\nSystem.out.println(sum);\n```\n\n### 2. Explain each line\n\n**Line 1:** `int sum = 0;`\n\n- Creates `sum` and sets it to `0`.\n\n**Line 2:** `for (int i = 1; i <= 3; i++) {`\n\n- Counts `i` from `1` to `3`.\n\n**Line 3:** `sum += i;`\n\n- Adds `i` to `sum` on each pass.\n\n**Output:**\n\n```text\n6\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-115",
+  "area": "code",
+  "prompt": "I get this error, what's wrong?\nTraceback (most recent call last):\n  File \"app.py\", line 3, in <module>\n    print(user[\"name\"])\nKeyError: 'name'",
+  "history": [],
+  "reply": "`KeyError: 'name'` on line 3: the dictionary `user` has no `name` key.\n\n### Why it fails\n\n- `user[\"name\"]` only works when the key exists.\n\n### The fix\n\n```python\nprint(user.get(\"name\", \"unknown\"))  # no error when the key is missing\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-116",
+  "area": "code",
+  "prompt": "explain the code of conduct",
+  "history": [],
+  "reply": "A code of conduct is a written set of rules for how people in a group, company or community are expected to behave, and what happens when someone breaks them. It usually covers respect, harassment, conflicts of interest and how to report a problem.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-117",
+  "area": "code",
+  "prompt": "line by line poem analysis of The Road Not Taken",
+  "history": [],
+  "reply": "**Stanza 1.** The speaker stands where a road splits in a yellow wood and regrets that he cannot travel both.\n\n**Stanza 2.** He takes the other road, which seems less worn, though both are really about the same.\n\n**Stanza 3.** He keeps the first road for another day, doubting he will ever come back.\n\n**Stanza 4.** Years later he will tell the story with a sigh and say the choice made all the difference.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-118",
+  "area": "code",
+  "prompt": "fix my sleep schedule",
+  "history": [],
+  "reply": "1. **Pick a fixed wake time** - get up at the same time every day, weekends too.\n2. **Get morning light** - ten minutes outside soon after waking.\n3. **Move bedtime slowly** - 15 minutes earlier every few days.\n4. **Cut late caffeine** - none after early afternoon.\n5. **Dim screens at night** - the last hour stays calm.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-119",
+  "area": "code",
+  "prompt": "why does my car fail inspection",
+  "history": [],
+  "reply": "The usual reasons are worn brakes or tyres, a lit check-engine light, emissions over the limit, broken lights, or a cracked windscreen. The inspection report lists the exact item, so start there.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-120",
+  "area": "teaching",
+  "prompt": "When teaching me, explain one concept at a time, use practical examples, and ask me to solve a short exercise before moving on.",
+  "history": [],
+  "reply": "Got it. From now on I'll teach you like this:\n\n- One concept at a time\n- A practical example for each\n- A short exercise for you to solve before we move on\n\nWhat would you like to learn first?",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-121",
+  "area": "teaching",
+  "prompt": "When teaching me, explain one concept at a time, use practical examples, and ask me to solve a short exercise before moving on.",
+  "history": [
+   [
+    "user",
+    "Why does this code fail, and how would you fix it?\nnumbers = [1, 2, 3]\nprint(numbers[3])"
+   ],
+   [
+    "assistant",
+    "This code fails with an `IndexError` on line 2.\n\n### Why it fails\n\n- `numbers` has three items, at indexes `0`, `1` and `2`.\n- `numbers[3]` asks for a fourth item, which does not exist.\n\n### The fix\n\n```python\nnumbers = [1, 2, 3]\nprint(numbers[2])  # the last item is at index 2\n```\n\n- `numbers[-1]` also gets the last item, whatever the length.\n\n**Output:**\n\n```text\n3\n```"
+   ]
+  ],
+  "reply": "Got it. From now on I'll teach you like this:\n\n- One concept at a time\n- A practical example for each\n- A short exercise for you to solve before we move on\n\nWant to keep going with lists and indexes this way?",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-122",
+  "area": "teaching",
+  "prompt": "From now on, always give me a practical example before the theory.",
+  "history": [],
+  "reply": "Will do: a real example first, then the idea behind it.",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-123",
+  "area": "teaching",
+  "prompt": "I learn best when you quiz me after each step.",
+  "history": [],
+  "reply": "Got it. I'll stop after each step with a quick question for you to answer before we go on. What would you like to learn first?",
+  "expect": "answer"
+ },
+ {
+  "id": "cc-124",
+  "area": "teaching",
+  "prompt": "Don't give me the answer, give me hints.",
+  "history": [],
+  "reply": "Deal. I'll give you a hint at a time and let you work out the answer. What are you working on?",
+  "expect": "answer"
+ }
+]

@@ -1,0 +1,366 @@
+{
+  "expo": {
+    "name": "Recall",
+    "slug": "recall",
+    "version": "1.0.0",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "recall",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.recall.app",
+      "usesAppleSignIn": true,
+      "config": {
+        "usesNonExemptEncryption": false
+      },
+      "privacyManifests": {
+        "NSPrivacyTracking": false,
+        "NSPrivacyTrackingDomains": [],
+        "NSPrivacyCollectedDataTypes": [
+          {
+            "NSPrivacyCollectedDataType": "NSPrivacyCollectedDataTypeEmailAddress",
+            "NSPrivacyCollectedDataTypeLinked": true,
+            "NSPrivacyCollectedDataTypeTracking": false,
+            "NSPrivacyCollectedDataTypePurposes": [
+              "NSPrivacyCollectedDataTypePurposeAppFunctionality"
+            ]
+          },
+          {
+            "NSPrivacyCollectedDataType": "NSPrivacyCollectedDataTypeName",
+            "NSPrivacyCollectedDataTypeLinked": true,
+            "NSPrivacyCollectedDataTypeTracking": false,
+            "NSPrivacyCollectedDataTypePurposes": [
+              "NSPrivacyCollectedDataTypePurposeAppFunctionality",
+              "NSPrivacyCollectedDataTypePurposeProductPersonalization"
+            ]
+          },
+          {
+            "NSPrivacyCollectedDataType": "NSPrivacyCollectedDataTypePreciseLocation",
+            "NSPrivacyCollectedDataTypeLinked": true,
+            "NSPrivacyCollectedDataTypeTracking": false,
+            "NSPrivacyCollectedDataTypePurposes": [
+              "NSPrivacyCollectedDataTypePurposeAppFunctionality"
+            ]
+          },
+          {
+            "NSPrivacyCollectedDataType": "NSPrivacyCollectedDataTypeCoarseLocation",
+            "NSPrivacyCollectedDataTypeLinked": true,
+            "NSPrivacyCollectedDataTypeTracking": false,
+            "NSPrivacyCollectedDataTypePurposes": [
+              "NSPrivacyCollectedDataTypePurposeAppFunctionality"
+            ]
+          },
+          {
+            "NSPrivacyCollectedDataType": "NSPrivacyCollectedDataTypePhotosorVideos",
+            "NSPrivacyCollectedDataTypeLinked": true,
+            "NSPrivacyCollectedDataTypeTracking": false,
+            "NSPrivacyCollectedDataTypePurposes": [
+              "NSPrivacyCollectedDataTypePurposeAppFunctionality"
+            ]
+          },
+          {
+            "NSPrivacyCollectedDataType": "NSPrivacyCollectedDataTypeAudioData",
+            "NSPrivacyCollectedDataTypeLinked": true,
+            "NSPrivacyCollectedDataTypeTracking": false,
+            "NSPrivacyCollectedDataTypePurposes": [
+              "NSPrivacyCollectedDataTypePurposeAppFunctionality"
+            ]
+          },
+          {
+            "NSPrivacyCollectedDataType": "NSPrivacyCollectedDataTypeOtherUserContent",
+            "NSPrivacyCollectedDataTypeLinked": true,
+            "NSPrivacyCollectedDataTypeTracking": false,
+            "NSPrivacyCollectedDataTypePurposes": [
+              "NSPrivacyCollectedDataTypePurposeAppFunctionality",
+              "NSPrivacyCollectedDataTypePurposeProductPersonalization"
+            ]
+          },
+          {
+            "NSPrivacyCollectedDataType": "NSPrivacyCollectedDataTypeUserID",
+            "NSPrivacyCollectedDataTypeLinked": true,
+            "NSPrivacyCollectedDataTypeTracking": false,
+            "NSPrivacyCollectedDataTypePurposes": [
+              "NSPrivacyCollectedDataTypePurposeAppFunctionality",
+              "NSPrivacyCollectedDataTypePurposeAnalytics"
+            ]
+          },
+          {
+            "NSPrivacyCollectedDataType": "NSPrivacyCollectedDataTypeDeviceID",
+            "NSPrivacyCollectedDataTypeLinked": true,
+            "NSPrivacyCollectedDataTypeTracking": false,
+            "NSPrivacyCollectedDataTypePurposes": [
+              "NSPrivacyCollectedDataTypePurposeAppFunctionality",
+              "NSPrivacyCollectedDataTypePurposeAnalytics"
+            ]
+          },
+          {
+            "NSPrivacyCollectedDataType": "NSPrivacyCollectedDataTypePurchaseHistory",
+            "NSPrivacyCollectedDataTypeLinked": true,
+            "NSPrivacyCollectedDataTypeTracking": false,
+            "NSPrivacyCollectedDataTypePurposes": [
+              "NSPrivacyCollectedDataTypePurposeAppFunctionality",
+              "NSPrivacyCollectedDataTypePurposeAnalytics"
+            ]
+          },
+          {
+            "NSPrivacyCollectedDataType": "NSPrivacyCollectedDataTypeProductInteraction",
+            "NSPrivacyCollectedDataTypeLinked": true,
+            "NSPrivacyCollectedDataTypeTracking": false,
+            "NSPrivacyCollectedDataTypePurposes": [
+              "NSPrivacyCollectedDataTypePurposeAnalytics"
+            ]
+          },
+          {
+            "NSPrivacyCollectedDataType": "NSPrivacyCollectedDataTypePerformanceData",
+            "NSPrivacyCollectedDataTypeLinked": true,
+            "NSPrivacyCollectedDataTypeTracking": false,
+            "NSPrivacyCollectedDataTypePurposes": [
+              "NSPrivacyCollectedDataTypePurposeAnalytics",
+              "NSPrivacyCollectedDataTypePurposeAppFunctionality"
+            ]
+          },
+          {
+            "NSPrivacyCollectedDataType": "NSPrivacyCollectedDataTypeCrashData",
+            "NSPrivacyCollectedDataTypeLinked": false,
+            "NSPrivacyCollectedDataTypeTracking": false,
+            "NSPrivacyCollectedDataTypePurposes": [
+              "NSPrivacyCollectedDataTypePurposeAppFunctionality"
+            ]
+          },
+          {
+            "NSPrivacyCollectedDataType": "NSPrivacyCollectedDataTypeOtherDiagnosticData",
+            "NSPrivacyCollectedDataTypeLinked": false,
+            "NSPrivacyCollectedDataTypeTracking": false,
+            "NSPrivacyCollectedDataTypePurposes": [
+              "NSPrivacyCollectedDataTypePurposeAppFunctionality"
+            ]
+          },
+          {
+            "NSPrivacyCollectedDataType": "NSPrivacyCollectedDataTypeOtherDataTypes",
+            "NSPrivacyCollectedDataTypeLinked": true,
+            "NSPrivacyCollectedDataTypeTracking": false,
+            "NSPrivacyCollectedDataTypePurposes": [
+              "NSPrivacyCollectedDataTypePurposeAppFunctionality",
+              "NSPrivacyCollectedDataTypePurposeProductPersonalization"
+            ]
+          }
+        ],
+        "NSPrivacyAccessedAPITypes": [
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryFileTimestamp",
+            "NSPrivacyAccessedAPITypeReasons": [
+              "C617.1"
+            ]
+          }
+        ]
+      },
+      "infoPlist": {
+        "NSUserNotificationsUsageDescription": "Recall sends reminders for your to-dos.",
+        "NSLocationWhenInUseUsageDescription": "Recall uses your location for local time and to answer where you are.",
+        "NSPhotoLibraryUsageDescription": "Recall needs access to your photos so you can attach images in chat.",
+        "NSPhotoLibraryAddUsageDescription": "Recall saves generated and chat images to your photo library when you tap Download.",
+        "NSCameraUsageDescription": "Recall uses the camera so you can take photos to attach in chat and scan math problems from your notes or worksheets.",
+        "NSMicrophoneUsageDescription": "Recall uses the microphone so you can dictate messages and talk with Recall in Live Talk.",
+        "NSMotionUsageDescription": "Recall does not use motion or fitness data and never asks for it.",
+        "LSApplicationQueriesSchemes": [
+          "googlegmail",
+          "gmail",
+          "mailto",
+          "https"
+        ]
+      }
+    },
+    "android": {
+      "package": "com.recall.app",
+      "softwareKeyboardLayoutMode": "resize",
+      "adaptiveIcon": {
+        "backgroundColor": "#4F56E5",
+        "foregroundImage": "./assets/images/android-icon-foreground.png",
+        "backgroundImage": "./assets/images/android-icon-background.png",
+        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "blockedPermissions": [
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.READ_MEDIA_VIDEO",
+        "android.permission.READ_MEDIA_AUDIO",
+        "android.permission.READ_MEDIA_VISUAL_USER_SELECTED",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK",
+        "android.permission.SYSTEM_ALERT_WINDOW",
+        "android.permission.BLUETOOTH"
+      ]
+    },
+    "plugins": [
+      "expo-router",
+      "expo-asset",
+      [
+        "expo-secure-store",
+        {
+          "faceIDPermission": false
+        }
+      ],
+      "expo-apple-authentication",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#FCFCFC",
+          "dark": {
+            "backgroundColor": "#0F0F10"
+          }
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/notification-icon.png",
+          "color": "#4F56E5",
+          "sounds": [
+            "./assets/audio/recall_notify.wav"
+          ]
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Recall uses your location for local time and to answer where you are.",
+          "locationAlwaysAndWhenInUsePermission": false,
+          "locationAlwaysPermission": false,
+          "motionUsagePermission": "Recall does not use motion or fitness data and never asks for it."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Recall needs access to your photos so you can attach images in chat.",
+          "cameraPermission": "Recall uses the camera so you can take photos to attach in chat and scan math problems from your notes or worksheets.",
+          "microphonePermission": "Recall uses the microphone so you can dictate messages and talk with Recall in Live Talk."
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Recall needs access to your photos so you can attach images in chat.",
+          "savePhotosPermission": "Recall saves generated and chat images to your photo library when you tap Download.",
+          "isAccessMediaLocationEnabled": false,
+          "granularPermissions": []
+        }
+      ],
+      [
+        "expo-font",
+        {
+          "android": {
+            "fonts": [
+              {
+                "fontFamily": "KaTeX_Main",
+                "fontDefinitions": [
+                  { "path": "./assets/fonts/KaTeX_Main-Regular.ttf", "weight": 400 }
+                ]
+              },
+              {
+                "fontFamily": "KaTeX_MathItalic",
+                "fontDefinitions": [
+                  { "path": "./assets/fonts/KaTeX_Math-Italic.ttf", "weight": 400 }
+                ]
+              },
+              {
+                "fontFamily": "KaTeX_AMS",
+                "fontDefinitions": [
+                  { "path": "./assets/fonts/KaTeX_AMS-Regular.ttf", "weight": 400 }
+                ]
+              },
+              {
+                "fontFamily": "SpaceMono",
+                "fontDefinitions": [
+                  { "path": "./assets/fonts/SpaceMono-Regular.ttf", "weight": 400 }
+                ]
+              },
+              {
+                "fontFamily": "SourceSans3",
+                "fontDefinitions": [
+                  { "path": "./node_modules/@expo-google-fonts/source-sans-3/400Regular/SourceSans3_400Regular.ttf", "weight": 400 }
+                ]
+              },
+              {
+                "fontFamily": "SourceSans3-Medium",
+                "fontDefinitions": [
+                  { "path": "./node_modules/@expo-google-fonts/source-sans-3/500Medium/SourceSans3_500Medium.ttf", "weight": 400 }
+                ]
+              },
+              {
+                "fontFamily": "SourceSans3-Semibold",
+                "fontDefinitions": [
+                  { "path": "./node_modules/@expo-google-fonts/source-sans-3/600SemiBold/SourceSans3_600SemiBold.ttf", "weight": 400 }
+                ]
+              },
+              {
+                "fontFamily": "SourceSans3-Bold",
+                "fontDefinitions": [
+                  { "path": "./node_modules/@expo-google-fonts/source-sans-3/700Bold/SourceSans3_700Bold.ttf", "weight": 400 }
+                ]
+              },
+              {
+                "fontFamily": "SourceSans3-Italic",
+                "fontDefinitions": [
+                  { "path": "./node_modules/@expo-google-fonts/source-sans-3/400Regular_Italic/SourceSans3_400Regular_Italic.ttf", "weight": 400 }
+                ]
+              },
+              {
+                "fontFamily": "SourceSans3-SemiboldItalic",
+                "fontDefinitions": [
+                  { "path": "./node_modules/@expo-google-fonts/source-sans-3/600SemiBold_Italic/SourceSans3_600SemiBold_Italic.ttf", "weight": 400 }
+                ]
+              },
+              {
+                "fontFamily": "SourceSans3-BoldItalic",
+                "fontDefinitions": [
+                  { "path": "./node_modules/@expo-google-fonts/source-sans-3/700Bold_Italic/SourceSans3_700Bold_Italic.ttf", "weight": 400 }
+                ]
+              },
+              {
+                "fontFamily": "KaTeX_Size1",
+                "fontDefinitions": [
+                  { "path": "./node_modules/katex/dist/fonts/KaTeX_Size1-Regular.ttf", "weight": 400 }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      [
+        "react-native-vision-camera-mlkit",
+        {
+          "textRecognition": true,
+          "textRecognitionChinese": false,
+          "textRecognitionDevanagari": false,
+          "textRecognitionJapanese": false,
+          "textRecognitionKorean": false,
+          "barcodeScanning": false
+        }
+      ],
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "Recall uses the microphone so you can dictate messages and talk with Recall in Live Talk.",
+          "enableBackgroundPlayback": false
+        }
+      ],
+      [
+        "@config-plugins/react-native-webrtc",
+        {
+          "microphonePermission": "Recall uses the microphone so you can dictate messages and talk with Recall in Live Talk.",
+          "cameraPermission": "Recall uses the camera so you can take photos to attach in chat and scan math problems from your notes or worksheets."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

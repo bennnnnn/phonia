@@ -1,0 +1,893 @@
+[
+ {
+  "id": "r5-down-01",
+  "area": "free_fall",
+  "prompt": "A ball is thrown straight down at 8 m/s from the top of a 40 m building. how long does it take to hit the ground?",
+  "expect": "answer",
+  "answer": [
+   2.15435,
+   "s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "r5-down-02",
+  "area": "free_fall",
+  "prompt": "a ball is thrown straight down at 10 m/s from a 50 m cliff. how long to reach the ground",
+  "expect": "answer",
+  "answer": [
+   2.332168,
+   "s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "r5-down-03",
+  "area": "free_fall",
+  "prompt": "someone throws a ball down at 6 m/s from a 20 m balcony, time to hit the ground?",
+  "expect": "answer",
+  "answer": [
+   1.498249,
+   "s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "r5-down-04",
+  "area": "free_fall",
+  "prompt": "A ball is thrown straight down at 8 m/s from the top of a 40 m building. what is its height after 1 s?",
+  "expect": "answer",
+  "answer": [
+   27.095,
+   "m"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "r5-down-05",
+  "area": "free_fall",
+  "prompt": "A ball is thrown straight down at 8 m/s from the top of a 40 m building. how fast is it going when it hits the ground?",
+  "expect": "answer",
+  "answer": [
+   29.134172,
+   "m/s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "r5-down-06",
+  "area": "free_fall",
+  "prompt": "a rock is thrown vertically down at 12 m/s from a 60 m bridge. how long till it hits the water?",
+  "expect": "answer",
+  "answer": [
+   2.481989,
+   "s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "r5-down-07",
+  "area": "free_fall",
+  "prompt": "A ball is thrown straight up at 8 m/s from the top of a 40 m building. how long does it take to hit the ground?",
+  "expect": "answer",
+  "answer": [
+   3.785339,
+   "s"
+  ],
+  "note": "control: up stays up",
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "r5-down-08",
+  "area": "free_fall",
+  "prompt": "A ball is thrown straight up at 20 m/s. How long is it in the air?",
+  "expect": "answer",
+  "answer": [
+   4.077472,
+   "s"
+  ],
+  "note": "back to the hand: no height, t = 2v0/g",
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "r5-below-01",
+  "area": "projectile",
+  "prompt": "A ball is thrown at 10 m/s at 30° below the horizontal from the top of a 20 m building. how far from the base does it land?",
+  "expect": "answer",
+  "answer": [
+   13.621908,
+   "m"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "r5-below-02",
+  "area": "projectile",
+  "prompt": "A ball is thrown at 10 m/s at 30° below the horizontal from a 20 m cliff. what is its maximum height?",
+  "expect": "decline",
+  "note": "a downward launch is highest where it starts"
+ },
+ {
+  "id": "r5-noh-01",
+  "area": "free_fall",
+  "prompt": "A rock is thrown horizontally off a cliff at 12 m/s. how long until it lands?",
+  "expect": "decline",
+  "note": "no height"
+ },
+ {
+  "id": "r5-noh-02",
+  "area": "free_fall",
+  "prompt": "A ball is thrown horizontally at 15 m/s. how long until it hits the ground?",
+  "expect": "decline",
+  "note": "no height"
+ },
+ {
+  "id": "r5-noh-03",
+  "area": "free_fall",
+  "prompt": "A ball rolls off a table at 3 m/s. how long until it hits the floor?",
+  "expect": "decline",
+  "note": "no height"
+ },
+ {
+  "id": "r5-noh-04",
+  "area": "free_fall",
+  "prompt": "A stone is thrown horizontally from a cliff at 20 m/s. what's its speed when it lands?",
+  "expect": "decline",
+  "note": "no height"
+ },
+ {
+  "id": "r5-noh-05",
+  "area": "free_fall",
+  "prompt": "A ball is kicked horizontally off a roof at 8 m/s. how far from the building does it land?",
+  "expect": "decline",
+  "note": "no height"
+ },
+ {
+  "id": "r5-noh-06",
+  "area": "free_fall",
+  "prompt": "a stone is thrown down a well at 4 m/s, how deep is the well?",
+  "expect": "decline",
+  "note": "no time or depth"
+ },
+ {
+  "id": "r5-noh-07",
+  "area": "free_fall",
+  "prompt": "A ball is thrown at 25 m/s. How long is it in the air?",
+  "expect": "decline",
+  "note": "direction unstated"
+ },
+ {
+  "id": "r5-noh-08",
+  "area": "projectile",
+  "prompt": "A ball rolls off a 1.2 m high table at 3 m/s. How long until it hits the floor?",
+  "expect": "answer",
+  "answer": [
+   0.494619,
+   "s"
+  ],
+  "note": "look-alike: with a height, a level launch",
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "r5-meet-01",
+  "area": "kinematics",
+  "prompt": "Two trains are 2.1 km apart heading toward each other on parallel tracks at 72 km/h and 54 km/h. how long until they meet?",
+  "expect": "answer",
+  "answer": [
+   60.0,
+   "s"
+  ]
+ },
+ {
+  "id": "r5-meet-02",
+  "area": "kinematics",
+  "prompt": "Two cyclists start 18 km apart and ride toward each other at 12 km/h and 15 km/h. how long before they meet?",
+  "expect": "answer",
+  "answer": [
+   2400.0,
+   "s"
+  ]
+ },
+ {
+  "id": "r5-meet-03",
+  "area": "kinematics",
+  "prompt": "Two cars 300 m apart drive toward each other at 20 m/s and 10 m/s. how long until they meet?",
+  "expect": "answer",
+  "answer": [
+   10.0,
+   "s"
+  ]
+ },
+ {
+  "id": "r5-meet-04",
+  "area": "kinematics",
+  "prompt": "A car at 30 m/s is chasing a truck doing 20 m/s that is 100 m ahead. how long does it take to catch up?",
+  "expect": "answer",
+  "answer": [
+   10.0,
+   "s"
+  ],
+  "note": "which speed is the chaser's is not read; left to the model"
+ },
+ {
+  "id": "r5-meet-05",
+  "area": "kinematics",
+  "prompt": "A car speeds up from 10 m/s to 20 m/s over 300 m. How long does it take?",
+  "expect": "answer",
+  "answer": [
+   20.0,
+   "s"
+  ],
+  "note": "look-alike: one body, u and v"
+ },
+ {
+  "id": "r5-table-01",
+  "area": "forces",
+  "prompt": "A 5 kg block on a frictionless horizontal table is attached by a string over a pulley to a 2 kg mass hanging over the edge. find the acceleration",
+  "expect": "answer",
+  "answer": [
+   2.802857,
+   "m/s^2"
+  ]
+ },
+ {
+  "id": "r5-table-02",
+  "area": "forces",
+  "prompt": "A 4 kg block on a smooth table is connected over a pulley to a hanging 1 kg mass. what's the tension in the string?",
+  "expect": "answer",
+  "answer": [
+   7.848,
+   "N"
+  ]
+ },
+ {
+  "id": "r5-table-03",
+  "area": "forces",
+  "prompt": "block of 3 kg on a horizontal frictionless surface is pulled by a hanging 2 kg mass over a pulley. find the acceleration",
+  "expect": "answer",
+  "answer": [
+   3.924,
+   "m/s^2"
+  ]
+ },
+ {
+  "id": "r5-table-04",
+  "area": "forces",
+  "prompt": "atwood machine with masses 2.5 kg and 4 kg. find the acceleration",
+  "expect": "answer",
+  "answer": [
+   2.263846,
+   "m/s^2"
+  ],
+  "note": "look-alike: both hang",
+  "visual": "free_body"
+ },
+ {
+  "id": "r5-incline-01",
+  "area": "friction",
+  "prompt": "a 3 kg box is pushed up a frictionless 25° incline by a 30 N force parallel to the slope. acceleration?",
+  "expect": "answer",
+  "answer": [
+   5.854115,
+   "m/s^2"
+  ],
+  "note": "the push is not ignored; unsolved is fine"
+ },
+ {
+  "id": "r5-incline-02",
+  "area": "friction",
+  "prompt": "a 10 kg crate is pulled up a 20° frictionless ramp with a 60 N force along the ramp. acceleration?",
+  "expect": "answer",
+  "answer": [
+   2.644782,
+   "m/s^2"
+  ]
+ },
+ {
+  "id": "r5-incline-03",
+  "area": "friction",
+  "prompt": "A 5 kg block is pushed up a 30 degree incline with a force of 50 N parallel to the incline. μk = 0.2. find the acceleration",
+  "expect": "answer",
+  "answer": [
+   3.395858,
+   "m/s^2"
+  ]
+ },
+ {
+  "id": "r5-circle-01",
+  "area": "circular",
+  "prompt": "A merry-go-round turns once every 6 s. A child sits 2.5 m from the centre. what is the child's speed?",
+  "expect": "answer",
+  "answer": [
+   2.617994,
+   "m/s"
+  ]
+ },
+ {
+  "id": "r5-circle-02",
+  "area": "circular",
+  "prompt": "A point on a wheel of radius 0.4 m makes one revolution every 0.5 s. what's its speed?",
+  "expect": "answer",
+  "answer": [
+   5.026548,
+   "m/s"
+  ]
+ },
+ {
+  "id": "r5-circle-03",
+  "area": "circular",
+  "prompt": "A stone on a 1.5 m string is whirled in a horizontal circle, completing one turn every 2 s. what is its speed?",
+  "expect": "answer",
+  "answer": [
+   4.712389,
+   "m/s"
+  ]
+ },
+ {
+  "id": "r5-lap-01",
+  "area": "kinematics",
+  "prompt": "a runner does one full lap of a 400 m track in 80 s. what is her average velocity?",
+  "expect": "answer",
+  "answer": [
+   0.0,
+   "m/s"
+  ],
+  "note": "displacement is zero; unsolved is fine, 5 m/s is wrong"
+ },
+ {
+  "id": "r5-lap-02",
+  "area": "kinematics",
+  "prompt": "a runner does one full lap of a 400 m track in 80 s. what is her average speed?",
+  "expect": "answer",
+  "answer": [
+   5.0,
+   "m/s"
+  ],
+  "note": "look-alike: speed is d/t"
+ },
+ {
+  "id": "r5-roll-01",
+  "area": "energy",
+  "prompt": "a solid sphere of mass 2 kg and radius 10 cm rolls without slipping at 3 m/s. what's its total kinetic energy?",
+  "expect": "answer",
+  "answer": [
+   12.6,
+   "J"
+  ]
+ },
+ {
+  "id": "r5-roll-02",
+  "area": "energy",
+  "prompt": "A 5 kg hoop rolls without slipping at 2 m/s. what's its total kinetic energy?",
+  "expect": "answer",
+  "answer": [
+   20,
+   "J"
+  ]
+ },
+ {
+  "id": "r5-roll-03",
+  "area": "energy",
+  "prompt": "A solid cylinder of mass 4 kg rolls along the floor at 6 m/s without slipping. What's its total kinetic energy?",
+  "expect": "answer",
+  "answer": [
+   108.0,
+   "J"
+  ]
+ },
+ {
+  "id": "r5-shm-01",
+  "area": "oscillations",
+  "prompt": "A 0.5 kg mass on a spring (k = 200 N/m) oscillates with amplitude 5 cm. max speed?",
+  "expect": "answer",
+  "answer": [
+   1.0,
+   "m/s"
+  ]
+ },
+ {
+  "id": "r5-shm-02",
+  "area": "oscillations",
+  "prompt": "spring k=100 N/m, mass 1 kg, amplitude 10 cm. max speed?",
+  "expect": "answer",
+  "answer": [
+   1.0,
+   "m/s"
+  ]
+ },
+ {
+  "id": "r5-shm-03",
+  "area": "oscillations",
+  "prompt": "A 2 kg mass on a spring with k = 50 N/m is pulled 20 cm and released. max acceleration?",
+  "expect": "answer",
+  "answer": [
+   5.0,
+   "m/s^2"
+  ]
+ },
+ {
+  "id": "r5-shm-04",
+  "area": "oscillations",
+  "prompt": "mass 0.4 kg on spring 160 N/m, amplitude 3 cm. maximum velocity?",
+  "expect": "answer",
+  "answer": [
+   0.6,
+   "m/s"
+  ]
+ },
+ {
+  "id": "r5-shm-05",
+  "area": "oscillations",
+  "prompt": "A 0.25 kg mass oscillates on a spring with k = 40 N/m. What is the period?",
+  "expect": "answer",
+  "answer": [
+   0.496729,
+   "s"
+  ],
+  "note": "look-alike: the period is still the period"
+ },
+ {
+  "id": "r5-net-01",
+  "area": "circuits",
+  "prompt": "a 4 Ω resistor is in series with a parallel pair of 6 Ω and 12 Ω. what's the total resistance",
+  "expect": "answer",
+  "answer": [
+   8.0,
+   "ohm"
+  ],
+  "note": "series-parallel; unsolved is fine"
+ },
+ {
+  "id": "r5-net-02",
+  "area": "circuits",
+  "prompt": "a 2 Ω resistor in series with two 4 Ω resistors in parallel. total resistance?",
+  "expect": "answer",
+  "answer": [
+   4.0,
+   "ohm"
+  ]
+ },
+ {
+  "id": "r5-net-03",
+  "area": "circuits",
+  "prompt": "6 Ω and 3 Ω are in parallel, and that combination is in series with 5 Ω. total resistance",
+  "expect": "answer",
+  "answer": [
+   7.0,
+   "ohm"
+  ]
+ },
+ {
+  "id": "r5-net-04",
+  "area": "circuits",
+  "prompt": "Three 9 Ω resistors are connected in parallel across a 6 V battery. what's the total current?",
+  "expect": "answer",
+  "answer": [
+   2.0,
+   "A"
+  ],
+  "visual": "circuit"
+ },
+ {
+  "id": "r5-net-05",
+  "area": "circuits",
+  "prompt": "Four 12 Ω resistors are connected in parallel. what is the equivalent resistance?",
+  "expect": "answer",
+  "answer": [
+   3.0,
+   "ohm"
+  ],
+  "visual": "circuit"
+ },
+ {
+  "id": "r5-net-06",
+  "area": "circuits",
+  "prompt": "two 10 ohm resistors are in parallel across 5 V, total current?",
+  "expect": "answer",
+  "answer": [
+   1.0,
+   "A"
+  ],
+  "visual": "circuit"
+ },
+ {
+  "id": "r5-net-07",
+  "area": "circuits",
+  "prompt": "Three 6 Ω resistors in series are connected to a 9 V battery. what current flows?",
+  "expect": "answer",
+  "answer": [
+   0.5,
+   "A"
+  ],
+  "visual": "circuit"
+ },
+ {
+  "id": "r5-net-08",
+  "area": "circuits",
+  "prompt": "Five 100 Ω resistors are connected in series. total resistance?",
+  "expect": "answer",
+  "answer": [
+   500.0,
+   "ohm"
+  ],
+  "visual": "circuit"
+ },
+ {
+  "id": "r5-phase-01",
+  "area": "thermal",
+  "prompt": "How much heat is needed to warm 250 g of water from 20 °C to 100 °C and then boil it all away?",
+  "expect": "answer",
+  "answer": [
+   648720.0,
+   "J"
+  ],
+  "note": "latent heat too; unsolved is fine"
+ },
+ {
+  "id": "r5-phase-02",
+  "area": "thermal",
+  "prompt": "How much heat to melt 500 g of ice at 0 °C and then warm the water to 30 °C?",
+  "expect": "answer",
+  "answer": [
+   229790.0,
+   "J"
+  ]
+ },
+ {
+  "id": "r5-phase-03",
+  "area": "thermal",
+  "prompt": "How much heat is needed to warm 2 kg of water from 20 °C to 80 °C?",
+  "expect": "answer",
+  "answer": [
+   502320,
+   "J"
+  ],
+  "note": "look-alike: no change of state"
+ },
+ {
+  "id": "r5-grav-01",
+  "area": "gravitation",
+  "prompt": "What is the acceleration due to gravity at a height of 300 km above Earth's surface?",
+  "expect": "answer",
+  "answer": [
+   8.95661,
+   "m/s^2"
+  ]
+ },
+ {
+  "id": "r5-grav-02",
+  "area": "gravitation",
+  "prompt": "What is the gravitational field strength 1000 km above the surface of the Moon?",
+  "expect": "answer",
+  "answer": [
+   0.653949,
+   "m/s^2"
+  ]
+ },
+ {
+  "id": "r5-grav-03",
+  "area": "gravitation",
+  "prompt": "What is g on a planet with mass 6.4e23 kg and radius 3.4e6 m?",
+  "expect": "answer",
+  "answer": [
+   3.695114,
+   "m/s^2"
+  ],
+  "note": "look-alike: a stated radius"
+ },
+ {
+  "id": "r5-hump-01",
+  "area": "circular",
+  "prompt": "A 1000 kg car goes over the top of a hump of radius 20 m at 10 m/s. what is the normal force on the car?",
+  "expect": "answer",
+  "answer": [
+   4810.0,
+   "N"
+  ]
+ },
+ {
+  "id": "r5-vcirc-01",
+  "area": "circular",
+  "prompt": "a 300 g stone on a string is whirled in a vertical circle of radius 0.9 m. at the bottom it moves at 5 m/s. tension at the bottom?",
+  "expect": "answer",
+  "answer": [
+   11.276333,
+   "N"
+  ]
+ },
+ {
+  "id": "r5-vcirc-02",
+  "area": "circular",
+  "prompt": "A 0.2 kg ball on a 0.5 m string is whirled in a vertical circle. At the top it moves at 4 m/s. What is the tension at the top?",
+  "expect": "answer",
+  "answer": [
+   4.438,
+   "N"
+  ]
+ },
+ {
+  "id": "r5-claim-01",
+  "area": "free_fall",
+  "prompt": "A 2 kg ball is dropped from 20 m. I got 19.8 m/s for its impact speed. Am I right?",
+  "expect": "answer",
+  "answer": [
+   19.809089,
+   "m/s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "r5-claim-02",
+  "area": "free_fall",
+  "prompt": "A ball is dropped from 20 m. Does it hit the ground at 19.8 m/s?",
+  "expect": "answer",
+  "answer": [
+   19.809089,
+   "m/s"
+  ],
+  "note": "the model says yes, with the check"
+ },
+ {
+  "id": "r5-claim-03",
+  "area": "free_fall",
+  "prompt": "A ball is dropped from 20 m. I calculated 2.02 s to hit the ground. Is that right?",
+  "expect": "answer",
+  "answer": [
+   2.019275,
+   "s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "r5-claim-04",
+  "area": "projectile",
+  "prompt": "A ball is thrown at 20 m/s at 30 degrees. I got a range of 20.4 m. Is that right?",
+  "expect": "answer",
+  "answer": [
+   35.311943,
+   "m"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "r5-claim-05",
+  "area": "circuits",
+  "prompt": "A 12 V battery drives current through a 4 ohm resistor. I got 48 A. Is that right?",
+  "expect": "answer",
+  "answer": [
+   3.0,
+   "A"
+  ],
+  "visual": "circuit"
+ },
+ {
+  "id": "r5-claim-06",
+  "area": "free_fall",
+  "prompt": "A ball is dropped from 20 m. My friend says it hits at 19.8 m/s. How fast does it actually hit?",
+  "expect": "answer",
+  "answer": [
+   19.809089,
+   "m/s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "r5-claim-07",
+  "area": "free_fall",
+  "prompt": "A ball is dropped from 80 m.",
+  "expect": "decline",
+  "note": "no question"
+ },
+ {
+  "id": "r5-side-01",
+  "area": "free_fall",
+  "prompt": "A ball is dropped from 20 m. How fast does it hit the ground? Would it be different on Mars?",
+  "expect": "answer",
+  "answer": [
+   19.809089,
+   "m/s"
+  ]
+ },
+ {
+  "id": "r5-side-02",
+  "area": "projectile",
+  "prompt": "A ball is thrown at 20 m/s at 30 degrees from a 10 m cliff. How far from the base does it land? Ignore air resistance, and also tell me how this changes on the Moon.",
+  "expect": "answer",
+  "answer": [
+   48.042714,
+   "m"
+  ]
+ },
+ {
+  "id": "r5-side-03",
+  "area": "free_fall",
+  "prompt": "How long does a ball take to fall 20 m on Earth? Compare with Jupiter.",
+  "expect": "answer",
+  "answer": [
+   2.019275,
+   "s"
+  ]
+ },
+ {
+  "id": "r5-side-04",
+  "area": "free_fall",
+  "prompt": "A ball is dropped from 20 m on Mars. How fast does it hit the ground?",
+  "expect": "answer",
+  "answer": [
+   12.181954,
+   "m/s"
+  ],
+  "note": "look-alike: Mars is the main question's",
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "r5-parts-01",
+  "area": "kinematics",
+  "prompt": "A car accelerates uniformly from rest at 2 m/s^2 for 10 s. Find (a) its final speed and (b) the distance travelled.",
+  "expect": "answer",
+  "answer": [
+   20.0,
+   "m/s"
+  ],
+  "note": "both parts on one card: 20 m/s and 100 m"
+ },
+ {
+  "id": "r5-parts-02",
+  "area": "free_fall",
+  "prompt": "A ball is dropped from 45 m. (a) how long does it take to hit the ground? (b) how fast is it going when it lands?",
+  "expect": "answer",
+  "answer": [
+   3.02891,
+   "s"
+  ],
+  "parts": [
+   [
+    3.02891,
+    "s"
+   ],
+   [
+    29.713633,
+    "m/s"
+   ]
+  ],
+  "note": "each part solved on its own (split_parts.py); (b) alone was verified before"
+ },
+ {
+  "id": "r5-parts-03",
+  "area": "kinematics",
+  "prompt": "A 1500 kg car at 20 m/s brakes to a stop in 5 s. Find the deceleration and the braking force.",
+  "expect": "answer",
+  "answer": [
+   4.0,
+   "m/s^2"
+  ],
+  "note": "the deceleration is the verified block; the model adds the 6000 N force"
+ },
+ {
+  "id": "r5-unit-01",
+  "area": "fluids",
+  "prompt": "What is the gauge pressure in psi at a depth of 10 m in fresh water?",
+  "expect": "answer",
+  "answer": [
+   14.228203,
+   "psi"
+  ]
+ },
+ {
+  "id": "r5-unit-02",
+  "area": "thermal",
+  "prompt": "air at 15 psi and 2 L is compressed to 0.5 L at constant temperature. new pressure?",
+  "expect": "answer",
+  "answer": [
+   60.0,
+   "psi"
+  ]
+ },
+ {
+  "id": "r5-route-01",
+  "area": "kinematics",
+  "prompt": "car doing 90km/h, how far does it go in 4 s in metres",
+  "expect": "answer",
+  "answer": [
+   100,
+   "m"
+  ]
+ },
+ {
+  "id": "r5-route-02",
+  "area": "kinematics",
+  "prompt": "a car going 72km/h, how far will it go in 10 s",
+  "expect": "answer",
+  "answer": [
+   200.0,
+   "m"
+  ]
+ },
+ {
+  "id": "r5-route-03",
+  "area": "kinematics",
+  "prompt": "a cyclist rides at 5m/s for 2 minutes how far does she go",
+  "expect": "answer",
+  "answer": [
+   600.0,
+   "m"
+  ]
+ },
+ {
+  "id": "r5-route-04",
+  "area": "projectile",
+  "prompt": "A ball is kicked at 40° above the ground with speed 20m/s. how far does it go?",
+  "expect": "answer",
+  "answer": [
+   40.15526,
+   "m"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "r5-route-05",
+  "area": "kinematics",
+  "prompt": "if i walk at 1.4 m/s how far do i get in 30 minutes",
+  "expect": "answer",
+  "answer": [
+   2520.0,
+   "m"
+  ],
+  "note": "look-alike: 'do i get' is a question"
+ },
+ {
+  "id": "r5-route-06",
+  "area": "projectile",
+  "prompt": "A ball is thrown at 30° above the horizontal. how far does it go?",
+  "expect": "decline",
+  "note": "no speed"
+ },
+ {
+  "id": "r5-look-01",
+  "area": "lookalike",
+  "prompt": "remind me to buy a 9V battery tomorrow",
+  "expect": "not_subject"
+ },
+ {
+  "id": "r5-look-02",
+  "area": "lookalike",
+  "prompt": "remind me to charge the 12V battery in the car tomorrow at 9",
+  "expect": "not_subject"
+ },
+ {
+  "id": "r5-look-03",
+  "area": "lookalike",
+  "prompt": "set a reminder at 6pm to replace the 60 W bulb in the kitchen",
+  "expect": "not_subject"
+ },
+ {
+  "id": "r5-look-04",
+  "area": "lookalike",
+  "prompt": "remind me at 7 to charge my 5000 mAh power bank",
+  "expect": "not_subject"
+ },
+ {
+  "id": "r5-look-05",
+  "area": "lookalike",
+  "prompt": "add 'buy 2 kg of rice' to my to-do list",
+  "expect": "not_subject"
+ },
+ {
+  "id": "r5-look-06",
+  "area": "lookalike",
+  "prompt": "my car's tyre pressure is 32 psi, is that ok?",
+  "expect": "not_subject"
+ },
+ {
+  "id": "r5-look-07",
+  "area": "lookalike",
+  "prompt": "Two friends are meeting at the station at 5 pm, how long do they have if it is 4:20 now?",
+  "expect": "not_subject"
+ },
+ {
+  "id": "r5-look-08",
+  "area": "lookalike",
+  "prompt": "I got 30 minutes of sleep last night, is that bad?",
+  "expect": "not_subject"
+ }
+]

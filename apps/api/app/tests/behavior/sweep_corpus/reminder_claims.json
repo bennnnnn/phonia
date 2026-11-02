@@ -1,0 +1,193 @@
+[
+ {
+  "id": "rc-001",
+  "area": "todo",
+  "prompt": "remind me to call the dentist tomorrow at 9am",
+  "reply": "```reminder\n{\"title\": \"Call the dentist\", \"due_at\": \"2026-10-15T09:00:00+03:00\"}\n```\n\nDone! I've set a reminder to call the dentist tomorrow at 9 AM.",
+  "expect": "save"
+ },
+ {
+  "id": "rc-002",
+  "area": "todo",
+  "prompt": "remind me to call the dentist tomorrow at 9am",
+  "reply": "Done! I've set a reminder to call the dentist tomorrow at 9 AM.",
+  "expect": "save"
+ },
+ {
+  "id": "rc-003",
+  "area": "todo",
+  "prompt": "remind me to water the plants on saturday at 8am",
+  "reply": "All set! Your reminder is set for Saturday at 8 AM.\n\n```reminder\n{\"title\": \"Water the plants\", \"due_at\": \"2026-10-17T08:00:00+03:00\"}\n```",
+  "expect": "save"
+ },
+ {
+  "id": "rc-004",
+  "area": "todo",
+  "prompt": "add a reminder to renew my passport on monday at 10am",
+  "reply": "I've added **Renew my passport** to your reminders for Monday at 10 AM.\n\n```reminder\n{\"title\": \"Renew my passport\", \"due_at\": \"2026-10-19T10:00:00+03:00\"}\n```",
+  "expect": "save"
+ },
+ {
+  "id": "rc-005",
+  "area": "todo",
+  "prompt": "remind me to take my vitamins every day at 8am",
+  "reply": "Reminder set! You'll get a reminder every morning at 8 AM.\n\n```reminder\n{\"title\": \"Take my vitamins\", \"due_at\": \"2026-10-15T08:00:00+03:00\", \"recurrence_rule\": \"daily\"}\n```",
+  "expect": "save"
+ },
+ {
+  "id": "rc-006",
+  "area": "todo",
+  "prompt": "remind me to submit the report on friday at 4pm",
+  "reply": "Got it, I'll remind you on Friday at 4 PM to submit the report.",
+  "expect": "save"
+ },
+ {
+  "id": "rc-007",
+  "area": "todo",
+  "prompt": "the team meeting is set for friday at 3pm. remind me to prep the slides on thursday at 5pm",
+  "reply": "The meeting is set for Friday, so Thursday evening still leaves a day of slack.\n\n```reminder\n{\"title\": \"Prep the slides\", \"due_at\": \"2026-10-15T17:00:00+03:00\"}\n```",
+  "expect": "save"
+ },
+ {
+  "id": "rc-008",
+  "area": "todo",
+  "prompt": "write me a two-line story about a writer, and remind me to stretch tomorrow at 7am",
+  "reply": "Every morning I set aside time to write, before the city wakes. The words come slowly, then all at once.\n\n```reminder\n{\"title\": \"Stretch\", \"due_at\": \"2026-10-15T07:00:00+03:00\"}\n```",
+  "expect": "save"
+ },
+ {
+  "id": "rc-009",
+  "area": "todo",
+  "prompt": "what is the boiling point of water? also remind me to buy milk tomorrow at 9am",
+  "reply": "Water boils at **100 °C** (212 °F) at sea level.\n\nI'll remind you tomorrow at 9 am.",
+  "expect": "save"
+ },
+ {
+  "id": "rc-010",
+  "area": "todo",
+  "prompt": "remind me to call mom at 5pm and to pay rent on friday at 9am",
+  "reply": "Sure! I'll remind you to call mom at 5 PM and to pay rent on Friday at 9 AM.",
+  "expect": "save"
+ },
+ {
+  "id": "rc-011",
+  "area": "todo",
+  "prompt": "remind me to call mom tomorrow at 5pm, and remind me to pay rent on friday at 9am",
+  "reply": "Busy week! I'll remind you about both.",
+  "expect": "save"
+ },
+ {
+  "id": "rc-012",
+  "area": "lookalike",
+  "prompt": "my flight is set for friday at 9am, what should I pack for 3 days in Lisbon?",
+  "reply": "For three days in Lisbon in October:\n\n- Light layers and a rain jacket\n- Comfortable walking shoes (the hills are steep)\n- A power adapter (type F)",
+  "expect": "answer"
+ },
+ {
+  "id": "rc-013",
+  "area": "lookalike",
+  "prompt": "I set aside an hour every day at 6pm to study. How can I make it more effective?",
+  "reply": "Make the hour count:\n\n1. Start with a 5-minute review of yesterday.\n2. Work in two 25-minute blocks with a short break.\n3. End by writing tomorrow's first task.",
+  "expect": "answer"
+ },
+ {
+  "id": "rc-014",
+  "area": "lookalike",
+  "prompt": "my alarm is set for 6am but I keep snoozing. any tips?",
+  "reply": "Put the phone across the room, so you have to stand up to stop it, and get daylight in the first ten minutes.",
+  "expect": "answer"
+ },
+ {
+  "id": "rc-015",
+  "area": "todo",
+  "prompt": "remind me to stretch in 3 minutes",
+  "reply": "When should I remind you?",
+  "expect": "save"
+ },
+ {
+  "id": "rc-016",
+  "area": "todo",
+  "prompt": "remind me in 2 hours to call mom",
+  "reply": "```reminder\n{\"title\": \"Call mom\", \"due_at\": \"2026-10-14T11:00:00\"}\n```\n\nI'll remind you to call mom in 2 hours.",
+  "expect": "save"
+ },
+ {
+  "id": "rc-017",
+  "area": "todo",
+  "prompt": "remind me to drink water in 30 mins",
+  "reply": "Sure! When should I remind you to drink water?",
+  "expect": "save"
+ },
+ {
+  "id": "rc-018",
+  "area": "todo",
+  "prompt": "remind me in half an hour to check the oven",
+  "reply": "```reminder\n{\"title\": \"Check the oven\", \"due_at\": \"2026-10-14T09:30:00\"}\n```",
+  "expect": "save"
+ },
+ {
+  "id": "rc-019",
+  "area": "todo",
+  "prompt": "remind me to call the bank 20 minutes from now",
+  "reply": "Got it.",
+  "expect": "save"
+ },
+ {
+  "id": "rc-020",
+  "area": "todo",
+  "prompt": "remind me to practice this tomorrow at 7pm",
+  "reply": "Got it set for tomorrow evening! 📅\n\n```reminder\n{\"title\": \"Practice list comprehensions\", \"due_at\": \"2026-10-15T19:00:00+03:00\"}\n```",
+  "expect": "save"
+ },
+ {
+  "id": "rc-021",
+  "area": "todo",
+  "prompt": "yes",
+  "history": [
+   [
+    "user",
+    "wait you can't do reminders? you made one earlier for my python practice"
+   ],
+   [
+    "assistant",
+    "I can definitely create reminders for you now. Would you like me to set up that **Practice list comprehensions** reminder for tomorrow at 7:00 PM?"
+   ]
+  ],
+  "reply": "Setting that reminder for you now! ⏰\n\n```reminder\n{\"title\": \"Practice list comprehensions\", \"due_at\": \"2026-10-15T19:00:00+03:00\"}\n```",
+  "expect": "save"
+ },
+ {
+  "id": "rc-022",
+  "area": "todo lookalike",
+  "prompt": "yes",
+  "history": [
+   [
+    "user",
+    "what's a list comprehension?"
+   ],
+   [
+    "assistant",
+    "It builds a list in one line: `[x * 2 for x in nums]`. Want me to show you a few more examples?"
+   ]
+  ],
+  "reply": "Sure! Here are two more:\n\n```python\nsquares = [x * x for x in range(5)]\nevens = [x for x in range(10) if x % 2 == 0]\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "rc-023",
+  "area": "todo lookalike",
+  "prompt": "sure",
+  "history": [
+   [
+    "user",
+    "a rectangle has a perimeter of 36 cm and its length is twice its width. find the area"
+   ],
+   [
+    "assistant",
+    "The area is 72 cm². Want a practice problem tomorrow at 7 to try on your own?"
+   ]
+  ],
+  "reply": "Here's one for tomorrow at 7: a rectangle has a perimeter of 40 cm and its length is three times its width. Find the area.",
+  "expect": "answer"
+ }
+]

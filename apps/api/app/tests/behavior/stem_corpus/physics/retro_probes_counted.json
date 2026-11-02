@@ -1,0 +1,17 @@
+[
+  {"id": "rp-cnt-01", "area": "circuits", "expect": "answer", "answer": [1.0, "kWh"], "note": "retro review 2026-11-01: counted parts read as one (0.5 kWh)", "prompt": "Two 100 W electric bulbs are used for 5 hours. Find the energy consumed in kWh."},
+  {"id": "rp-cnt-02", "area": "circuits", "expect": "answer", "answer": [1.0, "A"], "note": "certified 0.5 A, one resistor", "prompt": "Two 10 Ω carbon resistors are connected in parallel across 5 V. Find the total current."},
+  {"id": "rp-cnt-03", "area": "circuits", "expect": "answer", "answer": [1.0, "A"], "note": "certified 0.5 A, one cell", "prompt": "Two 1.5 V dry cells are connected in series to a 3 Ω bulb. Find the current."},
+  {"id": "rp-cnt-04", "area": "circuits", "expect": "answer", "answer": [1.5, "kWh"], "note": "certified 0.75 kWh, one fan", "prompt": "A house has two fans of 75 W each used for 10 h. Find the energy consumed in kWh."},
+  {"id": "rp-cnt-05", "area": "circuits", "expect": "decline", "note": "\"of 2 kW\" without \"each\": each or in all? Certified 6 kWh, one heater", "prompt": "Two heaters of 2 kW are used for 3 hours. Find the energy used in kWh."},
+  {"id": "rp-cnt-06", "area": "circuits", "expect": "decline", "note": "\"of 6 Ω\" without \"each\": each or in all? Certified 1 A, one lamp", "prompt": "Two lamps of 6 Ω are connected in parallel across 6 V. Find the total current."},
+  {"id": "rp-cnt-07", "area": "circuits", "expect": "answer", "answer": [1.2, "kWh"], "note": "a count above twelve: certified 0.08 kWh, one bulb", "prompt": "Fifteen 40 W bulbs are used for 2 hours. Find the energy consumed in kWh."},
+  {"id": "rp-cnt-08", "area": "circuits", "expect": "answer", "answer": [3.6, "kWh"], "note": "certified 0.3 kWh, one bulb", "prompt": "A dozen 60 W bulbs are used for 5 hours. Find the energy consumed in kWh."},
+  {"id": "rp-cnt-09", "area": "circuits", "expect": "answer", "answer": [12.0, "kWh"], "note": "certified 6 kWh, one heater", "prompt": "Two 2 kW electric heaters run for 3 hours. How much energy do they use in kWh?"},
+  {"id": "rp-cnt-10", "area": "circuits", "expect": "answer", "answer": [0.48, "kWh"], "note": "certified 0.24 kWh, one fan", "prompt": "Two 60 W ceiling fans are switched on for 4 hours. Find the energy in kWh."},
+  {"id": "rp-cnt-11", "area": "circuits", "expect": "answer", "answer": [0.72, "kWh"], "note": "certified 0.24 kWh, one light", "prompt": "A family uses three 40 W tube lights for 6 hours a day. Find the energy used in a day in kWh."},
+  {"id": "rp-cnt-12", "area": "circuits", "expect": "answer", "answer": [2.0, "A"], "note": "kept: two 4 Ω coils in series are 8 Ω", "prompt": "Two 4 Ω coils are joined in series across 16 V. Find the current."},
+  {"id": "rp-cnt-13", "area": "circuits", "expect": "answer", "answer": [0.5, "kWh"], "note": "kept: one bulb", "prompt": "A 100 W bulb is used for 5 hours. Find the energy consumed in kWh."},
+  {"id": "rp-cnt-14", "area": "circuits", "expect": "answer", "answer": [1.2, "kWh"], "prompt": "4 bulbs of 60 W each are used for 5 hours. Find the energy consumed in kWh."},
+  {"id": "rp-cnt-15", "area": "circuits", "expect": "answer", "answer": [4.0, "kWh"], "prompt": "Two 1000 W irons are used for 2 hours. Find the energy in kWh."}
+]

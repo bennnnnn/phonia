@@ -1,0 +1,15 @@
+[
+  {"id": "la-01", "area": "lookalike", "prompt": "our team has great chemistry this season", "expect": "not_subject"},
+  {"id": "la-02", "area": "lookalike", "prompt": "I need a solution to my problem with my landlord", "expect": "not_subject"},
+  {"id": "la-03", "area": "lookalike", "prompt": "add salt to my shopping list", "expect": "not_subject"},
+  {"id": "la-04", "area": "lookalike", "prompt": "what's the best base layer for skiing in -10 °C", "expect": "not_subject"},
+  {"id": "la-05", "area": "lookalike", "prompt": "my phone battery's half-life seems really short lately", "expect": "not_subject"},
+  {"id": "la-06", "area": "lookalike", "prompt": "remind me to buy 2 L of milk and 500 g of butter", "expect": "not_subject"},
+  {"id": "la-07", "area": "lookalike", "prompt": "the bond market had a rough week, should I worry about my portfolio?", "expect": "not_subject"},
+  {"id": "la-08", "area": "lookalike", "prompt": "can you help me balance my budget: rent 1200, food 400, salary 2500", "expect": "not_subject"},
+  {"id": "la-09", "area": "lookalike", "prompt": "the mole on my arm changed color, should I see a doctor?", "expect": "not_subject"},
+  {"id": "la-10", "area": "lookalike", "prompt": "how many moles do I need to dig up my garden lol, there are like 5 of them", "expect": "not_subject"},
+  {"id": "la-11", "area": "lookalike", "prompt": "the boiling point of my patience is low today", "expect": "not_subject"},
+  {"id": "la-12", "area": "lookalike", "prompt": "the freezing point of my enthusiasm hit a new low today", "expect": "not_subject"},
+  {"id": "la-13", "area": "lookalike", "prompt": "the melting point of my willpower is near zero today", "expect": "not_subject"}
+]

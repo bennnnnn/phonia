@@ -1,0 +1,66 @@
+[
+ {
+  "id": "rc-json-001",
+  "area": "code",
+  "prompt": "give me the list of the planets as valid JSON",
+  "history": [],
+  "reply": "```json\n[\"Mercury\", \"Venus\", \"Earth\", \"Mars\", \"Jupiter\", \"Saturn\", \"Uranus\", \"Neptune\"]\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "rc-json-002",
+  "area": "code",
+  "prompt": "list three fruits in JSON",
+  "history": [],
+  "reply": "Here you go:\n\n```json\n[\"apple\", \"mango\", \"banana\",]\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "rc-json-003",
+  "area": "code",
+  "prompt": "how are comments written in JSON?",
+  "history": [],
+  "reply": "JSON has no comments. Some tools accept them anyway:\n\n```json\n{\n  // this breaks a strict parser\n  \"name\": \"Ann\"\n}\n```\n\nA strict parser rejects the line starting with //.",
+  "expect": "answer"
+ },
+ {
+  "id": "rc-json-004",
+  "area": "code",
+  "prompt": "write a python function that returns json",
+  "history": [],
+  "reply": "```python\nimport json\n\ndef to_json(data):\n    return json.dumps(data)\n```\n\n`json.dumps` turns a dict or list into a JSON string.",
+  "expect": "answer"
+ },
+ {
+  "id": "rc-lookalike-001",
+  "area": "writing",
+  "prompt": "can you review my cover letter for a product manager role",
+  "history": [],
+  "reply": "Happy to. Paste the letter here and tell me the company, and I'll mark what to cut, what to sharpen and what to move up.",
+  "expect": "answer"
+ },
+ {
+  "id": "rc-lookalike-002",
+  "area": "chitchat",
+  "prompt": "plan my week, I have gym on monday and a dentist visit on thursday",
+  "history": [],
+  "reply": "**Monday:** gym in the morning, errands after.\n**Tuesday:** a free evening.\n**Wednesday:** catch up on work.\n**Thursday:** dentist; keep the afternoon light.\n**Friday:** something fun.",
+  "expect": "answer"
+ },
+ {
+  "id": "rc-lookalike-003",
+  "area": "chitchat",
+  "prompt": "all my friends are busy and some days are hard, what should I do this weekend",
+  "history": [],
+  "reply": "That sounds lonely. A few ideas: a class where you meet people, a long walk somewhere new, or calling one friend for a short coffee even if they're busy.",
+  "expect": "answer"
+ },
+ {
+  "id": "rc-lookalike-004",
+  "area": "chitchat",
+  "prompt": "my promo code doesn't work at checkout",
+  "history": [],
+  "reply": "Check that it hasn't expired, that your basket meets its minimum, and that it's typed without spaces. If it still fails, the shop's support can apply it by hand.",
+  "expect": "answer"
+ }
+]

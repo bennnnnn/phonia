@@ -1,0 +1,321 @@
+"""Verified capacitor operations: storage, networks, charging and discharging."""
+
+from __future__ import annotations
+
+from app.services.law_binding.spec import Binding, FormulaSpec, bind, formula, var
+
+_CHARGE = var("Q", "Q", "coulomb")
+_CAPACITANCE = var("capacitance", "C", "farad")
+
+_VOLTAGE = var("V", "V", "volt")
+
+
+SPECS: tuple[FormulaSpec, ...] = (
+    formula(
+        "capacitance",
+        "circuit",
+        "Capacitance formula",
+        "C",
+        variables=(
+            var("Q", "Q", "coulomb"),
+            var("V", "V", "volt"),
+        ),
+        binding=bind(("capacitance",), "farad", "Q", "V"),
+    ),
+    formula(
+        "parallel_plate_capacitance",
+        "circuit",
+        "Parallel-plate capacitance",
+        "C",
+        base_latex="C = \\frac{\\epsilon_0A}{d}",
+        variables=(
+            var("area", "A", "meter ** 2"),
+            var("d", "d", "meter"),
+        ),
+    ),
+    formula(
+        "capacitor_energy",
+        "circuit",
+        "Capacitor energy",
+        "U",
+        base_latex="U = \\frac{1}{2}CV^2",
+        variables=(
+            var("V", "V", "volt"),
+            var("capacitance", "C", "farad"),
+        ),
+    ),
+    formula(
+        "rc_time_constant",
+        "circuit",
+        "RC time constant",
+        "\\tau",
+        base_latex="\\tau = RC",
+        variables=(
+            var("R", "R", "ohm"),
+            var("capacitance", "C", "farad"),
+        ),
+        binding=bind(("time constant",), "second", "R", "capacitance"),
+    ),
+    formula(
+        "capacitor_charge",
+        "circuit",
+        "Capacitance formula",
+        "Q",
+        base_latex="Q = CV",
+        expression="capacitance*V",
+        variables=(_CAPACITANCE, var("V", "V", "volt")),
+        binding=bind(
+            ("charge stored", "charge"), "coulomb", "capacitance", "V", cues=("capacitor",)
+        ),
+    ),
+    formula(
+        "capacitor_voltage",
+        "circuit",
+        "Capacitance formula",
+        "V",
+        base_latex="Q = CV",
+        expression="Q/capacitance",
+        variables=(_CAPACITANCE, _CHARGE),
+        binding=bind(
+            ("potential difference", "voltage"), "volt", "Q", "capacitance", cues=("capacitor",)
+        ),
+    ),
+    formula(
+        "capacitors_series",
+        "circuit",
+        "Capacitors in series",
+        "C",
+        base_latex=r"\frac{1}{C} = \frac{1}{C_1} + \frac{1}{C_2}",
+        expression="c1*c2/(c1 + c2)",
+        variables=(var("c1", "C_1", "farad"), var("c2", "C_2", "farad")),
+        binding=Binding(
+            asks=(
+                "total capacitance",
+                "combined capacitance",
+                "equivalent capacitance",
+                "capacitance",
+            ),
+            result=("farad",),
+            inputs=(frozenset({"c1", "c2"}),),
+            cues=("series",),
+            interchangeable=("c1", "c2"),
+            nonnegative=True,
+        ),
+    ),
+    formula(
+        "capacitors_parallel",
+        "circuit",
+        "Capacitors in parallel",
+        "C",
+        base_latex="C = C_1 + C_2",
+        expression="c1 + c2",
+        variables=(var("c1", "C_1", "farad"), var("c2", "C_2", "farad")),
+        binding=Binding(
+            asks=(
+                "total capacitance",
+                "combined capacitance",
+                "equivalent capacitance",
+                "capacitance",
+            ),
+            result=("farad",),
+            inputs=(frozenset({"c1", "c2"}),),
+            cues=("parallel",),
+            interchangeable=("c1", "c2"),
+            nonnegative=True,
+        ),
+    ),
+    # A capacitor charging or discharging through a resistor, after a time.
+    formula(
+        "capacitor_charging_voltage",
+        "circuit",
+        "RC charging equation",
+        "V",
+        base_latex=r"V = V_0\left(1 - e^{-t/RC}\right)",
+        assumptions=("the capacitor starts uncharged",),
+        expression="v_supply*(1 - exp(-t/(R*capacitance)))",
+        variables=(
+            var("R", "R", "ohm"),
+            _CAPACITANCE,
+            var("t", "t", "second"),
+            var("v_supply", "V_0", "volt"),
+        ),
+        binding=bind(
+            ("potential difference", "voltage"),
+            "volt",
+            "R",
+            "capacitance",
+            "t",
+            "v_supply",
+            cues=("charging", "charges", "being charged", "is charged"),
+            excludes=("discharg",),
+        ),
+    ),
+    formula(
+        "capacitor_discharge_voltage",
+        "circuit",
+        "RC discharge equation",
+        "V",
+        base_latex=r"V = V_0 e^{-t/RC}",
+        expression="v_supply*exp(-t/(R*capacitance))",
+        variables=(
+            var("R", "R", "ohm"),
+            _CAPACITANCE,
+            var("t", "t", "second"),
+            var("v_supply", "V_0", "volt"),
+        ),
+        binding=bind(
+            ("potential difference", "voltage"),
+            "volt",
+            "R",
+            "capacitance",
+            "t",
+            "v_supply",
+            cues=("discharg",),
+        ),
+    ),
+    # How long a discharge takes to fall to a stated voltage: t = RC ln(V₀/V).
+    # 12 V to 3 V through 500 Ω and 1000 µF takes 0.693 s, two halvings.
+    formula(
+        "capacitor_discharge_time",
+        "circuit",
+        "RC discharge equation",
+        "t",
+        base_latex=r"V = V_0 e^{-t/RC}",
+        expression="R*capacitance*log(v_supply/v_final)",
+        variables=(
+            var("R", "R", "ohm"),
+            _CAPACITANCE,
+            var(
+                "v_supply",
+                "V_0",
+                "volt",
+                words=("charged to", "initially", "starts at", "from"),
+                needs_words=True,
+            ),
+            var(
+                "v_final",
+                "V",
+                "volt",
+                words=("drops to", "falls to", "reaches", "decreases to", "down to", "decays to"),
+                needs_words=True,
+            ),
+        ),
+        binding=Binding(
+            asks=("how long", "time"),
+            result=("second",),
+            inputs=(frozenset({"R", "capacitance", "v_final", "v_supply"}),),
+            cues=("discharg",),
+            nonnegative=True,
+            requires=("v_supply - v_final", "v_final"),
+        ),
+    ),
+    formula(
+        "dielectric_parallel_plate",
+        "circuit",
+        "Parallel-plate capacitance with a dielectric",
+        "C",
+        base_latex=r"C = \frac{\kappa\varepsilon_0 A}{d}",
+        assumptions=("a linear dielectric filling the gap",),
+        expression="dielectric_constant*epsilon_0*area/d",
+        variables=(
+            var(
+                "dielectric_constant",
+                r"\kappa",
+                dimensionless=True,
+                words=("dielectric", "kappa"),
+                needs_words=True,
+            ),
+            var("area", "A", "meter ** 2", words=("area",), needs_words=True),
+            var(
+                "d",
+                "d",
+                "meter",
+                words=("separation", "spacing", "apart"),
+                needs_words=True,
+            ),
+        ),
+        binding=Binding(
+            asks=("capacitance",),
+            result=("farad",),
+            inputs=(frozenset({"area", "d", "dielectric_constant"}),),
+            cues=("parallel plate", "parallel-plate"),
+            excludes=("vacuum",),
+            nonnegative=True,
+        ),
+    ),
+    formula(
+        "coaxial_capacitance",
+        "circuit",
+        "Coaxial capacitance",
+        "C",
+        base_latex=r"C = \frac{2\pi\varepsilon_0 L}{\ln(b/a)}",
+        assumptions=("vacuum between the conductors",),
+        expression="2*pi*epsilon_0*cable_length/log(outer_radius/inner_radius)",
+        variables=(
+            var("cable_length", "L", "meter", words=("long", "length"), needs_words=True),
+            var("inner_radius", "a", "meter", words=("inner",), needs_words=True),
+            var("outer_radius", "b", "meter", words=("outer",), needs_words=True),
+        ),
+        binding=Binding(
+            asks=("capacitance",),
+            result=("farad",),
+            inputs=(frozenset({"cable_length", "inner_radius", "outer_radius"}),),
+            cues=("coaxial",),
+            nonnegative=True,
+        ),
+    ),
+    formula(
+        "spherical_capacitance",
+        "circuit",
+        "Spherical capacitor",
+        "C",
+        base_latex=r"C = 4\pi\varepsilon_0\frac{ab}{b-a}",
+        assumptions=("vacuum between concentric spheres",),
+        expression="4*pi*epsilon_0*inner_radius*outer_radius/(outer_radius-inner_radius)",
+        variables=(
+            var("inner_radius", "a", "meter", words=("inner",), needs_words=True),
+            var("outer_radius", "b", "meter", words=("outer",), needs_words=True),
+        ),
+        binding=Binding(
+            asks=("capacitance",),
+            result=("farad",),
+            inputs=(frozenset({"inner_radius", "outer_radius"}),),
+            cues=("spherical capacitor",),
+            nonnegative=True,
+        ),
+    ),
+    formula(
+        "capacitor_energy_charge",
+        "circuit",
+        "Capacitor energy",
+        "U",
+        base_latex=r"U = \frac{Q^2}{2C}",
+        expression="Q**2/(2*capacitance)",
+        variables=(_CHARGE, _CAPACITANCE),
+        binding=Binding(
+            asks=("stored energy", "energy"),
+            result=("joule",),
+            inputs=(frozenset({"Q", "capacitance"}),),
+            cues=("capacitor",),
+            excludes=("voltage", "volt"),
+            nonnegative=True,
+        ),
+    ),
+    formula(
+        "capacitor_energy_charge_voltage",
+        "circuit",
+        "Capacitor energy",
+        "U",
+        base_latex=r"U = \frac{1}{2}QV",
+        expression="Q*V/2",
+        variables=(_CHARGE, _VOLTAGE),
+        binding=Binding(
+            asks=("stored energy", "energy"),
+            result=("joule",),
+            inputs=(frozenset({"Q", "V"}),),
+            cues=("capacitor",),
+            excludes=("capacitance", "farad"),
+            nonnegative=True,
+        ),
+    ),
+)

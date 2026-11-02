@@ -1,0 +1,106 @@
+---
+description: Hard UX bans — do not reintroduce recalled chip or assistant fold
+alwaysApply: true
+---
+
+# Chat UX bans (do not reintroduce)
+
+When the user says **remove** or we **replace** a UX, **delete the old path** — component,
+wire-up, intercept, attach-menu row, i18n for that UI. Do not leave a second entry point that
+can pop the old thing back. Do **not** reintroduce removed UX in later PRs, “polish”,
+FEATURES grade-ups, or “parity” work.
+
+## 1. No “Recalled N memories” chip
+- Do **not** show a recalled / “✨ Recalled N memories” (or similar) chip on assistant messages.
+- Backend may still send `recalled` for logging/metrics; the **mobile UI must not surface it**.
+- Do not wire `showRecalledMemories`, `chat.recalled_memories`, or equivalent UI again.
+
+## 2. No Show more / Show less on LLM (assistant) message bodies
+- Assistant markdown/text must **not** fold with Show more / Show less.
+- Keep `CollapsibleMessageBody` **`collapsible={false}`** for assistant bubbles (or omit folding).
+- **Exception:** code blocks may keep their own Show more / Show less (`CodeBlock`).
+- User-message folding is separate; do not “fix parity” by enabling assistant folding again.
+
+When the user says **remove**, leave it removed. Do **not** bring these back in later PRs,
+“polish”, FEATURES grade-ups, or “parity” work.
+
+## 3. No project filter chips on Schedule
+- Do **not** show a horizontal chip row to filter reminders by project.
+- Do **not** show a folder / “Link to project” control on reminder rows.
+- Do **not** show a “Linked to {{title}}” (or `todos.project_linked`) subtitle on
+  reminder rows.
+
+## 4. No model-fallback / context-summarized chips on assistant messages
+- Do **not** show `chat.model_fallback`, “switched to …”, or “N earlier messages summarized”
+  chips on assistant bubbles.
+- Backend may still send `fallback_used` / `context_summarized` for logging; the **mobile UI
+  must not surface them**.
+
+## 5. No empty-state body / primary CTA when a FAB already adds
+- Schedule empty states: **icon + title only** (e.g. “Nothing scheduled”).
+- Do **not** add body copy or an “Add …” `Button` that duplicates the bottom (+) FAB.
+
+## 6. No image-generation confirmation sheet
+- Image gen is **composer only**: user types the request and hits send; Pro generates immediately.
+- Do **not** reintroduce `ImageGenPromptSheet`, attach-menu “Generate image”, or any second prompt
+  modal that intercepts send. Intent detection may still call `/images/generate` — without a sheet.
+
+## 7. No swipe-to-delete on drawer chat titles
+- Do **not** wrap conversation rows in `Swipeable` / reveal a red Delete action on swipe.
+- Delete stays on long-press row menu and multi-select. Schedule swipe-delete is separate.
+
+## 8. No Lists (shopping / packing checklists)
+- Do **not** add a drawer **Lists** row, list composer, `ListGroupsView`, or undated
+  checklist UI. Chat must not create items without a due date.
+- **Schedule** (dated reminders) stays.
+
+## 9. No Gmail chips or reminder bell on chat
+- Do **not** show Gmail suggested-reminder chips in the composer (`SuggestedRemindersNudge`).
+- Do **not** show a reminder bell on `ChatHeader`.
+- Schedule keeps `SuggestedReminderRow` / From email. The drawer Schedule badge stays.
+
+## 10. No Home dashboard chrome
+- Home is **greeting + at most one dismissible overdue reminder**.
+- Do **not** show starter chips (`welcomeStarters`, “Help me think”, “What can you do?”,
+  time, memory, calendar, or “Pick up where we left off” chips).
+- Do **not** show a progress bar, due-soon stack, or “For you” personalized chips.
+- `/home` may return `starters: []`. Do not rebuild a starter list or wire `onSelectStarter`.
+
+## 11. No user-message edit / resend
+- Do **not** show a pencil on user bubbles, an “editing message” composer banner, or
+  send-as-edit that truncates the thread and re-runs from that turn.
+- Do **not** wire WS `type: "edit"`, `POST /chats/{id}/edit/stream`, `editMessage`,
+  `handleEditMessage`, or `stream_edit_response`.
+- Long-press on a user bubble is copy only.
+
+If a plan or FEATURES item asks for these, **push back and skip** — they are explicitly rejected.
+
+## 12. No language-learning product
+- Vocabulary classes, lesson maps, flashcards, practice sessions, and `/projects` are removed.
+- Do **not** restore a Learning drawer row, lesson screen, or vocabulary browser.
+- Conversational “teach me…” in ordinary chat stays.
+
+## 13. No inline Settings choice expand
+- Appearance, style, tone, language, reminder lead, and daily goal open a
+  **floating popup** (the `SelectMenu` popover from `apps/mobile/ui/overlay`). Do **not** expand options inside
+  the gray card (`inlineOptionWell` / accordion). FEATURES must not say
+  “expand inline”. Do not revive PR #707’s in-list picker.
+
+## 14. No draft token count on the composer
+- Do **not** show “~N tokens” (or `chat.draft_tokens`) under the composer.
+- Do **not** restore `estimateTokens` / `shouldShowDraftTokenHint` just to paint that label.
+
+## 15. No in-chat A–D quiz chips
+- Chat must **not** render A–D chips or grade stored `vocab_quiz` fences.
+- Leftover `vocab_quiz`, `vocab_card`, and `learning_launch` fences in old messages are **strip for display** only. Do not parse them back into chips or a lesson path.
+
+## 16. No “couldn't automatically verify” line on a reply
+- Do **not** append or render “I couldn't automatically verify this result.”
+- A declined solve stays in the prompt. The reply the user reads does not carry that sentence.
+- Do **not** bring the line back as a chip, a footer, or italic under the answer.
+
+## 17. No My Job product
+- Job search, match cards, cover letters, application stages, and `/my-job` are removed.
+- Do **not** restore `modules/job_search/`, `features/job-search/`, the drawer row, or the `job_search` chat tool.
+- A stored `job-results` fence is **strip for display** only.
+- Settings “your job” stays. That is the profile occupation field.

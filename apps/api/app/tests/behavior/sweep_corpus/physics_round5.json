@@ -1,0 +1,130 @@
+[
+  {
+    "id": "p5-001",
+    "area": "todo",
+    "prompt": "remind me to buy a 9V battery tomorrow at 10am",
+    "history": [],
+    "reply": "Set: Buy a 9V battery — Thursday, Oct 15, 10:00 AM.",
+    "expect": "save"
+  },
+  {
+    "id": "p5-002",
+    "area": "todo",
+    "prompt": "remind me to charge the 12V battery in the car tomorrow at 9am",
+    "history": [],
+    "reply": "Set: Charge the 12V battery in the car — Thursday, Oct 15, 9:00 AM.",
+    "expect": "save"
+  },
+  {
+    "id": "p5-003",
+    "area": "todo",
+    "prompt": "set a reminder for tomorrow at 6pm to replace the 60 W bulb in the kitchen",
+    "history": [],
+    "reply": "Set: Replace the 60 W bulb in the kitchen — Thursday, Oct 15, 6:00 PM.",
+    "expect": "save"
+  },
+  {
+    "id": "p5-004",
+    "area": "todo",
+    "prompt": "remind me tomorrow at 7pm to charge my 5000 mAh power bank",
+    "history": [],
+    "reply": "Set: Charge my 5000 mAh power bank — Thursday, Oct 15, 7:00 PM.",
+    "expect": "save"
+  },
+  {
+    "id": "p5-005",
+    "area": "physics",
+    "prompt": "remind me how to find the current through a 4 ohm resistor on a 12 V battery",
+    "history": [],
+    "reply": "Use Ohm's law, which links voltage, current and resistance:\n\n$$I = \\frac{V}{R} = \\frac{12\\,\\text{V}}{4\\,\\Omega} = 3\\,\\text{A}$$\n\nDivide the battery's voltage by the resistance; the current is **3 A**.",
+    "expect": "answer"
+  },
+  {
+    "id": "p5-006",
+    "area": "lookalike",
+    "prompt": "I got 30 minutes of sleep last night, is that bad?",
+    "history": [],
+    "reply": "Yes — 30 minutes is far too little for one night. Most adults need 7–9 hours. Expect slower reactions, poorer memory and a low mood today, so skip driving if you feel drowsy, keep caffeine to the morning, and try to get to bed early tonight. If short nights keep happening, it is worth talking to a doctor.",
+    "expect": "answer"
+  },
+  {
+    "id": "p5-007",
+    "area": "lookalike",
+    "prompt": "I calculated my budget at 2000 birr a week for food, is that enough for two people in Addis?",
+    "history": [],
+    "reply": "2,000 birr a week for two people can work in Addis if you cook at home most days: staples like teff, lentils, vegetables and eggs stretch it well. Eating out or buying meat often will push it over, so plan a weekly menu and shop at the open market rather than supermarkets.",
+    "expect": "answer"
+  },
+  {
+    "id": "p5-008",
+    "area": "physics",
+    "prompt": "A ball is dropped from 20 m. How fast does it hit the ground? Would it be different on Mars?",
+    "history": [],
+    "reply": "On Earth it hits the ground at about **19.8 m/s**:\n\n$$v = \\sqrt{2gh} = \\sqrt{2 \\times 9.81 \\times 20} \\approx 19.8\\ \\text{m/s}$$\n\nYes, it would be different on Mars. Mars's gravity is about 3.71 m/s², so the same drop ends at about $\\sqrt{2 \\times 3.71 \\times 20} \\approx 12.2$ m/s — slower, because weaker gravity speeds the ball up less.",
+    "expect": "answer"
+  },
+  {
+    "id": "p5-009",
+    "area": "lookalike",
+    "prompt": "Would the weather be different on Mars? I'm writing a short story set there.",
+    "history": [],
+    "reply": "Very different. Mars is cold (around −60 °C on average), its air is thin carbon dioxide, and dust storms can cover the whole planet for weeks. Days are about 24 h 40 min, and the sky looks butterscotch by day with blue sunsets — great details for a story.",
+    "expect": "answer"
+  },
+  {
+    "id": "p5-010",
+    "area": "physics",
+    "prompt": "Two trains are 300 km apart and head toward each other at 80 km/h and 70 km/h. When do they meet?",
+    "history": [],
+    "reply": "They close the gap at the sum of their speeds, 80 + 70 = 150 km/h:\n\n$$t = \\frac{300\\ \\text{km}}{150\\ \\text{km/h}} = 2\\ \\text{h}$$\n\nThey meet after **2 hours**.",
+    "expect": "answer"
+  },
+  {
+    "id": "p5-011",
+    "area": "physics",
+    "prompt": "A ball is dropped from 80 m.",
+    "history": [],
+    "reply": "Got it — a ball dropped from rest at 80 m. What would you like to find: how long it takes to land (about 4 s) or how fast it is going when it hits the ground?",
+    "expect": "answer"
+  },
+  {
+    "id": "p5-012",
+    "area": "physics",
+    "prompt": "A 2 kg ball is dropped from 20 m. I got 19.8 m/s for its impact speed. Am I right?",
+    "history": [],
+    "reply": "Yes, 19.8 m/s is right. From rest, $v = \\sqrt{2gh} = \\sqrt{2 \\times 9.81 \\times 20} \\approx 19.8$ m/s. The 2 kg mass does not change it.",
+    "expect": "answer"
+  },
+  {
+    "id": "p5-013",
+    "area": "lookalike",
+    "prompt": "my friend says the bus is 20 minutes late, should I wait or take a taxi?",
+    "history": [],
+    "reply": "If you have somewhere to be soon, take the taxi — 20 minutes late often turns into more. If you're not in a hurry and the fare matters, waiting is fine; check the bus company's app or ask the driver of another bus on the same route for an update.",
+    "expect": "answer"
+  },
+  {
+    "id": "p5-014",
+    "area": "todo",
+    "prompt": "add 'buy 2 kg of rice and a 9V battery' to my shopping list",
+    "history": [],
+    "reply": "Added to your shopping list: buy 2 kg of rice and a 9V battery.",
+    "expect": "todo"
+  },
+  {
+    "id": "p5-015",
+    "area": "physics",
+    "prompt": "A merry-go-round turns once every 6 s. A child sits 2.5 m from the centre. what is the child's speed?",
+    "history": [],
+    "reply": "In one turn the child goes once round a circle of radius 2.5 m:\n\n$$v = \\frac{2\\pi r}{T} = \\frac{2\\pi \\times 2.5}{6} \\approx 2.62\\ \\text{m/s}$$\n\nThe child moves at about **2.62 m/s**.",
+    "expect": "answer"
+  },
+  {
+    "id": "p5-016",
+    "area": "lookalike",
+    "prompt": "we meet every 2 weeks for book club, how many meetings is that in a year?",
+    "history": [],
+    "reply": "A year has 52 weeks, so meeting every 2 weeks gives **26 meetings** (27 if the first one falls in the first week and the year has 53 Thursdays or similar).",
+    "expect": "answer"
+  }
+]

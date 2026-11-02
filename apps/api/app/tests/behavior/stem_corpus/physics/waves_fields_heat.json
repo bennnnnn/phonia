@@ -1,0 +1,927 @@
+[
+ {
+  "id": "wave-01",
+  "area": "waves",
+  "prompt": "A wave has a frequency of 50 Hz and a wavelength of 4 m. What is its speed?",
+  "expect": "answer",
+  "answer": [
+   200.0,
+   "m/s"
+  ],
+  "visual": "wave"
+ },
+ {
+  "id": "wave-02",
+  "area": "waves",
+  "prompt": "Sound travels at 343 m/s. What is the wavelength of a 440 Hz note?",
+  "expect": "answer",
+  "answer": [
+   0.779545,
+   "m"
+  ],
+  "visual": "wave"
+ },
+ {
+  "id": "wave-03",
+  "area": "waves",
+  "prompt": "A radio station broadcasts at 98.5 MHz. What is the wavelength of its radio waves?",
+  "expect": "answer",
+  "answer": [
+   3.04365,
+   "m"
+  ],
+  "visual": "wave"
+ },
+ {
+  "id": "wave-04",
+  "area": "waves",
+  "prompt": "A wave has a period of 0.02 s. What is its frequency?",
+  "expect": "answer",
+  "answer": [
+   50.0,
+   "Hz"
+  ]
+ },
+ {
+  "id": "wave-05",
+  "area": "waves",
+  "prompt": "you hear thunder 3 seconds after seeing lightning. how far away is the storm? (speed of sound 340 m/s)",
+  "expect": "answer",
+  "answer": [
+   1020.0,
+   "m"
+  ]
+ },
+ {
+  "id": "wave-06",
+  "area": "waves",
+  "prompt": "A guitar string 0.65 m long has a wave speed of 260 m/s. What is its fundamental frequency?",
+  "expect": "answer",
+  "answer": [
+   200.0,
+   "Hz"
+  ],
+  "visual": "wave"
+ },
+ {
+  "id": "wave-07",
+  "area": "waves",
+  "prompt": "A water wave travels 12 m in 4 s and its wavelength is 1.5 m. What is the frequency?",
+  "expect": "answer",
+  "answer": [
+   2.0,
+   "Hz"
+  ],
+  "visual": "wave"
+ },
+ {
+  "id": "wave-08",
+  "area": "waves",
+  "prompt": "An echo returns 0.6 s after a shout toward a cliff. If sound travels at 340 m/s, how far is the cliff?",
+  "expect": "answer",
+  "answer": [
+   102.0,
+   "m"
+  ]
+ },
+ {
+  "id": "wave-09",
+  "area": "waves",
+  "prompt": "An ambulance siren at 700 Hz approaches you at 25 m/s. What frequency do you hear? Use 343 m/s for sound.",
+  "expect": "answer",
+  "answer": [
+   755.031,
+   "Hz"
+  ]
+ },
+ {
+  "id": "wave-10",
+  "area": "waves",
+  "prompt": "A sound is 60 dB. A second sound is 100 times more intense. What is its level?",
+  "expect": "answer",
+  "answer": [
+   80.0,
+   "dB"
+  ]
+ },
+ {
+  "id": "opt-01",
+  "area": "optics",
+  "prompt": "Light goes from air into glass (n = 1.5) at an angle of incidence of 40°. What is the angle of refraction?",
+  "expect": "answer",
+  "answer": [
+   25.374,
+   "deg"
+  ],
+  "visual": "rays"
+ },
+ {
+  "id": "opt-02",
+  "area": "optics",
+  "prompt": "What is the critical angle for light going from glass (n = 1.5) to air?",
+  "expect": "answer",
+  "answer": [
+   41.8103,
+   "deg"
+  ],
+  "visual": "rays"
+ },
+ {
+  "id": "opt-03",
+  "area": "optics",
+  "prompt": "What is the speed of light in water with refractive index 1.33?",
+  "expect": "answer",
+  "answer": [
+   225414000.0,
+   "m/s"
+  ]
+ },
+ {
+  "id": "opt-04",
+  "area": "optics",
+  "prompt": "An object is 30 cm from a converging lens of focal length 10 cm. Where is the image?",
+  "expect": "answer",
+  "answer": [
+   15.0,
+   "cm"
+  ],
+  "visual": "rays"
+ },
+ {
+  "id": "opt-05",
+  "area": "optics",
+  "prompt": "An object is placed 20 cm in front of a concave mirror with focal length 15 cm. Find the image distance.",
+  "expect": "answer",
+  "answer": [
+   60.0,
+   "cm"
+  ],
+  "visual": "rays"
+ },
+ {
+  "id": "opt-06",
+  "area": "optics",
+  "prompt": "An object 30 cm from a converging lens forms an image 15 cm behind it. What is the magnification?",
+  "expect": "answer",
+  "answer": [
+   0.5,
+   ""
+  ],
+  "visual": "rays"
+ },
+ {
+  "id": "opt-07",
+  "area": "optics",
+  "prompt": "What is the power of a lens with a focal length of 25 cm?",
+  "expect": "answer",
+  "answer": [
+   4.0,
+   "D"
+  ]
+ },
+ {
+  "id": "opt-08",
+  "area": "optics",
+  "prompt": "Light hits a mirror at 35° to the normal. What is the angle of reflection?",
+  "expect": "answer",
+  "answer": [
+   35.0,
+   "deg"
+  ],
+  "visual": "rays"
+ },
+ {
+  "id": "opt-09",
+  "area": "optics",
+  "prompt": "A converging lens has a focal length of 8 cm. An object is 12 cm away. How far is the image from the lens?",
+  "expect": "answer",
+  "answer": [
+   24.0,
+   "cm"
+  ],
+  "visual": "rays"
+ },
+ {
+  "id": "elec-01",
+  "area": "circuits",
+  "prompt": "What current flows through a 20 ohm resistor connected to a 12 V battery?",
+  "expect": "answer",
+  "answer": [
+   0.6,
+   "A"
+  ],
+  "visual": "circuit"
+ },
+ {
+  "id": "elec-02",
+  "area": "circuits",
+  "prompt": "A 9 V battery drives 0.3 A through a bulb. What is the bulb's resistance?",
+  "expect": "answer",
+  "answer": [
+   30.0,
+   "ohm"
+  ],
+  "visual": "circuit"
+ },
+ {
+  "id": "elec-03",
+  "area": "circuits",
+  "prompt": "What voltage is needed to push 2 A through a 15 Ω resistor?",
+  "expect": "answer",
+  "answer": [
+   30.0,
+   "V"
+  ],
+  "visual": "circuit"
+ },
+ {
+  "id": "elec-04",
+  "area": "circuits",
+  "prompt": "Three resistors of 4 Ω, 6 Ω and 10 Ω are connected in series. What is the total resistance?",
+  "expect": "answer",
+  "answer": [
+   20.0,
+   "ohm"
+  ],
+  "visual": "circuit"
+ },
+ {
+  "id": "elec-05",
+  "area": "circuits",
+  "prompt": "Two resistors of 6 ohm and 3 ohm are in parallel. What is the equivalent resistance?",
+  "expect": "answer",
+  "answer": [
+   2.0,
+   "ohm"
+  ],
+  "visual": "circuit"
+ },
+ {
+  "id": "elec-06",
+  "area": "circuits",
+  "prompt": "A 60 W bulb runs on 120 V. What current does it draw?",
+  "expect": "answer",
+  "answer": [
+   0.5,
+   "A"
+  ],
+  "visual": "circuit"
+ },
+ {
+  "id": "elec-07",
+  "area": "circuits",
+  "prompt": "A kettle draws 10 A from a 230 V supply. What is its power?",
+  "expect": "answer",
+  "answer": [
+   2300.0,
+   "W"
+  ],
+  "visual": "circuit"
+ },
+ {
+  "id": "elec-08",
+  "area": "circuits",
+  "prompt": "How much charge passes through a wire carrying 3 A for 2 minutes?",
+  "expect": "answer",
+  "answer": [
+   360.0,
+   "C"
+  ]
+ },
+ {
+  "id": "elec-09",
+  "area": "circuits",
+  "prompt": "A 2 kW heater is used for 3 hours. How much energy does it use in kWh?",
+  "expect": "answer",
+  "answer": [
+   6.0,
+   "kWh"
+  ]
+ },
+ {
+  "id": "elec-10",
+  "area": "circuits",
+  "prompt": "A 100 W TV is left on for 5 hours a day for 30 days. Electricity costs $0.15 per kWh. How much energy does it use?",
+  "expect": "answer",
+  "answer": [
+   15.0,
+   "kWh"
+  ]
+ },
+ {
+  "id": "elec-11",
+  "area": "circuits",
+  "prompt": "What is the power dissipated in a 50 ohm resistor carrying 0.2 A?",
+  "expect": "answer",
+  "answer": [
+   2.0,
+   "W"
+  ],
+  "visual": "circuit"
+ },
+ {
+  "id": "elec-12",
+  "area": "circuits",
+  "prompt": "A 12 V battery is connected to a 4 Ω and an 8 Ω resistor in series. What is the current?",
+  "expect": "answer",
+  "answer": [
+   1.0,
+   "A"
+  ],
+  "visual": "circuit"
+ },
+ {
+  "id": "elec-13",
+  "area": "circuits",
+  "prompt": "A 1.5 V AA battery stores 9000 J of energy. How much charge can it deliver?",
+  "expect": "answer",
+  "answer": [
+   6000.0,
+   "C"
+  ]
+ },
+ {
+  "id": "elec-14",
+  "area": "circuits",
+  "prompt": "how much current does a 1500 watt microwave use on a 120 volt outlet",
+  "expect": "answer",
+  "answer": [
+   12.5,
+   "A"
+  ],
+  "visual": "circuit"
+ },
+ {
+  "id": "elec-15",
+  "area": "circuits",
+  "prompt": "A phone charger supplies 5 V at 2 A. What power does it deliver?",
+  "expect": "answer",
+  "answer": [
+   10.0,
+   "W"
+  ],
+  "visual": "circuit"
+ },
+ {
+  "id": "estat-01",
+  "area": "electrostatics",
+  "prompt": "Two charges of 2 µC and 3 µC are 0.1 m apart. What is the force between them?",
+  "expect": "answer",
+  "answer": [
+   5.3928,
+   "N"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "estat-02",
+  "area": "electrostatics",
+  "prompt": "What is the electric field 0.2 m from a 5 nC point charge?",
+  "expect": "answer",
+  "answer": [
+   1123.5,
+   "N/C"
+  ]
+ },
+ {
+  "id": "estat-03",
+  "area": "electrostatics",
+  "prompt": "A 4 µF capacitor is charged to 12 V. How much charge does it store?",
+  "expect": "answer",
+  "answer": [
+   4.8e-05,
+   "C"
+  ]
+ },
+ {
+  "id": "estat-04",
+  "area": "electrostatics",
+  "prompt": "What is the energy stored in a 100 µF capacitor charged to 50 V?",
+  "expect": "answer",
+  "answer": [
+   0.125,
+   "J"
+  ]
+ },
+ {
+  "id": "estat-05",
+  "area": "electrostatics",
+  "prompt": "An electron is accelerated through a potential difference of 100 V. How much kinetic energy does it gain in joules?",
+  "expect": "answer",
+  "answer": [
+   1.602e-17,
+   "J"
+  ]
+ },
+ {
+  "id": "estat-06",
+  "area": "electrostatics",
+  "prompt": "A uniform field between two plates 2 cm apart has a potential difference of 300 V. What is the field strength?",
+  "expect": "answer",
+  "answer": [
+   15000.0,
+   "V/m"
+  ]
+ },
+ {
+  "id": "mag-01",
+  "area": "magnetism",
+  "prompt": "A wire 0.5 m long carries 4 A at right angles to a 0.2 T magnetic field. What is the force on it?",
+  "expect": "answer",
+  "answer": [
+   0.4,
+   "N"
+  ]
+ },
+ {
+  "id": "mag-02",
+  "area": "magnetism",
+  "prompt": "A proton moves at 2 x 10^6 m/s perpendicular to a 0.5 T field. What is the magnetic force on it?",
+  "expect": "answer",
+  "answer": [
+   1.602e-13,
+   "N"
+  ]
+ },
+ {
+  "id": "mag-03",
+  "area": "magnetism",
+  "prompt": "A transformer has 200 turns on the primary and 50 turns on the secondary. If the primary voltage is 240 V, what is the secondary voltage?",
+  "expect": "answer",
+  "answer": [
+   60.0,
+   "V"
+  ]
+ },
+ {
+  "id": "mag-04",
+  "area": "magnetism",
+  "prompt": "A solenoid with 500 turns per metre carries 2 A. What is the magnetic field inside it?",
+  "expect": "answer",
+  "answer": [
+   0.00125664,
+   "T"
+  ]
+ },
+ {
+  "id": "heat-01",
+  "area": "thermal",
+  "prompt": "How much heat is needed to raise 2 kg of water from 20 °C to 80 °C?",
+  "expect": "answer",
+  "answer": [
+   502320.0,
+   "J"
+  ]
+ },
+ {
+  "id": "heat-02",
+  "area": "thermal",
+  "prompt": "How much energy is needed to heat 500 g of water by 10 degrees Celsius? (c = 4200 J/kg°C)",
+  "expect": "answer",
+  "answer": [
+   21000.0,
+   "J"
+  ]
+ },
+ {
+  "id": "heat-03",
+  "area": "thermal",
+  "prompt": "How much energy is needed to melt 0.5 kg of ice at 0°C? The latent heat of fusion is 334 kJ/kg.",
+  "expect": "answer",
+  "answer": [
+   167000.0,
+   "J"
+  ]
+ },
+ {
+  "id": "heat-04",
+  "area": "thermal",
+  "prompt": "A 3 kg block of aluminium (c = 900 J/kg·K) absorbs 54 kJ. What is its temperature rise?",
+  "expect": "answer",
+  "answer": [
+   20.0,
+   "K"
+  ]
+ },
+ {
+  "id": "heat-05",
+  "area": "thermal",
+  "prompt": "Convert 25 °C to kelvin.",
+  "expect": "answer",
+  "answer": [
+   298.15,
+   "K"
+  ]
+ },
+ {
+  "id": "heat-06",
+  "area": "thermal",
+  "prompt": "A gas at 300 K and 2 atm is heated to 450 K at constant volume. What is its new pressure?",
+  "expect": "answer",
+  "answer": [
+   3.0,
+   "atm"
+  ]
+ },
+ {
+  "id": "heat-07",
+  "area": "thermal",
+  "prompt": "A gas occupies 4 L at 100 kPa. It is compressed at constant temperature to 1 L. What is the new pressure?",
+  "expect": "answer",
+  "answer": [
+   400.0,
+   "kPa"
+  ]
+ },
+ {
+  "id": "heat-08",
+  "area": "thermal",
+  "prompt": "How many moles of an ideal gas occupy 0.05 m^3 at 300 K and 1.0 x 10^5 Pa?",
+  "expect": "answer",
+  "answer": [
+   2.00465,
+   "mol"
+  ]
+ },
+ {
+  "id": "heat-09",
+  "area": "thermal",
+  "prompt": "A steel bridge 500 m long heats up by 30 °C. How much does it expand? (α = 12 x 10^-6 /°C)",
+  "expect": "answer",
+  "answer": [
+   0.18,
+   "m"
+  ]
+ },
+ {
+  "id": "heat-10",
+  "area": "thermal",
+  "prompt": "How much energy is needed to boil away 2 kg of water at 100 °C? Latent heat of vaporization is 2.26 x 10^6 J/kg.",
+  "expect": "answer",
+  "answer": [
+   4520000.0,
+   "J"
+  ]
+ },
+ {
+  "id": "heat-11",
+  "area": "thermal",
+  "prompt": "A gas has a volume of 2 L at 27 °C. What volume will it have at 127 °C at constant pressure?",
+  "expect": "answer",
+  "answer": [
+   2.66667,
+   "L"
+  ]
+ },
+ {
+  "id": "fluid-01",
+  "area": "fluids",
+  "prompt": "What is the water pressure at a depth of 10 m in a lake (ignore air pressure)?",
+  "expect": "answer",
+  "answer": [
+   98100.0,
+   "Pa"
+  ]
+ },
+ {
+  "id": "fluid-02",
+  "area": "fluids",
+  "prompt": "What is the density of a block with mass 2.4 kg and volume 0.003 m^3?",
+  "expect": "answer",
+  "answer": [
+   800.0,
+   "kg/m^3"
+  ]
+ },
+ {
+  "id": "fluid-03",
+  "area": "fluids",
+  "prompt": "A 70 kg person stands on one foot with an area of 0.014 m^2. What pressure do they exert on the floor?",
+  "expect": "answer",
+  "answer": [
+   49050.0,
+   "Pa"
+  ]
+ },
+ {
+  "id": "fluid-04",
+  "area": "fluids",
+  "prompt": "A force of 200 N acts on an area of 0.5 m². What is the pressure?",
+  "expect": "answer",
+  "answer": [
+   400.0,
+   "Pa"
+  ]
+ },
+ {
+  "id": "fluid-05",
+  "area": "fluids",
+  "prompt": "A block of volume 0.002 m^3 is fully submerged in water. What is the buoyant force on it?",
+  "expect": "answer",
+  "answer": [
+   19.62,
+   "N"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "fluid-06",
+  "area": "fluids",
+  "prompt": "A hydraulic lift has a small piston of area 0.01 m^2 and a large piston of area 0.5 m^2. What force on the small piston lifts a 10000 N car?",
+  "expect": "answer",
+  "answer": [
+   200.0,
+   "N"
+  ]
+ },
+ {
+  "id": "mod-01",
+  "area": "modern",
+  "prompt": "What is the energy of a photon with a wavelength of 500 nm?",
+  "expect": "answer",
+  "answer": [
+   3.97295e-19,
+   "J"
+  ]
+ },
+ {
+  "id": "mod-02",
+  "area": "modern",
+  "prompt": "What is the energy of a photon of frequency 6 x 10^14 Hz?",
+  "expect": "answer",
+  "answer": [
+   3.9756e-19,
+   "J"
+  ]
+ },
+ {
+  "id": "mod-03",
+  "area": "modern",
+  "prompt": "A radioactive sample has a half-life of 8 days. What fraction remains after 24 days?",
+  "expect": "answer",
+  "answer": [
+   0.125,
+   ""
+  ]
+ },
+ {
+  "id": "mod-04",
+  "area": "modern",
+  "prompt": "A sample of 200 g has a half-life of 5 years. How much is left after 15 years?",
+  "expect": "answer",
+  "answer": [
+   25.0,
+   "g"
+  ]
+ },
+ {
+  "id": "mod-05",
+  "area": "modern",
+  "prompt": "How much energy is released if 1 g of mass is converted completely to energy?",
+  "expect": "answer",
+  "answer": [
+   89880000000000.0,
+   "J"
+  ]
+ },
+ {
+  "id": "mod-06",
+  "area": "modern",
+  "prompt": "What is the de Broglie wavelength of an electron moving at 2 x 10^6 m/s?",
+  "expect": "answer",
+  "answer": [
+   3.63706e-10,
+   "m"
+  ]
+ },
+ {
+  "id": "mod-07",
+  "area": "modern",
+  "prompt": "What is the momentum of a photon of wavelength 600 nm?",
+  "expect": "answer",
+  "answer": [
+   1.10433e-27,
+   "kg*m/s"
+  ]
+ },
+ {
+  "id": "ex-11",
+  "area": "explain",
+  "prompt": "Why is the sky blue?",
+  "expect": "explain"
+ },
+ {
+  "id": "ex-12",
+  "area": "explain",
+  "prompt": "How does a transformer work?",
+  "expect": "explain"
+ },
+ {
+  "id": "ex-13",
+  "area": "explain",
+  "prompt": "what is the difference between series and parallel circuits",
+  "expect": "explain"
+ },
+ {
+  "id": "ex-14",
+  "area": "explain",
+  "prompt": "Why does ice float on water?",
+  "expect": "explain"
+ },
+ {
+  "id": "ex-15",
+  "area": "explain",
+  "prompt": "Explain the photoelectric effect simply.",
+  "expect": "explain"
+ },
+ {
+  "id": "ex-16",
+  "area": "explain",
+  "prompt": "How do rainbows form?",
+  "expect": "explain"
+ },
+ {
+  "id": "ex-17",
+  "area": "explain",
+  "prompt": "What is entropy, in simple words?",
+  "expect": "explain"
+ },
+ {
+  "id": "dec-11",
+  "area": "decline",
+  "prompt": "A resistor is connected to a battery. What current flows?",
+  "expect": "decline",
+  "note": "no values"
+ },
+ {
+  "id": "dec-12",
+  "area": "decline",
+  "prompt": "A lens forms an image 20 cm away. What is the object distance?",
+  "expect": "decline",
+  "note": "no focal length"
+ },
+ {
+  "id": "dec-13",
+  "area": "decline",
+  "prompt": "How much heat is needed to warm 2 kg of metal by 10 °C?",
+  "expect": "decline",
+  "note": "no specific heat, metal unknown"
+ },
+ {
+  "id": "look-01",
+  "area": "lookalike",
+  "prompt": "I need to lose 5 kg in 2 months, what's a good diet plan?",
+  "expect": "not_physics",
+  "note": "diet"
+ },
+ {
+  "id": "look-02",
+  "area": "lookalike",
+  "prompt": "My internet speed is 50 Mbps, is that good for gaming?",
+  "expect": "not_physics",
+  "note": "internet speed"
+ },
+ {
+  "id": "look-03",
+  "area": "lookalike",
+  "prompt": "Write a motivational quote about momentum in life.",
+  "expect": "not_physics",
+  "note": "metaphor"
+ },
+ {
+  "id": "look-04",
+  "area": "lookalike",
+  "prompt": "How do I build more force in my writing?",
+  "expect": "not_physics",
+  "note": "metaphor"
+ },
+ {
+  "id": "look-05",
+  "area": "lookalike",
+  "prompt": "What's the best way to save energy on my electricity bill?",
+  "expect": "not_physics",
+  "note": "advice, no numbers to solve"
+ },
+ {
+  "id": "look-06",
+  "area": "lookalike",
+  "prompt": "I walk 10000 steps a day, how many calories is that?",
+  "expect": "not_physics",
+  "note": "fitness"
+ },
+ {
+  "id": "look-07",
+  "area": "lookalike",
+  "prompt": "Can you help me with the pressure I'm under at work?",
+  "expect": "not_physics",
+  "note": "metaphor"
+ },
+ {
+  "id": "look-08",
+  "area": "lookalike",
+  "prompt": "My car does 30 miles per gallon. How much fuel for a 300 mile trip?",
+  "expect": "not_physics",
+  "note": "fuel arithmetic, not physics"
+ },
+ {
+  "id": "look-09",
+  "area": "lookalike",
+  "prompt": "Translate 'the speed of light' into Spanish.",
+  "expect": "not_physics",
+  "note": "translation"
+ },
+ {
+  "id": "look-10",
+  "area": "lookalike",
+  "prompt": "A 5 kg bag of rice costs $12. How much does 1 kg cost?",
+  "expect": "not_physics",
+  "note": "price arithmetic"
+ },
+ {
+  "id": "look-11",
+  "area": "lookalike",
+  "prompt": "Who discovered gravity?",
+  "expect": "not_physics",
+  "note": "history question"
+ },
+ {
+  "id": "look-12",
+  "area": "lookalike",
+  "prompt": "what's the weight limit for checked bags on most airlines",
+  "expect": "not_physics",
+  "note": "travel"
+ },
+ {
+  "id": "look-13",
+  "area": "lookalike",
+  "prompt": "I have a 3 hour drive, what podcasts do you recommend?",
+  "expect": "not_physics",
+  "note": "recommendation"
+ },
+ {
+  "id": "look-14",
+  "area": "lookalike",
+  "prompt": "Summarize the plot of Interstellar.",
+  "expect": "not_physics",
+  "note": "film"
+ },
+ {
+  "id": "look-15",
+  "area": "lookalike",
+  "prompt": "the power went out, how do I keep my fridge cold",
+  "expect": "not_physics",
+  "note": "practical"
+ },
+ {
+  "id": "look-16",
+  "area": "lookalike",
+  "prompt": "Give me 5 tips to increase my running speed.",
+  "expect": "not_physics",
+  "note": "fitness tips"
+ },
+ {
+  "id": "dec-water-ethanol",
+  "area": "decline",
+  "prompt": "100 g of water at 80 °C is mixed with 50 g of ethanol at 20 °C. What is the final temperature?",
+  "expect": "decline",
+  "note": "ethanol's specific heat is not water's: 60 °C was a verified wrong answer"
+ },
+ {
+  "id": "dec-water-alcohol",
+  "area": "decline",
+  "prompt": "200 g of water at 90 °C is mixed with 100 g of alcohol at 20 °C. What is the final temperature?",
+  "expect": "decline",
+  "note": "a second substance"
+ },
+ {
+  "id": "dec-seawater",
+  "area": "decline",
+  "prompt": "300 g of seawater at 30 °C is mixed with 200 g of water at 10 °C. What is the final temperature?",
+  "expect": "decline",
+  "note": "seawater is not fresh water"
+ },
+ {
+  "id": "dec-water-mercury",
+  "area": "decline",
+  "prompt": "50 g of mercury at 100 °C is poured into 200 g of water at 20 °C. What is the final temperature?",
+  "expect": "decline",
+  "note": "mercury's specific heat is not water's"
+ },
+ {
+  "id": "dec-water-milk",
+  "area": "decline",
+  "prompt": "150 g of milk at 5 °C is mixed with 100 g of water at 60 °C. What is the final temperature?",
+  "expect": "decline",
+  "note": "a substance no list names: the amount names it"
+ },
+ {
+  "id": "t-hot-cold-water",
+  "area": "thermal",
+  "prompt": "200 g of hot water at 70 °C is mixed with 300 g of cold water at 20 °C. What is the final temperature?",
+  "expect": "answer",
+  "answer": [
+   40.0,
+   "degC"
+  ]
+ }
+]

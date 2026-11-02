@@ -1,0 +1,58 @@
+---
+description: Execution discipline — plan first, keep changes scoped, finish green
+alwaysApply: true
+---
+
+# Plan, scope, and finish green
+
+## Plan first
+- For any non-trivial task (3+ steps or ambiguous), write a short todo/plan and confirm scope
+  before coding. Use Plan mode for large or ambiguous asks.
+- Anything outside the agreed scope goes to `FEATURES.md` as deferred — don't build it now.
+
+## Keep changes scoped
+- One concern per branch/commit. Don't bundle unrelated features into one big change
+  (past commits bundled 5+ things — unreviewable and un-bisectable).
+- Commit working increments often; don't let large piles of work sit uncommitted.
+
+## Ship every change (commit + push)
+- After **any** code change — not only backlog tasks — **commit and push before you say done**
+  (unless the user explicitly says not to commit or not to push).
+- Do not leave local-only diffs across turns; unpushed work breaks the user's other machines,
+  simulators, and CI.
+- Flow: finish the change → `./scripts/dev.sh check` green → commit → `git push` → confirm push
+  landed.
+
+## One task, then merge, then continue
+- When the user gives a multi-item backlog (e.g. refinement lanes, ticket lists), **finish one
+  task completely** before starting the next — don't stack two lanes in one uncommitted batch.
+- Only after that push lands start the next task.
+- If a task grows mid-flight, stop and ask whether to split or defer — don't silently absorb
+  the next item into the same diff.
+
+## After a PR merges — no leftover Compare & pull request
+GitHub shows **Compare & pull request** when a remote branch still has commits that are
+not ancestors of `main`. Squash-merge does **not** make those SHAs ancestors. Extra pushes
+onto that head after merge make it worse (`fix/mobile-math-no-gray-clip`,
+`claude/pull-latest-code-*`).
+
+- **Never push** to a branch whose PR is already merged or closed. New work → new branch
+  from current `origin/main`.
+- Merge with **delete the head branch** (`gh pr merge --squash --delete-branch`). If the
+  branch still exists, `git push origin --delete <branch>` before you say done.
+- Cloud/agent branches (`claude/*`, `cursor/*`): when their unique work is on `main`,
+  **delete the remote branch**. Do not keep pushing them.
+- Unique commits still on a merged/closed head: cherry-pick onto a **new** branch from
+  `origin/main`, open one PR, then delete the old branch. Do not revive the old head.
+- Before ending a session that touched git: `gh pr list --state open` and
+  `git fetch` + `git log origin/main..origin/<your-branch>`. If GitHub would offer
+  Compare & pull request on a dead head, delete it.
+
+## Definition of done (don't say "done" until this holds)
+- Run the full gate locally: `./scripts/dev.sh check` (API: ruff + format + mypy + pytest ≥80%;
+  mobile: typecheck + lint). It must be green.
+- **Commit and push** — work is not done until the remote has the changes.
+- CI order is ruff → format → mypy → pytest; an earlier failure means tests never run — so match
+  the whole chain locally, not just pytest.
+- Never weaken the gate to pass — no lowering the coverage bar, no blanket `# type: ignore` /
+  `# noqa` — without saying so explicitly.

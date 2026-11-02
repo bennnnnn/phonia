@@ -1,0 +1,70 @@
+[
+ {
+  "id": "rm-001",
+  "area": "missed lookalike",
+  "history": [
+   [
+    "user",
+    "Expl\u00edcame la fotos\u00edntesis en dos frases"
+   ],
+   [
+    "assistant",
+    "La fotos\u00edntesis es el proceso por el cual las plantas convierten la luz solar en energ\u00eda."
+   ]
+  ],
+  "prompt": "What time is it?",
+  "reply": "It's 6:40 PM.",
+  "expect": "answer"
+ },
+ {
+  "id": "rm-002",
+  "area": "missed lookalike",
+  "history": [
+   [
+    "user",
+    "Expl\u00edcame la fotos\u00edntesis en dos frases"
+   ],
+   [
+    "assistant",
+    "La fotos\u00edntesis es el proceso por el cual las plantas convierten la luz solar en energ\u00eda."
+   ]
+  ],
+  "prompt": "what about the roots?",
+  "reply": "Roots take in water and minerals, which the leaves need for photosynthesis.",
+  "expect": "answer"
+ },
+ {
+  "id": "rm-003",
+  "area": "missed lookalike",
+  "history": [
+   [
+    "user",
+    "Expl\u00edcame la fotos\u00edntesis en dos frases"
+   ],
+   [
+    "assistant",
+    "La fotos\u00edntesis es el proceso por el cual las plantas convierten la luz solar en energ\u00eda."
+   ]
+  ],
+  "prompt": "huh, interesting",
+  "reply": "It is! Leaves are basically solar panels.",
+  "expect": "answer"
+ },
+ {
+  "id": "rm-004",
+  "area": "missed lookalike",
+  "history": [
+   [
+    "user",
+    "Expl\u00edcame la fotos\u00edntesis en dos frases"
+   ],
+   [
+    "assistant",
+    "La fotos\u00edntesis es el proceso por el cual las plantas convierten la luz solar en energ\u00eda."
+   ]
+  ],
+  "prompt": "sorry for the late reply",
+  "reply": "No worries at all.",
+  "expect": "answer"
+ }
+]

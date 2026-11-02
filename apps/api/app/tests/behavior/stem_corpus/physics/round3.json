@@ -1,0 +1,130 @@
+[
+ {
+  "id": "r3-01",
+  "area": "kinematics",
+  "prompt": "How long does light from the Sun take to reach Earth, 1.5 × 10^11 m away?",
+  "expect": "answer",
+  "answer": [
+   500.3461,
+   "s"
+  ]
+ },
+ {
+  "id": "r3-02",
+  "area": "gravitation",
+  "prompt": "A 70 kg astronaut stands on the surface of Mars. What is the gravitational force on her?",
+  "expect": "answer",
+  "answer": [
+   260.4,
+   "N"
+  ]
+ },
+ {
+  "id": "r3-03",
+  "area": "forces",
+  "prompt": "A 5 kg box is pushed with 30 N to the left and 10 N to the right. What is its acceleration?",
+  "expect": "answer",
+  "answer": [
+   4.0,
+   "m/s^2"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "r3-04",
+  "area": "momentum",
+  "prompt": "A 1.5 kg rifle fires a 10 g bullet at 300 m/s. What is the recoil velocity of the rifle?",
+  "expect": "answer",
+  "answer": [
+   2.0,
+   "m/s"
+  ],
+  "visual": "collision"
+ },
+ {
+  "id": "r3-05",
+  "area": "momentum",
+  "prompt": "A 70 kg astronaut pushes off a 30 kg satellite. If the first moves at 0.3 m/s, how fast does the second move?",
+  "expect": "answer",
+  "answer": [
+   0.7,
+   "m/s"
+  ],
+  "visual": "collision"
+ },
+ {
+  "id": "r3-06",
+  "area": "momentum",
+  "prompt": "A 50 kg girl and a 70 kg boy push off each other on ice. If the second moves at 1 m/s, how fast does the first move?",
+  "expect": "answer",
+  "answer": [
+   1.4,
+   "m/s"
+  ],
+  "visual": "collision"
+ },
+ {
+  "id": "r3-07",
+  "area": "waves",
+  "prompt": "A sound of 80 dB is made 10 times more intense. What is the new sound level?",
+  "expect": "answer",
+  "answer": [
+   90.0,
+   "dB"
+  ]
+ },
+ {
+  "id": "r3-08",
+  "area": "circuits",
+  "prompt": "A 1500 W kettle is used for 10 minutes a day for 7 days. How much energy does it use?",
+  "expect": "answer",
+  "answer": [
+   6300000.0,
+   "J"
+  ]
+ },
+ {
+  "id": "r3-09",
+  "area": "kinematics",
+  "prompt": "A ticket costs $12 and the train travels at 30 m/s for 600 s. How far does it go?",
+  "expect": "answer",
+  "answer": [
+   18000.0,
+   "m"
+  ]
+ },
+ {
+  "id": "r3-10",
+  "area": "electrostatics",
+  "prompt": "Two identical 4 nC charges are 2 cm apart. What is the force between them?",
+  "expect": "answer",
+  "answer": [
+   0.000359502,
+   "N"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "r3-11",
+  "area": "electrostatics",
+  "prompt": "A 2 nC charge and a 5 pC charge are 3 mm apart. What is the electric force?",
+  "expect": "answer",
+  "answer": [
+   9.98617e-06,
+   "N"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "r3-d1",
+  "area": "decline",
+  "prompt": "A 2 kW heater runs for 3 hours. Electricity costs $0.20 per kWh. How much does it cost to run?",
+  "expect": "decline"
+ },
+ {
+  "id": "r3-d2",
+  "area": "decline",
+  "prompt": "A 5 kg box is pulled with 30 N to the right and 10 N to the right. Which force is bigger?",
+  "expect": "explain"
+ }
+]

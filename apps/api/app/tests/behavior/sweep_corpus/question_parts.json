@@ -1,0 +1,127 @@
+[
+ {
+  "id": "qp-001",
+  "area": "physics",
+  "prompt": "A ball is thrown up at 15 m/s. How high does it go? How long does it take to reach the top?",
+  "reply": "**Maximum height:** $h = \\dfrac{u^2}{2g} = \\dfrac{15^2}{2(9.81)} \\approx 11.5$ m\n\n**Time to the top:** $t = \\dfrac{u}{g} = \\dfrac{15}{9.81} \\approx 1.53$ s",
+  "expect": "answer"
+ },
+ {
+  "id": "qp-002",
+  "area": "physics",
+  "prompt": "A ball rolls off a table 1.2 m high. What is its speed? How long does it take to reach the floor?",
+  "reply": "The time to fall depends only on the height: $t = \\sqrt{2h/g} = \\sqrt{2(1.2)/9.81} \\approx 0.49$ s. Its speed off the table isn't given, so I can't find its horizontal speed; it lands moving down at $gt \\approx 4.85$ m/s.",
+  "expect": "answer",
+  "gap": "Physics reads no subject in \"A ball rolls off a table 1.2 m high\" on its own, so it sets up no problem; the floor question, cut from it, reads as a trip and is searched."
+ },
+ {
+  "id": "qp-003",
+  "area": "physics",
+  "prompt": "A train travels at 20 m/s. How far does it go in 2 minutes? How long does it take to reach the next station 6 km away?",
+  "reply": "**Distance in 2 min:** $d = vt = 20 \\times 120 = 2400$ m\n\n**Time to the station:** $t = d/v = 6000/20 = 300$ s (5 minutes)",
+  "expect": "answer"
+ },
+ {
+  "id": "qp-004",
+  "area": "physics",
+  "prompt": "A ball is dropped from 20 m. What is its speed after 1 s? How long does it take to reach the ground?",
+  "reply": "**Speed after 1 s:** $v = gt = 9.81$ m/s\n\n**Time to the ground:** $t = \\sqrt{2h/g} = \\sqrt{2(20)/9.81} \\approx 2.02$ s",
+  "expect": "answer",
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "qp-005",
+  "area": "physics",
+  "prompt": "A car of mass 1000 kg moves at 20 m/s. It brakes to a stop in 4 s. What is the braking force?",
+  "reply": "**Deceleration:** $a = \\Delta v/t = 20/4 = 5$ m/s²\n\n**Force:** $F = ma = 1000 \\times 5 = 5000$ N",
+  "expect": "answer"
+ },
+ {
+  "id": "qp-006",
+  "area": "physics",
+  "prompt": "I'm studying for a test. A ball is dropped from 20 m. How long does it take to reach the ground?",
+  "reply": "$t = \\sqrt{2h/g} = \\sqrt{2(20)/9.81} \\approx 2.02$ s. Good luck on the test!",
+  "expect": "answer"
+ },
+ {
+  "id": "qp-007",
+  "area": "multi",
+  "prompt": "A ball is dropped from 20 m. How long does it take to reach the ground? What's the weather like today?",
+  "reply": "### The ball\n\n$t = \\sqrt{2(20)/9.81} \\approx 2.02$ s\n\n### Today\n\nSunny in Addis Ababa, a high of **24°C**.",
+  "expect": [
+   "search",
+   "answer"
+  ],
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "qp-008",
+  "area": "multi",
+  "prompt": "A ball is dropped from 20 m. How long does it take to land? Who won the Arsenal game last night?",
+  "reply": "### The ball\n\n$t = \\sqrt{2(20)/9.81} \\approx 2.02$ s\n\n### Arsenal\n\nArsenal beat Chelsea **2–1** at the Emirates last night.",
+  "expect": [
+   "search",
+   "answer"
+  ]
+ },
+ {
+  "id": "qp-009",
+  "area": "multi",
+  "prompt": "A train travels at 20 m/s. How long does it take to reach the station 4 km away? Are there coffee shops near me?",
+  "reply": "### The train\n\n$t = 4000/20 = 200$ s\n\n### Coffee near you\n\n- **Tomoca Coffee**, Bole Road\n- **Kaldi's Coffee**, Bole Medhanialem",
+  "expect": [
+   "search",
+   "answer"
+  ],
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "qp-010",
+  "area": "multi",
+  "prompt": "What's the latest news on SpaceX? And what is 12 squared?",
+  "reply": "### SpaceX\n\nSpaceX launched another Starship test flight this week.\n\n### 12 squared\n\n$12^2 = 144$",
+  "expect": [
+   "search",
+   "answer"
+  ]
+ },
+ {
+  "id": "qp-011",
+  "area": "multi",
+  "prompt": "Find coffee shops near me. And what is 25% of 60?",
+  "reply": "### Coffee near you\n\n- **Tomoca Coffee**, Bole Road\n\n### 25% of 60\n\n$0.25 \\times 60 = 15$",
+  "expect": [
+   "search",
+   "answer"
+  ],
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "qp-012",
+  "area": "multi lookalike",
+  "prompt": "A car moves 100 m in 20 s. Find its speed and give the unit.",
+  "reply": "$v = d/t = 100/20 = 5$ m/s",
+  "expect": "answer"
+ },
+ {
+  "id": "qp-013",
+  "area": "multi lookalike",
+  "prompt": "Two dice are rolled. What is the probability that the sum is 4? Give your answer as a fraction.",
+  "reply": "There are 3 ways out of 36: $P = \\dfrac{3}{36} = \\dfrac{1}{12}$",
+  "expect": "answer"
+ },
+ {
+  "id": "qp-014",
+  "area": "multi",
+  "prompt": "I'm a backend dev. What laptop should I buy? What is 12 squared?",
+  "reply": "### A laptop\n\nFor backend work, a MacBook Air M3 with 16 GB or a ThinkPad T14 with 32 GB.\n\n### 12 squared\n\n$12^2 = 144$",
+  "expect": "answer"
+ },
+ {
+  "id": "qp-015",
+  "area": "multi",
+  "prompt": "We're in Paris. How far is 300 m in feet? What's good to eat here?",
+  "reply": "### 300 m in feet\n\n$300 \\times 3.281 \\approx 984$ ft\n\n### Eating in Paris\n\nTry a croque-monsieur at a café, fresh croissants, and steak frites at a bistro.",
+  "expect": "answer"
+ }
+]

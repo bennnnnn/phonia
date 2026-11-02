@@ -1,0 +1,2425 @@
+[
+ {
+  "id": "mo-001",
+  "area": "money lookalike",
+  "prompt": "I'm interested in buying a car, which brand is most reliable?",
+  "history": [],
+  "reply": "Toyota and Honda top most reliability surveys; Mazda is close behind.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-002",
+  "area": "money lookalike",
+  "prompt": "rate my essay out of 10",
+  "history": [],
+  "reply": "I'd give it a 7: a clear thesis, but the middle paragraphs repeat.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-003",
+  "area": "money lookalike",
+  "prompt": "what does a school principal do all day?",
+  "history": [],
+  "reply": "A principal runs the school: staff, budgets, discipline and parents.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-004",
+  "area": "money lookalike",
+  "prompt": "credit card design ideas for a fintech startup",
+  "history": [],
+  "reply": "- A matte black card with a vertical layout\n- A clear card with a printed edge",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-005",
+  "area": "money lookalike",
+  "prompt": "my card was declined at the store, why?",
+  "history": [],
+  "reply": "Common reasons: a fraud hold, an expired card, or the daily limit.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-006",
+  "area": "money lookalike",
+  "prompt": "pay attention to the details in this paragraph",
+  "history": [],
+  "reply": "Here are the details worth noticing: the dates, the names and the order of events.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-007",
+  "area": "money lookalike",
+  "prompt": "the interest of the story fades in act 3, how do I fix it?",
+  "history": [],
+  "reply": "Raise the stakes: give the hero a deadline and take away an ally.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-008",
+  "area": "money lookalike",
+  "prompt": "savings on groceries tips",
+  "history": [],
+  "reply": "- Plan meals for the week\n- Buy store brands\n- Shop with a list",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-009",
+  "area": "money lookalike",
+  "prompt": "how much should I save for a house",
+  "history": [],
+  "reply": "Aim for a 20% down payment plus 3-5% for closing costs, if you can.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-010",
+  "area": "money lookalike",
+  "prompt": "my house is 20 years old, should I replace the roof?",
+  "history": [],
+  "reply": "Asphalt roofs last about 20-25 years, so have it inspected.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-011",
+  "area": "money lookalike",
+  "prompt": "I drove my car 300 miles today",
+  "history": [],
+  "reply": "That's a long day on the road; take a break before driving again.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-012",
+  "area": "money lookalike",
+  "prompt": "what does APR mean",
+  "history": [],
+  "reply": "APR, the annual percentage rate, is a loan's yearly cost including fees.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-013",
+  "area": "money lookalike",
+  "prompt": "explain how mortgages work",
+  "history": [],
+  "reply": "A mortgage is a loan secured by a home: you repay principal and interest monthly.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-014",
+  "area": "money lookalike",
+  "prompt": "write a short poem about saving money",
+  "history": [],
+  "reply": "A coin today, a coin tomorrow,\nfar from debt and far from sorrow.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-015",
+  "area": "money lookalike",
+  "prompt": "compound interest on 1000 at 5% for 3 years",
+  "history": [],
+  "reply": "**Given**\n$P = 1000$, $r = 5\\%$, $t = 3$\n\n**Answer**\n\n```answer\n1157.63\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-016",
+  "area": "money",
+  "prompt": "what is my mortgage for 300k dollars house if mr rate is 1 percent",
+  "history": [],
+  "reply": "At 1%, a $300,000 mortgage over 30 years (assumed) is about $964.92 a month.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-017",
+  "area": "money",
+  "prompt": "I owe 5000 on my credit card at 22% apr and pay 200 a month, how long to pay off",
+  "history": [],
+  "reply": "About 34 months, paying about $1,800 in interest.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-018",
+  "area": "money",
+  "prompt": "if I save 200 a month at 4.5% for 10 years how much will I have",
+  "history": [],
+  "reply": "About $30,200: $24,000 deposited and about $6,200 in interest.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-019",
+  "area": "money",
+  "prompt": "i'm thinking of buying a used car for 14000, i can put 3000 down. what would my monthly payment be over 5 years?",
+  "history": [],
+  "reply": "For an $11,000 used car loan over 60 months at today's average rate, the payment is about $218.64 a month, with about $2,118.67 in interest.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-020",
+  "area": "money",
+  "prompt": "hmm what if i only do 3 years instead",
+  "history": [
+   [
+    "user",
+    "i'm thinking of buying a used car for 14000, i can put 3000 down. what would my monthly payment be over 5 years?"
+   ],
+   [
+    "assistant",
+    "For an $11,000 used car loan over 60 months at today's average rate, the payment is about $218.64 a month, with about $2,118.67 in interest."
+   ]
+  ],
+  "reply": "Over 36 months the payment is about $340.45 a month, with about $1,256.32 in interest.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-021",
+  "area": "money",
+  "prompt": "what if I put 5000 down?",
+  "history": [
+   [
+    "user",
+    "car loan 14000 with 3000 down at 7.16% for 5 years, what's the monthly payment"
+   ],
+   [
+    "assistant",
+    "About $218.64 a month for 60 months, about $2,118.67 in interest in total."
+   ]
+  ],
+  "reply": "With $5,000 down you borrow $9,000: about $178.89 a month over 60 months.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-022",
+  "area": "money declined",
+  "prompt": "what if I pay 300 a month instead?",
+  "history": [
+   [
+    "user",
+    "I owe 5000 on my credit card at 22% apr and pay 200 a month, how long to pay off"
+   ],
+   [
+    "assistant",
+    "About 34 months, paying about $1,800 in interest."
+   ]
+  ],
+  "reply": "At $300 a month it is paid off in about 20 months, with about $1,000 in interest.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-023",
+  "area": "money",
+  "prompt": "what about 20 years?",
+  "history": [
+   [
+    "user",
+    "if I save 200 a month at 4.5% for 10 years how much will I have"
+   ],
+   [
+    "assistant",
+    "About $30,200: $24,000 deposited and about $6,200 in interest."
+   ]
+  ],
+  "reply": "After 20 years you would have about $77,600: $48,000 deposited and $29,600 interest.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-024",
+  "area": "money",
+  "prompt": "and with 5000 down?",
+  "history": [
+   [
+    "user",
+    "car loan 14000 with 3000 down at 7.16% for 5 years, what's the monthly payment"
+   ],
+   [
+    "assistant",
+    "About $218.64 a month for 60 months, about $2,118.67 in interest in total."
+   ],
+   [
+    "user",
+    "what if i only do 3 years instead"
+   ],
+   [
+    "assistant",
+    "About $340.45 a month over 36 months."
+   ]
+  ],
+  "reply": "With $5,000 down over 36 months, about $278.55 a month.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-025",
+  "area": "money lookalike",
+  "prompt": "what if i only do 3 sets instead",
+  "history": [
+   [
+    "user",
+    "give me a 4 day workout plan with 4 sets of each exercise"
+   ],
+   [
+    "assistant",
+    "Day 1: squats, lunges and calf raises, 4 sets of 10 each."
+   ]
+  ],
+  "reply": "Three sets still works: keep the weight and rest 90 seconds between sets.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-026",
+  "area": "money lookalike",
+  "prompt": "what if it was 3 years ago",
+  "history": [
+   [
+    "user",
+    "i'm thinking of buying a used car for 14000, i can put 3000 down. what would my monthly payment be over 5 years?"
+   ],
+   [
+    "assistant",
+    "For an $11,000 used car loan over 60 months at today's average rate, the payment is about $218.64 a month, with about $2,118.67 in interest."
+   ]
+  ],
+  "reply": "Three years ago used car rates were lower, so the same loan would have cost less.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-027",
+  "area": "money lookalike",
+  "prompt": "3 years",
+  "history": [
+   [
+    "user",
+    "how long has my cat been with you, she was a stray when I took her in"
+   ],
+   [
+    "assistant",
+    "I don't know yet. How long has she been with you?"
+   ]
+  ],
+  "reply": "Three years is a good while: she has settled in by now.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-028",
+  "area": "money lookalike",
+  "prompt": "what if I keep the car for 10 years",
+  "history": [
+   [
+    "user",
+    "car loan 14000 with 3000 down at 7.16% for 5 years, what's the monthly payment"
+   ],
+   [
+    "assistant",
+    "About $218.64 a month for 60 months, about $2,118.67 in interest in total."
+   ]
+  ],
+  "reply": "Keeping it 10 years spreads the cost: plan for tires, brakes and a timing belt.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-029",
+  "area": "money lookalike",
+  "prompt": "what if i only do 3 years instead",
+  "history": [
+   [
+    "user",
+    "car loan 14000 with 3000 down at 7.16% for 5 years, what's the monthly payment"
+   ],
+   [
+    "assistant",
+    "About $218.64 a month for 60 months, about $2,118.67 in interest in total."
+   ],
+   [
+    "user",
+    "how do I make lasagna?"
+   ],
+   [
+    "assistant",
+    "Layer pasta, ragu and bechamel, then bake for 45 minutes."
+   ]
+  ],
+  "reply": "Three years of what, the lasagna? Tell me what you'd like to change.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-030",
+  "area": "money lookalike",
+  "prompt": "I used a calculator and got $400 a month on my car, is that normal?",
+  "history": [],
+  "reply": "That's close to the average new car payment; it depends on the price and the term.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-031",
+  "area": "money lookalike",
+  "prompt": "what if sales tax is 7%",
+  "history": [
+   [
+    "user",
+    "car loan 20000 at 7% for 5 years, what's the monthly payment"
+   ],
+   [
+    "assistant",
+    "About $396.02 a month for 60 months, $3,761.44 in interest."
+   ]
+  ],
+  "reply": "At 7% sales tax the car costs $21,400, so you would borrow more unless you pay the tax up front.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-032",
+  "area": "money lookalike",
+  "prompt": "what if property tax is 1.2%",
+  "history": [
+   [
+    "user",
+    "mortgage of 300k at 6% for 30 years"
+   ],
+   [
+    "assistant",
+    "About $1,798.65 a month over 30 years, $347,514.57 in interest."
+   ]
+  ],
+  "reply": "Property tax of 1.2% on a $300,000 home is about $300 a month on top of the mortgage payment.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-033",
+  "area": "money lookalike",
+  "prompt": "with 3% inflation?",
+  "history": [
+   [
+    "user",
+    "mortgage of 300k at 6% for 30 years"
+   ],
+   [
+    "assistant",
+    "About $1,798.65 a month over 30 years, $347,514.57 in interest."
+   ]
+  ],
+  "reply": "Inflation makes a fixed payment feel lighter over time: in 30 years the same payment is worth much less.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-034",
+  "area": "money lookalike",
+  "prompt": "what if I get a 3% raise",
+  "history": [
+   [
+    "user",
+    "car loan 20000 at 7% for 5 years, what's the monthly payment"
+   ],
+   [
+    "assistant",
+    "About $396.02 a month for 60 months, $3,761.44 in interest."
+   ]
+  ],
+  "reply": "A 3% raise each year makes the payment a smaller part of your pay over the 5 years.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-035",
+  "area": "money lookalike",
+  "prompt": "what if the dealer gives me 2% cash back",
+  "history": [
+   [
+    "user",
+    "car loan 20000 at 7% for 5 years, what's the monthly payment"
+   ],
+   [
+    "assistant",
+    "About $396.02 a month for 60 months, $3,761.44 in interest."
+   ]
+  ],
+  "reply": "Cash back of 2% is $400 you can put toward the car or keep.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-036",
+  "area": "money lookalike",
+  "prompt": "what if inflation is 3%",
+  "history": [
+   [
+    "user",
+    "if I save 200 a month at 4.5% for 10 years how much will I have"
+   ],
+   [
+    "assistant",
+    "About $30,200: $24,000 deposited and about $6,200 in interest."
+   ]
+  ],
+  "reply": "With 3% inflation the real value of your savings grows by about 1.5% a year.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-037",
+  "area": "money lookalike",
+  "prompt": "what if I pay 400 instead?",
+  "history": [
+   [
+    "user",
+    "car loan 20000 at 7% for 5 years, what's the monthly payment"
+   ],
+   [
+    "assistant",
+    "About $396.02 a month for 60 months, $3,761.44 in interest."
+   ]
+  ],
+  "reply": "Paying $400 a month would clear the loan a little faster than 60 months.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-038",
+  "area": "money lookalike",
+  "prompt": "what if the trade-in is worth 4000",
+  "history": [
+   [
+    "user",
+    "car loan 20000 at 7% for 5 years, what's the monthly payment"
+   ],
+   [
+    "assistant",
+    "About $396.02 a month for 60 months, $3,761.44 in interest."
+   ]
+  ],
+  "reply": "A $4,000 trade-in works like a down payment and lowers what you borrow.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-039",
+  "area": "money lookalike",
+  "prompt": "what if I pay 150 for insurance",
+  "history": [
+   [
+    "user",
+    "car loan 20000 at 7% for 5 years, what's the monthly payment"
+   ],
+   [
+    "assistant",
+    "About $396.02 a month for 60 months, $3,761.44 in interest."
+   ]
+  ],
+  "reply": "Insurance of $150 a month is a separate cost on top of the loan payment.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-040",
+  "area": "money lookalike",
+  "prompt": "and with 60k salary?",
+  "history": [
+   [
+    "user",
+    "car loan 20000 at 7% for 5 years, what's the monthly payment"
+   ],
+   [
+    "assistant",
+    "About $396.02 a month for 60 months, $3,761.44 in interest."
+   ]
+  ],
+  "reply": "On a $60,000 salary that payment is about 8% of your gross monthly pay.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-041",
+  "area": "money lookalike",
+  "prompt": "what if I refinance at 5% in 2 years",
+  "history": [
+   [
+    "user",
+    "mortgage of 300k at 6% for 30 years"
+   ],
+   [
+    "assistant",
+    "About $1,798.65 a month over 30 years, $347,514.57 in interest."
+   ]
+  ],
+  "reply": "Refinancing later depends on the balance left then and the closing costs.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-042",
+  "area": "money lookalike",
+  "prompt": "what if I trade in my 2015 car",
+  "history": [
+   [
+    "user",
+    "car loan 20000 at 7% for 5 years, what's the monthly payment"
+   ],
+   [
+    "assistant",
+    "About $396.02 a month for 60 months, $3,761.44 in interest."
+   ]
+  ],
+  "reply": "A 2015 car's trade-in value depends on its mileage and condition.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-043",
+  "area": "money declined",
+  "prompt": "what if I bought a new car for 30000 instead",
+  "history": [
+   [
+    "user",
+    "i'm thinking of buying a used car for 14000, i can put 3000 down. what would my monthly payment be over 5 years?"
+   ],
+   [
+    "assistant",
+    "About $218.64 a month over 60 months at today's average rate."
+   ]
+  ],
+  "reply": "A new car for $30,000 with $3,000 down is $27,000 borrowed, about $534.63 a month.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-044",
+  "area": "money declined",
+  "prompt": "what if I pay 5000 upfront",
+  "history": [
+   [
+    "user",
+    "car loan 20000 at 7% for 5 years, what's the monthly payment"
+   ],
+   [
+    "assistant",
+    "About $396.02 a month for 60 months, $3,761.44 in interest."
+   ]
+  ],
+  "reply": "With $5,000 upfront you borrow $15,000: about $297.02 a month.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-045",
+  "area": "money declined",
+  "prompt": "what about 400k?",
+  "history": [
+   [
+    "user",
+    "mortgage of 300k at 6% for 30 years"
+   ],
+   [
+    "assistant",
+    "About $1,798.65 a month over 30 years, $347,514.57 in interest."
+   ]
+  ],
+  "reply": "A $400,000 mortgage at 6% over 30 years is about $2,398.20 a month.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-046",
+  "area": "money lookalike",
+  "prompt": "what if I get a 5% match from my employer",
+  "history": [
+   [
+    "user",
+    "if I save 200 a month at 4.5% for 10 years how much will I have"
+   ],
+   [
+    "assistant",
+    "About $30,200: $24,000 deposited and about $6,200 in interest."
+   ]
+  ],
+  "reply": "A 5% employer match is free money: contribute at least enough to get all of it.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-047",
+  "area": "money lookalike",
+  "prompt": "what if it's 40k miles",
+  "history": [
+   [
+    "user",
+    "car loan 20000 at 7% for 5 years, what's the monthly payment"
+   ],
+   [
+    "assistant",
+    "About $396.02 a month for 60 months, $3,761.44 in interest."
+   ]
+  ],
+  "reply": "At 40k miles a car still has plenty of life if it was serviced on schedule.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-048",
+  "area": "money lookalike",
+  "prompt": "what if rates are 5% for 2 years then go up",
+  "history": [
+   [
+    "user",
+    "mortgage of 300k at 6% for 30 years"
+   ],
+   [
+    "assistant",
+    "About $1,798.65 a month over 30 years, $347,514.57 in interest."
+   ]
+  ],
+  "reply": "That is an adjustable rate: after the first 2 years the payment can rise with the market.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-049",
+  "area": "money lookalike",
+  "prompt": "what if I take 6 months of maternity leave",
+  "history": [
+   [
+    "user",
+    "mortgage of 300k at 6% for 30 years"
+   ],
+   [
+    "assistant",
+    "About $1,798.65 a month over 30 years, $347,514.57 in interest."
+   ]
+  ],
+  "reply": "Plan for six payments from savings, or ask the lender about a short forbearance.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-050",
+  "area": "money lookalike",
+  "prompt": "what if I pay 1000 now",
+  "history": [
+   [
+    "user",
+    "I owe 5000 on my credit card at 22% apr and pay 200 a month, how long to pay off"
+   ],
+   [
+    "assistant",
+    "About 34 months, paying about $1,800 in interest."
+   ]
+  ],
+  "reply": "Paying 1,000 now cuts the balance and the interest from here on.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-051",
+  "area": "money lookalike",
+  "prompt": "what if it was $400k",
+  "history": [
+   [
+    "user",
+    "mortgage of 3 million birr at 15% for 20 years"
+   ],
+   [
+    "assistant",
+    "About 39,500 birr a month over 20 years."
+   ]
+  ],
+  "reply": "A dollar mortgage would be priced in dollars, at a dollar lender's rates.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-052",
+  "area": "money lookalike",
+  "prompt": "what if I'm at 80% LTV",
+  "history": [
+   [
+    "user",
+    "mortgage of 300k at 6% for 30 years"
+   ],
+   [
+    "assistant",
+    "About $1,798.65 a month over 30 years, $347,514.57 in interest."
+   ]
+  ],
+  "reply": "At 80% loan-to-value most lenders drop the PMI requirement.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-053",
+  "area": "money lookalike",
+  "prompt": "what if the house is 1500 sq ft",
+  "history": [
+   [
+    "user",
+    "mortgage of 300k at 6% for 30 years"
+   ],
+   [
+    "assistant",
+    "About $1,798.65 a month over 30 years, $347,514.57 in interest."
+   ]
+  ],
+  "reply": "At 1,500 square feet that works out to about $200 a square foot.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-054",
+  "area": "money declined",
+  "prompt": "what about a 600k house?",
+  "history": [
+   [
+    "user",
+    "mortgage on a 500k house with 20% down at 6.5%"
+   ],
+   [
+    "assistant",
+    "With $100,000 down you borrow $400,000: about $2,528.27 a month over 30 years."
+   ]
+  ],
+  "reply": "With 20% down on $600,000 you borrow $480,000: about $3,033.93 a month.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-055",
+  "area": "money declined",
+  "prompt": "what if I buy it used at 9%",
+  "history": [
+   [
+    "user",
+    "car loan 20000 at 7% for 5 years, what's the monthly payment"
+   ],
+   [
+    "assistant",
+    "About $396.02 a month for 60 months, $3,761.44 in interest."
+   ]
+  ],
+  "reply": "A used car at 9% over 60 months costs about $415.17 a month.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-056",
+  "area": "money declined",
+  "prompt": "what about a 2019 model?",
+  "history": [
+   [
+    "user",
+    "used car loan 8000 at 9% for 48 months"
+   ],
+   [
+    "assistant",
+    "About $199.08 a month over 48 months."
+   ]
+  ],
+  "reply": "A 2019 model would likely cost more than $8,000; tell me its price and I'll redo the payment.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-057",
+  "area": "money declined",
+  "prompt": "what if my payment is 3%",
+  "history": [
+   [
+    "user",
+    "I owe 5000 on my credit card at 22% apr and pay 200 a month, how long to pay off"
+   ],
+   [
+    "assistant",
+    "About 34 months, paying about $1,800 in interest."
+   ]
+  ],
+  "reply": "A minimum of 3% of the balance starts at $150 and shrinks as the balance falls.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-058",
+  "area": "money declined",
+  "prompt": "what if I put 20% down, so 80k",
+  "history": [
+   [
+    "user",
+    "what would my mortgage payment be on a 350k house with 20% down"
+   ],
+   [
+    "assistant",
+    "With $70,000 down you borrow $280,000; I need the rate to work out the payment."
+   ]
+  ],
+  "reply": "80k is 20% of a $400,000 house, so you'd borrow $320,000.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-059",
+  "area": "money declined",
+  "prompt": "what about 3.5 down?",
+  "history": [
+   [
+    "user",
+    "what would my mortgage payment be on a 350k house with 20% down"
+   ],
+   [
+    "assistant",
+    "With $70,000 down you borrow $280,000; I need the rate to work out the payment."
+   ]
+  ],
+  "reply": "With 3.5% down on $350,000 you'd put $12,250 down and borrow $337,750.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-060",
+  "area": "money declined",
+  "prompt": "what if the new price is 12k",
+  "history": [
+   [
+    "user",
+    "i'm thinking of buying a used car for 14000, i can put 3000 down. what would my monthly payment be over 5 years?"
+   ],
+   [
+    "assistant",
+    "About $218.64 a month over 60 months at today's average rate."
+   ]
+  ],
+  "reply": "At $12,000 with $3,000 down you'd borrow $9,000.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-061",
+  "area": "money declined",
+  "prompt": "what if I make 3000 a month",
+  "history": [
+   [
+    "user",
+    "if I save 1000 a month at 5% for 20 years how much will I have"
+   ],
+   [
+    "assistant",
+    "About $411,000: $240,000 deposited and about $171,000 in interest."
+   ]
+  ],
+  "reply": "Saving $1,000 of $3,000 a month is a third of your income.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-062",
+  "area": "money declined",
+  "prompt": "what about 15%?",
+  "history": [
+   [
+    "user",
+    "mortgage on a 400k house with 10% down at 6.5%"
+   ],
+   [
+    "assistant",
+    "With $40,000 down you borrow $360,000: about $2,275.44 a month over 30 years."
+   ]
+  ],
+  "reply": "With 15% down you'd put $60,000 down and borrow $340,000.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-063",
+  "area": "money lookalike",
+  "prompt": "it's been 5 years",
+  "history": [
+   [
+    "user",
+    "mortgage of 300k at 6% for 30 years"
+   ],
+   [
+    "assistant",
+    "About $1,798.65 a month over 30 years, $347,514.57 in interest."
+   ]
+  ],
+  "reply": "After 5 years of payments about $20,800 of the principal is paid off.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-064",
+  "area": "money lookalike",
+  "prompt": "what about at 5 years?",
+  "history": [
+   [
+    "user",
+    "mortgage of 300k at 6% for 30 years"
+   ],
+   [
+    "assistant",
+    "About $1,798.65 a month over 30 years, $347,514.57 in interest."
+   ]
+  ],
+  "reply": "At the 5-year mark you would still owe about $279,000.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-065",
+  "area": "money declined",
+  "prompt": "what about 6% interest only",
+  "history": [
+   [
+    "user",
+    "mortgage of 300k at 6% for 30 years"
+   ],
+   [
+    "assistant",
+    "About $1,798.65 a month over 30 years, $347,514.57 in interest."
+   ]
+  ],
+  "reply": "Interest-only at 6% is $1,500 a month, and the balance does not go down.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-066",
+  "area": "money lookalike",
+  "prompt": "what's 7%?",
+  "history": [
+   [
+    "user",
+    "mortgage of 300k at 6% for 30 years"
+   ],
+   [
+    "assistant",
+    "About $1,798.65 a month over 30 years, $347,514.57 in interest."
+   ]
+  ],
+  "reply": "7% of $300,000 is $21,000.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-067",
+  "area": "money",
+  "prompt": "and at 5%?",
+  "history": [
+   [
+    "user",
+    "car loan 20000 at 7% for 5 years, what's the monthly payment"
+   ],
+   [
+    "assistant",
+    "About $396.02 a month for 60 months, $3,761.44 in interest."
+   ]
+  ],
+  "reply": "At 5% the payment is about $377.42 a month.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-068",
+  "area": "money",
+  "prompt": "what about 3 years",
+  "history": [
+   [
+    "user",
+    "set a reminder for 9 tomorrow and what's the payment on a 20000 car loan at 6%"
+   ],
+   [
+    "assistant",
+    "Reminder set for 9 tomorrow. The car loan is about $386.66 a month over 60 months."
+   ]
+  ],
+  "reply": "Over 36 months the payment is about $608.44 a month.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-069",
+  "area": "money",
+  "prompt": "20k with 6 percent",
+  "history": [
+   [
+    "user",
+    "I am planing to buy a car"
+   ],
+   [
+    "assistant",
+    "Nice! Are you looking at new or used, and what's your budget?"
+   ]
+  ],
+  "reply": "A $20,000 car loan at 6% over 60 months is about $386.66 a month, with about $3,199.36 in interest.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-070",
+  "area": "money",
+  "prompt": "60k down at 6 percent",
+  "history": [
+   [
+    "user",
+    "House buying for 400k"
+   ],
+   [
+    "assistant",
+    "Congrats! How much are you putting down, and what rate have you been quoted?"
+   ]
+  ],
+  "reply": "With $60,000 down you borrow $340,000: about $2,038.47 a month over 30 years.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-071",
+  "area": "money",
+  "prompt": "what if 3 years instead",
+  "history": [
+   [
+    "user",
+    "I am planing to buy a car"
+   ],
+   [
+    "assistant",
+    "Nice! Are you looking at new or used, and what's your budget?"
+   ],
+   [
+    "user",
+    "20k with 6 percent"
+   ],
+   [
+    "assistant",
+    "About $386.66 a month over 60 months."
+   ]
+  ],
+  "reply": "Over 36 months the payment is about $608.44 a month, with about $1,903.80 in interest.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-072",
+  "area": "money",
+  "prompt": "60k at 6 percent",
+  "history": [
+   [
+    "user",
+    "House buying for 400k"
+   ],
+   [
+    "assistant",
+    "Congrats! How much are you putting down, and what rate have you been quoted?"
+   ]
+  ],
+  "reply": "Reading $60,000 as your down payment, you borrow $340,000: about $2,038.47 a month over 30 years at 6%.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-073",
+  "area": "money",
+  "prompt": "Down payment 3k",
+  "history": [
+   [
+    "user",
+    "I am planing to buy a car"
+   ],
+   [
+    "assistant",
+    "Nice! Are you looking at new or used, and what's your budget?"
+   ],
+   [
+    "user",
+    "20k with 6 percent"
+   ],
+   [
+    "assistant",
+    "About $386.66 a month over 60 months."
+   ]
+  ],
+  "reply": "With $3,000 down you borrow $17,000: about $328.66 a month over 60 months.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-074",
+  "area": "money lookalike",
+  "prompt": "20k with 6 percent was a good deal?",
+  "history": [
+   [
+    "user",
+    "I bought a car last week."
+   ],
+   [
+    "assistant",
+    "Congrats on the new car! How are you liking it?"
+   ]
+  ],
+  "reply": "6% is close to today's average for a new car loan, so it was a fair deal.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-075",
+  "area": "money lookalike",
+  "prompt": "20k steps with 6 percent incline",
+  "history": [
+   [
+    "user",
+    "I am planing to buy a car"
+   ],
+   [
+    "assistant",
+    "Nice! Are you looking at new or used, and what's your budget?"
+   ]
+  ],
+  "reply": "That's a solid walk: 20k steps at a 6% incline burns far more than walking on the flat.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-076",
+  "area": "money lookalike",
+  "prompt": "my car does 20k miles a year",
+  "history": [
+   [
+    "user",
+    "I am planing to buy a car"
+   ],
+   [
+    "assistant",
+    "Nice! Are you looking at new or used, and what's your budget?"
+   ]
+  ],
+  "reply": "At 20k miles a year, a reliable hybrid will save you the most on fuel.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-077",
+  "area": "money lookalike",
+  "prompt": "20k with 6 percent",
+  "history": [
+   [
+    "user",
+    "buy a house in minecraft"
+   ],
+   [
+    "assistant",
+    "Find a village and trade emeralds with a villager, or build your own."
+   ]
+  ],
+  "reply": "Minecraft houses don't take loans: you trade emeralds or build one yourself.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-078",
+  "area": "money lookalike",
+  "prompt": "20k with 6 percent growth for 3 years",
+  "history": [
+   [
+    "user",
+    "I am planing to buy a car"
+   ],
+   [
+    "assistant",
+    "Nice! Are you looking at new or used, and what's your budget?"
+   ]
+  ],
+  "reply": "At 6% growth a year, 20k becomes about $23,820 after 3 years.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-079",
+  "area": "money lookalike",
+  "prompt": "I make 60k with 6 percent raise",
+  "history": [
+   [
+    "user",
+    "I'm planning to buy a house"
+   ],
+   [
+    "assistant",
+    "Exciting! What's your price range?"
+   ]
+  ],
+  "reply": "On $60,000 a 6% raise is $3,600 a year more, about $300 a month.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-080",
+  "area": "money declined",
+  "prompt": "20k at 6%",
+  "history": [
+   [
+    "user",
+    "I'm planning to buy a car. What should I check first?"
+   ],
+   [
+    "assistant",
+    "Check reliability ratings, insurance costs and the total price, not just the monthly payment."
+   ]
+  ],
+  "reply": "A $20,000 car loan at 6% over 60 months is about $386.66 a month.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-081",
+  "area": "money lookalike",
+  "prompt": "$2,000 down",
+  "history": [
+   [
+    "user",
+    "I'm buying a 2021 suv"
+   ],
+   [
+    "assistant",
+    "Nice! Do you have a budget and a rate in mind?"
+   ]
+  ],
+  "reply": "With $2,000 down, what's the price and the rate you've been quoted?",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-082",
+  "area": "money lookalike",
+  "prompt": "with $1,000 down at 8%",
+  "history": [
+   [
+    "user",
+    "buying a 2015 car"
+   ],
+   [
+    "assistant",
+    "Nice! Do you have a budget and a rate in mind?"
+   ]
+  ],
+  "reply": "What's the price of the car? Then I can work out the loan.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-083",
+  "area": "money lookalike",
+  "prompt": "$500 down at 7%",
+  "history": [
+   [
+    "user",
+    "I want to buy a 2018 truck"
+   ],
+   [
+    "assistant",
+    "Nice! Do you have a budget and a rate in mind?"
+   ]
+  ],
+  "reply": "How much is the truck? With $500 down at 7% I can work out the payment.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-084",
+  "area": "money lookalike",
+  "prompt": "1500 down at 6%",
+  "history": [
+   [
+    "user",
+    "I want to buy a 1999 car"
+   ],
+   [
+    "assistant",
+    "Nice! Do you have a budget and a rate in mind?"
+   ]
+  ],
+  "reply": "What's the car's price? Then I can take the $1,500 off it.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-085",
+  "area": "money",
+  "prompt": "20k at 7%",
+  "history": [
+   [
+    "user",
+    "I want to buy a 2018 truck"
+   ],
+   [
+    "assistant",
+    "Nice! Do you have a budget and a rate in mind?"
+   ]
+  ],
+  "reply": "A $20,000 car loan at 7% over 60 months is about $396.02 a month.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-086",
+  "area": "money lookalike",
+  "prompt": "20k at 6%",
+  "history": [
+   [
+    "user",
+    "I want to get my car"
+   ],
+   [
+    "assistant",
+    "Nice! Do you have a budget and a rate in mind?"
+   ]
+  ],
+  "reply": "Is the 20k a loan on the car, or something else?",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-087",
+  "area": "money lookalike",
+  "prompt": "20k at 6%",
+  "history": [
+   [
+    "user",
+    "I need to get my car"
+   ],
+   [
+    "assistant",
+    "Nice! Do you have a budget and a rate in mind?"
+   ]
+  ],
+  "reply": "Is the 20k a loan on the car, or something else?",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-088",
+  "area": "money",
+  "prompt": "I'm putting 3k down",
+  "history": [
+   [
+    "user",
+    "I am planing to buy a car"
+   ],
+   [
+    "assistant",
+    "Nice! Are you looking at new or used, and what's your budget?"
+   ],
+   [
+    "user",
+    "20k with 6 percent"
+   ],
+   [
+    "assistant",
+    "About $386.66 a month over 60 months."
+   ]
+  ],
+  "reply": "With $3,000 down you borrow $17,000: about $328.66 a month over 60 months.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-089",
+  "area": "money",
+  "prompt": "3k down for 4 years",
+  "history": [
+   [
+    "user",
+    "I am planing to buy a car"
+   ],
+   [
+    "assistant",
+    "Nice! Are you looking at new or used, and what's your budget?"
+   ],
+   [
+    "user",
+    "20k with 6 percent"
+   ],
+   [
+    "assistant",
+    "About $386.66 a month over 60 months."
+   ]
+  ],
+  "reply": "With $3,000 down over 48 months, about $399.25 a month.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-090",
+  "area": "money",
+  "prompt": "5k at 7%",
+  "history": [
+   [
+    "user",
+    "car shopping for 20k"
+   ],
+   [
+    "assistant",
+    "Nice! What rate and down payment are you looking at?"
+   ]
+  ],
+  "reply": "Reading $5,000 as your down payment, you borrow $15,000: about $297.02 a month over 60 months.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-091",
+  "area": "money",
+  "prompt": "320k at 6%",
+  "history": [
+   [
+    "user",
+    "House buying for 400k"
+   ],
+   [
+    "assistant",
+    "Congrats! How much are you putting down, and what rate have you been quoted?"
+   ]
+  ],
+  "reply": "Reading $320,000 as the loan, about $1,918.56 a month over 30 years.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-092",
+  "area": "money lookalike",
+  "prompt": "down payment assistance programs?",
+  "history": [
+   [
+    "user",
+    "I am planing to buy a car"
+   ],
+   [
+    "assistant",
+    "Nice! Are you looking at new or used, and what's your budget?"
+   ],
+   [
+    "user",
+    "20k with 6 percent"
+   ],
+   [
+    "assistant",
+    "About $386.66 a month over 60 months."
+   ]
+  ],
+  "reply": "Many states run down payment assistance programs for first-time buyers.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-093",
+  "area": "money lookalike",
+  "prompt": "what's a good down payment?",
+  "history": [
+   [
+    "user",
+    "I am planing to buy a car"
+   ],
+   [
+    "assistant",
+    "Nice! Are you looking at new or used, and what's your budget?"
+   ],
+   [
+    "user",
+    "20k with 6 percent"
+   ],
+   [
+    "assistant",
+    "About $386.66 a month over 60 months."
+   ]
+  ],
+  "reply": "For a car, 10 to 20 percent of the price is a common target.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-094",
+  "area": "money lookalike",
+  "prompt": "I put 3k down on my old car last year",
+  "history": [
+   [
+    "user",
+    "I am planing to buy a car"
+   ],
+   [
+    "assistant",
+    "Nice! Are you looking at new or used, and what's your budget?"
+   ],
+   [
+    "user",
+    "20k with 6 percent"
+   ],
+   [
+    "assistant",
+    "About $386.66 a month over 60 months."
+   ]
+  ],
+  "reply": "That's a solid start. Is this car a trade-in?",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-095",
+  "area": "money lookalike",
+  "prompt": "the dealer wants 3k down",
+  "history": [
+   [
+    "user",
+    "I am planing to buy a car"
+   ],
+   [
+    "assistant",
+    "Nice! Are you looking at new or used, and what's your budget?"
+   ],
+   [
+    "user",
+    "20k with 6 percent"
+   ],
+   [
+    "assistant",
+    "About $386.66 a month over 60 months."
+   ]
+  ],
+  "reply": "That's common. Do you want me to work the loan with $3,000 down?",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-096",
+  "area": "money lookalike",
+  "prompt": "down payment 3k",
+  "history": [],
+  "reply": "A $3,000 down payment on what? A car, a house?",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-097",
+  "area": "money lookalike",
+  "prompt": "3k down",
+  "history": [
+   [
+    "user",
+    "if I save 200 a month at 4.5% for 10 years how much will I have"
+   ],
+   [
+    "assistant",
+    "About $30,190 after 10 years."
+   ]
+  ],
+  "reply": "Do you mean a $3,000 starting deposit for your savings?",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-098",
+  "area": "money lookalike",
+  "prompt": "3k down",
+  "history": [
+   [
+    "user",
+    "I owe 5000 on my credit card at 22% apr and pay 200 a month, how long to pay off"
+   ],
+   [
+    "assistant",
+    "About 33 months to pay it off."
+   ]
+  ],
+  "reply": "Do you mean paying $3,000 off the card now?",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-099",
+  "area": "money declined",
+  "prompt": "150k at 6%",
+  "history": [
+   [
+    "user",
+    "House buying for 400k"
+   ],
+   [
+    "assistant",
+    "Congrats! How much are you putting down, and what rate have you been quoted?"
+   ]
+  ],
+  "reply": "Is the $150,000 your down payment or the amount you want to borrow?",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-100",
+  "area": "money lookalike",
+  "prompt": "20k at 6%",
+  "history": [
+   [
+    "user",
+    "I went car shopping for 3 hours"
+   ],
+   [
+    "assistant",
+    "That sounds tiring! Find anything?"
+   ]
+  ],
+  "reply": "Is 20k at 6% a loan you were offered?",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-101",
+  "area": "money lookalike",
+  "prompt": "300k at 6%",
+  "history": [
+   [
+    "user",
+    "house hunting tips"
+   ],
+   [
+    "assistant",
+    "Start with your budget and the neighbourhoods you like."
+   ]
+  ],
+  "reply": "Is that a mortgage of $300,000 at 6%?",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-102",
+  "area": "money lookalike",
+  "prompt": "20k at 6%",
+  "history": [
+   [
+    "user",
+    "shopping for a car for my son"
+   ],
+   [
+    "assistant",
+    "Lovely! What's he looking for?"
+   ]
+  ],
+  "reply": "Is that a loan of $20,000 at 6% for his car?",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-103",
+  "area": "money",
+  "prompt": "400k house with 20% down at 6%",
+  "history": [],
+  "reply": "With $80,000 down you borrow $320,000: about $1,918.56 a month over 30 years at 6%.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-104",
+  "area": "money",
+  "prompt": "no, 60k is the loan",
+  "history": [
+   [
+    "user",
+    "House buying for 400k"
+   ],
+   [
+    "assistant",
+    "Congrats! How much are you putting down, and what rate have you been quoted?"
+   ],
+   [
+    "user",
+    "60k at 6 percent"
+   ],
+   [
+    "assistant",
+    "About $2,038.47 a month on a $340,000 loan over 30 years.\n\n**Read as:** 60,000 is the down payment on the 400,000 price, so the loan is 340,000. If 60,000 is the loan, say so."
+   ]
+  ],
+  "reply": "Got it: a $60,000 loan at 6% over 30 years is about $359.73 a month.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-105",
+  "area": "money",
+  "prompt": "im putting 3k down",
+  "history": [
+   [
+    "user",
+    "I am planing to buy a car"
+   ],
+   [
+    "assistant",
+    "Nice! Are you looking at new or used, and what's your budget?"
+   ],
+   [
+    "user",
+    "20k with 6 percent"
+   ],
+   [
+    "assistant",
+    "About $386.66 a month over 60 months."
+   ]
+  ],
+  "reply": "With $3,000 down you borrow $17,000: about $328.66 a month over 60 months.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-106",
+  "area": "money lookalike",
+  "prompt": "3k down",
+  "history": [
+   [
+    "user",
+    "car loan 20k at 6%"
+   ],
+   [
+    "assistant",
+    "About $386.66 a month over 60 months."
+   ]
+  ],
+  "reply": "Is the $20,000 the car's price, so $3,000 down leaves $17,000 to borrow?",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-107",
+  "area": "money lookalike",
+  "prompt": "with 10k down",
+  "history": [
+   [
+    "user",
+    "refinance my 250k mortgage at 6%"
+   ],
+   [
+    "assistant",
+    "About $1,498.88 a month over 30 years."
+   ]
+  ],
+  "reply": "A refinance usually has no down payment; do you mean paying $10,000 off the balance?",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-108",
+  "area": "money lookalike",
+  "prompt": "it was 3k down",
+  "history": [
+   [
+    "user",
+    "I am planing to buy a car"
+   ],
+   [
+    "assistant",
+    "Nice! Are you looking at new or used, and what's your budget?"
+   ],
+   [
+    "user",
+    "20k with 6 percent"
+   ],
+   [
+    "assistant",
+    "About $386.66 a month over 60 months."
+   ]
+  ],
+  "reply": "Was that on a car you had before?",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-109",
+  "area": "money lookalike",
+  "prompt": "I put 3k down",
+  "history": [
+   [
+    "user",
+    "I am planing to buy a car"
+   ],
+   [
+    "assistant",
+    "Nice! Are you looking at new or used, and what's your budget?"
+   ],
+   [
+    "user",
+    "20k with 6 percent"
+   ],
+   [
+    "assistant",
+    "About $386.66 a month over 60 months."
+   ]
+  ],
+  "reply": "Do you mean on this car, so you borrow $17,000?",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-110",
+  "area": "money lookalike",
+  "prompt": "is it 3k down",
+  "history": [
+   [
+    "user",
+    "I am planing to buy a car"
+   ],
+   [
+    "assistant",
+    "Nice! Are you looking at new or used, and what's your budget?"
+   ],
+   [
+    "user",
+    "20k with 6 percent"
+   ],
+   [
+    "assistant",
+    "About $386.66 a month over 60 months."
+   ]
+  ],
+  "reply": "That depends on the dealer; 10 to 20 percent is common.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-111",
+  "area": "money lookalike",
+  "prompt": "down payment 2026",
+  "history": [
+   [
+    "user",
+    "I am planing to buy a car"
+   ],
+   [
+    "assistant",
+    "Nice! Are you looking at new or used, and what's your budget?"
+   ],
+   [
+    "user",
+    "20k with 6 percent"
+   ],
+   [
+    "assistant",
+    "About $386.66 a month over 60 months."
+   ]
+  ],
+  "reply": "Do you mean a down payment in 2026?",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-112",
+  "area": "money lookalike",
+  "prompt": "2026 at 6%",
+  "history": [
+   [
+    "user",
+    "House buying for 400k"
+   ],
+   [
+    "assistant",
+    "Congrats! How much are you putting down, and what rate have you been quoted?"
+   ]
+  ],
+  "reply": "Is 2026 the year you plan to buy?",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-113",
+  "area": "money lookalike",
+  "prompt": "$500 at 6%",
+  "history": [
+   [
+    "user",
+    "House buying for 400k"
+   ],
+   [
+    "assistant",
+    "Congrats! How much are you putting down, and what rate have you been quoted?"
+   ]
+  ],
+  "reply": "Is $500 a monthly amount, or the down payment?",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-114",
+  "area": "money standing",
+  "prompt": "Yes",
+  "history": [
+   [
+    "user",
+    "House buying for 400k"
+   ],
+   [
+    "assistant",
+    "Congrats! How much are you putting down, and what rate have you been quoted?"
+   ],
+   [
+    "user",
+    "60k at 6 percent"
+   ],
+   [
+    "assistant",
+    "Your monthly payment on a $340,000 mortgage at 6% over 30 years would be **$2,038.47**."
+   ],
+   [
+    "user",
+    "How"
+   ],
+   [
+    "assistant",
+    "Here's how the payment is worked out. If you'd like, I can also show how a 15-year term changes the monthly payment and total interest."
+   ]
+  ],
+  "reply": "Over 15 years the payment is $2,869.11 a month.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-115",
+  "area": "money standing",
+  "prompt": "How",
+  "history": [
+   [
+    "user",
+    "House buying for 400k"
+   ],
+   [
+    "assistant",
+    "Congrats! How much are you putting down, and what rate have you been quoted?"
+   ],
+   [
+    "user",
+    "60k at 6 percent"
+   ],
+   [
+    "assistant",
+    "Your monthly payment on a $340,000 mortgage at 6% over 30 years would be **$2,038.47**. Want me to break down how the payment is worked out?"
+   ]
+  ],
+  "reply": "The payment uses the standard amortization formula on the $340,000 loan.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-116",
+  "area": "money standing",
+  "prompt": "which is cheaper overall, 15 or 30 years?",
+  "history": [
+   [
+    "user",
+    "House buying for 400k"
+   ],
+   [
+    "assistant",
+    "Congrats! How much are you putting down, and what rate have you been quoted?"
+   ],
+   [
+    "user",
+    "60k at 6 percent"
+   ],
+   [
+    "assistant",
+    "Your monthly payment on a $340,000 mortgage at 6% over 30 years would be **$2,038.47**."
+   ]
+  ],
+  "reply": "The 15-year loan costs less in total interest.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-117",
+  "area": "money standing",
+  "prompt": "can I afford that payment on 90k a year?",
+  "history": [
+   [
+    "user",
+    "I am planing to buy a car"
+   ],
+   [
+    "assistant",
+    "Nice! New or used, and what's your budget?"
+   ],
+   [
+    "user",
+    "20k with 6 percent"
+   ],
+   [
+    "assistant",
+    "A $20,000 car loan at 6% over 60 months is **$386.66** a month."
+   ]
+  ],
+  "reply": "At $386.66 a month it is well within a 90k salary.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-118",
+  "area": "money standing",
+  "prompt": "show me the math",
+  "history": [
+   [
+    "user",
+    "I am planing to buy a car"
+   ],
+   [
+    "assistant",
+    "Nice! New or used, and what's your budget?"
+   ],
+   [
+    "user",
+    "20k with 6 percent"
+   ],
+   [
+    "assistant",
+    "A $20,000 car loan at 6% over 60 months is **$386.66** a month."
+   ]
+  ],
+  "reply": "Here is how $386.66 is worked out.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-119",
+  "area": "money standing lookalike",
+  "prompt": "thanks",
+  "history": [
+   [
+    "user",
+    "House buying for 400k"
+   ],
+   [
+    "assistant",
+    "Congrats! How much are you putting down, and what rate have you been quoted?"
+   ],
+   [
+    "user",
+    "60k at 6 percent"
+   ],
+   [
+    "assistant",
+    "Your monthly payment on a $340,000 mortgage at 6% over 30 years would be **$2,038.47**."
+   ]
+  ],
+  "reply": "You're welcome!",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-120",
+  "area": "money standing lookalike",
+  "prompt": "what's a good name for a cat?",
+  "history": [
+   [
+    "user",
+    "House buying for 400k"
+   ],
+   [
+    "assistant",
+    "Congrats! How much are you putting down, and what rate have you been quoted?"
+   ],
+   [
+    "user",
+    "60k at 6 percent"
+   ],
+   [
+    "assistant",
+    "Your monthly payment on a $340,000 mortgage at 6% over 30 years would be **$2,038.47**."
+   ]
+  ],
+  "reply": "Miso, Pepper or Luna are popular picks.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-121",
+  "area": "money standing lookalike",
+  "prompt": "how do I bake bread?",
+  "history": [
+   [
+    "user",
+    "I am planing to buy a car"
+   ],
+   [
+    "assistant",
+    "Nice! New or used, and what's your budget?"
+   ],
+   [
+    "user",
+    "20k with 6 percent"
+   ],
+   [
+    "assistant",
+    "A $20,000 car loan at 6% over 60 months is **$386.66** a month."
+   ]
+  ],
+  "reply": "Mix flour, water, yeast and salt, then knead.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-122",
+  "area": "money standing lookalike",
+  "prompt": "Yes",
+  "history": [
+   [
+    "user",
+    "I am planing to buy a car"
+   ],
+   [
+    "assistant",
+    "Nice! New or used, and what's your budget?"
+   ],
+   [
+    "user",
+    "20k with 6 percent"
+   ],
+   [
+    "assistant",
+    "A $20,000 car loan at 6% over 60 months is **$386.66** a month."
+   ],
+   [
+    "user",
+    "how do I bake bread?"
+   ],
+   [
+    "assistant",
+    "Mix flour, water, yeast and salt. Want a full recipe?"
+   ]
+  ],
+  "reply": "Here is a simple recipe.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-123",
+  "area": "money standing lookalike",
+  "prompt": "tell me a joke",
+  "history": [
+   [
+    "user",
+    "House buying for 400k"
+   ],
+   [
+    "assistant",
+    "Congrats! How much are you putting down, and what rate have you been quoted?"
+   ],
+   [
+    "user",
+    "60k at 6 percent"
+   ],
+   [
+    "assistant",
+    "Your monthly payment on a $340,000 mortgage at 6% over 30 years would be **$2,038.47**."
+   ]
+  ],
+  "reply": "Why did the scarecrow win an award? He was outstanding in his field.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-124",
+  "area": "money standing lookalike",
+  "prompt": "Yes",
+  "history": [
+   [
+    "user",
+    "How do I start running?"
+   ],
+   [
+    "assistant",
+    "Start with three short runs a week. Want a plan?"
+   ]
+  ],
+  "reply": "Here is a four-week plan.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-125",
+  "area": "money standing lookalike",
+  "prompt": "how many years did WW2 last?",
+  "history": [
+   [
+    "user",
+    "House buying for 400k"
+   ],
+   [
+    "assistant",
+    "Congrats! How much are you putting down, and what rate have you been quoted?"
+   ],
+   [
+    "user",
+    "60k at 6 percent"
+   ],
+   [
+    "assistant",
+    "Your monthly payment on a $340,000 mortgage at 6% over 30 years would be **$2,038.47**."
+   ]
+  ],
+  "reply": "World War II lasted about six years, from 1939 to 1945.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-126",
+  "area": "money standing lookalike",
+  "prompt": "how many months until christmas?",
+  "history": [
+   [
+    "user",
+    "House buying for 400k"
+   ],
+   [
+    "assistant",
+    "Congrats! How much are you putting down, and what rate have you been quoted?"
+   ],
+   [
+    "user",
+    "60k at 6 percent"
+   ],
+   [
+    "assistant",
+    "Your monthly payment on a $340,000 mortgage at 6% over 30 years would be **$2,038.47**."
+   ]
+  ],
+  "reply": "Christmas is about two months away.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-127",
+  "area": "money standing lookalike",
+  "prompt": "what's the cost of a trip to Paris?",
+  "history": [
+   [
+    "user",
+    "House buying for 400k"
+   ],
+   [
+    "assistant",
+    "Congrats! How much are you putting down, and what rate have you been quoted?"
+   ],
+   [
+    "user",
+    "60k at 6 percent"
+   ],
+   [
+    "assistant",
+    "Your monthly payment on a $340,000 mortgage at 6% over 30 years would be **$2,038.47**."
+   ]
+  ],
+  "reply": "A week in Paris often runs $2,000 to $4,000 with flights.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-128",
+  "area": "money standing lookalike",
+  "prompt": "Yes",
+  "history": [
+   [
+    "user",
+    "House buying for 400k"
+   ],
+   [
+    "assistant",
+    "Congrats! How much are you putting down, and what rate have you been quoted?"
+   ],
+   [
+    "user",
+    "60k at 6 percent"
+   ],
+   [
+    "assistant",
+    "Your monthly payment on a $340,000 mortgage at 6% over 30 years would be **$2,038.47**."
+   ],
+   [
+    "user",
+    "remind me to call the bank"
+   ],
+   [
+    "assistant",
+    "Want me to set a reminder for Friday at 9?"
+   ]
+  ],
+  "reply": "Done, tap the card to save it.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-129",
+  "area": "money standing lookalike",
+  "prompt": "Yes",
+  "history": [
+   [
+    "user",
+    "House buying for 400k"
+   ],
+   [
+    "assistant",
+    "Congrats! How much are you putting down, and what rate have you been quoted?"
+   ],
+   [
+    "user",
+    "60k at 6 percent"
+   ],
+   [
+    "assistant",
+    "Your monthly payment on a $340,000 mortgage at 6% over 30 years would be **$2,038.47**."
+   ],
+   [
+    "user",
+    "help me write to my landlord"
+   ],
+   [
+    "assistant",
+    "Should I draft an email to your landlord?"
+   ]
+  ],
+  "reply": "Here is a draft.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-130",
+  "area": "money standing lookalike",
+  "prompt": "what are the terms of service?",
+  "history": [
+   [
+    "user",
+    "House buying for 400k"
+   ],
+   [
+    "assistant",
+    "Congrats! How much are you putting down, and what rate have you been quoted?"
+   ],
+   [
+    "user",
+    "60k at 6 percent"
+   ],
+   [
+    "assistant",
+    "Your monthly payment on a $340,000 mortgage at 6% over 30 years would be **$2,038.47**."
+   ]
+  ],
+  "reply": "Recall's terms are in Settings, under About.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-131",
+  "area": "money standing lookalike",
+  "prompt": "I'm 30 years old, what's a good workout?",
+  "history": [
+   [
+    "user",
+    "House buying for 400k"
+   ],
+   [
+    "assistant",
+    "Congrats! How much are you putting down, and what rate have you been quoted?"
+   ],
+   [
+    "user",
+    "60k at 6 percent"
+   ],
+   [
+    "assistant",
+    "Your monthly payment on a $340,000 mortgage at 6% over 30 years would be **$2,038.47**."
+   ]
+  ],
+  "reply": "Three full-body sessions a week is a good start.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-132",
+  "area": "money standing lookalike",
+  "prompt": "Yes",
+  "history": [
+   [
+    "user",
+    "House buying for 400k"
+   ],
+   [
+    "assistant",
+    "Congrats! How much are you putting down, and what rate have you been quoted?"
+   ],
+   [
+    "user",
+    "60k at 6 percent"
+   ],
+   [
+    "assistant",
+    "Your payment is $2,038.47. Want me to set a reminder for the first payment?"
+   ]
+  ],
+  "reply": "Tap the card to save it.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-133",
+  "area": "money standing lookalike",
+  "prompt": "Yes",
+  "history": [
+   [
+    "user",
+    "House buying for 400k"
+   ],
+   [
+    "assistant",
+    "Congrats! How much are you putting down, and what rate have you been quoted?"
+   ],
+   [
+    "user",
+    "60k at 6 percent"
+   ],
+   [
+    "assistant",
+    "Your monthly payment on a $340,000 mortgage at 6% over 30 years would be **$2,038.47**."
+   ],
+   [
+    "user",
+    "can you help me write to my realtor"
+   ],
+   [
+    "assistant",
+    "Shall I draft an email to your realtor about the loan?"
+   ]
+  ],
+  "reply": "Here is a draft.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-134",
+  "area": "money lookalike",
+  "prompt": "4) How much external force is required to accelerate a 1500 kg car at the rate of 6m/s2\n?",
+  "history": [],
+  "reply": "**Newton's second law**\n$F = ma = 1500 \\times 6 = 9000\\ \\text{N}$",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-135",
+  "area": "money lookalike",
+  "prompt": "A car travels 120 miles at a rate of 40 miles per hour. How long does it take?",
+  "history": [],
+  "reply": "It takes 3 hours: 120 / 40 = 3.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-136",
+  "area": "money lookalike",
+  "prompt": "A 2000 kg car moving at 20 m/s brakes at a rate of 5 m/s2. How far does it go?",
+  "history": [],
+  "reply": "It stops in 40 m: v² / (2a) = 400 / 10.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-137",
+  "area": "money lookalike",
+  "prompt": "A car went 500m at a constant rate in 50 s. What was its speed?",
+  "history": [],
+  "reply": "Its speed was 10 m/s.",
+  "expect": "answer"
+ },
+ {
+  "id": "mo-138",
+  "area": "money lookalike",
+  "prompt": "A 1200 kg car accelerates at 3 m/s^2. What is the net force on the car?",
+  "history": [],
+  "reply": "The net force is 3600 N.",
+  "expect": "answer"
+ }
+]

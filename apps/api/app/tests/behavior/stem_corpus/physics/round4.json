@@ -1,0 +1,91 @@
+[
+ {
+  "id": "r4-01",
+  "area": "kinematics",
+  "prompt": "A car travels at a constant speed of 50 km/h for 100 km. It then speeds up to 100 km/h and is driven another 100 km. What is the car's average speed for the 200 km trip?",
+  "expect": "answer",
+  "answer": [
+   66.6667,
+   "km/h"
+  ]
+ },
+ {
+  "id": "r4-02",
+  "area": "kinematics",
+  "prompt": "A car drives at 60 km/h for 120 km and then at 80 km/h for another 120 km. What is its average speed for the 240 km trip?",
+  "expect": "answer",
+  "answer": [
+   68.5714,
+   "km/h"
+  ]
+ },
+ {
+  "id": "r4-03",
+  "area": "kinematics",
+  "prompt": "A car travels 100 km at 50 km/h and then 300 km at 100 km/h. What is its average speed?",
+  "expect": "answer",
+  "answer": [
+   80.0,
+   "km/h"
+  ]
+ },
+ {
+  "id": "r4-04",
+  "area": "kinematics",
+  "prompt": "A cyclist rides to town at 20 km/h and returns at 30 km/h. What is her average speed for the round trip?",
+  "expect": "answer",
+  "answer": [
+   24.0,
+   "km/h"
+  ]
+ },
+ {
+  "id": "r4-05",
+  "area": "kinematics",
+  "prompt": "A car travels at 40 km/h for half the time and 60 km/h for the other half. What is its average speed?",
+  "expect": "answer",
+  "answer": [
+   50.0,
+   "km/h"
+  ]
+ },
+ {
+  "id": "r4-06",
+  "area": "kinematics",
+  "prompt": "A runner covers 3 km at 2 m/s and then 1 km at 4 m/s. What is her average speed?",
+  "expect": "answer",
+  "answer": [
+   2.2857,
+   "m/s"
+  ]
+ },
+ {
+  "id": "r4-07",
+  "area": "kinematics",
+  "prompt": "A passenger walks 4 m forward in 8 s to take his seat on provided place forward. What is his average velocity?",
+  "expect": "answer",
+  "answer": [
+   0.5,
+   "m/s"
+  ]
+ },
+ {
+  "id": "r4-d1",
+  "area": "kinematics",
+  "prompt": "A car drives at 60 km/h for 120 km and then at 80 km/h for another 120 km. What is its average speed for the 250 km trip?",
+  "expect": "decline",
+  "note": "the legs make 240 km, not 250"
+ },
+ {
+  "id": "r4-n1",
+  "area": "kinematics",
+  "prompt": "What is the average of 40 and 60?",
+  "expect": "not_subject"
+ },
+ {
+  "id": "r4-n2",
+  "area": "kinematics",
+  "prompt": "I drove to my mum's and came back the same day, the round trip took ages",
+  "expect": "not_subject"
+ }
+]

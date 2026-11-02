@@ -1,0 +1,123 @@
+name: Publish app update
+
+# Ships JavaScript and asset changes to installed apps over the air (EAS Update),
+# with no store review. Native changes (a new native module, an Expo SDK upgrade,
+# a config plugin or permission change) still need a store build from deploy.yml,
+# and a bump of `version` in apps/mobile/app.json: a build only takes updates whose
+# runtime version (that `version`) matches its own.
+#
+# The production channel takes updates from main only, after Mobile CI passed for
+# that commit, in the GitHub environment "production" (add required reviewers
+# there; docs/PRODUCTION.md §4). The preview channel takes any branch. Either way
+# the bundle is typechecked, linted and tested here before it is published.
+
+on:
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: Which installed builds receive it
+        type: choice
+        options:
+          - production
+          - preview
+        default: production
+      message:
+        description: What changed (shown in the EAS dashboard)
+        type: string
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mobile-update-${{ inputs.channel }}
+  cancel-in-progress: false
+
+jobs:
+  gate:
+    name: Gate (production from main, CI green)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+      checks: read
+    steps:
+      - name: Production updates come from main only
+        if: inputs.channel == 'production' && github.ref != 'refs/heads/main'
+        env:
+          REF: ${{ github.ref }}
+        run: |
+          echo "::error title=Not main::The production channel takes updates from main only, not $REF. Use the preview channel to try a branch."
+          exit 1
+
+      - uses: actions/checkout@v7
+        if: inputs.channel == 'production'
+        with:
+          fetch-depth: 100
+          persist-credentials: false
+
+      - name: Mobile CI passed for this commit's app code
+        if: inputs.channel == 'production'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          scripts/require-green-ci.sh mobile-ci.yml "$GITHUB_SHA"
+          apps/mobile scripts/check_file_sizes.py scripts/file_size_baseline.json
+          .github/workflows/mobile-ci.yml
+
+  publish:
+    needs: gate
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.channel }}
+    defaults:
+      run:
+        working-directory: apps/mobile
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: apps/mobile/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # The same checks as Mobile CI, on the exact tree being bundled.
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Unit tests
+        run: pnpm test
+
+      - uses: expo/expo-github-action@9da89d3617bb88139671bad31b09c65714c2ee06 # 9.0.1
+        with:
+          eas-version: 24.10.0
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Publish the update
+        # --environment loads the EAS environment variables for that channel, so the
+        # bundle gets the same EXPO_PUBLIC_* values (API URL, client IDs) as the build.
+        # They must be "Plain text" or "Sensitive" in EAS, not "Secret", or the
+        # bundler cannot read them. RECALL_UPDATE_PROFILE makes app.config.ts check
+        # them like a release build and fail here rather than ship a broken bundle.
+        env:
+          RECALL_UPDATE_PROFILE: ${{ inputs.channel }}
+          UPDATE_CHANNEL: ${{ inputs.channel }}
+          UPDATE_MESSAGE: ${{ inputs.message }}
+        run: >-
+          eas update
+          --channel "$UPDATE_CHANNEL"
+          --environment "$UPDATE_CHANNEL"
+          --message "$UPDATE_MESSAGE"
+          --non-interactive

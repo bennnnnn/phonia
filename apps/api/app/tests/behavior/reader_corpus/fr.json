@@ -1,0 +1,587 @@
+[
+ {
+  "subject": "chemistry",
+  "id": "amt-01",
+  "prompt": "Combien de moles y a-t-il dans 25,0 g de NaCl ?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "amt-08",
+  "prompt": "combien de mg représentent 0,0150 mol de NaOH"
+ },
+ {
+  "subject": "chemistry",
+  "id": "dil-01",
+  "prompt": "J'ai une solution mère d'HCl à 12 M. Combien de mL dois-je prélever pour préparer 500 mL d'HCl à 1,5 M ?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "dr-10",
+  "prompt": "combien de grammes de NaCl se forment lorsque 4,6 g de sodium réagissent avec un excès de chlore"
+ },
+ {
+  "subject": "chemistry",
+  "id": "dr-12",
+  "prompt": "Quelle quantité d'eau obtient-on si 3,0 g d'hydrogène et 16,0 g d'oxygène réagissent ?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "dr-13",
+  "prompt": "combien de grammes de H2 doivent brûler pour former 36 g d'eau"
+ },
+ {
+  "subject": "chemistry",
+  "id": "dr-15",
+  "prompt": "combien de grammes de NH3 peut-on obtenir à partir de 28 g d'azote et de 6 g d'hydrogène"
+ },
+ {
+  "subject": "chemistry",
+  "id": "dr-26",
+  "prompt": "2H2 + O2 -> 2H2O quelle quantité d'eau à partir de 4 g de H2"
+ },
+ {
+  "subject": "chemistry",
+  "id": "dr-28",
+  "prompt": "Combien de molécules d'eau se forment lorsqu'on brûle 4 g de H₂ ?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "dr-29",
+  "prompt": "2H2 + O2 -> 2H2O. Combien de molécules de H2O se forment à partir de 4 g de H2 ?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "ef-01",
+  "prompt": "Un composé est constitué de 85,6 % de carbone et de 14,4 % d'hydrogène. Quelle est sa formule brute ?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "ef-05",
+  "prompt": "La formule empirique d’un composé est NO2 et sa masse molaire est de 92,0 g/mol. Trouvez la formule moléculaire."
+ },
+ {
+  "subject": "chemistry",
+  "id": "eq-03",
+  "prompt": "Le Ksp du AgCl est de 1,8 × 10^-10. Quelle est sa solubilité molaire ?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "gas-01",
+  "prompt": "Un gaz occupe 4,0 L à 1,0 atm. Quel volume occupera-t-il à 2,5 atm si la température est constante ?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "kin-02",
+  "prompt": "k = 0,0450 s^-1 pour une réaction du premier ordre. Combien de temps faut-il pour que 75 % du réactif disparaisse ?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "mm-03",
+  "prompt": "Quelle est la masse molaire du glucose ?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "mm-04",
+  "prompt": "masse molaire du chlorure de sodium ??"
+ },
+ {
+  "subject": "chemistry",
+  "id": "nm-02",
+  "prompt": "Quel est le nom de Fe2(SO4)3 ?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "ph-04",
+  "prompt": "le pOH est de 3,2, trouvez le pH"
+ },
+ {
+  "subject": "chemistry",
+  "id": "r-04",
+  "prompt": "Quel est le pOH d'une solution de HCl à 0,0025 M ?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "r-21",
+  "prompt": "Calculer le potentiel de cellule d'une pile Zn/Cu avec [Zn2+] = 1,0 M et [Cu2+] = 0,010 M à 25 °C"
+ },
+ {
+  "subject": "chemistry",
+  "id": "r-27",
+  "prompt": "Quelle est la masse molaire d'un gaz dont la masse volumique est de 1,25 g/L dans les conditions normales de température et de pression ?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "sh-01",
+  "prompt": "Pourquoi la molécule d'eau est-elle coudée alors que celle de CO₂ ne l'est pas ?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "sh-08",
+  "prompt": "angle de liaison dans H2O"
+ },
+ {
+  "subject": "chemistry",
+  "id": "sh-13",
+  "prompt": "Quelle est la forme d'une molécule d'eau ?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "sh-17",
+  "prompt": "BeCl2 est-il linéaire"
+ },
+ {
+  "subject": "chemistry",
+  "id": "sol-02",
+  "prompt": "Combien de grammes de NaOH faut-il pour préparer 250 mL d'une solution à 0,150 M ?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "sol-04",
+  "prompt": "combien de mg de KCl y a-t-il dans 15,0 mL d'une solution de KCl à 0,200 mol/L ?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "u-01",
+  "prompt": "Quelle est la masse molaire de H₂SO₄ ?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "u-02",
+  "prompt": "combien de grammes y a-t-il dans 2,0 mol de CO₂"
+ },
+ {
+  "subject": "chemistry",
+  "id": "u-05",
+  "prompt": "Quelle est la molarité de 4,9 g de H₂SO₄ dans 500 mL de solution ?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "v-03",
+  "prompt": "Calculer [H+] pour une solution ayant un pH de 4,75"
+ },
+ {
+  "subject": "chemistry",
+  "id": "v-11",
+  "prompt": "Calculer la pression totale : P(He) = 0,40 atm, P(Ne) = 0,25 atm, P(Ar) = 0,15 atm"
+ },
+ {
+  "subject": "chemistry",
+  "id": "v-15",
+  "prompt": "Utilisez la loi de Hess : C + O2 → CO2, ΔH = -393,5 kJ ; CO + 1/2 O2 → CO2, ΔH = -283,0 kJ. Calculez ΔH pour C + 1/2 O2 → CO."
+ },
+ {
+  "subject": "chemistry",
+  "id": "v-16",
+  "prompt": "La constante de vitesse d'une réaction du premier ordre est de 0,0450 s^-1. Combien de temps faut-il pour que la concentration diminue jusqu'à 25 % de sa valeur initiale ?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "v-18",
+  "prompt": "Quel est le potentiel standard de cellule d'une pile galvanique constituée d'argent et de cuivre ?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "v-21",
+  "prompt": "Quel est le volume de 0,500 mol d'un gaz parfait à 25 °C et 101,3 kPa ?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "v-23",
+  "prompt": "Combien de moles de O2 réagissent avec 3,0 mol de CH4 dans CH4 + 2O2 -> CO2 + 2H2O ?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "x-10",
+  "prompt": "Quelle est la molalité de 18,0 g de glucose dans 500 g d'eau ?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "x-11",
+  "prompt": "Déterminez le degré d'oxydation du Cr dans K2Cr2O7."
+ },
+ {
+  "subject": "math",
+  "id": "ar2",
+  "prompt": "(3+5)^2 - 4*3"
+ },
+ {
+  "subject": "math",
+  "id": "ar5",
+  "prompt": "-3^2 + 5"
+ },
+ {
+  "subject": "math",
+  "id": "ar9",
+  "prompt": "Qu’est-ce que 15 - 4 × 3 + 8/2 ?"
+ },
+ {
+  "subject": "math",
+  "id": "b31",
+  "prompt": "Combien font 25 % de 80 plus 10 ?"
+ },
+ {
+  "subject": "math",
+  "id": "b32",
+  "prompt": "résoudre 2^x = 3^(x-1)"
+ },
+ {
+  "subject": "math",
+  "id": "b43",
+  "prompt": "combien de secondes dans un jour"
+ },
+ {
+  "subject": "math",
+  "id": "b5",
+  "prompt": "trouver les zéros de f(x) = x^2 - 4x"
+ },
+ {
+  "subject": "math",
+  "id": "b8",
+  "prompt": "Quelle est la somme des racines de x^2 - 5x + 6 = 0 ?"
+ },
+ {
+  "subject": "math",
+  "id": "b9",
+  "prompt": "trouver k pour que x^2 + kx + 9 = 0 ait exactement une solution"
+ },
+ {
+  "subject": "math",
+  "id": "cg1",
+  "prompt": "pente entre (2,3) et (6,11)"
+ },
+ {
+  "subject": "math",
+  "id": "ex1",
+  "prompt": "résoudre 2^x = 32"
+ },
+ {
+  "subject": "math",
+  "id": "ge1",
+  "prompt": "aire d'un cercle de rayon 7 cm"
+ },
+ {
+  "subject": "math",
+  "id": "ge13",
+  "prompt": "dans le triangle ABC, A = 45°, B = 30° et a = 8, trouver b"
+ },
+ {
+  "subject": "math",
+  "id": "ge2",
+  "prompt": "hypoténuse d'un triangle rectangle dont les cathètes mesurent 5 et 12"
+ },
+ {
+  "subject": "math",
+  "id": "lm2",
+  "prompt": "limite lorsque x tend vers 2 de (x^2-4)/(x-2)"
+ },
+ {
+  "subject": "math",
+  "id": "n15",
+  "prompt": "$\\int_{0}^{2} x^3\\,dx$"
+ },
+ {
+  "subject": "math",
+  "id": "n30",
+  "prompt": "trouver la réciproque de y = e^x"
+ },
+ {
+  "subject": "math",
+  "id": "n32",
+  "prompt": "$\\sec(\\frac{\\pi}{3})$"
+ },
+ {
+  "subject": "math",
+  "id": "n38",
+  "prompt": "combien vaut 3 au carré"
+ },
+ {
+  "subject": "math",
+  "id": "n41",
+  "prompt": "combien font sept plus huit"
+ },
+ {
+  "subject": "math",
+  "id": "nt5",
+  "prompt": "factorisation en nombres premiers de 360"
+ },
+ {
+  "subject": "math",
+  "id": "qu6",
+  "prompt": "trouver le sommet de y = x^2 - 6x + 5"
+ },
+ {
+  "subject": "math",
+  "id": "sy2",
+  "prompt": "x+y+z=6, 2x-y+z=3, x+2y-z=2"
+ },
+ {
+  "subject": "math",
+  "id": "sy3",
+  "prompt": "Résoudre le système 3x - 2y = 4, 6x - 4y = 8"
+ },
+ {
+  "subject": "math",
+  "id": "tr7",
+  "prompt": "convertir 135 degrés en radians"
+ },
+ {
+  "subject": "math",
+  "id": "wp1",
+  "prompt": "J'ai acheté 3 cahiers à 2,40 $ chacun et un stylo pour 1,85 $. J'ai payé avec un billet de 20 $. Combien de monnaie me rend-on ?"
+ },
+ {
+  "subject": "math",
+  "id": "xa20",
+  "prompt": "montrer le sommet de y = x^2 - 4x + 3"
+ },
+ {
+  "subject": "math",
+  "id": "xd10",
+  "prompt": "moyenne de 2, 4, 6"
+ },
+ {
+  "subject": "math",
+  "id": "xd11",
+  "prompt": "Combien font 25 % de 80 moins 5 ?"
+ },
+ {
+  "subject": "math",
+  "id": "xd4",
+  "prompt": "Combien font 15 % de 80 plus une taxe de 8 % ?"
+ },
+ {
+  "subject": "math",
+  "id": "xd9",
+  "prompt": "7,5 % de 1200"
+ },
+ {
+  "subject": "math",
+  "id": "xe3",
+  "prompt": "ln(0)"
+ },
+ {
+  "subject": "math",
+  "id": "xe5",
+  "prompt": "cot 0°"
+ },
+ {
+  "subject": "math",
+  "id": "xf5",
+  "prompt": "évaluer x^2 - 2xy + y^2 lorsque x = 3 et y = -2"
+ },
+ {
+  "subject": "math",
+  "id": "xf7",
+  "prompt": "aire d'un cercle de circonférence 10"
+ },
+ {
+  "subject": "math",
+  "id": "xf9",
+  "prompt": "si x = 2, trouver 3x + 1"
+ },
+ {
+  "subject": "math",
+  "id": "xj10",
+  "prompt": "factoriser x^2 + 5x + 6"
+ },
+ {
+  "subject": "physics",
+  "id": "c09",
+  "prompt": "Quelle est la force centripète sur une voiture de 1200 kg parcourant un rond-point de rayon 25 m à 36 km/h ?"
+ },
+ {
+  "subject": "physics",
+  "id": "circ-02",
+  "prompt": "Une balle de 0,5 kg au bout d'une ficelle est mise en rotation en cercle de rayon 1,2 m à 6 m/s. Quelle est la tension (négliger la gravité) ?"
+ },
+ {
+  "subject": "physics",
+  "id": "circ-03",
+  "prompt": "Une roue tourne à 120 tr/min. Quelle est sa période ?"
+ },
+ {
+  "subject": "physics",
+  "id": "d08",
+  "prompt": "Quelle est la longueur d'onde seuil pour un métal dont le travail d'extraction est de 2,3 eV ?"
+ },
+ {
+  "subject": "physics",
+  "id": "elec-03",
+  "prompt": "Quelle tension faut-il pour faire passer 2 A à travers une résistance de 15 Ω ?"
+ },
+ {
+  "subject": "physics",
+  "id": "elec-08",
+  "prompt": "Quelle quantité de charge traverse un fil parcouru par un courant de 3 A pendant 2 minutes ?"
+ },
+ {
+  "subject": "physics",
+  "id": "elec-14",
+  "prompt": "quelle intensité un four à micro-ondes de 1500 watts utilise-t-il sur une prise de 120 volts"
+ },
+ {
+  "subject": "physics",
+  "id": "en-04",
+  "prompt": "Quel est le travail effectué pour pousser une boîte sur 5 m avec une force de 40 N ?"
+ },
+ {
+  "subject": "physics",
+  "id": "en-06",
+  "prompt": "Un moteur soulève une charge de 100 kg sur 12 m en 8 s. Quelle est sa puissance utile ?"
+ },
+ {
+  "subject": "physics",
+  "id": "estat-05",
+  "prompt": "Un électron est accéléré sous une différence de potentiel de 100 V. Quelle énergie cinétique, en joules, acquiert-il ?"
+ },
+ {
+  "subject": "physics",
+  "id": "g7-02",
+  "prompt": "Une machine soulève une charge de 600 N avec un effort de 150 N. Quel est son avantage mécanique ?"
+ },
+ {
+  "subject": "physics",
+  "id": "g7-07",
+  "prompt": "Une voiture de 500 N est tirée sur une planche de 20 m jusqu'à une plate-forme à 5 m au-dessus du sol par un effort de 150 N parallèle à la planche. Calculez le rendement."
+ },
+ {
+  "subject": "physics",
+  "id": "grav-03",
+  "prompt": "Quelle est l'accélération due à la gravité sur Mars ?"
+ },
+ {
+  "subject": "physics",
+  "id": "h-elec-03",
+  "prompt": "Des résistances de 10 Ω et 15 Ω sont en parallèle. Trouvez la résistance totale."
+ },
+ {
+  "subject": "physics",
+  "id": "h-en-08",
+  "prompt": "Quel est le travail effectué pour soulever une boîte de 10 kg sur une étagère de 1,2 m ?"
+ },
+ {
+  "subject": "physics",
+  "id": "h-grav-02",
+  "prompt": "Quelle est la force gravitationnelle entre la Terre et une masse de 1 kg à sa surface ?"
+ },
+ {
+  "subject": "physics",
+  "id": "h-heat-02",
+  "prompt": "Un bloc de cuivre de 0,5 kg (c = 385 J/kg·K) reçoit 3850 J. De combien sa température augmente-t-elle ?"
+ },
+ {
+  "subject": "physics",
+  "id": "h-mag-01",
+  "prompt": "Un électron se déplace à 3 x 10^6 m/s perpendiculairement à un champ magnétique de 0,1 T. Quelle force s'exerce sur lui ?"
+ },
+ {
+  "subject": "physics",
+  "id": "h-opt-03",
+  "prompt": "Une lentille de distance focale 10 cm forme une image d'un objet situé à 25 cm. Où se trouve l'image ?"
+ },
+ {
+  "subject": "physics",
+  "id": "h-opt-04",
+  "prompt": "Une lentille a une vergence de 2,5 dioptries. Quelle est sa distance focale ?"
+ },
+ {
+  "subject": "physics",
+  "id": "h-osc-02",
+  "prompt": "Une masse de 3 kg est suspendue à un ressort et l'étire de 0,15 m. Trouvez la constante de raideur du ressort."
+ },
+ {
+  "subject": "physics",
+  "id": "h-osc-03",
+  "prompt": "Une corde de guitare vibre 1320 fois en 3 s. Quelle est sa fréquence ?"
+ },
+ {
+  "subject": "physics",
+  "id": "k06",
+  "prompt": "Une balle est lancée verticalement vers le bas à 8 m/s depuis le sommet d'un bâtiment de 40 m. Combien de temps met-elle pour atteindre le sol ?"
+ },
+ {
+  "subject": "physics",
+  "id": "k10",
+  "prompt": "Une voiture accélère à 2,5 m/s² de 18 km/h à 72 km/h. Quelle distance parcourt-elle pendant l'accélération ?"
+ },
+ {
+  "subject": "physics",
+  "id": "k14",
+  "prompt": "Un conducteur roulant à 108 km/h aperçoit un danger, son temps de réaction est de 0,8 s, puis il freine à 6 m/s^2. Quelle est la distance totale d'arrêt ?"
+ },
+ {
+  "subject": "physics",
+  "id": "kin-06",
+  "prompt": "Combien de temps faut-il pour parcourir 240 km à 80 km/h ?"
+ },
+ {
+  "subject": "physics",
+  "id": "mag-02",
+  "prompt": "Un proton se déplace à 2 x 10^6 m/s perpendiculairement à un champ de 0,5 T. Quelle est la force magnétique qui s'exerce sur lui ?"
+ },
+ {
+  "subject": "physics",
+  "id": "opt-03",
+  "prompt": "Quelle est la vitesse de la lumière dans l'eau d'indice de réfraction 1,33 ?"
+ },
+ {
+  "subject": "physics",
+  "id": "osc-03",
+  "prompt": "Une masse de 0,5 kg sur un ressort de constante k = 200 N/m oscille. Quelle est la période ?"
+ },
+ {
+  "subject": "physics",
+  "id": "p02",
+  "prompt": "Une balle de 2 kg se déplaçant à 6 m/s heurte une balle stationnaire de 4 kg lors d'une collision élastique frontale. Quelle est la vitesse de la balle de 2 kg après la collision ?"
+ },
+ {
+  "subject": "physics",
+  "id": "p08",
+  "prompt": "Une raquette de tennis exerce une force moyenne de 240 N sur une balle de 58 g pendant 5 ms. Quelle est la variation de la vitesse de la balle ?"
+ },
+ {
+  "subject": "physics",
+  "id": "pA5",
+  "prompt": "Une balle est lancée verticalement vers le bas à 8 m/s du sommet d'un immeuble de 40 m. Quelle est sa vitesse lorsqu'elle touche le sol ?"
+ },
+ {
+  "subject": "physics",
+  "id": "pC1",
+  "prompt": "Deux voitures distantes de 300 m roulent l'une vers l'autre à 20 m/s et 10 m/s. Quand se rencontrent-elles ?"
+ },
+ {
+  "subject": "physics",
+  "id": "pJ2",
+  "prompt": "Deux résistances de 10 ohms sont en parallèle sous 5 V, courant total ?"
+ },
+ {
+  "subject": "physics",
+  "id": "proj-11",
+  "prompt": "Un avion volant horizontalement à 70 m/s lâche un colis depuis 200 m. À quelle distance devant l'avion le colis atterrit-il ?"
+ },
+ {
+  "subject": "physics",
+  "id": "q06",
+  "prompt": "Un pendule de 2 m de long est écarté de 30° par rapport à la verticale puis lâché. Quelle est la vitesse de la masse au point le plus bas ?"
+ },
+ {
+  "subject": "physics",
+  "id": "r5-grav-02",
+  "prompt": "Quelle est l'intensité du champ gravitationnel à 1000 km au-dessus de la surface de la Lune ?"
+ },
+ {
+  "subject": "physics",
+  "id": "s02",
+  "prompt": "Un pendule de 80 cm de long est emmené sur la Lune où g = 1,62 m/s^2. Quelle est sa période là-bas ?"
+ },
+ {
+  "subject": "physics",
+  "id": "w04",
+  "prompt": "Un tuyau fermé à une extrémité a une longueur de 85 cm. Quelle est sa fréquence fondamentale ? Vitesse du son : 340 m/s."
+ },
+ {
+  "subject": "physics",
+  "id": "wave-07",
+  "prompt": "Une onde à la surface de l’eau parcourt 12 m en 4 s et sa longueur d’onde est de 1,5 m. Quelle est la fréquence ?"
+ }
+]

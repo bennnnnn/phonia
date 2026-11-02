@@ -1,0 +1,925 @@
+[
+ {
+  "id": "s2-001",
+  "area": "math",
+  "prompt": "a bus leaves at 7:15am and arrives at 9:40am how long is the trip",
+  "history": [],
+  "reply": "The trip takes **2 hours 25 minutes**.\n\nCount it in two pieces:\n\n1. 7:15 → 9:15 is **2 hours**\n2. 9:15 → 9:40 is **25 minutes**\n\nSo 2 h + 25 min = **2 h 25 min** (that's 145 minutes in total).",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-002",
+  "area": "math",
+  "prompt": "if today is wednesday what day is it in 100 days",
+  "history": [],
+  "reply": "It will be a **Friday**.\n\nDays of the week repeat every 7 days, so only the remainder matters:\n\n$$100 = 7 \\times 14 + 2$$\n\n14 full weeks bring you back to Wednesday, then 2 more days → Thursday, **Friday**.\n\nCounting from today (Wednesday, October 14, 2026), 100 days later is **Friday, January 22, 2027**.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-003",
+  "area": "study",
+  "prompt": "remind me to study chemistry tomorrow at 7pm",
+  "history": [],
+  "reply": "```reminder\n{\"title\": \"Study chemistry\", \"due_at\": \"2026-10-15T19:00:00+03:00\"}\n```\n\nSet: Study chemistry — Thursday, Oct 15, 7:00 PM. 🧪",
+  "expect": "save"
+ },
+ {
+  "id": "s2-004",
+  "area": "math",
+  "prompt": "Abebe saves 200 birr every week starting Monday. How much will he have after 12 weeks? and how many weeks until he has 5000 birr?",
+  "history": [],
+  "reply": "**After 12 weeks:**\n\n$$200 \\times 12 = 2{,}400 \\text{ birr}$$\n\n**Weeks to reach 5,000 birr:**\n\n$$\\frac{5000}{200} = 25 \\text{ weeks}$$\n\nSo Abebe has **2,400 birr** after 12 weeks and reaches **5,000 birr** with his **25th** deposit. If the first deposit is next Monday (October 19), the 25th one lands on Monday, April 5, 2027.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-005",
+  "area": "math",
+  "prompt": "a shirt costs 450 birr after a 10% discount. what was the original price?",
+  "history": [],
+  "reply": "The original price was **500 birr**.\n\nAfter a 10% discount you pay 90% of the original price:\n\n$$0.9 \\times P = 450$$\n$$P = \\frac{450}{0.9} = 500$$\n\n**Check:** 10% of 500 is 50, and 500 − 50 = 450 ✓\n\n⚠️ A common mistake is adding 10% of 450 back (450 + 45 = 495). That's wrong because the discount was taken from the *original* price, not from 450.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-006",
+  "area": "physics",
+  "prompt": "whats the current through a 10 ohm resistor connected to a 12V battery",
+  "history": [],
+  "reply": "Use Ohm's law:\n\n$$I = \\frac{V}{R} = \\frac{12\\,\\text{V}}{10\\,\\Omega} = 1.2\\,\\text{A}$$\n\nThe current is **1.2 A** (amperes). That assumes the battery's internal resistance is negligible. The resistor dissipates $P = VI = 12 \\times 1.2 = 14.4$ W, so it needs to be rated for at least that.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-007",
+  "area": "math",
+  "prompt": "set a reminder for my calculus exam on friday at 8:30am",
+  "history": [],
+  "reply": "Set: Calculus exam — Friday, Oct 16, 8:30 AM. Good luck! 📐",
+  "expect": "save"
+ },
+ {
+  "id": "s2-008",
+  "area": "physics",
+  "prompt": "the results of my pendulum experiment were g = 9.6, 9.9, 9.7 and 9.8 m/s². find the mean and the percent error",
+  "history": [],
+  "reply": "**Mean:**\n\n$$\\bar g = \\frac{9.6 + 9.9 + 9.7 + 9.8}{4} = \\frac{39.0}{4} = 9.75\\ \\text{m/s}^2$$\n\n**Percent error** (accepted value $g = 9.81$ m/s²):\n\n$$\\%\\,\\text{error} = \\frac{|9.75 - 9.81|}{9.81} \\times 100\\% \\approx 0.61\\%$$\n\nThat's a very good result for a pendulum lab. Your readings spread over 0.3 m/s², so for the write-up you could quote $g = 9.75 \\pm 0.15$ m/s² (half the range). Likely error sources: timing the swings by hand, measuring the length to the centre of the bob, and swinging at too large an angle.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-009",
+  "area": "math",
+  "prompt": "whats the next number after the latest one: 2, 6, 18, 54, ...",
+  "history": [],
+  "reply": "The next number is **162**.\n\nEach term is 3 times the one before it (a geometric sequence with ratio 3):\n\n| Term | Value |\n|---|---|\n| 1 | 2 |\n| 2 | 6 |\n| 3 | 18 |\n| 4 | 54 |\n| **5** | **54 × 3 = 162** |\n\nGeneral term: $a_n = 2 \\cdot 3^{\\,n-1}$.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-010",
+  "area": "study",
+  "prompt": "remind me at 6pm today to practice 20 integrals",
+  "history": [],
+  "reply": "```reminder\n{\"title\": \"Practice 20 integrals\", \"due_at\": \"2026-10-14T18:00:00+03:00\"}\n```\n\nSet: Practice 20 integrals — today, Oct 14, 6:00 PM.",
+  "expect": "save"
+ },
+ {
+  "id": "s2-011",
+  "area": "math",
+  "prompt": "A news report says 3/5 of the 450 students in a school passed the national exam. How many students failed?",
+  "history": [],
+  "reply": "**180 students failed.**\n\n1. Students who passed: $\\frac{3}{5} \\times 450 = 270$\n2. Students who failed: $450 - 270 = 180$\n\nShortcut: if 3/5 passed, then 2/5 failed, and $\\frac{2}{5} \\times 450 = 180$.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-012",
+  "area": "math",
+  "prompt": "remind me the formula for the area of a circle",
+  "history": [],
+  "reply": "$$A = \\pi r^2$$\n\nwhere $r$ is the radius. If you're given the diameter $d$, use $r = d/2$, so $A = \\dfrac{\\pi d^2}{4}$.\n\nRelated: the circumference is $C = 2\\pi r$.\n\n**Example:** a circle with radius 5 cm has area $\\pi \\times 5^2 = 25\\pi \\approx 78.5$ cm².",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-013",
+  "area": "physics",
+  "prompt": "remind me what newtons second law is",
+  "history": [],
+  "reply": "**Newton's second law:** the net force on an object equals its mass times its acceleration.\n\n$$\\vec F_{\\text{net}} = m\\vec a$$\n\n- $F_{\\text{net}}$ in newtons (N)\n- $m$ in kilograms (kg)\n- $a$ in m/s²\n\nKey points:\n- It's the **net** (total) force that matters, so add all forces as vectors first.\n- The acceleration points in the same direction as the net force.\n- More general form: $F_{\\text{net}} = \\dfrac{\\Delta p}{\\Delta t}$ (rate of change of momentum).\n\n**Example:** a 2 kg trolley pushed with a net force of 10 N accelerates at $10/2 = 5$ m/s².",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-014",
+  "area": "study",
+  "prompt": "remind me to start this plan tomorrow at 7am",
+  "history": [
+   [
+    "user",
+    "give me a 3 day plan to prepare for my physics test on saturday"
+   ],
+   [
+    "assistant",
+    "**3-day physics plan**\n\n| Day | Focus |\n|---|---|\n| Wed | Kinematics + Newton's laws — 15 problems |\n| Thu | Work, energy, power + momentum — 15 problems |\n| Fri | Mixed past-paper questions (timed), then review mistakes |\n\nAim for about 2 hours a day, and do the hardest problems first while you're fresh."
+   ]
+  ],
+  "reply": "```reminder\n{\"title\": \"Start the physics test study plan\", \"due_at\": \"2026-10-15T07:00:00+03:00\"}\n```\n\nSet: Start the physics test study plan — Thursday, Oct 15, 7:00 AM. 💪",
+  "expect": "save"
+ },
+ {
+  "id": "s2-015",
+  "area": "math",
+  "prompt": "add 3/4 and 2/5",
+  "history": [],
+  "reply": "$$\\frac{3}{4} + \\frac{2}{5} = \\frac{23}{20} = 1\\tfrac{3}{20}$$\n\n**Steps:**\n\n1. Common denominator: LCM of 4 and 5 is **20**.\n2. Convert: $\\frac{3}{4} = \\frac{15}{20}$ and $\\frac{2}{5} = \\frac{8}{20}$.\n3. Add the numerators: $\\frac{15 + 8}{20} = \\frac{23}{20}$.\n\nAs a decimal that's **1.15**.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-016",
+  "area": "math",
+  "prompt": "add these fractions 1/2 + 1/3 + 1/6",
+  "history": [],
+  "reply": "They add up to exactly **1**.\n\nThe LCM of 2, 3 and 6 is 6:\n\n$$\\frac{1}{2} + \\frac{1}{3} + \\frac{1}{6} = \\frac{3}{6} + \\frac{2}{6} + \\frac{1}{6} = \\frac{6}{6} = 1$$",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-017",
+  "area": "math",
+  "prompt": "ok now delete the common factor",
+  "history": [
+   [
+    "user",
+    "simplify (x^2 - 9)/(x^2 + 5x + 6)"
+   ],
+   [
+    "assistant",
+    "Factor the top and bottom first:\n\n- Numerator: $x^2 - 9 = (x - 3)(x + 3)$ (difference of squares)\n- Denominator: $x^2 + 5x + 6 = (x + 2)(x + 3)$\n\n$$\\frac{(x - 3)(x + 3)}{(x + 2)(x + 3)}$$\n\nDo you see a factor that appears in both? Try the last step yourself."
+   ]
+  ],
+  "reply": "Cancel the shared $(x + 3)$:\n\n$$\\frac{(x - 3)\\cancel{(x + 3)}}{(x + 2)\\cancel{(x + 3)}} = \\frac{x - 3}{x + 2}$$\n\n**Final answer:**\n\n$$\\frac{x^2 - 9}{x^2 + 5x + 6} = \\frac{x - 3}{x + 2}, \\quad x \\neq -3,\\ x \\neq -2$$\n\nKeep the restriction $x \\neq -3$: the original expression is undefined there even though the simplified one isn't.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-018",
+  "area": "study",
+  "prompt": "remind me to revise physics",
+  "history": [],
+  "reply": "Sure — when should I remind you to revise physics?",
+  "expect": "ask_time"
+ },
+ {
+  "id": "s2-019",
+  "area": "math",
+  "prompt": "move the x to the other side",
+  "history": [
+   [
+    "user",
+    "solve 5x + 4 = 2x + 19"
+   ],
+   [
+    "assistant",
+    "Sure! The first goal is to get all the $x$ terms on one side and the plain numbers on the other. Which side would you like the $x$ terms on?"
+   ]
+  ],
+  "reply": "Let's collect the $x$ terms on the left by subtracting $2x$ from both sides:\n\n$$5x + 4 = 2x + 19$$\n$$5x - 2x + 4 = 19$$\n$$3x + 4 = 19$$\n\nNow move the 4: subtract 4 from both sides:\n\n$$3x = 15$$\n$$x = 5$$\n\n**Check:** $5(5) + 4 = 29$ and $2(5) + 19 = 29$ ✓",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-020",
+  "area": "math",
+  "prompt": "just mark the right answer",
+  "history": [
+   [
+    "user",
+    "Which of these is the derivative of x^3?\na) 3x\nb) 3x^2\nc) x^2\nd) x^4/4"
+   ],
+   [
+    "assistant",
+    "Use the power rule: $\\frac{d}{dx}x^n = n x^{n-1}$. Bring the exponent down in front and subtract 1 from it. Which option do you think matches?"
+   ]
+  ],
+  "reply": "The right answer is **b) $3x^2$**.\n\nPower rule: $\\dfrac{d}{dx}x^n = n x^{n-1}$, so $\\dfrac{d}{dx}x^3 = 3x^{2}$.\n\n- a) $3x$ — the exponent should drop by 1, not 2\n- c) $x^2$ — missing the factor 3\n- d) $x^4/4$ — that's the *integral*, not the derivative",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-021",
+  "area": "chemistry",
+  "prompt": "remind me to finish my chemistry lab report",
+  "history": [],
+  "reply": "Got it. When should I remind you to finish your chemistry lab report? (e.g. \"tonight at 8pm\" or \"Friday at 4pm\")",
+  "expect": "ask_time"
+ },
+ {
+  "id": "s2-022",
+  "area": "math",
+  "prompt": "check my answer: 2x+3=11 so x=4",
+  "history": [],
+  "reply": "✅ **Correct!** $x = 4$.\n\nSubstitute back in: $2(4) + 3 = 8 + 3 = 11$ ✓\n\nThe working: subtract 3 from both sides → $2x = 8$, divide by 2 → $x = 4$.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-023",
+  "area": "math",
+  "prompt": "set x = 3 and solve",
+  "history": [
+   [
+    "user",
+    "I have f(x) = 2x^2 - 5x + 1. what am i supposed to do with it"
+   ],
+   [
+    "assistant",
+    "$f(x) = 2x^2 - 5x + 1$ is a quadratic function: a rule that takes an input $x$ and gives an output. Typical questions are:\n\n1. **Evaluate** it at a value, e.g. $f(2)$\n2. **Find the roots** (solve $f(x) = 0$)\n3. **Find the vertex** or sketch the parabola\n\nWhat does your worksheet ask?"
+   ]
+  ],
+  "reply": "Substitute $x = 3$ into $f(x) = 2x^2 - 5x + 1$:\n\n$$f(3) = 2(3)^2 - 5(3) + 1$$\n$$= 2(9) - 15 + 1$$\n$$= 18 - 15 + 1 = 4$$\n\nSo **$f(3) = 4$**. The point $(3, 4)$ is on the graph of $f$.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-024",
+  "area": "math",
+  "prompt": "show me how to solve 3x - 5 = 10",
+  "history": [],
+  "reply": "Goal: get $x$ by itself.\n\n**Step 1 — undo the −5** by adding 5 to both sides:\n\n$$3x - 5 + 5 = 10 + 5 \\quad\\Rightarrow\\quad 3x = 15$$\n\n**Step 2 — undo the ×3** by dividing both sides by 3:\n\n$$x = \\frac{15}{3} = 5$$\n\n**Check:** $3(5) - 5 = 15 - 5 = 10$ ✓\n\nRule of thumb: undo the operations in reverse order (addition/subtraction first, then multiplication/division).",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-025",
+  "area": "chemistry",
+  "prompt": "remind me to go over this again tomorrow",
+  "history": [
+   [
+    "user",
+    "explain le chatelier's principle simply"
+   ],
+   [
+    "assistant",
+    "**Le Chatelier's principle:** if you disturb a system at equilibrium, it shifts to partly undo the disturbance.\n\n- **Add reactant** → shifts right (makes more product)\n- **Remove product** → shifts right\n- **Increase pressure** → shifts toward the side with fewer gas molecules\n- **Increase temperature** → shifts in the endothermic direction\n\nExample: in $\\text{N}_2 + 3\\text{H}_2 \\rightleftharpoons 2\\text{NH}_3$, raising the pressure favours NH₃ (4 gas molecules → 2)."
+   ]
+  ],
+  "reply": "Happy to. What time tomorrow should I remind you to go over Le Chatelier's principle?",
+  "expect": "ask_time"
+ },
+ {
+  "id": "s2-026",
+  "area": "math",
+  "prompt": "show me the graph of y=x^2",
+  "history": [],
+  "reply": "Here's $y = x^2$ — a **parabola** opening upward.\n\n| $x$ | −3 | −2 | −1 | 0 | 1 | 2 | 3 |\n|---|---|---|---|---|---|---|---|\n| $y$ | 9 | 4 | 1 | 0 | 1 | 4 | 9 |\n\n**Key features:**\n- **Vertex** at $(0, 0)$ — the lowest point\n- **Axis of symmetry:** the y-axis ($x = 0$); the left and right halves mirror each other\n- **Range:** $y \\ge 0$ — it never goes below the x-axis\n- It gets steeper as you move away from the origin: going from $x=2$ to $x=3$ raises $y$ by 5, but from $x=0$ to $x=1$ only by 1\n\nPlot the points from the table and join them with a smooth U-shaped curve.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-027",
+  "area": "physics",
+  "prompt": "draw a free body diagram for a box sliding down a rough incline",
+  "history": [],
+  "reply": "**Free body diagram — box sliding down a rough incline (angle θ)**\n\nThree forces act on the box:\n\n| Force | Direction | Size |\n|---|---|---|\n| Weight $mg$ | straight down | $mg$ |\n| Normal force $N$ | perpendicular to the slope, away from it | $N = mg\\cos\\theta$ |\n| Kinetic friction $f_k$ | **up** the slope (opposes the sliding) | $f_k = \\mu_k N = \\mu_k mg\\cos\\theta$ |\n\nResolve the weight along the incline axes:\n\n- Along the slope (down): $mg\\sin\\theta$\n- Into the slope: $mg\\cos\\theta$ (balanced by $N$)\n\n**Net force and acceleration down the slope:**\n\n$$a = g(\\sin\\theta - \\mu_k\\cos\\theta)$$\n\nTip: tilt your axes so x runs along the slope — then only the weight needs to be split into components.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-028",
+  "area": "study",
+  "prompt": "mark read as done, finished the physics chapter",
+  "history": [],
+  "reply": "Done — marked **Read** as complete. Nice work finishing the chapter! 📚",
+  "expect": "change"
+ },
+ {
+  "id": "s2-029",
+  "area": "chemistry",
+  "prompt": "draw the structure of ethanol",
+  "history": [],
+  "reply": "Ethanol is **C₂H₅OH** (CH₃–CH₂–OH):\n\n```smiles\nCCO\n```\n\n**Structure:**\n- Two carbons joined by a single bond\n- The first carbon (CH₃) carries 3 hydrogens\n- The second carbon (CH₂) carries 2 hydrogens and the **–OH (hydroxyl) group**, which makes it an alcohol\n\nDisplayed formula:\n\n```\n    H   H\n    |   |\nH - C - C - O - H\n    |   |\n    H   H\n```\n\nMolar mass ≈ 46.07 g/mol. The O–H group lets ethanol hydrogen-bond, which is why it mixes with water and boils at 78 °C.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-030",
+  "area": "math",
+  "prompt": "what does a sine wave look like",
+  "history": [],
+  "reply": "A sine wave is a smooth, repeating up-and-down curve. For $y = \\sin x$:\n\n| $x$ | 0 | $\\frac{\\pi}{2}$ | $\\pi$ | $\\frac{3\\pi}{2}$ | $2\\pi$ |\n|---|---|---|---|---|---|\n| $\\sin x$ | 0 | 1 | 0 | −1 | 0 |\n\n**Shape:** it starts at 0, rises to a peak of 1, falls back through 0, dips to a trough of −1, and returns to 0 — then repeats forever.\n\n- **Amplitude:** 1 (height of a peak above the middle line)\n- **Period:** $2\\pi$ (≈ 6.28) — the length of one full cycle\n- In $y = A\\sin(Bx)$, $A$ stretches it vertically and the period becomes $\\frac{2\\pi}{B}$\n\nSine waves describe sound, AC electricity, pendulums and ocean waves.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-031",
+  "area": "study",
+  "prompt": "make a study schedule for my exams next week — math, physics, chemistry and english",
+  "history": [],
+  "reply": "Here's a plan for the days before your exams (Thu Oct 15 → Sun Oct 18), with lighter review once exam week starts.\n\n| Day | Session 1 (2 h) | Session 2 (2 h) | Evening (1 h) |\n|---|---|---|---|\n| **Thu, Oct 15** | Math — algebra & functions | Physics — mechanics | English — reading practice |\n| **Fri, Oct 16** | Chemistry — stoichiometry & moles | Math — calculus | Flashcards: formulas |\n| **Sat, Oct 17** | Physics — electricity & circuits | Chemistry — organic & bonding | English — essay outline |\n| **Sun, Oct 18** | Full past paper: math (timed) | Full past paper: physics (timed) | Review mistakes only |\n\n**During exam week (Oct 19–25):** the evening before each exam, spend 2 hours on that subject's past-paper mistakes and formula sheet — nothing new.\n\n**Tips:**\n- Put the hardest subject in your most alert slot (usually the morning)\n- Take a 10-minute break every 50 minutes\n- Sleep 7–8 hours — memory consolidates while you sleep\n\nTell me your exact exam dates and I'll reorder it so each subject peaks right before its exam.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-032",
+  "area": "study",
+  "prompt": "delete the gym reminder, i need that time for exam prep",
+  "history": [],
+  "reply": "Deleted your **Gym** reminder. Good luck with exam prep! 💪",
+  "expect": "change"
+ },
+ {
+  "id": "s2-033",
+  "area": "study",
+  "prompt": "plan my revision for chemistry",
+  "history": [],
+  "reply": "Here's a 2-week chemistry revision plan (about 1.5 hours a day):\n\n**Week 1 — Foundations**\n| Day | Topic | Activity |\n|---|---|---|\n| 1 | Atomic structure & periodic table | Notes → 15 MCQs |\n| 2 | Chemical bonding | Draw Lewis structures, predict shapes (VSEPR) |\n| 3 | Moles & stoichiometry | 10 calculation problems |\n| 4 | Solutions & concentration | Molarity, dilution $C_1V_1 = C_2V_2$ |\n| 5 | Chemical equilibrium | Le Chatelier practice |\n| 6 | Acids & bases | pH calculations, titration curves |\n| 7 | Rest / light review | Flashcards only |\n\n**Week 2 — Applying it**\n| Day | Topic | Activity |\n|---|---|---|\n| 8 | Redox & electrochemistry | Balance 5 redox equations |\n| 9 | Thermochemistry | Hess's law problems |\n| 10 | Organic chemistry | Functional groups, naming, reactions |\n| 11 | Rates of reaction | Graph interpretation |\n| 12 | Full past paper (timed) | Mark it honestly |\n| 13 | Fix weak topics from the paper | Redo every wrong question |\n| 14 | Formula sheet + light review | Early night |\n\n**How to revise well:** test yourself instead of rereading, mix problem types, and keep an \"error log\" of every mistake.\n\nWhen is your exam? I can compress or stretch this to fit.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-034",
+  "area": "math",
+  "prompt": "now do 7 + 8 the same way",
+  "history": [
+   [
+    "user",
+    "how do i add 6 + 5 using the make ten method"
+   ],
+   [
+    "assistant",
+    "**6 + 5 using make-ten:**\n\n1. 6 needs **4** more to make 10.\n2. Split the 5 into **4 + 1**.\n3. 6 + 4 = **10**.\n4. Add what's left: 10 + 1 = **11**.\n\n$$6 + 5 = 11$$\n\nMaking 10 first is easier because adding to 10 is quick."
+   ]
+  ],
+  "reply": "**7 + 8 using make-ten:**\n\n1. 8 is close to 10 — it needs **2** more.\n2. Take 2 from the 7: 7 = **2 + 5**.\n3. Give the 2 to the 8: 8 + 2 = **10**.\n4. Add what's left: 10 + 5 = **15**.\n\n$$7 + 8 = 15$$",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-035",
+  "area": "math",
+  "prompt": "Can you add 4 + 5 using the same method?",
+  "history": [
+   [
+    "user",
+    "3+3"
+   ],
+   [
+    "assistant",
+    "3 + 3 = **6**.\n\nThink of it as counting on: start at 3, then count up 3 more — **4, 5, 6**."
+   ]
+  ],
+  "reply": "Sure — counting on from the bigger number:\n\n1. Start at **5** (the bigger number).\n2. Count up 4 more: **6, 7, 8, 9**.\n\n$$4 + 5 = 9$$\n\nStarting from the bigger number means fewer counts (4 instead of 5), and the order doesn't change the answer.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-036",
+  "area": "study",
+  "prompt": "move water the plants to saturday at 10am, exams all week",
+  "history": [],
+  "reply": "Moved **Water the plants** to Saturday, Oct 17 at 10:00 AM. 🌱",
+  "expect": "change"
+ },
+ {
+  "id": "s2-037",
+  "area": "math",
+  "prompt": "can you add one more example",
+  "history": [
+   [
+    "user",
+    "how do I complete the square for x^2 + 6x + 5 = 0"
+   ],
+   [
+    "assistant",
+    "**Completing the square:** $x^2 + 6x + 5 = 0$\n\n1. Move the constant: $x^2 + 6x = -5$\n2. Half of 6 is 3; $3^2 = 9$. Add 9 to both sides: $x^2 + 6x + 9 = 4$\n3. Factor: $(x + 3)^2 = 4$\n4. Square root: $x + 3 = \\pm 2$\n5. Solve: $x = -1$ or $x = -5$"
+   ]
+  ],
+  "reply": "Sure! **Example 2:** solve $x^2 - 8x + 7 = 0$ by completing the square.\n\n1. Move the constant: $x^2 - 8x = -7$\n2. Half of −8 is −4; square it: $(-4)^2 = 16$. Add 16 to both sides:\n$$x^2 - 8x + 16 = 9$$\n3. Write the left side as a square: $(x - 4)^2 = 9$\n4. Square root both sides: $x - 4 = \\pm 3$\n5. Solve: $x = 4 + 3 = 7$ or $x = 4 - 3 = 1$\n\n**Answer:** $x = 7$ or $x = 1$\n\n**Check:** $7^2 - 8(7) + 7 = 49 - 56 + 7 = 0$ ✓",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-038",
+  "area": "math",
+  "prompt": "explain step 3",
+  "history": [
+   [
+    "user",
+    "solve 2(x − 3) + 4 = 3x − 5 step by step"
+   ],
+   [
+    "assistant",
+    "**Step 1 — expand the bracket:** $2x - 6 + 4 = 3x - 5$\n\n**Step 2 — simplify the left side:** $2x - 2 = 3x - 5$\n\n**Step 3 — subtract $2x$ from both sides:** $-2 = x - 5$\n\n**Step 4 — add 5 to both sides:** $x = 3$\n\n**Check:** $2(3-3) + 4 = 4$ and $3(3) - 5 = 4$ ✓"
+   ]
+  ],
+  "reply": "**Step 3: subtract $2x$ from both sides.**\n\nAfter step 2 we had:\n\n$$2x - 2 = 3x - 5$$\n\nThere are $x$ terms on *both* sides, so we need to collect them on one side. Subtracting $2x$ from both sides keeps the equation balanced:\n\n$$2x - 2 \\color{red}{- 2x} = 3x - 5 \\color{red}{- 2x}$$\n$$-2 = x - 5$$\n\nWhy $2x$ and not $3x$? Removing the **smaller** $x$ term leaves a positive $x$ ($3x - 2x = x$), so you don't have to deal with $-x$ later. Subtracting $3x$ would also work — you'd get $-x - 2 = -5$, and you'd still reach $x = 3$.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-039",
+  "area": "study",
+  "prompt": "what reminders do i have? want to see where i can fit study time",
+  "history": [],
+  "reply": "Here are your reminders:\n\n- Call mom\n- Dentist appointment\n- Gym\n- Pay rent\n- Read\n- Water the plants\n\nWant me to add study sessions around them?",
+  "expect": "read"
+ },
+ {
+  "id": "s2-040",
+  "area": "physics",
+  "prompt": "what about if its 5 kg",
+  "history": [
+   [
+    "user",
+    "a 20 N force pushes a 2 kg block on a frictionless surface. what's the acceleration"
+   ],
+   [
+    "assistant",
+    "Using Newton's second law:\n\n$$a = \\frac{F}{m} = \\frac{20\\ \\text{N}}{2\\ \\text{kg}} = 10\\ \\text{m/s}^2$$\n\nThe block accelerates at **10 m/s²** in the direction of the push."
+   ]
+  ],
+  "reply": "Same force, bigger mass:\n\n$$a = \\frac{F}{m} = \\frac{20\\ \\text{N}}{5\\ \\text{kg}} = 4\\ \\text{m/s}^2$$\n\nThe acceleration drops from **10 m/s²** to **4 m/s²**. Mass went up by a factor of 2.5, so acceleration went down by the same factor — for a fixed force, $a$ is inversely proportional to $m$.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-041",
+  "area": "math",
+  "prompt": "make it harder",
+  "history": [
+   [
+    "user",
+    "give me a practice problem on linear equations"
+   ],
+   [
+    "assistant",
+    "Solve for $x$:\n\n$$4x - 7 = 13$$"
+   ],
+   [
+    "user",
+    "x = 5"
+   ],
+   [
+    "assistant",
+    "✅ Correct! $4(5) - 7 = 20 - 7 = 13$. Nice work."
+   ]
+  ],
+  "reply": "Level up! 💪 Try this one:\n\n$$3(2x - 5) - 4(x + 1) = 7 - x$$\n\n**Hints if you get stuck:**\n1. Expand both brackets carefully — watch the sign on $-4(x + 1)$.\n2. Collect like terms on the left.\n3. Get all the $x$ terms on one side.\n\nThe answer isn't a whole number this time. Send me what you get and I'll check it.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-042",
+  "area": "math",
+  "prompt": "check it",
+  "history": [
+   [
+    "user",
+    "i'm doing this integral ∫ 2x·cos(x²) dx and my answer is sin(x²) + C"
+   ],
+   [
+    "assistant",
+    "Nice — that's a classic substitution integral. Want me to verify your answer, or walk through the substitution?"
+   ]
+  ],
+  "reply": "✅ **Your answer is correct:** $\\int 2x\\cos(x^2)\\,dx = \\sin(x^2) + C$\n\n**Check by differentiating** (chain rule):\n\n$$\\frac{d}{dx}\\left[\\sin(x^2) + C\\right] = \\cos(x^2) \\cdot \\frac{d}{dx}(x^2) = \\cos(x^2) \\cdot 2x$$\n\nThat's exactly the integrand $2x\\cos(x^2)$ ✓\n\n**Why it works:** with $u = x^2$, $du = 2x\\,dx$, so the integral becomes $\\int \\cos u\\,du = \\sin u + C$.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-043",
+  "area": "chemistry",
+  "prompt": "show me a real photo of a bunsen burner",
+  "history": [],
+  "reply": "Here's a Bunsen burner 🔥\n\nIt's a small metal tube on a heavy base, connected to a gas tap by rubber tubing. The **collar** near the bottom has an air hole: closed, it gives a yellow, sooty \"safety flame\"; open, it gives the hot blue roaring flame used for heating (the hottest part is just above the tip of the inner blue cone).",
+  "expect": "photo"
+ },
+ {
+  "id": "s2-044",
+  "area": "chemistry",
+  "prompt": "another one",
+  "history": [
+   [
+    "user",
+    "give me a chemical equation to balance for practice"
+   ],
+   [
+    "assistant",
+    "**Balance:**\n\n$$\\_\\_\\ \\text{H}_2 + \\_\\_\\ \\text{O}_2 \\rightarrow \\_\\_\\ \\text{H}_2\\text{O}$$"
+   ],
+   [
+    "user",
+    "2, 1, 2"
+   ],
+   [
+    "assistant",
+    "✅ Correct! $2\\text{H}_2 + \\text{O}_2 \\rightarrow 2\\text{H}_2\\text{O}$ — 4 H and 2 O on each side."
+   ]
+  ],
+  "reply": "Here's the next one — a bit harder:\n\n**Balance:**\n\n$$\\_\\_\\ \\text{Fe} + \\_\\_\\ \\text{O}_2 \\rightarrow \\_\\_\\ \\text{Fe}_2\\text{O}_3$$\n\n**Hint:** oxygen appears as O₂ on the left but O₃ inside Fe₂O₃ on the right. Find the smallest number that both 2 and 3 divide into, and balance oxygen first.\n\nSend me your coefficients when you're ready!",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-045",
+  "area": "math",
+  "prompt": "what is the angle between the hour and minute hands at 3:15",
+  "history": [],
+  "reply": "The angle is **7.5°**.\n\n- **Minute hand** at 15 minutes: $15 \\times 6° = 90°$\n- **Hour hand:** it moves 30° per hour plus 0.5° per minute, so at 3:15 it's at $3 \\times 30° + 15 \\times 0.5° = 97.5°$\n\n$$|97.5° - 90°| = 7.5°$$\n\nThe trap is thinking the hour hand sits exactly on the 3 — by 3:15 it has moved a quarter of the way toward the 4.\n\nGeneral formula: $\\theta = |30H - 5.5M|$ → $|30(3) - 5.5(15)| = |90 - 82.5| = 7.5°$",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-046",
+  "area": "math",
+  "prompt": "a meeting starts at 10:45 and lasts 95 minutes. what time does it end",
+  "history": [],
+  "reply": "It ends at **12:20**.\n\n95 minutes = 1 hour 35 minutes.\n\n1. 10:45 + 1 hour = 11:45\n2. 11:45 + 15 minutes = 12:00\n3. 12:00 + 20 more minutes = **12:20**\n\n(15 + 20 = 35 minutes ✓)",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-047",
+  "area": "chemistry",
+  "prompt": "what does pyrite look like",
+  "history": [],
+  "reply": "Here's pyrite ✨\n\nPyrite (FeS₂, iron disulfide) is known as **fool's gold**: it has a brassy, pale-gold metallic shine and often grows as sharp, near-perfect **cubes**, sometimes with fine parallel lines (striations) on the faces. Unlike real gold it's hard and brittle, and it leaves a greenish-black streak on unglazed porcelain.",
+  "expect": "photo"
+ },
+ {
+  "id": "s2-048",
+  "area": "physics",
+  "prompt": "tomorrows temperature in addis is forecast to be 24°C. what is that in fahrenheit and kelvin?",
+  "history": [],
+  "reply": "**24 °C = 75.2 °F = 297.15 K**\n\n**Fahrenheit:**\n\n$$F = \\frac{9}{5}C + 32 = \\frac{9}{5}(24) + 32 = 43.2 + 32 = 75.2\\ °F$$\n\n**Kelvin:**\n\n$$K = C + 273.15 = 24 + 273.15 = 297.15\\ \\text{K}$$\n\nNote: kelvin has no degree sign — it's just \"297.15 K\".",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-049",
+  "area": "math",
+  "prompt": "my phone is at 100% at 9am and drains 15% every hour. at what time will it be at 25%?",
+  "history": [],
+  "reply": "It reaches 25% at **2:00 PM**.\n\n1. Battery to lose: 100% − 25% = **75%**\n2. Time: $\\frac{75}{15} = 5$ hours\n3. 9:00 AM + 5 hours = **2:00 PM**\n\nAs a formula: battery $= 100 - 15t$, where $t$ is hours after 9 AM. Setting $100 - 15t = 25$ gives $t = 5$.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-050",
+  "area": "physics",
+  "prompt": "show me what a van de graaff generator looks like",
+  "history": [],
+  "reply": "Here's a Van de Graaff generator ⚡\n\nIt's a large polished metal **dome** sitting on top of an insulating column. Inside the column a rubber belt carries charge up to the dome, which can build up hundreds of thousands of volts — that's why touching it (while standing on an insulator) makes your hair stand on end.",
+  "expect": "photo"
+ },
+ {
+  "id": "s2-051",
+  "area": "math",
+  "prompt": "I water the plants every 3 days and go to the gym every 4 days. if I did both today, when will I do both on the same day again?",
+  "history": [],
+  "reply": "In **12 days** — that's **Monday, October 26**.\n\nYou need the **least common multiple** of 3 and 4:\n\n- Plants: 3, 6, 9, **12**, 15, …\n- Gym: 4, 8, **12**, 16, …\n\n$$\\text{LCM}(3, 4) = 12$$\n\nAfter that it happens every 12 days: Oct 26, Nov 7, Nov 19, and so on.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-052",
+  "area": "math",
+  "prompt": "my rent goes up 8% every year. if i pay 6000 birr now how much will i pay in 3 years",
+  "history": [],
+  "reply": "You'd pay about **7,558.27 birr** per month in 3 years.\n\nEach year the rent is multiplied by 1.08 (compound growth):\n\n$$6000 \\times 1.08^3 = 6000 \\times 1.259712 = 7{,}558.27$$\n\n| Year | Rent (birr) |\n|---|---|\n| Now | 6,000.00 |\n| 1 | 6,480.00 |\n| 2 | 6,998.40 |\n| 3 | 7,558.27 |\n\nThat's about a 26% increase overall — more than 3 × 8% = 24%, because each raise is applied to the already-raised rent.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-053",
+  "area": "math",
+  "prompt": "if I call mom every 5 days starting today, what day of the week will the 10th call be on",
+  "history": [],
+  "reply": "The 10th call falls on a **Saturday** — **Saturday, November 28, 2026**.\n\n1. Today is call #1, so the 10th call comes after **9 gaps** of 5 days: $9 \\times 5 = 45$ days.\n2. $45 = 7 \\times 6 + 3$ → 6 full weeks plus **3 days**.\n3. Today is Wednesday; 3 days later is **Saturday**.\n\nWatch out for the off-by-one trap: it's 9 gaps, not 10, because the first call is today.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-054",
+  "area": "chemistry",
+  "prompt": "draw me a cute cartoon atom with a smiley face for our chemistry club poster",
+  "history": [],
+  "reply": "Here's your cartoon atom! ⚛️😊 A happy round nucleus with a big smile, three colourful electron orbits looping around it, and little sparkles — bright and fun for the poster. Want a version with the club's name on it?",
+  "expect": "image_gen"
+ },
+ {
+  "id": "s2-055",
+  "area": "physics",
+  "prompt": "a car starts from rest and accelerates at 3 m/s² for 5 seconds. whats its final speed and how far did it go",
+  "history": [],
+  "reply": "**Given:** $u = 0$, $a = 3$ m/s², $t = 5$ s\n\n**Final speed:**\n\n$$v = u + at = 0 + 3(5) = 15\\ \\text{m/s}$$\n\n**Distance:**\n\n$$s = ut + \\tfrac{1}{2}at^2 = 0 + \\tfrac{1}{2}(3)(5)^2 = 37.5\\ \\text{m}$$\n\nSo the car reaches **15 m/s** (54 km/h) and travels **37.5 m**.\n\nCheck with $v^2 = u^2 + 2as$: $15^2 = 225 = 2(3)(37.5)$ ✓",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-056",
+  "area": "physics",
+  "prompt": "a clock on a spaceship moving at 0.8c ticks 1 hour. how much time passes on earth",
+  "history": [],
+  "reply": "About **1 hour 40 minutes** (1.67 h) passes on Earth.\n\n**Time dilation:** $\\Delta t = \\gamma\\,\\Delta t_0$, where\n\n$$\\gamma = \\frac{1}{\\sqrt{1 - v^2/c^2}} = \\frac{1}{\\sqrt{1 - 0.8^2}} = \\frac{1}{\\sqrt{0.36}} = \\frac{1}{0.6} \\approx 1.667$$\n\n$$\\Delta t = 1.667 \\times 1\\ \\text{h} \\approx 1.67\\ \\text{h} = 1\\ \\text{h}\\ 40\\ \\text{min}$$\n\nThe 1 hour on the ship is the **proper time** (measured by a clock at rest relative to the ship). Earth observers see that clock running slow.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-057",
+  "area": "chemistry",
+  "prompt": "half life of a sample is 5 days. if i start with 80 g today how much is left in 15 days",
+  "history": [],
+  "reply": "**10 g** will be left.\n\n15 days ÷ 5 days = **3 half-lives**.\n\n| Time | Half-lives | Mass left |\n|---|---|---|\n| 0 days | 0 | 80 g |\n| 5 days | 1 | 40 g |\n| 10 days | 2 | 20 g |\n| 15 days | 3 | **10 g** |\n\nFormula: $m = m_0 \\left(\\tfrac{1}{2}\\right)^{t/t_{1/2}} = 80 \\times \\left(\\tfrac{1}{2}\\right)^3 = 10$ g.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-058",
+  "area": "math",
+  "prompt": "generate an image of a robot teaching calculus on a chalkboard",
+  "history": [],
+  "reply": "Here's your image: a friendly robot teacher with a piece of chalk, standing at a green chalkboard covered with integrals and derivative notation, in a sunlit classroom. 🤖📚",
+  "expect": "image_gen"
+ },
+ {
+  "id": "s2-059",
+  "area": "math",
+  "prompt": "if 3 pens cost 45 birr whats the price of 7 pens",
+  "history": [],
+  "reply": "**7 pens cost 105 birr.**\n\n1. Price of one pen: $45 \\div 3 = 15$ birr\n2. Price of 7 pens: $15 \\times 7 = 105$ birr\n\nThis is the unitary method — find the cost of one, then scale up.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-060",
+  "area": "math",
+  "prompt": "the temperature dropped from 18°C at 6pm to 9°C at 3am. whats the average rate of change per hour",
+  "history": [],
+  "reply": "The average rate of change is **−1 °C per hour**.\n\n1. Change in temperature: $9 - 18 = -9$ °C\n2. Time elapsed: 6 PM → 3 AM is **9 hours** (6 hours to midnight + 3 hours)\n3. Rate: $\\dfrac{-9\\ °C}{9\\ \\text{h}} = -1\\ °C/\\text{h}$\n\nThe negative sign means the temperature was falling, on average by 1 °C every hour.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-061",
+  "area": "study",
+  "prompt": "price of a casio fx-991es plus calculator in addis these days?",
+  "history": [],
+  "reply": "From current listings in Addis Ababa, a **Casio fx-991ES PLUS** is going for roughly **2,500–3,500 birr**, depending on the shop and whether it's the 2nd edition. Stationery shops around Piassa and Merkato tend to be cheaper than malls in Bole.\n\n⚠️ Watch out for fakes: check the solar panel works, the font on the keys is sharp, and the box has the Casio hologram sticker.",
+  "expect": "search"
+ },
+ {
+  "id": "s2-062",
+  "area": "math",
+  "prompt": "team A scored 3 goals in the first half and twice as many in the second half. team B scored 4 in total. whats the final score",
+  "history": [],
+  "reply": "The final score is **Team A 9 – 4 Team B**.\n\n- Team A, first half: 3\n- Team A, second half: $2 \\times 3 = 6$\n- Team A total: $3 + 6 = 9$\n- Team B total: 4\n\nTeam A wins by 5 goals.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-063",
+  "area": "chemistry",
+  "prompt": "remind me how to balance redox equations",
+  "history": [],
+  "reply": "**Half-reaction method (acidic solution):**\n\n1. **Split** the reaction into an oxidation half and a reduction half.\n2. **Balance all atoms except O and H** in each half.\n3. **Balance O** by adding H₂O.\n4. **Balance H** by adding H⁺.\n5. **Balance charge** by adding electrons (e⁻) — to the right in oxidation, to the left in reduction.\n6. **Equalize electrons:** multiply the halves so both transfer the same number of e⁻.\n7. **Add** the halves and cancel anything that appears on both sides.\n8. **Check** that atoms *and* charge balance.\n\n**In basic solution:** do the above, then add OH⁻ to both sides to neutralize every H⁺ (H⁺ + OH⁻ → H₂O) and cancel the extra waters.\n\n**Quick example:** $\\text{Fe}^{2+} + \\text{MnO}_4^- \\rightarrow \\text{Fe}^{3+} + \\text{Mn}^{2+}$\n- Oxidation: $\\text{Fe}^{2+} \\rightarrow \\text{Fe}^{3+} + e^-$ (×5)\n- Reduction: $\\text{MnO}_4^- + 8\\text{H}^+ + 5e^- \\rightarrow \\text{Mn}^{2+} + 4\\text{H}_2\\text{O}$\n- Overall: $5\\text{Fe}^{2+} + \\text{MnO}_4^- + 8\\text{H}^+ \\rightarrow 5\\text{Fe}^{3+} + \\text{Mn}^{2+} + 4\\text{H}_2\\text{O}$\n\nMnemonic: **OIL RIG** — Oxidation Is Loss, Reduction Is Gain (of electrons).",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-064",
+  "area": "math",
+  "prompt": "remind me the quadratic formula pls",
+  "history": [],
+  "reply": "For $ax^2 + bx + c = 0$:\n\n$$x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$$\n\nThe **discriminant** $\\Delta = b^2 - 4ac$ tells you what kind of roots you get:\n\n| $\\Delta$ | Roots |\n|---|---|\n| $> 0$ | two different real roots |\n| $= 0$ | one repeated real root |\n| $< 0$ | no real roots (two complex roots) |\n\n**Example:** $x^2 - 5x + 6 = 0$ → $x = \\frac{5 \\pm \\sqrt{25 - 24}}{2} = \\frac{5 \\pm 1}{2}$, so $x = 3$ or $x = 2$.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-065",
+  "area": "study",
+  "prompt": "is it going to rain this afternoon? planning to walk to the library to study",
+  "history": [],
+  "reply": "In Addis Ababa this afternoon it's around **20 °C** and cloudy, with a **good chance of showers between about 2 and 5 PM** (it's the tail end of the rainy season). Take an umbrella or head out before 2 PM if you can. ☔",
+  "expect": "search",
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "s2-066",
+  "area": "chemistry",
+  "prompt": "can u remind me what molarity is",
+  "history": [],
+  "reply": "**Molarity (M)** is the number of moles of solute per litre of **solution**:\n\n$$M = \\frac{n_{\\text{solute}}\\ (\\text{mol})}{V_{\\text{solution}}\\ (\\text{L})}$$\n\nUnits: mol/L, written **M**.\n\n**Example:** dissolve 0.5 mol of NaCl in enough water to make 250 mL of solution:\n\n$$M = \\frac{0.5\\ \\text{mol}}{0.250\\ \\text{L}} = 2.0\\ \\text{M}$$\n\nCommon pitfalls:\n- Convert mL to L first\n- It's litres of *solution*, not of solvent\n- Don't mix it up with **molality** (m), which is moles per **kg of solvent**\n\nFor dilutions: $M_1V_1 = M_2V_2$.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-067",
+  "area": "physics",
+  "prompt": "find the current through each resistor: 6Ω and 3Ω in parallel across 12 V",
+  "history": [],
+  "reply": "In parallel, each resistor has the **full 12 V** across it.\n\n- **6 Ω:** $I = \\dfrac{12}{6} = 2$ A\n- **3 Ω:** $I = \\dfrac{12}{3} = 4$ A\n- **Total current:** $2 + 4 = 6$ A\n\n**Check with the equivalent resistance:**\n\n$$\\frac{1}{R_{eq}} = \\frac{1}{6} + \\frac{1}{3} = \\frac{1}{2} \\Rightarrow R_{eq} = 2\\ \\Omega, \\qquad I = \\frac{12}{2} = 6\\ \\text{A}\\ ✓$$\n\nNotice that the smaller resistor carries the larger current.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-068",
+  "area": "study",
+  "prompt": "switch to dark mode, studying late tonight",
+  "history": [],
+  "reply": "Done — switched to dark mode. 🌙 Good luck studying tonight!",
+  "expect": "settings"
+ },
+ {
+  "id": "s2-069",
+  "area": "physics",
+  "prompt": "whats the weather like on venus",
+  "history": [],
+  "reply": "Venus has the most hostile weather of any planet in the solar system 🌋\n\n- **Temperature:** about **465 °C** at the surface, day and night — hot enough to melt lead. It's hotter than Mercury even though it's farther from the Sun, because of a runaway greenhouse effect.\n- **Pressure:** about **92 times** Earth's sea-level pressure, like being 900 m deep in the ocean.\n- **Atmosphere:** ~96% carbon dioxide.\n- **Clouds:** thick layers of **sulfuric acid** droplets that cover the whole planet.\n- **Wind:** near the surface it's slow, but at cloud-top level the atmosphere \"super-rotates\" at around **360 km/h**, circling the planet in about 4 Earth days while Venus itself takes 243 days to spin once.\n\nSo: permanently overcast, crushingly heavy, and scorching.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-070",
+  "area": "facts",
+  "prompt": "is the speed of light still 299,792,458 m/s today?",
+  "history": [],
+  "reply": "Yes — and it always will be, by definition.\n\nSince **1983**, the speed of light in a vacuum has been **exactly**\n\n$$c = 299{,}792{,}458\\ \\text{m/s}$$\n\nIt's no longer *measured*: the metre is defined as the distance light travels in $\\frac{1}{299\\,792\\,458}$ of a second. So better experiments now improve how precisely we realize the metre, not the value of $c$.\n\nFor calculations, $c \\approx 3.00 \\times 10^8$ m/s is usually enough. (Light is slower in materials — in water about 2.25 × 10⁸ m/s.)",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-071",
+  "area": "math",
+  "prompt": "what does the graph of y = 1/x look like",
+  "history": [],
+  "reply": "$y = \\frac{1}{x}$ is a **hyperbola** with two separate branches.\n\n| $x$ | −2 | −1 | −0.5 | 0.5 | 1 | 2 |\n|---|---|---|---|---|---|---|\n| $y$ | −0.5 | −1 | −2 | 2 | 1 | 0.5 |\n\n**Features:**\n- **Two branches:** one in the 1st quadrant ($x > 0, y > 0$) and one in the 3rd quadrant ($x < 0, y < 0$)\n- **Vertical asymptote** $x = 0$: as $x \\to 0^+$, $y \\to +\\infty$; as $x \\to 0^-$, $y \\to -\\infty$\n- **Horizontal asymptote** $y = 0$: the curve gets closer and closer to the x-axis but never touches it\n- **Undefined at $x = 0$** — there's a gap there\n- Symmetric about the origin (it's an odd function)",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-072",
+  "area": "chemistry",
+  "prompt": "remember that my chemistry exam is on october 28",
+  "history": [],
+  "reply": "Got it — I'll remember that your chemistry exam is on **October 28**. 🧪",
+  "expect": "memory"
+ },
+ {
+  "id": "s2-073",
+  "area": "physics",
+  "prompt": "draw a velocity-time graph for a car that speeds up then brakes",
+  "history": [],
+  "reply": "Here's how the **velocity–time graph** looks, in three stages:\n\n| Stage | Time | Velocity | Shape of graph |\n|---|---|---|---|\n| A — speeding up | 0 → 10 s | 0 → 20 m/s | straight line sloping **up** |\n| B — steady speed | 10 → 25 s | 20 m/s | **flat** horizontal line |\n| C — braking | 25 → 30 s | 20 → 0 m/s | straight line sloping **down** (steeper) |\n\n```\nv (m/s)\n 20 |        ___________\n    |       /           \\\n 10 |     /              \\\n    |   /                 \\\n  0 |_/____________________\\___ t (s)\n    0      10        25    30\n```\n\n**How to read it:**\n- **Slope = acceleration:** A is $\\frac{20}{10} = 2$ m/s², B is 0, C is $\\frac{-20}{5} = -4$ m/s²\n- **Area under the line = distance:** $\\frac{1}{2}(10)(20) + 15(20) + \\frac{1}{2}(5)(20) = 100 + 300 + 50 = 450$ m\n\nBraking is usually steeper than speeding up, because brakes decelerate faster than the engine accelerates.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-074",
+  "area": "chemistry",
+  "prompt": "show me the structure of benzene",
+  "history": [],
+  "reply": "Benzene is **C₆H₆** — a flat ring of six carbons, each bonded to one hydrogen:\n\n```smiles\nc1ccccc1\n```\n\n**Key points:**\n- The ring is often drawn with **alternating single and double bonds** (a Kekulé structure), but in reality all six C–C bonds are the **same length** (139 pm), between a single and a double bond.\n- That's because the π electrons are **delocalized** around the whole ring, which is why it's also drawn as a hexagon with a circle inside.\n- All bond angles are **120°** (each carbon is sp² hybridized), and the molecule is planar.\n- The delocalization makes benzene unusually stable (**aromatic**): it prefers substitution reactions over addition.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-075",
+  "area": "study",
+  "prompt": "how should i split 3 hours tonight between math and physics, math exam is first",
+  "history": [],
+  "reply": "Since math comes first, give it the bigger share and the fresher part of the evening:\n\n| Time | Activity |\n|---|---|\n| 0:00–0:50 | **Math** — your weakest topic, worked problems |\n| 0:50–1:00 | Break (walk, water, no phone) |\n| 1:00–1:45 | **Math** — timed past-paper questions |\n| 1:45–1:55 | Break |\n| 1:55–2:45 | **Physics** — formulas + 5–6 mixed problems |\n| 2:45–3:00 | **Math** quick review: go over the mistakes you made tonight |\n\nThat's about **1 h 50 min math** and **50 min physics**. Ending with a short math review means it's the freshest thing in your head for the exam.\n\nIf physics is only a day or two after math, you can flip the ratio tomorrow night.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-076",
+  "area": "study",
+  "prompt": "remember im in grade 12 natural science stream and preparing for the national exam",
+  "history": [],
+  "reply": "Got it — I'll remember that you're in **grade 12, natural science stream**, preparing for the national exam. I'll keep explanations aligned with that.",
+  "expect": "memory"
+ },
+ {
+  "id": "s2-077",
+  "area": "study",
+  "prompt": "make me a pomodoro plan for 2 hours of chemistry 🧪",
+  "history": [],
+  "reply": "Here's a 2-hour Pomodoro plan 🍅\n\n| Block | Time | Focus |\n|---|---|---|\n| 🍅 1 | 25 min | Read and summarize one topic (e.g. chemical equilibrium) |\n| ☕ | 5 min | Break |\n| 🍅 2 | 25 min | Practice problems on that topic |\n| ☕ | 5 min | Break |\n| 🍅 3 | 25 min | Second topic (e.g. acids & bases) — problems first, notes only when stuck |\n| ☕ | 5 min | Break |\n| 🍅 4 | 25 min | Mixed quiz from both topics, closed book |\n| ✅ | 5 min | Write down 3 things you got wrong to review tomorrow |\n\n**Rules:** phone in another room, one task per pomodoro, and if a thought pops up, jot it down and get back to work.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-078",
+  "area": "physics",
+  "prompt": "update the answer using g = 10",
+  "history": [
+   [
+    "user",
+    "a ball is dropped from 45 m. how long until it hits the ground"
+   ],
+   [
+    "assistant",
+    "Using $h = \\frac{1}{2}gt^2$ with $g = 9.8$ m/s²:\n\n$$t = \\sqrt{\\frac{2h}{g}} = \\sqrt{\\frac{90}{9.8}} \\approx 3.03\\ \\text{s}$$\n\nThe ball takes about **3.03 seconds** to hit the ground (ignoring air resistance)."
+   ]
+  ],
+  "reply": "With $g = 10$ m/s²:\n\n$$t = \\sqrt{\\frac{2h}{g}} = \\sqrt{\\frac{2 \\times 45}{10}} = \\sqrt{9} = 3\\ \\text{s}$$\n\nThe ball hits the ground after **3 s** (vs. ≈ 3.03 s with $g = 9.8$). Its speed on impact is $v = gt = 10 \\times 3 = 30$ m/s.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-079",
+  "area": "study",
+  "prompt": "whats today's date? need it for my lab report header",
+  "history": [],
+  "reply": "Today is **Wednesday, October 14, 2026**.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-080",
+  "area": "physics",
+  "prompt": "change it to km/h",
+  "history": [
+   [
+    "user",
+    "a car covers 1500 m in 60 s, find the average speed"
+   ],
+   [
+    "assistant",
+    "$$v = \\frac{d}{t} = \\frac{1500\\ \\text{m}}{60\\ \\text{s}} = 25\\ \\text{m/s}$$\n\nThe average speed is **25 m/s**."
+   ]
+  ],
+  "reply": "$$25\\ \\text{m/s} \\times 3.6 = 90\\ \\text{km/h}$$\n\nThe car's average speed is **90 km/h**. (Multiply by 3.6 because 1 m/s = 3600 m per hour = 3.6 km/h.)",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-081",
+  "area": "physics",
+  "prompt": "An object is 30 cm from a lens of focal length 10 cm. How far is the image from the lens?",
+  "history": [],
+  "reply": "**Given:** $u = 30$ cm, $f = 10$ cm\n\n$$\\frac{1}{v} = \\frac{1}{f} - \\frac{1}{u} = \\frac{1}{10} - \\frac{1}{30} = \\frac{2}{30}$$\n\n$$v = 15\\ \\text{cm}$$\n\nThe image is **15 cm** from the lens, on the other side.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-082",
+  "area": "physics",
+  "prompt": "An echo returns 0.6 s after a shout toward a cliff. If sound travels at 340 m/s, how far is the cliff?",
+  "history": [],
+  "reply": "The sound goes to the cliff and back, so it covers twice the distance.\n\n$$d = \\frac{vt}{2} = \\frac{340 \\times 0.6}{2} = 102\\ \\text{m}$$\n\nThe cliff is **102 m** away.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-083",
+  "area": "physics",
+  "prompt": "A candle stands 20 cm in front of a concave mirror with focal length 15 cm. How far away is the image?",
+  "history": [],
+  "reply": "$$\\frac{1}{v} = \\frac{1}{f} - \\frac{1}{u} = \\frac{1}{15} - \\frac{1}{20} = \\frac{1}{60}$$\n\n$$v = 60\\ \\text{cm}$$\n\nThe image forms **60 cm** in front of the mirror (real and inverted).",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-084",
+  "area": "places",
+  "prompt": "How far is the closest eyeglasses store from me?",
+  "history": [],
+  "reply": "The closest eyeglasses store is **Vision Plus Optics** on Bole Road, about **1.2 km** away (5 minutes by car).",
+  "expect": "search",
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "s2-085",
+  "area": "math",
+  "prompt": "the train departs at 08:10 and arrives in Adama at 10:25. how long is the journey?",
+  "history": [],
+  "reply": "The journey takes **2 hours 15 minutes**.\n\n1. 08:10 → 10:10 is **2 hours**\n2. 10:10 → 10:25 is **15 minutes**\n\nSo 2 h + 15 min = **2 h 15 min** (135 minutes).",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-086",
+  "area": "math",
+  "prompt": "my flight leaves at 11pm and lands at 6:30am, how long is the flight? same time zone",
+  "history": [],
+  "reply": "The flight takes **7 hours 30 minutes**.\n\n1. 11:00 PM → midnight is **1 hour**\n2. Midnight → 6:30 AM is **6 hours 30 minutes**\n\nSo 1 h + 6 h 30 min = **7 h 30 min**.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-087",
+  "area": "physics",
+  "prompt": "what's the temperature on the moon during the day?",
+  "history": [],
+  "reply": "In direct sunlight near the equator the Moon's surface reaches about **120 °C (250 °F)**. With no atmosphere to hold heat, it drops to around **−130 °C (−208 °F)** at night, and colder still in permanently shadowed craters.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-088",
+  "area": "physics",
+  "prompt": "is the weather on mars anything like earth's?",
+  "history": [],
+  "reply": "Only a little. Mars has weather — wind, frost, clouds and huge dust storms — but its air is about **1% as thick** as Earth's and mostly carbon dioxide. Average temperatures sit around **−60 °C**, and a dust storm can cover the whole planet for weeks.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-089",
+  "area": "places",
+  "prompt": "what's the weather like on Mount Kenya this weekend? planning a hike",
+  "history": [],
+  "reply": "Expect **dry mornings and afternoon cloud** on Mount Kenya this weekend: around 12 °C at the Met Station and below freezing near Point Lenana overnight. Start early and pack a warm layer and rain shell.",
+  "expect": "search"
+ },
+ {
+  "id": "s2-090",
+  "area": "study",
+  "prompt": "what's the weather like on saturday? we have an outdoor study group",
+  "history": [],
+  "reply": "Saturday in Addis looks **mostly sunny, 22 °C**, with a small chance of a shower after 3 PM. A morning session outside should be fine.",
+  "expect": "search",
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "s2-091",
+  "area": "study",
+  "prompt": "what's the weather on the weekend?",
+  "history": [],
+  "reply": "I need your location to tell you that.",
+  "expect": "instant"
+ },
+ {
+  "id": "s2-092",
+  "area": "physics",
+  "prompt": "Draw the forces on a box sliding down a 30 degree incline with friction",
+  "history": [],
+  "reply": "Three forces act on the box:\n\n1. **Weight** $mg$, straight down.\n2. **Normal force** $N = mg\\cos 30^\\circ$, perpendicular to the slope.\n3. **Kinetic friction** $f = \\mu N$, up the slope, against the sliding.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-093",
+  "area": "physics",
+  "prompt": "show the forces acting on a hanging mass",
+  "history": [],
+  "reply": "Two forces act on the mass: the **tension** $T$ up the rope and its **weight** $mg$ down. At rest they balance, so $T = mg$.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-094",
+  "area": "physics",
+  "prompt": "draw a free-body diagram of a ball falling with air resistance",
+  "history": [],
+  "reply": "While it falls, its **weight** $mg$ pulls it down and **air resistance** pushes up, growing with speed until the two balance at terminal velocity.",
+  "expect": "answer"
+ },
+ {
+  "id": "s2-095",
+  "area": "lookalike",
+  "prompt": "what are the forces of the market behind oil prices?",
+  "history": [],
+  "reply": "Supply and demand: OPEC output, shale production, global growth and inventories.",
+  "expect": "answer"
+ }
+]

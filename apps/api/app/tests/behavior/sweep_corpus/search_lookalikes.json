@@ -1,0 +1,646 @@
+[
+ {
+  "id": "sl-001",
+  "area": "statement",
+  "prompt": "Hello there how is your day going because you are doing a great job with the new composer layout today",
+  "reply": "Thank you, that's really kind! Is there anything you'd like to work on next?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-002",
+  "area": "statement",
+  "prompt": "you're doing great today",
+  "reply": "That sounds like a lot. Want to talk about it, or should we plan something to make the evening easier?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-003",
+  "area": "statement",
+  "prompt": "Thanks, that was really helpful today",
+  "reply": "That's wonderful news, congratulations! How are you going to celebrate?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-004",
+  "area": "statement",
+  "prompt": "I'm so tired today, long shift at work",
+  "reply": "Thank you, that's really kind! Is there anything you'd like to work on next?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-005",
+  "area": "statement",
+  "prompt": "Today was a good day honestly",
+  "reply": "That sounds like a lot. Want to talk about it, or should we plan something to make the evening easier?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-006",
+  "area": "statement",
+  "prompt": "Had the best coffee this morning, feeling great right now",
+  "reply": "That's wonderful news, congratulations! How are you going to celebrate?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-007",
+  "area": "statement",
+  "prompt": "My boss gave me the news today that I got promoted!",
+  "reply": "Thank you, that's really kind! Is there anything you'd like to work on next?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-008",
+  "area": "statement",
+  "prompt": "I just watched the news and I feel overwhelmed",
+  "reply": "That sounds like a lot. Want to talk about it, or should we plan something to make the evening easier?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-009",
+  "area": "statement",
+  "prompt": "The latest version of my essay is much better thanks to you",
+  "reply": "That's wonderful news, congratulations! How are you going to celebrate?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-010",
+  "area": "statement",
+  "prompt": "Current mood: sleepy",
+  "reply": "Thank you, that's really kind! Is there anything you'd like to work on next?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-011",
+  "area": "statement",
+  "prompt": "Right now I'm just chilling at home",
+  "reply": "That sounds like a lot. Want to talk about it, or should we plan something to make the evening easier?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-012",
+  "area": "statement",
+  "prompt": "Good morning! Ready to get some work done today",
+  "reply": "That's wonderful news, congratulations! How are you going to celebrate?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-013",
+  "area": "statement",
+  "prompt": "haha that's the best answer I've heard all week",
+  "reply": "Thank you, that's really kind! Is there anything you'd like to work on next?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-014",
+  "area": "statement",
+  "prompt": "Tonight I'm cooking dinner for my family",
+  "reply": "That sounds like a lot. Want to talk about it, or should we plan something to make the evening easier?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-015",
+  "area": "statement",
+  "prompt": "This weekend was so relaxing",
+  "reply": "That's wonderful news, congratulations! How are you going to celebrate?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-016",
+  "area": "statement",
+  "prompt": "Prices at the market were crazy high today",
+  "reply": "Thank you, that's really kind! Is there anything you'd like to work on next?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-017",
+  "area": "statement",
+  "prompt": "I finally got my visa approved today!",
+  "reply": "That sounds like a lot. Want to talk about it, or should we plan something to make the evening easier?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-018",
+  "area": "statement",
+  "prompt": "My flight got delayed again, ugh",
+  "reply": "That's wonderful news, congratulations! How are you going to celebrate?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-019",
+  "area": "statement",
+  "prompt": "Congrats to me, I passed my driving test today",
+  "reply": "Thank you, that's really kind! Is there anything you'd like to work on next?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-020",
+  "area": "statement",
+  "prompt": "lol the news anchor tripped on live TV earlier",
+  "reply": "That sounds like a lot. Want to talk about it, or should we plan something to make the evening easier?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-021",
+  "area": "statement",
+  "prompt": "Thank you so much, you're the best assistant right now",
+  "reply": "That's wonderful news, congratulations! How are you going to celebrate?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-022",
+  "area": "statement",
+  "prompt": "Nice, the new layout looks clean today",
+  "reply": "Thank you, that's really kind! Is there anything you'd like to work on next?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-023",
+  "area": "statement",
+  "prompt": "Rn I'm studying for my exam",
+  "reply": "That sounds like a lot. Want to talk about it, or should we plan something to make the evening easier?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-024",
+  "area": "statement",
+  "prompt": "Just finished my run, 5k today",
+  "reply": "That's wonderful news, congratulations! How are you going to celebrate?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-025",
+  "area": "statement",
+  "prompt": "We're celebrating my sister's birthday tonight",
+  "reply": "Thank you, that's really kind! Is there anything you'd like to work on next?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-026",
+  "area": "statement",
+  "prompt": "Been a long week, glad it's Friday today",
+  "reply": "That sounds like a lot. Want to talk about it, or should we plan something to make the evening easier?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-027",
+  "area": "statement",
+  "prompt": "You did great with that recipe earlier today",
+  "reply": "That's wonderful news, congratulations! How are you going to celebrate?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-028",
+  "area": "statement",
+  "prompt": "Good night, talk to you tomorrow",
+  "reply": "Thank you, that's really kind! Is there anything you'd like to work on next?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-029",
+  "area": "statement",
+  "prompt": "The CEO of my company gave a speech today and it was inspiring",
+  "reply": "That sounds like a lot. Want to talk about it, or should we plan something to make the evening easier?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-030",
+  "area": "statement",
+  "prompt": "Our team's latest release went really smoothly today",
+  "reply": "That's wonderful news, congratulations! How are you going to celebrate?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-031",
+  "area": "statement",
+  "prompt": "Hello! Hope your day is going well right now",
+  "reply": "Thank you, that's really kind! Is there anything you'd like to work on next?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-032",
+  "area": "statement",
+  "prompt": "Great job on that answer, you nailed it today",
+  "reply": "That sounds like a lot. Want to talk about it, or should we plan something to make the evening easier?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-033",
+  "area": "statement",
+  "prompt": "Honestly the latest update made the app feel so much faster",
+  "reply": "That's wonderful news, congratulations! How are you going to celebrate?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-034",
+  "area": "statement",
+  "prompt": "Today I'm grateful for my family and my health",
+  "reply": "Thank you, that's really kind! Is there anything you'd like to work on next?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-035",
+  "area": "statement",
+  "prompt": "Hey Recall, just wanted to say you've been super helpful this week",
+  "reply": "That sounds like a lot. Want to talk about it, or should we plan something to make the evening easier?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-036",
+  "area": "statement",
+  "prompt": "Long day today but I made it",
+  "reply": "That's wonderful news, congratulations! How are you going to celebrate?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-037",
+  "area": "statement",
+  "prompt": "That explanation today finally made recursion click for me",
+  "reply": "Thank you, that's really kind! Is there anything you'd like to work on next?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-038",
+  "area": "statement",
+  "prompt": "My current project is a recipe app for my mom",
+  "reply": "That sounds like a lot. Want to talk about it, or should we plan something to make the evening easier?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-039",
+  "area": "statement",
+  "prompt": "It's raining so hard today, staying in with tea",
+  "reply": "That's wonderful news, congratulations! How are you going to celebrate?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-040",
+  "area": "statement",
+  "prompt": "What a day today, so much happened",
+  "reply": "Thank you, that's really kind! Is there anything you'd like to work on next?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-041",
+  "area": "statement",
+  "prompt": "Teach me something new today",
+  "reply": "Here's one for today: **octopuses have three hearts**. Two pump blood to the gills, one to the rest of the body.",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-042",
+  "area": "statement",
+  "prompt": "Write a short poem about today",
+  "reply": "Morning light on the kettle's rim,\nthe day begins, a quiet hymn.",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-043",
+  "area": "statement",
+  "prompt": "Can you help me plan my study session for today?",
+  "reply": "Sure! Try 3 blocks of 45 minutes with 10-minute breaks: review, practice problems, then a short self-quiz.",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-044",
+  "area": "statement",
+  "prompt": "Give me a quick English lesson for today",
+  "reply": "**Today's phrase: *on the fence***, meaning undecided. *I'm on the fence about the trip.*",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-045",
+  "area": "statement",
+  "prompt": "Quiz me on what we learned today",
+  "reply": "Question 1: what does a Python `for` loop iterate over?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-046",
+  "area": "statement",
+  "prompt": "Make me a 20 minute workout for today",
+  "reply": "1. 5 min warm-up\n2. 3 rounds: 10 squats, 10 push-ups, 30 s plank\n3. 5 min stretch",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-047",
+  "area": "statement",
+  "prompt": "Help me write a thank-you note to my team for their great work today",
+  "reply": "Hi team, thank you for the effort today. The launch went smoothly because of you.",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-048",
+  "area": "statement",
+  "prompt": "Translate 'how was your day today' into Spanish",
+  "reply": "*¿Cómo estuvo tu día hoy?*",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-049",
+  "area": "statement",
+  "prompt": "What should I cook for dinner tonight with chicken and rice?",
+  "reply": "Try a one-pan chicken and rice: brown the chicken, add rice, stock and garlic, simmer 20 minutes.",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-050",
+  "area": "statement",
+  "prompt": "Teach me today's Python lesson: list comprehensions",
+  "reply": "A list comprehension builds a list in one line: `[x * 2 for x in nums]`.",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-051",
+  "area": "statement",
+  "prompt": "Give me a word of the day",
+  "reply": "**Serendipity**: finding something good without looking for it.",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-052",
+  "area": "statement",
+  "prompt": "Explain the latest concept we covered again, more simply",
+  "reply": "Sure. A variable is a labelled box that holds a value you can change later.",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-053",
+  "area": "statement",
+  "prompt": "Write a caption for my photo from today's hike",
+  "reply": "Summit views and tired legs. Worth every step.",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-054",
+  "area": "statement",
+  "prompt": "Help me reply to my friend who said she had a rough day today",
+  "reply": "Something like: *I'm sorry today was hard. Want to grab tea tomorrow and talk?*",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-055",
+  "area": "statement",
+  "prompt": "Make a to-do plan for my day today",
+  "reply": "1. Deep work 9-11\n2. Emails\n3. Lunch walk\n4. Errands",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-056",
+  "area": "search",
+  "prompt": "What's the weather today in Addis Ababa?",
+  "reply": "Here's what I found from current sources: the details are below, with links.",
+  "expect": "search"
+ },
+ {
+  "id": "sl-057",
+  "area": "search",
+  "prompt": "what's in the news today",
+  "reply": "Here's what I found from current sources: the details are below, with links.",
+  "expect": "search"
+ },
+ {
+  "id": "sl-058",
+  "area": "search",
+  "prompt": "What is the price of gold today?",
+  "reply": "Here's what I found from current sources: the details are below, with links.",
+  "expect": "search"
+ },
+ {
+  "id": "sl-059",
+  "area": "search",
+  "prompt": "Is the National Museum in Addis open today?",
+  "reply": "Here's what I found from current sources: the details are below, with links.",
+  "expect": "search"
+ },
+ {
+  "id": "sl-060",
+  "area": "search",
+  "prompt": "What time does the sun set today in Nairobi?",
+  "reply": "Here's what I found from current sources: the details are below, with links.",
+  "expect": "search"
+ },
+ {
+  "id": "sl-061",
+  "area": "search",
+  "prompt": "latest news about Ethiopia",
+  "reply": "Here's what I found from current sources: the details are below, with links.",
+  "expect": "search"
+ },
+ {
+  "id": "sl-062",
+  "area": "search",
+  "prompt": "tell me today's headlines",
+  "reply": "Here's what I found from current sources: the details are below, with links.",
+  "expect": "search"
+ },
+ {
+  "id": "sl-063",
+  "area": "search",
+  "prompt": "check the current exchange rate for usd to etb",
+  "reply": "Here's what I found from current sources: the details are below, with links.",
+  "expect": "search"
+ },
+ {
+  "id": "sl-064",
+  "area": "search",
+  "prompt": "how much is a flight to Nairobi right now",
+  "reply": "Here's what I found from current sources: the details are below, with links.",
+  "expect": "search"
+ },
+ {
+  "id": "sl-065",
+  "area": "search",
+  "prompt": "What's the current price of bitcoin?",
+  "reply": "Here's what I found from current sources: the details are below, with links.",
+  "expect": "search"
+ },
+ {
+  "id": "sl-066",
+  "area": "search",
+  "prompt": "Who won the Arsenal game today?",
+  "reply": "Here's what I found from current sources: the details are below, with links.",
+  "expect": "search"
+ },
+ {
+  "id": "sl-067",
+  "area": "search",
+  "prompt": "Is it going to rain tonight in London?",
+  "reply": "Here's what I found from current sources: the details are below, with links.",
+  "expect": "search"
+ },
+ {
+  "id": "sl-068",
+  "area": "search",
+  "prompt": "What are the latest updates on the AI Act?",
+  "reply": "Here's what I found from current sources: the details are below, with links.",
+  "expect": "search"
+ },
+ {
+  "id": "sl-069",
+  "area": "search",
+  "prompt": "search for the best coffee shops open now near Bole",
+  "reply": "Here's what I found from current sources: the details are below, with links.",
+  "expect": "search"
+ },
+ {
+  "id": "sl-070",
+  "area": "made data",
+  "prompt": "Give me sample CSV data for 5 students with name, grade and score",
+  "reply": "```csv\nname,grade,score\nAbebe,10,88\nHana,11,92\nDawit,10,75\nSara,12,81\nLiya,11,95\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-071",
+  "area": "made data",
+  "prompt": "give me mock API responses for a login endpoint",
+  "reply": "Success:\n\n```json\n{\"token\": \"abc123\", \"user\": {\"id\": 1}}\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-072",
+  "area": "made data",
+  "prompt": "give me dummy data for a products table, 3 rows",
+  "reply": "| id | name | price |\n|---|---|---|\n| 1 | Mug | 8.50 |\n| 2 | Pen | 1.20 |\n| 3 | Lamp | 24.00 |",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-073",
+  "area": "made data",
+  "prompt": "show me sample SQL inserts for a library app",
+  "reply": "```sql\nINSERT INTO books (title, author) VALUES ('Fikir Eske Mekabir', 'Haddis Alemayehu');\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-074",
+  "area": "made data",
+  "prompt": "give me fake names and emails for testing",
+  "reply": "- Abel Tesfaye — abel@example.com\n- Mimi Bekele — mimi@example.com",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-075",
+  "area": "search",
+  "prompt": "give me test results for the 2024 national exam in Ethiopia",
+  "reply": "In 2024, about 5.4% of students who sat the national exam passed.",
+  "expect": "search"
+ },
+ {
+  "id": "sl-076",
+  "area": "search",
+  "prompt": "Is iPhone 19 out?",
+  "reply": "Not yet. Here's what current sources say about the next iPhone, with links.",
+  "expect": "search"
+ },
+ {
+  "id": "sl-077",
+  "area": "search",
+  "prompt": "has gta 6 been released",
+  "reply": "Here's what current sources say about GTA 6's release, with links.",
+  "expect": "search"
+ },
+ {
+  "id": "sl-078",
+  "area": "search",
+  "prompt": "when is Avatar 3 coming out",
+  "reply": "Here's the release date current sources give, with links.",
+  "expect": "search"
+ },
+ {
+  "id": "sl-079",
+  "area": "chitchat",
+  "prompt": "is the power out on your end too? mine just flickered",
+  "reply": "I can't see your power, but a flicker often means a brief grid dip. Check whether neighbours lost power too.",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-080",
+  "area": "chitchat",
+  "prompt": "Is Dad out?",
+  "reply": "I can't see where your dad is. Want me to help you write him a quick message?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-081",
+  "area": "chitchat",
+  "prompt": "is the cake out yet",
+  "reply": "I can't see your oven, but most cakes take 30 to 35 minutes. A toothpick should come out clean.",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-082",
+  "area": "chitchat",
+  "prompt": "when does school get out",
+  "reply": "It depends on your school. Most US schools let out between 2:30 and 3:30 pm.",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-083",
+  "area": "chitchat",
+  "prompt": "has the baby come out yet",
+  "reply": "I don't know, but I hope everyone is doing well! Want help with a message to the new parents?",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-084",
+  "area": "search",
+  "prompt": "which chip does the iPhone 18 Pro Max have and when was it released?",
+  "reply": "Here's the chip and release date current sources give, with links.",
+  "expect": "search"
+ },
+ {
+  "id": "sl-085",
+  "area": "search",
+  "prompt": "do you know when the Galaxy S26 came out?",
+  "reply": "Here's the release date current sources give, with links.",
+  "expect": "search"
+ },
+ {
+  "id": "sl-086",
+  "area": "search",
+  "prompt": "I'm thinking of getting the Pixel 11, is it out yet?",
+  "reply": "Here's what current sources say about the Pixel 11, with links.",
+  "expect": "search"
+ },
+ {
+  "id": "sl-087",
+  "area": "search",
+  "prompt": "can you tell me if GTA 6 is out yet?",
+  "reply": "Here's what current sources say about GTA 6's release, with links.",
+  "expect": "search"
+ },
+ {
+  "id": "sl-088",
+  "area": "chitchat",
+  "prompt": "I have 2 dogs, are they out yet?",
+  "reply": "I can't see your yard, but if they've been out a while, a quick check never hurts.",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-089",
+  "area": "chitchat",
+  "prompt": "My phone is 2 years old, when was it released?",
+  "reply": "Tell me the model and I can tell you when it came out.",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-090",
+  "area": "chitchat",
+  "prompt": "I put the cake in at 3, is it out yet?",
+  "reply": "I can't see your oven, but most cakes need 30 to 35 minutes; a toothpick should come out clean.",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-091",
+  "area": "chitchat",
+  "prompt": "my iPhone 15 battery died, is it out of warranty?",
+  "reply": "Apple's standard warranty lasts one year from purchase; check the date on your receipt or in Settings.",
+  "expect": "answer"
+ },
+ {
+  "id": "sl-092",
+  "area": "chitchat",
+  "prompt": "I got the iPhone 17 yesterday, is it any good?",
+  "reply": "Congrats! Most people like its battery life and camera. What do you mostly use your phone for?",
+  "expect": "answer"
+ }
+]

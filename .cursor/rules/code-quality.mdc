@@ -1,0 +1,38 @@
+---
+description: Clean, scalable, performant code — structure, performance, correctness
+alwaysApply: true
+---
+
+# Clean & scalable code
+
+The full policy is `docs/ENGINEERING_STANDARDS.md` (layers, subject isolation, sizes, STEM
+correctness, CI gates). Complements the layering in `recall.mdc` / `recall-api.mdc` and the
+gate in `execution.mdc`. Be concrete, not clever. Optimize real bottlenecks — don't gold-plate.
+
+## Structure & placement
+- Keep files focused: aim for 300 lines; over 500 needs a reason recorded in
+  `scripts/file_size_baseline.json` and may not grow (CI checks). Mixing concerns still means
+  split even when the file is shorter. Functions stay under ~50 lines and 3 levels of nesting.
+  Screens stay thin — logic in hooks, not the screen.
+- Put code in the right owner: migrated backend domains live in `modules/<domain>/`; shared
+  infrastructure stays in `core/`, `gateways/`, and `repositories/`. Mobile product code lives
+  in `features/<feature>/`; feature API slices compose through `lib/api.ts`.
+- No dead code, commented-out blocks, or duplicated logic — extract a shared helper.
+- Name by intent; no magic numbers (use named constants / config).
+
+## Performance (snappy & smooth)
+- Never block the user path with best-effort work — push it to background jobs; it must never
+  raise into the request/stream.
+- Kill waterfalls: batch independent calls (`asyncio.gather` / `Promise.all`), don't `await` in a
+  loop. Paginate; never fetch-all-then-filter.
+- Cache hot/repeated reads (Redis on the backend; React state/memo on mobile) and invalidate on
+  write. Don't refetch on every render.
+- Backend: no N+1 queries — one query + existing indexes; release the DB connection during the
+  model stream.
+- Mobile: `React.memo` / `useMemo` + stable callbacks for expensive renders; never do heavy work
+  (e.g. full markdown re-parse) per streamed token; keep FlashList items cheap.
+
+## Correctness (not buggy / not sloppy)
+- Surface errors — no silent empty `catch`. Validate inputs (Pydantic on the backend).
+- Clean up: clear timers/listeners/sockets on unmount; cancel in-flight work when inputs change.
+- Add/adjust tests for new logic, and finish green (`./scripts/dev.sh check`).

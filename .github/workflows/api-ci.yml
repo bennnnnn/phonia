@@ -1,0 +1,251 @@
+name: API CI
+
+on:
+  # main only. A pull request's commits are checked by its pull_request run below; a
+  # push to its branch that touched these paths ran the same jobs a second time. The
+  # deploy gate (scripts/require-green-ci.sh) reads only main's push runs.
+  push:
+    branches: [main]
+    # API tests read more than apps/api: CLAUDE.md and docs paths that comments name, fly.toml,
+    # the phone's sources (contract and parity tests), the shared fixtures and scripts. Only a
+    # change confined to the web client leaves them as they were.
+    paths-ignore:
+      - "apps/web/**"
+  # Every pull request, so the required checks always report. The jobs skip
+  # themselves when nothing they check changed (a skipped job counts as passed).
+  pull_request:
+
+# A new push to a pull request stops the run it replaces: its result no longer
+# counts and it held a runner for up to half an hour. Runs on main are never
+# cancelled; the deploy gate reads each of main's commits.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: apps/api
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      run: ${{ steps.diff.outputs.run }}
+      sweeps: ${{ steps.diff.outputs.sweeps }}
+    steps:
+      - id: diff
+        working-directory: .
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          run=true
+          sweeps=true
+          if [ -n "$PR" ] && files=$(gh pr diff "$PR" --repo "$GITHUB_REPOSITORY" --name-only); then
+            # API tests read beyond apps/api (docs and CLAUDE.md paths that comments name,
+            # fly.toml, the phone's sources for contract tests, scripts): only a pull request
+            # that changes nothing but the web client skips them.
+            echo "$files" | grep -qvE '^apps/web/' || run=false
+            # The sweeps read the app's code, the shared test helpers, their corpora, the
+            # fixtures and the battery scripts: a pull request that only changes other tests,
+            # migrations or scripts leaves what they check as it was.
+            hit=$(echo "$files" | grep -E '^apps/api/(app/|pyproject\.toml$|uv\.lock$)' | grep -vE '^apps/api/app/tests/.+/' || true)
+            hit="$hit$(echo "$files" | grep -E '^(apps/api/app/tests/behavior/|docs/fixtures/|scripts/battery(_compare)?\.py$|\.github/workflows/api-ci\.yml$)' || true)"
+            [ -n "$hit" ] && [ "$run" = true ] || sweeps=false
+          fi
+          echo "run=$run" >> "$GITHUB_OUTPUT"
+          echo "sweeps=$sweeps" >> "$GITHUB_OUTPUT"
+
+  unit:
+    needs: changes
+    if: needs.changes.outputs.run == 'true'
+    runs-on: ubuntu-latest
+    # A hung run fails here instead of holding a runner for GitHub's six hours.
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: recall_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@localhost:5432/recall_test
+      REDIS_URL: redis://localhost:6379
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --all-groups --frozen
+
+      - name: Ruff check
+        run: uv run ruff check .
+
+      - name: Ruff format
+        run: uv run ruff format --check --diff .
+
+      - name: File sizes
+        run: python3 ../../scripts/check_file_sizes.py api
+
+      - name: Mypy
+        run: uv run mypy
+
+      # The reply packages' strict errors only fall (docs/STRUCTURE_TICKETS.md ST-02).
+      - name: Mypy strict ratchet
+        run: uv run python ../../scripts/check_mypy_strict.py
+
+      - name: Migrate test database
+        run: uv run alembic upgrade head
+
+      # One copy of the migrated database per test worker; conftest.py points each worker
+      # at its own (and at its own Redis index), so no two share a row or a lock.
+      - name: A database per test worker
+        working-directory: .
+        env:
+          PGPASSWORD: postgres
+        run: |
+          workers=$(nproc)
+          echo "WORKERS=$workers" >> "$GITHUB_ENV"
+          for i in $(seq 0 $((workers - 1))); do
+            psql -h localhost -U postgres -v ON_ERROR_STOP=1 \
+              -c "CREATE DATABASE recall_test_gw$i TEMPLATE recall_test"
+          done
+
+      # Every test but the sweeps and the wall-clock ones, one worker per core: the serial run
+      # took 20-30 minutes. A worker shares the machine with three others, so its hang limit
+      # is three minutes.
+      - name: Pytest
+        env:
+          VIRTUAL_ENV: ""
+          HYPOTHESIS_PROFILE: ci
+          RECALL_TEST_DB_PER_WORKER: "1"
+        run: >-
+          uv run pytest -n "$WORKERS" --dist loadfile --ignore=app/tests/behavior
+          -m "not wall_clock" --timeout=180 --cov=app --cov-report=
+
+      # The tests that assert on elapsed time, alone, as they were written to run
+      # (tests/architecture/test_wall_clock_marks.py keeps every such test marked).
+      - name: Pytest, wall clock
+        env:
+          VIRTUAL_ENV: ""
+          HYPOTHESIS_PROFILE: ci
+        run: >-
+          uv run pytest -p no:xdist --ignore=app/tests/behavior -m wall_clock
+          --cov=app --cov-append --cov-report=
+
+      # Both runs' coverage together, against the floor. The sweeps job's own coverage does
+      # not count here: about 170 statements only the sweeps reach are no longer covered.
+      - name: Coverage
+        run: uv run coverage report --show-missing --precision=2 --fail-under=80
+
+  # The behaviour and STEM sweeps (app/tests/behavior), on their own runner and only when
+  # what they read changed. They fake the database and Redis, so no services start.
+  sweeps:
+    needs: changes
+    if: needs.changes.outputs.sweeps == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --all-groups --frozen
+
+      # A coverage test runs a whole corpus, so the hang limit here is five minutes, not the
+      # suite's one; a test's own timeout marker still wins. Each worker gets its own Redis
+      # index (conftest.py); nothing here reaches a database.
+      - name: Sweeps
+        env:
+          VIRTUAL_ENV: ""
+          HYPOTHESIS_PROFILE: ci
+          RECALL_TEST_DB_PER_WORKER: "1"
+        run: >-
+          uv run pytest app/tests/behavior -n "$(nproc)" --dist load --timeout=300
+          -m "not wall_clock"
+
+      # A sweep that asserts on elapsed time runs alone; none do today (exit 5: none found).
+      - name: Sweeps, wall clock
+        env:
+          VIRTUAL_ENV: ""
+          HYPOTHESIS_PROFILE: ci
+        run: uv run pytest app/tests/behavior -p no:xdist -m wall_clock || [ $? -eq 5 ]
+
+  # The required "test" check. Each test job ended as the changes job said it should: passed
+  # when it had to run, skipped only when it had nothing to check. A job that failed, was
+  # cancelled, or was skipped when it should have run (an edited `if:`) fails it.
+  test:
+    needs: [changes, unit, sweeps]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Unit tests and sweeps
+        working-directory: .
+        env:
+          CHANGES: ${{ needs.changes.result }}
+          RUN: ${{ needs.changes.outputs.run }}
+          SWEEPS_RUN: ${{ needs.changes.outputs.sweeps }}
+          UNIT: ${{ needs.unit.result }}
+          SWEEPS: ${{ needs.sweeps.result }}
+        run: |
+          [ "$CHANGES" = success ] || { echo "::error::changes ended $CHANGES"; exit 1; }
+          expect() { [ "$1" = true ] && echo success || echo skipped; }
+          [ "$UNIT" = "$(expect "$RUN")" ] || { echo "::error::unit ended $UNIT (run=$RUN)"; exit 1; }
+          [ "$SWEEPS" = "$(expect "$SWEEPS_RUN")" ] ||
+            { echo "::error::sweeps ended $SWEEPS (sweeps=$SWEEPS_RUN)"; exit 1; }
+
+  # Validate the production image builds so a Dockerfile/dependency regression
+  # surfaces on the PR, not at deploy time. No push — build only. Layer cache
+  # keeps it fast when only app code changed (the deps layer is cached).
+  docker-build:
+    needs: changes
+    if: needs.changes.outputs.run == 'true'
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: docker/setup-buildx-action@v4
+
+      - name: Build API image (no push)
+        uses: docker/build-push-action@v7
+        with:
+          context: apps/api
+          file: apps/api/Dockerfile
+          push: false
+          load: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

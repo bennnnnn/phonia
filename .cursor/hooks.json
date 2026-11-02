@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "hooks": {
+    "stop": [
+      {
+        "command": ".cursor/hooks/review-change.py",
+        "loop_limit": 1
+      },
+      {
+        "command": ".cursor/hooks/merge-conflict.py",
+        "loop_limit": 1,
+        "timeout": 45
+      },
+      {
+        "command": ".cursor/hooks/delete-merged-branches.py",
+        "loop_limit": 1,
+        "timeout": 60
+      }
+    ]
+  }
+}

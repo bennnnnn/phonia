@@ -1,0 +1,353 @@
+[
+ {
+  "op": "semicircle",
+  "prompt": "Find the perimeter of a semicircle with diameter 10 cm",
+  "block": {
+   "text": "$r = \\frac{10}{2} = 5$\n$P = \\pi(5) + 2(5)$\nVerified result: 5\\pi + 10 \\approx 25.71\\ \\mathrm{cm}",
+   "canonical_fence": {
+    "type": "answer",
+    "content": "5\\pi + 10 \\approx 25.71\\ \\mathrm{cm}"
+   },
+   "canonical_answer": "5\\pi + 10 \\approx 25.71\\ \\mathrm{cm}",
+   "worked_reply": "**Given**  \n$d = 10$ — diameter\n\n**Required**  \n$P$ — perimeter of the semicircle\n\n**Solution**\n\n**Curved edge plus the diameter formula**  \n$P = \\pi r + 2r$\n\n**Substitution**  \n$r = \\frac{10}{2} = 5$  \n$P = \\pi(5) + 2(5)$\n\n**Answer**\n\n```answer\n5\\pi + 10 \\approx 25.71\\ \\mathrm{cm}\n```\n"
+  }
+ },
+ {
+  "op": "hemisphere",
+  "prompt": "volume of a hemisphere with radius 3",
+  "block": {
+   "text": "$V = \\frac{2}{3}\\pi(3)^3$\nVerified result: 18\\pi \\approx 56.55",
+   "canonical_fence": {
+    "type": "answer",
+    "content": "18\\pi \\approx 56.55"
+   },
+   "canonical_answer": "18\\pi \\approx 56.55",
+   "worked_reply": "**Given**  \n$r = 3$ — radius\n\n**Required**  \n$V$ — volume of the hemisphere\n\n**Solution**\n\n**Half a sphere formula**  \n$V = \\frac{2}{3}\\pi r^3$\n\n**Substitution**  \n$V = \\frac{2}{3}\\pi(3)^3$\n\n**Answer**\n\n```answer\n18\\pi \\approx 56.55\n```\n"
+  }
+ },
+ {
+  "op": "circle_from_circumference",
+  "prompt": "find the radius of a circle with circumference 31.4",
+  "block": {
+   "text": "$r = \\frac{C}{2\\pi} = \\frac{31.4}{2\\pi} \\approx 5.00$\nVerified result: \\approx 5.00",
+   "canonical_fence": {
+    "type": "answer",
+    "content": "\\approx 5.00"
+   },
+   "canonical_answer": "\\approx 5.00",
+   "worked_reply": "**Given**  \n$C = 31.4$ — circumference\n\n**Required**  \n$r$ — radius\n\n**Solution**\n\n**Circumference formula**  \n$C = 2\\pi r$\n\n**Substitution**  \n$r = \\frac{C}{2\\pi} = \\frac{31.4}{2\\pi} \\approx 5.00$\n\n**Answer**\n\n```answer\n\\approx 5.00\n```\n"
+  }
+ },
+ {
+  "op": "circle_from_area",
+  "prompt": "find the diameter of a circle with area 50",
+  "block": {
+   "text": "$r = \\sqrt{\\frac{A}{\\pi}} = \\sqrt{\\frac{50}{\\pi}} \\approx 3.99$\n$d = 2r \\approx 2(3.99)$\nVerified result: \\approx 7.98",
+   "canonical_fence": {
+    "type": "answer",
+    "content": "\\approx 7.98"
+   },
+   "canonical_answer": "\\approx 7.98",
+   "worked_reply": "**Given**  \n$A = 50$ — area\n\n**Required**  \n$d$ — diameter\n\n**Solution**\n\n**Circle area formula**  \n$A = \\pi r^2$\n\n**Substitution**  \n$r = \\sqrt{\\frac{A}{\\pi}} = \\sqrt{\\frac{50}{\\pi}} \\approx 3.99$  \n$d = 2r \\approx 2(3.99)$\n\n**Answer**\n\n```answer\n\\approx 7.98\n```\n"
+  }
+ },
+ {
+  "op": "circle_from_circumference_pi",
+  "prompt": "find the area of a circle with circumference 10π",
+  "block": {
+   "text": "$r = \\frac{C}{2\\pi} = \\frac{10\\pi}{2\\pi} = 5$\n$A = \\pi r^2 = \\pi\\left(5\\right)^2 = 25\\pi$\nVerified result: 25\\pi \\approx 78.54",
+   "canonical_fence": {
+    "type": "answer",
+    "content": "25\\pi \\approx 78.54"
+   },
+   "canonical_answer": "25\\pi \\approx 78.54",
+   "worked_reply": "**Given**  \n$C = 10\\pi$ — circumference\n\n**Required**  \n$A$ — area\n\n**Solution**\n\n**Circumference formula**  \n$C = 2\\pi r$\n\n**Substitution**  \n$r = \\frac{C}{2\\pi} = \\frac{10\\pi}{2\\pi} = 5$  \n$A = \\pi r^2 = \\pi\\left(5\\right)^2 = 25\\pi$\n\n**Answer**\n\n```answer\n25\\pi \\approx 78.54\n```\n"
+  }
+ },
+ {
+  "op": "circle_from_area_pi",
+  "prompt": "find the radius of a circle with area 16π",
+  "block": {
+   "text": "$r = \\sqrt{\\frac{A}{\\pi}} = \\sqrt{\\frac{16\\pi}{\\pi}} = 4$\nVerified result: 4",
+   "canonical_fence": {
+    "type": "answer",
+    "content": "4"
+   },
+   "canonical_answer": "4",
+   "worked_reply": "**Given**  \n$A = 16\\pi$ — area\n\n**Required**  \n$r$ — radius\n\n**Solution**\n\n**Circle area formula**  \n$A = \\pi r^2$\n\n**Substitution**  \n$r = \\sqrt{\\frac{A}{\\pi}} = \\sqrt{\\frac{16\\pi}{\\pi}} = 4$\n\n**Answer**\n\n```answer\n4\n```\n"
+  }
+ },
+ {
+  "op": "square_from_diagonal",
+  "prompt": "What is the side of a square with diagonal 6 m?",
+  "block": {
+   "text": "$s = \\frac{6}{\\sqrt{2}}$\nVerified result: 3\\sqrt{2} \\approx 4.24\\ \\mathrm{m}",
+   "canonical_fence": {
+    "type": "answer",
+    "content": "3\\sqrt{2} \\approx 4.24\\ \\mathrm{m}"
+   },
+   "canonical_answer": "3\\sqrt{2} \\approx 4.24\\ \\mathrm{m}",
+   "worked_reply": "**Given**  \n$d = 6$ — diagonal\n\n**Required**  \n$s$ — side\n\n**Solution**\n\n**Pythagorean theorem on half the square formula**  \n$d = s\\sqrt{2}$\n\n**Substitution**  \n$s = \\frac{6}{\\sqrt{2}}$\n\n**Answer**\n\n```answer\n3\\sqrt{2} \\approx 4.24\\ \\mathrm{m}\n```\n"
+  }
+ },
+ {
+  "op": "rhombus",
+  "prompt": "area of a rhombus with diagonals 6 and 8",
+  "block": {
+   "text": "$A = \\frac{6 \\times 8}{2} = \\frac{48}{2}$\nVerified result: 24",
+   "canonical_fence": {
+    "type": "answer",
+    "content": "24"
+   },
+   "canonical_answer": "24",
+   "worked_reply": "**Given**  \n$d_1 = 6$  \n$d_2 = 8$\n\n**Required**  \n$A$ — area\n\n**Solution**\n\n**Rhombus or kite area formula**  \n$A = \\frac{d_1 d_2}{2}$\n\n**Substitution**  \n$A = \\frac{6 \\times 8}{2} = \\frac{48}{2}$\n\n**Answer**\n\n```answer\n24\n```\n"
+  }
+ },
+ {
+  "op": "equilateral",
+  "prompt": "area of an equilateral triangle with side 6",
+  "block": {
+   "text": "$A = \\frac{\\sqrt{3}}{4}(6)^2$\nVerified result: 9\\sqrt{3} \\approx 15.59",
+   "canonical_fence": {
+    "type": "answer",
+    "content": "9\\sqrt{3} \\approx 15.59"
+   },
+   "canonical_answer": "9\\sqrt{3} \\approx 15.59",
+   "worked_reply": "**Given**  \n$s = 6$ — side\n\n**Required**  \n$A$ — area\n\n**Solution**\n\n**Equilateral triangle area formula**  \n$A = \\frac{\\sqrt{3}}{4}s^2$\n\n**Substitution**  \n$A = \\frac{\\sqrt{3}}{4}(6)^2$\n\n**Answer**\n\n```answer\n9\\sqrt{3} \\approx 15.59\n```\n"
+  }
+ },
+ {
+  "op": "cube_diagonal",
+  "prompt": "diagonal of a cube with side 2",
+  "block": {
+   "text": "$d = 2\\sqrt{3}$\nVerified result: 2\\sqrt{3} \\approx 3.46",
+   "canonical_fence": {
+    "type": "answer",
+    "content": "2\\sqrt{3} \\approx 3.46"
+   },
+   "canonical_answer": "2\\sqrt{3} \\approx 3.46",
+   "worked_reply": "**Given**  \n$s = 2$ — edge\n\n**Required**  \n$d$ — space diagonal\n\n**Solution**\n\n**Pythagorean theorem in 3D formula**  \n$d = \\sqrt{s^2 + s^2 + s^2} = s\\sqrt{3}$\n\n**Substitution**  \n$d = 2\\sqrt{3}$\n\n**Answer**\n\n```answer\n2\\sqrt{3} \\approx 3.46\n```\n"
+  }
+ },
+ {
+  "op": "cuboid_diagonal",
+  "prompt": "find the diagonal of a cuboid 3 by 4 by 12 cm",
+  "block": {
+   "text": "$d = \\sqrt{3^2 + 4^2 + 12^2} = \\sqrt{169}$\nVerified result: 13\\ \\mathrm{cm}",
+   "canonical_fence": {
+    "type": "answer",
+    "content": "13\\ \\mathrm{cm}"
+   },
+   "canonical_answer": "13\\ \\mathrm{cm}",
+   "worked_reply": "**Given**  \n$l = 3$  \n$w = 4$  \n$h = 12$\n\n**Required**  \n$d$ — space diagonal\n\n**Solution**\n\n**Pythagorean theorem in 3D formula**  \n$d = \\sqrt{l^2 + w^2 + h^2}$\n\n**Substitution**  \n$d = \\sqrt{3^2 + 4^2 + 12^2} = \\sqrt{169}$\n\n**Answer**\n\n```answer\n13\\ \\mathrm{cm}\n```\n"
+  }
+ },
+ {
+  "op": "extreme_angle",
+  "prompt": "a triangle has sides 7, 8 and 9, find the largest angle",
+  "block": {
+   "text": "$\\cos C = \\frac{7^2 + 8^2 - 9^2}{2(7)(8)} = \\frac{32}{112}$\n$C = \\cos^{-1}\\left(\\frac{2}{7}\\right)$\nVerified result: \\approx 73.4^\\circ",
+   "canonical_fence": {
+    "type": "answer",
+    "content": "\\approx 73.4^\\circ"
+   },
+   "canonical_answer": "\\approx 73.4^\\circ",
+   "worked_reply": "**Given**  \n$a = 7$  \n$b = 8$  \n$c = 9$\n\n**Required**  \n$C$ — the largest angle, opposite the longest side 9\n\n**Solution**\n\n**Cosine rule**  \n$\\cos C = \\frac{a^2 + b^2 - c^2}{2ab}$\n\n**Substitution**  \n$\\cos C = \\frac{7^2 + 8^2 - 9^2}{2(7)(8)} = \\frac{32}{112}$  \n$C = \\cos^{-1}\\left(\\frac{2}{7}\\right)$\n\n**Answer**\n\n```answer\n\\approx 73.4^\\circ\n```\n"
+  }
+ },
+ {
+  "op": "third_angle",
+  "prompt": "two angles of a triangle are 50 and 60 degrees, find the third angle",
+  "block": {
+   "text": "$x = 180^\\circ - 50^\\circ - 60^\\circ$\nVerified result: 70^\\circ",
+   "canonical_fence": {
+    "type": "answer",
+    "content": "70^\\circ"
+   },
+   "canonical_answer": "70^\\circ",
+   "worked_reply": "**Given**  \n$50^\\circ,\\ 60^\\circ$ — two angles\n\n**Required**  \n$x$ — the third angle\n\n**Solution**\n\n**Formula**  \n$\\text{angles in a triangle} = 180^\\circ$\n\n**Substitution**  \n$x = 180^\\circ - 50^\\circ - 60^\\circ$\n\n**Answer**\n\n```answer\n70^\\circ\n```\n"
+  }
+ },
+ {
+  "op": "isosceles",
+  "prompt": "an isosceles triangle has a base angle of 70 degrees, find the apex angle",
+  "block": {
+   "text": "$x = 180^\\circ - 2(70^\\circ)$\nVerified result: 40^\\circ",
+   "canonical_fence": {
+    "type": "answer",
+    "content": "40^\\circ"
+   },
+   "canonical_answer": "40^\\circ",
+   "worked_reply": "**Given**  \n$70^\\circ$ — each base angle\n\n**Required**  \n$x$ — the apex angle\n\n**Solution**\n\n**The base angles are equal formula**  \n$x + 2(\\text{base angle}) = 180^\\circ$\n\n**Substitution**  \n$x = 180^\\circ - 2(70^\\circ)$\n\n**Answer**\n\n```answer\n40^\\circ\n```\n"
+  }
+ },
+ {
+  "op": "supplement",
+  "prompt": "find the supplement of 35 degrees",
+  "block": {
+   "text": "$x = 180^\\circ - 35^\\circ$\nVerified result: 145^\\circ",
+   "canonical_fence": {
+    "type": "answer",
+    "content": "145^\\circ"
+   },
+   "canonical_answer": "145^\\circ",
+   "worked_reply": "**Given**  \n$35^\\circ$\n\n**Required**  \n$x$ — its supplement\n\n**Solution**\n\n**Supplementary angles formula**  \n$x + \\text{angle} = 180^\\circ$\n\n**Substitution**  \n$x = 180^\\circ - 35^\\circ$\n\n**Answer**\n\n```answer\n145^\\circ\n```\n"
+  }
+ },
+ {
+  "op": "complement",
+  "prompt": "find the complement of 28 degrees",
+  "block": {
+   "text": "$x = 90^\\circ - 28^\\circ$\nVerified result: 62^\\circ",
+   "canonical_fence": {
+    "type": "answer",
+    "content": "62^\\circ"
+   },
+   "canonical_answer": "62^\\circ",
+   "worked_reply": "**Given**  \n$28^\\circ$\n\n**Required**  \n$x$ — its complement\n\n**Solution**\n\n**Complementary angles formula**  \n$x + \\text{angle} = 90^\\circ$\n\n**Substitution**  \n$x = 90^\\circ - 28^\\circ$\n\n**Answer**\n\n```answer\n62^\\circ\n```\n"
+  }
+ },
+ {
+  "op": "polygon_sides",
+  "prompt": "how many sides does a regular polygon have if each interior angle is 140 degrees",
+  "block": {
+   "text": "$\\text{exterior angle} = 180^\\circ - 140^\\circ = 40^\\circ$\n$n = \\frac{360^\\circ}{40^\\circ}$\nVerified result: 9",
+   "canonical_fence": {
+    "type": "answer",
+    "content": "9"
+   },
+   "canonical_answer": "9",
+   "worked_reply": "**Given**  \n$140^\\circ$ — each interior angle\n\n**Required**  \n$n$ — the number of sides\n\n**Solution**\n\n**Exterior angles add to 360° formula**  \n$n = \\frac{360^\\circ}{\\text{exterior angle}}$\n\n**Substitution**  \n$\\text{exterior angle} = 180^\\circ - 140^\\circ = 40^\\circ$  \n$n = \\frac{360^\\circ}{40^\\circ}$\n\n**Answer**\n\n```answer\n9\n```\n"
+  }
+ },
+ {
+  "op": "ladder",
+  "prompt": "a 10 m ladder leans against a wall with its foot 6 m from the wall, how high up the wall does it reach",
+  "block": {
+   "text": "$h = \\sqrt{10^2 - 6^2} = \\sqrt{100 - 36} = \\sqrt{64}$\nVerified result: 8\\ \\mathrm{m}",
+   "canonical_fence": {
+    "type": "answer",
+    "content": "8\\ \\mathrm{m}"
+   },
+   "canonical_answer": "8\\ \\mathrm{m}",
+   "worked_reply": "**Given**  \n$L = 10$ — the ladder, the hypotenuse  \n$d = 6$ — foot of the ladder to the wall\n\n**Required**  \n$h$ — height up the wall\n\n**Solution**\n\n**Pythagorean theorem**  \n$h^2 + d^2 = L^2$\n\n**Substitution**  \n$h = \\sqrt{10^2 - 6^2} = \\sqrt{100 - 36} = \\sqrt{64}$\n\n**Answer**\n\n```answer\n8\\ \\mathrm{m}\n```\n"
+  }
+ },
+ {
+  "op": "circle_equation",
+  "prompt": "equation of a circle with center (2, -3) and radius 4",
+  "block": {
+   "text": "$(x - (2))^2 + (y - (-3))^2 = 4^2$\nVerified result: \\left(x - 2\\right)^2 + \\left(y + 3\\right)^2 = 16",
+   "canonical_fence": {
+    "type": "answer",
+    "content": "\\left(x - 2\\right)^2 + \\left(y + 3\\right)^2 = 16"
+   },
+   "canonical_answer": "\\left(x - 2\\right)^2 + \\left(y + 3\\right)^2 = 16",
+   "worked_reply": "**Given**  \n$\\text{centre } (2, -3)$  \n$r = 4$\n\n**Required**  \n$\\text{the equation of the circle}$\n\n**Solution**\n\n**Circle with centre (a, b) formula**  \n$(x - a)^2 + (y - b)^2 = r^2$\n\n**Substitution**  \n$(x - (2))^2 + (y - (-3))^2 = 4^2$\n\n**Answer**\n\n```answer\n\\left(x - 2\\right)^2 + \\left(y + 3\\right)^2 = 16\n```\n"
+  }
+ },
+ {
+  "op": "circle_centre_radius",
+  "prompt": "find the center and radius of x^2 + y^2 - 4x + 6y - 3 = 0",
+  "block": {
+   "text": "$\\left(x - 2\\right)^2 - 4 + \\left(y + 3\\right)^2 - 9 - 3 = 0$\n$\\left(x - 2\\right)^2 + \\left(y + 3\\right)^2 = 16$\nVerified result: \\text{centre } (2, -3),\\ r = 4",
+   "canonical_fence": {
+    "type": "answer",
+    "content": "\\text{centre } (2, -3),\\ r = 4"
+   },
+   "canonical_answer": "\\text{centre } (2, -3),\\ r = 4",
+   "worked_reply": "**Given**  \n$x^{2} - 4 x + y^{2} + 6 y - 3 = 0$\n\n**Required**  \n$\\text{centre and radius}$\n\n**Solution**\n\n**Complete the square in x and in y formula**  \n$(x - a)^2 + (y - b)^2 = r^2$\n\n**Substitution**  \n$\\left(x - 2\\right)^2 - 4 + \\left(y + 3\\right)^2 - 9 - 3 = 0$  \n$\\left(x - 2\\right)^2 + \\left(y + 3\\right)^2 = 16$\n\n**Answer**\n\n```answer\n\\text{centre } (2, -3),\\ r = 4\n```\n"
+  }
+ },
+ {
+  "op": "triangle_vertices",
+  "prompt": "area of a triangle with vertices (0, 0), (4, 0) and (0, 3)",
+  "block": {
+   "text": "$A = \\frac{1}{2}\\left|0(0 - 3) + 4(3 - 0) + 0(0 - 0)\\right| = \\frac{1}{2}\\left|12\\right|$\nVerified result: 6",
+   "canonical_fence": {
+    "type": "answer",
+    "content": "6"
+   },
+   "canonical_answer": "6",
+   "worked_reply": "**Given**  \n$(0, 0),\\ (4, 0),\\ (0, 3)$ — vertices\n\n**Required**  \n$A$ — area\n\n**Solution**\n\n**Shoelace formula**  \n$A = \\frac{1}{2}\\left|x_1(y_2 - y_3) + x_2(y_3 - y_1) + x_3(y_1 - y_2)\\right|$\n\n**Substitution**  \n$A = \\frac{1}{2}\\left|0(0 - 3) + 4(3 - 0) + 0(0 - 0)\\right| = \\frac{1}{2}\\left|12\\right|$\n\n**Answer**\n\n```answer\n6\n```\n"
+  }
+ },
+ {
+  "op": "perpendicular_gradient",
+  "prompt": "gradient of a line perpendicular to y = 2x + 1",
+  "block": {
+   "text": "$m = 2, \\quad m_{\\perp} = -\\frac{1}{2}$\nVerified result: - \\frac{1}{2}",
+   "canonical_fence": {
+    "type": "answer",
+    "content": "- \\frac{1}{2}"
+   },
+   "canonical_answer": "- \\frac{1}{2}",
+   "worked_reply": "**Given**  \n$y = 2 x + 1$\n\n**Required**  \n$m_{\\perp}$ — gradient of a perpendicular line\n\n**Solution**\n\n**Perpendicular gradients multiply to -1 formula**  \n$m_{\\perp} = -\\frac{1}{m}$\n\n**Substitution**  \n$m = 2, \\quad m_{\\perp} = -\\frac{1}{2}$\n\n**Answer**\n\n```answer\n- \\frac{1}{2}\n```\n"
+  }
+ },
+ {
+  "op": "perpendicular_bisector",
+  "prompt": "equation of the perpendicular bisector of (1, 2) and (5, 6)",
+  "block": {
+   "text": "$M = \\left(3, 4\\right)$\n$m = \\frac{6 - 2}{5 - 1} = 1, \\quad m_{\\perp} = -1$\n$y - 4 = -1\\left(x - 3\\right)$\nVerified result: y = -x + 7",
+   "canonical_fence": {
+    "type": "answer",
+    "content": "y = -x + 7"
+   },
+   "canonical_answer": "y = -x + 7",
+   "worked_reply": "**Given**  \n$(1, 2),\\ (5, 6)$\n\n**Required**  \n$\\text{the perpendicular bisector}$\n\n**Solution**\n\n**Through the midpoint, perpendicular formula**  \n$y - y_M = m_{\\perp}(x - x_M)$\n\n**Substitution**  \n$M = \\left(3, 4\\right)$ — midpoint  \n$m = \\frac{6 - 2}{5 - 1} = 1, \\quad m_{\\perp} = -1$  \n$y - 4 = -1\\left(x - 3\\right)$\n\n**Answer**\n\n```answer\ny = -x + 7\n```\n"
+  }
+ },
+ {
+  "op": "reflection_line",
+  "prompt": "In a reflection, the image of the point P(3, 10) is P'(7, 2). Find the equation of the line of reflection.",
+  "block": {
+   "text": "$M = \\left(5, 6\\right)$\n$m = \\frac{2 - 10}{7 - 3} = -2, \\quad m_{\\perp} = \\frac{1}{2}$\n$y - 6 = \\frac{1}{2}\\left(x - 5\\right)$\nVerified result: y = \\frac{1}{2} x + \\frac{7}{2}",
+   "canonical_fence": {
+    "type": "answer",
+    "content": "y = \\frac{1}{2} x + \\frac{7}{2}"
+   },
+   "canonical_answer": "y = \\frac{1}{2} x + \\frac{7}{2}",
+   "worked_reply": "**Given**  \n$P = (3, 10)$ — the point  \n$P' = (7, 2)$ — its image\n\n**Required**  \n$\\text{the line of reflection}$\n\n**Solution**\n\n**Formula**  \n$\\text{line of reflection} = \\text{perpendicular bisector of } PP'$ — every point on the mirror is as far from P as from P'\n\n**Through the midpoint, perpendicular formula**  \n$y - y_M = m_{\\perp}(x - x_M)$\n\n**Substitution**  \n$M = \\left(5, 6\\right)$ — midpoint  \n$m = \\frac{2 - 10}{7 - 3} = -2, \\quad m_{\\perp} = \\frac{1}{2}$  \n$y - 6 = \\frac{1}{2}\\left(x - 5\\right)$\n\n**Answer**\n\n```answer\ny = \\frac{1}{2} x + \\frac{7}{2}\n```\n"
+  }
+ },
+ {
+  "op": "sine_rule",
+  "prompt": "in triangle ABC, A = 40 degrees, B = 60 degrees, a = 10, find b",
+  "block": {
+   "text": "$b = \\frac{10 \\sin 60^\\circ}{\\sin 40^\\circ}$\nVerified result: \\approx 13.47",
+   "canonical_fence": {
+    "type": "answer",
+    "content": "\\approx 13.47"
+   },
+   "canonical_answer": "\\approx 13.47",
+   "worked_reply": "**Given**  \n$a = 10$  \n$A = 40^\\circ$  \n$B = 60^\\circ$\n\n**Required**  \n$b$\n\n**Solution**\n\n**Sine rule**  \n$\\frac{b}{\\sin B} = \\frac{a}{\\sin A}$\n\n**Substitution**  \n$b = \\frac{10 \\sin 60^\\circ}{\\sin 40^\\circ}$\n\n**Answer**\n\n```answer\n\\approx 13.47\n```\n"
+  }
+ },
+ {
+  "op": "right_angle_from_sides",
+  "prompt": "in a right triangle the opposite side is 5 and the hypotenuse is 10, find the angle",
+  "block": {
+   "text": "$\\sin\\theta = \\frac{5}{10}$\n$\\theta = \\sin^{-1}\\left(\\frac{5}{10}\\right)$\nVerified result: 30^\\circ",
+   "canonical_fence": {
+    "type": "answer",
+    "content": "30^\\circ"
+   },
+   "canonical_answer": "30^\\circ",
+   "worked_reply": "**Given**  \n$\\text{opposite} = 5$  \n$\\text{hypotenuse} = 10$\n\n**Required**  \n$\\theta$ — the angle\n\n**Solution**\n\n**Sine ratio formula**  \n$\\sin\\theta = \\frac{\\text{opposite}}{\\text{hypotenuse}}$\n\n**Substitution**  \n$\\sin\\theta = \\frac{5}{10}$  \n$\\theta = \\sin^{-1}\\left(\\frac{5}{10}\\right)$\n\n**Answer**\n\n```answer\n30^\\circ\n```\n"
+  }
+ },
+ {
+  "op": "right_side_from_angle",
+  "prompt": "a right triangle has an angle of 30 degrees and hypotenuse 12, find the opposite side",
+  "block": {
+   "text": "$\\text{opposite} = 12\\sin 30^\\circ$\nVerified result: 6",
+   "canonical_fence": {
+    "type": "answer",
+    "content": "6"
+   },
+   "canonical_answer": "6",
+   "worked_reply": "**Given**  \n$\\theta = 30^\\circ$  \n$\\text{hypotenuse} = 12$\n\n**Required**  \n$\\text{opposite}$\n\n**Solution**\n\n**Sine ratio formula**  \n$\\sin\\theta = \\frac{\\text{opposite}}{\\text{hypotenuse}}$\n\n**Substitution**  \n$\\text{opposite} = 12\\sin 30^\\circ$\n\n**Answer**\n\n```answer\n6\n```\n"
+  }
+ }
+]

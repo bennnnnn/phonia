@@ -1,0 +1,5 @@
+[
+  {"id": "lang-am-poh", "area": "language", "prompt": "የ 0.0025 M HCl የ pOH ስንት ነው?", "expect": "decline", "note": "the card was right (11.40); another language gets none"},
+  {"id": "lang-fr-moles", "area": "language", "prompt": "Combien de moles y a-t-il dans 25,0 g de NaCl ?", "expect": "decline"},
+  {"id": "lang-en-poh-es-user", "area": "language", "prompt": "What is the pOH of 0.0025 M HCl?", "expect": "answer", "answers": [[11.3979, ""]], "abs_tol": 0.02, "locale": "es"}
+]

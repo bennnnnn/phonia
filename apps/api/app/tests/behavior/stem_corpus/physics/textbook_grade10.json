@@ -1,0 +1,7 @@
+[
+  {"id": "g10-01", "area": "optics", "prompt": "An object is placed at a distance of 10 cm from a convex mirror of focal length 15 cm. Find the position and nature of the image.", "expect": "decline", "note": "NCERT Class 10 (2026-10-30): a convex mirror diverges; read as concave it was certified 30 cm (the image is 6 cm behind)"},
+  {"id": "g10-02", "area": "optics", "prompt": "The far point of a myopic person is 80 cm in front of the eye. What is the nature and power of the lens required to correct the problem?", "expect": "decline", "note": "a far point is not a focal length: certified +1.25 D, the lens is concave (-1.25 D)"},
+  {"id": "g10-03", "area": "optics", "prompt": "Find the power of a concave lens of focal length 2 m.", "expect": "decline", "note": "a concave lens's power is negative"},
+  {"id": "g10-04", "area": "optics", "prompt": "A doctor has prescribed a corrective lens of power +1.5 D. Find the focal length of the lens. Is the prescribed lens diverging or converging?", "expect": "answer", "answer": [0.667, "m"]},
+  {"id": "g10-05", "area": "optics", "prompt": "What is the power of a convex lens of focal length 50 cm?", "expect": "answer", "answer": [2.0, "D"]}
+]

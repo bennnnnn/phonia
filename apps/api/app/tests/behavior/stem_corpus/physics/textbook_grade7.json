@@ -1,0 +1,10 @@
+[
+  {"id": "g7-01", "area": "machines", "prompt": "If a load of 24 N is moved by applying an effort of 6 N to the machine, what is the M.A of the machine?", "expect": "answer", "answer": [4.0, ""], "note": "grade 7 physics book (2026-10-29): no law read it"},
+  {"id": "g7-02", "area": "machines", "prompt": "A machine lifts a load of 600 N with an effort of 150 N. What is its mechanical advantage?", "expect": "answer", "answer": [4.0, ""]},
+  {"id": "g7-03", "area": "machines", "prompt": "A 500 N car is pulled up a 20 m plank to a flat 5 m above the ground by an effort of 150 N parallel to the plank. Calculate the VR of the machine.", "expect": "answer", "answer": [4.0, ""], "note": "grade 7 physics book (2026-10-29): no law read it"},
+  {"id": "g7-04", "area": "machines", "prompt": "A 500 N car is pulled up a 20 m plank to a flat 5 m above the ground by an effort of 150 N parallel to the plank. Calculate the MA of the machine.", "expect": "answer", "answer": [3.3333, ""], "note": "load over effort, not the plank's ideal L/h"},
+  {"id": "g7-05", "area": "machines", "prompt": "A 500 N car is pulled up a 20 m plank to a flat 5 m above the ground by an effort of 150 N parallel to the plank. Calculate the input work.", "expect": "answer", "answer": [3000.0, "J"]},
+  {"id": "g7-06", "area": "machines", "prompt": "A 500 N car is pulled up a 20 m plank to a flat 5 m above the ground by an effort of 150 N parallel to the plank. Calculate the output work.", "expect": "answer", "answer": [2500.0, "J"]},
+  {"id": "g7-07", "area": "machines", "prompt": "A 500 N car is pulled up a 20 m plank to a flat 5 m above the ground by an effort of 150 N parallel to the plank. Calculate the efficiency.", "expect": "answer", "answer": [83.333, "%"]},
+  {"id": "g7-08", "area": "energy", "prompt": "An electric motor pumps 200 liter of water to a reservoir of height 6 m in 2 s. Take g = 10 m/s^2. Calculate the power developed by the motor. Take 1 liter of water = 1 kg of water.", "expect": "answer", "answer": [6000.0, "W"], "note": "the stated 1 L = 1 kg was read as two more givens"}
+]

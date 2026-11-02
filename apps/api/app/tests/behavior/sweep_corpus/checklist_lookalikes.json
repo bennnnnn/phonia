@@ -1,0 +1,114 @@
+[
+ {
+  "id": "cl-001",
+  "area": "checklist lookalike",
+  "prompt": "how do I make a checklist in Notion",
+  "history": [],
+  "reply": "In Notion, type `/to-do` (or `[]` then a space) on a new line to add a checkbox block. Press Enter for the next item, and Tab to nest one under another. To turn existing lines into checkboxes, select them, open the block menu (⋮⋮) and choose **Turn into → To-do list**.",
+  "expect": "answer"
+ },
+ {
+  "id": "cl-002",
+  "area": "checklist lookalike",
+  "prompt": "how do I add a task list in Google Docs",
+  "history": [],
+  "reply": "Go to **Format → Bullets & numbering → Checklist**, or press **Ctrl+Shift+9** (**⌘+Shift+9** on a Mac). Each line becomes a checkbox you can tick; ticked items get a strikethrough.",
+  "expect": "answer"
+ },
+ {
+  "id": "cl-003",
+  "area": "checklist lookalike",
+  "prompt": "what is a checklist?",
+  "history": [],
+  "reply": "A checklist is a list of items or steps you tick off one by one, so nothing gets forgotten. Pilots, surgeons and builders use them for routine but critical work.",
+  "expect": "answer"
+ },
+ {
+  "id": "cl-004",
+  "area": "checklist lookalike",
+  "prompt": "thanks for the checklist, that's really helpful",
+  "history": [],
+  "reply": "You're welcome! Have a great trip, and enjoy the hike.",
+  "expect": "answer"
+ },
+ {
+  "id": "cl-005",
+  "area": "checklist lookalike",
+  "prompt": "the pilot skipped part of the pre-flight checklist, is that legal?",
+  "history": [],
+  "reply": "Generally no. Aviation rules require pilots to complete the required checklists for their aircraft, and skipping items can be treated as a violation, especially if it leads to an incident. Whether it counts depends on the regulator and the operator's procedures.",
+  "expect": "answer"
+ },
+ {
+  "id": "cl-006",
+  "area": "checklist lookalike",
+  "prompt": "my checklist app crashes every time I open it",
+  "history": [],
+  "reply": "Try these in order: force-close the app and reopen it, check for an update in the App Store, restart your phone, and if it still crashes, reinstall the app (back up your lists first if it has a sync or export option).",
+  "expect": "answer"
+ },
+ {
+  "id": "cl-007",
+  "area": "checklist lookalike",
+  "prompt": "share your thoughts on my checklist: passport, charger, tickets, sunscreen",
+  "history": [],
+  "reply": "That covers the essentials. A few things people often forget: a power adapter for the country you're visiting, any regular medication, and a copy of your passport stored separately from the original.",
+  "expect": "answer"
+ },
+ {
+  "id": "cl-008",
+  "area": "checklist lookalike",
+  "prompt": "is The Checklist Manifesto worth reading?",
+  "history": [],
+  "reply": "Yes, if you like practical non-fiction. Atul Gawande shows how simple checklists cut errors in surgery and aviation. The core idea fits in a few chapters, so it can feel repetitive, but it's a short and engaging read.",
+  "expect": "answer"
+ },
+ {
+  "id": "cl-009",
+  "area": "checklist lookalike",
+  "prompt": "make sure the safety checklist covers fire exits and first aid kits",
+  "history": [],
+  "reply": "A good safety checklist should name each fire exit and confirm it is unobstructed and signposted, and list where every first aid kit is, who checks it, and how often its supplies are restocked.",
+  "expect": "answer"
+ },
+ {
+  "id": "cl-010",
+  "area": "checklist lookalike",
+  "prompt": "send me my to-do list",
+  "history": [],
+  "reply": "Here's what's on your list.",
+  "expect": "answer"
+ },
+ {
+  "id": "cl-011",
+  "area": "checklist lookalike",
+  "prompt": "write a checklist component in React",
+  "history": [],
+  "reply": "```jsx\nimport { useState } from \"react\";\n\nexport function Checklist({ items }) {\n  const [done, setDone] = useState({});\n  return (\n    <ul>\n      {items.map((item) => (\n        <li key={item}>\n          <label>\n            <input\n              type=\"checkbox\"\n              checked={!!done[item]}\n              onChange={() => setDone((d) => ({ ...d, [item]: !d[item] }))}\n            />\n            {item}\n          </label>\n        </li>\n      ))}\n    </ul>\n  );\n}\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "cl-012",
+  "area": "checklist lookalike",
+  "prompt": "how do I check list length in python",
+  "history": [],
+  "reply": "Use `len()`:\n\n```python\nitems = [1, 2, 3]\nprint(len(items))  # 3\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "cl-013",
+  "area": "checklist lookalike",
+  "prompt": "is a to-do list or a calendar better for ADHD?",
+  "history": [],
+  "reply": "Many people with ADHD do best with both: a calendar for anything tied to a time, and a short to-do list for the rest. If you only pick one, a calendar with reminders is usually more reliable, because it interrupts you when something is due.",
+  "expect": "answer"
+ },
+ {
+  "id": "cl-014",
+  "area": "checklist lookalike",
+  "prompt": "how long does a pre-flight checklist usually take?",
+  "history": [],
+  "reply": "For a small private plane, about 10 to 20 minutes for the walk-around and cockpit checks. Airline crews spend longer in total, but split the work between them.",
+  "expect": "answer"
+ }
+]

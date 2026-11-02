@@ -1,0 +1,602 @@
+[
+ {
+  "subject": "chemistry",
+  "id": "amt-01",
+  "prompt": "በ25.0 ግ የNaCl ውስጥ ስንት ሞል አለ?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "amt-08",
+  "prompt": "0.0150 mol የNaOH ስንት mg ነው?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "dil-01",
+  "prompt": "12 M HCl ክምችት አለኝ። 500 mL የ1.5 M HCl ለማዘጋጀት ስንት mL ያስፈልገኛል?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "dr-10",
+  "prompt": "4.6 ግራም ሶዲየም ከተትረፈረፈ ክሎሪን ጋር ሲተሳሰር ስንት ግራም NaCl ይፈጠራል?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "dr-12",
+  "prompt": "3.0 ግራም ሃይድሮጅን እና 16.0 ግራም ኦክስጅን ሲቀላቀሉ ምን ያህል ውሃ ይፈጠራል?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "dr-13",
+  "prompt": "36 ግራም ውሃ ለመሥራት ስንት ግራም H2 መቃጠል አለበት?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "dr-15",
+  "prompt": "ከ28 ግራም ናይትሮጅን እና 6 ግራም ሃይድሮጅን ስንት ግራም NH3 ማዘጋጀት ይቻላል?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "dr-26",
+  "prompt": "2H2 + O2 -> 2H2O ከ4g የH2 ምን ያህል ውሃ ይፈጠራል?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "dr-28",
+  "prompt": "4 ግራም የH2 ሲቃጠል ስንት የውሃ ሞለኪውሎች ይፈጠራሉ?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "dr-29",
+  "prompt": "2H2 + O2 -> 2H2O። ከ4 ግራም H2 ስንት H2O ሞለኪውሎች ይሠራሉ?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "ef-01",
+  "prompt": "አንድ ውህድ 85.6% ካርቦን እና 14.4% ሃይድሮጅን ነው። ቀመሩ ምንድን ነው?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "ef-05",
+  "prompt": "የአንድ ውህድ ተጨባጭ ቀመር NO2 ሲሆን ሞላር መጠኑ 92.0 g/mol ነው። ሞለኪውላዊ ቀመሩን ፈልግ።"
+ },
+ {
+  "subject": "chemistry",
+  "id": "eq-03",
+  "prompt": "የAgCl ኬኤስፒ 1.8 × 10^-10 ነው። የሞላር መሟሟት ስንት ነው?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "gas-01",
+  "prompt": "አንድ ጋዝ በ1.0 አትሞስፌር ግፊት 4.0 ሊትር ቦታ ይይዛል። የሙቀት መጠኑ ቋሚ ከሆነ፣ በ2.5 አትሞስፌር ግፊት ስንት ሊትር ቦታ ይይዛል?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "kin-02",
+  "prompt": "k = 0.0450 s^-1 ለአንደኛ ደረጃ ምላሽ። 75% የምላሽ ሰጪው እስኪጠፋ ድረስ ምን ያህል ጊዜ ይወስዳል?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "mm-03",
+  "prompt": "የግሉኮስ ሞላር መጠን ስንት ነው?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "mm-04",
+  "prompt": "የሶዲየም ክሎራይድ ሞላር ክብደት ስንት ነው??"
+ },
+ {
+  "subject": "chemistry",
+  "id": "nm-02",
+  "prompt": "የFe2(SO4)3 ስም ምን ይባላል?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "ph-04",
+  "prompt": "pOH ወደ 3.2 ከሆነ፣ pH ፈልግ"
+ },
+ {
+  "subject": "chemistry",
+  "id": "r-04",
+  "prompt": "የ 0.0025 M HCl የ pOH ስንት ነው?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "r-21",
+  "prompt": "የ Zn/Cu ሴል ኃይል አቅም በ [Zn2+] = 1.0 M እና [Cu2+] = 0.010 M በ 25 °C ያግኙ።"
+ },
+ {
+  "subject": "chemistry",
+  "id": "r-27",
+  "prompt": "የአንድ ጋዝ መጠን 1.25 g/L በ STP ላይ ሲሆን የሞላር ክብደቱ ስንት ነው?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "sh-01",
+  "prompt": "ውሃ ለምን የተጠመደ ነው፣ CO₂ ግን አይደለም?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "sh-08",
+  "prompt": "በH2O ውስጥ የቦንድ አንግል"
+ },
+ {
+  "subject": "chemistry",
+  "id": "sh-13",
+  "prompt": "የውሃ ሞለኪውል ቅርጽ ምንድነው?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "sh-17",
+  "prompt": "BeCl2 ቀጥተኛ ነው?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "sol-02",
+  "prompt": "250 mL የ 0.150 M መፍትሄ ለማዘጋጀት ስንት ግራም NaOH ያስፈልጋል?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "sol-04",
+  "prompt": "በ15.0 mL የ0.200 mol/L KCl መፍትሔ ውስጥ ስንት mg KCl አለ?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "u-01",
+  "prompt": "የ H₂SO₄ ሞላር ክብደት ስንት ነው?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "u-02",
+  "prompt": "በ2.0 ሞል CO₂ ውስጥ ስንት ግራም አለ?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "u-05",
+  "prompt": "በ500 mL የመፍትሔ መጠን ውስጥ የ4.9 g H₂SO₄ ሞላሪቲ ስንት ነው?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "v-03",
+  "prompt": "ለ pH 4.75 ላለው መፍትሔ [H+] አስላ።"
+ },
+ {
+  "subject": "chemistry",
+  "id": "v-11",
+  "prompt": "አጠቃላይ ግፊትን ፈልግ፦ P(He) = 0.40 atm, P(Ne) = 0.25 atm, P(Ar) = 0.15 atm"
+ },
+ {
+  "subject": "chemistry",
+  "id": "v-15",
+  "prompt": "የሄስ ሕግን ተጠቀም፦ C + O2 → CO2, ΔH = -393.5 kJ; CO + 1/2 O2 → CO2, ΔH = -283.0 kJ። ለ C + 1/2 O2 → CO የሆነውን ΔH ፈልግ።"
+ },
+ {
+  "subject": "chemistry",
+  "id": "v-16",
+  "prompt": "የአንደኛ ደረጃ ምላሽ ተመሳሳይነት ቋሚ 0.0450 s^-1 ነው። ክምችቱ ከመጀመሪያው እሴቱ 25% ድረስ ለመውረድ ምን ያህል ጊዜ ይወስዳል?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "v-18",
+  "prompt": "ከብር እና ከመዳብ የተሠራ የጋልቫኒክ ሴል መደበኛ ሴል አቅም ስንት ነው?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "v-21",
+  "prompt": "የ0.500 ሞል ተስማሚ ጋዝ መጠን በ25 °C እና 101.3 ኪፓ ስንት ነው?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "v-23",
+  "prompt": "በ CH4 + 2O2 -> CO2 + 2H2O ውስጥ 3.0 ሞል CH4 ከ多少 ሞል O2 ጋር ይተገበራል?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "x-10",
+  "prompt": "የ18.0 ግ ግሉኮስ በ500 ግ ውሃ ውስጥ ያለው ሞላሊቲ ስንት ነው?"
+ },
+ {
+  "subject": "chemistry",
+  "id": "x-11",
+  "prompt": "በ K2Cr2O7 ውስጥ የ Cr ኦክሲዴሽን ሁኔታ ይወስኑ።"
+ },
+ {
+  "subject": "math",
+  "id": "ar2",
+  "prompt": "(3+5)^2 - 4*3"
+ },
+ {
+  "subject": "math",
+  "id": "ar5",
+  "prompt": "-3^2 + 5"
+ },
+ {
+  "subject": "math",
+  "id": "ar9",
+  "prompt": "15 - 4 x 3 + 8/2 ስንት ነው?"
+ },
+ {
+  "subject": "math",
+  "id": "b31",
+  "prompt": "ከ80 25% ሲደመር 10 ስንት ነው?"
+ },
+ {
+  "subject": "math",
+  "id": "b32",
+  "prompt": "2^x = 3^(x-1) ን ፍታ"
+ },
+ {
+  "subject": "math",
+  "id": "b43",
+  "prompt": "በአንድ ቀን ውስጥ ስንት ሰከንዶች አሉ?"
+ },
+ {
+  "subject": "math",
+  "id": "b5",
+  "prompt": "የ f(x) = x^2 - 4x ዜሮዎችን ፈልግ።"
+ },
+ {
+  "subject": "math",
+  "id": "b8",
+  "prompt": "የ x^2 - 5x + 6 = 0 ሥሮች ድምር ስንት ነው?"
+ },
+ {
+  "subject": "math",
+  "id": "b9",
+  "prompt": "x^2 + kx + 9 = 0 በትክክል አንድ መፍትሔ እንዲኖረው k ፈልግ።"
+ },
+ {
+  "subject": "math",
+  "id": "cg1",
+  "prompt": "በ (2,3) እና (6,11) መካከል ያለው ተዳፋት"
+ },
+ {
+  "subject": "math",
+  "id": "ex1",
+  "prompt": "2^x = 32 ን ፍታ"
+ },
+ {
+  "subject": "math",
+  "id": "ge1",
+  "prompt": "የአንድ ክብ ስፋት ራዲየስ 7 ሴ.ሜ ሲሆን"
+ },
+ {
+  "subject": "math",
+  "id": "ge13",
+  "prompt": "በሶስት ማዕዘን ABC ውስጥ፣ A = 45°፣ B = 30° እና a = 8 ከሆነ፣ b ፈልግ"
+ },
+ {
+  "subject": "math",
+  "id": "ge2",
+  "prompt": "የቀኝ ትሪያንግል ሃይፖቴኒውስ ከእግሮች 5 እና 12 ጋር"
+ },
+ {
+  "subject": "math",
+  "id": "lm2",
+  "prompt": "የ x ወደ 2 ሲቃረብ ገደብ የ (x^2-4)/(x-2)"
+ },
+ {
+  "subject": "math",
+  "id": "n15",
+  "prompt": "$\\int_{0}^{2} x^3\\,dx$"
+ },
+ {
+  "subject": "math",
+  "id": "n30",
+  "prompt": "የ y = e^x ተገላቢጦሽ ፈልግ።"
+ },
+ {
+  "subject": "math",
+  "id": "n32",
+  "prompt": "$\\sec(\\frac{\\pi}{3})$"
+ },
+ {
+  "subject": "math",
+  "id": "n38",
+  "prompt": "3 ስኩዌር ስንት ነው"
+ },
+ {
+  "subject": "math",
+  "id": "n41",
+  "prompt": "ሰባት ሲደመር ስምንት ስንት ነው?"
+ },
+ {
+  "subject": "math",
+  "id": "n45",
+  "prompt": "2 ለሦስተኛ ኃይል ስንት ነው"
+ },
+ {
+  "subject": "math",
+  "id": "nt5",
+  "prompt": "የ360 ፕራይም ፋክተርዜሽን"
+ },
+ {
+  "subject": "math",
+  "id": "qu6",
+  "prompt": "የ y = x^2 - 6x + 5 ጫፍ ፈልግ።"
+ },
+ {
+  "subject": "math",
+  "id": "sy2",
+  "prompt": "x+y+z=6, 2x-y+z=3, x+2y-z=2"
+ },
+ {
+  "subject": "math",
+  "id": "sy3",
+  "prompt": "ስርዓቱን ይፍቱ 3x - 2y = 4, 6x - 4y = 8"
+ },
+ {
+  "subject": "math",
+  "id": "tr7",
+  "prompt": "135 ዲግሪዎችን ወደ ራዲያን ይለውጡ"
+ },
+ {
+  "subject": "math",
+  "id": "wp1",
+  "prompt": "3 ደብተሮችን በአንዱ በ$2.40 እና አንድ እስክሪብቶ በ$1.85 ገዛሁ። በ$20 ኖት ከፈልኩ። ስንት ቅርፊት አገኛለሁ?"
+ },
+ {
+  "subject": "math",
+  "id": "xa20",
+  "prompt": "የ y = x^2 - 4x + 3 ጫፍ አሳይ"
+ },
+ {
+  "subject": "math",
+  "id": "xd10",
+  "prompt": "የ2, 4, 6 አማካይ"
+ },
+ {
+  "subject": "math",
+  "id": "xd11",
+  "prompt": "ከ80 ውስጥ 25% ሲቀነስ 5 ስንት ነው?"
+ },
+ {
+  "subject": "math",
+  "id": "xd3",
+  "prompt": "የ1,200, 1,500 እና 1,800 አማካይ"
+ },
+ {
+  "subject": "math",
+  "id": "xd4",
+  "prompt": "ከ80 15% ስንት ነው ከ8% ታክስ ጋር"
+ },
+ {
+  "subject": "math",
+  "id": "xd5",
+  "prompt": "1,200 + 800"
+ },
+ {
+  "subject": "math",
+  "id": "xd9",
+  "prompt": "ከ1200 7.5%"
+ },
+ {
+  "subject": "math",
+  "id": "xe3",
+  "prompt": "ln(0)"
+ },
+ {
+  "subject": "math",
+  "id": "xe5",
+  "prompt": "cot 0°"
+ },
+ {
+  "subject": "math",
+  "id": "xf5",
+  "prompt": "x = 3 እና y = -2 ሲሆኑ x^2 - 2xy + y^2 ን ይገምግሙ"
+ },
+ {
+  "subject": "math",
+  "id": "xf7",
+  "prompt": "የአንድ ክብ ስፋት ዙሪያው 10 ሲሆን"
+ },
+ {
+  "subject": "math",
+  "id": "xf9",
+  "prompt": "x = 2 ከሆነ 3x + 1 ፈልግ"
+ },
+ {
+  "subject": "math",
+  "id": "xj10",
+  "prompt": "x^2 + 5x + 6 ን ፋክተር አድርግ።"
+ },
+ {
+  "subject": "physics",
+  "id": "c09",
+  "prompt": "በ1200 ኪ.ግ መኪና ላይ 25 ሜትር ራዲየስ ያለውን የክብ መንገድ በ36 ኪ.ሜ/ሰ ፍጥነት ሲዞር የሚሠራው ሴንትሪፔታል ኃይል ስንት ነው?"
+ },
+ {
+  "subject": "physics",
+  "id": "circ-02",
+  "prompt": "0.5 ኪግ ኳስ በክር ተይዞ በ1.2 ሜትር ራዲየስ ክብ ውስጥ በ6 ሜ/ሰ ፍጥነት ይወዛወዛል። ውጥረቱ ስንት ነው (ስበትን ችላ በል)?"
+ },
+ {
+  "subject": "physics",
+  "id": "circ-03",
+  "prompt": "አንድ ጎማ በ120 ዑደት/ደቂቃ ይሽከረከራል። ወቅቱ ስንት ነው?"
+ },
+ {
+  "subject": "physics",
+  "id": "d08",
+  "prompt": "የ2.3 eV የሥራ ተግባር ላለው ብረት የመገደቢያ ሞገድ ርዝመት ስንት ነው?"
+ },
+ {
+  "subject": "physics",
+  "id": "elec-03",
+  "prompt": "2 A ን በ15 Ω ተከላካይ ውስጥ ለማስገደድ ምን ያህል ቮልቴጅ ያስፈልጋል?"
+ },
+ {
+  "subject": "physics",
+  "id": "elec-08",
+  "prompt": "በ3 A ጅረት ለ2 ደቂቃ ሲጓዝ በሽቦ ውስጥ ምን ያህል ቻርጅ ያልፋል?"
+ },
+ {
+  "subject": "physics",
+  "id": "elec-14",
+  "prompt": "በ120 ቮልት መውጫ ላይ የ1500 ዋት ማይክሮዌቭ ምን ያህል ጅረት ይጠቀማል?"
+ },
+ {
+  "subject": "physics",
+  "id": "en-04",
+  "prompt": "ሳጥንን በ40 N ኃይል 5 m ሲገፋ ምን ያህል ሥራ ይሠራል?"
+ },
+ {
+  "subject": "physics",
+  "id": "en-06",
+  "prompt": "አንድ ሞተር 100 ኪግ ሸክምን በ12 ሜትር በ8 ሰከንድ ውስጥ ያነሳል። የኃይል ውጤቱ ስንት ነው?"
+ },
+ {
+  "subject": "physics",
+  "id": "estat-05",
+  "prompt": "አንድ ኤሌክትሮን በ100 ቮልት አቅም ልዩነት ውስጥ ሲፋጠን፣ በጁል የሚያገኘው የኪነቲክ ጉልበት ስንት ነው?"
+ },
+ {
+  "subject": "physics",
+  "id": "g7-02",
+  "prompt": "አንድ ማሽን 600 N የሆነ ጫና በ150 N ኃይል አነሳ። ሜካኒካል ጥቅሙ ስንት ነው?"
+ },
+ {
+  "subject": "physics",
+  "id": "g7-07",
+  "prompt": "500 N መኪና በ20 m ርዝመት ባለው ሰሌዳ ላይ ከመሬት 5 m ከፍታ ወደሚገኝ ጠፍጣፋ ቦታ በሰሌዳው ጋር ትይዩ በሆነ 150 N ኃይል ይጎትታል። ቅልጥፍናውን አስሉ።"
+ },
+ {
+  "subject": "physics",
+  "id": "grav-03",
+  "prompt": "በማርስ ላይ የስበት ምክንያት የሆነ ፍጥነት ስንት ነው?"
+ },
+ {
+  "subject": "physics",
+  "id": "h-elec-03",
+  "prompt": "የ 10 Ω እና 15 Ω ተቃዋሚዎች በትይዩ ናቸው። አጠቃላይ ተቃውሞን ያግኙ።"
+ },
+ {
+  "subject": "physics",
+  "id": "h-en-08",
+  "prompt": "10 ኪግ ሳጥን ወደ 1.2 ሜትር መደርደሪያ ላይ ለማንሳት ምን ያህል ሥራ ይሠራል?"
+ },
+ {
+  "subject": "physics",
+  "id": "h-grav-02",
+  "prompt": "በምድር እና በምድር ገጽ ላይ በሚገኝ 1 ኪግ ክብደት መካከል ያለው የስበት ኃይል ስንት ነው?"
+ },
+ {
+  "subject": "physics",
+  "id": "h-heat-02",
+  "prompt": "0.5 ኪግ የመዳብ ጡባዊ (c = 385 ጄ/ኪግ·ኬ) 3850 ጄ ያገኛል። የሙቀት መጠኑ በምን ያህል ይጨምራል?"
+ },
+ {
+  "subject": "physics",
+  "id": "h-mag-01",
+  "prompt": "አንድ ኤሌክትሮን በ 3 x 10^6 m/s ፍጥነት ወደ 0.1 T መግነጢሳዊ መስክ ቀጥ ብሎ ይንቀሳቀሳል። በላዩ ላይ የሚሠራው ኃይል ምንድን ነው?"
+ },
+ {
+  "subject": "physics",
+  "id": "h-opt-03",
+  "prompt": "10 ሴ.ሜ የትኩረት ርዝመት ያለው ሌንስ ከ25 ሴ.ሜ ርቀት ላይ ያለን አንድ ነገር ምስል ይፈጥራል። ምስሉ የት ይገኛል?"
+ },
+ {
+  "subject": "physics",
+  "id": "h-opt-04",
+  "prompt": "አንድ ሌንስ 2.5 ዳዮፕትር ኃይል አለው። የትኩረት ርዝመቱ ስንት ነው?"
+ },
+ {
+  "subject": "physics",
+  "id": "h-osc-02",
+  "prompt": "አንድ 3 ኪሎ ግራም ክብደት ያለው አካል ከስፕሪንግ ላይ ተንጠልጥሎ ስፕሪንግን በ0.15 ሜትር ያራዝመዋል። የስፕሪንግ ቋሚውን ያግኙ።"
+ },
+ {
+  "subject": "physics",
+  "id": "h-osc-03",
+  "prompt": "አንድ የጊታር ገመድ በ3 ሰከንድ ውስጥ 1320 ጊዜ ይንቀጠቀጣል። ድግግሞሹ ስንት ነው?"
+ },
+ {
+  "subject": "physics",
+  "id": "k06",
+  "prompt": "አንድ ኳስ ከ40 ሜትር ሕንፃ ጫፍ ላይ በ8 ሜ/ሰ ፍጥነት ወደታች ይወርዳል። መሬት ለመንካት ምን ያህል ጊዜ ይወስዳል?"
+ },
+ {
+  "subject": "physics",
+  "id": "k10",
+  "prompt": "አንድ መኪና ከ18 ኪሜ/ሰ ወደ 72 ኪሜ/ሰ በ2.5 ሜ/ሰ² ፍጥነት ይጨምራል። ፍጥነቱን እየጨመረ ሳለ ምን ያህል ርቀት ይጓዛል?"
+ },
+ {
+  "subject": "physics",
+  "id": "k14",
+  "prompt": "አንድ ሹፌር በ108 ኪሜ/ሰ እየነዳ አደጋ አየ፣ የምላሽ ጊዜው 0.8 ሰ ነው፣ ከዚያም በ6 ሜ/ሰ^2 ብሬክ ይይዛል። አጠቃላይ የማቆሚያ ርቀት ስንት ነው?"
+ },
+ {
+  "subject": "physics",
+  "id": "kin-06",
+  "prompt": "240 ኪሎ ሜትር በ80 ኪሎ ሜትር በሰዓት ለመንዳት ምን ያህል ጊዜ ይወስዳል?"
+ },
+ {
+  "subject": "physics",
+  "id": "mag-02",
+  "prompt": "አንድ ፕሮቶን በ2 x 10^6 ሜ/ሰ ፍጥነት ከ0.5 ቴስላ መስክ ጋር ቀጥ ብሎ ይንቀሳቀሳል። በላዩ ላይ ያለው መግነጢሳዊ ኃይል ስንት ነው?"
+ },
+ {
+  "subject": "physics",
+  "id": "opt-03",
+  "prompt": "በውሃ ውስጥ የብርሃን ፍጥነት ምን ያህል ነው፣ የማጣቀሻ ኢንዴክስ 1.33 ሲሆን?"
+ },
+ {
+  "subject": "physics",
+  "id": "osc-03",
+  "prompt": "በ 0.5 ኪግ ክብደት ላይ በ k = 200 ኒ/ሜ ስፕሪንግ ላይ የሚወዛወዝ ክብደት። ጊዜው ስንት ነው?"
+ },
+ {
+  "subject": "physics",
+  "id": "p02",
+  "prompt": "2 ኪግ ኳስ በ6 ሜ/ሰ ፍጥነት እየተንቀሳቀሰ በእረፍት ላይ ያለውን 4 ኪግ ኳስ በገጽታ-ገጽ ተመሳሳይ ግጭት ሲመታ፣ ከዚያ በኋላ የ2 ኪግ ኳስ ፍጥነት ስንት ነው?"
+ },
+ {
+  "subject": "physics",
+  "id": "p08",
+  "prompt": "የቴኒስ ራኬት በ58 ግ ኳስ ላይ ለ5 ሚሴ አማካይ የ240 ኒውተን ኃይል ይፈጥራል። የኳሱ ፍጥነት ለውጥ ስንት ነው?"
+ },
+ {
+  "subject": "physics",
+  "id": "pA5",
+  "prompt": "አንድ ኳስ ከ40 ሜትር ህንፃ ጫፍ ላይ በ8 ሜ/ሰ ፍጥነት ወደ ታች ተወረወረ። መሬት ሲነካ ፍጥነቱ ስንት ነው?"
+ },
+ {
+  "subject": "physics",
+  "id": "pC1",
+  "prompt": "ሁለት መኪኖች በ300 ሜትር ርቀት ላይ ሆነው በ20 ሜ/ሰ እና በ10 ሜ/ሰ ፍጥነት እርስ በርስ ወደ አንዱ ይጓዛሉ። መቼ ይገናኛሉ?"
+ },
+ {
+  "subject": "physics",
+  "id": "pJ2",
+  "prompt": "ሁለት 10 ኦም ተቃዋሚዎች በ5 ቮ ላይ በትይዩ ሲሆኑ፣ አጠቃላይ ጅረት ስንት ነው?"
+ },
+ {
+  "subject": "physics",
+  "id": "proj-11",
+  "prompt": "አንድ አውሮፕላን በ 70 m/s አግድም እየበረረ ከ 200 m ከፍታ ላይ አንድ ጥቅል ጣለ። ጥቅሉ ስንት ቀድሞ ይወድቃል?"
+ },
+ {
+  "subject": "physics",
+  "id": "q06",
+  "prompt": "2 ሜትር ርዝመት ያለው ተንጠልጣይ ከቁልቁል 30° ወደ ኋላ ተጎትቶ ይለቀቃል። ክብደቱ በዝቅተኛው ነጥብ ላይ ምን ያህል ፍጥነት አለው?"
+ },
+ {
+  "subject": "physics",
+  "id": "r5-grav-02",
+  "prompt": "ከጨረቃ ገጽታ 1000 ኪሜ ከፍታ ላይ ያለው የስበት መስክ ጥንካሬ ስንት ነው?"
+ },
+ {
+  "subject": "physics",
+  "id": "s02",
+  "prompt": "80 ሴንቲ ሜትር ርዝመት ያለው ተንጠልጣይ ጨረቃ ላይ ተወስዶ g = 1.62 m/s^2 በሆነበት ቦታ። በዚያ ወቅታዊ ጊዜው ስንት ነው?"
+ },
+ {
+  "subject": "physics",
+  "id": "w04",
+  "prompt": "አንድ ጫፉ የተዘጋ ቱቦ ርዝመቱ 85 ሴንቲ ሜትር ነው። መሠረታዊ ድግግሞሹ ስንት ነው? የድምፅ ፍጥነት 340 ሜ/ሰ"
+ },
+ {
+  "subject": "physics",
+  "id": "wave-07",
+  "prompt": "የውሃ ሞገድ 12 m በ4 s ይጓዛል፤ የሞገድ ርዝመቱ ደግሞ 1.5 m ነው። ድግግሞሹ ስንት ነው?"
+ }
+]

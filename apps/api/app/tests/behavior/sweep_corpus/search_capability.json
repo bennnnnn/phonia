@@ -1,0 +1,507 @@
+[
+ {
+  "id": "sc-001",
+  "area": "search capability",
+  "prompt": "Can you search the web?",
+  "history": [
+   [
+    "user",
+    "Show me how u work"
+   ],
+   [
+    "assistant",
+    "I'm Recall, a chat assistant. Ask me questions, have me draft or explain things, or keep reminders and remember what you tell me."
+   ]
+  ],
+  "reply": "Yes, I can search the web for current information. What should I look up?",
+  "expect": "answer"
+ },
+ {
+  "id": "sc-002",
+  "area": "search capability",
+  "prompt": "Can you search the web?",
+  "reply": "Yes, I can search the web for current information. What should I look up?",
+  "expect": "answer"
+ },
+ {
+  "id": "sc-003",
+  "area": "search capability",
+  "prompt": "do you search online?",
+  "history": [
+   [
+    "user",
+    "Show me how u work"
+   ],
+   [
+    "assistant",
+    "I'm Recall, a chat assistant. Ask me questions, have me draft or explain things, or keep reminders and remember what you tell me."
+   ]
+  ],
+  "reply": "Yes, I can search the web for current information. What should I look up?",
+  "expect": "answer"
+ },
+ {
+  "id": "sc-004",
+  "area": "search capability",
+  "prompt": "are you able to browse the internet?",
+  "history": [
+   [
+    "user",
+    "Show me how u work"
+   ],
+   [
+    "assistant",
+    "I'm Recall, a chat assistant. Ask me questions, have me draft or explain things, or keep reminders and remember what you tell me."
+   ]
+  ],
+  "reply": "Yes, I can search the web for current information. What should I look up?",
+  "expect": "answer"
+ },
+ {
+  "id": "sc-005",
+  "area": "search capability",
+  "prompt": "can u google things?",
+  "reply": "Yes, I can search the web for current information. What should I look up?",
+  "expect": "answer"
+ },
+ {
+  "id": "sc-006",
+  "area": "search capability",
+  "prompt": "do you have web search?",
+  "history": [
+   [
+    "user",
+    "Show me how u work"
+   ],
+   [
+    "assistant",
+    "I'm Recall, a chat assistant. Ask me questions, have me draft or explain things, or keep reminders and remember what you tell me."
+   ]
+  ],
+  "reply": "Yes, I can search the web for current information. What should I look up?",
+  "expect": "answer"
+ },
+ {
+  "id": "sc-007",
+  "area": "search capability",
+  "prompt": "Can you search?",
+  "history": [
+   [
+    "user",
+    "Show me how u work"
+   ],
+   [
+    "assistant",
+    "I'm Recall, a chat assistant. Ask me questions, have me draft or explain things, or keep reminders and remember what you tell me."
+   ]
+  ],
+  "reply": "Yes, I can search the web for current information. What should I look up?",
+  "expect": "answer"
+ },
+ {
+  "id": "sc-008",
+  "area": "search",
+  "prompt": "could you search online?",
+  "history": [
+   [
+    "user",
+    "who won the bears game yesterday"
+   ],
+   [
+    "assistant",
+    "I don't have yesterday's result in front of me."
+   ]
+  ],
+  "reply": "The Bears won 24-17.",
+  "expect": "search"
+ },
+ {
+  "id": "sc-009",
+  "area": "search capability",
+  "prompt": "can you look things up online?",
+  "history": [
+   [
+    "user",
+    "Show me how u work"
+   ],
+   [
+    "assistant",
+    "I'm Recall, a chat assistant. Ask me questions, have me draft or explain things, or keep reminders and remember what you tell me."
+   ]
+  ],
+  "reply": "Yes, I can search the web for current information. What should I look up?",
+  "expect": "answer"
+ },
+ {
+  "id": "sc-010",
+  "area": "search capability",
+  "prompt": "do you have access to the internet?",
+  "reply": "Yes, I can search the web for current information. What should I look up?",
+  "expect": "answer"
+ },
+ {
+  "id": "sc-011",
+  "area": "search capability",
+  "prompt": "can you actually browse the web?",
+  "history": [
+   [
+    "user",
+    "Show me how u work"
+   ],
+   [
+    "assistant",
+    "I'm Recall, a chat assistant. Ask me questions, have me draft or explain things, or keep reminders and remember what you tell me."
+   ]
+  ],
+  "reply": "Yes, I can search the web for current information. What should I look up?",
+  "expect": "answer"
+ },
+ {
+  "id": "sc-012",
+  "area": "search capability",
+  "prompt": "hey, can you search the internet too?",
+  "reply": "Yes, I can search the web for current information. What should I look up?",
+  "expect": "answer"
+ },
+ {
+  "id": "sc-r01",
+  "area": "search",
+  "prompt": "can you search for the latest news on Tesla?",
+  "history": [
+   [
+    "user",
+    "Show me how u work"
+   ],
+   [
+    "assistant",
+    "I'm Recall, a chat assistant. Ask me questions, have me draft or explain things, or keep reminders and remember what you tell me."
+   ]
+  ],
+  "reply": "Here is the latest on Tesla from today's coverage.",
+  "expect": "search"
+ },
+ {
+  "id": "sc-r02",
+  "area": "search",
+  "prompt": "can you look it up?",
+  "history": [
+   [
+    "user",
+    "who won the bears game yesterday"
+   ],
+   [
+    "assistant",
+    "I don't have yesterday's result in front of me."
+   ]
+  ],
+  "reply": "The Bears won 24-17.",
+  "expect": "search"
+ },
+ {
+  "id": "sc-r03",
+  "area": "search",
+  "prompt": "can't you look it up? You looked up the weather",
+  "history": [
+   [
+    "user",
+    "who won the bears game yesterday"
+   ],
+   [
+    "assistant",
+    "I don't have yesterday's result in front of me."
+   ]
+  ],
+  "reply": "The Bears won 24-17.",
+  "expect": "search"
+ },
+ {
+  "id": "sc-r04",
+  "area": "search",
+  "prompt": "search the web for flights to Paris",
+  "reply": "Here are flights to Paris this week.",
+  "expect": "search"
+ },
+ {
+  "id": "sc-r05",
+  "area": "search",
+  "prompt": "can you google it",
+  "history": [
+   [
+    "user",
+    "who won the bears game yesterday"
+   ],
+   [
+    "assistant",
+    "I don't have yesterday's result in front of me."
+   ]
+  ],
+  "reply": "The Bears won 24-17.",
+  "expect": "search"
+ },
+ {
+  "id": "sc-r06",
+  "area": "search",
+  "prompt": "can you search the web for that?",
+  "history": [
+   [
+    "user",
+    "who won the bears game yesterday"
+   ],
+   [
+    "assistant",
+    "I don't have yesterday's result in front of me."
+   ]
+  ],
+  "reply": "The Bears won 24-17.",
+  "expect": "search"
+ },
+ {
+  "id": "sc-r07",
+  "area": "search",
+  "prompt": "can u google the price of bitcoin?",
+  "reply": "Bitcoin is trading near today's price.",
+  "expect": "search"
+ },
+ {
+  "id": "sc-r08",
+  "area": "search",
+  "prompt": "can you look up the weather in Nairobi?",
+  "reply": "Nairobi is mild today.",
+  "expect": "search"
+ },
+ {
+  "id": "sc-013",
+  "area": "search capability",
+  "prompt": "Can you search the web?",
+  "history": [
+   [
+    "user",
+    "Show me how u work"
+   ],
+   [
+    "assistant",
+    "I'm Recall. Ask me questions, have me draft things, or keep reminders. What would you like to try first?"
+   ]
+  ],
+  "reply": "Yes, I can search the web for current information. What should I look up?",
+  "expect": "answer"
+ },
+ {
+  "id": "sc-r09",
+  "area": "search",
+  "prompt": "can you search the web?",
+  "history": [
+   [
+    "user",
+    "who won the bears game yesterday"
+   ],
+   [
+    "assistant",
+    "I don't have yesterday's result in front of me. I can search the web for that if you'd like."
+   ]
+  ],
+  "reply": "The Bears won 24-17.",
+  "expect": "search"
+ },
+ {
+  "id": "sc-r10",
+  "area": "search",
+  "prompt": "ok can you search online?",
+  "history": [
+   [
+    "user",
+    "who won the bears game yesterday"
+   ],
+   [
+    "assistant",
+    "I don't have yesterday's result in front of me. I can search the web for that if you'd like."
+   ]
+  ],
+  "reply": "The Bears won 24-17.",
+  "expect": "search"
+ },
+ {
+  "id": "sc-r11",
+  "area": "search",
+  "prompt": "can you search?",
+  "history": [
+   [
+    "user",
+    "who won the bears game yesterday"
+   ],
+   [
+    "assistant",
+    "I don't have yesterday's result in front of me."
+   ]
+  ],
+  "reply": "The Bears won 24-17.",
+  "expect": "search"
+ },
+ {
+  "id": "sc-r12",
+  "area": "search",
+  "prompt": "can you google?",
+  "history": [
+   [
+    "user",
+    "who won the bears game yesterday"
+   ],
+   [
+    "assistant",
+    "I don't have yesterday's result in front of me."
+   ]
+  ],
+  "reply": "The Bears won 24-17.",
+  "expect": "search"
+ },
+ {
+  "id": "sc-r13",
+  "area": "search",
+  "prompt": "can you go online?",
+  "history": [
+   [
+    "user",
+    "who won the bears game yesterday"
+   ],
+   [
+    "assistant",
+    "I don't have yesterday's result in front of me."
+   ]
+  ],
+  "reply": "The Bears won 24-17.",
+  "expect": "search"
+ },
+ {
+  "id": "sc-r14",
+  "area": "search",
+  "prompt": "Can you search the web?",
+  "history": [
+   [
+    "user",
+    "tell me about Purecart"
+   ],
+   [
+    "assistant",
+    "I don't know a company called Purecart. Want me to look it up?"
+   ]
+  ],
+  "reply": "Purecart is an online grocery store.",
+  "expect": "search"
+ },
+ {
+  "id": "sc-014",
+  "area": "search capability",
+  "prompt": "can you search the web?",
+  "history": [
+   [
+    "user",
+    "who won the bears game yesterday"
+   ],
+   [
+    "assistant",
+    "I don't have yesterday's result in front of me."
+   ],
+   [
+    "user",
+    "how do I boil an egg"
+   ],
+   [
+    "assistant",
+    "Put it in boiling water for 9 minutes."
+   ],
+   [
+    "user",
+    "Show me how u work"
+   ],
+   [
+    "assistant",
+    "I'm Recall, a chat assistant. Ask me questions or keep reminders."
+   ]
+  ],
+  "reply": "Yes, I can search the web for current information. What should I look up?",
+  "expect": "answer"
+ },
+ {
+  "id": "sc-015",
+  "area": "search capability",
+  "prompt": "can you search the web?",
+  "history": [
+   [
+    "user",
+    "who won the bears game yesterday"
+   ],
+   [
+    "assistant",
+    "I don't have yesterday's result in front of me."
+   ],
+   [
+    "user",
+    "how do I boil an egg"
+   ],
+   [
+    "assistant",
+    "Put it in boiling water for 9 minutes."
+   ],
+   [
+    "user",
+    "how do I boil an egg"
+   ],
+   [
+    "assistant",
+    "Put it in boiling water for 9 minutes."
+   ],
+   [
+    "user",
+    "how do I boil an egg"
+   ],
+   [
+    "assistant",
+    "Put it in boiling water for 9 minutes."
+   ],
+   [
+    "user",
+    "Show me how u work"
+   ],
+   [
+    "assistant",
+    "I'm Recall, a chat assistant. Ask me questions or keep reminders."
+   ]
+  ],
+  "reply": "Yes, I can search the web for current information. What should I look up?",
+  "expect": "answer"
+ },
+ {
+  "id": "sc-016",
+  "area": "search capability",
+  "prompt": "can you search the web?",
+  "history": [
+   [
+    "user",
+    "hi"
+   ],
+   [
+    "assistant",
+    "Hi! Should I check online for anything?"
+   ]
+  ],
+  "reply": "Yes, I can search the web for current information. What should I look up?",
+  "expect": "answer"
+ },
+ {
+  "id": "sc-017",
+  "area": "search capability",
+  "prompt": "can you search the web?",
+  "history": [
+   [
+    "user",
+    "hi"
+   ],
+   [
+    "assistant",
+    "Hi! Want me to google that?"
+   ]
+  ],
+  "reply": "Yes, I can search the web for current information. What should I look up?",
+  "expect": "answer"
+ }
+]

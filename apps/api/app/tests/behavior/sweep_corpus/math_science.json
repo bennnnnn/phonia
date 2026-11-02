@@ -1,0 +1,1119 @@
+[
+ {
+  "id": "ms-001",
+  "area": "math",
+  "prompt": "12*7",
+  "reply": "$12 \\times 7 = 84$",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-002",
+  "area": "math",
+  "prompt": "√144",
+  "reply": "$\\sqrt{144} = 12$, because $12^2 = 144$.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-003",
+  "area": "math",
+  "prompt": "2x+5=17",
+  "reply": "Subtract 5 from both sides, then divide by 2:\n\n$$2x + 5 = 17 \\;\\Rightarrow\\; 2x = 12 \\;\\Rightarrow\\; x = 6$$\n\n**Done:** $x = 6$ (check: $2 \\cdot 6 + 5 = 17$ ✓)",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-004",
+  "area": "math",
+  "prompt": "Can you add 3 + 4 using the same method?",
+  "history": [
+   [
+    "user",
+    "3+3"
+   ],
+   [
+    "assistant",
+    "$3 + 3 = 6$"
+   ]
+  ],
+  "reply": "Sure! Same method — start at the first number and count up:\n\n- Start at **3**\n- Count up 4: 4, 5, 6, **7**\n\nSo $3 + 4 = 7$. It's one more than $3 + 3 = 6$, since 4 is one more than 3.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-005",
+  "area": "math",
+  "prompt": "now add 5 and 9",
+  "history": [
+   [
+    "user",
+    "3+3"
+   ],
+   [
+    "assistant",
+    "$3 + 3 = 6$"
+   ]
+  ],
+  "reply": "$5 + 9 = 14$\n\nQuick trick: 9 is one less than 10, so add 10 and take 1 away: $5 + 10 = 15$, then $15 - 1 = 14$.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-006",
+  "area": "math",
+  "prompt": "what about 10?",
+  "history": [
+   [
+    "user",
+    "3+3"
+   ],
+   [
+    "assistant",
+    "$3 + 3 = 6$"
+   ]
+  ],
+  "reply": "$3 + 10 = 13$. (If you meant $10 + 10$, that's $20$.)",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-007",
+  "area": "math",
+  "prompt": "I buy 3 apples at $2 each and get 1 free, how much do I pay?",
+  "reply": "You pay **$6**.\n\n- 3 apples × $2 = $6\n- The free apple costs nothing\n\nSo you get 4 apples for $6 — effectively **$1.50 per apple**.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-008",
+  "area": "math",
+  "prompt": "if I save $50 every day, how much will I have after a year?",
+  "reply": "$$50 \\times 365 = 18{,}250$$\n\nYou'd have **$18,250** after a year (or $18,300 in a leap year, with 366 days). That's before any interest.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-009",
+  "area": "math",
+  "prompt": "a train leaves at 6pm going 80 km/h. a second train leaves the same station at 7pm going 100 km/h in the same direction. when does the second one catch up?",
+  "reply": "**At 11pm.**\n\n1. By 7pm the first train has a 1-hour head start: $80 \\times 1 = 80$ km.\n2. The second train closes the gap at $100 - 80 = 20$ km/h.\n3. Time to close 80 km: $80 \\div 20 = 4$ hours after 7pm → **11pm**.\n\nThey meet $100 \\times 4 = 400$ km from the station.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-010",
+  "area": "math",
+  "prompt": "a reminder: the tank fills at 3 L/min and holds 240 L. there's already 60 L in it. how long until it's full?",
+  "reply": "It needs $240 - 60 = 180$ L more.\n\n$$\\frac{180 \\text{ L}}{3 \\text{ L/min}} = 60 \\text{ min}$$\n\nSo it'll be full in **1 hour**.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-011",
+  "area": "math",
+  "prompt": "I got x = 4 for 3x - 2 = 10, is that right?",
+  "reply": "Yes, that's right! ✅\n\n$$3x - 2 = 10 \\Rightarrow 3x = 12 \\Rightarrow x = 4$$\n\nCheck: $3(4) - 2 = 12 - 2 = 10$ ✓",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-012",
+  "area": "math",
+  "prompt": "i got x = 5 for 4x + 3 = 19 is that correct",
+  "reply": "Not quite — the answer is $x = 4$.\n\n$$4x + 3 = 19 \\Rightarrow 4x = 16 \\Rightarrow x = 4$$\n\nCheck your value: $4(5) + 3 = 23 \\ne 19$, while $4(4) + 3 = 19$ ✓.\n\nRemember: always plug your answer back into the original equation to check it.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-013",
+  "area": "math",
+  "prompt": "mark which step was wrong",
+  "history": [
+   [
+    "user",
+    "solve 5x - 7 = 3x + 9. my work: 5x - 3x = 9 - 7, so 2x = 2, so x = 1"
+   ],
+   [
+    "assistant",
+    "Close, but the answer should be $x = 8$. Check: $5(8) - 7 = 33$ and $3(8) + 9 = 33$ ✓"
+   ]
+  ],
+  "reply": "| Step | Your work | Status |\n|---|---|---|\n| 1 | $5x - 3x = 9 - 7$ | ❌ sign error |\n| 2 | $2x = 2$ | follows from step 1 |\n| 3 | $x = 1$ | follows from step 1 |\n\n**Step 1 is the mistake.** When you move $-7$ to the right side it becomes $+7$, not $-7$:\n\n$$5x - 3x = 9 + 7 \\Rightarrow 2x = 16 \\Rightarrow x = 8$$\n\nEverything after that was done correctly — it just carried the sign error forward.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-014",
+  "area": "math",
+  "prompt": "derivative of x^3 sin x",
+  "reply": "Use the product rule, $(uv)' = u'v + uv'$, with $u = x^3$ and $v = \\sin x$:\n\n$$\\frac{d}{dx}\\left(x^3 \\sin x\\right) = 3x^2 \\sin x + x^3 \\cos x$$\n\nYou can factor it as $x^2(3\\sin x + x\\cos x)$.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-015",
+  "area": "math",
+  "prompt": "do the same for x^2",
+  "history": [
+   [
+    "user",
+    "derivative of x^3"
+   ],
+   [
+    "assistant",
+    "$\\frac{d}{dx}x^3 = 3x^2$ (power rule: bring the 3 down, subtract 1 from the exponent)."
+   ]
+  ],
+  "reply": "Same power rule:\n\n$$\\frac{d}{dx}x^2 = 2x^{2-1} = 2x$$",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-016",
+  "area": "math",
+  "prompt": "find the max of f(x) = -2x^2 + 8x + 1",
+  "reply": "Set the derivative to zero:\n\n$$f'(x) = -4x + 8 = 0 \\Rightarrow x = 2$$\n\nSince $f''(x) = -4 < 0$, this is a maximum.\n\n$$f(2) = -2(4) + 8(2) + 1 = -8 + 16 + 1 = 9$$\n\n**Maximum value: 9, at $x = 2$.**",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-017",
+  "area": "math",
+  "prompt": "complete the square x^2 + 6x + 5",
+  "reply": "Take half of 6 (that's 3), square it (9), then add and subtract it:\n\n$$x^2 + 6x + 5 = (x^2 + 6x + 9) - 9 + 5 = (x + 3)^2 - 4$$\n\nCompleted square form: $(x+3)^2 - 4$, so the vertex is at $(-3, -4)$.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-018",
+  "area": "math",
+  "prompt": "complete the table up to 10",
+  "history": [
+   [
+    "user",
+    "make a times table for 7 up to 5"
+   ],
+   [
+    "assistant",
+    "| × | Result |\n|---|---|\n| 7 × 1 | 7 |\n| 7 × 2 | 14 |\n| 7 × 3 | 21 |\n| 7 × 4 | 28 |\n| 7 × 5 | 35 |"
+   ]
+  ],
+  "reply": "| × | Result |\n|---|---|\n| 7 × 1 | 7 |\n| 7 × 2 | 14 |\n| 7 × 3 | 21 |\n| 7 × 4 | 28 |\n| 7 × 5 | 35 |\n| 7 × 6 | 42 |\n| 7 × 7 | 49 |\n| 7 × 8 | 56 |\n| 7 × 9 | 63 |\n| 7 × 10 | 70 |\n\nEach row adds 7 to the one above it.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-019",
+  "area": "math",
+  "prompt": "make it harder",
+  "history": [
+   [
+    "user",
+    "solve x^2 - 5x + 6 = 0"
+   ],
+   [
+    "assistant",
+    "Factor: $(x-2)(x-3) = 0$, so $x = 2$ or $x = 3$."
+   ]
+  ],
+  "reply": "Here's a step up — the leading coefficient isn't 1:\n\n**Solve $2x^2 - 7x + 3 = 0$.**\n\nHint: find two numbers that multiply to $2 \\cdot 3 = 6$ and add to $-7$.\n\nAnswer (try it first!): $-6$ and $-1$ work, so $2x^2 - 6x - x + 3 = (2x - 1)(x - 3) = 0$, giving $x = \\tfrac{1}{2}$ or $x = 3$.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-020",
+  "area": "math",
+  "prompt": "set x to 4 instead",
+  "history": [
+   [
+    "user",
+    "evaluate 3x^2 - 2x + 1 for x = 2"
+   ],
+   [
+    "assistant",
+    "$3(2)^2 - 2(2) + 1 = 12 - 4 + 1 = 9$"
+   ]
+  ],
+  "reply": "Updated! With $x = 4$:\n\n$$3(4)^2 - 2(4) + 1 = 48 - 8 + 1 = 41$$",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-021",
+  "area": "math",
+  "prompt": "remove the decimals",
+  "history": [
+   [
+    "user",
+    "what's 22/7 as a decimal"
+   ],
+   [
+    "assistant",
+    "$22/7 \\approx 3.142857142857\\ldots$ (the block 142857 repeats forever)"
+   ]
+  ],
+  "reply": "Rounded to a whole number, $22/7 \\approx 3$.\n\nIf you want it without decimals but still exact, write it as a mixed number: $3\\tfrac{1}{7}$.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-022",
+  "area": "math",
+  "prompt": "finish the proof",
+  "history": [
+   [
+    "user",
+    "prove the sum of two even numbers is even"
+   ],
+   [
+    "assistant",
+    "Let $a = 2m$ and $b = 2n$ where $m$ and $n$ are integers. Then $a + b = 2m + 2n$ …"
+   ]
+  ],
+  "reply": "Picking up where we left off:\n\n$$a + b = 2m + 2n = 2(m + n)$$\n\nSince $m$ and $n$ are integers, $k = m + n$ is also an integer, so $a + b = 2k$. A number of the form $2k$ is even by definition, so **the sum of two even numbers is even**. $\\blacksquare$",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-023",
+  "area": "math",
+  "prompt": "put it in a table with the deviations",
+  "history": [
+   [
+    "user",
+    "mean of 4, 8, 15, 16, 23, 42?"
+   ],
+   [
+    "assistant",
+    "Sum $= 108$, so the mean is $108 / 6 = 18$."
+   ]
+  ],
+  "reply": "| $x$ | $x - \\bar{x}$ | $(x - \\bar{x})^2$ |\n|---|---|---|\n| 4 | −14 | 196 |\n| 8 | −10 | 100 |\n| 15 | −3 | 9 |\n| 16 | −2 | 4 |\n| 23 | 5 | 25 |\n| 42 | 24 | 576 |\n| **Sum** | **0** | **910** |\n\nThe deviations always add up to 0. From the last column:\n\n- Population variance: $910 / 6 \\approx 151.7$, SD $\\approx 12.3$\n- Sample variance: $910 / 5 = 182$, SD $\\approx 13.5$",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-024",
+  "area": "math",
+  "prompt": "get the derivative too",
+  "history": [
+   [
+    "user",
+    "integrate x^2 from 0 to 3"
+   ],
+   [
+    "assistant",
+    "$\\int_0^3 x^2\\,dx = \\left[\\frac{x^3}{3}\\right]_0^3 = 9$"
+   ]
+  ],
+  "reply": "The derivative of $x^2$ is\n\n$$\\frac{d}{dx}x^2 = 2x$$\n\nSo on $[0, 3]$ the slope goes from $0$ at $x = 0$ up to $6$ at $x = 3$.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-025",
+  "area": "math",
+  "prompt": "¿cuánto es el 15% de 80?",
+  "reply": "El 15 % de 80 es **12**.\n\n$$0{,}15 \\times 80 = 12$$",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-026",
+  "area": "math",
+  "prompt": "résous 3x + 7 = 22 stp",
+  "reply": "On isole $x$ :\n\n$$3x + 7 = 22 \\Rightarrow 3x = 15 \\Rightarrow x = 5$$\n\nVérification : $3 \\times 5 + 7 = 22$ ✓",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-027",
+  "area": "math",
+  "prompt": "የ25 እና የ17 ድምር ስንት ነው?",
+  "reply": "የ25 እና የ17 ድምር **42** ነው።\n\n$$25 + 17 = 42$$",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-028",
+  "area": "math",
+  "prompt": "wats the squar root of 2 to 3 decmals",
+  "reply": "$\\sqrt{2} \\approx 1.414$ (to 3 decimal places).\n\nMore precisely it's $1.41421356\\ldots$ — it's irrational, so the decimals never end or repeat.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-029",
+  "area": "math",
+  "prompt": "pls help 😭 now 7/8 - 1/4",
+  "history": [
+   [
+    "user",
+    "whats 1/2 + 1/4"
+   ],
+   [
+    "assistant",
+    "$\\frac{1}{2} + \\frac{1}{4} = \\frac{2}{4} + \\frac{1}{4} = \\frac{3}{4}$"
+   ]
+  ],
+  "reply": "You've got this! Same idea — get a common denominator first:\n\n$$\\frac{7}{8} - \\frac{1}{4} = \\frac{7}{8} - \\frac{2}{8} = \\frac{5}{8}$$\n\nSo the answer is $\\frac{5}{8}$ (or $0.625$).",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-030",
+  "area": "math",
+  "prompt": "remind me how to do long division, like 1452 ÷ 12",
+  "reply": "Sure — divide, multiply, subtract, bring down, repeat:\n\n1. **14 ÷ 12** = 1 → $1 \\times 12 = 12$, $14 - 12 = 2$\n2. Bring down the 5 → **25 ÷ 12** = 2 → $2 \\times 12 = 24$, $25 - 24 = 1$\n3. Bring down the 2 → **12 ÷ 12** = 1 → remainder 0\n\n$$1452 \\div 12 = 121$$\n\nCheck: $121 \\times 12 = 1452$ ✓",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-031",
+  "area": "math",
+  "prompt": "probability of getting at least one 6 in 4 rolls of a die",
+  "reply": "Use the complement — it's easier to find the chance of **no** 6s:\n\n$$P(\\text{no 6 in 4 rolls}) = \\left(\\tfrac{5}{6}\\right)^4 = \\tfrac{625}{1296}$$\n\n$$P(\\text{at least one 6}) = 1 - \\tfrac{625}{1296} = \\tfrac{671}{1296} \\approx 0.518$$\n\nSo about a **51.8%** chance — slightly better than a coin flip.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-032",
+  "area": "math",
+  "prompt": "set A = {1,2,3,4} and B = {3,4,5}. find A ∪ B and A ∩ B",
+  "reply": "- **Union** (everything in either set): $A \\cup B = \\{1, 2, 3, 4, 5\\}$\n- **Intersection** (only what's in both): $A \\cap B = \\{3, 4\\}$",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-033",
+  "area": "math",
+  "prompt": "change 0.375 to a fraction",
+  "reply": "$$0.375 = \\frac{375}{1000} = \\frac{3}{8}$$\n\n(Divide top and bottom by 125.)",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-034",
+  "area": "math",
+  "prompt": "I work 9am to 5:30pm every day with a 45 min lunch. how many hours do I actually work in a 5-day week?",
+  "reply": "- 9am → 5:30pm = 8.5 hours\n- Minus lunch: $8.5 - 0.75 = 7.75$ hours per day\n- Over 5 days: $7.75 \\times 5 = 38.75$ hours\n\nThat's **38 hours 45 minutes** a week.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-035",
+  "area": "math",
+  "prompt": "If I get paid $18/hour and work 6pm to 11pm tomorrow, how much do I make?",
+  "reply": "6pm to 11pm is 5 hours, so:\n\n$$5 \\times 18 = 90$$\n\nYou'd make **$90** tomorrow, before taxes.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-036",
+  "area": "math",
+  "prompt": "standard deviation of 2, 4, 4, 4, 5, 5, 7, 9",
+  "reply": "Mean: $\\bar{x} = 40 / 8 = 5$\n\nSquared deviations: $9, 1, 1, 1, 0, 0, 4, 16$ → sum $= 32$\n\n| Type | Variance | SD |\n|---|---|---|\n| Population ($\\div n$) | $32/8 = 4$ | **2** |\n| Sample ($\\div (n-1)$) | $32/7 \\approx 4.571$ | **≈ 2.138** |\n\nUse the population SD if this is all the data, the sample SD if it's a sample from something bigger.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-037",
+  "area": "math",
+  "prompt": "move it into matrix form",
+  "history": [
+   [
+    "user",
+    "solve x + y = 10 and x - y = 2"
+   ],
+   [
+    "assistant",
+    "Add the equations: $2x = 12$, so $x = 6$ and $y = 4$."
+   ]
+  ],
+  "reply": "$$\\begin{pmatrix} 1 & 1 \\\\ 1 & -1 \\end{pmatrix} \\begin{pmatrix} x \\\\ y \\end{pmatrix} = \\begin{pmatrix} 10 \\\\ 2 \\end{pmatrix}$$\n\nThe determinant is $(1)(-1) - (1)(1) = -2$, so the inverse is\n\n$$A^{-1} = \\frac{1}{-2}\\begin{pmatrix} -1 & -1 \\\\ -1 & 1 \\end{pmatrix} = \\begin{pmatrix} 1/2 & 1/2 \\\\ 1/2 & -1/2 \\end{pmatrix}$$\n\nand $A^{-1}\\begin{pmatrix}10\\\\2\\end{pmatrix} = \\begin{pmatrix}6\\\\4\\end{pmatrix}$ ✓ — same answer as before.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-038",
+  "area": "math",
+  "prompt": "Add 1/3 and 1/6",
+  "reply": "Added together:\n\n$$\\frac{1}{3} + \\frac{1}{6} = \\frac{2}{6} + \\frac{1}{6} = \\frac{3}{6} = \\frac{1}{2}$$",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-039",
+  "area": "math",
+  "prompt": "Can you add 248 and 579?",
+  "history": [
+   [
+    "user",
+    "what's 120 + 345?"
+   ],
+   [
+    "assistant",
+    "$120 + 345 = 465$"
+   ]
+  ],
+  "reply": "I'll add the two numbers column by column:\n\n- Ones: $8 + 9 = 17$ → write 7, carry 1\n- Tens: $4 + 7 + 1 = 12$ → write 2, carry 1\n- Hundreds: $2 + 5 + 1 = 8$\n\n$$248 + 579 = 827$$",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-040",
+  "area": "math",
+  "prompt": "get the gcd of 84 and 126",
+  "reply": "Prime factorise:\n\n- $84 = 2^2 \\cdot 3 \\cdot 7$\n- $126 = 2 \\cdot 3^2 \\cdot 7$\n\nTake the lowest power of each shared prime: $2 \\cdot 3 \\cdot 7 = 42$.\n\n$$\\gcd(84, 126) = 42$$",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-041",
+  "area": "math",
+  "prompt": "delete the outlier and recompute",
+  "history": [
+   [
+    "user",
+    "mean of 12, 14, 13, 15, 98?"
+   ],
+   [
+    "assistant",
+    "$(12 + 14 + 13 + 15 + 98) / 5 = 152 / 5 = 30.4$"
+   ]
+  ],
+  "reply": "Removing 98 (it's far from the rest):\n\n$$\\frac{12 + 14 + 13 + 15}{4} = \\frac{54}{4} = 13.5$$\n\nThe mean drops from 30.4 to **13.5** — a good example of how one outlier drags the mean. The median barely moves (14 with the outlier, 13.5 without).",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-042",
+  "area": "math",
+  "prompt": "finish this sequence: 2, 6, 18, 54, ...",
+  "reply": "Each term is multiplied by 3 (geometric, $r = 3$):\n\n$$2,\\ 6,\\ 18,\\ 54,\\ \\mathbf{162},\\ \\mathbf{486},\\ \\ldots$$\n\nGeneral term: $a_n = 2 \\cdot 3^{n-1}$.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-043",
+  "area": "math",
+  "prompt": "buy 2 get 1 free on $4.50 notebooks. I need 7. what's the cheapest way?",
+  "reply": "Every deal (pay for 2, get 3) costs $2 \\times 4.50 = 9.00$ dollars.\n\n- 2 deals → 6 notebooks for 18.00\n- 1 more at full price → 4.50\n\n**Total: $22.50 for 7 notebooks.** If you paid for one more you'd get 9 notebooks for 27.00 — only worth it if you'll use the extras.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-044",
+  "area": "math",
+  "prompt": "a bacteria population doubles every day. start with 100, how many after a week?",
+  "reply": "$$N = 100 \\times 2^7 = 100 \\times 128 = 12{,}800$$\n\nAfter 7 days there are **12,800** bacteria.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-045",
+  "area": "math",
+  "prompt": "if today is wednesday, what day is it 100 days from tomorrow",
+  "reply": "Tomorrow is Thursday. Since $100 = 14 \\times 7 + 2$, 100 days from tomorrow is 2 days past Thursday:\n\n**Saturday.**",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-046",
+  "area": "math",
+  "prompt": "remind me the quadratic formula and use it",
+  "history": [
+   [
+    "user",
+    "factor x^2 + 4x + 1"
+   ],
+   [
+    "assistant",
+    "It doesn't factor nicely over the integers — no two integers multiply to 1 and add to 4."
+   ]
+  ],
+  "reply": "Remember: for $ax^2 + bx + c = 0$,\n\n$$x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$$\n\nSet: $a = 1$, $b = 4$, $c = 1$.\n\n$$x = \\frac{-4 \\pm \\sqrt{16 - 4}}{2} = \\frac{-4 \\pm 2\\sqrt{3}}{2} = -2 \\pm \\sqrt{3}$$\n\nSo $x \\approx -0.268$ or $x \\approx -3.732$, and $x^2 + 4x + 1 = (x + 2 - \\sqrt{3})(x + 2 + \\sqrt{3})$.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-047",
+  "area": "math",
+  "prompt": "add a 15% tip first",
+  "history": [
+   [
+    "user",
+    "we're 4 people and the bill is $64, how much each?"
+   ],
+   [
+    "assistant",
+    "$64 / 4 = 16$, so **16 dollars** each."
+   ]
+  ],
+  "reply": "Added: 15% tip.\n\n- Tip: $64 \\times 0.15 = 9.60$\n- Total: $64 + 9.60 = 73.60$\n- Per person: $73.60 / 4 = 18.40$\n\n**$18.40 each**, tip included.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-048",
+  "area": "physics",
+  "prompt": "a ball is thrown at 20 m/s at 30° above horizontal. range? use g = 9.8",
+  "reply": "For level ground, $R = \\dfrac{v^2 \\sin 2\\theta}{g}$:\n\n$$R = \\frac{20^2 \\sin 60^\\circ}{9.8} = \\frac{400 \\times 0.866}{9.8} \\approx 35.3 \\text{ m}$$\n\nAlso handy:\n\n- Time of flight: $T = \\dfrac{2v\\sin\\theta}{g} = \\dfrac{20}{9.8} \\approx 2.04$ s\n- Max height: $H = \\dfrac{(v\\sin\\theta)^2}{2g} = \\dfrac{100}{19.6} \\approx 5.10$ m",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-049",
+  "area": "physics",
+  "prompt": "change the angle to 45°",
+  "history": [
+   [
+    "user",
+    "a ball is thrown at 20 m/s at 30° above horizontal. range? use g = 9.8"
+   ],
+   [
+    "assistant",
+    "$R = \\frac{v^2 \\sin 2\\theta}{g} \\approx 35.3$ m, time of flight ≈ 2.04 s."
+   ]
+  ],
+  "reply": "Angle changed to 45°:\n\n$$R = \\frac{400 \\sin 90^\\circ}{9.8} = \\frac{400}{9.8} \\approx 40.8 \\text{ m}$$\n\nThat's the maximum possible range for this launch speed on level ground, since $\\sin 2\\theta$ peaks at $\\theta = 45^\\circ$. Time of flight goes up to $\\frac{2 \\cdot 20 \\sin 45^\\circ}{9.8} \\approx 2.89$ s.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-050",
+  "area": "physics",
+  "prompt": "set the mass to 2 kg and the force to 10 N, what's the acceleration?",
+  "reply": "Newton's second law, $a = F/m$:\n\n$$a = \\frac{10 \\text{ N}}{2 \\text{ kg}} = 5 \\text{ m/s}^2$$",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-051",
+  "area": "physics",
+  "prompt": "set the mass to 2 kg",
+  "history": [
+   [
+    "user",
+    "a 5 kg box is pushed with 20 N across a frictionless floor. acceleration?"
+   ],
+   [
+    "assistant",
+    "$a = F/m = 20/5 = 4$ m/s²"
+   ]
+  ],
+  "reply": "With $m = 2$ kg and the same 20 N push:\n\n$$a = \\frac{20}{2} = 10 \\text{ m/s}^2$$\n\nLighter box, same force → 2.5× the acceleration.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-052",
+  "area": "physics",
+  "prompt": "car goes 0 to 100 km/h in 8 s. acceleration?",
+  "reply": "Convert first: $100 \\text{ km/h} = \\frac{100\\,000 \\text{ m}}{3600 \\text{ s}} \\approx 27.8$ m/s.\n\n$$a = \\frac{\\Delta v}{\\Delta t} = \\frac{27.8}{8} \\approx 3.47 \\text{ m/s}^2$$\n\nThat's about $0.35g$.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-053",
+  "area": "physics",
+  "prompt": "change the units to km/h",
+  "history": [
+   [
+    "user",
+    "a cyclist rides at 12 m/s. how far in 10 minutes?"
+   ],
+   [
+    "assistant",
+    "$d = vt = 12 \\times 600 = 7200$ m"
+   ]
+  ],
+  "reply": "Speed changed to km/h:\n\n$$12 \\text{ m/s} \\times 3.6 = 43.2 \\text{ km/h}$$\n\nAnd the distance in km: $7200 \\text{ m} = 7.2$ km (check: $43.2 \\times \\tfrac{10}{60} = 7.2$ ✓).",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-054",
+  "area": "physics",
+  "prompt": "three resistors 4Ω, 6Ω and 12Ω in parallel. total resistance?",
+  "reply": "$$\\frac{1}{R} = \\frac{1}{4} + \\frac{1}{6} + \\frac{1}{12} = \\frac{3}{12} + \\frac{2}{12} + \\frac{1}{12} = \\frac{6}{12}$$\n\n$$R = 2\\ \\Omega$$\n\nNote it's smaller than the smallest resistor — always true in parallel.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-055",
+  "area": "physics",
+  "prompt": "now put them in series and add a 12 V battery. current?",
+  "history": [
+   [
+    "user",
+    "three resistors 4Ω, 6Ω and 12Ω in parallel. total resistance?"
+   ],
+   [
+    "assistant",
+    "$R = 2\\ \\Omega$"
+   ]
+  ],
+  "reply": "In series the resistances just add:\n\n$$R = 4 + 6 + 12 = 22\\ \\Omega$$\n\n$$I = \\frac{V}{R} = \\frac{12}{22} \\approx 0.545 \\text{ A}$$\n\nVoltage drops: 4 Ω → 2.18 V, 6 Ω → 3.27 V, 12 Ω → 6.55 V (they add to 12 V ✓).",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-056",
+  "area": "physics",
+  "prompt": "a reminder for myself: work = force × distance. so pushing a crate with 50 N for 8 m is how much work?",
+  "reply": "Right — when the force is along the motion, $W = Fd$:\n\n$$W = 50 \\text{ N} \\times 8 \\text{ m} = 400 \\text{ J}$$\n\n(If the force were at an angle $\\theta$ to the motion, you'd use $W = Fd\\cos\\theta$.)",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-057",
+  "area": "physics",
+  "prompt": "how long does a rock dropped from 45 m take to hit the ground",
+  "reply": "From $h = \\tfrac{1}{2}gt^2$:\n\n$$t = \\sqrt{\\frac{2h}{g}} = \\sqrt{\\frac{90}{9.8}} \\approx 3.03 \\text{ s}$$\n\n(With $g = 10$ m/s² it's exactly 3 s.) It hits at about $v = gt \\approx 29.7$ m/s, ignoring air resistance.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-058",
+  "area": "physics",
+  "prompt": "period of a pendulum 1.5 m long?",
+  "reply": "$$T = 2\\pi\\sqrt{\\frac{L}{g}} = 2\\pi\\sqrt{\\frac{1.5}{9.8}} \\approx 2.46 \\text{ s}$$\n\nValid for small swings (under about 15°).",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-059",
+  "area": "physics",
+  "prompt": "energy of a photon with 500 nm wavelength",
+  "reply": "$$E = \\frac{hc}{\\lambda} = \\frac{(6.626\\times10^{-34})(3.00\\times10^{8})}{500\\times10^{-9}} \\approx 3.98\\times10^{-19} \\text{ J}$$\n\nIn electronvolts: $3.98\\times10^{-19} / 1.602\\times10^{-19} \\approx 2.48$ eV (green light).",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-060",
+  "area": "physics",
+  "prompt": "set k to 500 and double the compression",
+  "history": [
+   [
+    "user",
+    "a spring with k = 200 N/m is compressed 0.1 m. stored energy?"
+   ],
+   [
+    "assistant",
+    "$E = \\tfrac{1}{2}kx^2 = \\tfrac{1}{2}(200)(0.1)^2 = 1$ J"
+   ]
+  ],
+  "reply": "Updated: $k = 500$ N/m, $x = 0.2$ m.\n\n$$E = \\tfrac{1}{2}(500)(0.2)^2 = \\tfrac{1}{2}(500)(0.04) = 10 \\text{ J}$$\n\nThat's 10× the original: 2.5× from the stiffer spring and 4× from doubling $x$ (energy goes as $x^2$).",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-061",
+  "area": "physics",
+  "prompt": "a 0.15 kg baseball comes in at 40 m/s and leaves the bat at 50 m/s the other way. impulse?",
+  "reply": "Take the outgoing direction as positive, so $v_i = -40$ m/s and $v_f = +50$ m/s:\n\n$$J = \\Delta p = m(v_f - v_i) = 0.15 \\times (50 - (-40)) = 0.15 \\times 90 = 13.5 \\text{ N·s}$$\n\nIf the contact lasts 1 ms, the average force is $13.5 / 0.001 = 13\\,500$ N.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-062",
+  "area": "physics",
+  "prompt": "un coche frena de 30 m/s a 0 en 6 s. ¿cuál es la desaceleración?",
+  "reply": "$$a = \\frac{\\Delta v}{\\Delta t} = \\frac{0 - 30}{6} = -5 \\text{ m/s}^2$$\n\nLa desaceleración es de **5 m/s²**. En ese tiempo recorre $d = \\tfrac{30 + 0}{2} \\times 6 = 90$ m.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-063",
+  "area": "physics",
+  "prompt": "quelle est la force gravitationnelle sur une masse de 70 kg sur Terre ?",
+  "reply": "C'est le poids : $P = mg$.\n\n$$P = 70 \\times 9{,}81 \\approx 687 \\text{ N}$$\n\nSur la Lune ($g \\approx 1{,}62$ m/s²), ce serait seulement environ 113 N.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-064",
+  "area": "physics",
+  "prompt": "complete this table: a 3 kg cart at v = 0, 2, 4, 6 m/s — kinetic energy?",
+  "reply": "Using $KE = \\tfrac{1}{2}mv^2 = 1.5v^2$:\n\n| $v$ (m/s) | $KE$ (J) |\n|---|---|\n| 0 | 0 |\n| 2 | 6 |\n| 4 | 24 |\n| 6 | 54 |\n\nDoubling the speed quadruples the kinetic energy.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-065",
+  "area": "physics",
+  "prompt": "add friction with μ = 0.2",
+  "history": [
+   [
+    "user",
+    "a 2 kg block slides down a 30° frictionless incline. acceleration?"
+   ],
+   [
+    "assistant",
+    "$a = g\\sin 30^\\circ = 9.8 \\times 0.5 = 4.9$ m/s²"
+   ]
+  ],
+  "reply": "Now friction opposes the motion:\n\n$$a = g(\\sin\\theta - \\mu\\cos\\theta) = 9.8(0.5 - 0.2 \\times 0.866) = 9.8 \\times 0.327 \\approx 3.20 \\text{ m/s}^2$$\n\nForces on the 2 kg block:\n\n| Force | Value |\n|---|---|\n| Weight component along slope, $mg\\sin\\theta$ | 9.80 N |\n| Normal force, $mg\\cos\\theta$ | 16.97 N |\n| Friction, $\\mu N$ | 3.39 N |\n| Net force down the slope | 6.41 N |\n\nCheck: $6.41 / 2 \\approx 3.20$ m/s² ✓",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-066",
+  "area": "physics",
+  "prompt": "remove the friction again and get the speed after it slides 3 m from rest",
+  "history": [
+   [
+    "user",
+    "a 2 kg block slides down a 30° frictionless incline. acceleration?"
+   ],
+   [
+    "assistant",
+    "$a = g\\sin 30^\\circ = 4.9$ m/s²"
+   ],
+   [
+    "user",
+    "add friction with μ = 0.2"
+   ],
+   [
+    "assistant",
+    "$a = g(\\sin\\theta - \\mu\\cos\\theta) \\approx 3.20$ m/s²"
+   ]
+  ],
+  "reply": "Friction removed, so $a = 4.9$ m/s² again. From $v^2 = v_0^2 + 2ad$:\n\n$$v = \\sqrt{2 \\times 4.9 \\times 3} = \\sqrt{29.4} \\approx 5.42 \\text{ m/s}$$\n\n(With the friction it would have been $\\sqrt{2 \\times 3.20 \\times 3} \\approx 4.38$ m/s.)",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-067",
+  "area": "physics",
+  "prompt": "heat needed to warm 2 kg of water from 20°C to 100°C?",
+  "reply": "$$Q = mc\\Delta T = 2 \\times 4186 \\times 80 \\approx 669\\,800 \\text{ J} \\approx 670 \\text{ kJ}$$\n\nThat only gets it to 100°C — actually boiling it all off would take another $mL = 2 \\times 2.26\\times10^6 \\approx 4.5$ MJ.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-068",
+  "area": "physics",
+  "prompt": "if I put a 1500 W kettle on for 4 min how much energy is that, and what does it cost at $0.15/kWh?",
+  "reply": "- Energy: $E = Pt = 1500 \\text{ W} \\times 240 \\text{ s} = 360\\,000 \\text{ J}$\n- In kWh: $1.5 \\text{ kW} \\times \\tfrac{4}{60} \\text{ h} = 0.1$ kWh\n- Cost: $0.1 \\times 0.15 = 0.015$\n\nAbout **1.5 cents** per boil.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-069",
+  "area": "physics",
+  "prompt": "ok and my heater is 2 kW and I run it from 6pm to 11pm every day. kWh per month (30 days)?",
+  "history": [
+   [
+    "user",
+    "if I put a 1500 W kettle on for 4 min how much energy is that, and what does it cost at $0.15/kWh?"
+   ],
+   [
+    "assistant",
+    "0.1 kWh, so about 1.5 cents per boil."
+   ]
+  ],
+  "reply": "6pm to 11pm is 5 hours a day:\n\n$$2 \\text{ kW} \\times 5 \\text{ h} = 10 \\text{ kWh per day}$$\n\n$$10 \\times 30 = 300 \\text{ kWh per month}$$\n\nAt 15 cents per kWh that's about **$45 a month**.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-070",
+  "area": "physics",
+  "prompt": "derive the escape velocity of earth",
+  "reply": "Set the kinetic energy at launch equal to the gravitational potential energy you need to climb out of:\n\n$$\\tfrac{1}{2}mv^2 = \\frac{GMm}{R} \\quad\\Rightarrow\\quad v_{esc} = \\sqrt{\\frac{2GM}{R}}$$\n\nThe mass $m$ cancels, so it's the same for any object. With $G = 6.674\\times10^{-11}$, $M = 5.97\\times10^{24}$ kg, $R = 6.37\\times10^{6}$ m:\n\n$$v_{esc} = \\sqrt{\\frac{2(6.674\\times10^{-11})(5.97\\times10^{24})}{6.37\\times10^{6}}} \\approx 1.12\\times10^{4} \\text{ m/s}$$\n\nAbout **11.2 km/s** (ignoring air resistance and Earth's rotation).",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-071",
+  "area": "physics",
+  "prompt": "Done with the lab: measured g as 9.6 m/s². percent error vs 9.81?",
+  "reply": "$$\\%\\ \\text{error} = \\frac{|9.6 - 9.81|}{9.81} \\times 100\\% = \\frac{0.21}{9.81} \\times 100\\% \\approx 2.1\\%$$\n\nThat's a solid result for a school lab. Usual suspects for the gap: reaction time on the timer, air resistance, and error in measuring the distance or length.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-072",
+  "area": "physics",
+  "prompt": "capacitor 10 µF charged to 12 V, energy stored?",
+  "reply": "$$E = \\tfrac{1}{2}CV^2 = \\tfrac{1}{2}(10\\times10^{-6})(12)^2 = 7.2\\times10^{-4} \\text{ J}$$\n\nThat's **0.72 mJ**. The charge on it is $Q = CV = 120\\ \\mu\\text{C}$.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-073",
+  "area": "physics",
+  "prompt": "mark the forces on it",
+  "history": [
+   [
+    "user",
+    "a book is resting on a table. is it in equilibrium?"
+   ],
+   [
+    "assistant",
+    "Yes — it isn't accelerating, so the net force on it is zero."
+   ]
+  ],
+  "reply": "Two forces act **on the book**:\n\n| Force | Direction | Exerted by |\n|---|---|---|\n| Weight, $W = mg$ | down ↓ | Earth |\n| Normal force, $N$ | up ↑ | table |\n\nSince the book is at rest, $N = mg$. Careful: these two are *not* a Newton's third law pair — they act on the same object. The weight's partner is the book pulling Earth up; the normal force's partner is the book pushing down on the table.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-074",
+  "area": "physics",
+  "prompt": "how much slower does a clock moving at 0.8c tick?",
+  "reply": "$$\\gamma = \\frac{1}{\\sqrt{1 - v^2/c^2}} = \\frac{1}{\\sqrt{1 - 0.64}} = \\frac{1}{0.6} \\approx 1.667$$\n\nThe moving clock ticks at $1/\\gamma = 0.6$ the rate of a stationary one: for every 10 s on your watch, only **6 s** pass on the moving clock (as measured from your frame).",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-075",
+  "area": "physics",
+  "prompt": "now throw it up at 15 m/s instead",
+  "history": [
+   [
+    "user",
+    "a stone is dropped from an 80 m cliff, g = 10"
+   ],
+   [
+    "assistant",
+    "$t = \\sqrt{2h/g} = 4$ s, and it hits at $v = gt = 40$ m/s."
+   ]
+  ],
+  "reply": "Take up as positive, launch from the top of the cliff ($y = 0$), ground at $y = -80$ m:\n\n$$-80 = 15t - 5t^2 \\;\\Rightarrow\\; t^2 - 3t - 16 = 0$$\n\n$$t = \\frac{3 + \\sqrt{9 + 64}}{2} = \\frac{3 + \\sqrt{73}}{2} \\approx 5.77 \\text{ s}$$\n\nImpact speed: $v^2 = 15^2 + 2(10)(80) = 1825$, so $v \\approx 42.7$ m/s. It also rises $15^2 / 20 = 11.25$ m above the cliff top before falling.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-076",
+  "area": "chemistry",
+  "prompt": "balance Fe + O2 -> Fe2O3",
+  "reply": "$$4\\text{Fe} + 3\\text{O}_2 \\rightarrow 2\\text{Fe}_2\\text{O}_3$$\n\nCheck: Fe 4 = 4 ✓, O 6 = 6 ✓.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-077",
+  "area": "chemistry",
+  "prompt": "molar mass of CaCO3",
+  "reply": "| Element | Count | Atomic mass | Total |\n|---|---|---|---|\n| Ca | 1 | 40.08 | 40.08 |\n| C | 1 | 12.01 | 12.01 |\n| O | 3 | 16.00 | 48.00 |\n| **CaCO₃** | | | **100.09 g/mol** |",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-078",
+  "area": "chemistry",
+  "prompt": "do H2SO4 next",
+  "history": [
+   [
+    "user",
+    "molar mass of CaCO3"
+   ],
+   [
+    "assistant",
+    "CaCO₃ = 40.08 + 12.01 + 3(16.00) = **100.09 g/mol**"
+   ]
+  ],
+  "reply": "$$M(\\text{H}_2\\text{SO}_4) = 2(1.008) + 32.06 + 4(16.00) = 2.016 + 32.06 + 64.00 = 98.08 \\text{ g/mol}$$\n\nThat's sulfuric acid — a strong diprotic acid.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-079",
+  "area": "chemistry",
+  "prompt": "pH of 0.01 M HCl",
+  "reply": "HCl is a strong acid, so it dissociates completely: $[\\text{H}^+] = 0.01$ M.\n\n$$\\text{pH} = -\\log(0.01) = 2$$",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-080",
+  "area": "chemistry",
+  "prompt": "what about 0.01 M NaOH?",
+  "history": [
+   [
+    "user",
+    "pH of 0.01 M HCl"
+   ],
+   [
+    "assistant",
+    "pH = −log(0.01) = 2"
+   ]
+  ],
+  "reply": "NaOH is a strong base, so $[\\text{OH}^-] = 0.01$ M:\n\n$$\\text{pOH} = -\\log(0.01) = 2, \\qquad \\text{pH} = 14 - 2 = 12$$\n\n(at 25°C)",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-081",
+  "area": "chemistry",
+  "prompt": "balance C3H8 + O2 -> CO2 + H2O",
+  "reply": "Balance C, then H, then O last:\n\n1. C: 3 on the left → $3\\text{CO}_2$\n2. H: 8 on the left → $4\\text{H}_2\\text{O}$\n3. O on the right: $3(2) + 4(1) = 10$ → $5\\text{O}_2$\n\n$$\\text{C}_3\\text{H}_8 + 5\\text{O}_2 \\rightarrow 3\\text{CO}_2 + 4\\text{H}_2\\text{O}$$",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-082",
+  "area": "chemistry",
+  "prompt": "do the same for N2 + H2 -> NH3",
+  "history": [
+   [
+    "user",
+    "balance H2 + O2 -> H2O"
+   ],
+   [
+    "assistant",
+    "$2\\text{H}_2 + \\text{O}_2 \\rightarrow 2\\text{H}_2\\text{O}$"
+   ]
+  ],
+  "reply": "$$\\text{N}_2 + 3\\text{H}_2 \\rightarrow 2\\text{NH}_3$$\n\nCheck: N 2 = 2 ✓, H 6 = 6 ✓. (That's the Haber process.)",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-083",
+  "area": "chemistry",
+  "prompt": "how do I dilute 50 mL of 2 M HCl down to 0.5 M?",
+  "reply": "Use $C_1V_1 = C_2V_2$:\n\n$$V_2 = \\frac{C_1V_1}{C_2} = \\frac{2 \\times 50}{0.5} = 200 \\text{ mL}$$\n\nSo make it up to a final volume of **200 mL** — i.e. add about 150 mL of water. Safety note: always add acid to water, not water to acid.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-084",
+  "area": "chemistry",
+  "prompt": "ideal gas: 2 mol at 300 K in 10 L. pressure?",
+  "reply": "$$P = \\frac{nRT}{V} = \\frac{2 \\times 0.08206 \\times 300}{10} \\approx 4.92 \\text{ atm}$$\n\nThat's about 499 kPa.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-085",
+  "area": "chemistry",
+  "prompt": "electron configuration of iron",
+  "reply": "Iron (Fe, $Z = 26$):\n\n$$1s^2\\, 2s^2\\, 2p^6\\, 3s^2\\, 3p^6\\, 4s^2\\, 3d^6$$\n\nShorthand: $[\\text{Ar}]\\, 3d^6\\, 4s^2$. When iron forms Fe²⁺, the two 4s electrons are removed first, leaving $[\\text{Ar}]\\,3d^6$.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-086",
+  "area": "chemistry",
+  "prompt": "limiting reagent if I react 6 g of H2 with 32 g of O2 to make water?",
+  "reply": "$$2\\text{H}_2 + \\text{O}_2 \\rightarrow 2\\text{H}_2\\text{O}$$\n\n| | Mass | Moles |\n|---|---|---|\n| H₂ | 6 g | $6 / 2.016 \\approx 2.98$ mol |\n| O₂ | 32 g | $32 / 32.00 = 1.00$ mol |\n\n1.00 mol O₂ needs 2.00 mol H₂, and you have 2.98 mol — so **O₂ is the limiting reagent**.\n\n- Water formed: $2.00 \\text{ mol} \\times 18.02 = 36.0$ g\n- H₂ left over: $6 - 2.00 \\times 2.016 \\approx 1.97$ g",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-087",
+  "area": "chemistry",
+  "prompt": "¿cuál es la masa molar del NaCl?",
+  "reply": "$$M(\\text{NaCl}) = 22{,}99 + 35{,}45 = 58{,}44 \\text{ g/mol}$$",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-088",
+  "area": "chemistry",
+  "prompt": "የውሃ ኬሚካላዊ ቀመር ምንድን ነው?",
+  "reply": "የውሃ ኬሚካላዊ ቀመር **H₂O** ነው — ሁለት የሃይድሮጅን አቶሞች እና አንድ የኦክሲጅን አቶም።",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-089",
+  "area": "chemistry",
+  "prompt": "how many grams of NaOH do I need to make 250 mL of 0.1 M solution",
+  "reply": "1. Moles: $n = CV = 0.1 \\times 0.250 = 0.025$ mol\n2. Mass: $m = nM = 0.025 \\times 40.00 = 1.00$ g\n\nDissolve **1.00 g NaOH** in some water, then make it up to 250 mL in a volumetric flask.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-090",
+  "area": "chemistry",
+  "prompt": "set the volume to 500 mL instead",
+  "history": [
+   [
+    "user",
+    "how many grams of NaOH do I need to make 250 mL of 0.1 M solution"
+   ],
+   [
+    "assistant",
+    "$0.025$ mol × 40.00 g/mol = **1.00 g**"
+   ]
+  ],
+  "reply": "Set: $V = 0.500$ L.\n\n$$n = 0.1 \\times 0.500 = 0.050 \\text{ mol}, \\qquad m = 0.050 \\times 40.00 = 2.00 \\text{ g}$$\n\nDouble the volume, double the mass: **2.00 g**.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-091",
+  "area": "chemistry",
+  "prompt": "how much is left after 17,190 years?",
+  "history": [
+   [
+    "user",
+    "what's the half-life of carbon-14?"
+   ],
+   [
+    "assistant",
+    "About 5,730 years."
+   ]
+  ],
+  "reply": "$17\\,190 / 5730 = 3$ half-lives exactly.\n\n$$\\left(\\tfrac{1}{2}\\right)^3 = \\tfrac{1}{8} = 12.5\\%$$\n\nSo **12.5%** of the original C-14 remains.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-092",
+  "area": "chemistry",
+  "prompt": "Completed my titration: 25.0 mL of NaOH neutralized 20.0 mL of 0.150 M HCl. what's the NaOH concentration?",
+  "reply": "HCl and NaOH react 1 : 1.\n\n- Moles HCl: $0.150 \\times 0.0200 = 3.00\\times10^{-3}$ mol\n- So moles NaOH $= 3.00\\times10^{-3}$ mol\n\n$$[\\text{NaOH}] = \\frac{3.00\\times10^{-3}}{0.0250} = 0.120 \\text{ M}$$",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-093",
+  "area": "chemistry",
+  "prompt": "Created a buffer with 0.1 M acetic acid and 0.1 M sodium acetate. pKa is 4.76, what's the pH?",
+  "reply": "Henderson–Hasselbalch:\n\n$$\\text{pH} = \\text{p}K_a + \\log\\frac{[\\text{A}^-]}{[\\text{HA}]} = 4.76 + \\log\\frac{0.1}{0.1} = 4.76$$\n\nWith equal concentrations the log term is zero, so pH = pKa = **4.76**.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-094",
+  "area": "chemistry",
+  "prompt": "change the acetate to 0.2 M",
+  "history": [
+   [
+    "user",
+    "Created a buffer with 0.1 M acetic acid and 0.1 M sodium acetate. pKa is 4.76, what's the pH?"
+   ],
+   [
+    "assistant",
+    "pH = pKa + log(1) = 4.76"
+   ]
+  ],
+  "reply": "Acetate changed to 0.2 M:\n\n$$\\text{pH} = 4.76 + \\log\\frac{0.2}{0.1} = 4.76 + 0.301 \\approx 5.06$$",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-095",
+  "area": "chemistry",
+  "prompt": "ΔH = -92 kJ/mol and ΔS = -199 J/(mol·K) at 298 K. is it spontaneous?",
+  "reply": "Convert ΔS to kJ first: $-0.199$ kJ/(mol·K).\n\n$$\\Delta G = \\Delta H - T\\Delta S = -92 - 298(-0.199) = -92 + 59.3 = -32.7 \\text{ kJ/mol}$$\n\n$\\Delta G < 0$, so **yes, it's spontaneous at 298 K**. Because both ΔH and ΔS are negative, it stops being spontaneous above $T = \\Delta H / \\Delta S = 92 / 0.199 \\approx 462$ K.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-096",
+  "area": "chemistry",
+  "prompt": "update: I burned 2.5 g of Mg. theoretical yield of MgO?",
+  "history": [
+   [
+    "user",
+    "balance Mg + O2 -> MgO"
+   ],
+   [
+    "assistant",
+    "$2\\text{Mg} + \\text{O}_2 \\rightarrow 2\\text{MgO}$"
+   ]
+  ],
+  "reply": "From the balanced equation, Mg : MgO is 1 : 1.\n\n1. Moles Mg: $2.5 / 24.31 \\approx 0.10284$ mol\n2. Moles MgO: $0.10284$ mol\n3. Mass MgO: $0.10284 \\times 40.31 \\approx 4.15$ g\n\n**Theoretical yield ≈ 4.15 g MgO.** Once you weigh your product, percent yield = actual ÷ 4.15 × 100%.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-097",
+  "area": "chemistry",
+  "prompt": "remove the spectator ions: AgNO3(aq) + NaCl(aq) -> AgCl(s) + NaNO3(aq)",
+  "reply": "Full ionic equation:\n\n$$\\text{Ag}^+ + \\text{NO}_3^- + \\text{Na}^+ + \\text{Cl}^- \\rightarrow \\text{AgCl}(s) + \\text{Na}^+ + \\text{NO}_3^-$$\n\nSpectator ions removed (Na⁺ and NO₃⁻):\n\n$$\\text{Ag}^+(aq) + \\text{Cl}^-(aq) \\rightarrow \\text{AgCl}(s)$$",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-098",
+  "area": "chemistry",
+  "prompt": "SMILES for ethanol?",
+  "reply": "Ethanol (CH₃CH₂OH) is `CCO` in SMILES — two carbons and an oxygen, with the hydrogens left implicit.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-099",
+  "area": "chemistry",
+  "prompt": "who created the periodic table and why is it arranged like that?",
+  "reply": "Created by **Dmitri Mendeleev** in 1869 (Lothar Meyer had a similar table around the same time). Mendeleev ordered elements roughly by atomic mass, grouped ones with similar properties, and left gaps for undiscovered elements like gallium and germanium — whose properties he predicted.\n\nToday it's arranged by **atomic number** (number of protons), which explains the few spots where mass order looks \"wrong\" (e.g. tellurium comes before iodine even though it's heavier):\n\n- **Rows (periods):** a new electron shell starts each row\n- **Columns (groups):** same number of valence electrons → similar chemistry\n- **Blocks (s, p, d, f):** which subshell is being filled",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-100",
+  "area": "chemistry",
+  "prompt": "complete the reaction: HCl + NaOH →",
+  "reply": "$$\\text{HCl} + \\text{NaOH} \\rightarrow \\text{NaCl} + \\text{H}_2\\text{O}$$\n\nA neutralization: acid + base → salt + water. Net ionic: $\\text{H}^+ + \\text{OH}^- \\rightarrow \\text{H}_2\\text{O}$.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-101",
+  "area": "math",
+  "prompt": "a pizza is cut into 8 slices and I eat 3, what fraction is left?",
+  "reply": "$8 - 3 = 5$ slices are left, so **$\\tfrac{5}{8}$** of the pizza remains.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-102",
+  "area": "math",
+  "prompt": "I eat lunch at 12:30 and dinner at 7pm, how many hours between them?",
+  "reply": "From 12:30 PM to 7:00 PM is **6½ hours** (6 hours 30 minutes).",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-103",
+  "area": "math",
+  "prompt": "I drink 3 coffees a day at 95 mg each, how much caffeine is that in a week?",
+  "reply": "- Per day: $3 \\times 95 = 285$ mg\n- Per week: $285 \\times 7 = 1995$ mg\n\nThat's about **2,000 mg** of caffeine a week.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-104",
+  "area": "food",
+  "prompt": "dinner for 6 at 8pm, how many dishes do I need?",
+  "reply": "For 6 people, plan **one main, two sides and a salad**, plus bread or injera. If it's a sharing table, make one extra side so nobody runs short.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-105",
+  "area": "food",
+  "prompt": "I have 2 hours before dinner guests arrive, what can I cook?",
+  "reply": "Two hours is plenty for **misir wat** (about 45 minutes), **gomen** (30 minutes) and a simple tomato salad. Start the lentils first, then the greens while they simmer.",
+  "expect": "answer"
+ },
+ {
+  "id": "ms-106",
+  "area": "math",
+  "prompt": "whats 72 fahrenheit in celsius",
+  "history": [],
+  "reply": "72°F is about 22.2°C.",
+  "expect": "instant"
+ },
+ {
+  "id": "ms-107",
+  "area": "math",
+  "prompt": "how much is 5 km in miles",
+  "history": [],
+  "reply": "About 3.1 miles.",
+  "expect": "instant"
+ },
+ {
+  "id": "ms-108",
+  "area": "chitchat",
+  "prompt": "ugh its like 90 degrees in here",
+  "history": [],
+  "reply": "Oof, that's hot. Got a fan nearby?",
+  "expect": "answer"
+ }
+]

@@ -1,0 +1,10 @@
+{
+  "about": "The camera captions the phone sends with a scan (apps/mobile/lib/scanner/subjects.ts, lib/math/cameraPrompt.ts, features/scanner/model/readBack.ts) and the API recognizes exactly (apps/api/app/services/subject_scan.py). Both test suites compare their constants with these strings (code-health audit CLAR-13).",
+  "camera_prompts": {
+    "math": "Solve the math problem in this image step by step.",
+    "physics": "Solve the physics problem in this image step by step.",
+    "chemistry": "Solve the chemistry problem in this image step by step.",
+    "biology": "Solve the biology problem in this image step by step."
+  },
+  "confirmed_prefix": "I read this as:"
+}

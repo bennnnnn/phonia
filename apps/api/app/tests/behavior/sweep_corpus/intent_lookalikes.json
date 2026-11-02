@@ -1,0 +1,985 @@
+[
+ {
+  "id": "hi-001",
+  "area": "settings",
+  "prompt": "write a dark poem about the rainy season in addis",
+  "history": [],
+  "reply": "**Kiremt**\n\nThe sky comes down on Entoto like a lid,\nand all the tin roofs drum the same complaint.\nThe streets forget their names beneath the mud;\nthe eucalyptus weep, and do not faint.\n\nMy mother lights the charcoal anyway,\nthe coffee smoke too heavy now to rise.\nSomewhere a gutter carries off the day,\nand July keeps its hands across our eyes.\n\nWe wait for Meskel like a debt unpaid —\nfor yellow flowers, for a sun that stays.\nBut dark is patient. Dark is never late.\nIt learns our roofs, and memorizes our days.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-002",
+  "area": "settings",
+  "prompt": "explain dark mode in CSS",
+  "history": [],
+  "reply": "**Dark mode in CSS** usually means giving your page two color schemes and switching between them based on the user's system setting (or a toggle).\n\n### 1. Define colors as variables\n\n```css\n:root {\n  --bg: #ffffff;\n  --text: #1a1a1a;\n  --accent: #2563eb;\n}\n\nbody {\n  background: var(--bg);\n  color: var(--text);\n}\n```\n\n### 2. Override them when the OS is in dark mode\n\n```css\n@media (prefers-color-scheme: dark) {\n  :root {\n    --bg: #121212;\n    --text: #e6e6e6;\n    --accent: #60a5fa;\n  }\n}\n```\n\n`prefers-color-scheme` reads the user's system preference, so the page follows it automatically.\n\n### 3. Optional: a manual toggle\n\n```css\n[data-theme=\"dark\"] {\n  --bg: #121212;\n  --text: #e6e6e6;\n}\n```\n\n```js\ndocument.documentElement.dataset.theme = \"dark\";\n```\n\n### Tips\n- Add `color-scheme: light dark;` on `:root` so form controls and scrollbars match.\n- Avoid pure black (`#000`) — a dark gray is easier on the eyes.\n- Lighten accent colors a bit in dark mode so they keep enough contrast.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-003",
+  "area": "settings",
+  "prompt": "light mode or dark mode for reading at night?",
+  "history": [],
+  "reply": "For reading at night, **dark mode is usually more comfortable** — but it depends on the room.\n\n- **Dark room:** dark mode wins. A bright white screen in a dark room causes glare and makes your eyes work harder to adjust.\n- **Lit room:** light mode is often easier for long stretches — dark text on a light background looks sharper for most people, especially with astigmatism (light text on dark can look a bit blurry or \"glowy\").\n\nWhatever you pick, the bigger wins are:\n1. **Turn brightness down** to roughly match the room.\n2. **Turn on Night Shift / Night Light** to warm the colors in the evening.\n3. **Stop 30–60 minutes before sleep** if you can — the content keeps your brain awake more than the color does.\n\nShort version: dark mode + low brightness + warm tint for bedtime reading.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-004",
+  "area": "settings",
+  "prompt": "what model of car should i buy for addis roads? budget around 2.5 million birr",
+  "history": [],
+  "reply": "With about **2.5 million birr** in Addis, you're mostly looking at a good used compact car. What matters most here: **ground clearance** (potholes, speed bumps, rainy-season roads), **easy-to-find spare parts**, and **fuel economy**.\n\n| Car | Why | Watch out for |\n|---|---|---|\n| **Toyota Vitz / Yaris** | Cheapest to maintain, parts everywhere, every mechanic knows it | Low clearance; high demand keeps prices up |\n| **Suzuki Dzire / Swift** | Good fuel economy, newer years within budget | Lighter build, you feel rough roads |\n| **Hyundai i10** | Affordable, simple, easy to park | Small for long trips |\n| **Toyota Corolla (older)** | Very reliable, holds resale value | Older years may need more repairs |\n\n**My pick:** a **Vitz/Yaris** in good condition — resale value and spare-part availability matter a lot in Ethiopia.\n\n**Before you buy:**\n- Have a trusted mechanic inspect it (suspension and underbody especially).\n- Check the **libre** (ownership booklet) and that the chassis number matches.\n- Confirm duty is fully paid.\n\nPrices move a lot, so check current listings (e.g. Jiji) before you fix your budget. Want me to compare two specific cars you're considering?",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-005",
+  "area": "settings",
+  "prompt": "make the tone of this email warmer",
+  "history": [
+   [
+    "user",
+    "write an email to my team saying the deadline for the q4 report got pushed to friday"
+   ],
+   [
+    "assistant",
+    "**Subject:** Q4 report deadline moved to Friday\n\nHi team,\n\nThe deadline for the Q4 report has been moved to **Friday, October 16**. Please submit your sections by end of day Friday.\n\nLet me know if you have any questions.\n\nBini"
+   ]
+  ],
+  "reply": "Here's a warmer version:\n\n**Subject:** A little more time for the Q4 report 🙂\n\nHi team,\n\nQuick update: the Q4 report deadline has been pushed to **Friday, October 16**, so everyone has a bit more breathing room.\n\nPlease send your sections over by end of day Friday. If anything's blocking you or you'd like a second pair of eyes on your part, just reach out — happy to help.\n\nThanks so much for all the effort you're putting into this.\n\nBest,\nBini\n\nWant it even more casual, or is this the right level?",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-006",
+  "area": "settings",
+  "prompt": "what language is spoken in Eritrea",
+  "history": [],
+  "reply": "Eritrea has **no single official language**. The main working languages are:\n\n- **Tigrinya** — the most widely spoken, used in government and the media\n- **Arabic** — widely used, especially in the lowlands and along the coast\n- **English** — used in secondary and higher education and in business\n\nNine ethnic-group languages are recognized in total: Tigrinya, Tigre, Afar, Saho, Bilen, Kunama, Nara, Hedareb (Beja), and Arabic (Rashaida).\n\nTigrinya is also spoken in Ethiopia's Tigray region, and like Amharic it's written in the Ge'ez (Fidel) script.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-007",
+  "area": "settings",
+  "prompt": "translate to amharic",
+  "history": [
+   [
+    "user",
+    "write a short thank you note to my landlord ato getachew for fixing the water heater"
+   ],
+   [
+    "assistant",
+    "Hi Ato Getachew,\n\nThank you so much for fixing the water heater so quickly. It's working perfectly now, and we really appreciate your help.\n\nBest regards,\nBini"
+   ]
+  ],
+  "reply": "Here it is in Amharic:\n\nሰላም አቶ ጌታቸው፣\n\nየውሃ ማሞቂያውን በፍጥነት ስላስተካከሉልን በጣም እናመሰግናለን። አሁን በትክክል እየሰራ ነው፤ ድጋፍዎን በጣም እናደንቃለን።\n\nከሰላምታ ጋር፣\nቢኒ",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-008",
+  "area": "settings",
+  "prompt": "be honest, is my plan good?",
+  "history": [
+   [
+    "user",
+    "ok here's my plan: quit my job in december, build a food delivery app for bole and kazanchis for 6 months full time. i have savings for about 4 months and no cofounder yet"
+   ],
+   [
+    "assistant",
+    "Thanks for laying it out. A few things stand out — the timeline, the runway, and going solo. Want my honest take, or help breaking it into milestones first?"
+   ]
+  ],
+  "reply": "Honestly? **The idea can work, but the plan as written is risky** — mainly because of the money gap.\n\n**What's good**\n- Food delivery in Bole and Kazanchis has real demand — offices, apartments, and lots of restaurants close together.\n- Starting with two neighborhoods instead of all of Addis is smart.\n\n**What worries me**\n1. **Your runway is shorter than your timeline.** 4 months of savings for a 6-month plan means you'd run out of money before you know if it works — and startups almost always take longer than planned.\n2. **Solo is hard for this kind of business.** Delivery is tech *plus* operations: riders, restaurant deals, payments, complaints. That's a lot for one person.\n3. **Competition.** There are already established delivery apps in Addis. You need a clear reason restaurants and customers would switch.\n\n**How I'd make it safer**\n- **Test before you quit.** Run it manually for a month: a Telegram channel, 3–5 partner restaurants, a couple of riders, payment via telebirr. If people reorder, you have a signal.\n- **Extend your runway** to at least 8–9 months — keep the job longer, freelance part-time, or cut costs.\n- **Find a cofounder** who's strong on operations.\n- **Pick a niche** the big players handle badly — office lunches, home-cooked food, or late-night orders.\n\nSo: good instinct, risky timing. Validate it while you still have a salary, then quit once the numbers say yes. Want help designing that 1-month test?",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-009",
+  "area": "settings",
+  "prompt": "use a casual tone in the caption",
+  "history": [
+   [
+    "user",
+    "write an instagram caption for a photo of me and my friends at entoto park"
+   ],
+   [
+    "assistant",
+    "Above the city, among the eucalyptus — grateful for these people and this view. 🌲 #Entoto #AddisAbaba"
+   ]
+  ],
+  "reply": "Here are a few casual options:\n\n1. *up in the trees with my people 🌲😎 #Entoto*\n2. *entoto air hits different with these guys 🌿*\n3. *touch grass? we touched a whole forest 🌲😂*\n4. *best views in addis, even better company 🫶*\n\nWant one with more emoji or more of an inside-joke vibe?",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-010",
+  "area": "settings",
+  "prompt": "how do i turn on dark mode on my iphone",
+  "history": [],
+  "reply": "On iPhone:\n\n1. Open **Settings**.\n2. Tap **Display & Brightness**.\n3. Under *Appearance*, choose **Dark**.\n\n**Shortcuts:**\n- **Control Center:** swipe down from the top-right corner, long-press the brightness slider, then tap **Dark Mode**.\n- **Automatic:** in Display & Brightness, turn on **Automatic** to switch to dark at sunset and back to light at sunrise (tap *Options* for custom times).\n\nMost apps that support dark mode will follow this setting automatically.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-011",
+  "area": "settings",
+  "prompt": "my moms phone is stuck in french 😅 how do i change it back to english, its a samsung",
+  "history": [],
+  "reply": "No problem — on a Samsung, just follow the French menu names:\n\n1. Open **Paramètres** (Settings — the gear icon).\n2. Scroll down and tap **Gestion globale** (General management).\n3. Tap **Langue** (Language).\n4. If English is already listed, tap it and choose **Appliquer** (Apply).\n   If not, tap **Ajouter une langue** (Add language), pick **English**, then tap **Définir par défaut** (Set as default).\n\n**Tip:** if you get lost, open Paramètres, tap the 🔍 search icon at the top, and type **langue**.\n\nThe keyboard language is a separate setting — if it's still typing in French, look under **Gestion globale** for the **Clavier Samsung** settings and change **Langues et types**.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-012",
+  "area": "settings",
+  "prompt": "whats the main theme of things fall apart",
+  "history": [],
+  "reply": "The central theme of *Things Fall Apart* (Chinua Achebe, 1958) is **the collapse of a traditional society — and of one man — under internal pressure and colonial change.**\n\nKey themes:\n\n- **Tradition vs. change** — Umuofia's customs, religion, and justice system are shaken by Christian missionaries and British colonial rule.\n- **Masculinity and fear of weakness** — Okonkwo's terror of being like his gentle, indebted father, Unoka, drives nearly all his choices, including killing Ikemefuna.\n- **Fate vs. choice** — the idea of the *chi* (personal god) raises the question of how much Okonkwo controls his own destiny.\n- **Language and storytelling** — proverbs and folktales show Igbo culture as rich and complex, countering colonial portrayals of Africa as \"primitive.\"\n- **Colonialism's cost** — at the end, the District Commissioner reduces Okonkwo's life to \"a reasonable paragraph\" in his book, showing how colonizers erased African perspectives.\n\nThe title comes from Yeats's poem *The Second Coming*: \"Things fall apart; the centre cannot hold.\"\n\nWriting an essay on it? I can help you build a thesis.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-013",
+  "area": "settings",
+  "prompt": "in vs code how do i change the color theme",
+  "history": [],
+  "reply": "In VS Code:\n\n- **Shortcut:** press `Ctrl+K` then `Ctrl+T` (Mac: `Cmd+K` then `Cmd+T`), then move through the list with the arrow keys — it previews as you go.\n- **Menu:** **File → Preferences → Theme → Color Theme** (Mac: **Code → Settings → Theme → Color Theme**).\n- **Command Palette:** `Ctrl+Shift+P` / `Cmd+Shift+P`, type **Color Theme**, press Enter.\n\n**More themes:** pick **Browse Additional Color Themes…** at the bottom of that list, or search the Extensions panel (`Ctrl+Shift+X`) for popular ones like *One Dark Pro*, *Dracula*, or *GitHub Theme*.\n\nTo follow your OS light/dark setting automatically, enable `window.autoDetectColorScheme` in Settings.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-014",
+  "area": "settings",
+  "prompt": "shorter pls",
+  "history": [
+   [
+    "user",
+    "what is inflation and why does it happen"
+   ],
+   [
+    "assistant",
+    "**Inflation** is the rate at which the general level of prices for goods and services rises over time, which means each unit of money buys less than before.\n\n### Why it happens\n\n1. **Demand-pull inflation** — when demand grows faster than the economy can produce, sellers raise prices.\n2. **Cost-push inflation** — when production costs rise (fuel, raw materials, wages, imported inputs), businesses pass them on to consumers.\n3. **Too much money** — if money and credit grow much faster than output, more money chases the same goods.\n4. **Currency depreciation** — a weaker local currency makes imports more expensive, which matters a lot in import-heavy economies like Ethiopia.\n5. **Expectations** — if people expect prices to rise, workers ask for higher wages and businesses raise prices in advance.\n\n### Why it matters\nModerate inflation (around 2–3% a year) is considered normal in many economies, but high inflation erodes savings, makes planning hard, and hurts people on fixed incomes most. Central banks fight it mainly by raising interest rates and limiting money growth."
+   ]
+  ],
+  "reply": "**Inflation** = prices rising over time, so your money buys less.\n\n**Why:** demand outpacing supply, higher production costs (fuel, imports), too much money printed, or a weaker currency making imports pricier.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-015",
+  "area": "settings",
+  "prompt": "whats a language model in simple words",
+  "history": [],
+  "reply": "A **language model** is a computer program that has read a huge amount of text and learned to predict **what word comes next**.\n\nThink of your phone keyboard suggesting the next word — a large language model (like me) is that same idea, scaled up enormously. Predicting the next word well across so much writing means it picks up grammar, facts, reasoning patterns, and styles along the way.\n\nSo when you ask a question, it writes the answer one piece at a time, each time choosing what most likely comes next given everything before it.\n\n- **Good at:** explaining, writing, summarizing, translating, brainstorming, coding.\n- **Limits:** it can sound confident and still be wrong, and it doesn't know recent events unless it can search.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-016",
+  "area": "settings",
+  "prompt": "how do i set a default value for a function parameter in python",
+  "history": [],
+  "reply": "Put `=value` after the parameter name:\n\n```python\ndef greet(name, greeting=\"Hello\"):\n    return f\"{greeting}, {name}!\"\n\ngreet(\"Bini\")                  # 'Hello, Bini!'\ngreet(\"Bini\", \"Selam\")         # 'Selam, Bini!'\ngreet(\"Bini\", greeting=\"Hi\")   # 'Hi, Bini!'\n```\n\nParameters with defaults must come **after** the ones without:\n\n```python\ndef f(a=1, b):   # SyntaxError\n    ...\n```\n\n### ⚠️ Watch out: mutable defaults\nDon't use a list or dict as a default — it's created **once** and shared between calls:\n\n```python\ndef add_item(item, items=[]):   # bug\n    items.append(item)\n    return items\n\nadd_item(1)  # [1]\nadd_item(2)  # [1, 2]  <- surprise!\n```\n\nUse `None` instead:\n\n```python\ndef add_item(item, items=None):\n    if items is None:\n        items = []\n    items.append(item)\n    return items\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-017",
+  "area": "memory",
+  "prompt": "I can't remember the capital of Peru",
+  "history": [],
+  "reply": "It's **Lima** 🇵🇪 — on the Pacific coast, and home to about a third of Peru's population. (Easy to mix up with Cusco, the old Inca capital.)",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-018",
+  "area": "memory",
+  "prompt": "remember when we talked about my budget? how much did we put for transport again",
+  "history": [
+   [
+    "user",
+    "help me make a monthly budget, i earn 45,000 birr after tax"
+   ],
+   [
+    "assistant",
+    "Here's a simple starting budget for **45,000 birr/month**:\n\n| Category | Amount | % |\n|---|---|---|\n| Rent | 15,000 | 33% |\n| Food & groceries | 9,000 | 20% |\n| Transport | 4,500 | 10% |\n| Utilities & phone | 2,500 | 6% |\n| Savings | 6,750 | 15% |\n| Family support | 3,000 | 7% |\n| Personal & fun | 4,250 | 9% |\n| **Total** | **45,000** | **100%** |\n\nWant to adjust any of these?"
+   ],
+   [
+    "user",
+    "looks good for now. unrelated but how do i make shiro"
+   ],
+   [
+    "assistant",
+    "**Quick shiro wat** (serves 3–4):\n\n1. Sauté 1 finely chopped red onion in a dry pot for 3–4 minutes, then add 3 tbsp oil.\n2. Add 2 cloves minced garlic and 1 tsp berbere (optional); stir for a minute.\n3. Add 3 cups water and bring to a simmer.\n4. Whisk in ¾ cup shiro powder gradually so it doesn't clump.\n5. Simmer 10–15 minutes, stirring often, until thick and glossy. Salt to taste, and add a spoon of niter kibbeh if you like.\n\nServe hot with injera."
+   ]
+  ],
+  "reply": "Yes — we put **4,500 birr a month for transport**, which is **10%** of your 45,000 birr.\n\nIf that feels tight (or too generous) for your commute, we can move some from *Personal & fun* or *Food*. Want to adjust it?",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-019",
+  "area": "memory",
+  "prompt": "forget it, never mind 😅 it just came back",
+  "history": [
+   [
+    "user",
+    "can you help me write a complaint to ethio telecom, my internet has been down since morning"
+   ],
+   [
+    "assistant",
+    "Sure — is it your home broadband/fiber or mobile data? And roughly when did it go down? I'll draft something short you can send, or read out when you call 994."
+   ]
+  ],
+  "reply": "Ha, perfect timing 😄 Glad it's back! If it drops again, just tell me and I'll have that complaint ready in a minute.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-020",
+  "area": "memory",
+  "prompt": "do you remember my name?",
+  "history": [],
+  "reply": "Of course — you're **Bini**. 🙂 What can I help you with today?",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-021",
+  "area": "memory",
+  "prompt": "I forgot my password, what do I do",
+  "history": [],
+  "reply": "No worries — it's fixable. Which account is it for (email, a bank app, Facebook, Wi-Fi…)? In general:\n\n1. Go to the sign-in page and tap **\"Forgot password?\"**\n2. Enter your email or phone number.\n3. Use the code or link they send you to set a new password.\n4. Check your spam folder if the email doesn't arrive within a few minutes.\n\n**Lost access to that email or phone too?** Most services (Google, Apple, Facebook) have an account-recovery form where you prove it's you — it can take a few days.\n\n**Next time:** a password manager (the one built into your phone, or Google/Apple's) saves you from this.\n\nTell me which account and I'll give you the exact steps.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-022",
+  "area": "memory",
+  "prompt": "write a song about remembering my grandmother, she used to make coffee every morning",
+  "history": [],
+  "reply": "**Morning Smoke**\n\n*Verse 1*\nEvery morning at the break of light,\nshe'd roast the beans till the room smelled right,\nthe jebena singing on the coals,\nfrankincense rising, warming our souls.\n\n*Chorus*\nAnd I still remember, I still remember you,\nin the coffee smoke, in the morning dew.\nEvery cup I pour, every sunrise new,\nGrandma, I still remember you.\n\n*Verse 2*\nThree rounds she poured — abol, tona, bereka,\nstories at the table we'd beg her to tell,\nher hands were rough but her voice was kind,\nshe kept the whole family close in mind.\n\n*Chorus*\n\n*Bridge*\nNow the stool sits empty by the door,\nbut the smell of coffee fills the house once more.\nI roast the beans the way you showed me how,\nand I swear you're sitting right here now.\n\n*Final chorus*\nAnd I still remember, I still remember you…\nGrandma, I still remember you.\n\nWant me to add chords, write a version in Amharic, or change the mood?",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-023",
+  "area": "memory",
+  "prompt": "best way to remember new english vocab? i forget words after like a day",
+  "history": [],
+  "reply": "That's totally normal — most new words fade within a day unless you review them. Here's what actually works:\n\n1. **Spaced repetition** — review new words after 1 day, 3 days, a week, then a month. Apps like **Anki** or **Quizlet** schedule this for you.\n2. **Learn words in sentences, not lists.** Instead of *reluctant = unwilling*, save *\"She was reluctant to speak in the meeting.\"*\n3. **Use it the same day.** Write a sentence with it, say it out loud, or use it in a message.\n4. **Test yourself** — cover the meaning and try to recall it. Recalling builds memory far more than re-reading.\n5. **Link it to something you know** — an image, a similar Amharic word, a funny association.\n6. **Fewer words, more often.** 5–10 new words a day with daily review beats 50 once a week.\n7. **Read and listen to things you enjoy** — you'll meet the words again naturally.\n\nWant me to quiz you on some words you're learning?",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-024",
+  "area": "memory",
+  "prompt": "how do i forget someone i really loved",
+  "history": [],
+  "reply": "I'm sorry — that's one of the hardest things to go through. 💔 Honestly, you probably won't fully *forget* them, and that's okay. The goal is for it to stop hurting so much — and with time, it does.\n\nThings that genuinely help:\n\n1. **Let yourself grieve.** Cry, journal, talk it out. Pushing feelings down tends to make them last longer.\n2. **Create distance.** Mute or unfollow them for now, archive old chats and photos — not forever, just so you're not reopening the wound every day.\n3. **Don't check on them.** Every look at their profile resets the clock.\n4. **Lean on your people.** Spend time with friends and family, even when you don't feel like it.\n5. **Rebuild your routine.** Exercise, sleep, a new class or hobby — things that remind you who you are on your own.\n6. **Be patient with bad days.** Healing isn't a straight line; a hard day doesn't mean you're back at zero.\n\nIf you feel stuck for a long time, or it's affecting your sleep, eating, or work, talking to a counselor can really help.\n\nDo you want to talk about what happened?",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-025",
+  "area": "memory",
+  "prompt": "remind me what the capital of australia is again lol",
+  "history": [],
+  "reply": "**Canberra** 😄 — not Sydney or Melbourne. It was actually built as a compromise between those two rival cities.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-026",
+  "area": "memory",
+  "prompt": "whats the difference between remember and remind in english",
+  "history": [],
+  "reply": "- **Remember** = *you* keep something in your mind, or bring it back.\n  - *I remember her name.*\n  - *Remember to lock the door.*\n- **Remind** = *someone or something* makes you remember.\n  - *Can you remind me to call her?*\n  - *This song reminds me of my childhood.*\n\nQuick test: if a person or thing is causing the memory, use **remind** (usually *remind someone of / about / to*).\n\n❌ *Remember me to buy bread.*\n✅ *Remind me to buy bread.*",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-027",
+  "area": "memory",
+  "prompt": "is remember the titans based on a true story",
+  "history": [],
+  "reply": "Yes — mostly. *Remember the Titans* (2000) is based on the **1971 T.C. Williams High School** football team in Alexandria, Virginia, coached by **Herman Boone** (played by Denzel Washington) with assistant **Bill Yoast**.\n\n**What's true:**\n- Boone, a Black coach, was named head coach over Yoast as the newly combined school brought Black and white players together.\n- The team went **13–0** and won the Virginia state championship.\n- The preseason camp at Gettysburg College really happened.\n\n**What Hollywood changed:**\n- The real season was more dominant than the film shows — many games weren't close.\n- **Gerry Bertier's** car accident happened *after* the season ended, not before the championship game.\n- Some characters and rivalries were combined or invented for drama.\n\nStill a great movie — the core story is real.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-028",
+  "area": "memory",
+  "prompt": "explain the forgetting curve",
+  "history": [],
+  "reply": "The **forgetting curve** describes how quickly we lose new information if we don't review it. It comes from **Hermann Ebbinghaus**, who tested his own memory with nonsense syllables in the 1880s.\n\n**Key findings:**\n- Forgetting is fastest right after learning — a big chunk is lost within the first day.\n- After that the curve flattens: what survives the first few days fades more slowly.\n- A simple model: retention $R = e^{-t/S}$, where $t$ is time since learning and $S$ is the memory's \"strength.\"\n\n**The good news — review resets the curve.** Each review makes the memory stronger and slower to fade. That's the idea behind **spaced repetition**: review just before you'd forget, at growing intervals (1 day → 3 days → 1 week → 2 weeks → 1 month).\n\n**How to use it:**\n- Review notes the same evening you learn something.\n- Use flashcard apps like Anki that schedule reviews for you.\n- Test yourself (active recall) instead of just re-reading.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-029",
+  "area": "photo",
+  "prompt": "show me how to tie a tie",
+  "history": [],
+  "reply": "Here's the **four-in-hand knot** — the easiest and most common:\n\n1. **Drape** the tie around your neck, wide end on your right, hanging about 30 cm lower than the narrow end.\n2. **Cross** the wide end over the narrow end.\n3. **Wrap** the wide end behind the narrow end, back to the right.\n4. **Cross** it over the front again, to the left.\n5. **Bring** the wide end up through the neck loop from underneath.\n6. **Push** it down through the front loop you just made.\n7. **Tighten** by holding the narrow end and sliding the knot up to your collar.\n\n**Check:** the tip of the wide end should just touch your belt buckle. Too long or short? Undo it and adjust the starting length in step 1.\n\nWant the **half-Windsor** instead? It's a bit wider and more formal — good for interviews and weddings.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-030",
+  "area": "photo",
+  "prompt": "ok let me see the code again",
+  "history": [
+   [
+    "user",
+    "write a python function to count words in a text file"
+   ],
+   [
+    "assistant",
+    "```python\ndef count_words(path):\n    with open(path, encoding=\"utf-8\") as f:\n        text = f.read()\n    return len(text.split())\n\n\nprint(count_words(\"notes.txt\"))\n```\n\n`split()` with no arguments splits on any whitespace, so multiple spaces and newlines are handled."
+   ],
+   [
+    "user",
+    "what does `with` do there"
+   ],
+   [
+    "assistant",
+    "`with` opens the file and **closes it automatically** when the block ends — even if an error happens inside. Without it you'd need to call `f.close()` yourself, and a crash before that line would leave the file open."
+   ]
+  ],
+  "reply": "Here it is:\n\n```python\ndef count_words(path):\n    with open(path, encoding=\"utf-8\") as f:\n        text = f.read()\n    return len(text.split())\n\n\nprint(count_words(\"notes.txt\"))\n```\n\nWant a version that also counts how often each word appears?",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-031",
+  "area": "photo",
+  "prompt": "what does the error look like, like where do i even find it",
+  "history": [
+   [
+    "user",
+    "my flask app crashes when i open /profile, it says something about a key"
+   ],
+   [
+    "assistant",
+    "That sounds like a `KeyError` — probably reading a value from `session` or `request.form` that isn't there. Can you paste the traceback?"
+   ]
+  ],
+  "reply": "When Flask crashes, the error shows up as a **traceback** in the terminal where you started the app (the one running `flask run` or `python app.py`). Scroll to the bottom — the **last lines** are what matter. It'll look something like:\n\n```text\nTraceback (most recent call last):\n  File \".../site-packages/flask/app.py\", line 1473, in wsgi_app\n    response = self.full_dispatch_request()\n  ...\n  File \"/home/bini/myapp/app.py\", line 42, in profile\n    user_id = session[\"user_id\"]\n              ~~~~~~~^^^^^^^^^^^\nKeyError: 'user_id'\n```\n\nHow to read it:\n- **Last line** — the error type and the missing key: `KeyError: 'user_id'`.\n- **The last line that points into *your* file** (`app.py`, line 42) — that's where it broke.\n\nIf you run with debug mode on (`flask run --debug`), you'll also see the same traceback in the browser.\n\nPaste those last few lines here and I'll tell you the fix — usually it's `session.get(\"user_id\")` plus a redirect to login when it's missing.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-032",
+  "area": "photo",
+  "prompt": "show me the math",
+  "history": [
+   [
+    "user",
+    "if a shirt costs 850 birr after a 15% discount what was the original price"
+   ],
+   [
+    "assistant",
+    "The original price was **1,000 birr**."
+   ]
+  ],
+  "reply": "Sure:\n\nA 15% discount means you pay **85%** of the original price $P$:\n\n$$0.85 \\times P = 850$$\n\n$$P = \\frac{850}{0.85} = 1000$$\n\n**Check:** 15% of 1,000 is 150, and 1,000 − 150 = **850** ✓\n\nSo the original price was **1,000 birr**.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-033",
+  "area": "photo",
+  "prompt": "what does 'carpe diem' mean",
+  "history": [],
+  "reply": "**\"Carpe diem\"** is Latin for **\"seize the day\"** — literally \"pluck the day,\" like picking ripe fruit.\n\nIt comes from the Roman poet **Horace** (*Odes* 1.11, 23 BC): *carpe diem, quam minimum credula postero* — \"seize the day, trusting as little as possible in tomorrow.\"\n\nIt means: make the most of today instead of putting things off. It became popular again thanks to the film *Dead Poets Society* (1989).",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-034",
+  "area": "photo",
+  "prompt": "show me the results",
+  "history": [
+   [
+    "user",
+    "I surveyed 40 people at work: 22 prefer working from home, 12 prefer the office, 6 want hybrid. can you analyze this"
+   ],
+   [
+    "assistant",
+    "Sure — do you want percentages, a chart, or a short write-up you could share with your manager?"
+   ]
+  ],
+  "reply": "Here are the results from your 40 responses:\n\n| Preference | People | Share |\n|---|---|---|\n| Work from home | 22 | **55%** |\n| Office | 12 | **30%** |\n| Hybrid | 6 | **15%** |\n| **Total** | **40** | **100%** |\n\n**Takeaways:**\n- A clear **majority (55%) prefer working from home**.\n- Only **30%** want to be in the office full-time.\n- Counting hybrid as \"at least some remote,\" **70%** want some flexibility.\n\nOne caveat: 40 people is a small sample, and how the question was worded matters. Want a chart or a short summary paragraph for your manager?",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-035",
+  "area": "photo",
+  "prompt": "can I see an example",
+  "history": [
+   [
+    "user",
+    "how should i start a cover letter for a marketing internship"
+   ],
+   [
+    "assistant",
+    "Start strong — skip \"I am writing to apply for…\". Open with **why this company**, a **specific thing you've done**, or a **short hook** that connects you to the role. Keep the first paragraph to 2–3 sentences and name the position clearly."
+   ]
+  ],
+  "reply": "Sure — here's an opening for a marketing internship:\n\n> Dear Hiring Team,\n>\n> When I grew my university club's Instagram from 300 to 2,400 followers in one semester — mostly with short behind-the-scenes videos — I realized I love figuring out what makes people stop scrolling. That's why I'm excited to apply for the **Marketing Intern** position at **[Company Name]**, whose campaigns for local brands I've followed for a while.\n\n**Why it works:**\n- Opens with a **concrete result** (numbers stand out).\n- Shows **genuine interest** in the company.\n- Names the **role** clearly in the first paragraph.\n\nSwap in your own achievement and the company's name. Want me to write one using your real experience?",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-036",
+  "area": "photo",
+  "prompt": "what does a good resume look like for a fresh graduate",
+  "history": [],
+  "reply": "For a fresh graduate, a good resume is **one page**, clean, and focused on what you *can do*, not just where you studied.\n\n**Structure (top to bottom):**\n\n1. **Header** — name, phone, email, LinkedIn (and portfolio/GitHub if relevant).\n2. **Summary** (2–3 lines) — who you are and what you're aiming for.\n   *\"Accounting graduate from Addis Ababa University with internship experience in auditing and strong Excel skills, looking for an entry-level role in financial analysis.\"*\n3. **Education** — degree, university, graduation year, CGPA if it's strong, relevant courses or thesis.\n4. **Experience** — internships, part-time jobs, volunteering, big projects. Start bullets with action verbs and include results:\n   - *Reconciled 200+ monthly transactions with zero errors during a 3-month audit internship.*\n5. **Skills** — tools and languages (Excel, Python, Peachtree; Amharic, English, Afaan Oromo).\n6. **Extras** (optional) — certifications, awards, club leadership.\n\n**Common mistakes:**\n- Paragraphs instead of bullets\n- Listing duties instead of achievements\n- Fancy designs that are hard to read\n- Typos — read it out loud before sending\n\nWant me to review yours or build one from your details?",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-037",
+  "area": "photo",
+  "prompt": "show me a better way to say this: me and him goes to the market every sunday",
+  "history": [],
+  "reply": "**He and I go to the market every Sunday.**\n\nWhat changed:\n- **\"Me and him\" → \"He and I\"** — they're the subject, so use subject pronouns (*I, he*). It's polite to put yourself last.\n- **\"goes\" → \"go\"** — two people make a plural subject, so the verb is *go*.\n- **\"sunday\" → \"Sunday\"** — days of the week are capitalized in English.\n\nOther natural options:\n- *We go to the market every Sunday.*\n- *He and I usually go to the market on Sundays.*",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-038",
+  "area": "photo",
+  "prompt": "how do i take a screenshot on a mac",
+  "history": [],
+  "reply": "On a Mac:\n\n| Shortcut | What it does |\n|---|---|\n| `Cmd + Shift + 3` | Captures the **whole screen** |\n| `Cmd + Shift + 4` | Lets you **drag to select** an area |\n| `Cmd + Shift + 4`, then `Space` | Captures **one window** (click it) |\n| `Cmd + Shift + 5` | Opens the **screenshot toolbar** (also screen recording) |\n\nScreenshots save to your **Desktop** by default. Add `Ctrl` to any shortcut (e.g. `Cmd + Ctrl + Shift + 4`) to copy to the clipboard instead, so you can paste it straight into a chat or document.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-039",
+  "area": "photo",
+  "prompt": "what does a healthy sleep schedule look like for a teenager",
+  "history": [],
+  "reply": "Teens need about **8–10 hours** of sleep a night. A healthy school-night schedule looks something like:\n\n| Time | What |\n|---|---|\n| **9:00 PM** | Phone and screens away; wind down |\n| **9:30–10:00 PM** | Lights out |\n| **6:30 AM** | Wake up, get daylight soon after |\n\nThat gives **8.5–9 hours**.\n\n**What makes it work:**\n- **Consistent times**, weekends included (no more than about an hour later).\n- **Morning light** soon after waking to set the body clock.\n- **No caffeine after early afternoon** — macchiato, energy drinks, and cola count.\n- **Naps:** short (20–30 min) and before 4 PM.\n- **Bed = sleep.** Studying or scrolling in bed makes falling asleep harder.\n\nTeen body clocks naturally run later, so a 10 PM bedtime can feel hard at first — move it earlier by 15 minutes every few days.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-040",
+  "area": "image",
+  "prompt": "draw a conclusion from this data: sales jan 120, feb 135, mar 128, apr 160, may 175, jun 190",
+  "history": [],
+  "reply": "**Conclusion: sales are growing steadily — up 58% from January to June — with one small dip in March.**\n\n| Month | Sales | Change |\n|---|---|---|\n| Jan | 120 | — |\n| Feb | 135 | +12.5% |\n| Mar | 128 | −5.2% |\n| Apr | 160 | +25.0% |\n| May | 175 | +9.4% |\n| Jun | 190 | +8.6% |\n\n**What the data says:**\n- **Strong upward trend:** 120 → 190 is **+58%** over six months, about **+9.6% per month** on average.\n- **March was the only decline** (−7 units). Worth checking what happened — a holiday, stock shortage, or price change?\n- **April was the biggest jump** (+32 units), and growth has stayed solid since.\n- **Growth is easing slightly** in May–June compared to April — still healthy, but worth watching.\n\nIf the trend holds, July could land around **200–210**. Want me to chart it?",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-041",
+  "area": "image",
+  "prompt": "make a plan for my week. stats exam friday morning, i want to hit the gym 3 times and keep sunday free",
+  "history": [],
+  "reply": "Here's a plan for the rest of your week, built around Friday's exam:\n\n| Day | Study | Gym | Notes |\n|---|---|---|---|\n| **Wed (today)** | 3 hrs — skim all topics, list your weak spots | 🏋️ Evening, 45 min | Sleep by 10:30 |\n| **Thu** | 3–4 hrs — practice problems on weak spots + one timed past paper | Rest | Light review only after 8 PM; sleep early |\n| **Fri** | 📝 **Exam (morning)** — 30 min formula review over breakfast | 🏋️ Evening — celebrate | Evening off |\n| **Sat** | 1–2 hrs — catch up on anything you pushed | 🏋️ Morning | Free afternoon |\n| **Sun** | — | — | 🎉 Day off |\n\n**Study tips for stats:**\n- Make a one-page formula sheet today and review it every day.\n- Focus on *which* test to use when (t-test vs. chi-square vs. regression) — that's where most points are lost.\n- Do problems; don't just re-read notes.\n\nGood luck Friday — you've got this. 💪",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-042",
+  "area": "image",
+  "prompt": "create a function that checks if a number is prime in javascript",
+  "history": [],
+  "reply": "```js\nfunction isPrime(n) {\n  if (!Number.isInteger(n) || n < 2) return false;\n  if (n === 2) return true;\n  if (n % 2 === 0) return false;\n  for (let i = 3; i * i <= n; i += 2) {\n    if (n % i === 0) return false;\n  }\n  return true;\n}\n\nconsole.log(isPrime(2));   // true\nconsole.log(isPrime(17));  // true\nconsole.log(isPrime(21));  // false\nconsole.log(isPrime(1));   // false\n```\n\n**How it works:**\n- Numbers below 2 (and non-integers) aren't prime.\n- 2 is the only even prime, so other even numbers are rejected right away.\n- It only checks odd divisors up to **√n** — if `n` had a factor larger than √n, it would also have one smaller, which we'd already have found.\n\nThat makes it fast enough for numbers into the billions. For checking many numbers at once, a Sieve of Eratosthenes is better — want that version?",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-043",
+  "area": "image",
+  "prompt": "generate ideas for my startup, something with agriculture in ethiopia",
+  "history": [],
+  "reply": "Here are agriculture startup ideas that fit Ethiopia:\n\n1. **Farm-to-business marketplace** — connect smallholder farmers directly with hotels, restaurants, and supermarkets in Addis. Revenue: commission per order.\n2. **Cold storage as a service** — solar-powered cold rooms near produce markets so tomatoes, onions, and fruit don't spoil. Farmers pay per crate per day.\n3. **Coffee traceability** — let specialty buyers trace beans to the farm or washing station, so farmers earn premium prices.\n4. **SMS/voice advisory** — weather alerts, planting tips, and market prices in Amharic, Afaan Oromo, and Tigrinya, delivered by SMS or voice (works without a smartphone).\n5. **Tractor and equipment sharing** — \"Uber for tractors\": farmers book machinery by the hour instead of buying it.\n6. **Feed from waste** — turn brewery spent grain, coffee pulp, or food waste into affordable livestock feed.\n7. **Urban vertical farming** — leafy greens and herbs grown in Addis for restaurants and supermarkets.\n\n**To choose one, ask:**\n- Can I test it cheaply in 1–2 months?\n- Who pays, and do they already feel the pain?\n- Do I have an unfair advantage (family farm, contacts, tech skills)?\n\nWant me to go deeper on one — a business model or a quick validation plan?",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-044",
+  "area": "image",
+  "prompt": "design a workout for me, 3 days a week, no equipment",
+  "history": [],
+  "reply": "Here's a **3-day, no-equipment full-body plan** (e.g. Mon / Wed / Fri — rest a day between sessions).\n\n**Warm-up (5 min, every session):** jumping jacks, arm circles, bodyweight squats, hip rotations.\n\n### Day 1 — Strength\n| Exercise | Sets × Reps |\n|---|---|\n| Squats | 3 × 15 |\n| Push-ups (knees if needed) | 3 × 10 |\n| Glute bridges | 3 × 15 |\n| Plank | 3 × 30 sec |\n| Reverse lunges | 3 × 10 per leg |\n\n### Day 2 — Cardio + core\nCircuit, 40 sec work / 20 sec rest, 4 rounds:\n- High knees\n- Mountain climbers\n- Burpees\n- Bicycle crunches\n- Jump squats\n\n### Day 3 — Strength (harder)\n| Exercise | Sets × Reps |\n|---|---|\n| Bulgarian split squats (back foot on a chair) | 3 × 10 per leg |\n| Pike push-ups | 3 × 8 |\n| Chair dips | 3 × 12 |\n| Side plank | 3 × 20 sec per side |\n| Superman holds | 3 × 30 sec |\n\n**Cool-down:** 5 minutes stretching hamstrings, quads, chest, and shoulders.\n\n**Progress:** add 2–3 reps or 5–10 seconds each week. When that gets easy, slow each rep down (3 seconds on the way down).\n\nWant a version for a specific goal — fat loss, muscle, or running fitness?",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-045",
+  "area": "image",
+  "prompt": "sketch out an outline for my essay on how climate change is affecting coffee farming in ethiopia",
+  "history": [],
+  "reply": "**Essay outline: How climate change is affecting coffee farming in Ethiopia**\n\n**I. Introduction**\n- Hook: Ethiopia is the birthplace of *Coffea arabica*, and millions of households depend on coffee.\n- Context: arabica is very sensitive to temperature and rainfall.\n- **Thesis:** Climate change threatens Ethiopia's coffee sector by shrinking suitable growing land, increasing pests and disease, and destabilizing farmers' incomes — but adaptation can reduce the damage.\n\n**II. Changing growing conditions**\n- Rising temperatures; arabica prefers roughly 18–22 °C\n- Irregular rainfall and droughts disrupt flowering and harvests\n- Projections of suitable land shifting to higher elevations\n\n**III. Pests, disease, and quality**\n- Coffee berry borer and leaf rust spreading in warmer conditions\n- Lower bean quality → lower prices for specialty coffee\n\n**IV. Impact on farmers and the economy**\n- Smallholders grow most of Ethiopia's coffee\n- Income instability, migration, food insecurity\n- Coffee's weight in national export earnings\n\n**V. Adaptation and solutions**\n- Shade trees and agroforestry (forest coffee systems)\n- Moving production upslope; climate-resilient varieties\n- Better weather data and farmer training\n- Fair pricing and certification to fund adaptation\n\n**VI. Complications and counterarguments**\n- Some higher-altitude areas may become *more* suitable\n- Market prices and policy also shape farmer outcomes\n\n**VII. Conclusion**\n- Restate the thesis\n- Coffee as both a cultural symbol and an early warning of climate impacts\n\nWant sources for each section, or should I expand one into paragraphs?",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-046",
+  "area": "image",
+  "prompt": "draw up a simple contract for freelance logo design work",
+  "history": [],
+  "reply": "Here's a simple freelance logo design agreement you can adapt. *(Not legal advice — for larger projects, have a lawyer review it.)*\n\n---\n\n**FREELANCE LOGO DESIGN AGREEMENT**\n\n**Between:** [Designer name] (\"Designer\") and [Client name / company] (\"Client\")\n**Date:** [Date]\n\n**1. Scope of work**\nThe Designer will create a logo for [business name], including:\n- [3] initial concepts\n- Up to [2] rounds of revisions on the chosen concept\n- Final files in PNG, SVG, and PDF (color, black, and white versions)\n\n**2. Timeline**\nInitial concepts within [7] days of receiving the deposit and brief; final files within [5] days of final approval.\n\n**3. Payment**\nTotal fee: [amount] birr.\n- 50% deposit before work begins (non-refundable)\n- 50% on approval, before final files are delivered\n- Extra revision rounds: [amount] birr each\n\n**4. Ownership**\nFull rights to the final logo transfer to the Client after full payment. The Designer may show the work in their portfolio unless the Client objects in writing.\n\n**5. Client responsibilities**\nThe Client provides a clear brief and gives feedback within [5] working days. Delays may move the timeline.\n\n**6. Cancellation**\nEither party may cancel in writing. The deposit is non-refundable; completed work beyond the deposit is billed proportionally.\n\n**Signatures**\n\nDesigner: ______________ Date: ________\n\nClient: ________________ Date: ________\n\n---\n\nWant me to fill it in with your details or make an Amharic version?",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-047",
+  "area": "image",
+  "prompt": "picture this: you're 80 and looking back. what advice would you give a 25 year old?",
+  "history": [],
+  "reply": "Imagining that view from 80, here's what I'd tell a 25-year-old:\n\n1. **Your health is the account you can't refill.** Sleep, walk, eat decently, get checkups — small habits compound for 50 years.\n2. **Save early, even small amounts.** Time does more of the work than the amount does.\n3. **Call your parents and grandparents more.** One day you'll want one more conversation.\n4. **Careers are long and rarely straight.** It's fine not to have it figured out; it's not fine to stop learning.\n5. **Choose your partner and friends carefully.** The people closest to you shape your life more than any job.\n6. **Say yes to things that scare you a little** — the trip, the move, the new skill. Most regret comes from what you didn't try.\n7. **Don't save all the enjoyment for \"later.\"** Later comes faster than you think.\n\nWhat got you thinking about this — a big decision coming up?",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-048",
+  "area": "image",
+  "prompt": "make me a grocery list for doro wat for 6 people",
+  "history": [],
+  "reply": "**Doro wat for 6 — grocery list**\n\n**Chicken & eggs**\n- 2 whole chickens (about 2.5–3 kg total), cut into traditional pieces\n- 8 eggs (one per person plus a couple extra)\n- 2 lemons (for cleaning the chicken)\n\n**Vegetables & aromatics**\n- 3 kg red onions (yes, a lot — they're the base)\n- 1 large head of garlic\n- 1 large piece of ginger (about 100 g)\n\n**Spices & fats**\n- 1 cup berbere (about 150 g)\n- 1 cup niter kibbeh — or 250 g butter plus spices to make your own (korerima, besobila, cumin, fenugreek)\n- ½ cup vegetable oil\n- 1 tsp ground korerima (Ethiopian cardamom)\n- Salt\n- Optional: ½ cup tej or red wine\n\n**To serve**\n- Injera — about 12–15 pieces for 6 people\n- Ayib (fresh cheese), optional\n\nWant the step-by-step cooking method too?",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-049",
+  "area": "image",
+  "prompt": "generate a regex for ethiopian phone numbers",
+  "history": [],
+  "reply": "Here's a regex for Ethiopian mobile numbers (Ethio Telecom **09…** and Safaricom **07…**), with or without the country code:\n\n```regex\n^(?:\\+251|251|0)?[79]\\d{8}$\n```\n\n**Matches:** `0912345678`, `+251912345678`, `251712345678`, `912345678`\n\n**Breakdown:**\n- `(?:\\+251|251|0)?` — optional `+251`, `251`, or leading `0`\n- `[79]` — mobile numbers start with 9 (Ethio Telecom) or 7 (Safaricom)\n- `\\d{8}` — the remaining 8 digits\n\nTo allow spaces or dashes (e.g. `+251 91 234 5678`), strip them first:\n\n```js\nconst isEthiopianMobile = (s) =>\n  /^(?:\\+251|251|0)?[79]\\d{8}$/.test(s.replace(/[\\s-]/g, \"\"));\n```\n\n```python\nimport re\n\ndef is_ethiopian_mobile(s: str) -> bool:\n    return re.fullmatch(r\"(?:\\+251|251|0)?[79]\\d{8}\", re.sub(r\"[\\s-]\", \"\", s)) is not None\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-050",
+  "area": "image",
+  "prompt": "can you paint a picture with words of a morning in addis",
+  "history": [],
+  "reply": "The city wakes slowly, then all at once.\n\nAt six, Addis is still wrapped in a cool gray haze, and the eucalyptus on Entoto stand dark against a sky turning from charcoal to pale gold. A church loudspeaker carries a priest's chant across the rooftops, long and rising, answered by roosters and the first blue-and-white minibuses rattling down the hill.\n\nOn the corner, a woman fans charcoal under a jebena, and the smell of roasting coffee and frankincense drifts into the street. Students in pressed uniforms hurry past, breath faintly visible in the chill. A shoe-shine boy sets out his little wooden box and waits.\n\nBy seven the sun clears the hills. Light catches the tin roofs and the glass towers along Bole Road at the same moment, and the quiet city fills with horns, voices, and the *weyala* calling out destinations — *Piassa! Piassa! Megenagna!* — as if all of Addis has just remembered it's late.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-051",
+  "area": "search",
+  "prompt": "what is the speed of light",
+  "history": [],
+  "reply": "The speed of light in a vacuum is exactly **299,792,458 meters per second** — about **300,000 km/s** (roughly 186,000 miles per second).\n\nIt's exact by definition: since 1983 the meter has been defined as the distance light travels in 1/299,792,458 of a second.\n\nFor scale: light could circle the Earth about **7.5 times in one second**, and sunlight takes about **8 minutes 20 seconds** to reach us.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-052",
+  "area": "search",
+  "prompt": "who won the 2010 World Cup",
+  "history": [],
+  "reply": "**Spain** won the 2010 FIFA World Cup in South Africa, beating the **Netherlands 1–0** in the final at Soccer City, Johannesburg, on **July 11, 2010**. **Andrés Iniesta** scored the winner in the 116th minute of extra time. It was Spain's first World Cup title.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-053",
+  "area": "search",
+  "prompt": "when was the battle of adwa",
+  "history": [],
+  "reply": "The **Battle of Adwa** was fought on **March 1, 1896** (Yekatit 23, 1888 in the Ethiopian calendar).\n\nEmperor **Menelik II** and Empress **Taytu Betul** led Ethiopian forces to a decisive victory over the Italian army near the town of Adwa in Tigray. The win secured Ethiopia's independence, forced Italy to recognize it in the Treaty of Addis Ababa, and made Adwa a lasting symbol of African resistance to colonialism.\n\nIt's commemorated every year on **Adwa Victory Day** (Yekatit 23, around March 2 in the Gregorian calendar).",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-054",
+  "area": "search",
+  "prompt": "look up the definition of entropy for me",
+  "history": [],
+  "reply": "**Entropy** is a measure of **disorder** — more precisely, of how many different ways a system's particles can be arranged while looking the same from the outside.\n\n**In physics (thermodynamics):**\n- Entropy $S$ never decreases in an isolated system — the **Second Law of Thermodynamics**. Heat flows from hot to cold, ice melts in a warm room, and a broken glass doesn't reassemble itself.\n- For a reversible process: $\\Delta S = \\dfrac{Q}{T}$ (heat added divided by absolute temperature), in J/K.\n- Boltzmann's statistical definition: $S = k_B \\ln W$, where $W$ is the number of microscopic arrangements.\n\n**In information theory:** Shannon entropy measures uncertainty in a message: $H = -\\sum_i p_i \\log_2 p_i$ bits.\n\n**Everyday version:** left alone, things get more mixed up and spread out — a tidy room gets messy, sugar dissolves in tea — and it takes energy to restore order.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-055",
+  "area": "search",
+  "prompt": "how does google search actually work",
+  "history": [],
+  "reply": "Google Search works in three main stages:\n\n### 1. Crawling\nAutomated programs called **crawlers** (Googlebot) constantly visit pages, follow links from page to page, and download what they find — plus sitemaps that site owners submit.\n\n### 2. Indexing\nGoogle analyzes each page — text, titles, images, links, language, freshness — and stores it in a giant **index**, like the index at the back of a book but for the whole web.\n\n### 3. Ranking\nWhen you search, Google looks through its index (not the live web) and ranks matching pages in a fraction of a second using hundreds of signals:\n- **Relevance** — does the page match what you *mean*, not just your exact words?\n- **Quality and trust** — links from reputable sites (the original **PageRank** idea), expertise, accuracy.\n- **Usability** — mobile-friendly, fast, secure (HTTPS).\n- **Context** — your location, language, and settings (that's why \"pizza near me\" gives different results in Addis and Nairobi).\n\nModern Google also uses AI language models to understand queries, and often shows an AI-written summary at the top.\n\nWant to know how to get a website to rank higher (SEO)?",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-056",
+  "area": "search",
+  "prompt": "at what temp does water boil in addis",
+  "history": [],
+  "reply": "Around **92 °C** (about 198 °F) instead of 100 °C.\n\nAddis sits at roughly **2,350 m** above sea level, where air pressure is only about **77% of sea level** (~77 kPa). Lower pressure means water boils at a lower temperature — roughly **1 °C less for every 300 m** of altitude.\n\n**What it means in practice:**\n- Cooking in boiling water takes longer (pasta, beans, eggs).\n- Pressure cookers help a lot — one reason they're so common in Ethiopian kitchens.\n- To make water safe to drink at this altitude, boil it for **3 minutes** instead of 1.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-057",
+  "area": "chitchat",
+  "prompt": "I'm feeling down today",
+  "history": [],
+  "reply": "I'm sorry you're feeling down today, Bini. 💛 Some days are just heavy, and it's okay not to be okay.\n\nDo you want to talk about it — is something specific bothering you, or is it more of a general low feeling?\n\nIn the meantime, a few small things that sometimes lighten the weight:\n- Step outside for 10 minutes — a short walk and some sunlight.\n- Text or call someone you trust, even just to chat.\n- Eat something and drink some water if you haven't.\n- Go easy on yourself — you don't have to fix everything today.\n\nI'm here to listen, no pressure.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-058",
+  "area": "chitchat",
+  "prompt": "tell me a joke",
+  "history": [],
+  "reply": "Why don't scientists trust atoms?\n\nBecause they make up everything. 😄\n\nWant another — maybe a programming one or a dad joke?",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-059",
+  "area": "chitchat",
+  "prompt": "good morning!",
+  "history": [],
+  "reply": "Good morning, Bini! ☀️ Hope you slept well. It's Wednesday — anything on your plate today I can help with?",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-060",
+  "area": "chitchat",
+  "prompt": "thank u that helped a lot 🙏",
+  "history": [
+   [
+    "user",
+    "how do i convert 2.5 hours to minutes"
+   ],
+   [
+    "assistant",
+    "Multiply by 60: 2.5 × 60 = **150 minutes**."
+   ]
+  ],
+  "reply": "You're welcome! 🙌 Glad it helped — ask anytime.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-061",
+  "area": "chitchat",
+  "prompt": "lol ok",
+  "history": [
+   [
+    "user",
+    "tell me a programming joke"
+   ],
+   [
+    "assistant",
+    "Why do programmers prefer dark mode?\n\nBecause light attracts bugs. 🐛"
+   ]
+  ],
+  "reply": "😄 Glad it (sort of) landed. Want another one, or back to work?",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-062",
+  "area": "settings",
+  "prompt": "switch to dark mode",
+  "history": [],
+  "reply": "Done — dark mode is on. 🌙",
+  "expect": "settings"
+ },
+ {
+  "id": "hi-063",
+  "area": "settings",
+  "prompt": "use the pro model by default",
+  "history": [],
+  "reply": "You can pick the model in Settings → Models.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-064",
+  "area": "settings",
+  "prompt": "change the app language to French",
+  "history": [],
+  "reply": "You can change the app language in Settings → Language.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-065",
+  "area": "settings",
+  "prompt": "be more concise from now on",
+  "history": [],
+  "reply": "Got it — I'll keep my replies short and to the point from now on.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-066",
+  "area": "settings",
+  "prompt": "set the theme to light pls",
+  "history": [],
+  "reply": "Done — switched to light mode. ☀️",
+  "expect": "settings"
+ },
+ {
+  "id": "hi-067",
+  "area": "settings",
+  "prompt": "from now on talk to me in a more casual tone",
+  "history": [],
+  "reply": "Sure, I'll keep it casual from here.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-068",
+  "area": "settings",
+  "prompt": "make the app theme follow my phone's setting",
+  "history": [],
+  "reply": "Done — the app theme now follows your phone's system setting, switching between light and dark automatically.",
+  "expect": "settings"
+ },
+ {
+  "id": "hi-069",
+  "area": "memory",
+  "prompt": "remember that my sister's name is Hana",
+  "history": [],
+  "reply": "Got it — I'll remember that your sister's name is **Hana**.",
+  "expect": "memory"
+ },
+ {
+  "id": "hi-070",
+  "area": "memory",
+  "prompt": "please forget that I live in Nairobi",
+  "history": [],
+  "reply": "Done — I've forgotten that you live in Nairobi.",
+  "expect": "memory"
+ },
+ {
+  "id": "hi-071",
+  "area": "memory",
+  "prompt": "remember im allergic to peanuts 🥜",
+  "history": [],
+  "reply": "Noted — I'll remember that you're **allergic to peanuts** and keep it in mind for recipes and food suggestions.",
+  "expect": "memory"
+ },
+ {
+  "id": "hi-072",
+  "area": "memory",
+  "prompt": "for future chats keep in mind that i'm vegetarian",
+  "history": [],
+  "reply": "Got it — I'll remember that you're **vegetarian**.",
+  "expect": "memory"
+ },
+ {
+  "id": "hi-073",
+  "area": "memory",
+  "prompt": "forget that i work at ethio telecom, i quit last month",
+  "history": [],
+  "reply": "Done — I've removed that you work at Ethio Telecom. Congrats on the change! Want me to remember what you're doing now?",
+  "expect": "memory"
+ },
+ {
+  "id": "hi-074",
+  "area": "photo",
+  "prompt": "show me a snow leopard",
+  "history": [],
+  "reply": "Here's a snow leopard 🐆 — the thick, smoky-gray coat with dark rosettes and that long, bushy tail (which it wraps around itself for warmth) help it survive high in the mountains of Central and South Asia, usually between 3,000 and 4,500 m.",
+  "expect": "photo"
+ },
+ {
+  "id": "hi-075",
+  "area": "photo",
+  "prompt": "what does a pangolin look like",
+  "history": [],
+  "reply": "Here's a pangolin — it's covered in overlapping **keratin scales** (the same material as your fingernails), so it looks like a walking pinecone. It has a small pointed head, no teeth, and a very long sticky tongue for eating ants and termites. When threatened, it rolls into a tight ball.\n\nPangolins are among the most trafficked mammals in the world, and all eight species are protected.",
+  "expect": "photo"
+ },
+ {
+  "id": "hi-076",
+  "area": "photo",
+  "prompt": "send me a photo of Lalibela churches",
+  "history": [],
+  "reply": "Here are the rock-hewn churches of **Lalibela** — carved straight down into solid volcanic rock in the 12th–13th centuries under King Lalibela. The cross-shaped **Bete Giyorgis** (Church of St. George) is the most famous of the 11 churches, which together are a UNESCO World Heritage Site.",
+  "expect": "photo"
+ },
+ {
+  "id": "hi-077",
+  "area": "photo",
+  "prompt": "pics of the simien mountains pls",
+  "history": [],
+  "reply": "Here are the **Simien Mountains** in northern Ethiopia — dramatic cliffs, deep valleys, and high plateaus. They're home to gelada monkeys, Walia ibex, and Ethiopian wolves, and to **Ras Dashen**, Ethiopia's highest peak at about 4,550 m.",
+  "expect": "image_gen"
+ },
+ {
+  "id": "hi-078",
+  "area": "photo",
+  "prompt": "what does a gelada look like 🐒",
+  "history": [],
+  "reply": "Here's a gelada — sometimes called the \"bleeding-heart monkey\" because of the bright red, hourglass-shaped patch of bare skin on its chest. It has long brown fur, and adult males grow a thick, lion-like mane. Geladas live only in the Ethiopian highlands and are the only primates that feed mainly on grass.",
+  "expect": "photo"
+ },
+ {
+  "id": "hi-079",
+  "area": "image",
+  "prompt": "draw me a lion wearing a crown",
+  "history": [],
+  "reply": "Here's your lion wearing a crown 🦁👑 — a regal golden lion with a full mane and a jeweled gold crown. Want a different style, like cartoon or oil painting?",
+  "expect": "image_gen"
+ },
+ {
+  "id": "hi-080",
+  "area": "image",
+  "prompt": "generate an image of a futuristic Addis",
+  "history": [],
+  "reply": "Here's a futuristic Addis Ababa 🌆 — glass towers rising around Meskel Square, an elevated light-rail line weaving between them, green rooftop gardens, and Entoto in the background under an evening sky.",
+  "expect": "image_gen"
+ },
+ {
+  "id": "hi-081",
+  "area": "image",
+  "prompt": "make a watercolor picture of a cat astronaut floating over the moon",
+  "history": [],
+  "reply": "Here's your watercolor cat astronaut 🐱🚀 — a ginger cat in a little white spacesuit, drifting above a soft gray moon with a wash of deep blue and violet stars behind it.",
+  "expect": "image_gen"
+ },
+ {
+  "id": "hi-082",
+  "area": "image",
+  "prompt": "create an anime style illustration of an ethiopian coffee ceremony",
+  "history": [],
+  "reply": "Here's an anime-style Ethiopian coffee ceremony ☕ — a woman in a white habesha kemis pouring from a jebena into small cups, with frankincense smoke curling up, fresh grass on the floor, and family gathered around in warm afternoon light.",
+  "expect": "image_gen"
+ },
+ {
+  "id": "hi-083",
+  "area": "search",
+  "prompt": "price of gold today",
+  "history": [],
+  "reply": "As of this morning (Wed, Oct 14), **spot gold is around $4,180 per troy ounce** — roughly **$134 per gram**.\n\n| Unit | Price (USD) |\n|---|---|\n| 1 troy ounce | ~$4,180 |\n| 1 gram (24K) | ~$134 |\n| 1 gram (21K) | ~$118 |\n\nJewelers in Addis price per gram in birr and add a making charge, so shop prices will be higher than spot.\n\n*Sources: Kitco, Reuters — prices move throughout the day.*",
+  "expect": "search"
+ },
+ {
+  "id": "hi-084",
+  "area": "search",
+  "prompt": "who won last night's Arsenal game",
+  "history": [],
+  "reply": "Arsenal didn't play last night — club football is paused for the **October international break**, so their players were away on national-team duty. Arsenal's next Premier League match is this weekend, when the league resumes.\n\nWant me to check the kickoff time in Addis time?",
+  "expect": "search"
+ },
+ {
+  "id": "hi-085",
+  "area": "search",
+  "prompt": "latest version of Python",
+  "history": [],
+  "reply": "The latest stable release is **Python 3.15** — **3.15.0** came out at the start of **October 2026**.\n\nNotable changes in 3.15:\n- **UTF-8 mode on by default** (PEP 686) — `open()` and friends use UTF-8 unless told otherwise, fixing a lot of Windows encoding bugs.\n- **Explicit lazy imports** (PEP 810) — `lazy import json` defers loading a module until it's first used, which speeds up startup.\n- A new **sampling profiler** in the standard library for low-overhead profiling.\n\n**Should you upgrade?** For new projects, yes. For existing ones, check that your key libraries publish 3.15 wheels first — if not, **3.14** is a solid choice.\n\nDownload: [python.org/downloads](https://www.python.org/downloads/)",
+  "expect": "search"
+ },
+ {
+  "id": "hi-086",
+  "area": "search",
+  "prompt": "is it going to rain today",
+  "history": [],
+  "reply": "Looks mostly dry in **Addis Ababa** today — about a **20% chance of a brief afternoon shower**, partly cloudy, high around **23 °C**, dropping to **11 °C** tonight.\n\nThe main rainy season is over, so heavy rain is unlikely — but a light jacket for the evening is a good idea.",
+  "expect": "search",
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "hi-087",
+  "area": "search",
+  "prompt": "weather",
+  "history": [],
+  "reply": "**Addis Ababa — today (Wed, Oct 14)**\n- ⛅ Partly cloudy\n- 🌡️ High **23 °C**, low **11 °C**\n- 🌧️ Rain chance: **20%**, mostly in the afternoon\n- 💨 Light easterly wind, ~10 km/h\n\nCool morning, pleasant afternoon. Tomorrow looks similar and a little sunnier.",
+  "expect": "search",
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "hi-088",
+  "area": "search",
+  "prompt": "usd to etb rate rn",
+  "history": [],
+  "reply": "Today (Oct 14), the **Commercial Bank of Ethiopia** rates are roughly:\n\n| | Rate |\n|---|---|\n| Buying (you sell USD) | **~156.8 ETB** |\n| Selling (you buy USD) | **~159.9 ETB** |\n\nOther banks are usually within a birr or two. Rates update daily, so check your bank's app before a big transfer.\n\n*Source: CBE daily exchange rates.*",
+  "expect": "search"
+ },
+ {
+  "id": "hi-089",
+  "area": "search",
+  "prompt": "any news on the GERD this week?",
+  "history": [],
+  "reply": "Here's what came up this week on the **Grand Ethiopian Renaissance Dam (GERD)**:\n\n- **Power** — Ethiopian Electric Power reported the dam supplying a growing share of the national grid, with electricity exports to neighboring countries continuing.\n- **Reservoir** — with the kiremt rains over, reports say the reservoir ended the season close to its operating level.\n- **Diplomacy** — no new negotiation round with Egypt and Sudan has been announced; officials on all sides repeated calls for cooperation on the Nile.\n\n*Sources: Ethiopian and international news outlets, this week.* Want me to dig into any of these?",
+  "expect": "search"
+ },
+ {
+  "id": "hi-090",
+  "area": "search",
+  "prompt": "good pizza place near me thats open now",
+  "history": [],
+  "reply": "Here are a couple of well-rated pizza places in Addis that show as **open now** (hours from their listings — worth a quick call before you go):\n\n1. **Effoi Pizza** — Bole · wood-fired, very popular · open until about 10 PM\n2. **Castelli** — Piassa · classic Italian sit-down restaurant · open until about 10 PM\n\nWant me to look for one closer to a specific neighborhood, or places that deliver?",
+  "expect": "search",
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "hi-091",
+  "area": "memory",
+  "prompt": "When teaching me yesterday you used a great example with lists, can you show it again?",
+  "history": [],
+  "reply": "I can't see yesterday's chat from here, but here is a list example in the same spirit:\n\n```python\nages = [18, 25, 32]\nprint(ages[0])  # 18\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-092",
+  "area": "lookalike",
+  "prompt": "from now on I'll wake at 6",
+  "history": [],
+  "reply": "Nice, an early start. A fixed wake time makes the rest of the day easier.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-093",
+  "area": "todo",
+  "prompt": "always remind me to drink water",
+  "history": [],
+  "reply": "How often should I remind you?",
+  "expect": "todo"
+ },
+ {
+  "id": "hi-094",
+  "area": "lookalike",
+  "prompt": "From now on, keep your answers short.",
+  "history": [],
+  "reply": "Got it, short answers from here on.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-095",
+  "area": "memory",
+  "prompt": "Please remember that I learn best with examples",
+  "history": [],
+  "reply": "Noted: examples first when I explain something.",
+  "expect": "memory"
+ },
+ {
+  "id": "hi-096",
+  "area": "image",
+  "prompt": "draw a decision tree for choosing a first programming language",
+  "history": [],
+  "reply": "Here's a decision tree to help you pick:\n\n```mermaid\nflowchart TD\n    Q1{What do you want to build?} -->|Websites| JS[JavaScript]\n    Q1 -->|Data or AI| PY[Python]\n    Q1 -->|Mobile apps| Q2{Which phone?}\n    Q2 -->|iPhone| SW[Swift]\n    Q2 -->|Android| KT[Kotlin]\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-097",
+  "area": "image",
+  "prompt": "Draw a state machine for a traffic light",
+  "history": [],
+  "reply": "```mermaid\nstateDiagram-v2\n    [*] --> Red\n    Red --> Green : timer\n    Green --> Yellow : timer\n    Yellow --> Red : timer\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-098",
+  "area": "image",
+  "prompt": "make a mind map of renewable energy sources",
+  "history": [],
+  "reply": "```mermaid\nmindmap\n  root((Renewable energy))\n    Solar\n      Rooftop panels\n      Solar farms\n    Wind\n      Onshore\n      Offshore\n    Hydro\n    Geothermal\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-099",
+  "area": "image",
+  "prompt": "draw our family tree: grandma Almaz, her kids Dawit and Sara, and Sara's son Abel",
+  "history": [],
+  "reply": "```mermaid\nflowchart TD\n    A[Almaz] --> D[Dawit]\n    A --> S[Sara]\n    S --> B[Abel]\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-100",
+  "area": "image",
+  "prompt": "generate an image of an old oak tree in autumn, watercolor",
+  "history": [],
+  "reply": "Here's your watercolor of an old oak tree in autumn.",
+  "expect": "image_gen"
+ },
+ {
+  "id": "hi-101",
+  "area": "image",
+  "prompt": "draw a treasure map for my kid's pirate party",
+  "history": [],
+  "reply": "Here's your treasure map for the pirate party.",
+  "expect": "image_gen"
+ },
+ {
+  "id": "hi-102",
+  "area": "image",
+  "prompt": "draw the learning curve for a new language",
+  "history": [],
+  "reply": "```chart\n{}\n```\nSample data: fast gains in the first months, then a long plateau.",
+  "expect": "answer"
+ },
+ {
+  "id": "hi-103",
+  "area": "image",
+  "prompt": "draw a winding mountain road with sharp curves at sunset",
+  "history": [],
+  "reply": "Here's your winding mountain road at sunset.",
+  "expect": "image_gen"
+ },
+ {
+  "id": "hi-104",
+  "area": "image",
+  "prompt": "can you draw me a cute cartoon skeleton for my notes",
+  "reply": "Here is a friendly skeleton you can sketch into your notes.",
+  "expect": "image_gen"
+ },
+ {
+  "id": "hi-105",
+  "area": "lookalike",
+  "prompt": "make a mnemonic for my notes",
+  "reply": "Try: Some Lovers Try Positions That They Can't Handle, for the carpal bones.",
+  "expect": "answer"
+ }
+]

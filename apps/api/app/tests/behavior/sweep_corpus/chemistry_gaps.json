@@ -1,0 +1,114 @@
+[
+ {
+  "id": "cg-001",
+  "area": "todos",
+  "prompt": "remind me to buy NaCl tomorrow at 9am",
+  "reply": "Set: Buy NaCl — Friday, Oct 16, 9:00 AM.",
+  "expect": "save"
+ },
+ {
+  "id": "cg-002",
+  "area": "todos",
+  "prompt": "remind me to buy 500 g of NaCl and 2 L of milk tomorrow at 10am",
+  "reply": "Set: Buy 500 g of NaCl and 2 L of milk — Friday, Oct 16, 10:00 AM.",
+  "expect": "save"
+ },
+ {
+  "id": "cg-003",
+  "area": "todos",
+  "prompt": "remind me tomorrow at 7pm to plate the dinner",
+  "reply": "Set: Plate the dinner — Thursday, Oct 15, 7:00 PM.",
+  "expect": "save"
+ },
+ {
+  "id": "cg-004",
+  "area": "math",
+  "prompt": "what % of my salary goes to rent if rent is 1200 and my salary is 4000",
+  "reply": "1200 / 4000 = 0.30, so **30%** of your salary goes to rent.",
+  "expect": "answer"
+ },
+ {
+  "id": "cg-005",
+  "area": "math",
+  "prompt": "what % of the class is girls if 12 of the 30 students are girls?",
+  "reply": "12 / 30 = 0.4, so **40%** of the class are girls.",
+  "expect": "answer"
+ },
+ {
+  "id": "cg-006",
+  "area": "math",
+  "prompt": "I got 21.3 out of 25 on the quiz. percent?",
+  "reply": "21.3 / 25 × 100 = **85.2%**.",
+  "expect": "answer"
+ },
+ {
+  "id": "cg-007",
+  "area": "chitchat",
+  "prompt": "my phone has 10^6 molecules of patience left lol",
+  "reply": "Ha, sounds like it's been a long day. Want to vent about it?",
+  "expect": "answer"
+ },
+ {
+  "id": "cg-008",
+  "area": "chitchat",
+  "prompt": "how long should I let the pasta rest before I plate it?",
+  "reply": "A minute or two is plenty. Toss it in the sauce, let it sit briefly so the sauce clings, then plate it hot.",
+  "expect": "answer"
+ },
+ {
+  "id": "cg-009",
+  "area": "chitchat",
+  "prompt": "freezing point of my freezer is -18 °C, is that ok?",
+  "reply": "Yes, -18 °C (0 °F) is the standard setting for a home freezer and keeps food safe.",
+  "expect": "answer"
+ },
+ {
+  "id": "cg-010",
+  "area": "physics",
+  "prompt": "Tank C at 2 atm and tank B at 3 atm, what is the total pressure if connected?",
+  "reply": "It depends on the tank volumes: the final pressure is (P_C V_C + P_B V_B) / (V_C + V_B). With equal volumes it would be **2.5 atm**.",
+  "expect": "answer"
+ },
+ {
+  "id": "cg-011",
+  "area": "chitchat",
+  "prompt": "what percentage of my day is spent on my phone if it's 6 hours?",
+  "reply": "6 of 24 hours is **25%** of your day.",
+  "expect": "answer"
+ },
+ {
+  "id": "cg-012",
+  "area": "chitchat",
+  "prompt": "I have a low boiling point today, everything annoys me",
+  "reply": "Sounds like a rough day. Want to talk about what set it off?",
+  "expect": "answer"
+ },
+ {
+  "id": "cg-013",
+  "area": "todos",
+  "prompt": "remind me to balence the books tomorrow at 9am",
+  "reply": "Set: Balance the books — Thursday, Oct 15, 9:00 AM.",
+  "expect": "save"
+ },
+ {
+  "id": "cg-014",
+  "area": "chitchat",
+  "prompt": "what's the formula for success?",
+  "reply": "Clear goals, small daily habits, and patience. The rest is showing up.",
+  "expect": "answer"
+ },
+ {
+  "id": "cg-015",
+  "area": "chitchat",
+  "prompt": "what's the mole fraction of my weekend spent sleeping lol",
+  "reply": "Ha, if it's anything like most weekends, it's probably the majority!",
+  "expect": "answer"
+ },
+ {
+  "id": "cg-016",
+  "area": "math",
+  "prompt": "my battery went from 100% to 25% in 3 hours, how long until it's empty at that rate?",
+  "reply": "It drops 25% an hour, so the last 25% lasts about **1 more hour**.",
+  "expect": "answer"
+ }
+]

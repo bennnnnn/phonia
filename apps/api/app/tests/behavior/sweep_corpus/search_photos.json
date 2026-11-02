@@ -1,0 +1,1480 @@
+[
+ {
+  "id": "sp-001",
+  "area": "search",
+  "prompt": "latest news on the AI act",
+  "reply": "Here's where the **EU AI Act** stands as of mid-October 2026:\n\n- **General-purpose AI rules** have applied since August 2025; providers of large models now publish training-data summaries and follow the Code of Practice.\n- **High-risk obligations** were due in August 2026, but the Commission's *digital omnibus* proposal pushes parts of them back while harmonised standards are finished.\n- **Enforcement:** several member states are still designating their national market-surveillance authorities.\n\nWant me to pull the latest on the Parliament vote over the delay?",
+  "expect": "search"
+ },
+ {
+  "id": "sp-002",
+  "area": "search",
+  "prompt": "What's the price of bitcoin right now?",
+  "reply": "**Bitcoin (BTC)** is trading at about **$112,400**, up ~1.8% in the last 24 hours.\n\n| | Price |\n|---|---|\n| 24h high | $113,050 |\n| 24h low | $109,870 |\n\nCrypto prices move by the minute, so check your exchange before you buy.",
+  "expect": "search"
+ },
+ {
+  "id": "sp-003",
+  "area": "search",
+  "prompt": "Get me the latest Lakers score",
+  "reply": "The **Lakers beat the Warriors 118–112** in last night's preseason game.\n\n- **Luka Dončić:** 31 pts, 9 reb\n- **LeBron James:** 24 pts, 8 ast\n\nTheir next game is **Friday at 7:30 PM PT** against the Clippers.",
+  "expect": "search"
+ },
+ {
+  "id": "sp-004",
+  "area": "search",
+  "prompt": "Can you get the current USD to ETB exchange rate?",
+  "reply": "Right now **1 USD ≈ 152.6 ETB** (mid-market rate).\n\n- Commercial banks are quoting roughly **151–154 ETB** per dollar.\n- The birr has floated since the July 2024 reform, so the rate moves daily.\n\nIf you're sending money, compare your bank's rate with the transfer service's rate — the spread is where the fees hide.",
+  "expect": "search"
+ },
+ {
+  "id": "sp-005",
+  "area": "search",
+  "prompt": "How's NVIDIA stock doing today?",
+  "reply": "**NVIDIA (NVDA)** is at **$186.20**, down **1.4%** today in a broader chip sell-off.\n\n- Market cap: ~$4.5T\n- 52-week range: $86.62 – $212.19\n\nIts next earnings report is expected around **November 19**.",
+  "expect": "search"
+ },
+ {
+  "id": "sp-006",
+  "area": "search",
+  "prompt": "Is the Golden Gate Bridge open today?",
+  "reply": "Yes — the **Golden Gate Bridge is open** to traffic today with no closures posted.\n\n- **East sidewalk (pedestrians):** 5:00 AM – 6:30 PM\n- **West sidewalk (cyclists):** weekends and holidays\n\nHigh winds can close the sidewalks at short notice, so check the bridge district's alerts before you walk it.",
+  "expect": "search"
+ },
+ {
+  "id": "sp-007",
+  "area": "search",
+  "prompt": "Show me the latest news on the Ethiopian Premier League",
+  "reply": "Latest from the **Ethiopian Premier League**:\n\n1. **Saint George** opened the season with a 2–0 win over Fasil Kenema.\n2. **Ethiopia Bunna** signed two forwards before the transfer window closed.\n3. Matchday 3 kicks off **Saturday**, with most games in Addis Ababa and Bahir Dar.\n\nWant the current standings?",
+  "expect": "search"
+ },
+ {
+  "id": "sp-008",
+  "area": "search",
+  "prompt": "show me today's headlines",
+  "reply": "Top headlines for **Wednesday, October 14**:\n\n- **Markets:** Asian stocks slip as chipmakers fall.\n- **Climate:** Negotiators gather ahead of COP31 in Antalya next month.\n- **Tech:** The EU opens a new probe into app-store fees.\n- **Sports:** World Cup qualifiers wrap up the October window.\n\nTell me which one you want more on.",
+  "expect": "search"
+ },
+ {
+  "id": "sp-009",
+  "area": "search",
+  "prompt": "Mark Carney news today",
+  "reply": "Today's top stories on **Prime Minister Mark Carney**:\n\n- He met provincial premiers in Ottawa about removing interprovincial trade barriers.\n- The government announced the date for its fall economic statement.\n- A new poll shows the Liberals holding a narrow national lead.\n\nWant links to the full articles?",
+  "expect": "search"
+ },
+ {
+  "id": "sp-010",
+  "area": "search",
+  "prompt": "Finish line results from Sunday's Chicago Marathon?",
+  "reply": "**Chicago Marathon — Sunday, October 11, 2026**\n\n| Place | Men | Women |\n|---|---|---|\n| 1st | 2:04:12 (Kenya) | 2:16:48 (Ethiopia) |\n| 2nd | 2:04:31 (Ethiopia) | 2:17:05 (Kenya) |\n| 3rd | 2:05:02 (Kenya) | 2:18:40 (Ethiopia) |\n\nWarm, humid conditions kept times well off the course records. Want the full results with names and splits?",
+  "expect": "search"
+ },
+ {
+  "id": "sp-011",
+  "area": "search",
+  "prompt": "what about the UK?",
+  "history": [
+   [
+    "user",
+    "latest news on the AI act"
+   ],
+   [
+    "assistant",
+    "The EU AI Act's general-purpose AI rules have applied since August 2025, and the Commission has proposed delaying parts of the high-risk obligations. Want more detail on any part?"
+   ]
+  ],
+  "reply": "The **UK** still has no single AI law like the EU's. Instead:\n\n- **Sector regulators** (ICO, CMA, Ofcom, FCA) apply existing law to AI in their areas.\n- The **AI Security Institute** tests frontier models before and after release.\n- A government **AI bill** focused on the most powerful models has been promised but not yet introduced.\n\nWant the latest on when that bill might be published?",
+  "expect": "search"
+ },
+ {
+  "id": "sp-012",
+  "area": "search",
+  "prompt": "What's scheduled at the Hollywood Bowl this weekend?",
+  "reply": "Here's what's on at the **Hollywood Bowl** this weekend:\n\n- **Fri, Oct 16, 7:30 PM** — LA Phil with a guest conductor: Dvořák's *New World* Symphony\n- **Sat, Oct 17, 7:00 PM** — Halloween film night with live orchestra\n- **Sun, Oct 18** — no performance\n\nParking fills fast; the Park & Ride shuttles start running 2 hours before showtime.",
+  "expect": "search"
+ },
+ {
+  "id": "sp-013",
+  "area": "search",
+  "prompt": "I just got the new iPhone, how do I move my WhatsApp chats over?",
+  "reply": "Congrats on the new phone! If you're coming from **another iPhone**:\n\n1. On the old phone, open **WhatsApp → Settings → Chats → Transfer Chats to iPhone**.\n2. Install WhatsApp on the new iPhone and sign in with the **same number**.\n3. Scan the QR code shown on the old phone and keep both phones on the same Wi-Fi until it finishes.\n\nComing from **Android**? Use the **Move to iOS** app during setup and tick WhatsApp in the list of data to move.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-014",
+  "area": "time",
+  "prompt": "weather in Addis tomorrow",
+  "reply": "**Tomorrow in Addis Ababa (Thursday, Oct 15):**\n\n- **High / low:** 23°C / 11°C\n- **Rain:** 40% chance of a shower after 3 PM\n- **Wind:** light, from the east\n\nThe evenings get cool, so bring a light jacket if you'll be out late.",
+  "expect": "search"
+ },
+ {
+  "id": "sp-015",
+  "area": "time",
+  "prompt": "Will it rain at 6pm?",
+  "reply": "Looks dry at **6 PM** — only a **10%** chance of rain, with clouds clearing by sunset. Showers return after midnight, so you're fine for the evening.",
+  "expect": "search",
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "sp-016",
+  "area": "time",
+  "prompt": "What time is it in Tokyo?",
+  "reply": "It's **11:20 PM on Wednesday, October 14** in Tokyo (JST, UTC+9).",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-017",
+  "area": "time",
+  "prompt": "What does the weather look like?",
+  "reply": "Right now it's **18°C and partly cloudy** where you are. Expect a high of **21°C** this afternoon with a light breeze; no rain until the weekend.",
+  "expect": "search"
+ },
+ {
+  "id": "sp-018",
+  "area": "time",
+  "prompt": "Remind me to check the forecast tomorrow at 7am",
+  "reply": "Got it — I'll remind you **tomorrow (Thursday) at 7:00 AM** to check the forecast.",
+  "expect": "todo"
+ },
+ {
+  "id": "sp-019",
+  "area": "time",
+  "prompt": "Is it going to be cold in Chicago every day next week?",
+  "reply": "Not every day. Here's **Chicago, Mon Oct 19 – Sun Oct 25**:\n\n| Day | High | Low |\n|---|---|---|\n| Mon | 58°F | 44°F |\n| Tue | 52°F | 39°F |\n| Wed | 47°F | 35°F |\n| Thu | 49°F | 37°F |\n| Fri | 55°F | 42°F |\n| Sat | 61°F | 46°F |\n| Sun | 57°F | 43°F |\n\nMidweek is the cold stretch, with frost possible Wednesday night. Bring a warm coat for those days.",
+  "expect": "search"
+ },
+ {
+  "id": "sp-020",
+  "area": "time",
+  "prompt": "When does the Apple store close today?",
+  "reply": "Your nearest Apple Store closes at **9 PM** today (Wednesday). Tomorrow it's open **10 AM – 9 PM**.\n\nIf you're picking up an order, the store stops handing out pickups about 15 minutes before closing.",
+  "expect": "search"
+ },
+ {
+  "id": "sp-021",
+  "area": "time",
+  "prompt": "What's the time difference between Addis and New York?",
+  "reply": "**Addis Ababa is 7 hours ahead** of New York right now (EAT is UTC+3; New York is on EDT, UTC−4).\n\nAfter US clocks go back on **November 1**, the gap becomes **8 hours** until March.\n\n| Addis | New York |\n|---|---|\n| 9:00 AM | 2:00 AM |\n| 5:00 PM | 10:00 AM |",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-022",
+  "area": "time",
+  "prompt": "Change it to Fahrenheit",
+  "history": [
+   [
+    "user",
+    "weather in Addis tomorrow"
+   ],
+   [
+    "assistant",
+    "Tomorrow in Addis Ababa: high 23°C, low 11°C, 40% chance of a shower after 3 PM."
+   ]
+  ],
+  "reply": "Here it is in Fahrenheit:\n\n- **High / low:** 73°F / 52°F\n- **Rain:** 40% chance of a shower after 3 PM\n\nWant me to use Fahrenheit for weather from now on?",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-023",
+  "area": "time",
+  "prompt": "What time is sunset tomorrow in Cape Town?",
+  "reply": "**Cape Town, Thursday October 15:**\n\nSunrise: 6:16 AM\nSunset: 7:11 PM\n\nFor the best view, head up Signal Hill about 45 minutes before — parking fills up fast on clear evenings.",
+  "expect": "search"
+ },
+ {
+  "id": "sp-024",
+  "area": "time",
+  "prompt": "When does daylight saving time end this year in the US?",
+  "reply": "**Sunday, November 1, 2026** at 2:00 AM — clocks fall back to 1:00 AM, so you get an extra hour of sleep.\n\nPhones and computers change automatically. Set any manual clocks (oven, car, microwave) back one hour before bed on Saturday.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-025",
+  "area": "time",
+  "prompt": "Move my 3pm call to tomorrow",
+  "reply": "Moved your **3 PM call** to **tomorrow (Thursday) at 3:00 PM**.",
+  "expect": "todo"
+ },
+ {
+  "id": "sp-026",
+  "area": "time",
+  "prompt": "Every day at 7am remind me to drink water",
+  "reply": "I'll remind you **every day at 7:00 AM** to drink water.",
+  "expect": "todo"
+ },
+ {
+  "id": "sp-027",
+  "area": "time",
+  "prompt": "What's the weather like in Paris in April?",
+  "reply": "April in Paris is mild but changeable:\n\n- **Highs:** 15–17°C; **lows:** 6–8°C\n- **Rain:** showers on about 9 days, usually short\n- **Daylight:** sunset moves from about 8:20 PM to 9 PM through the month\n\nPack layers, a light waterproof jacket, and a compact umbrella.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-028",
+  "area": "photo",
+  "prompt": "Show me the Eiffel Tower",
+  "reply": "Here's the **Eiffel Tower**, seen from the Trocadéro gardens across the Seine.\n\n- **Height:** 330 m including antennas\n- Created in 1889 for the Exposition Universelle, it was only meant to stand for 20 years.\n- At night it sparkles for five minutes at the top of every hour.\n\nWant a shot of it at night or from the top?",
+  "expect": "photo"
+ },
+ {
+  "id": "sp-029",
+  "area": "photo",
+  "prompt": "What does a capybara look like?",
+  "reply": "Here's a **capybara** — the world's largest rodent:\n\n- Barrel-shaped body, about 1.2 m long and up to 65 kg\n- Coarse reddish-brown fur\n- Blunt, square snout, small ears, and slightly webbed feet\n\nThink of a giant guinea pig that spends half its day in the water.",
+  "expect": "photo"
+ },
+ {
+  "id": "sp-030",
+  "area": "photo",
+  "prompt": "picture of a 1967 Mustang",
+  "reply": "Here's a **1967 Ford Mustang** fastback in Highland Green.\n\nWhat changed for '67:\n\n- A wider, longer body to fit the big-block 390 V8\n- A larger grille and deeper side scoops\n- A concave rear panel with triple tail lights\n\nWant to see the coupe or the convertible too?",
+  "expect": "image_gen"
+ },
+ {
+  "id": "sp-031",
+  "area": "photo",
+  "prompt": "Show me how to tie a tie",
+  "reply": "Here's the **four-in-hand knot** — the easiest one:\n\n1. Drape the tie around your neck, wide end on your right, hanging about 30 cm lower than the narrow end.\n2. Cross the wide end over the narrow end.\n3. Bring it underneath, then across the front again.\n4. Pull it up through the neck loop from underneath.\n5. Push it down through the front loop you just made.\n6. Hold the narrow end and slide the knot up to your collar.\n\nThe tip should just reach your belt buckle. Want the half-Windsor next?",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-032",
+  "area": "photo",
+  "prompt": "show me the code",
+  "history": [
+   [
+    "user",
+    "I need a small Python function that converts a trip budget from USD to EUR."
+   ],
+   [
+    "assistant",
+    "Sure. Should it take the exchange rate as an argument and round to cents?"
+   ],
+   [
+    "user",
+    "Yes, both."
+   ],
+   [
+    "assistant",
+    "Got it. I'll keep it to one function that validates the rate."
+   ]
+  ],
+  "reply": "```python\nfrom decimal import Decimal, ROUND_HALF_UP\n\n\ndef usd_to_eur(amount_usd: float, rate: float) -> Decimal:\n    \"\"\"Convert USD to EUR at `rate` (EUR per 1 USD), rounded to cents.\"\"\"\n    if rate <= 0:\n        raise ValueError(\"rate must be positive\")\n    eur = Decimal(str(amount_usd)) * Decimal(str(rate))\n    return eur.quantize(Decimal(\"0.01\"), rounding=ROUND_HALF_UP)\n\n\nprint(usd_to_eur(1500, 0.86))  # 1290.00\n```\n\nUsing `Decimal` avoids float surprises like `1289.9999999`.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-033",
+  "area": "photo",
+  "prompt": "Can you show me an example?",
+  "history": [
+   [
+    "user",
+    "How do I make a good packing list for a short trip?"
+   ],
+   [
+    "assistant",
+    "Group it by category (clothes, toiletries, tech, documents), plan outfits per day, and pack for the forecast rather than every possibility."
+   ]
+  ],
+  "reply": "Sure — here's one for **3 days in a city, mild weather**:\n\n**Clothes**\n- 2 pants, 3 tops, 1 light jacket\n- 3 underwear, 3 pairs of socks, sleepwear\n- Comfortable walking shoes\n\n**Toiletries**\n- Toothbrush, toothpaste, deodorant\n- Travel-size shampoo, sunscreen\n\n**Tech**\n- Phone + charger, power bank, plug adapter\n\n**Documents**\n- Passport/ID, boarding pass, a card and some cash\n\nDone packing? Do a last check on the three things you can't replace: passport, phone, wallet.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-034",
+  "area": "photo",
+  "prompt": "Where is Kenya?",
+  "reply": "**Kenya** is in **East Africa**, straddling the equator on the Indian Ocean coast.\n\n- **Borders:** Ethiopia (north), Somalia (northeast), Tanzania (south), Uganda (west), South Sudan (northwest)\n- **Capital:** Nairobi\n- **Coast:** Mombasa and the Lamu archipelago\n\nLake Victoria touches its southwest corner.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-035",
+  "area": "photo",
+  "prompt": "Draw me a cat",
+  "reply": "Here's your cat — a fluffy orange tabby curled up on a sunny windowsill, tail wrapped neatly around its paws. Want a different style, like a cartoon or a watercolor?",
+  "expect": "image_gen"
+ },
+ {
+  "id": "sp-036",
+  "area": "photo",
+  "prompt": "image of a sunset",
+  "reply": "Here's a sunset over the Indian Ocean from Diani Beach, Kenya — deep orange fading to violet over the water.\n\nWant a particular place (Santorini, the Grand Canyon, the Serengeti), or an AI-generated one instead?",
+  "expect": "image_gen"
+ },
+ {
+  "id": "sp-037",
+  "area": "photo",
+  "prompt": "Show me another one",
+  "history": [
+   [
+    "user",
+    "Show me the Eiffel Tower"
+   ],
+   [
+    "assistant",
+    "Here's the Eiffel Tower, seen from the Trocadéro gardens across the Seine."
+   ]
+  ],
+  "reply": "Here's another — the tower from the Champ de Mars at dusk, just as the evening lights come on.",
+  "expect": "photo"
+ },
+ {
+  "id": "sp-038",
+  "area": "photo",
+  "prompt": "Can I see it at night?",
+  "history": [
+   [
+    "user",
+    "Tell me about the Sagrada Família"
+   ],
+   [
+    "assistant",
+    "It's Antoni Gaudí's basilica in Barcelona, under construction since 1882. Its central tower, the Tower of Jesus Christ, made it the tallest church in the world in 2026."
+   ]
+  ],
+  "reply": "Here it is at night — the Nativity and Passion facades lit warm gold, with the central Tower of Jesus Christ glowing above the other spires.",
+  "expect": "photo"
+ },
+ {
+  "id": "sp-039",
+  "area": "photo",
+  "prompt": "Send me a photo of the rock-hewn churches in Lalibela",
+  "reply": "Here are the **rock-hewn churches of Lalibela** — this is the cross-shaped **Bete Giyorgis** (Church of St. George), carved straight down into the volcanic rock.\n\n- Carved in the 12th–13th centuries under King Lalibela\n- 11 churches linked by trenches and tunnels\n- A UNESCO World Heritage Site since 1978",
+  "expect": "photo"
+ },
+ {
+  "id": "sp-040",
+  "area": "photo",
+  "prompt": "Get me a picture of a red panda",
+  "reply": "Here's a **red panda** — rusty-red fur, a white-masked face, and a thick ringed tail it wraps around itself like a scarf. Despite the name, it isn't closely related to the giant panda.",
+  "expect": "photo"
+ },
+ {
+  "id": "sp-041",
+  "area": "photo",
+  "prompt": "Generate an image of a cozy cabin in the snow at night",
+  "reply": "Here's your cabin — a small log cabin half-buried in snow, warm light glowing from the windows and smoke curling from the chimney under a starry sky.",
+  "expect": "image_gen"
+ },
+ {
+  "id": "sp-042",
+  "area": "photo",
+  "prompt": "Make me a picture of a dragon drinking buna in Addis",
+  "reply": "Here's your dragon — a friendly green one curled around a clay jebena, sipping buna from a tiny cup on a Piassa rooftop at sunset.",
+  "expect": "image_gen"
+ },
+ {
+  "id": "sp-043",
+  "area": "photo",
+  "prompt": "Show me what a Shiba Inu looks like",
+  "reply": "Here's a **Shiba Inu**:\n\n- Fox-like face, with a curled tail carried over its back\n- Red, sesame, or black-and-tan coat with cream *urajiro* markings on the cheeks and chest\n- Small and compact: about 8–11 kg\n\nIt's the dog from the *doge* meme.",
+  "expect": "photo"
+ },
+ {
+  "id": "sp-044",
+  "area": "photo",
+  "prompt": "Show me the difference between a crocodile and an alligator",
+  "reply": "| | Alligator | Crocodile |\n|---|---|---|\n| **Snout** | Wide, U-shaped | Narrow, V-shaped |\n| **Teeth (mouth closed)** | Upper teeth cover the lower | Big lower 4th tooth sticks out |\n| **Color** | Dark, almost black | Lighter olive or tan |\n| **Habitat** | Fresh water (US, China) | Fresh and salt water across the tropics |\n\nQuick tip: if you can see a big lower tooth while its mouth is shut, it's a crocodile.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-045",
+  "area": "photo",
+  "prompt": "Can you show me the Simien Mountains?",
+  "reply": "Here are the **Simien Mountains** in northern Ethiopia — sheer escarpments dropping more than 1,000 m, with gelada monkeys grazing along the cliff edges.\n\nThe highest peak, **Ras Dashen**, reaches 4,550 m. The best trekking season is October to March.",
+  "expect": "photo"
+ },
+ {
+  "id": "sp-046",
+  "area": "food",
+  "prompt": "What does a pomelo look like inside?",
+  "reply": "Inside, a **pomelo** looks like an oversized grapefruit:\n\n- A **very thick white pith** (2–3 cm) under the green-yellow peel\n- Large, pale yellow or pink segments\n- Each segment wrapped in a tough membrane you peel off before eating\n\nIt's sweeter and less bitter than grapefruit.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-047",
+  "area": "food",
+  "prompt": "show me the menu",
+  "history": [
+   [
+    "user",
+    "Tell me about Tomoca coffee in Addis"
+   ],
+   [
+    "assistant",
+    "Tomoca is a historic Addis Ababa roaster founded in 1953, near Piassa. It's a standing-room espresso bar famous for strong macchiatos and beans you can buy by the kilo."
+   ]
+  ],
+  "reply": "Tomoca keeps it simple. The usual menu at the Piassa shop:\n\n| Drink | Notes |\n|---|---|\n| **Macchiato** | Their signature — small, strong, layered |\n| **Espresso** | Single or double |\n| **Cappuccino** | Milky and foamy |\n| **Spris** | Coffee layered with tea |\n| **Beans to go** | Sold by 250 g, 500 g, or the kilo |\n\nPrices change often, so check the board when you're there.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-048",
+  "area": "places",
+  "prompt": "Can I see the route on a map?",
+  "history": [
+   [
+    "user",
+    "How do I get from Piassa to Bole airport?"
+   ],
+   [
+    "assistant",
+    "The quickest way is a ride-hail (Ride or Feres) down Churchill Avenue and along Africa Avenue (Bole Road) — about 25–40 minutes depending on traffic. The light rail doesn't go to the airport."
+   ]
+  ],
+  "reply": "Here's the route:\n\n1. **Piassa** → south down **Churchill Avenue** to La Gare\n2. East to **Meskel Square**\n3. **Africa Avenue (Bole Road)** straight to **Bole International Airport**\n\nAbout **9 km**, 25–40 minutes. Leave extra time between 5 and 7 PM.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-049",
+  "area": "shopping",
+  "prompt": "Let me see the options",
+  "history": [
+   [
+    "user",
+    "Should I get the MacBook Air or Pro for video editing?"
+   ],
+   [
+    "assistant",
+    "It depends on how heavy your projects are and your budget. I can lay out the options side by side."
+   ]
+  ],
+  "reply": "| Model | Chip | Best for | From |\n|---|---|---|---|\n| **MacBook Air 13\"** | M4 | 1080p edits, short 4K clips | $999 |\n| **MacBook Air 15\"** | M4 | Same, bigger screen | $1,199 |\n| **MacBook Pro 14\"** | M5 | Regular 4K, color grading | $1,599 |\n| **MacBook Pro 14\"/16\"** | M4 Pro / M4 Max | Long 4K/8K timelines, heavy effects | $1,999+ |\n\nFor serious editing the Pro's fan matters: the Air throttles on long exports.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-050",
+  "area": "travel",
+  "prompt": "Show me the steps to renew my US passport",
+  "reply": "To **renew a US passport**:\n\n1. **Check eligibility:** your last passport was issued when you were 16 or older, within the last 15 years, and it isn't damaged.\n2. **Online:** apply at travel.state.gov if you're not traveling for at least 6 weeks.\n3. **By mail:** fill out form **DS-82**, attach a new 2×2 photo, your old passport, and the fee ($130 for a passport book).\n4. **Wait:** routine processing takes 4–6 weeks; expedited (+$60) takes 2–3 weeks.\n\nSet a reminder to renew about 9 months before it expires — many countries require 6 months' validity.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-051",
+  "area": "travel",
+  "prompt": "Show me cheap flights to Nairobi",
+  "reply": "Cheapest round trips I'm seeing from **Addis Ababa (ADD) → Nairobi (NBO)**:\n\n| Airline | Route | Round trip |\n|---|---|---|\n| Ethiopian | Nonstop, ~2 h | ~$310 |\n| Kenya Airways | Nonstop, ~2 h | ~$345 |\n| flydubai | Via Dubai | ~$420 |\n\nMid-week departures in early November are the cheapest. Want me to check specific dates?",
+  "expect": "search"
+ },
+ {
+  "id": "sp-052",
+  "area": "travel",
+  "prompt": "What does a typical day in Tokyo look like?",
+  "reply": "A relaxed first-timer day in **Tokyo**:\n\n- **8:00** — Breakfast at a kissaten, or an onigiri run at a konbini\n- **9:30** — Meiji Shrine, then walk through Harajuku\n- **12:30** — Ramen in Shibuya, then cross the scramble\n- **15:00** — Asakusa and Sensō-ji, stroll Nakamise street\n- **18:00** — Sunset from the free Tokyo Metropolitan Government observatory\n- **20:00** — Izakaya dinner in Shinjuku's Omoide Yokocho\n\nPut a Suica card on your phone; it covers every train and most convenience stores.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-053",
+  "area": "travel",
+  "prompt": "What does a $3,000 budget for 10 days in Italy look like?",
+  "reply": "Here's how **$3,000 for 10 days in Italy** breaks down (international flights not included):\n\n| Category | Per day | 10 days |\n|---|---|---|\n| Lodging (mid-range B&B) | $130 | $1,300 |\n| Food | $70 | $700 |\n| Trains (Rome–Florence–Venice) | — | $200 |\n| Sights & museums | $30 | $300 |\n| Local transport, gelato, extras | $50 | $500 |\n| **Total** | | **$3,000** |\n\nSet aside about 10% as a buffer if you can; Venice and Florence run pricier than Rome.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-054",
+  "area": "places",
+  "prompt": "show me the way to the airport",
+  "reply": "From your location in **Bole**, it's a short trip to **Bole International Airport**:\n\n1. Head south on **Africa Avenue (Bole Road)**\n2. Keep straight past Edna Mall\n3. Follow the signs for **Terminal 2 Departures**\n\nAbout **3.5 km, 10–15 minutes** in current traffic.",
+  "expect": "search"
+ },
+ {
+  "id": "sp-055",
+  "area": "places",
+  "prompt": "coffee near me",
+  "reply": "Coffee spots close to you:\n\n1. **Tomoca (Bole branch)** — 0.4 km, open until 8 PM, ★ 4.6\n2. **Kaldi's Coffee, Bole Medhanialem** — 0.7 km, open until 10 PM, ★ 4.3\n3. **Galani Coffee** — 1.2 km, open until 7 PM, ★ 4.7, great for working\n\nWant directions to one of them?",
+  "expect": "search",
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "sp-056",
+  "area": "places",
+  "prompt": "Best pizza in Rome?",
+  "reply": "Rome does two styles — thin, crispy *tonda romana* and pizza by the slice (*al taglio*).\n\n**Sit-down (tonda):**\n- **Da Remo** (Testaccio) — classic, loud, cheap\n- **Seu Pizza Illuminati** (Trastevere area) — modern, creative toppings\n- **Emma** (near Campo de' Fiori)\n\n**By the slice:**\n- **Pizzarium Bonci** (near the Vatican) — the famous one; expect a line\n- **Forno Campo de' Fiori** — get the *pizza bianca*\n\nMost tonda places only open for dinner, around 7 PM.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-057",
+  "area": "places",
+  "prompt": "Directions to the airport",
+  "reply": "Here's the drive from you to **Bole International Airport**:\n\n- **Distance:** 6.8 km\n- **Time:** about 18 minutes in current traffic\n- **Route:** Africa Avenue (Bole Road) south, then follow the signs for Terminal 2\n\nTraffic builds after 5 PM, so add 15 minutes if you're leaving then.",
+  "expect": "search",
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "sp-058",
+  "area": "places",
+  "prompt": "How far is Paris from London?",
+  "reply": "**Paris to London** is about **344 km (214 miles)** in a straight line.\n\n| Way | Time |\n|---|---|\n| Eurostar (Gare du Nord → St Pancras) | ~2 h 16 min |\n| Flight | ~1 h 15 min in the air, ~4 h door to door |\n| Drive + Channel Tunnel | ~5–6 h |\n\nThe Eurostar is usually fastest city-centre to city-centre.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-059",
+  "area": "places",
+  "prompt": "What's open near me right now?",
+  "reply": "Open now near you:\n\n- **Shoa Supermarket** — open until 10 PM (0.3 km)\n- **Kaldi's Coffee** — open until 10 PM (0.6 km)\n- **24-hour pharmacy on Bole Road** — open all night (0.9 km)\n- **Yod Abyssinia** — traditional restaurant, open until 11 PM, live music tonight (1.4 km)\n\nLooking for something specific — food, pharmacy, groceries?",
+  "expect": "search",
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "sp-060",
+  "area": "places",
+  "prompt": "Is the British Museum free to visit?",
+  "reply": "Yes — **general admission to the British Museum is free**. You can book a free timed ticket online to use the faster entrance, but walk-ins are welcome.\n\n- **Hours:** daily 10:00–17:00, Fridays until 20:30\n- **Paid:** some special exhibitions (around £20)\n\nGo early on a weekday to see the Rosetta Stone without a crowd.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-061",
+  "area": "places",
+  "prompt": "Put the hotels in a table",
+  "history": [
+   [
+    "user",
+    "Where should I stay in Lisbon for 4 nights, mid-range?"
+   ],
+   [
+    "assistant",
+    "Good mid-range picks: Memmo Alfama (rooftop pool, views), The Lumiares in Bairro Alto (apartment-style suites), Hotel Lisboa Plaza near Avenida da Liberdade (classic, quiet), and Casa do Barão in Chiado (boutique guesthouse)."
+   ]
+  ],
+  "reply": "| Hotel | Area | Vibe | Approx./night |\n|---|---|---|---|\n| **Memmo Alfama** | Alfama | Rooftop pool, river views | €220 |\n| **The Lumiares** | Bairro Alto | Apartment suites with kitchenettes | €240 |\n| **Hotel Lisboa Plaza** | Avenida da Liberdade | Classic and quiet | €160 |\n| **Casa do Barão** | Chiado | Boutique guesthouse with a small pool | €150 |\n\nFor 4 nights, Alfama is the most atmospheric; Avenida is the easiest for transport.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-062",
+  "area": "places",
+  "prompt": "Get directions to Bole airport from Piassa",
+  "reply": "**Piassa → Bole International Airport**\n\n1. Head south on **Churchill Avenue** to La Gare\n2. Turn east toward **Meskel Square**\n3. Continue on **Africa Avenue (Bole Road)** to the airport\n\n**About 9 km, 25–35 minutes** right now. A Ride or Feres trip costs roughly 400–500 birr.",
+  "expect": "search",
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "sp-063",
+  "area": "places",
+  "prompt": "What about Lyon?",
+  "history": [
+   [
+    "user",
+    "Best bakeries in Paris?"
+   ],
+   [
+    "assistant",
+    "Top picks: Du Pain et des Idées (pain des amis, escargots), Poilâne (sourdough miche), Mamiche (brioche), and Bo&Mie (viennoiserie)."
+   ]
+  ],
+  "reply": "Lyon is a great bakery city too:\n\n- **Boulangerie du Palais** — famous for the pink *tarte aux pralines*\n- **Pralus** — get the *Praluline*, a brioche loaded with pink pralines\n- **Sève** — patisserie and chocolatier, excellent macarons\n- **Bernachon** — technically a chocolatier, but don't skip it\n\nTry a *coussin de Lyon* while you're there — it's the city's signature sweet.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-064",
+  "area": "places",
+  "prompt": "How long does it take to walk across the Brooklyn Bridge?",
+  "reply": "About **25–40 minutes** at a relaxed pace. The walkway is roughly **1.8 km (1.1 miles)**, and most people stop for photos.\n\n- Start in **Brooklyn (DUMBO)** so you face the Manhattan skyline the whole way.\n- Go early in the morning or near sunset to avoid the midday crowds.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-065",
+  "area": "places",
+  "prompt": "Remove the museums from that plan",
+  "history": [
+   [
+    "user",
+    "Plan a day in Paris for me"
+   ],
+   [
+    "assistant",
+    "Morning: Louvre (9–12). Lunch near the Palais-Royal. Afternoon: Musée d'Orsay (2–4), then a walk along the Seine to the Eiffel Tower. Evening: dinner in Saint-Germain."
+   ]
+  ],
+  "reply": "Here's the day without museums:\n\n- **Morning:** Île de la Cité and Notre-Dame, then the Marais and Place des Vosges\n- **Lunch:** Falafel on Rue des Rosiers\n- **Afternoon:** Jardin du Luxembourg, then stroll the Seine to the Eiffel Tower\n- **Evening:** Dinner in Saint-Germain, then a Seine cruise\n\nMore time outdoors, same easy pace.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-066",
+  "area": "shopping",
+  "prompt": "Should I buy a MacBook Air or Pro?",
+  "reply": "Get the **Air** unless you do sustained heavy work.\n\n| | MacBook Air (M4) | MacBook Pro 14\" (M5) |\n|---|---|---|\n| Price | from $999 | from $1,599 |\n| Cooling | Fanless | Fan |\n| Display | 60 Hz | 120 Hz ProMotion, brighter |\n| Ports | 2× Thunderbolt, MagSafe | 3× Thunderbolt, HDMI, SD card |\n| Weight | 1.24 kg | 1.55 kg |\n\n**Choose the Pro** for long video exports, big code builds, or if you'll use the SD and HDMI ports every day.\n\nAdded bonus: the Air is completely silent, since it has no fan.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-067",
+  "area": "shopping",
+  "prompt": "buy milk",
+  "reply": "Want me to add **Buy milk** to your reminders? When should I remind you — tomorrow morning, or on your way home at 6 PM?",
+  "expect": "todo"
+ },
+ {
+  "id": "sp-068",
+  "area": "shopping",
+  "prompt": "Buy milk tomorrow at 6pm",
+  "reply": "I'll remind you to **buy milk** tomorrow (Thursday) at **6:00 PM**.",
+  "expect": "todo"
+ },
+ {
+  "id": "sp-069",
+  "area": "shopping",
+  "prompt": "Add eggs to my shopping reminders",
+  "reply": "Sure — I'll add **Eggs** to your shopping reminders. When should I remind you?",
+  "expect": "todo"
+ },
+ {
+  "id": "sp-070",
+  "area": "shopping",
+  "prompt": "Buy or lease — which makes more sense for a car I'll keep 3 years?",
+  "reply": "For a car you'll keep **3 years** it's close: leasing usually wins on cash flow, buying wins on total cost if you might keep it longer.\n\n| | Lease | Buy (finance) |\n|---|---|---|\n| Monthly payment | Lower | Higher |\n| Upfront | First month + fees | Down payment |\n| After 3 years | Hand it back (or buy it out) | You own it and can sell it |\n| Mileage limits | Yes, ~10–12k miles/yr | None |\n| Wear charges | Possible | No |\n\n**Lease** if you drive under 12k miles a year and like a new car every 3 years. **Buy** if you drive a lot or might keep it past year 3 — the steepest depreciation happens in years 1–3 either way.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-071",
+  "area": "shopping",
+  "prompt": "Get the second one",
+  "history": [
+   [
+    "user",
+    "Best noise-cancelling headphones under $400?"
+   ],
+   [
+    "assistant",
+    "1. Bose QuietComfort Ultra — best noise cancelling ($379)\n2. Sony WH-1000XM6 — best all-rounder ($399)\n3. Apple AirPods Max — best for iPhone users ($399, often on sale)"
+   ]
+  ],
+  "reply": "Good pick — the **Sony WH-1000XM6** is the best all-rounder. I can't buy it for you, but here's what to know:\n\n- **Where:** Sony's store, Amazon, or Best Buy at $399 list; watch for ~$50 off around Black Friday\n- **Returns:** check the return window (Best Buy gives 15 days) in case the fit isn't right\n\nTip: update the firmware in the Sony Sound Connect app on day one.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-072",
+  "area": "shopping",
+  "prompt": "Make it cheaper",
+  "history": [
+   [
+    "user",
+    "Spec me a PC for 1440p gaming"
+   ],
+   [
+    "assistant",
+    "Here's a ~$1,800 build: Ryzen 7 9800X3D, RTX 5070 Ti, 32 GB DDR5-6000, 2 TB NVMe, B650 board, 850 W Gold PSU, airflow case."
+   ]
+  ],
+  "reply": "Here's a **~$1,080 build** that still handles 1440p well:\n\n| Part | Pick | Approx. |\n|---|---|---|\n| CPU | Ryzen 5 9600X | $200 |\n| GPU | RTX 5060 Ti 16 GB | $430 |\n| RAM | 32 GB DDR5-6000 | $95 |\n| Storage | 1 TB NVMe | $65 |\n| Motherboard | B650 | $140 |\n| PSU | 650 W Gold | $80 |\n| Case | Airflow mid-tower | $70 |\n| **Total** | | **~$1,080** |\n\nYou'll go from ultra to high settings, at roughly 60–100 fps in most games.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-073",
+  "area": "shopping",
+  "prompt": "How much is an iPhone 17 in Ethiopia?",
+  "reply": "In **Ethiopia**, the base **iPhone 17 (256 GB)** is selling for about **180,000–210,000 birr** at phone shops in Bole and Mexico, depending on the seller and the model variant.\n\n- Apple's US price is **$799**\n- Imported phones carry duty, so local prices run well above the US price\n- Check whether it's the eSIM-only US model if you need a physical SIM slot",
+  "expect": "search"
+ },
+ {
+  "id": "sp-074",
+  "area": "shopping",
+  "prompt": "Add it to my list",
+  "history": [
+   [
+    "user",
+    "What's a good blender for smoothies under $100?"
+   ],
+   [
+    "assistant",
+    "The Ninja Professional BL610 ($90) is the best value: 1000 W, crushes ice easily, 72 oz pitcher. If you want single-serve cups, the NutriBullet Pro 900 ($80) is great."
+   ]
+  ],
+  "reply": "I'll add **Buy Ninja Professional BL610 blender** to your list. Want a reminder at a specific time, like Saturday morning?",
+  "expect": "todo"
+ },
+ {
+  "id": "sp-075",
+  "area": "shopping",
+  "prompt": "Get my mom something nice for under $50 — ideas? She loves gardening.",
+  "reply": "Gardening gifts under $50:\n\n1. **Garden kneeler + tool pouch** (~$35)\n2. **Herb seed starter kit** with labeled pots (~$25)\n3. **Bypass pruning shears** (~$45) — gardeners always need a good pair\n4. **Goatskin gardening gloves** (~$20)\n5. **Hand-painted plant markers** (~$18)\n\nIf she already has the basics, the shears are the one she'll use every day.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-076",
+  "area": "shopping",
+  "prompt": "Change the currency to euros",
+  "history": [
+   [
+    "user",
+    "Compare the Kindle Paperwhite, Kobo Clara BW, and Kindle Colorsoft"
+   ],
+   [
+    "assistant",
+    "| E-reader | Price |\n|---|---|\n| Kindle Paperwhite | $159 |\n| Kobo Clara BW | $139 |\n| Kindle Colorsoft | $249 |"
+   ]
+  ],
+  "reply": "Prices changed to euros (EU list prices, VAT included):\n\n| E-reader | Price |\n|---|---|\n| Kindle Paperwhite | €169.99 |\n| Kobo Clara BW | €149.99 |\n| Kindle Colorsoft | €279.99 |\n\nEU prices are a bit higher than a straight conversion because VAT is included.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-077",
+  "area": "shopping",
+  "prompt": "Compare AirPods Pro 3 and Sony WF-1000XM5 for running",
+  "reply": "| | AirPods Pro 3 | Sony WF-1000XM5 |\n|---|---|---|\n| **Fit while running** | Secure, extra tip sizes in the box | Foam tips seal well but can loosen with sweat |\n| **Water resistance** | IP57 | IPX4 |\n| **Heart-rate sensing** | Yes, works with the Workout app | No |\n| **Battery (ANC on)** | ~8 h | ~8 h |\n| **Price** | $249 | ~$230 (often on sale) |\n\nFor running, the **AirPods Pro 3** win — better sweat rating and built-in heart rate. Added bonus: Live Translation works mid-run if you're traveling.\n\nOn Android? Get the Sonys.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-078",
+  "area": "travel",
+  "prompt": "Can you get me a cheap flight to Nairobi?",
+  "reply": "I can't book it, but here are the cheapest options I found for **Addis Ababa → Nairobi**:\n\n| Date | Airline | Fare (one way) |\n|---|---|---|\n| Tue, Oct 20 | Ethiopian (nonstop, ~2 h) | $168 |\n| Wed, Oct 21 | Kenya Airways (nonstop) | $175 |\n| Sat, Oct 24 | Ethiopian | $214 |\n\nBooking directly on the airline's site makes changes easiest. Want me to check return dates?",
+  "expect": "search"
+ },
+ {
+  "id": "sp-079",
+  "area": "travel",
+  "prompt": "What should I pack for 3 days in Paris?",
+  "reply": "Mid-October in Paris is cool (highs ~15°C, lows ~8°C) with a good chance of rain. Pack light:\n\n**Clothes**\n- 2 pairs of trousers or jeans, 3 tops, 1 warm sweater\n- A water-resistant jacket\n- Comfortable walking shoes — you'll do 15,000+ steps a day\n- A scarf\n\n**Essentials**\n- Compact umbrella\n- Type E plug adapter\n- Power bank for maps and photos\n- Small cross-body bag (pickpockets work the Métro)\n\nEverything fits in a carry-on.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-080",
+  "area": "travel",
+  "prompt": "Things to do in Tokyo tomorrow",
+  "reply": "Here's a solid plan for **Thursday** in Tokyo:\n\n- **Morning:** Breakfast at the Tsukiji Outer Market, then teamLab Planets in Toyosu (book a timed ticket)\n- **Afternoon:** Asakusa and Sensō-ji, then a Sumida River boat to Hamarikyu Gardens\n- **Evening:** Shibuya Sky at sunset, dinner at Ebisu Yokocho\n\nMost museums are open Thursdays (many close Mondays). If it rains, swap the river boat for the Mori Art Museum in Roppongi.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-081",
+  "area": "travel",
+  "prompt": "Do I need a visa for Kenya with an Ethiopian passport?",
+  "reply": "**No visa needed.** Since January 2025, Kenya has let citizens of almost all African countries, including Ethiopia, enter **without a visa or eTA** for up to **2 months**.\n\n- Bring a passport valid for 6+ months\n- Have a return ticket and proof of accommodation\n- Carry your yellow fever certificate; it may be checked\n\nThese rules have changed several times recently, so double-check with the Kenyan embassy before you fly.",
+  "expect": "search"
+ },
+ {
+  "id": "sp-082",
+  "area": "travel",
+  "prompt": "Change my itinerary to 4 days instead of 3",
+  "history": [
+   [
+    "user",
+    "Plan 3 days in Paris"
+   ],
+   [
+    "assistant",
+    "Day 1: Louvre, Tuileries, Seine walk.\nDay 2: Montmartre, Sacré-Cœur, Opéra.\nDay 3: Eiffel Tower, Musée d'Orsay, Saint-Germain."
+   ]
+  ],
+  "reply": "Updated! Here's the 4-day version:\n\n- **Day 1:** Louvre, Tuileries, walk the Seine at sunset\n- **Day 2:** Montmartre, Sacré-Cœur, Palais Garnier\n- **Day 3:** Eiffel Tower, Musée d'Orsay, Saint-Germain\n- **Day 4 (new):** Day trip to Versailles — palace in the morning, gardens and Marie Antoinette's estate after lunch\n\nBook Versailles tickets ahead; it's closed on Mondays.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-083",
+  "area": "travel",
+  "prompt": "Set a budget for my trip to Zanzibar — 7 days, mid-range",
+  "reply": "Here's a **7-day mid-range budget for Zanzibar** (per person, flights not included):\n\n| Item | Per day | 7 days |\n|---|---|---|\n| Hotel (beach or Stone Town boutique) | $90 | $630 |\n| Food & drinks | $40 | $280 |\n| Transport (taxis, dala-dala) | $15 | $105 |\n| Activities (spice tour, Prison Island, snorkeling) | $35 | $245 |\n| Entry fees & tips | $10 | $70 |\n| **Total** | **$190** | **$1,330** |\n\nAlso budget for the **mandatory Zanzibar travel insurance (~$44)**. Set aside about 10% extra for surprises.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-084",
+  "area": "travel",
+  "prompt": "Add a day trip to Versailles",
+  "history": [
+   [
+    "user",
+    "Plan 3 days in Paris"
+   ],
+   [
+    "assistant",
+    "Day 1: Louvre, Tuileries, Seine walk.\nDay 2: Montmartre, Sacré-Cœur, Opéra.\nDay 3: Eiffel Tower, Musée d'Orsay, Saint-Germain."
+   ]
+  ],
+  "reply": "Versailles needs most of a day, so here's the reshuffled plan:\n\n- **Day 1:** Louvre, Tuileries, Eiffel Tower at night\n- **Day 2:** Montmartre, Sacré-Cœur, Opéra\n- **Day 3:** **Versailles** — RER C from Saint-Michel (~45 min), palace at 9 AM, gardens after lunch\n\nI dropped Orsay and Saint-Germain to make room; swap them back in if you'd rather skip Montmartre. Versailles is closed on Mondays.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-085",
+  "area": "travel",
+  "prompt": "Add a stop in Bahir Dar on Saturday at 9am",
+  "history": [
+   [
+    "user",
+    "Plan a road trip from Addis to Gondar, leaving Friday"
+   ],
+   [
+    "assistant",
+    "Day 1 (Fri): Addis → Debre Markos (about 300 km), overnight there. Day 2 (Sat): Debre Markos → Gondar via Bahir Dar (about 440 km). Day 3: explore Gondar's castles."
+   ]
+  ],
+  "reply": "Here's the updated road trip:\n\n- **Fri:** Addis → Debre Markos (~300 km), overnight\n- **Sat, 9:00 AM:** Arrive in **Bahir Dar** — boat out to the Lake Tana monasteries (2–3 h), lunch by the lake\n- **Sat afternoon:** Bahir Dar → Gondar (~180 km, about 3 h)\n- **Sun:** Gondar's Fasil Ghebbi castles\n\nDebre Markos to Bahir Dar is about 265 km (4–5 hours), so leave by 4:30 AM to make it by 9.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-086",
+  "area": "travel",
+  "prompt": "My flight got cancelled — what are my rights under EU261?",
+  "reply": "If your flight was **cancelled less than 14 days before departure** and it left from the EU (or was an EU airline flying into the EU), you're entitled to:\n\n1. **Refund or rerouting** — your choice, not the airline's\n2. **Care while you wait:** meals, drinks, and a hotel if it runs overnight\n3. **Compensation**, unless the cause was extraordinary (bad weather, air-traffic-control strikes):\n\n| Distance | Compensation |\n|---|---|\n| Up to 1,500 km | €250 |\n| 1,500–3,500 km | €400 |\n| Over 3,500 km | €600 |\n\nKeep your receipts and file the claim with the airline first; if they don't respond, go to the national enforcement body.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-087",
+  "area": "travel",
+  "prompt": "Is ET 500 on time today?",
+  "reply": "**Ethiopian ET 500** (Addis Ababa → Washington Dulles) is **on time** today.\n\nScheduled: 10:40 AM departure, Terminal 2\nGate moved: A4 → A7\nEstimated arrival: 8:25 PM local time at IAD\n\nGates can change late, so check the Ethiopian app before you head through security.",
+  "expect": "search"
+ },
+ {
+  "id": "sp-088",
+  "area": "travel",
+  "prompt": "Remind me to check in for my Nairobi flight on Friday at 9am",
+  "reply": "I'll remind you on **Friday, October 16 at 9:00 AM** to check in for your Nairobi flight. Online check-in opens 24 hours before departure.",
+  "expect": "todo"
+ },
+ {
+  "id": "sp-089",
+  "area": "food",
+  "prompt": "Add a recipe for jollof rice",
+  "reply": "Here's a classic **Nigerian jollof rice** (serves 4):\n\n**Ingredients**\n- 2 cups long-grain parboiled rice, rinsed\n- 4 plum tomatoes, 2 red bell peppers, 1 scotch bonnet, 1 onion — blended\n- 3 tbsp tomato paste\n- ⅓ cup vegetable oil\n- 2 cups chicken stock\n- 2 bay leaves, 1 tsp thyme, 1 tsp curry powder, 2 stock cubes, salt\n\n**Method**\n1. Fry a sliced half-onion in the oil, add the tomato paste, and fry 5 minutes until it darkens.\n2. Add the blended pepper mix and cook it down 20–25 minutes, until thick and the oil rises.\n3. Stir in the stock, spices, and bay leaves; taste for salt.\n4. Add the rice, cover tightly with foil and the lid, and cook on low for 30 minutes.\n5. Stir once, cover, and cook 10 more minutes. For the smoky *party jollof* flavor, let the bottom catch slightly.\n\nServe with fried plantain and chicken.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-090",
+  "area": "food",
+  "prompt": "Make a grocery list for tacos",
+  "reply": "Here's a grocery list for **taco night for 4**:\n\n**Protein**\n- 1 lb (450 g) ground beef or chicken thighs\n\n**Produce**\n- 1 white onion, 1 bunch cilantro, 3 limes\n- 2 tomatoes, 2 avocados (for guac)\n- 1 jalapeño, shredded lettuce\n\n**Dairy**\n- Shredded cheese, sour cream\n\n**Pantry**\n- 12 corn or flour tortillas\n- Taco seasoning (or cumin, chili powder, paprika, garlic powder)\n- Salsa or hot sauce\n\nWant me to scale it up for a party?",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-091",
+  "area": "food",
+  "prompt": "What temp should a steak be for medium-rare?",
+  "reply": "**Medium-rare: 130–135°F (54–57°C)** internal. Pull it about 5°F early — it keeps cooking while it rests.\n\nFull doneness chart:\n\nRare: 120–125°F (49–52°C)\nMedium-rare: 130–135°F (54–57°C)\nMedium: 140–145°F (60–63°C)\nMedium-well: 150–155°F (66–68°C)\nWell done: 160°F+ (71°C+)\n\nRest it 5 minutes before slicing.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-092",
+  "area": "food",
+  "prompt": "Remove seeds from a pomegranate without the mess?",
+  "reply": "The **water-bowl method** keeps juice off your counter:\n\n1. Cut off the crown, then score the skin along the white ridges (4–6 cuts, skin-deep only).\n2. Submerge it in a bowl of cold water and pull it apart into sections.\n3. Under the water, push the seeds (arils) out with your thumbs.\n4. The pith floats and the seeds sink — skim off the pith and drain.\n\nNo bowl handy? Halve it, hold it cut-side down over a bowl, and whack the back with a wooden spoon.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-093",
+  "area": "food",
+  "prompt": "Finish the recipe — what do I do after the dough rises?",
+  "history": [
+   [
+    "user",
+    "Give me a simple white bread recipe"
+   ],
+   [
+    "assistant",
+    "Mix 500 g bread flour, 7 g instant yeast, 10 g salt, 30 g butter, and 300 ml warm water. Knead 10 minutes until smooth, then let it rise in a covered bowl for about an hour, until doubled."
+   ]
+  ],
+  "reply": "After the first rise:\n\n1. **Knock it back** — press out the air and shape it into a tight log.\n2. Put it seam-side down in a greased 2 lb (900 g) loaf tin.\n3. **Second rise:** cover and leave 30–45 minutes, until it domes about 2 cm above the tin.\n4. Heat the oven to **220°C (200°C fan)**.\n5. Bake **30–35 minutes**. It's done when it's deep golden and sounds hollow when you tap the base.\n6. Cool on a rack for at least an hour before slicing.\n\nDone right, the crumb will be soft and even.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-094",
+  "area": "food",
+  "prompt": "Complete the list with drinks",
+  "history": [
+   [
+    "user",
+    "I'm hosting 10 friends for a game night, what food should I get?"
+   ],
+   [
+    "assistant",
+    "- 2 large pizzas\n- Chips with salsa and guacamole\n- Chicken wings (about 40)\n- A veggie tray with hummus\n- Brownies or cookies"
+   ]
+  ],
+  "reply": "Here's the full list with drinks:\n\n**Food**\n- 2 large pizzas\n- Chips with salsa and guacamole\n- Chicken wings (about 40)\n- Veggie tray with hummus\n- Brownies or cookies\n\n**Drinks**\n- 2 × 12-packs of soda (cola plus something citrus)\n- 2 large bottles of sparkling water\n- 1 jug of lemonade or iced tea\n- A case of beer or cider, if your friends drink\n- Ice — 2 bags, more than you think\n\nThat's roughly 3 drinks per person over the evening.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-095",
+  "area": "food",
+  "prompt": "Set the oven to what temperature for sourdough?",
+  "reply": "For a sourdough boule in a **Dutch oven**:\n\n1. **Preheat to 250°C (480°F)** with the pot inside for 45–60 minutes.\n2. Bake **20 minutes with the lid on** at 250°C.\n3. Remove the lid, lower to **230°C (450°F)**, and bake **20–25 minutes** more until deep brown.\n\nThe loaf is done at an internal temperature of about **96°C (205°F)**.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-096",
+  "area": "food",
+  "prompt": "Delete the onions from that recipe",
+  "history": [
+   [
+    "user",
+    "Quick weeknight chili recipe?"
+   ],
+   [
+    "assistant",
+    "Brown 500 g ground beef with 1 diced onion and 2 garlic cloves. Add 1 can kidney beans, 1 can crushed tomatoes, 2 tbsp chili powder, 1 tsp cumin, salt. Simmer 25 minutes."
+   ]
+  ],
+  "reply": "Here it is without onions:\n\n1. Brown **500 g ground beef** with **2 minced garlic cloves**.\n2. Add **1 can kidney beans**, **1 can crushed tomatoes**, **2 tbsp chili powder**, **1 tsp cumin**, and salt.\n3. Simmer **25 minutes**.\n\nTo make up for the onion's sweetness, add half a diced red bell pepper or a pinch of sugar.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-097",
+  "area": "food",
+  "prompt": "I'm under the weather — what soup should I make?",
+  "reply": "Sorry you're feeling rough. Easy, soothing options:\n\n1. **Chicken noodle soup** — broth, carrots, celery, noodles, lots of black pepper\n2. **Ginger-garlic broth** — simmer stock with a thumb of sliced ginger, 4 garlic cloves, and a squeeze of lemon\n3. **Red lentil soup** — lentils, onion, cumin, lemon; ready in 25 minutes\n4. **Egg drop soup** — 10 minutes and very gentle on the stomach\n\nDrink plenty of water and rest. If a high fever lasts more than a couple of days, see a doctor.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-098",
+  "area": "food",
+  "prompt": "Best Ethiopian restaurant in DC that's open right now?",
+  "reply": "Open right now in DC:\n\n1. **Letena** (Columbia Heights) — open until 10 PM, ★ 4.7, great kitfo\n2. **Chercher** (Shaw) — open until 10 PM, ★ 4.6, a Michelin Bib Gourmand pick\n3. **Dukem** (U Street) — open until 11 PM, ★ 4.3, big portions and live music some nights\n\nWant directions to one of them?",
+  "expect": "search"
+ },
+ {
+  "id": "sp-099",
+  "area": "food",
+  "prompt": "Today I want to cook something with lentils, any ideas?",
+  "reply": "A few lentil ideas, from quick to slow:\n\n1. **Misir wot** (Ethiopian red lentil stew) — berbere, onions, garlic; 40 minutes\n2. **Dal tadka** — yellow lentils with a cumin-garlic tempering; 30 minutes\n3. **Lentil salad** — green lentils, feta, cucumber, lemon vinaigrette; 25 minutes\n4. **Mujadara** — lentils and rice with deeply caramelized onions; 1 hour\n\nRed lentils cook fastest and don't need soaking. Want the misir wot recipe?",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-100",
+  "area": "food",
+  "prompt": "Pick up where we left off — what was step 4?",
+  "history": [
+   [
+    "user",
+    "Walk me through making doro wot"
+   ],
+   [
+    "assistant",
+    "Step 1: Cook 4 finely chopped red onions in a dry pot on low for 30–40 minutes until soft and dark.\nStep 2: Add ½ cup niter kibbeh and 3 tbsp berbere; cook 10 minutes.\nStep 3: Stir in garlic, ginger, and a splash of water; simmer 10 minutes.\nStep 4: Add the chicken pieces (soaked in lemon water first) and simmer 30 minutes.\nStep 5: Add peeled hard-boiled eggs and simmer 10 more minutes."
+   ]
+  ],
+  "reply": "**Step 4:** Add the chicken pieces — rinsed and soaked in lemon water first — to the berbere sauce, and simmer covered for about **30 minutes**, turning them now and then so they soak up the color.\n\nNext is step 5: the peeled hard-boiled eggs go in for the last 10 minutes.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-101",
+  "area": "photo",
+  "prompt": "show me the html page",
+  "history": [
+   [
+    "user",
+    "Build me a simple landing page for my coffee shop, Buna Corner."
+   ],
+   [
+    "assistant",
+    "Sure — a one-page site with a header, your hours and a short welcome. Want the full HTML?"
+   ]
+  ],
+  "reply": "Here's the full page — save it as `index.html` and open it in your browser:\n\n```html\n<!doctype html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <title>Buna Corner</title>\n  <style>\n    body { font-family: system-ui, sans-serif; margin: 0; }\n    header { background: #4b2e1e; color: #fff; padding: 3rem 1.5rem; text-align: center; }\n    main { max-width: 40rem; margin: 2rem auto; padding: 0 1.5rem; }\n  </style>\n</head>\n<body>\n  <header>\n    <h1>Buna Corner</h1>\n    <p>Fresh-roasted Ethiopian coffee in Bole</p>\n  </header>\n  <main>\n    <h2>Hours</h2>\n    <p>Mon–Sat, 7:00 – 19:00</p>\n  </main>\n</body>\n</html>\n```\n\nWant me to add a menu section next?",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-102",
+  "area": "photo",
+  "prompt": "show me a regex",
+  "reply": "Here's a common one — it matches an email address:\n\n```regex\n^[\\w.+-]+@[\\w-]+\\.[\\w.]+$\n```\n\n- `[\\w.+-]+` — the name part: letters, digits, dots, plus and hyphen\n- `@` — the at sign\n- `[\\w-]+\\.[\\w.]+` — the domain, with at least one dot\n\nTell me what you want to match and I'll write one for that.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-103",
+  "area": "photo",
+  "prompt": "show me the sql query",
+  "history": [
+   [
+    "user",
+    "I have customers and orders tables. How do I see who spent the most this year?"
+   ],
+   [
+    "assistant",
+    "Join the two tables, filter to this year's orders, and sum the totals per customer. Want the query?"
+   ]
+  ],
+  "reply": "Here's the query — it returns each customer's total spend this year, highest first:\n\n```sql\nSELECT c.id, c.name, SUM(o.total) AS spent\nFROM customers c\nJOIN orders o ON o.customer_id = c.id\nWHERE o.created_at >= DATE '2026-01-01'\nGROUP BY c.id, c.name\nORDER BY spent DESC;\n```\n\nAdd `LIMIT 10` at the end if you only want the top ten.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-104",
+  "area": "photo",
+  "prompt": "show me a recipe",
+  "reply": "Here's a quick **shiro wot** for two:\n\n**Ingredients**\n- 1 red onion, finely chopped\n- 3 tbsp oil or niter kibbeh\n- 2 garlic cloves, minced\n- ½ cup shiro powder\n- 2 cups water, salt\n\n**Method**\n1. Cook the onion in the oil until soft, about 5 minutes.\n2. Add the garlic and cook 1 minute.\n3. Whisk the shiro powder into the water, pour it in and stir.\n4. Simmer on low for 10–15 minutes, stirring, until thick and glossy.\n\nServe hot with injera. Want something non-Ethiopian instead?",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-105",
+  "area": "photo",
+  "prompt": "show me a poem",
+  "reply": "**Morning in Entoto**\n\nThe mist lies low on eucalyptus hills,\nthe city wakes in coffee smoke and bells;\nsomewhere a kettle hums, a rooster calls,\nand light comes slowly down the stone-cut walls.\n\nWant one on a different theme?",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-106",
+  "area": "photo",
+  "prompt": "show me a button mushroom",
+  "reply": "Here's a **button mushroom** (*Agaricus bisporus*): small, round and white, with a smooth cap and a short stem.\n\nIt's the same species as cremini and portobello — just picked young.",
+  "expect": "photo"
+ },
+ {
+  "id": "sp-107",
+  "area": "photo",
+  "prompt": "What do bed bugs look like?",
+  "reply": "**Bed bugs** are small, flat, oval insects:\n\n- **Size:** about 5 mm — roughly an apple seed\n- **Color:** reddish-brown; rounder and redder after feeding\n- **Young (nymphs):** smaller and almost see-through\n\nLook for them along mattress seams and headboards, along with tiny dark spots and shed skins.",
+  "expect": "photo"
+ },
+ {
+  "id": "sp-108",
+  "area": "photo",
+  "prompt": "show me a fish hook",
+  "reply": "Here's a **fish hook**: a curved steel wire with a sharp point and a small barb that keeps the fish on, and an eye at the top where the line is tied.\n\nSmaller numbers (size 2) are bigger hooks; size 10 and up are tiny ones for small fish.",
+  "expect": "photo"
+ },
+ {
+  "id": "sp-109",
+  "area": "photo",
+  "prompt": "show me the bug",
+  "history": [
+   [
+    "user",
+    "Why is my average always a bit low?\n\n```python\ndef average(scores):\n    total = 0\n    for i in range(1, len(scores)):\n        total += scores[i]\n    return total / len(scores)\n```"
+   ],
+   [
+    "assistant",
+    "There's an off-by-one in the loop, so one score never gets added. Want me to point it out?"
+   ]
+  ],
+  "reply": "It's the start of the `range`:\n\n```python\nfor i in range(1, len(scores)):\n```\n\nStarting at `1` skips `scores[0]`, so the first score is never added but you still divide by the full count. Loop over the list directly:\n\n```python\ndef average(scores):\n    return sum(scores) / len(scores)\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-110",
+  "area": "photo",
+  "prompt": "show me the tests",
+  "history": [
+   [
+    "user",
+    "Write a Python function that checks whether a string is a palindrome, with tests."
+   ],
+   [
+    "assistant",
+    "```python\ndef is_palindrome(text: str) -> bool:\n    cleaned = \"\".join(c.lower() for c in text if c.isalnum())\n    return cleaned == cleaned[::-1]\n```\n\nI can add pytest tests for it next."
+   ]
+  ],
+  "reply": "```python\nimport pytest\n\nfrom palindrome import is_palindrome\n\n\n@pytest.mark.parametrize(\n    \"text, expected\",\n    [\n        (\"racecar\", True),\n        (\"A man, a plan, a canal: Panama\", True),\n        (\"hello\", False),\n        (\"\", True),\n    ],\n)\ndef test_is_palindrome(text, expected):\n    assert is_palindrome(text) is expected\n```\n\nRun them with `pytest -q`.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-111",
+  "area": "photo",
+  "prompt": "show me the git branch",
+  "history": [
+   [
+    "user",
+    "I made a few commits but I'm not sure which branch I'm on."
+   ],
+   [
+    "assistant",
+    "Git can tell you. The current branch is the one marked with `*` in `git branch`. Want the command?"
+   ]
+  ],
+  "reply": "Run:\n\n```bash\ngit branch --show-current\n```\n\nIt prints just the name of the branch you're on. Plain `git branch` lists every local branch and marks the current one with `*`.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-112",
+  "area": "photo",
+  "prompt": "show me a custom hook",
+  "history": [
+   [
+    "user",
+    "Every one of my React components repeats the same fetch + loading + error state. Is there a cleaner way?"
+   ],
+   [
+    "assistant",
+    "Yes: move that logic into a custom hook, and each component calls one function instead of repeating three pieces of state."
+   ]
+  ],
+  "reply": "```tsx\nimport { useEffect, useState } from \"react\";\n\nexport function useFetch<T>(url: string) {\n  const [data, setData] = useState<T | null>(null);\n  const [loading, setLoading] = useState(true);\n  const [error, setError] = useState<Error | null>(null);\n\n  useEffect(() => {\n    fetch(url)\n      .then((res) => res.json())\n      .then(setData)\n      .catch(setError)\n      .finally(() => setLoading(false));\n  }, [url]);\n\n  return { data, loading, error };\n}\n```\n\nThen in a component: `const { data, loading } = useFetch<User[]>(\"/api/users\");`",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-113",
+  "area": "photo",
+  "prompt": "show me the unit test",
+  "history": [
+   [
+    "user",
+    "Write a TypeScript function that converts Celsius to Fahrenheit, with a unit test."
+   ],
+   [
+    "assistant",
+    "```ts\nexport function toFahrenheit(celsius: number): number {\n  return (celsius * 9) / 5 + 32;\n}\n```\n\nI'll add the Jest test next."
+   ]
+  ],
+  "reply": "```ts\nimport { toFahrenheit } from \"./temperature\";\n\ndescribe(\"toFahrenheit\", () => {\n  it.each([\n    [0, 32],\n    [100, 212],\n    [-40, -40],\n  ])(\"%d°C is %d°F\", (celsius, fahrenheit) => {\n    expect(toFahrenheit(celsius)).toBe(fahrenheit);\n  });\n});\n```\n\nRun it with `npx jest temperature`.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-114",
+  "area": "photo",
+  "prompt": "show me the failing test",
+  "history": [
+   [
+    "user",
+    "CI is red on my PR: 1 failed, 41 passed.\n\n```\nFAILED tests/test_cart.py::test_total_with_discount - assert 90.0 == 81.0\n```"
+   ],
+   [
+    "assistant",
+    "Only one test fails, and it's the discount total. It expects the 10% discount applied twice, but the cart applies it once."
+   ]
+  ],
+  "reply": "This is the one that fails:\n\n```python\ndef test_total_with_discount():\n    cart = Cart(items=[Item(price=100)], discounts=[0.1, 0.1])\n    assert cart.total() == 81.0\n```\n\nIt stacks two 10% discounts (100 → 90 → 81), but `Cart.total()` only applies the first one, so it returns 90.0.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-115",
+  "area": "photo",
+  "prompt": "show me the submit button",
+  "history": [
+   [
+    "user",
+    "Build me a simple React Native login form with email and password fields."
+   ],
+   [
+    "assistant",
+    "```tsx\n<TextInput value={email} onChangeText={setEmail} placeholder=\"Email\" />\n<TextInput value={password} onChangeText={setPassword} placeholder=\"Password\" secureTextEntry />\n```\n\nWant me to add the submit button?"
+   ]
+  ],
+  "reply": "```tsx\n<Pressable\n  onPress={() => onSubmit(email, password)}\n  disabled={!email || !password}\n  accessibilityRole=\"button\"\n  style={styles.submit}\n>\n  <Text style={styles.submitText}>Log in</Text>\n</Pressable>\n```\n\nIt stays disabled until both fields have text.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-116",
+  "area": "photo",
+  "prompt": "show me the react hook",
+  "history": [
+   [
+    "user",
+    "In React, how do I run some code after the component renders?"
+   ],
+   [
+    "assistant",
+    "That's what the `useEffect` hook is for. It runs after render, and again whenever one of its dependencies changes."
+   ]
+  ],
+  "reply": "```tsx\nuseEffect(() => {\n  document.title = `${count} clicks`;\n}, [count]);\n```\n\nThe array at the end lists the values it depends on: here it runs after the first render and again whenever `count` changes.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-117",
+  "area": "photo",
+  "prompt": "show me the feature branch",
+  "history": [
+   [
+    "user",
+    "I want to work on the login screen without touching main. How should I set that up in git?"
+   ],
+   [
+    "assistant",
+    "Make a feature branch off an up-to-date main, commit there, and open a pull request when it's ready."
+   ]
+  ],
+  "reply": "```bash\ngit switch main\ngit pull\ngit switch -c feature/login-screen\n```\n\nCommit on `feature/login-screen` as usual, then `git push -u origin feature/login-screen` and open the pull request.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-118",
+  "area": "photo",
+  "prompt": "what does a custom hook look like",
+  "history": [
+   [
+    "user",
+    "My teacher keeps saying \"just write a custom hook\" for our React project."
+   ],
+   [
+    "assistant",
+    "A custom hook is an ordinary function whose name starts with `use` and that calls other hooks, so components can share the logic."
+   ]
+  ],
+  "reply": "```tsx\nfunction useToggle(initial = false) {\n  const [on, setOn] = useState(initial);\n  const toggle = useCallback(() => setOn((value) => !value), []);\n  return [on, toggle] as const;\n}\n```\n\nA component then writes `const [open, toggleOpen] = useToggle();`.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-119",
+  "area": "photo",
+  "prompt": "what does an olive branch look like",
+  "reply": "An **olive branch** is a slim, woody twig with narrow, lance-shaped leaves: dark grey-green on top and silvery underneath. In season it carries small oval olives, green ripening to purple-black.\n\nIt's an old symbol of peace, which is why it appears on the UN flag.",
+  "expect": "photo"
+ },
+ {
+  "id": "sp-120",
+  "area": "photo",
+  "prompt": "show me the main stage at Coachella",
+  "reply": "Here's the **Coachella Stage**, the festival's main stage at the Empire Polo Club in Indio, California: a huge open-air stage facing the polo field, framed by big video screens, with the San Jacinto mountains behind the crowd.",
+  "expect": "photo"
+ },
+ {
+  "id": "sp-121",
+  "area": "places",
+  "prompt": "How long does it take to walk around Central Park?",
+  "reply": "The full loop along the park's edge is about **10 km (6.1 miles)**, so **2 to 2½ hours** at an easy pace. The inner Drive loop is a little shorter, about 6 miles, if you'd rather stay inside the park.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-122",
+  "area": "places",
+  "prompt": "how long is the walk across the Golden Gate Bridge?",
+  "reply": "The bridge is about **2.7 km (1.7 miles)** long, so one way takes **30–45 minutes** with photo stops. Bring a jacket: it's windy and often foggy up there.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-123",
+  "area": "places",
+  "prompt": "how long does it take to walk to the stadium from here?",
+  "reply": "Addis Ababa Stadium is about **2.4 km** from you, so roughly **30 minutes** on foot via Churchill Avenue.",
+  "expect": "search",
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "sp-124",
+  "area": "places",
+  "prompt": "how long does it take to drive to the airport?",
+  "reply": "I need your location to tell you that.",
+  "expect": "instant"
+ },
+ {
+  "id": "sp-125",
+  "area": "places",
+  "prompt": "I leave at 5pm and need to arrive by 7pm, how long is the drive to the airport?",
+  "reply": "From you the drive to **Bole International Airport** is about **20 minutes** without traffic, but after 5 PM it often takes **35–45 minutes**. Leaving at 5 you'll make 7 PM comfortably.",
+  "expect": "search",
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "sp-126",
+  "area": "time",
+  "prompt": "I want to know if it will rain tomorrow",
+  "reply": "Tomorrow looks mostly dry: a **20%** chance of a light shower after 4 PM, high of **22°C**.",
+  "expect": "search",
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "sp-127",
+  "area": "time",
+  "prompt": "Do you know whether it's going to snow this weekend?",
+  "reply": "No snow expected this weekend: lows stay around **4°C**, with rain on Sunday.",
+  "expect": "search",
+  "location": "Toronto, Canada"
+ },
+ {
+  "id": "sp-128",
+  "area": "food",
+  "prompt": "Even if it rains we're still having the picnic, any food ideas?",
+  "reply": "Rain-proof picnic ideas:\n\n1. **Wraps** — they travel well and stay dry in foil\n2. **Pasta salad** — fine at room temperature\n3. **Brownies** — no plates needed",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-129",
+  "area": "time",
+  "prompt": "I wonder whether it will matter if I skip breakfast",
+  "reply": "For most people, skipping breakfast now and then is fine; what matters more is eating well across the day.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-130",
+  "area": "search",
+  "prompt": "who is the president of ethiopia",
+  "reply": "**Taye Atske Selassie** has been President of Ethiopia since October 2024.",
+  "expect": "search"
+ },
+ {
+  "id": "sp-131",
+  "area": "search",
+  "prompt": "who is the ceo of tesla",
+  "reply": "**Elon Musk** is Tesla's CEO.",
+  "expect": "search"
+ },
+ {
+  "id": "sp-132",
+  "area": "writing",
+  "prompt": "the president of my club asked me to give a speech, any tips?",
+  "reply": "A few tips:\n\n1. **Open with a story** — one short, personal moment\n2. **Keep it to three points**\n3. **End by thanking the members**",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-133",
+  "area": "search",
+  "prompt": "explain what a prime minister does",
+  "reply": "A prime minister leads the government: they chair the cabinet, set policy priorities and answer to parliament.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-134",
+  "area": "writing",
+  "prompt": "write a speech for a CEO announcing a new office",
+  "reply": "Good morning, everyone. Today we open a new chapter: our new office brings our teams closer to the customers we serve.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-135",
+  "area": "search",
+  "prompt": "what's the population of Ethiopia",
+  "reply": "Ethiopia has about 135 million people, according to recent estimates.",
+  "expect": "search"
+ },
+ {
+  "id": "sp-136",
+  "area": "search",
+  "prompt": "who won the champions league",
+  "reply": "The latest winners are listed in the results above.",
+  "expect": "search"
+ },
+ {
+  "id": "sp-137",
+  "area": "search",
+  "prompt": "best restaurants in Addis",
+  "reply": "A few well-reviewed places in Addis Ababa are listed above.",
+  "expect": "search"
+ },
+ {
+  "id": "sp-138",
+  "area": "search",
+  "prompt": "is Abiy Ahmed responsible for the Tigray war",
+  "reply": "Responsibility is contested: documented accounts point to both the federal government and the TPLF.",
+  "expect": "search"
+ },
+ {
+  "id": "sp-139",
+  "area": "search",
+  "prompt": "how many people live in Nairobi",
+  "reply": "Nairobi has roughly 5 million residents in the city proper.",
+  "expect": "search"
+ },
+ {
+  "id": "sp-140",
+  "area": "chitchat",
+  "prompt": "what are the benefits of drinking water",
+  "reply": "Water keeps you hydrated, helps your kidneys and supports focus.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-141",
+  "area": "chitchat",
+  "prompt": "how many minutes in a good nap",
+  "reply": "About 10 to 20 minutes for a power nap.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-142",
+  "area": "writing",
+  "prompt": "write a short bio for Haile Gebrselassie for a school poster",
+  "reply": "Haile Gebrselassie is an Ethiopian distance runner and two-time Olympic champion.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-143",
+  "area": "chitchat",
+  "prompt": "what is photosynthesis",
+  "reply": "Photosynthesis is how plants turn light into chemical energy.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-144",
+  "area": "chitchat",
+  "prompt": "what is the tallest mountain in the world",
+  "reply": "Mount Everest, at 8,849 metres.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-145",
+  "area": "chitchat",
+  "prompt": "how far is the moon from the earth",
+  "reply": "About 384,400 km on average.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-146",
+  "area": "search",
+  "prompt": "what's happening in the world today",
+  "reply": "Here are today's top stories from the results above.",
+  "expect": "search"
+ },
+ {
+  "id": "sp-147",
+  "area": "photo",
+  "prompt": "show the vertex",
+  "history": [
+   [
+    "user",
+    "graph y = x^2 - 5x + 6"
+   ],
+   [
+    "assistant",
+    "Here's the parabola y = x² − 5x + 6. It opens upward and crosses the x-axis twice."
+   ]
+  ],
+  "reply": "The vertex is at **(2.5, −0.25)**, the lowest point of the parabola.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-148",
+  "area": "photo",
+  "prompt": "show me the roots",
+  "history": [
+   [
+    "user",
+    "graph y = x^2 - 5x + 6"
+   ],
+   [
+    "assistant",
+    "Here's the parabola y = x² − 5x + 6. It opens upward and crosses the x-axis twice."
+   ]
+  ],
+  "reply": "The roots are **x = 2** and **x = 3**, where the curve crosses the x-axis.",
+  "expect": "answer"
+ },
+ {
+  "id": "sp-149",
+  "area": "photo",
+  "prompt": "show me the roots of a mangrove tree",
+  "reply": "Here are **mangrove roots**: arching prop roots that hold the tree above the water, and pencil-like roots that poke up from the mud to breathe.",
+  "expect": "photo"
+ },
+ {
+  "id": "sp-150",
+  "area": "photo",
+  "prompt": "do you have a picture of him?",
+  "history": [
+   [
+    "user",
+    "who was charles from charles's law anyway?"
+   ],
+   [
+    "assistant",
+    "Jacques Charles was a French physicist and balloonist who flew the first hydrogen balloon in 1783 and found that a gas expands as it warms."
+   ]
+  ],
+  "reply": "Here's **Jacques Charles** in a portrait from the 1780s, around the time of his balloon flights.",
+  "expect": "photo"
+ },
+ {
+  "id": "sp-151",
+  "area": "photo",
+  "prompt": "you got a photo of a gelada?",
+  "reply": "Here's a **gelada**: a grass-eating monkey of the Ethiopian highlands with a bright red patch on its chest.",
+  "expect": "photo"
+ },
+ {
+  "id": "sp-152",
+  "area": "photo",
+  "prompt": "have you got a picture of the titanic wreck?",
+  "reply": "Here's the **Titanic wreck** on the floor of the North Atlantic, about 3,800 m down.",
+  "expect": "photo"
+ },
+ {
+  "id": "sp-153",
+  "area": "photo",
+  "prompt": "is there a picture of her?",
+  "reply": "Here's **Marie Curie** in her laboratory in Paris, around 1920.",
+  "expect": "photo",
+  "history": [
+   [
+    "user",
+    "who was marie curie?"
+   ],
+   [
+    "assistant",
+    "Marie Curie was a physicist and chemist who won two Nobel Prizes, for physics in 1903 and chemistry in 1911."
+   ]
+  ]
+ }
+]

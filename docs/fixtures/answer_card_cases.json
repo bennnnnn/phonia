@@ -1,0 +1,146 @@
+[
+  {
+    "name": "a times fact",
+    "value": "4 × 4 = 16",
+    "working": "4 × 4",
+    "answer": "16"
+  },
+  {
+    "name": "a chain of operations",
+    "value": "8 − 8 − 8 = -8",
+    "working": "8 − 8 − 8",
+    "answer": "-8"
+  },
+  {
+    "name": "a factorial worked out",
+    "value": "5! = 5 × 4 × 3 × 2 × 1 = 120",
+    "working": "5! = 5 × 4 × 3 × 2 × 1",
+    "answer": "120"
+  },
+  {
+    "name": "fractions read as division",
+    "value": "1 ÷ 2 + 1 ÷ 4 = \\frac{3}{4}",
+    "working": "1 ÷ 2 + 1 ÷ 4",
+    "answer": "\\frac{3}{4}"
+  },
+  {
+    "name": "fractions in LaTeX",
+    "value": "\\frac{1}{2} + \\frac{1}{3} = \\frac{5}{6}",
+    "working": "\\frac{1}{2} + \\frac{1}{3}",
+    "answer": "\\frac{5}{6}"
+  },
+  {
+    "name": "decimals",
+    "value": "2.50 + 3.75 = 6.25",
+    "working": "2.50 + 3.75",
+    "answer": "6.25"
+  },
+  {
+    "name": "LaTeX operators",
+    "value": "23 \\times 47 = 1{,}081",
+    "working": "23 \\times 47",
+    "answer": "1{,}081"
+  },
+  {
+    "name": "a power",
+    "value": "2^{10} = 1024",
+    "working": "2^{10}",
+    "answer": "1024"
+  },
+  {
+    "name": "an approximate result keeps its sign",
+    "value": "22 \\div 7 \\approx 3.14",
+    "working": "22 \\div 7",
+    "answer": "\\approx 3.14"
+  },
+  {
+    "name": "the exact and decimal forms stay together",
+    "value": "\\frac{1}{2} + \\frac{1}{3} = \\frac{5}{6} \\approx 0.833",
+    "working": "\\frac{1}{2} + \\frac{1}{3}",
+    "answer": "\\frac{5}{6} \\approx 0.833"
+  },
+  {
+    "name": "a named answer stays whole",
+    "value": "x = 1",
+    "working": null,
+    "answer": "x = 1"
+  },
+  {
+    "name": "two answers stay whole",
+    "value": "x = 2 \\text{ or } x = 3",
+    "working": null,
+    "answer": "x = 2 \\text{ or } x = 3"
+  },
+  {
+    "name": "a list stays whole",
+    "value": "x = 2, x = 3",
+    "working": null,
+    "answer": "x = 2, x = 3"
+  },
+  {
+    "name": "a physics answer names its quantity",
+    "value": "a = 3.47\\,\\mathrm{m/s^2}",
+    "working": null,
+    "answer": "a = 3.47\\,\\mathrm{m/s^2}"
+  },
+  {
+    "name": "a chemistry answer names its quantity",
+    "value": "pH = 2.00",
+    "working": null,
+    "answer": "pH = 2.00"
+  },
+  {
+    "name": "one value written two ways",
+    "value": "\\frac{5}{6} \\approx 0.833",
+    "working": null,
+    "answer": "\\frac{5}{6} \\approx 0.833"
+  },
+  {
+    "name": "a decimal as a fraction",
+    "value": "0.5 = \\frac{1}{2}",
+    "working": null,
+    "answer": "0.5 = \\frac{1}{2}"
+  },
+  {
+    "name": "a function's value names it",
+    "value": "f(2) = 7",
+    "working": null,
+    "answer": "f(2) = 7"
+  },
+  {
+    "name": "a lone negative number",
+    "value": "-8",
+    "working": null,
+    "answer": "-8"
+  },
+  {
+    "name": "a factored expression",
+    "value": "\\left(x - 3\\right) \\left(x - 2\\right)",
+    "working": null,
+    "answer": "\\left(x - 3\\right) \\left(x - 2\\right)"
+  },
+  {
+    "name": "an inequality",
+    "value": "x \\leq 3",
+    "working": null,
+    "answer": "x \\leq 3"
+  },
+  {
+    "name": "a value with a unit",
+    "value": "1000\\ \\mathrm{m}",
+    "working": null,
+    "answer": "1000\\ \\mathrm{m}"
+  },
+  {
+    "name": "a statement in words",
+    "value": "5 \\div 0 \\text{ is undefined}",
+    "working": null,
+    "answer": "5 \\div 0 \\text{ is undefined}"
+  },
+  {
+    "name": "a root is not split",
+    "value": "\\sqrt{16} = 4",
+    "working": null,
+    "answer": "\\sqrt{16} = 4"
+  }
+]

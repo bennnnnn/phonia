@@ -1,0 +1,1268 @@
+[
+ {
+  "id": "td-001",
+  "area": "todo",
+  "prompt": "remind me to call mom tomorrow at 6pm",
+  "history": [],
+  "reply": "I'll remind you tomorrow evening.\n\n```reminder\n{\"title\": \"Call mom\", \"due_at\": \"2026-10-15T18:00:00+03:00\"}\n```",
+  "expect": "save"
+ },
+ {
+  "id": "td-002",
+  "area": "todo",
+  "prompt": "remind me to pay rent on Friday at 9am",
+  "history": [],
+  "reply": "Set: pay rent — Friday, Oct 16, 9:00 AM.",
+  "expect": "save"
+ },
+ {
+  "id": "td-003",
+  "area": "todo",
+  "prompt": "Remind me to take my vitamins every day at 8:00 am",
+  "history": [],
+  "reply": "Daily vitamin reminder, starting tomorrow morning.\n\n```reminder\n{\"title\": \"Take my vitamins\", \"due_at\": \"2026-10-15T08:00:00+03:00\", \"recurrence_rule\": \"daily\"}\n```",
+  "expect": "save"
+ },
+ {
+  "id": "td-004",
+  "area": "todo",
+  "prompt": "add a reminder to submit the visa form on Monday at 10:30am",
+  "history": [],
+  "reply": "```reminder\n{\"title\": \"Submit the visa form\", \"due_at\": \"2026-10-19T10:30:00+03:00\"}\n```\n\nSet: submit the visa form — Monday, Oct 19, 10:30 AM.",
+  "expect": "save"
+ },
+ {
+  "id": "td-005",
+  "area": "todo",
+  "prompt": "remind me tomorrow at 7am to go for a run",
+  "history": [],
+  "reply": "Early start — nice.\n\n```reminder\n{\"title\": \"Go for a run\", \"due_at\": \"2026-10-15T07:00:00+03:00\"}\n```",
+  "expect": "save"
+ },
+ {
+  "id": "td-006",
+  "area": "todo",
+  "prompt": "6pm",
+  "history": [
+   [
+    "user",
+    "remind me to call mom tomorrow"
+   ],
+   [
+    "assistant",
+    "When should I remind you?"
+   ]
+  ],
+  "reply": "Set: call mom — Thursday, Oct 15, 6:00 PM.",
+  "expect": "save"
+ },
+ {
+  "id": "td-007",
+  "area": "todo",
+  "prompt": "6",
+  "history": [
+   [
+    "user",
+    "remind me to pick up the dry cleaning on Saturday"
+   ],
+   [
+    "assistant",
+    "When should I remind you?"
+   ]
+  ],
+  "reply": "Got it — 6 PM on Saturday.\n\n```reminder\n{\"title\": \"Pick up the dry cleaning\", \"due_at\": \"2026-10-17T18:00:00+03:00\"}\n```",
+  "expect": "save"
+ },
+ {
+  "id": "td-008",
+  "area": "todo",
+  "prompt": "at 7:30 in the morning",
+  "history": [
+   [
+    "user",
+    "add gym on Thursday"
+   ],
+   [
+    "assistant",
+    "Sure — what time?"
+   ]
+  ],
+  "reply": "```reminder\n{\"title\": \"Gym\", \"due_at\": \"2026-10-15T07:30:00+03:00\"}\n```\n\nSet: gym — Thursday, Oct 15, 7:30 AM.",
+  "expect": "save"
+ },
+ {
+  "id": "td-009",
+  "area": "todo",
+  "prompt": "remind me to renew my passport on October 30 at 11am",
+  "history": [],
+  "reply": "```reminder\n{\"title\": \"Renew my passport\", \"due_at\": \"2026-10-30T11:00:00+03:00\"}\n```\n\nI'll remind you on Friday, Oct 30 at 11:00 AM.",
+  "expect": "save"
+ },
+ {
+  "id": "td-010",
+  "area": "todo",
+  "prompt": "remind me every Monday at 9am to send the weekly report",
+  "history": [],
+  "reply": "```reminder\n{\"title\": \"Send the weekly report\", \"due_at\": \"2026-10-19T09:00:00+03:00\", \"recurrence_rule\": \"weekly\"}\n```\n\nSet: send the weekly report — Monday, Oct 19, 9:00 AM · weekly.",
+  "expect": "save"
+ },
+ {
+  "id": "td-011",
+  "area": "todo",
+  "prompt": "remind me to take out the trash tonight at 9pm",
+  "history": [],
+  "reply": "```reminder\n{\"title\": \"Take out the trash\", \"due_at\": \"2026-10-14T21:00:00+03:00\"}\n```",
+  "expect": "save"
+ },
+ {
+  "id": "td-012",
+  "area": "todo",
+  "prompt": "Can you remind me to call the plumber tomorrow at 10am?",
+  "history": [],
+  "reply": "Sure!\n\n```reminder\n{\"title\": \"Call the plumber\", \"due_at\": \"2026-10-15T10:00:00+03:00\"}\n```",
+  "expect": "save"
+ },
+ {
+  "id": "td-013",
+  "area": "todo",
+  "prompt": "remind me at noon tomorrow to check on the bread dough",
+  "history": [],
+  "reply": "```reminder\n{\"title\": \"Check on the bread dough\", \"due_at\": \"2026-10-15T12:00:00+03:00\"}\n```\n\nSet: check on the bread dough — Thursday, Oct 15, 12:00 PM.",
+  "expect": "save"
+ },
+ {
+  "id": "td-014",
+  "area": "todo",
+  "prompt": "today at 4pm",
+  "history": [
+   [
+    "user",
+    "remind me to send the invoice"
+   ],
+   [
+    "assistant",
+    "When should I remind you?"
+   ]
+  ],
+  "reply": "```reminder\n{\"title\": \"Send the invoice\", \"due_at\": \"2026-10-14T16:00:00+03:00\"}\n```\n\nSet: send the invoice — Wednesday, Oct 14, 4:00 PM.",
+  "expect": "save"
+ },
+ {
+  "id": "td-015",
+  "area": "todo",
+  "prompt": "remind me to call mom tomorrow",
+  "history": [],
+  "reply": "When should I remind you?",
+  "expect": "ask_time"
+ },
+ {
+  "id": "td-016",
+  "area": "todo",
+  "prompt": "add buy milk",
+  "history": [],
+  "reply": "Sure — what time?",
+  "expect": "ask_time"
+ },
+ {
+  "id": "td-017",
+  "area": "todo",
+  "prompt": "remind me to stretch tomorrow",
+  "history": [],
+  "reply": "Sure — what time tomorrow?",
+  "expect": "ask_time"
+ },
+ {
+  "id": "td-018",
+  "area": "todo",
+  "prompt": "add a reminder to book flights on Friday",
+  "history": [],
+  "reply": "What time on Friday should I remind you?",
+  "expect": "ask_time"
+ },
+ {
+  "id": "td-019",
+  "area": "todo",
+  "prompt": "remind me to email the landlord",
+  "history": [],
+  "reply": "When should I remind you?",
+  "expect": "ask_time"
+ },
+ {
+  "id": "td-020",
+  "area": "todo",
+  "prompt": "can you add laundry to my to-do list",
+  "history": [],
+  "reply": "Sure — what time should I remind you to do the laundry?",
+  "expect": "ask_time"
+ },
+ {
+  "id": "td-021",
+  "area": "todo",
+  "prompt": "remind me to take my medicine in the evening",
+  "history": [],
+  "reply": "What time in the evening — 7 PM?",
+  "expect": "ask_time"
+ },
+ {
+  "id": "td-022",
+  "area": "todo",
+  "prompt": "tomorrow",
+  "history": [
+   [
+    "user",
+    "remind me to call grandma"
+   ],
+   [
+    "assistant",
+    "When should I remind you?"
+   ]
+  ],
+  "reply": "What time tomorrow?",
+  "expect": "ask_time"
+ },
+ {
+  "id": "td-023",
+  "area": "todo",
+  "prompt": "move the dentist reminder to Thursday",
+  "history": [],
+  "reply": "What time on Thursday?",
+  "expect": "ask_time"
+ },
+ {
+  "id": "td-024",
+  "area": "todo",
+  "prompt": "mark call mom as done",
+  "history": [],
+  "reply": "Done: call mom.",
+  "expect": "change"
+ },
+ {
+  "id": "td-025",
+  "area": "todo",
+  "prompt": "delete the dentist reminder",
+  "history": [],
+  "reply": "Deleted: dentist appointment.",
+  "expect": "change"
+ },
+ {
+  "id": "td-026",
+  "area": "todo",
+  "prompt": "move gym to 7pm",
+  "history": [],
+  "reply": "Moved: gym — Thursday, Oct 15, 7:00 PM.",
+  "expect": "change"
+ },
+ {
+  "id": "td-027",
+  "area": "todo",
+  "prompt": "reschedule pay rent to Saturday at 10am",
+  "history": [],
+  "reply": "Moved: pay rent — Saturday, Oct 17, 10:00 AM.",
+  "expect": "change"
+ },
+ {
+  "id": "td-028",
+  "area": "todo",
+  "prompt": "complete the laundry task",
+  "history": [],
+  "reply": "Done: laundry.",
+  "expect": "change"
+ },
+ {
+  "id": "td-029",
+  "area": "todo",
+  "prompt": "uncheck buy milk",
+  "history": [],
+  "reply": "Reopened: buy milk.",
+  "expect": "change"
+ },
+ {
+  "id": "td-030",
+  "area": "todo",
+  "prompt": "make it daily",
+  "history": [
+   [
+    "user",
+    "remind me to take my vitamins tomorrow at 8am"
+   ],
+   [
+    "assistant",
+    "Set: take my vitamins — Thursday, Oct 15, 8:00 AM."
+   ]
+  ],
+  "reply": "Moved: take my vitamins — Thursday, Oct 15, 8:00 AM · daily.",
+  "expect": "change"
+ },
+ {
+  "id": "td-031",
+  "area": "todo",
+  "prompt": "mark it as done",
+  "history": [
+   [
+    "user",
+    "remind me to water the plants today at 6:30 pm"
+   ],
+   [
+    "assistant",
+    "Set: water the plants — Wednesday, Oct 14, 6:30 PM."
+   ]
+  ],
+  "reply": "Done: water the plants.",
+  "expect": "change"
+ },
+ {
+  "id": "td-032",
+  "area": "todo",
+  "prompt": "remove the gym reminder",
+  "history": [],
+  "reply": "Deleted: gym.",
+  "expect": "change"
+ },
+ {
+  "id": "td-033",
+  "area": "todo",
+  "prompt": "change call mom to 8pm",
+  "history": [],
+  "reply": "Moved: call mom — Thursday, Oct 15, 8:00 PM.",
+  "expect": "change"
+ },
+ {
+  "id": "td-034",
+  "area": "todo",
+  "prompt": "what are my reminders today?",
+  "history": [],
+  "reply": "Here's what you have today:\n\n- **Water the plants** — 6:30 PM\n- **Take out the trash** — 9:00 PM",
+  "expect": "read"
+ },
+ {
+  "id": "td-035",
+  "area": "todo",
+  "prompt": "what reminders do I have this week?",
+  "history": [],
+  "reply": "This week:\n\n- **Call mom** — Thu, Oct 15, 6:00 PM\n- **Pay rent** — Fri, Oct 16, 9:00 AM\n- **Pick up the dry cleaning** — Sat, Oct 17, 6:00 PM",
+  "expect": "read"
+ },
+ {
+  "id": "td-036",
+  "area": "todo",
+  "prompt": "show my reminders",
+  "history": [],
+  "reply": "Here are your open reminders:\n\n- **Take out the trash** — Wednesday, Oct 14, 9:00 PM\n- **Call mom** — Thursday, Oct 15, 6:00 PM\n- **Pay rent** — Friday, Oct 16, 9:00 AM\n- **Submit the visa form** — Monday, Oct 19, 10:30 AM\n- **Laundry** — no time",
+  "expect": "read"
+ },
+ {
+  "id": "td-037",
+  "area": "todo",
+  "prompt": "do I have any reminders tomorrow?",
+  "history": [],
+  "reply": "Tomorrow (Thursday, Oct 15):\n\n- **Gym** — 7:30 AM\n- **Call the plumber** — 10:00 AM\n- **Call mom** — 6:00 PM",
+  "expect": "read"
+ },
+ {
+  "id": "td-038",
+  "area": "todo",
+  "prompt": "list my todos",
+  "history": [],
+  "reply": "Your to-dos:\n\n- **Buy milk** — Thursday, Oct 15, 5:00 PM\n- **Pay rent** — Friday, Oct 16, 9:00 AM\n- **Renew my passport** — Friday, Oct 30, 11:00 AM\n- **Laundry** — no time\n\nDone: call the plumber.",
+  "expect": "read"
+ },
+ {
+  "id": "td-039",
+  "area": "calendar",
+  "prompt": "what's on my calendar today?",
+  "history": [],
+  "reply": "Here's your Google Calendar for today (Wednesday, Oct 14):\n\n- **10:00–10:30 AM** — Team standup\n- **2:00–3:00 PM** — Design review\n\nYou also have one reminder tonight: *Take out the trash* at 9:00 PM.",
+  "expect": "read"
+ },
+ {
+  "id": "td-040",
+  "area": "calendar",
+  "prompt": "any meetings tomorrow?",
+  "history": [],
+  "reply": "Yes — two on Thursday, Oct 15:\n\n- **11:00 AM–12:00 PM** — 1:1 with Hana\n- **3:30–4:00 PM** — Vendor call",
+  "expect": "answer"
+ },
+ {
+  "id": "td-041",
+  "area": "calendar",
+  "prompt": "am I free Friday afternoon?",
+  "history": [],
+  "reply": "Mostly. On Friday, Oct 16 you have one event after noon:\n\n- **3:00–4:00 PM** — Sprint retro\n\nYou're free from 12:00 to 3:00 PM and after 4:00 PM.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-042",
+  "area": "calendar",
+  "prompt": "what's my schedule this week?",
+  "history": [],
+  "reply": "Here's the rest of your week from Google Calendar:\n\n**Wednesday, Oct 14**\n- 10:00–10:30 AM — Team standup\n- 2:00–3:00 PM — Design review\n\n**Thursday, Oct 15**\n- 11:00 AM–12:00 PM — 1:1 with Hana\n- 3:30–4:00 PM — Vendor call\n\n**Friday, Oct 16**\n- 3:00–4:00 PM — Sprint retro\n\nFrom your reminders: *Call mom* Thursday at 6:00 PM and *Pay rent* Friday at 9:00 AM.",
+  "expect": "read"
+ },
+ {
+  "id": "td-043",
+  "area": "calendar",
+  "prompt": "schedule a meeting with Sara on Friday at 3pm",
+  "history": [],
+  "reply": "Here's the event — tap **Add to Calendar** to confirm.\n\n```calendar_proposal\n{\"title\": \"Meeting with Sara\", \"start_at\": \"2026-10-16T15:00:00+03:00\", \"end_at\": \"2026-10-16T16:00:00+03:00\"}\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "td-044",
+  "area": "calendar",
+  "prompt": "add lunch with Dawit to my calendar on Thursday from 1pm to 2pm",
+  "history": [],
+  "reply": "Ready to add — confirm below.\n\n```calendar_proposal\n{\"title\": \"Lunch with Dawit\", \"start_at\": \"2026-10-15T13:00:00+03:00\", \"end_at\": \"2026-10-15T14:00:00+03:00\"}\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "td-045",
+  "area": "calendar",
+  "prompt": "book a haircut appointment on Saturday at 11am",
+  "history": [],
+  "reply": "I've drafted it for Saturday morning — tap **Add to Calendar** to save it.\n\n```calendar_proposal\n{\"title\": \"Haircut\", \"start_at\": \"2026-10-17T11:00:00+03:00\", \"end_at\": \"2026-10-17T12:00:00+03:00\"}\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "td-046",
+  "area": "calendar",
+  "prompt": "block off tomorrow from 9am to 11am for deep work",
+  "history": [],
+  "reply": "```calendar_proposal\n{\"title\": \"Deep work\", \"start_at\": \"2026-10-15T09:00:00+03:00\", \"end_at\": \"2026-10-15T11:00:00+03:00\"}\n```\n\nThat's clear on your calendar — no conflicts with your 11:00 AM 1:1 with Hana.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-047",
+  "area": "calendar",
+  "prompt": "schedule a call with the bank next week",
+  "history": [],
+  "reply": "Which day and time next week works for the call with the bank? Once you tell me, I'll draft the event for you to confirm.",
+  "expect": "ask_time"
+ },
+ {
+  "id": "td-048",
+  "area": "settings",
+  "prompt": "switch to dark mode",
+  "history": [],
+  "reply": "I can switch that for you: Appearance → Dark.\n\n```settings_proposal\n{\"proposal_id\": \"8d3f1c2a-6b4e-4f7a-9c1d-2e5b7a9f0c31\", \"changes\": [{\"field\": \"appearance\", \"value\": \"dark\", \"label\": \"Dark\"}]}\n```",
+  "expect": "settings"
+ },
+ {
+  "id": "td-049",
+  "area": "settings",
+  "prompt": "change the language to Spanish",
+  "history": [],
+  "reply": "You can change the language in Settings → Language.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-050",
+  "area": "settings",
+  "prompt": "be more casual",
+  "history": [],
+  "reply": "Sure, I'll keep it casual. 😊",
+  "expect": "answer"
+ },
+ {
+  "id": "td-051",
+  "area": "settings",
+  "prompt": "use the pro model by default",
+  "history": [],
+  "reply": "You can pick the model in Settings → Models.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-052",
+  "area": "settings",
+  "prompt": "reply in Amharic from now on",
+  "history": [],
+  "reply": "እሺ፣ ከአሁን ጀምሮ በአማርኛ እመልሳለሁ።",
+  "expect": "answer"
+ },
+ {
+  "id": "td-053",
+  "area": "settings",
+  "prompt": "change my name to Bini",
+  "history": [],
+  "reply": "Sure — I'll call you Bini from now on. To update the name on your account too, open **Settings → Profile** and edit *Name*.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-054",
+  "area": "settings",
+  "prompt": "turn off notifications",
+  "history": [],
+  "reply": "You can switch those off in **Settings → Notifications** — toggle off reminder and nudge notifications there. Your saved reminders will still show in your To-dos list.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-055",
+  "area": "memory",
+  "prompt": "remember that I'm allergic to nuts",
+  "history": [],
+  "reply": "Got it — I'll remember you're allergic to nuts and keep that in mind for recipes and food suggestions.",
+  "expect": "memory"
+ },
+ {
+  "id": "td-056",
+  "area": "memory",
+  "prompt": "forget my address",
+  "history": [],
+  "reply": "Done — I've removed your address from memory.",
+  "expect": "memory"
+ },
+ {
+  "id": "td-057",
+  "area": "memory",
+  "prompt": "please remember my sister's birthday is March 3",
+  "history": [],
+  "reply": "Saved — your sister's birthday is March 3. Want a reminder a few days before?",
+  "expect": "memory"
+ },
+ {
+  "id": "td-058",
+  "area": "memory",
+  "prompt": "stop remembering where I work",
+  "history": [],
+  "reply": "Okay — I've removed your workplace from memory and won't save it again unless you ask.",
+  "expect": "memory"
+ },
+ {
+  "id": "td-059",
+  "area": "memory",
+  "prompt": "forget that I said I'm vegetarian",
+  "history": [],
+  "reply": "Done — I've forgotten that you're vegetarian.",
+  "expect": "memory"
+ },
+ {
+  "id": "td-060",
+  "area": "memory",
+  "prompt": "I'm moving to Lisbon next month, please remember that",
+  "history": [],
+  "reply": "Noted — I'll remember you're moving to Lisbon next month (November 2026). Exciting!",
+  "expect": "memory"
+ },
+ {
+  "id": "td-061",
+  "area": "lookalike",
+  "prompt": "Can you add 3 + 4?",
+  "history": [],
+  "reply": "3 + 4 = **7**.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-062",
+  "area": "lookalike",
+  "prompt": "get me a pancake recipe",
+  "history": [],
+  "reply": "## Classic fluffy pancakes\n\n*Makes about 8 pancakes*\n\n**Ingredients**\n- 1 ½ cups (190 g) all-purpose flour\n- 2 tbsp sugar\n- 2 tsp baking powder\n- ½ tsp salt\n- 1 ¼ cups (300 ml) milk\n- 1 egg\n- 3 tbsp melted butter, plus more for the pan\n- 1 tsp vanilla (optional)\n\n**Steps**\n1. Whisk the flour, sugar, baking powder and salt in a large bowl.\n2. In another bowl, whisk the milk, egg, melted butter and vanilla.\n3. Pour the wet ingredients into the dry and stir until *just* combined — a few lumps are fine. Overmixing makes them tough.\n4. Rest the batter 5 minutes while you heat a pan over medium heat and butter it lightly.\n5. Pour about ¼ cup of batter per pancake. Flip when bubbles form on top and the edges look set (2–3 minutes), then cook 1–2 minutes more.\n\nServe with maple syrup, berries, or a squeeze of lemon and sugar.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-063",
+  "area": "lookalike",
+  "prompt": "remind me what a closure is",
+  "history": [],
+  "reply": "A **closure** is a function that keeps access to the variables from the scope where it was created, even after that outer function has finished running.\n\n```javascript\nfunction makeCounter() {\n  let count = 0;          // lives in makeCounter's scope\n  return function () {\n    count += 1;           // still reachable here\n    return count;\n  };\n}\n\nconst next = makeCounter();\nnext(); // 1\nnext(); // 2\n```\n\n`makeCounter` has returned, but the inner function still \"closes over\" `count`, so each call sees and updates the same variable.\n\n**Why it's useful**\n- Private state (like `count` above, which nothing else can touch)\n- Callbacks and event handlers that remember their setup values\n- Function factories, e.g. `makeMultiplier(3)`",
+  "expect": "answer"
+ },
+ {
+  "id": "td-064",
+  "area": "lookalike",
+  "prompt": "can you remind me the quadratic formula",
+  "history": [],
+  "reply": "For $ax^2 + bx + c = 0$ (with $a \\neq 0$):\n\n$$x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$$\n\nThe part under the root, $b^2 - 4ac$, is the **discriminant**:\n- **> 0** → two real solutions\n- **= 0** → one repeated solution\n- **< 0** → two complex solutions\n\n**Example:** $x^2 - 5x + 6 = 0$ gives $x = \\frac{5 \\pm \\sqrt{25 - 24}}{2} = \\frac{5 \\pm 1}{2}$, so $x = 3$ or $x = 2$.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-065",
+  "area": "lookalike",
+  "prompt": "add salt to taste?",
+  "history": [],
+  "reply": "\"Add salt to taste\" means there's no exact amount — you season gradually and adjust until it tastes right to you.\n\n**How to do it well**\n1. Start small — a pinch, or about ¼ tsp for a pot of soup.\n2. Stir, wait a few seconds, and taste.\n3. Repeat until the flavors taste bright rather than flat.\n\n**Tips**\n- Taste near the end, since sauces and soups concentrate as they reduce.\n- If the dish has salty ingredients (soy sauce, cheese, stock cubes), add those first and salt last.\n- Overdid it? Dilute with more unsalted liquid or base ingredients; a squeeze of lemon can also balance it.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-066",
+  "area": "lookalike",
+  "prompt": "add 5 and 7",
+  "history": [],
+  "reply": "5 + 7 = **12**.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-067",
+  "area": "lookalike",
+  "prompt": "mark my essay out of 10",
+  "history": [
+   [
+    "user",
+    "Can you give feedback on my essay? \"Social media has changed how teenagers make friends. In the past, friendships formed mostly at school or in the neighborhood. Today, many teens meet people online through games and group chats. This can help shy students find others with the same interests. However, online friendships can also feel shallow, and constant notifications make it hard to focus. In conclusion, social media is both good and bad for teenage friendships.\""
+   ],
+   [
+    "assistant",
+    "Nice, clear essay! **Strengths:** a focused topic, logical order (past → present → pros → cons), and easy-to-read sentences. **To improve:** your claims need evidence (a statistic, study, or example), the conclusion just restates \"good and bad\" — take a position — and each point could be developed into its own paragraph."
+   ]
+  ],
+  "reply": "**6/10**\n\n| Criterion | Score | Notes |\n|---|---|---|\n| Structure | 2/2 | Clear order: past → present → pros → cons |\n| Clarity | 2/2 | Short, readable sentences |\n| Evidence | 0/2 | No examples, data, or sources |\n| Argument | 1/2 | Both sides covered, but no position taken |\n| Conclusion | 1/2 | Restates the intro instead of adding insight |\n\n**Quickest way to an 8+:** add one concrete example or statistic for each side, and end with a clear judgment (e.g. *on balance, social media helps shy teens most when it leads to offline friendships*).",
+  "expect": "answer"
+ },
+ {
+  "id": "td-068",
+  "area": "lookalike",
+  "prompt": "delete the last line of this poem",
+  "history": [
+   [
+    "user",
+    "write a short poem about morning fog"
+   ],
+   [
+    "assistant",
+    "**Morning Fog**\n\nThe river wears a coat of grey,\nthe boats lie sleeping in the bay,\na heron waits on silver stone,\nthe town still dreaming, half alone,\nuntil the sun burns it away."
+   ]
+  ],
+  "reply": "**Morning Fog**\n\nThe river wears a coat of grey,\nthe boats lie sleeping in the bay,\na heron waits on silver stone,\nthe town still dreaming, half alone.\n\nI changed the comma after *alone* to a period so it ends cleanly.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-069",
+  "area": "lookalike",
+  "prompt": "move on",
+  "history": [
+   [
+    "user",
+    "teach me derivatives step by step"
+   ],
+   [
+    "assistant",
+    "**Step 1: The power rule**\n\n$$\\frac{d}{dx}x^n = nx^{n-1}$$\n\nBring the exponent down and subtract one. For example, $\\frac{d}{dx}x^3 = 3x^2$ and $\\frac{d}{dx}x^5 = 5x^4$.\n\nWant to try a practice problem, or move on to the chain rule?"
+   ]
+  ],
+  "reply": "**Step 2: The chain rule**\n\nUse it when one function is inside another, like $(3x + 1)^5$.\n\n$$\\frac{d}{dx} f(g(x)) = f'(g(x)) \\cdot g'(x)$$\n\nIn words: differentiate the outside (leaving the inside alone), then multiply by the derivative of the inside.\n\n**Example:** $\\frac{d}{dx}(3x + 1)^5$\n1. Outside: $5(3x + 1)^4$\n2. Inside: $\\frac{d}{dx}(3x + 1) = 3$\n3. Multiply: $15(3x + 1)^4$\n\nTry one: what is $\\frac{d}{dx}(x^2 + 4)^3$?",
+  "expect": "answer"
+ },
+ {
+  "id": "td-070",
+  "area": "lookalike",
+  "prompt": "set the table for 6 people ideas",
+  "history": [],
+  "reply": "Here are a few ways to set a table for six:\n\n**1. Relaxed family style**\n- Plates, a fork on the left, knife and spoon on the right\n- Serving dishes down the middle so people pass food around\n- A runner or linen napkins for color\n\n**2. Dinner party**\n- Charger or placemat under each dinner plate\n- Salad fork outside the dinner fork; knife (blade in) and spoon on the right\n- Water glass above the knife, wine glass to its right\n- Bread plate at the top left\n\n**3. Centerpiece ideas**\n- Low flowers or herbs in jars so guests can see each other\n- 3–5 candles of different heights\n- Seasonal touches: small pumpkins, citrus, or olive branches\n\n**Seating tip:** with six, put the hosts at the two ends and alternate guests along the sides so conversation flows.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-071",
+  "area": "lookalike",
+  "prompt": "change of plans: it's pouring, so no grill. what should I cook?",
+  "history": [
+   [
+    "user",
+    "Planning to grill burgers tonight for 4 people."
+   ],
+   [
+    "assistant",
+    "Sounds fun! For four, figure about 1.5 lb (680 g) of ground beef — 6 oz patties — plus buns, cheese, and toppings."
+   ]
+  ],
+  "reply": "Rain-proof options that still feel like a cookout:\n\n1. **Smash burgers in a skillet** — use the same beef; a hot cast-iron pan gives an even better crust than the grill.\n2. **Sloppy joes** — brown the beef with onion, tomato paste, a little ketchup and Worcestershire; pile onto the buns.\n3. **Sheet-pan sliders** — press the beef into one sheet, bake at 200 °C (400 °F) for about 15 minutes, add cheese, then slice.\n\n**Quick grocery list** (if you go with sloppy joes)\n- 1 onion\n- Tomato paste\n- Worcestershire sauce\n\nEverything else you already bought for burgers.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-072",
+  "area": "lookalike",
+  "prompt": "complete the sentence: the early bird…",
+  "history": [],
+  "reply": "…**catches the worm.**\n\nIt means people who start early or act first get the best chances. (The joke reply: *but the second mouse gets the cheese.*)",
+  "expect": "answer"
+ },
+ {
+  "id": "td-073",
+  "area": "lookalike",
+  "prompt": "what time is it",
+  "history": [],
+  "reply": "It's **10:42 AM** on Wednesday, October 14, 2026 (Addis Ababa time).",
+  "expect": "answer"
+ },
+ {
+  "id": "td-074",
+  "area": "lookalike",
+  "prompt": "every day I wake up tired, why?",
+  "history": [],
+  "reply": "Waking up tired every day usually comes down to one of these:\n\n**Sleep quantity or timing**\n- Fewer than 7 hours, or going to bed at very different times each night\n- Waking from deep sleep — an alarm mid-cycle can leave you groggy (*sleep inertia*)\n\n**Sleep quality**\n- Caffeine after early afternoon, or alcohol in the evening\n- Screens and bright light late at night\n- A warm, noisy, or bright bedroom\n- **Sleep apnea** — loud snoring, gasping, or morning headaches are signs\n\n**Health factors**\n- Low iron (anemia), thyroid problems, vitamin D or B12 deficiency\n- Stress, anxiety, or low mood\n- Dehydration or a heavy late meal\n\n**Try this for 2 weeks**\n1. Same wake-up time every day, weekends too\n2. No caffeine after 2 PM\n3. Morning daylight within an hour of waking\n4. A dark, cool room\n\nIf you still feel exhausted after that — or you snore loudly — see a doctor. A simple blood test can rule out common causes like anemia or thyroid issues.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-075",
+  "area": "lookalike",
+  "prompt": "buy or rent?",
+  "history": [
+   [
+    "user",
+    "I'm trying to decide about an apartment in Addis. The one I like is 6.5 million birr to buy, or 35,000 birr a month to rent."
+   ],
+   [
+    "assistant",
+    "That's a big decision — happy to help you think it through. How long do you expect to stay, and do you have the down payment saved?"
+   ]
+  ],
+  "reply": "It depends mostly on how long you'll stay and what borrowing costs you.\n\n**Quick math on your numbers**\n- Rent per year: 35,000 × 12 = **420,000 birr**\n- Price-to-rent ratio: 6,500,000 ÷ 420,000 ≈ **15.5**\n- Gross rental yield: 420,000 ÷ 6,500,000 ≈ **6.5%**\n\nA ratio around 15 is a gray zone — buying isn't obviously overpriced, but it isn't a bargain either.\n\n**Lean toward buying if**\n- You'll stay at least 5–7 years\n- Your loan rate (or what your savings could earn elsewhere) is below about 6.5% — otherwise renting is cheaper year to year\n- You expect prices in that area to keep rising\n\n**Lean toward renting if**\n- You might move for work within a few years\n- Buying would use up your emergency savings\n- Loan rates are well above that 6.5% yield\n\nIf you share your down payment and the loan rate you've been offered, I can compare the total cost over 5 and 10 years.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-076",
+  "area": "lookalike",
+  "prompt": "get the gist of this article: \"City officials announced Tuesday that the downtown bus network will be redesigned next year. Routes will be straightened to run every 10 minutes on major corridors, while low-ridership loops will be replaced by on-demand shuttles. The change is budget-neutral, officials said, because savings from cutting duplicate routes will fund the more frequent service. Some riders in outer neighborhoods worry the shuttles will be less reliable than the buses they replace. A public comment period runs through the end of the month.\"",
+  "history": [],
+  "reply": "**Gist:** The city is redesigning downtown buses next year — fewer, straighter routes running every 10 minutes, with on-demand shuttles replacing little-used loops.\n\n**Key points**\n- Paid for by cutting duplicate routes, so no extra cost\n- Outer-neighborhood riders worry the shuttles will be less reliable\n- Public comments are open until the end of the month",
+  "expect": "answer"
+ },
+ {
+  "id": "td-077",
+  "area": "lookalike",
+  "prompt": "what's on the calendar in Ethiopia (Ethiopian calendar) today?",
+  "history": [],
+  "reply": "Today, Wednesday, October 14, 2026, is **Tikimt 4, 2019** in the Ethiopian calendar (E.C.).\n\n**How the Ethiopian calendar works**\n- **13 months:** 12 months of 30 days plus *Pagume*, a short month of 5 days (6 in a leap year)\n- It runs about **7–8 years behind** the Gregorian calendar — the new year, *Enkutatash*, falls on September 11 (September 12 in the year before a Gregorian leap year)\n- Tikimt is the second month, after Meskerem\n\n**Upcoming holidays**\n- **Genna** (Ethiopian Christmas) — Tahsas 29, 2019 → January 7, 2027\n- **Timket** (Epiphany) — Tir 11, 2019 → January 19, 2027\n\nMeskel (Meskerem 17) already passed on September 27.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-078",
+  "area": "lookalike",
+  "prompt": "set theory basics",
+  "history": [],
+  "reply": "## Set theory basics\n\nA **set** is a collection of distinct objects, called *elements*.\n\n**Notation**\n- $A = \\{1, 2, 3\\}$ — list the elements in braces\n- $2 \\in A$ — 2 is an element of $A$; $5 \\notin A$\n- $\\varnothing$ — the empty set\n- $|A| = 3$ — the number of elements (cardinality)\n\n**Relations**\n- $B \\subseteq A$ — every element of $B$ is also in $A$\n- Two sets are equal when they have exactly the same elements; order and repeats don't matter, so $\\{1, 2\\} = \\{2, 1, 1\\}$\n\n**Operations** (with $A = \\{1, 2, 3\\}$ and $B = \\{3, 4\\}$)\n\n| Operation | Symbol | Result |\n|---|---|---|\n| Union | $A \\cup B$ | $\\{1, 2, 3, 4\\}$ |\n| Intersection | $A \\cap B$ | $\\{3\\}$ |\n| Difference | $A \\setminus B$ | $\\{1, 2\\}$ |\n\n**Common sets:** $\\mathbb{N}$ (natural numbers), $\\mathbb{Z}$ (integers), $\\mathbb{Q}$ (rationals), $\\mathbb{R}$ (reals).\n\nGood next steps: Venn diagrams, power sets, and De Morgan's laws.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-079",
+  "area": "lookalike",
+  "prompt": "my settings app crashed on iPhone",
+  "history": [],
+  "reply": "Try these in order:\n\n1. **Force-close and reopen** — swipe up from the bottom (or double-press Home), swipe Settings away, then open it again.\n2. **Restart the iPhone** — this clears most one-off crashes.\n3. **Check storage** — Settings can crash when storage is nearly full. If you can get in, look under *General → iPhone Storage*; otherwise delete a few large apps or videos from the Home Screen.\n4. **Update iOS** — via *General → Software Update*, or with a computer (Finder on a Mac, Apple Devices or iTunes on Windows) if Settings won't stay open.\n5. **Reset All Settings** — *General → Transfer or Reset iPhone → Reset → Reset All Settings*. This keeps your data but resets Wi-Fi passwords and preferences.\n\nDoes it crash as soon as you open it, or only on a specific page? A crash on one page often points to a specific setting or profile.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-080",
+  "area": "lookalike",
+  "prompt": "remember when we talked about Rome?",
+  "history": [
+   [
+    "user",
+    "I'm thinking about 4 days in Rome next May. Is that too short?"
+   ],
+   [
+    "assistant",
+    "Four days is enough for the highlights if you plan by area: Day 1 Colosseum and Forum, Day 2 Vatican Museums and St. Peter's, Day 3 Pantheon, Trevi and Piazza Navona, Day 4 Trastevere or a day trip to Ostia Antica. Book the Vatican and Colosseum tickets in advance."
+   ],
+   [
+    "user",
+    "great, and what should I pack for the Netherlands in March?"
+   ],
+   [
+    "assistant",
+    "Layers! March in the Netherlands is usually 3–10 °C, windy and often wet: a waterproof jacket, a warm sweater, comfortable waterproof shoes and a compact umbrella."
+   ]
+  ],
+  "reply": "Yes — earlier in this chat you were planning **4 days in Rome next May**. Here's what we sketched out:\n\n1. **Day 1:** Colosseum and Roman Forum\n2. **Day 2:** Vatican Museums and St. Peter's\n3. **Day 3:** Pantheon, Trevi Fountain, Piazza Navona\n4. **Day 4:** Trastevere, or a day trip to Ostia Antica\n\nThe main tip was to book Vatican and Colosseum tickets ahead. Want to keep planning — hotels, food, or timing?",
+  "expect": "answer"
+ },
+ {
+  "id": "td-081",
+  "area": "lookalike",
+  "prompt": "forget it, never mind",
+  "history": [
+   [
+    "user",
+    "can you help me write something for the thing on Friday"
+   ],
+   [
+    "assistant",
+    "Happy to! What's the event on Friday, and what are you writing — a speech, a card, an invitation?"
+   ]
+  ],
+  "reply": "No problem! If you want to come back to it later, just let me know.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-082",
+  "area": "lookalike",
+  "prompt": "do you remember that song from Titanic?",
+  "history": [],
+  "reply": "Yes — **\"My Heart Will Go On\"**, sung by **Céline Dion**. It was composed by James Horner, with lyrics by Will Jennings, for *Titanic* (1997).\n\nIt won the **Academy Award for Best Original Song** and four Grammys, including Record and Song of the Year, and became one of the best-selling singles of all time.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-083",
+  "area": "lookalike",
+  "prompt": "I always forget my keys — any tips?",
+  "history": [],
+  "reply": "A few things that actually work:\n\n1. **One home for your keys** — a hook or bowl right by the door. Every time you come in, keys go there before anything else.\n2. **Door check** — before you step out, pat your pockets: *phone, wallet, keys*.\n3. **Prep the night before** — keep everything you need for the morning in one spot.\n4. **Bluetooth tracker** — an AirTag, Tile or similar on the keyring lets you ring or locate them.\n5. **Spare key** — leave one with someone you trust, or in a lockbox, for the days the system fails.\n\nThe first habit matters most: losing keys is usually about *where* you put them down, not memory.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-084",
+  "area": "lookalike",
+  "prompt": "remind me how to convert Celsius to Fahrenheit",
+  "history": [],
+  "reply": "Quick reminder — it's:\n\n$$°F = °C \\times \\frac{9}{5} + 32$$\n\nSo multiply by 1.8, then add 32.\n\n**Examples**\n- 0 °C → 32 °F\n- 20 °C → 68 °F\n- 37 °C → 98.6 °F\n- 100 °C → 212 °F\n\n**Quick mental estimate:** double it and add 30 (20 °C → about 70 °F).",
+  "expect": "answer"
+ },
+ {
+  "id": "td-085",
+  "area": "lookalike",
+  "prompt": "add a comma where needed: lets eat grandma",
+  "history": [],
+  "reply": "**Let's eat, Grandma!**\n\nTwo fixes:\n- **Let's** needs an apostrophe (it's short for *let us*).\n- The **comma** goes before *Grandma* because you're speaking to her — without it, Grandma is on the menu.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-086",
+  "area": "lookalike",
+  "prompt": "get rid of hiccups fast?",
+  "history": [],
+  "reply": "Most hiccups stop on their own within minutes, but these can help:\n\n- **Hold your breath** for 10–20 seconds, then breathe out slowly. Repeat a few times.\n- **Sip ice-cold water** slowly, or gargle with it.\n- **Swallow a teaspoon of sugar** dry.\n- **Breathe into a paper bag** (not plastic) for a minute.\n- **Pull your knees to your chest** and lean forward for a couple of minutes.\n\nSee a doctor if hiccups last more than 48 hours or make it hard to eat, breathe, or sleep.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-087",
+  "area": "lookalike",
+  "prompt": "pick up lines for a nerd",
+  "history": [],
+  "reply": "Some nerdy ones:\n\n1. Are you made of copper and tellurium? Because you're **CuTe**.\n2. You must be the square root of −1, because you can't be real.\n3. Are you a 90° angle? Because you're looking *right*.\n4. Is your name Wi-Fi? Because I'm feeling a connection.\n5. Are you a keyboard? Because you're just my type.\n6. You had me at *Hello, World*.\n\nThe chemistry one usually lands best with a science crowd.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-088",
+  "area": "lookalike",
+  "prompt": "make it less formal",
+  "history": [
+   [
+    "user",
+    "write an email to my manager asking to leave early on Friday for a doctor's appointment"
+   ],
+   [
+    "assistant",
+    "Here's a draft:\n\n```email\nSubject: Request to leave early on Friday\n\nDear [Manager's name],\n\nI am writing to request permission to leave the office at 2:00 PM this Friday, October 16, in order to attend a medical appointment. I will ensure that all pending tasks are completed beforehand and will remain reachable by email should anything urgent arise.\n\nThank you for your consideration.\n\nKind regards,\n[Your name]\n```"
+   ]
+  ],
+  "reply": "Here's a more relaxed version:\n\n```email\nSubject: Leaving early Friday\n\nHi [Manager's name],\n\nJust a heads-up — I've got a doctor's appointment on Friday, so I'd like to head out at 2 PM. I'll wrap up anything urgent before then and keep an eye on email in case something comes up.\n\nThanks!\n[Your name]\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "td-089",
+  "area": "lookalike",
+  "prompt": "Is the pro model worth it?",
+  "history": [],
+  "reply": "It depends on what you use Recall for.\n\n**Flash** is fast and handles most everyday things well: quick questions, rewrites, summaries, simple planning.\n\n**Pro** is worth it if you regularly:\n- Work through multi-step math, physics, or coding problems\n- Need longer, more careful writing or analysis\n- Hit tricky reasoning where Flash sometimes slips\n\nA good test: next time Flash gives you a so-so answer, pick Pro in the composer's model picker and ask the same question. If the difference matters to you most days, it's worth it.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-090",
+  "area": "lookalike",
+  "prompt": "dark mode vs light mode — which is better for your eyes?",
+  "history": [],
+  "reply": "Neither is clearly better for eye health — they suit different situations.\n\n**Dark mode helps when**\n- You're in a dim room or using your phone at night — less glare\n- You're on an OLED screen and want to save some battery\n\n**Light mode helps when**\n- You're reading long text in a bright room — dark text on a light background is usually easier to read, especially with astigmatism (light text on dark can look blurry or \"halo\")\n\n**What matters more for eye strain**\n- Match screen brightness to your surroundings\n- Follow the 20-20-20 rule: every 20 minutes, look at something 20 feet (6 m) away for 20 seconds\n- Remember to blink — people blink less when staring at screens\n\nMany people use **automatic** switching: light by day, dark at night.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-091",
+  "area": "lookalike",
+  "prompt": "translate 'good morning' to Spanish",
+  "history": [],
+  "reply": "**Buenos días** — pronounced *BWEH-nohs DEE-ahs*.\n\nUse it until about noon; after that, switch to *buenas tardes* (good afternoon) and, in the evening, *buenas noches*.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-092",
+  "area": "lookalike",
+  "prompt": "how do you say thank you in Amharic?",
+  "history": [],
+  "reply": "**አመሰግናለሁ** — *ameseginalehu* (ah-meh-seg-ee-NAH-leh-hu).\n\nOther useful forms:\n- **በጣም አመሰግናለሁ** (*betam ameseginalehu*) — thank you very much\n- **እግዚአብሔር ይስጥልኝ** (*Egziabher yistilign*) — a warm, traditional thank-you (literally \"may God give it to you for me\")",
+  "expect": "answer"
+ },
+ {
+  "id": "td-093",
+  "area": "lookalike",
+  "prompt": "tell me something funny",
+  "history": [],
+  "reply": "Why don't skeletons fight each other?\n\n*They don't have the guts.*\n\nWant another one, or something nerdier?",
+  "expect": "answer"
+ },
+ {
+  "id": "td-094",
+  "area": "lookalike",
+  "prompt": "delete the duplicates from this list: apples, pears, apples, figs, pears",
+  "history": [],
+  "reply": "**apples, pears, figs**\n\n(I kept the first appearance of each item, in the original order.)",
+  "expect": "answer"
+ },
+ {
+  "id": "td-095",
+  "area": "lookalike",
+  "prompt": "how does the Linux I/O scheduler decide what to schedule first?",
+  "history": [],
+  "reply": "In modern Linux (blk-mq), each block device has an **I/O scheduler** that decides the order in which queued read and write requests go to the disk. Check yours with `cat /sys/block/<device>/queue/scheduler`.\n\n**The common choices**\n- **none** — no reordering; requests go straight through. The usual default for fast NVMe SSDs, where reordering costs more than it saves.\n- **mq-deadline** — sorts requests by sector to reduce seeking, but gives each one a deadline (by default about 500 ms for reads, 5 s for writes) so nothing starves. Reads get priority because programs usually wait on them.\n- **BFQ** (Budget Fair Queueing) — gives each process a fair share of disk time as a \"budget\". Great for desktop responsiveness on slower disks, at some CPU cost.\n- **Kyber** — sets target latencies for reads and synchronous writes and throttles queue depth to meet them; designed for fast multi-queue devices.\n\n**So what goes first?**\n- *mq-deadline*: the next request in sector order, **unless** one has passed its deadline — then that one jumps the line.\n- *BFQ*: the process whose turn it is, within its budget.\n- *none*: whatever arrived first.\n\nYou can change it per device, e.g. `echo mq-deadline | sudo tee /sys/block/sda/queue/scheduler`.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-096",
+  "area": "lookalike",
+  "prompt": "book recommendations like Dune",
+  "history": [],
+  "reply": "If you loved *Dune*, try these:\n\n1. **Hyperion** — Dan Simmons. Pilgrims on a doomed journey, each telling their story; huge in scope and strange in the best way.\n2. **Foundation** — Isaac Asimov. A galactic empire's fall and a plan to shorten the dark age that follows.\n3. **The Left Hand of Darkness** — Ursula K. Le Guin. An envoy on an icy world; deep worldbuilding and politics.\n4. **A Memory Called Empire** — Arkady Martine. Court intrigue in an interstellar empire, seen through an outsider ambassador.\n5. **Children of Time** — Adrian Tchaikovsky. Evolution, ecology and a civilization unlike ours.\n6. **Red Rising** — Pierce Brown. Faster and more action-driven, with a strong caste-and-rebellion story.\n\nFor the closest *feel* — politics, prophecy, a harsh world — start with **Hyperion** or **A Memory Called Empire**.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-097",
+  "area": "lookalike",
+  "prompt": "A 5 kg block slides down a frictionless 30° incline. What's its acceleration?",
+  "history": [],
+  "reply": "On a frictionless incline, only the component of gravity along the slope accelerates the block:\n\n$$a = g \\sin\\theta = 9.8\\ \\text{m/s}^2 \\times \\sin 30^\\circ = 9.8 \\times 0.5$$\n\n$$a = 4.9\\ \\text{m/s}^2$$\n\nThe mass (5 kg) cancels out — any block slides down this slope with the same acceleration. Mass matters for the *forces*: the normal force is $mg\\cos 30^\\circ \\approx 42.4\\ \\text{N}$.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-098",
+  "area": "lookalike",
+  "prompt": "how many days until New Year's Day?",
+  "history": [],
+  "reply": "**79 days** — from today, Wednesday, October 14, 2026, to Friday, January 1, 2027.\n\n- Rest of October: 17 days\n- November: 30 days\n- December: 31 days\n- Plus January 1: 1 day",
+  "expect": "answer"
+ },
+ {
+  "id": "td-099",
+  "area": "lookalike",
+  "prompt": "Mark Twain's best books?",
+  "history": [],
+  "reply": "Mark Twain's most celebrated books:\n\n1. **Adventures of Huckleberry Finn** (1884) — Huck and Jim raft down the Mississippi; often called the Great American Novel.\n2. **The Adventures of Tom Sawyer** (1876) — boyhood mischief in a Mississippi river town.\n3. **Life on the Mississippi** (1883) — a memoir of his years as a steamboat pilot.\n4. **A Connecticut Yankee in King Arthur's Court** (1889) — a modern engineer lands in Camelot; sharp satire.\n5. **The Prince and the Pauper** (1881) — two look-alike boys swap places in Tudor England.\n6. **The Innocents Abroad** (1869) — his very funny travel book about Europe and the Holy Land.\n\nIf you read just one, make it **Huckleberry Finn**.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-100",
+  "area": "lookalike",
+  "prompt": "finish this proverb: a journey of a thousand miles…",
+  "history": [],
+  "reply": "…**begins with a single step.**\n\nIt comes from the *Tao Te Ching* (chapter 64), attributed to Laozi. The point: big goals are reached by starting small and simply beginning.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-101",
+  "area": "lookalike",
+  "prompt": "change 72°F to Celsius",
+  "history": [],
+  "reply": "$$\\frac{72 - 32}{1.8} = \\frac{40}{1.8} \\approx 22.2\\ °\\text{C}$$\n\nSo **72 °F ≈ 22 °C** — a comfortable room temperature.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-102",
+  "area": "lookalike",
+  "prompt": "put the kettle on — how long should green tea steep?",
+  "history": [],
+  "reply": "**2–3 minutes** is the sweet spot for most green teas.\n\n- **Water temperature:** 70–80 °C (160–175 °F), not boiling. If your kettle has no setting, let boiled water sit for 2–3 minutes before pouring.\n- **Japanese greens** (sencha) do best on the shorter side — 1–2 minutes.\n- **Chinese greens** (Dragon Well / Longjing) handle 2–3 minutes.\n\nToo hot or too long makes it bitter. Good leaves can usually be steeped 2–3 times.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-103",
+  "area": "lookalike",
+  "prompt": "remind me of the plot of Inception",
+  "history": [],
+  "reply": "**Inception** (2010, Christopher Nolan) — *spoilers ahead*\n\nDom Cobb (Leonardo DiCaprio) is a thief who steals secrets by entering people's dreams. A businessman, Saito, offers him a way home to his children — Cobb can't return to the US — if he can pull off the opposite: **inception**, planting an idea in someone's mind. The target is Robert Fischer, heir to a rival energy empire, and the idea is to break up his father's company.\n\nCobb's team builds a dream within a dream within a dream. Each level down, time runs slower, and because they're heavily sedated, dying in the dream could strand them in *limbo*. Cobb's biggest threat is his own guilt: a projection of his late wife, Mal, keeps sabotaging the mission.\n\nThey succeed, Cobb lets go of Mal, and he returns home. In the final shot he spins his top — his test for whether he's dreaming — and the film cuts to black before we see whether it falls.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-104",
+  "area": "lookalike",
+  "prompt": "pick up where we left off",
+  "history": [
+   [
+    "user",
+    "explain SQL joins"
+   ],
+   [
+    "assistant",
+    "**INNER JOIN** returns only rows that have a match in both tables:\n\n```sql\nSELECT c.name, o.id AS order_id\nFROM customers c\nINNER JOIN orders o ON o.customer_id = c.id;\n```\n\nCustomers without orders are left out. Next up: LEFT, RIGHT, and FULL OUTER JOIN — want me to continue?"
+   ],
+   [
+    "user",
+    "brb, dinner"
+   ],
+   [
+    "assistant",
+    "Enjoy! I'll be here."
+   ]
+  ],
+  "reply": "Welcome back! We'd covered **INNER JOIN** — next are the outer joins. Using `customers` and `orders`:\n\n**LEFT JOIN** — every row from the left table, plus matches from the right (or `NULL`).\n\n```sql\nSELECT c.name, o.id AS order_id\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id;\n```\n\nCustomers with no orders still appear, with `order_id` = `NULL`.\n\n**RIGHT JOIN** — the mirror image: every row from the right table. In practice most people swap the table order and use a LEFT JOIN.\n\n**FULL OUTER JOIN** — every row from both sides, matched where possible, `NULL` where not. (MySQL doesn't support it directly; combine a LEFT and a RIGHT JOIN with `UNION`.)\n\n| Join | Keeps unmatched rows from |\n|---|---|\n| INNER | neither |\n| LEFT | left table |\n| RIGHT | right table |\n| FULL OUTER | both |\n\nWant a quick practice question?",
+  "expect": "answer"
+ },
+ {
+  "id": "td-105",
+  "area": "lookalike",
+  "prompt": "delete my account, how does that work?",
+  "history": [],
+  "reply": "You can delete your account from the app:\n\n1. Open **Settings → Data controls**.\n2. Tap **Delete account** and confirm.\n\n**What happens**\n- Your chats, memories, reminders and uploaded files are permanently deleted.\n- It can't be undone.\n- If you have a Pro subscription, cancel it in your App Store or Google Play subscriptions too — deleting your account doesn't stop billing on its own.\n\nWant a copy first? **Settings → Data controls → Export data** gives you a download of your chats and memories.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-106",
+  "area": "lookalike",
+  "prompt": "Can you add a bit more humor to this toast? \"I've known Sam for fifteen years. We met in college, where he taught me how to cook rice and I taught him how to do laundry. Today he's marrying Lily, who is kind, patient, and smart. Please raise your glasses to Sam and Lily, and to a lifetime of happiness together.\"",
+  "history": [],
+  "reply": "Here's a version with a few more laughs that keeps the warmth:\n\nI've known Sam for fifteen years. We met in college, where he taught me how to cook rice and I taught him how to do laundry. Judging by the shirt he wore to the rehearsal dinner, only one of us was a good teacher.\n\nToday he's marrying Lily — who is kind, patient, and smart. Kind enough to laugh at his jokes, patient enough to hear them twice, and smart enough to have read this toast in advance.\n\nPlease raise your glasses to Sam and Lily: may your rice never burn, your laundry always be sorted, and your life together be full of happiness. To Sam and Lily!",
+  "expect": "answer"
+ },
+ {
+  "id": "td-107",
+  "area": "lookalike",
+  "prompt": "Make a plan to learn Spanish in 3 months",
+  "history": [],
+  "reply": "## 3-month Spanish plan (about 30–45 minutes a day)\n\n**Month 1 — Foundations**\n- Pronunciation and the 500 most common words (spaced-repetition flashcards, 10 min a day)\n- Present tense of regular verbs, plus *ser, estar, tener, ir*\n- One beginner podcast episode a day (e.g. *Coffee Break Spanish*)\n- Goal: introduce yourself and handle simple questions\n\n**Month 2 — Building sentences**\n- Past tenses: preterite, then imperfect\n- 1,000+ words; keep a short daily journal (3–5 sentences)\n- Watch a show with Spanish subtitles twice a week\n- One 30-minute conversation a week with a tutor or exchange partner\n- Goal: talk about your day and past events\n\n**Month 3 — Real conversation**\n- Future tense and the most common uses of the subjunctive\n- Two conversation sessions a week\n- Read a graded reader or simple news (e.g. *News in Slow Spanish*)\n- Goal: a 15-minute conversation on familiar topics\n\n**Every day:** review flashcards, say something out loud, and learn whole phrases rather than single words.\n\nWant me to turn this into a weekly schedule?",
+  "expect": "answer"
+ },
+ {
+  "id": "td-108",
+  "area": "lookalike",
+  "prompt": "don't set a reminder, just tell me when pharmacies usually open",
+  "history": [],
+  "reply": "Most pharmacies open around **8:00–9:00 AM** and close around **7:00–9:00 PM** on weekdays, with shorter hours on Sundays.\n\nA few things to know:\n- **Hospital and 24-hour pharmacies** stay open around the clock.\n- **Supermarket pharmacies** often follow store hours but may close the counter for lunch.\n- Hours vary by city and country, so check the specific pharmacy on a map app before you go.\n\nIf you tell me your area, I can look for ones nearby that are open now.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-109",
+  "area": "lookalike",
+  "prompt": "what should I add to my to-do list before moving house?",
+  "history": [],
+  "reply": "Here's a moving checklist, roughly in order:\n\n**4–6 weeks before**\n- Book movers or a van\n- Declutter: sell, donate, or toss what you won't take\n- Collect boxes, tape, and markers\n\n**2–3 weeks before**\n- Give notice to your landlord (if renting) and book a final inspection\n- Set up utilities at the new place: electricity, water, internet\n- Update your address with your bank, employer, and important services\n\n**1 week before**\n- Pack room by room; label boxes with room and contents\n- Pack an *open first* box: chargers, toiletries, documents, medication, a kettle\n- Confirm moving-day times\n\n**Moving day**\n- Take meter readings and photos of the old place\n- Do a final walkthrough: cupboards, closets, balcony\n- Hand over the keys\n\nWant any of these as reminders? Tell me the day and time for each.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-110",
+  "area": "lookalike",
+  "prompt": "Forget about the previous question — what's the capital of Canada?",
+  "history": [],
+  "reply": "The capital of Canada is **Ottawa**, in the province of Ontario.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-111",
+  "area": "todo",
+  "prompt": "6:30",
+  "history": [
+   [
+    "user",
+    "remind me to pick up the dry cleaning on Saturday"
+   ],
+   [
+    "assistant",
+    "When should I remind you?"
+   ]
+  ],
+  "reply": "Got it — 6:30 PM on Saturday.",
+  "expect": "save"
+ },
+ {
+  "id": "td-112",
+  "area": "todo",
+  "prompt": "0",
+  "history": [
+   [
+    "user",
+    "remind me to pick up the dry cleaning on Saturday"
+   ],
+   [
+    "assistant",
+    "When should I remind you?"
+   ]
+  ],
+  "reply": "Sorry, what time on Saturday should I remind you?",
+  "expect": "ask_time"
+ },
+ {
+  "id": "td-113",
+  "area": "todo",
+  "prompt": "make it 6:30 instead",
+  "history": [
+   [
+    "user",
+    "remind me about the gym tomorrow at 6pm"
+   ],
+   [
+    "assistant",
+    "Set: gym — Thursday, Oct 15, 6:00 PM."
+   ]
+  ],
+  "reply": "Done — moved **gym** to Thursday, Oct 15, 6:30 PM.",
+  "expect": "change"
+ },
+ {
+  "id": "td-114",
+  "area": "todo",
+  "prompt": "move gym to friday at 6:30",
+  "history": [],
+  "reply": "Moved **gym** to Friday, Oct 16, 6:30 PM.",
+  "expect": "change"
+ },
+ {
+  "id": "td-115",
+  "area": "lookalike",
+  "prompt": "make it 6:30",
+  "history": [
+   [
+    "user",
+    "write a text inviting my friends to dinner at my place saturday"
+   ],
+   [
+    "assistant",
+    "Hey all! Dinner at my place this Saturday at 6 — bring your appetite. Let me know if you can make it!"
+   ]
+  ],
+  "reply": "Hey all! Dinner at my place this Saturday at 6:30 — bring your appetite. Let me know if you can make it!",
+  "expect": "answer"
+ },
+ {
+  "id": "td-116",
+  "area": "lookalike",
+  "prompt": "change the long run to 1:30",
+  "history": [
+   [
+    "user",
+    "make me a 2 week half marathon plan"
+   ],
+   [
+    "assistant",
+    "**Week 1** — Tue: 5 km easy · Thu: 6 km tempo · Sun: long run 1:00\n**Week 2** — Tue: 6 km easy · Thu: 7 km tempo · Sun: long run 1:15"
+   ]
+  ],
+  "reply": "**Week 1** — Tue: 5 km easy · Thu: 6 km tempo · Sun: long run 1:30\n**Week 2** — Tue: 6 km easy · Thu: 7 km tempo · Sun: long run 1:30",
+  "expect": "answer"
+ },
+ {
+  "id": "td-117",
+  "area": "lookalike",
+  "prompt": "set the oven timer to 10:00",
+  "history": [],
+  "reply": "Most ovens: press **Timer**, type **1-0-0-0**, then **Start**. On a dial, turn it to 10 minutes.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-118",
+  "area": "lookalike",
+  "prompt": "0",
+  "history": [
+   [
+    "user",
+    "quiz me on the planets"
+   ],
+   [
+    "assistant",
+    "Question 1: how many moons does Venus have?"
+   ]
+  ],
+  "reply": "Right — Venus has no moons at all. Question 2: which planet is the hottest?",
+  "expect": "answer"
+ },
+ {
+  "id": "td-119",
+  "area": "lookalike",
+  "prompt": "6:30",
+  "history": [
+   [
+    "user",
+    "help me plan a movie night"
+   ],
+   [
+    "assistant",
+    "Fun! What time does the movie start?"
+   ]
+  ],
+  "reply": "Then start the popcorn at 6:15 and dim the lights at 6:25.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-120",
+  "area": "settings",
+  "prompt": "switch to GLM",
+  "history": [],
+  "reply": "You can pick the model in Settings → Models.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-127",
+  "area": "settings",
+  "prompt": "2 plus 2",
+  "history": [],
+  "reply": "2 + 2 = 4",
+  "expect": "answer"
+ },
+ {
+  "id": "td-121",
+  "area": "lookalike",
+  "prompt": "Change my name to Claude",
+  "history": [],
+  "reply": "I can't change your profile name from chat. You can edit it in Settings → Profile.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-122",
+  "area": "lookalike",
+  "prompt": "call me Claude",
+  "history": [],
+  "reply": "Got it, Claude.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-123",
+  "area": "lookalike",
+  "prompt": "my friend claude is visiting this weekend, any ideas?",
+  "history": [],
+  "reply": "A few ideas: a long walk somewhere new, a cooking night, or a local market.",
+  "expect": "answer"
+ },
+ {
+  "id": "td-124",
+  "area": "todo",
+  "prompt": "actually make it 8",
+  "history": [
+   [
+    "user",
+    "remind me to study bio at 7pm tonight"
+   ],
+   [
+    "assistant",
+    "```reminder_proposal\n{\"proposal_id\": \"p-study\", \"tz\": \"Africa/Nairobi\", \"items\": [{\"action\": \"add\", \"title\": \"Study bio\", \"due_at\": \"2026-10-14T16:00:00Z\", \"when\": \"Wednesday, Oct 14, 7:00 PM\"}]}\n```"
+   ]
+  ],
+  "reply": "```reminder\n{\"action\": \"set_due\", \"title\": \"water the plants\", \"due_at\": \"2026-10-14T20:00:00\"}\n```",
+  "expect": "save"
+ },
+ {
+  "id": "td-125",
+  "area": "todo",
+  "prompt": "no not that one, the study one. 8pm",
+  "history": [
+   [
+    "user",
+    "remind me to study bio at 7pm tonight"
+   ],
+   [
+    "assistant",
+    "```reminder_proposal\n{\"proposal_id\": \"p-study\", \"tz\": \"Africa/Nairobi\", \"items\": [{\"action\": \"add\", \"title\": \"Study bio\", \"due_at\": \"2026-10-14T16:00:00Z\", \"when\": \"Wednesday, Oct 14, 7:00 PM\"}]}\n```"
+   ]
+  ],
+  "reply": "Updated: Study bio — Wednesday, Oct 14, 8:00 PM.",
+  "expect": "save"
+ },
+ {
+  "id": "td-126",
+  "area": "todo",
+  "prompt": "ok thanks",
+  "history": [
+   [
+    "user",
+    "remind me to study bio at 7pm tonight"
+   ],
+   [
+    "assistant",
+    "```reminder_proposal\n{\"proposal_id\": \"p-study\", \"tz\": \"Africa/Nairobi\", \"items\": [{\"action\": \"add\", \"title\": \"Study bio\", \"due_at\": \"2026-10-14T16:00:00Z\", \"when\": \"Wednesday, Oct 14, 7:00 PM\"}]}\n```"
+   ]
+  ],
+  "reply": "You're welcome!",
+  "expect": "answer"
+ }
+]

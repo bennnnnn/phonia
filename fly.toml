@@ -1,0 +1,123 @@
+# Fly.io config for the Recall API.
+# See the README "Production deployment (Fly.io)" section for the full setup.
+#
+# Two processes: `app` serves HTTP/WebSocket (PROCESS_ROLE=api); `worker` runs
+# Redis-stream jobs + schedulers (PROCESS_ROLE=worker). Scale each independently.
+
+app = "recall-api"
+primary_region = "iad" # beside Neon (AWS us-east-1); production Redis (Upstash) belongs in us-east-1 too
+# A deploy or restart stops a Machine with kill_signal (Fly's default, SIGINT;
+# uvicorn and the worker shut down gracefully on SIGINT and SIGTERM) and kills
+# it kill_timeout seconds later. The default 5s cut every reply in progress.
+# uvicorn gets --timeout-graceful-shutdown 30 below (and in apps/api/Dockerfile)
+# to finish or stop-and-save in-flight chat turns; the rest is lifespan shutdown
+# (background drain up to 10s). Keep kill_timeout above 30 + 10.
+kill_timeout = 45
+
+[build]
+  context = "apps/api"
+  dockerfile = "Dockerfile"
+
+[env]
+  PROCESS_ROLE = "api"
+  # Fly's proxy is the TCP peer. Without this, every per-IP rate limit
+  # (sign-in, WebSocket handshake, anonymous REST) keys on the proxy address
+  # and becomes one global bucket. The default TRUSTED_PROXY_CIDRS
+  # (apps/api/app/core/settings/edge.py) cover Fly's private ranges;
+  # Fly-Client-IP is preferred when present. Every other setting runs on its
+  # code default, which is the production value (apps/api/app/tests/core/
+  # test_config_sources.py).
+  TRUST_X_FORWARDED_FOR = "true"
+
+# Run migrations once per deploy (not on every app machine boot), before any
+# Machine is replaced. Old code keeps running against the new schema while the
+# deploy rolls (and after a rollback), so migrations are expand/contract:
+# docs/ROLLBACK.md#schema-changes-expand-then-contract.
+[deploy]
+  release_command = "/opt/venv/bin/alembic upgrade head"
+  # Blue-green: boot the new Machines next to the old ones, wait for their
+  # health checks (http_service.checks for app, worker-health for worker),
+  # move traffic, then stop the old ones with kill_signal/kill_timeout. With
+  # one app Machine, the rolling default stopped it before its replacement
+  # was healthy: every deploy was an outage. Needs no volumes (none here) and
+  # room for a second Machine per group during the deploy. For a moment two
+  # workers run; jobs are leased and deduped, schedulers hold Redis locks.
+  strategy = "bluegreen"
+
+[processes]
+  # `exec` so uvicorn/worker is PID 1 and receives SIGTERM cleanly.
+  # --ws-max-size caps one WebSocket frame at 1 MiB (uvicorn default 16 MiB);
+  # a chat frame is at most ~130 KB. --timeout-graceful-shutdown bounds the
+  # drain on stop (see kill_timeout). Keep in step with apps/api/Dockerfile.
+  app = "sh -c 'exec /opt/venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000 --no-access-log --ws-max-size 1048576 --timeout-graceful-shutdown 30'"
+  worker = "sh -c 'PROCESS_ROLE=worker exec /opt/venv/bin/python -m app.worker_main'"
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["app"]
+
+  # Measure before launch whether each open chat WebSocket counts as one
+  # in-flight request here for its whole life (docs/PRODUCTION.md §4).
+  [http_service.concurrency]
+    type = "requests"
+    hard_limit = 200
+    soft_limit = 150
+
+# WebSocket support is on by default for HTTP services on Fly.
+# Liveness: process up. Readiness: Postgres only (Redis blip must not drain
+# the fleet). Worker is not covered by min_machines_running — pin it:
+#   fly scale count worker=1
+[[http_service.checks]]
+  interval = "20s"
+  timeout = "5s"
+  grace_period = "30s"
+  method = "GET"
+  path = "/health"
+
+[[http_service.checks]]
+  interval = "20s"
+  timeout = "5s"
+  grace_period = "30s"
+  method = "GET"
+  path = "/health/ready"
+
+[[vm]]
+  # The API warms SYMPY_MAX_WORKERS (3) SymPy worker processes at boot: about
+  # 270-400 MB for the API plus 90-150 MB per worker (docs/PRODUCTION.md).
+  memory = "1gb"
+  cpu_kind = "shared"
+  cpus = 1
+  processes = ["app"]
+
+[[vm]]
+  memory = "512mb"
+  cpu_kind = "shared"
+  cpus = 1
+  processes = ["worker"]
+
+# Worker is not an HTTP service, so min_machines_running does not apply.
+# Restart the worker whenever its process exits; keep count at 1 after deploy
+# (`fly scale count worker=1`). Fly restarts only on process exit, never for a
+# failing health check, so app/worker_main.py exits non-zero itself when its
+# jobs consumer or a scheduler dies (and the consumer retries Redis forever).
+[[restart]]
+  policy = "always"
+  processes = ["worker"]
+
+# Worker health check: the worker exposes a tiny /health/ready on port 8001
+# (worker_health_port): Redis reachable, jobs consumer and schedulers alive.
+# Fly uses it to gate deploys and shows it in `fly checks list`; it does not
+# restart the Machine. Alert on its status from Fly's metrics (Grafana).
+[[checks]]
+  name = "worker-health"
+  port = 8001
+  type = "http"
+  interval = "20s"
+  timeout = "5s"
+  grace_period = "30s"
+  path = "/health/ready"
+  process = "worker"

@@ -1,0 +1,477 @@
+[
+ {
+  "id": "rg-001",
+  "area": "chitchat",
+  "prompt": "how many minutes in a good nap",
+  "reply": "A **10–20 minute** power nap refreshes without grogginess. A full sleep cycle is about **90 minutes**; anything in between tends to leave you groggy.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-002",
+  "area": "chitchat",
+  "prompt": "how many minutes should I boil an egg",
+  "reply": "About **6–7 minutes** for a jammy yolk and **9–10 minutes** for hard-boiled, starting from boiling water. Then straight into cold water.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-003",
+  "area": "chitchat",
+  "prompt": "how many minutes to boil pasta",
+  "reply": "Most dried pasta takes **8–12 minutes**; check the packet and taste a minute before the time is up.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-004",
+  "area": "chitchat",
+  "prompt": "how many minutes of exercise do I need a day",
+  "reply": "Aim for about **30 minutes a day**, five days a week (150 minutes of moderate activity weekly), plus strength work twice a week.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-005",
+  "area": "chitchat",
+  "prompt": "how many minutes should a toddler nap",
+  "reply": "Most toddlers nap **1–3 hours** once a day, usually after lunch. Under 30 minutes is often too short to help.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-006",
+  "area": "chitchat",
+  "prompt": "how many minutes should I walk a day",
+  "reply": "About **30 minutes** of brisk walking a day is a good target; even 10-minute walks after meals add up.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-007",
+  "area": "chitchat",
+  "prompt": "how many minutes should I let a steak rest",
+  "reply": "About **5 minutes** for a thin steak and **8–10 minutes** for a thick one, loosely covered with foil.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-008",
+  "area": "chitchat",
+  "prompt": "how many miles is a 5k run?",
+  "reply": "A 5k is **3.1 miles** (5 km × 0.621).",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-009",
+  "area": "chitchat",
+  "prompt": "how many km is a marathon",
+  "reply": "A marathon is **42.195 km** (26.2 miles).",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-010",
+  "area": "places",
+  "prompt": "how many minutes to drive to the airport",
+  "reply": "",
+  "expect": "instant"
+ },
+ {
+  "id": "rg-011",
+  "area": "places",
+  "prompt": "how many mins away is the mall",
+  "reply": "",
+  "expect": "instant"
+ },
+ {
+  "id": "rg-012",
+  "area": "places",
+  "prompt": "how many minutes from here to the stadium",
+  "reply": "",
+  "expect": "instant"
+ },
+ {
+  "id": "rg-013",
+  "area": "places",
+  "prompt": "how many minutes does it take to get to work",
+  "reply": "",
+  "expect": "instant"
+ },
+ {
+  "id": "rg-014",
+  "area": "places",
+  "prompt": "how many miles to the nearest gas station",
+  "reply": "",
+  "expect": "instant"
+ },
+ {
+  "id": "rg-015",
+  "area": "places",
+  "prompt": "how many minutes to drive to the airport",
+  "location": "Westlands, Nairobi, Kenya",
+  "reply": "From Westlands to Jomo Kenyatta International Airport is about **35–60 minutes** by car, depending on traffic on Mombasa Road.",
+  "expect": "search"
+ },
+ {
+  "id": "rg-020",
+  "area": "todo",
+  "prompt": "remind me to plate the dinner at 7pm",
+  "reply": "Set: Plate the dinner — today, Oct 14, 7:00 PM.",
+  "expect": "save"
+ },
+ {
+  "id": "rg-021",
+  "area": "todo",
+  "prompt": "remind me to plate the dinner at 7pm",
+  "reply": "Sure! I'll remind you at 7 PM tonight to plate the dinner.",
+  "expect": "save"
+ },
+ {
+  "id": "rg-022",
+  "area": "todo",
+  "prompt": "remind me to call mom at 7pm",
+  "reply": "Set: Call mom — today, Oct 14, 7:00 PM.",
+  "expect": "save"
+ },
+ {
+  "id": "rg-023",
+  "area": "todo",
+  "prompt": "remind me at 6:30am to take my pills",
+  "reply": "Set: Take my pills — Thursday, Oct 15, 6:30 AM.",
+  "expect": "save"
+ },
+ {
+  "id": "rg-024",
+  "area": "todo",
+  "prompt": "set a reminder to start the oven at 6pm",
+  "reply": "Set: Start the oven — today, Oct 14, 6:00 PM.",
+  "expect": "save"
+ },
+ {
+  "id": "rg-025",
+  "area": "todo",
+  "prompt": "can you remind me at 8pm to take out the trash",
+  "reply": "Sure — I'll remind you at 8 PM.",
+  "expect": "save"
+ },
+ {
+  "id": "rg-026",
+  "area": "todo",
+  "prompt": "remind me to plate the dinner",
+  "reply": "When should I remind you?",
+  "expect": "ask_time"
+ },
+ {
+  "id": "rg-027",
+  "area": "todo",
+  "prompt": "remind me to plate the dinner at 7",
+  "reply": "What time — 7 PM?",
+  "expect": "ask_time"
+ },
+ {
+  "id": "rg-028",
+  "area": "lookalike",
+  "prompt": "you forgot to remind me to take my pills at 8pm",
+  "reply": "Sorry about that! Want me to set it again for tonight?",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-029",
+  "area": "lookalike",
+  "prompt": "did you remind me to plate the dinner at 7pm?",
+  "reply": "Not yet — there's nothing saved for that. Want me to set it?",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-030",
+  "area": "lookalike",
+  "prompt": "why didn't you remind me to call mom at 5pm",
+  "reply": "I'm sorry — nothing was saved for that, so no notification went out. Want me to set it now?",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-031",
+  "area": "lookalike",
+  "prompt": "the recipe says to plate the dinner at 7pm sharp",
+  "reply": "Sounds like a plan — plating right at 7 keeps everything hot. Warm the plates first.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-032",
+  "area": "lookalike",
+  "prompt": "how should I plate the dinner at 7pm for 6 guests?",
+  "reply": "Warm the plates, put the main slightly off-centre, sides beside it, and sauce last so it stays glossy.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-033",
+  "area": "lookalike",
+  "prompt": "add 2 hours to 7pm",
+  "reply": "7 PM + 2 hours = **9 PM**.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-034",
+  "area": "lookalike",
+  "prompt": "my reminder at 7pm didn't go off",
+  "reply": "Sorry about that — check that notifications are on for Recall in your phone's settings.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-035",
+  "area": "lookalike",
+  "prompt": "we plate dinner at 7pm every night at the restaurant, how do I speed up the line?",
+  "reply": "Prep garnishes and sauces before service, assign one person to plating only, and lay out plates in order of the tickets.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-040",
+  "area": "chitchat",
+  "prompt": "the boiling point of my patience is low today",
+  "reply": "Sounds like one of those days. Want to talk about what's been testing it?",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-041",
+  "area": "chitchat",
+  "prompt": "the battery of my brain is at 2 percent today",
+  "reply": "Running on fumes, huh. Anything you can drop from today's list?",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-042",
+  "area": "chitchat",
+  "prompt": "the freezing point of my enthusiasm hit a new low today",
+  "reply": "Oof. Rough day, or just a long week catching up with you?",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-043",
+  "area": "chitchat",
+  "prompt": "the energy levels in my office are really low today",
+  "reply": "Sounds like a sleepy day all round. A short walk or some music can lift the room a little.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-044",
+  "area": "chitchat",
+  "prompt": "the pressure in my head is through the roof today",
+  "reply": "That sounds stressful. Is it work piling up, or something else?",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-045",
+  "area": "chitchat",
+  "prompt": "the half-life of my motivation is about ten minutes today",
+  "reply": "Ha, relatable. Try one 10-minute task and call that a win.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-046",
+  "area": "news",
+  "prompt": "the price of gold went up again today in London",
+  "reply": "Gold rose again in London trading today, extending its gains this week.",
+  "expect": "search"
+ },
+ {
+  "id": "rg-047",
+  "area": "news",
+  "prompt": "Apple announced a new iPhone today in California",
+  "reply": "Here's what Apple announced today.",
+  "expect": "search"
+ },
+ {
+  "id": "rg-050",
+  "area": "news",
+  "prompt": "the exchange rate in my country today",
+  "location": "Westlands, Nairobi, Kenya",
+  "reply": "Today 1 USD is about **129 KES**.",
+  "expect": "search"
+ },
+ {
+  "id": "rg-051",
+  "area": "news",
+  "prompt": "the gas prices in my area today",
+  "location": "Westlands, Nairobi, Kenya",
+  "reply": "Petrol in Nairobi is about **KES 177 a litre** this month.",
+  "expect": "search"
+ },
+ {
+  "id": "rg-048",
+  "area": "chemistry",
+  "prompt": "what is the boiling point of ethanol",
+  "reply": "Ethanol boils at **78.4 °C** (173 °F) at sea-level pressure.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-049",
+  "area": "chemistry",
+  "prompt": "What is the boiling point of a solution made by dissolving 2.00 mol of glucose in 1.00 kg of water? Kb = 0.512 °C/m",
+  "reply": "ΔTb = i·Kb·m = 1 × 0.512 × 2.00 = 1.024 °C, so the solution boils at **101.02 °C**.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-060",
+  "area": "math",
+  "prompt": "A recipe needs 3 cups of flour for 12 cookies. How many cups for 30 cookies?",
+  "reply": "3/12 = 0.25 cups per cookie, so 30 cookies need **7.5 cups** of flour.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-061",
+  "area": "math",
+  "prompt": "A pancake recipe uses 2 eggs for 8 pancakes. How many eggs for 20 pancakes?",
+  "reply": "2/8 = 0.25 eggs per pancake, so 20 pancakes need **5 eggs**.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-062",
+  "area": "math",
+  "prompt": "It takes 2 eggs to make 8 pancakes. How many eggs for 20 pancakes?",
+  "reply": "20/8 = 2.5 batches, so **5 eggs**.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-063",
+  "area": "math",
+  "prompt": "If 3 cups of flour make 12 cookies, how many cups would I need to bake 30 cookies?",
+  "reply": "30/12 = 2.5 times the recipe, so **7.5 cups**.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-064",
+  "area": "math",
+  "prompt": "A smoothie recipe uses 2 bananas for 3 smoothies. How many bananas for 9 smoothies?",
+  "reply": "9 smoothies is 3 times the recipe, so **6 bananas**.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-065",
+  "area": "math",
+  "prompt": "A recipe needs 3 cups of flour for 12 cookies. How many cups do I need if I want to bake 30 cookies?",
+  "reply": "30/12 = 2.5 times the recipe, so **7.5 cups** of flour.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-066",
+  "area": "food",
+  "prompt": "what should I cook tonight?",
+  "reply": "How about a quick stir-fry: veggies, garlic, soy sauce and rice, ready in 20 minutes. Or shakshuka if you have eggs and tomatoes.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-067",
+  "area": "food",
+  "prompt": "what should I eat for dinner?",
+  "reply": "Something light: grilled chicken with a salad, or a lentil soup with bread.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-068",
+  "area": "food",
+  "prompt": "any good recipe for a quick lunch?",
+  "reply": "Try a chickpea salad: chickpeas, cucumber, tomato, red onion, lemon and olive oil. Ten minutes, no cooking.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-069",
+  "area": "math lookalike",
+  "prompt": "my recipe makes 12 cookies, how many should I bake for the party?",
+  "reply": "Plan on 2–3 cookies per guest, so for 15 people about 3 batches.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-070",
+  "area": "math lookalike",
+  "prompt": "I booked 2 rooms for 3 nights. How many towels come with that?",
+  "reply": "Hotels usually give one bath towel and one hand towel per guest, refreshed on request. Ask the front desk for extras.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-071",
+  "area": "math lookalike",
+  "prompt": "A recipe needs 3 cups of flour for 12 cookies, is that a lot?",
+  "reply": "That's a fairly standard ratio for drop cookies, maybe a bit flour-heavy if you like them chewy.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-072",
+  "area": "math lookalike",
+  "prompt": "we need 2 pizzas for 6 people, what toppings should we get?",
+  "reply": "One margherita to keep everyone happy, plus a pepperoni or a veggie supreme.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-073",
+  "area": "places",
+  "prompt": "What’s my current location?",
+  "reply": "",
+  "expect": "instant"
+ },
+ {
+  "id": "rg-074",
+  "area": "places",
+  "prompt": "What’s my current location?",
+  "location": "Westlands, Nairobi, Kenya",
+  "reply": "",
+  "expect": "instant"
+ },
+ {
+  "id": "rg-075",
+  "area": "places",
+  "prompt": "where’s my location right now",
+  "location": "Westlands, Nairobi, Kenya",
+  "reply": "",
+  "expect": "instant"
+ },
+ {
+  "id": "rg-076",
+  "area": "places",
+  "prompt": "what’s the current location of the ISS?",
+  "reply": "The ISS is over the **South Pacific** right now, about 420 km up, moving at roughly 28,000 km/h. It circles the Earth every 90 minutes, so that changes fast.",
+  "expect": "search"
+ },
+ {
+  "id": "rg-077",
+  "area": "places",
+  "prompt": "what’s my current location in the game?",
+  "reply": "I can’t see your game, so I can’t tell where you are in it. If you tell me which game and what’s around you, I can help you work it out.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-078",
+  "area": "places",
+  "prompt": "where’s my phone",
+  "location": "Westlands, Nairobi, Kenya",
+  "reply": "I can’t see your phone. On an iPhone, open **Find My** on another Apple device or sign in at icloud.com/find; on Android, use **Find My Device** at google.com/android/find.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-079",
+  "area": "math",
+  "prompt": "btw whats a 15% tip on 48 dollars",
+  "reply": "$48 \\times 0.15 = 7.20$",
+  "expect": "instant"
+ },
+ {
+  "id": "rg-080",
+  "area": "math",
+  "prompt": "8% tax on $25",
+  "reply": "$25 \\times 0.08 = 2$",
+  "expect": "instant"
+ },
+ {
+  "id": "rg-081",
+  "area": "chitchat",
+  "prompt": "any tips for a 15 minute talk on 48 slides",
+  "reply": "Aim for about one slide every 20 seconds, and cut the rest.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-082",
+  "area": "chitchat",
+  "prompt": "is a 15% tip enough in New York?",
+  "reply": "In New York, 18–20% is the usual tip at a sit-down restaurant.",
+  "expect": "answer"
+ },
+ {
+  "id": "rg-083",
+  "area": "chitchat",
+  "prompt": "whats 72 fahrenheit in celsius",
+  "reply": "72°F is about **22.2°C**, a comfortable room temperature.\n\n```chart\ntype: scatter\ntitle: \"Temperature\"\ndata: |\n  Fahrenheit | Celsius\n  ---------- | -------\n  32         | 0\n  72         | 22.2\n```\n\nTo convert, subtract 32 from the Fahrenheit reading, then multiply what is left by 5 and divide by 9: $C = \\frac{5}{9}(72 - 32)$, so $C \\approx 22.2^\\circ\\text{C}$. Water freezes at 32°F and boils at 212°F, which helps when you check an answer.",
+  "expect": "answer"
+ }
+]

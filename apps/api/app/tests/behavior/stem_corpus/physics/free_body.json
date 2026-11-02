@@ -1,0 +1,205 @@
+[
+ {
+  "id": "fb-01",
+  "area": "free_body",
+  "prompt": "Draw the forces on a box sliding down a 30 degree incline with friction",
+  "expect": "explain",
+  "visual": "incline"
+ },
+ {
+  "id": "fb-02",
+  "area": "free_body",
+  "prompt": "Draw a free-body diagram of a block at rest on an incline",
+  "expect": "explain",
+  "visual": "incline"
+ },
+ {
+  "id": "fb-03",
+  "area": "free_body",
+  "prompt": "show the forces on a skier going down a frictionless slope",
+  "expect": "explain",
+  "visual": "incline"
+ },
+ {
+  "id": "fb-04",
+  "area": "free_body",
+  "prompt": "What forces act on a crate resting on a 20° ramp?",
+  "expect": "explain",
+  "visual": "incline"
+ },
+ {
+  "id": "fb-05",
+  "area": "free_body",
+  "prompt": "show the forces acting on a hanging mass",
+  "expect": "explain",
+  "visual": "free_body"
+ },
+ {
+  "id": "fb-06",
+  "area": "free_body",
+  "prompt": "draw the forces on a lamp hanging from the ceiling by a cable",
+  "expect": "explain",
+  "visual": "free_body"
+ },
+ {
+  "id": "fb-07",
+  "area": "free_body",
+  "prompt": "What forces act on a book resting on a table?",
+  "expect": "explain",
+  "visual": "free_body"
+ },
+ {
+  "id": "fb-08",
+  "area": "free_body",
+  "prompt": "draw the forces on a block on a table pulled by a rope at 30 degrees above the horizontal",
+  "expect": "explain",
+  "visual": "free_body"
+ },
+ {
+  "id": "fb-09",
+  "area": "free_body",
+  "prompt": "draw a free-body diagram of a crate pushed across a rough floor",
+  "expect": "explain",
+  "visual": "free_body"
+ },
+ {
+  "id": "fb-10",
+  "area": "free_body",
+  "prompt": "sketch the forces on a ball falling with air resistance",
+  "expect": "explain",
+  "visual": "free_body"
+ },
+ {
+  "id": "fb-11",
+  "area": "free_body",
+  "prompt": "free body diagram of a sled pulled across the snow-covered ground by a rope",
+  "expect": "explain",
+  "visual": "free_body"
+ },
+ {
+  "id": "fb-12",
+  "area": "free_body",
+  "prompt": "Draw the forces on a box pushed up a 25 degree incline with friction",
+  "expect": "explain",
+  "visual": "incline"
+ },
+ {
+  "id": "fb-13",
+  "area": "free_body",
+  "prompt": "draw the forces on a box pulled up a ramp by a rope",
+  "expect": "explain",
+  "visual": "incline"
+ },
+ {
+  "id": "fb-14",
+  "area": "free_body",
+  "prompt": "draw the forces on a block sliding up an incline with friction",
+  "expect": "explain",
+  "visual": "incline"
+ },
+ {
+  "id": "fb-15",
+  "area": "free_body",
+  "prompt": "Draw a free-body diagram for two blocks connected by a string over a pulley",
+  "expect": "explain",
+  "visual": "free_body"
+ },
+ {
+  "id": "fb-16",
+  "area": "free_body",
+  "prompt": "show the forces on a block on a table connected over a pulley to a hanging mass",
+  "expect": "explain",
+  "visual": "free_body"
+ },
+ {
+  "id": "fb-17",
+  "area": "free_body",
+  "prompt": "draw the forces on a car going around a flat curve",
+  "expect": "explain",
+  "visual": "free_body"
+ },
+ {
+  "id": "fb-18",
+  "area": "free_body",
+  "prompt": "free body diagram of a car on a banked curve",
+  "expect": "explain",
+  "visual": "incline"
+ },
+ {
+  "id": "fb-19",
+  "area": "free_body",
+  "prompt": "draw the forces on a ball on a string at the top of a vertical circle",
+  "expect": "explain",
+  "visual": "free_body"
+ },
+ {
+  "id": "fb-l01",
+  "area": "free_body",
+  "prompt": "what are the forces of the market behind oil prices?",
+  "expect": "not_subject"
+ },
+ {
+  "id": "fb-l02",
+  "area": "free_body",
+  "prompt": "what forces shaped the French revolution?",
+  "expect": "not_subject"
+ },
+ {
+  "id": "fb-l03",
+  "area": "free_body",
+  "prompt": "tell me about the incline at Lalibela's rock churches",
+  "expect": "not_subject"
+ },
+ {
+  "id": "fb-l04",
+  "area": "free_body",
+  "prompt": "the forces of nature in Ethiopian poetry: give me examples",
+  "expect": "not_subject"
+ },
+ {
+  "id": "fb-l05",
+  "area": "free_body",
+  "prompt": "draw the slope of my sales chart",
+  "expect": "not_subject"
+ },
+ {
+  "id": "fb-l06",
+  "area": "lookalike",
+  "prompt": "how do I fix a squeaky pulley on my garage door?",
+  "expect": "not_subject"
+ },
+ {
+  "id": "fb-l07",
+  "area": "lookalike",
+  "prompt": "what forces shape the curve of supply and demand?",
+  "expect": "not_subject"
+ },
+ {
+  "id": "fb-l08",
+  "area": "lookalike",
+  "prompt": "how steep is the learning curve for a new language, and what forces you to stick with it?",
+  "expect": "not_subject"
+ },
+ {
+  "id": "fb-g8-01",
+  "area": "free_body",
+  "prompt": "Draw and explain a free body diagram (FBD) to show all the forces acting on a car.",
+  "expect": "explain",
+  "visual": "free_body",
+  "note": "Class 8 book (2026-10-30): no surface named, so nothing was drawn"
+ },
+ {
+  "id": "fb-g8-02",
+  "area": "free_body",
+  "prompt": "A book is placed on the surface of a table. The book is pushed in one direction. Draw the forces acting on the book and explain.",
+  "expect": "explain",
+  "visual": "free_body"
+ },
+ {
+  "id": "fb-g8-03",
+  "area": "free_body",
+  "prompt": "Draw a free body diagram (FBD) to show various forces acting on a body which is sliding on an inclined plane.",
+  "expect": "explain",
+  "visual": "incline"
+ }
+]

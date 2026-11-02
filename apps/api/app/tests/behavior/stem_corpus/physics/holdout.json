@@ -1,0 +1,969 @@
+[
+ {
+  "id": "h-kin-01",
+  "area": "kinematics",
+  "prompt": "my car goes from 0 to 100 km/h in 8 seconds, what's the acceleration in m/s^2",
+  "expect": "answer",
+  "answer": [
+   3.47222,
+   "m/s^2"
+  ]
+ },
+ {
+  "id": "h-kin-02",
+  "area": "kinematics",
+  "prompt": "A truck slows down from 72 km/h to 36 km/h in 5 s. Find its acceleration.",
+  "expect": "answer",
+  "answer": [
+   -2.0,
+   "m/s^2"
+  ]
+ },
+ {
+  "id": "h-kin-03",
+  "area": "kinematics",
+  "prompt": "An athlete runs at 6 m/s for 2 minutes. How far does she run?",
+  "expect": "answer",
+  "answer": [
+   720.0,
+   "m"
+  ]
+ },
+ {
+  "id": "h-kin-04",
+  "area": "kinematics",
+  "prompt": "How long does light take to cross 3000 km?",
+  "expect": "answer",
+  "answer": [
+   0.0100067,
+   "s"
+  ]
+ },
+ {
+  "id": "h-kin-05",
+  "area": "kinematics",
+  "prompt": "A bike starts from rest and reaches 12 m/s in 4 s. How far does it travel in this time?",
+  "expect": "answer",
+  "answer": [
+   24.0,
+   "m"
+  ]
+ },
+ {
+  "id": "h-kin-06",
+  "area": "kinematics",
+  "prompt": "A stone is dropped from rest. How far does it fall in 2 seconds?",
+  "expect": "answer",
+  "answer": [
+   19.62,
+   "m"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "h-kin-07",
+  "area": "kinematics",
+  "prompt": "A car moving at 20 m/s accelerates at 1.5 m/s^2 for 10 s. What is its final speed?",
+  "expect": "answer",
+  "answer": [
+   35.0,
+   "m/s"
+  ]
+ },
+ {
+  "id": "h-kin-08",
+  "area": "kinematics",
+  "prompt": "An object accelerates uniformly from 3 m/s to 15 m/s over 36 m. Find the time taken.",
+  "expect": "answer",
+  "answer": [
+   4.0,
+   "s"
+  ]
+ },
+ {
+  "id": "h-kin-09",
+  "area": "kinematics",
+  "prompt": "A car brakes from 30 m/s to 10 m/s in 4 s. How far does it travel during braking?",
+  "expect": "answer",
+  "answer": [
+   80.0,
+   "m"
+  ]
+ },
+ {
+  "id": "h-kin-10",
+  "area": "kinematics",
+  "prompt": "A rocket starts from rest and accelerates at 15 m/s^2. How far has it gone after 6 s?",
+  "expect": "answer",
+  "answer": [
+   270.0,
+   "m"
+  ]
+ },
+ {
+  "id": "h-fall-01",
+  "area": "free_fall",
+  "prompt": "A pebble is dropped off a 78 m bridge. How long until it splashes into the river?",
+  "expect": "answer",
+  "answer": [
+   3.98775,
+   "s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "h-fall-02",
+  "area": "free_fall",
+  "prompt": "A ball is thrown straight up at 25 m/s. Find the time to reach the top.",
+  "expect": "answer",
+  "answer": [
+   2.54842,
+   "s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "h-fall-03",
+  "area": "free_fall",
+  "prompt": "A ball is thrown vertically up at 18 m/s. What maximum height does it reach?",
+  "expect": "answer",
+  "answer": [
+   16.5138,
+   "m"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "h-fall-04",
+  "area": "free_fall",
+  "prompt": "How fast is a skydiver falling 3 s after jumping, ignoring air resistance?",
+  "expect": "answer",
+  "answer": [
+   29.43,
+   "m/s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "h-fall-05",
+  "area": "free_fall",
+  "prompt": "An egg falls off a 1.5 m counter. How long until it hits the floor?",
+  "expect": "answer",
+  "answer": [
+   0.553001,
+   "s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "h-proj-01",
+  "area": "projectile",
+  "prompt": "A football is kicked at 18 m/s at 35 degrees above the horizontal. How far does it go?",
+  "expect": "answer",
+  "answer": [
+   31.0357,
+   "m"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "h-proj-02",
+  "area": "projectile",
+  "prompt": "A toy car rolls off a 0.8 m high table at 2 m/s. How far from the table does it land?",
+  "expect": "answer",
+  "answer": [
+   0.80771,
+   "m"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "h-proj-03",
+  "area": "projectile",
+  "prompt": "An arrow is shot at 50 m/s at 15°. What is its time of flight?",
+  "expect": "answer",
+  "answer": [
+   2.63832,
+   "s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "h-proj-04",
+  "area": "projectile",
+  "prompt": "A water balloon is thrown horizontally at 6 m/s from a 20 m high window. How long is it in the air?",
+  "expect": "answer",
+  "answer": [
+   2.01928,
+   "s"
+  ],
+  "visual": "projectile_motion"
+ },
+ {
+  "id": "h-force-01",
+  "area": "forces",
+  "prompt": "How much force does it take to accelerate a 70 kg sprinter at 4 m/s^2?",
+  "expect": "answer",
+  "answer": [
+   280.0,
+   "N"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "h-force-02",
+  "area": "forces",
+  "prompt": "A 3 kg object is pushed with a net force of 12 N. Find its acceleration.",
+  "expect": "answer",
+  "answer": [
+   4.0,
+   "m/s^2"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "h-force-03",
+  "area": "forces",
+  "prompt": "What is the mass of an object that weighs 490 N on Earth?",
+  "expect": "answer",
+  "answer": [
+   49.949,
+   "kg"
+  ]
+ },
+ {
+  "id": "h-force-04",
+  "area": "forces",
+  "prompt": "A 900 N force accelerates a motorbike at 3 m/s^2. What is the mass of the motorbike?",
+  "expect": "answer",
+  "answer": [
+   300.0,
+   "kg"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "h-force-05",
+  "area": "forces",
+  "prompt": "A lift of mass 600 kg accelerates upward at 1.5 m/s^2. Find the tension in the cable.",
+  "expect": "answer",
+  "answer": [
+   6786.0,
+   "N"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "h-force-06",
+  "area": "forces",
+  "prompt": "A 75 kg parachutist falls at a steady terminal speed. What is the drag force on him?",
+  "expect": "answer",
+  "answer": [
+   735.75,
+   "N"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "h-force-07",
+  "area": "forces",
+  "prompt": "A net force of 50 N acts on a 10 kg trolley starting from rest for 4 s. How fast is it going?",
+  "expect": "answer",
+  "answer": [
+   20.0,
+   "m/s"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "h-fric-01",
+  "area": "friction",
+  "prompt": "A 15 kg box slides on a floor with μk = 0.4. What is the kinetic friction force?",
+  "expect": "answer",
+  "answer": [
+   58.86,
+   "N"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "h-fric-02",
+  "area": "friction",
+  "prompt": "A sled slides down a frictionless hill inclined at 20 degrees. What is its acceleration?",
+  "expect": "answer",
+  "answer": [
+   3.35522,
+   "m/s^2"
+  ],
+  "visual": "incline"
+ },
+ {
+  "id": "h-fric-03",
+  "area": "friction",
+  "prompt": "A 8 kg crate rests on a ramp at 25°. What friction force holds it still?",
+  "expect": "answer",
+  "answer": [
+   33.1671,
+   "N"
+  ],
+  "visual": "incline"
+ },
+ {
+  "id": "h-fric-04",
+  "area": "friction",
+  "prompt": "A curling stone slides at 3 m/s on ice with a coefficient of friction of 0.02. How far does it go before stopping?",
+  "expect": "answer",
+  "answer": [
+   22.9358,
+   "m"
+  ]
+ },
+ {
+  "id": "h-fric-05",
+  "area": "friction",
+  "prompt": "A 6 kg block sits on a 40° incline. Find the normal force.",
+  "expect": "answer",
+  "answer": [
+   45.0894,
+   "N"
+  ],
+  "visual": "incline"
+ },
+ {
+  "id": "h-en-01",
+  "area": "energy",
+  "prompt": "A 0.06 kg tennis ball is served at 50 m/s. What is its kinetic energy?",
+  "expect": "answer",
+  "answer": [
+   75.0,
+   "J"
+  ]
+ },
+ {
+  "id": "h-en-02",
+  "area": "energy",
+  "prompt": "How much potential energy does a 500 kg elevator gain rising 20 m?",
+  "expect": "answer",
+  "answer": [
+   98100.0,
+   "J"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "h-en-03",
+  "area": "energy",
+  "prompt": "A skateboarder starts from rest at the top of a 3 m ramp. How fast is she going at the bottom (no friction)?",
+  "expect": "answer",
+  "answer": [
+   7.67203,
+   "m/s"
+  ]
+ },
+ {
+  "id": "h-en-04",
+  "area": "energy",
+  "prompt": "A crane lifts a 2000 kg beam 15 m in 30 s. What power does it develop?",
+  "expect": "answer",
+  "answer": [
+   9810.0,
+   "W"
+  ]
+ },
+ {
+  "id": "h-en-05",
+  "area": "energy",
+  "prompt": "A 50 kg student climbs 3 m of stairs. How much work does she do against gravity?",
+  "expect": "answer",
+  "answer": [
+   1471.5,
+   "J"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "h-en-06",
+  "area": "energy",
+  "prompt": "A motor uses 500 J of electrical energy and does 400 J of useful work. What is its efficiency?",
+  "expect": "answer",
+  "answer": [
+   80.0,
+   "%"
+  ]
+ },
+ {
+  "id": "h-en-07",
+  "area": "energy",
+  "prompt": "A 1500 kg car has 300 kJ of kinetic energy. How fast is it moving?",
+  "expect": "answer",
+  "answer": [
+   20.0,
+   "m/s"
+  ]
+ },
+ {
+  "id": "h-en-08",
+  "area": "energy",
+  "prompt": "How much work is done lifting a 10 kg box onto a 1.2 m shelf?",
+  "expect": "answer",
+  "answer": [
+   117.72,
+   "J"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "h-mom-01",
+  "area": "momentum",
+  "prompt": "What is the momentum of a 1200 kg car moving at 25 m/s?",
+  "expect": "answer",
+  "answer": [
+   30000.0,
+   "kg*m/s"
+  ]
+ },
+ {
+  "id": "h-mom-02",
+  "area": "momentum",
+  "prompt": "A 4 kg ball moving at 5 m/s collides with a stationary 1 kg ball and they stick together. Find their velocity.",
+  "expect": "answer",
+  "answer": [
+   4.0,
+   "m/s"
+  ],
+  "visual": "collision"
+ },
+ {
+  "id": "h-mom-03",
+  "area": "momentum",
+  "prompt": "A 0.5 kg ball is kicked and its speed goes from 0 to 20 m/s in 0.05 s. Find the average force.",
+  "expect": "answer",
+  "answer": [
+   200.0,
+   "N"
+  ]
+ },
+ {
+  "id": "h-mom-04",
+  "area": "momentum",
+  "prompt": "A 1000 kg car brakes from 15 m/s to rest in 3 s. What is the average braking force?",
+  "expect": "answer",
+  "answer": [
+   5000.0,
+   "N"
+  ]
+ },
+ {
+  "id": "h-circ-01",
+  "area": "circular",
+  "prompt": "A 1.2 kg ball is whirled in a horizontal circle of radius 0.8 m at 4 m/s. What is the tension in the string?",
+  "expect": "answer",
+  "answer": [
+   24.0,
+   "N"
+  ],
+  "visual": "orbit"
+ },
+ {
+  "id": "h-circ-02",
+  "area": "circular",
+  "prompt": "A fan spins at 300 rpm. What is the period of one rotation?",
+  "expect": "answer",
+  "answer": [
+   0.2,
+   "s"
+  ]
+ },
+ {
+  "id": "h-circ-03",
+  "area": "circular",
+  "prompt": "A runner goes around a circular track of radius 30 m at 6 m/s. What is her centripetal acceleration?",
+  "expect": "answer",
+  "answer": [
+   1.2,
+   "m/s^2"
+  ],
+  "visual": "orbit"
+ },
+ {
+  "id": "h-grav-01",
+  "area": "gravitation",
+  "prompt": "What is the acceleration due to gravity on the Moon?",
+  "expect": "answer",
+  "answer": [
+   1.62331,
+   "m/s^2"
+  ]
+ },
+ {
+  "id": "h-grav-02",
+  "area": "gravitation",
+  "prompt": "What is the gravitational force between Earth and a 1 kg mass at its surface?",
+  "expect": "answer",
+  "answer": [
+   9.81986,
+   "N"
+  ]
+ },
+ {
+  "id": "h-osc-01",
+  "area": "oscillations",
+  "prompt": "A pendulum is 2.5 m long. What is its period?",
+  "expect": "answer",
+  "answer": [
+   3.17187,
+   "s"
+  ],
+  "visual": "pendulum"
+ },
+ {
+  "id": "h-osc-02",
+  "area": "oscillations",
+  "prompt": "A 3 kg mass hangs from a spring and stretches it by 0.15 m. Find the spring constant.",
+  "expect": "answer",
+  "answer": [
+   196.2,
+   "N/m"
+  ]
+ },
+ {
+  "id": "h-osc-03",
+  "area": "oscillations",
+  "prompt": "A guitar string vibrates 1320 times in 3 s. What is its frequency?",
+  "expect": "answer",
+  "answer": [
+   440.0,
+   "Hz"
+  ]
+ },
+ {
+  "id": "h-osc-04",
+  "area": "oscillations",
+  "prompt": "A spring needs 30 N to stretch 0.12 m. What is its spring constant?",
+  "expect": "answer",
+  "answer": [
+   250.0,
+   "N/m"
+  ]
+ },
+ {
+  "id": "h-osc-05",
+  "area": "oscillations",
+  "prompt": "A pendulum completes 15 oscillations in 30 s. What is its period?",
+  "expect": "answer",
+  "answer": [
+   2.0,
+   "s"
+  ]
+ },
+ {
+  "id": "h-wave-01",
+  "area": "waves",
+  "prompt": "A sound wave has a frequency of 256 Hz and travels at 340 m/s. What is its wavelength?",
+  "expect": "answer",
+  "answer": [
+   1.32812,
+   "m"
+  ],
+  "visual": "wave"
+ },
+ {
+  "id": "h-wave-02",
+  "area": "waves",
+  "prompt": "What is the wavelength of a microwave with frequency 2.45 GHz?",
+  "expect": "answer",
+  "answer": [
+   0.122367,
+   "m"
+  ],
+  "visual": "wave"
+ },
+ {
+  "id": "h-wave-03",
+  "area": "waves",
+  "prompt": "A ship's sonar pulse returns after 2 s. Sound travels at 1500 m/s in water. How deep is the sea?",
+  "expect": "answer",
+  "answer": [
+   1500.0,
+   "m"
+  ]
+ },
+ {
+  "id": "h-wave-04",
+  "area": "waves",
+  "prompt": "What is the frequency of a wave with period 0.25 s?",
+  "expect": "answer",
+  "answer": [
+   4.0,
+   "Hz"
+  ]
+ },
+ {
+  "id": "h-opt-01",
+  "area": "optics",
+  "prompt": "Light enters water (n = 1.33) from air at 30°. What is the angle of refraction?",
+  "expect": "answer",
+  "answer": [
+   22.0824,
+   "deg"
+  ],
+  "visual": "rays"
+ },
+ {
+  "id": "h-opt-02",
+  "area": "optics",
+  "prompt": "What is the critical angle of diamond, n = 2.42?",
+  "expect": "answer",
+  "answer": [
+   24.4075,
+   "deg"
+  ],
+  "visual": "rays"
+ },
+ {
+  "id": "h-opt-03",
+  "area": "optics",
+  "prompt": "A 10 cm focal length lens forms an image of an object 25 cm away. Where is the image?",
+  "expect": "answer",
+  "answer": [
+   16.6667,
+   "cm"
+  ],
+  "visual": "rays"
+ },
+ {
+  "id": "h-opt-04",
+  "area": "optics",
+  "prompt": "A lens has a power of 2.5 dioptres. What is its focal length?",
+  "expect": "answer",
+  "answer": [
+   0.4,
+   "m"
+  ]
+ },
+ {
+  "id": "h-elec-01",
+  "area": "circuits",
+  "prompt": "A 24 V supply drives a current through a 6 ohm resistor. What is the current?",
+  "expect": "answer",
+  "answer": [
+   4.0,
+   "A"
+  ],
+  "visual": "circuit"
+ },
+ {
+  "id": "h-elec-02",
+  "area": "circuits",
+  "prompt": "An oven is rated 2400 W at 240 V. What current does it draw?",
+  "expect": "answer",
+  "answer": [
+   10.0,
+   "A"
+  ],
+  "visual": "circuit"
+ },
+ {
+  "id": "h-elec-03",
+  "area": "circuits",
+  "prompt": "Resistors of 10 Ω and 15 Ω are in parallel. Find the total resistance.",
+  "expect": "answer",
+  "answer": [
+   6.0,
+   "ohm"
+  ],
+  "visual": "circuit"
+ },
+ {
+  "id": "h-elec-04",
+  "area": "circuits",
+  "prompt": "A current of 0.5 A flows for 10 minutes. How much charge flows?",
+  "expect": "answer",
+  "answer": [
+   300.0,
+   "C"
+  ]
+ },
+ {
+  "id": "h-elec-05",
+  "area": "circuits",
+  "prompt": "A 12 V car battery moves 600 C of charge. How much energy does it transfer?",
+  "expect": "answer",
+  "answer": [
+   7200.0,
+   "J"
+  ]
+ },
+ {
+  "id": "h-elec-06",
+  "area": "circuits",
+  "prompt": "A 9 V battery transfers 180 J of energy. How much charge passed through?",
+  "expect": "answer",
+  "answer": [
+   20.0,
+   "C"
+  ]
+ },
+ {
+  "id": "h-elec-07",
+  "area": "circuits",
+  "prompt": "A laptop charger uses 65 W. How much energy does it use in 2 hours in kWh?",
+  "expect": "answer",
+  "answer": [
+   0.13,
+   "kWh"
+  ]
+ },
+ {
+  "id": "h-elec-08",
+  "area": "circuits",
+  "prompt": "What is the resistance of a bulb that draws 0.25 A from a 6 V battery?",
+  "expect": "answer",
+  "answer": [
+   24.0,
+   "ohm"
+  ],
+  "visual": "circuit"
+ },
+ {
+  "id": "h-estat-01",
+  "area": "electrostatics",
+  "prompt": "Find the force between two 1 µC charges 5 cm apart.",
+  "expect": "answer",
+  "answer": [
+   3.5952,
+   "N"
+  ],
+  "visual": "free_body"
+ },
+ {
+  "id": "h-estat-02",
+  "area": "electrostatics",
+  "prompt": "What is the electric field 3 cm from a 2 µC point charge?",
+  "expect": "answer",
+  "answer": [
+   19973300.0,
+   "N/C"
+  ]
+ },
+ {
+  "id": "h-mag-01",
+  "area": "magnetism",
+  "prompt": "An electron moves at 3 x 10^6 m/s at right angles to a 0.1 T magnetic field. What force acts on it?",
+  "expect": "answer",
+  "answer": [
+   4.806e-14,
+   "N"
+  ]
+ },
+ {
+  "id": "h-mag-02",
+  "area": "magnetism",
+  "prompt": "A 0.2 m wire carrying 5 A sits at right angles in a 0.3 T field. Find the force on the wire.",
+  "expect": "answer",
+  "answer": [
+   0.3,
+   "N"
+  ]
+ },
+ {
+  "id": "h-heat-01",
+  "area": "thermal",
+  "prompt": "How much energy does it take to heat 3 kg of water from 15 °C to 100 °C?",
+  "expect": "answer",
+  "answer": [
+   1067430.0,
+   "J"
+  ]
+ },
+ {
+  "id": "h-heat-02",
+  "area": "thermal",
+  "prompt": "A 0.5 kg copper block (c = 385 J/kg·K) gains 3850 J. By how much does its temperature rise?",
+  "expect": "answer",
+  "answer": [
+   20.0,
+   "K"
+  ]
+ },
+ {
+  "id": "h-heat-03",
+  "area": "thermal",
+  "prompt": "How much heat is needed to melt 2 kg of ice at 0 °C? (Lf = 334000 J/kg)",
+  "expect": "answer",
+  "answer": [
+   668000.0,
+   "J"
+  ]
+ },
+ {
+  "id": "h-heat-04",
+  "area": "thermal",
+  "prompt": "A gas at 2 atm and 4 L is compressed at constant temperature to 2 L. What is the new pressure?",
+  "expect": "answer",
+  "answer": [
+   4.0,
+   "atm"
+  ]
+ },
+ {
+  "id": "h-fluid-01",
+  "area": "fluids",
+  "prompt": "What is the pressure at the bottom of a 3 m deep swimming pool due to the water?",
+  "expect": "answer",
+  "answer": [
+   29430.0,
+   "Pa"
+  ]
+ },
+ {
+  "id": "h-fluid-02",
+  "area": "fluids",
+  "prompt": "A 60 kg woman stands on high heels with a total area of 0.0002 m^2. What pressure does she exert?",
+  "expect": "answer",
+  "answer": [
+   2943000.0,
+   "Pa"
+  ]
+ },
+ {
+  "id": "h-fluid-03",
+  "area": "fluids",
+  "prompt": "A rock of volume 0.0005 m^3 is fully under water. What is the upthrust on it?",
+  "expect": "answer",
+  "answer": [
+   4.905,
+   "N"
+  ]
+ },
+ {
+  "id": "h-mod-01",
+  "area": "modern",
+  "prompt": "What is the energy of a photon of wavelength 700 nm?",
+  "expect": "answer",
+  "answer": [
+   2.83782e-19,
+   "J"
+  ]
+ },
+ {
+  "id": "h-mod-02",
+  "area": "modern",
+  "prompt": "How much energy is equivalent to 2 kg of mass?",
+  "expect": "answer",
+  "answer": [
+   1.7976e+17,
+   "J"
+  ]
+ },
+ {
+  "id": "h-mod-03",
+  "area": "modern",
+  "prompt": "A sample has a half-life of 3 hours. What fraction is left after 9 hours?",
+  "expect": "answer",
+  "answer": [
+   0.125,
+   ""
+  ]
+ },
+ {
+  "id": "h-ex-01",
+  "area": "explain",
+  "prompt": "Why does a spinning top not fall over?",
+  "expect": "explain"
+ },
+ {
+  "id": "h-ex-02",
+  "area": "explain",
+  "prompt": "how does a rocket move in space if there's nothing to push against",
+  "expect": "explain"
+ },
+ {
+  "id": "h-ex-03",
+  "area": "explain",
+  "prompt": "Explain what friction is and why it's useful.",
+  "expect": "explain"
+ },
+ {
+  "id": "h-ex-04",
+  "area": "explain",
+  "prompt": "What's the difference between mass and weight?",
+  "expect": "explain"
+ },
+ {
+  "id": "h-ex-05",
+  "area": "explain",
+  "prompt": "Why do we see lightning before we hear thunder?",
+  "expect": "explain"
+ },
+ {
+  "id": "h-dec-01",
+  "area": "decline",
+  "prompt": "A ball is dropped. How fast is it going when it lands?",
+  "expect": "decline",
+  "note": "no height"
+ },
+ {
+  "id": "h-dec-02",
+  "area": "decline",
+  "prompt": "A spring is stretched by 5 cm. What is the force?",
+  "expect": "decline",
+  "note": "no spring constant"
+ },
+ {
+  "id": "h-dec-03",
+  "area": "decline",
+  "prompt": "An object moves in a circle at 10 m/s. What is its acceleration?",
+  "expect": "decline",
+  "note": "no radius"
+ },
+ {
+  "id": "h-look-01",
+  "area": "lookalike",
+  "prompt": "My phone battery drains so fast, any tips?",
+  "expect": "not_physics",
+  "note": "advice"
+ },
+ {
+  "id": "h-look-02",
+  "area": "lookalike",
+  "prompt": "What's the speed limit on UK motorways?",
+  "expect": "not_physics",
+  "note": "law"
+ },
+ {
+  "id": "h-look-03",
+  "area": "lookalike",
+  "prompt": "How far is the moon from Earth?",
+  "expect": "not_physics",
+  "note": "fact, fine for model; not a calculation"
+ },
+ {
+  "id": "h-look-04",
+  "area": "lookalike",
+  "prompt": "I weigh 70 kg and want to reach 65 kg by summer, help me plan",
+  "expect": "not_physics",
+  "note": "fitness"
+ },
+ {
+  "id": "h-look-05",
+  "area": "lookalike",
+  "prompt": "Write a poem about gravity and love.",
+  "expect": "not_physics",
+  "note": "creative"
+ },
+ {
+  "id": "h-look-06",
+  "area": "lookalike",
+  "prompt": "How much does a 2 kg bag of flour cost at Tesco?",
+  "expect": "not_physics",
+  "note": "shopping"
+ },
+ {
+  "id": "h-look-07",
+  "area": "lookalike",
+  "prompt": "what time does the train at 60 km/h arrive if it left at 9",
+  "expect": "not_physics",
+  "note": "schedule; model may ask"
+ }
+]

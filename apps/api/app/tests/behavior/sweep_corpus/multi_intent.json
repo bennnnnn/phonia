@@ -1,0 +1,526 @@
+[
+ {
+  "id": "mi-laptop-jobs",
+  "area": "multi",
+  "prompt": "I need a new laptop, and I also want to find remote backend engineering jobs",
+  "reply": "### A new laptop\n\nFor backend work on a mid-range budget (about $1,200), look at a MacBook Air M3 with 16 GB of memory or a ThinkPad T14 with 32 GB.\n\n### Remote backend jobs\n\n- **Senior Backend Engineer (Go)** at Acme, fully remote\n- **Backend Developer (Python)** at Globex, remote within Europe",
+  "expect": [
+   "search",
+   "answer"
+  ]
+ },
+ {
+  "id": "mi-two-questions",
+  "area": "multi",
+  "prompt": "what's the capital of Australia? and how do I boil an egg?",
+  "reply": "### Capital of Australia\n\nCanberra.\n\n### Boiling an egg\n\n1. Put the egg in a pot and cover it with cold water.\n2. Bring it to a boil, then simmer 9 minutes.\n3. Cool it in cold water and peel.",
+  "expect": [
+   "answer"
+  ]
+ },
+ {
+  "id": "mi-weather-and-solve",
+  "area": "multi",
+  "prompt": "what's the weather in Paris tomorrow and also solve 2x + 5 = 17",
+  "reply": "### Paris tomorrow\n\nCloudy with light rain in the afternoon, around 14 °C.\n\n### Solving 2x + 5 = 17\n\nSubtract 5 from both sides: $2x = 12$. Divide by 2: $x = 6$.",
+  "expect": [
+   "search",
+   "answer"
+  ]
+ },
+ {
+  "id": "mi-solve-then-weather",
+  "area": "multi",
+  "prompt": "solve 2x + 5 = 17 and also what's the weather in Paris tomorrow",
+  "reply": "### Solving 2x + 5 = 17\n\nSubtract 5: $2x = 12$, so $x = 6$.\n\n### Paris tomorrow\n\nMostly cloudy, a high of 15 °C.",
+  "expect": [
+   "search",
+   "answer"
+  ]
+ },
+ {
+  "id": "mi-teach-and-price",
+  "area": "multi",
+  "prompt": "teach me python dictionaries, and what is the current price of bitcoin?",
+  "reply": "### Python dictionaries\n\nA dictionary maps keys to values: `ages = {'Abel': 30}`. Look a value up with `ages['Abel']`.\n\n### Bitcoin price\n\nAbout $68,000 right now, per the latest quotes.",
+  "expect": [
+   "search",
+   "answer"
+  ]
+ },
+ {
+  "id": "mi-code-and-score",
+  "area": "multi",
+  "prompt": "write a function to reverse a list, and who won the champions league final last night",
+  "reply": "### Reversing a list\n\n```python\ndef reverse(items):\n    return items[::-1]\n```\n\n### Last night's final\n\nReal Madrid won 2-1 after extra time.",
+  "expect": [
+   "search",
+   "answer"
+  ]
+ },
+ {
+  "id": "mi-reminder-and-weather",
+  "area": "multi",
+  "prompt": "remind me to buy milk at 5pm and what's the weather in Nairobi today?",
+  "reply": "Nairobi today: sunny spells, around 24 °C, with a chance of a shower in the evening.",
+  "expect": [
+   "search",
+   "save",
+   "answer"
+  ]
+ },
+ {
+  "id": "mi-settings-and-joke",
+  "area": "multi",
+  "prompt": "switch to dark mode and tell me a joke",
+  "reply": "Why don't skeletons fight each other? They don't have the guts.",
+  "expect": [
+   "settings",
+   "answer"
+  ]
+ },
+ {
+  "id": "mi-settings-and-question",
+  "area": "multi",
+  "prompt": "switch to dark mode, and also what is the capital of France?",
+  "reply": "The capital of France is Paris.",
+  "expect": [
+   "settings",
+   "answer"
+  ]
+ },
+ {
+  "id": "mi-tone-and-vaccines",
+  "area": "multi",
+  "prompt": "change the tone to funny, and also explain how vaccines work",
+  "reply": "You can change the tone in Settings → Personalization.\n\nVaccines show your immune system a harmless preview of a germ, so it learns to recognise it and builds antibodies. If the real germ turns up later, your body is ready and fights it off fast.",
+  "expect": "answer"
+ },
+ {
+  "id": "mi-draw-and-explain",
+  "area": "multi",
+  "prompt": "draw a cat wearing a hat and also explain what a black hole is",
+  "reply": "A black hole is a region of space where gravity is so strong that nothing, not even light, can escape once it crosses the event horizon.",
+  "expect": [
+   "image_gen",
+   "answer"
+  ]
+ },
+ {
+  "id": "mi-compare-and-install",
+  "area": "multi",
+  "prompt": "compare python and javascript, and how do I install node on mac?",
+  "reply": "### Python vs JavaScript\n\n| | Python | JavaScript |\n|---|---|---|\n| Typing | Dynamic | Dynamic |\n| Main use | Data, scripting | Web |\n\n### Installing Node on a Mac\n\n1. Install Homebrew.\n2. Run `brew install node`.\n3. Check with `node -v`.",
+  "expect": [
+   "answer"
+  ]
+ },
+ {
+  "id": "mi-brief-and-detail",
+  "area": "multi",
+  "prompt": "in one sentence what is DNS? Also explain in detail how TLS handshakes work",
+  "reply": "### DNS\n\nDNS turns names like example.com into the IP addresses computers use.\n\n### The TLS handshake\n\nThe client says hello with the versions and ciphers it supports; the server answers with its certificate; they agree a key and switch to encrypted traffic.",
+  "expect": [
+   "answer"
+  ]
+ },
+ {
+  "id": "mi-haiku-and-score",
+  "area": "multi",
+  "prompt": "write a haiku about autumn. Also, who won the champions league last night?",
+  "reply": "### Autumn haiku\n\nRed leaves drift and fall\nthe old maple lets them go\nwind carries the rest\n\n### Last night's result\n\nReal Madrid won the final 2-1.",
+  "expect": [
+   "search",
+   "answer"
+  ]
+ },
+ {
+  "id": "mi-dinner-and-rate",
+  "area": "multi",
+  "prompt": "give me 3 dinner ideas, and also what's the exchange rate from USD to ETB",
+  "reply": "### Dinner ideas\n\n1. Shiro with injera\n2. Lentil soup\n3. Vegetable stir-fry\n\n### USD to ETB\n\nOne US dollar buys about 120 birr today.",
+  "expect": [
+   "search",
+   "answer"
+  ]
+ },
+ {
+  "id": "mi-book-and-phone-price",
+  "area": "multi",
+  "prompt": "recommend a good sci-fi book, and also how much does the iPhone 17 Pro cost?",
+  "reply": "### A sci-fi book\n\n*The Left Hand of Darkness* by Ursula K. Le Guin.\n\n### iPhone 17 Pro price\n\nIt starts at $1,099 for 256 GB.",
+  "expect": [
+   "search",
+   "answer"
+  ]
+ },
+ {
+  "id": "mi-cold-brew-and-weather",
+  "area": "multi",
+  "prompt": "how do I make cold brew? btw what's the weather in Addis today",
+  "reply": "### Cold brew\n\n1. Mix 1 part coarse coffee with 8 parts cold water.\n2. Steep 12-18 hours in the fridge.\n3. Strain.\n\n### Addis Ababa today\n\nCloudy, about 20 °C.",
+  "expect": [
+   "search",
+   "answer"
+  ]
+ },
+ {
+  "id": "mi-spider-and-japan",
+  "area": "multi",
+  "prompt": "what's the capital of Japan and also how many legs does a spider have",
+  "reply": "### Capital of Japan\n\nTokyo.\n\n### Spider legs\n\nEight.",
+  "expect": [
+   "answer"
+  ]
+ },
+ {
+  "id": "ml-tcp-udp",
+  "area": "multi lookalike",
+  "prompt": "difference between TCP and UDP and when to use each",
+  "reply": "TCP is reliable and ordered; UDP is fast and connectionless. Use TCP for web pages and file transfers, UDP for games, calls and live video.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-which-is-faster",
+  "area": "multi lookalike",
+  "prompt": "compare python and javascript and tell me which is faster",
+  "reply": "| | Python | JavaScript |\n|---|---|---|\n| Speed | Slower | Faster (V8 JIT) |\n\nJavaScript is usually faster for general code.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-dns-how",
+  "area": "multi lookalike",
+  "prompt": "what is DNS and how does it work",
+  "reply": "DNS is the internet's address book: your device asks a resolver, which asks the root, TLD and authoritative servers until it gets the IP address.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-ceo-age",
+  "area": "multi lookalike",
+  "prompt": "who is the CEO of Tesla and how old is he",
+  "reply": "Elon Musk is Tesla's CEO; he was born in June 1971.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-pasta-sauce",
+  "area": "multi lookalike",
+  "prompt": "how do I make pasta and what sauce goes well with it",
+  "reply": "Boil salted water, cook the pasta until al dente, drain. A simple tomato and basil sauce or garlic and olive oil both go well with it.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-paris-there",
+  "area": "multi lookalike",
+  "prompt": "what's the weather in Paris and what can I do there",
+  "reply": "Paris is mild this week, around 15 °C. Visit the Louvre, walk along the Seine, or climb Montmartre.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-what-about-london",
+  "area": "multi lookalike",
+  "prompt": "What's the weather in Paris? What about London?",
+  "reply": "Paris: cloudy, 14 °C. London: light rain, 12 °C.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-eiffel-built",
+  "area": "multi lookalike",
+  "prompt": "How tall is the Eiffel Tower? When was it built?",
+  "reply": "The Eiffel Tower is 330 m tall and was built from 1887 to 1889.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-world-cup-goals",
+  "area": "multi lookalike",
+  "prompt": "who won the world cup in 2022 and who scored the goals",
+  "reply": "Argentina won the 2022 World Cup final against France; Messi scored twice and Di María once.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-paris-pack",
+  "area": "multi lookalike",
+  "prompt": "I'm going to Paris tomorrow. What's the weather going to be like and what should I pack?",
+  "reply": "Expect about 14 °C with some rain. Pack a light waterproof jacket, layers and comfortable shoes.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-recursion-example",
+  "area": "multi lookalike",
+  "prompt": "explain recursion and give me an example in python",
+  "reply": "Recursion is a function calling itself on a smaller problem.\n\n```python\ndef fact(n):\n    return 1 if n == 0 else n * fact(n - 1)\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-quantum-simple",
+  "area": "multi lookalike",
+  "prompt": "Explain quantum computing. Use simple words.",
+  "reply": "A quantum computer uses qubits, which can be 0 and 1 at once, so it can try many answers together for some kinds of problems.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-rome-budget",
+  "area": "multi lookalike",
+  "prompt": "plan a 3 day trip to Rome and include a budget",
+  "reply": "Day 1: the Colosseum and Forum. Day 2: the Vatican. Day 3: Trastevere. Budget about €150 a day for food, entry tickets and transport.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-japan-tokyo",
+  "area": "multi lookalike",
+  "prompt": "Can you help me plan a trip to Japan? I want to see Tokyo and Kyoto.",
+  "reply": "Spend four days in Tokyo, take the shinkansen to Kyoto for three days, and use a JR Pass to cover the trains.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-python-start",
+  "area": "multi lookalike",
+  "prompt": "how do I learn python? Where do I start?",
+  "reply": "Start with the official tutorial, write small scripts every day, then build one project you care about.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-translate-colon",
+  "area": "multi lookalike",
+  "prompt": "translate to French: where is the station and how much is a ticket?",
+  "reply": "Où est la gare et combien coûte un billet ?",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-email-boss",
+  "area": "multi lookalike",
+  "prompt": "write an email to my boss: I'm sick and also need Friday off",
+  "reply": "```email\nSubject: Sick today\n\nHi,\n\nI'm unwell today and would also like to take Friday off to recover.\n\nThanks,\nBini\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-graph-it",
+  "area": "multi lookalike",
+  "prompt": "solve 2x+5=17 and graph it",
+  "reply": "$x = 6$. The line $y = 2x + 5$ crosses $y = 17$ at $x = 6$.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-closure-one",
+  "area": "multi lookalike",
+  "prompt": "what is a closure in javascript and when should I use one",
+  "reply": "A closure is a function that remembers the variables around it. Use one to keep private state, like a counter.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-flu-last",
+  "area": "multi lookalike",
+  "prompt": "what are the symptoms of flu and how long does it last",
+  "reply": "Fever, aches, cough and tiredness; most people feel better in about a week.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-black-holes-form",
+  "area": "multi lookalike",
+  "prompt": "tell me about black holes and also how they form",
+  "reply": "Black holes are regions where gravity traps light. Most form when a massive star collapses at the end of its life.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-phones-which",
+  "area": "multi lookalike",
+  "prompt": "compare the iPhone 17 and the Pixel 10 and tell me which one to buy",
+  "reply": "| | iPhone 17 | Pixel 10 |\n|---|---|---|\n| Camera | Excellent | Excellent |\n\nBuy the Pixel if you want Android, the iPhone if you use a Mac.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-grammar-fix",
+  "area": "multi lookalike",
+  "prompt": "can you check my essay and also fix the grammar",
+  "reply": "Sure, paste the essay and I'll check it and fix the grammar.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-thanks-tomorrow",
+  "area": "multi lookalike",
+  "prompt": "thanks! and what about tomorrow?",
+  "reply": "Tomorrow looks similar: dry in the morning with showers later.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-dark-mode-css",
+  "area": "multi lookalike",
+  "prompt": "explain dark mode in CSS and how to switch themes with JavaScript",
+  "reply": "Define colours as CSS variables, override them in `@media (prefers-color-scheme: dark)`, and toggle a `data-theme` attribute on `<html>` from JavaScript.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-poem-dark-light",
+  "area": "multi lookalike",
+  "prompt": "write a poem about dark mode and also about light",
+  "reply": "Black glass at midnight,\na soft screen that spares the eyes;\nmorning brings back white.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-water-cycle-each",
+  "area": "multi lookalike",
+  "prompt": "draw me a diagram of the water cycle and explain each stage",
+  "reply": "Evaporation lifts water as vapour, condensation forms clouds, precipitation brings it down, and collection gathers it in rivers and seas.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-got-the-job",
+  "area": "statement",
+  "prompt": "I got the job!",
+  "reply": "Congratulations, that's wonderful news!",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-great-job",
+  "area": "statement",
+  "prompt": "you're doing a great job today",
+  "reply": "Thank you, that's kind of you to say!",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-cron-job",
+  "area": "code",
+  "prompt": "set up a cron job that backs up my database every night",
+  "reply": "Add this line with `crontab -e`:\n\n```\n0 2 * * * pg_dump mydb > /backups/mydb.sql\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-celery-jobs",
+  "area": "code",
+  "prompt": "my celery jobs keep failing with a timeout",
+  "reply": "Raise `task_time_limit`, check the broker connection, and look for blocking calls inside the task.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-interview-tips",
+  "area": "chitchat",
+  "prompt": "job interview tips for a backend role",
+  "reply": "Practise system design, review your past projects, and prepare questions about the team's stack.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-steve-jobs",
+  "area": "chitchat",
+  "prompt": "tell me about Steve Jobs",
+  "reply": "Steve Jobs co-founded Apple in 1976 and led it through the iPhone era.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-degree-jobs",
+  "area": "chitchat",
+  "prompt": "what jobs can I get with a biology degree",
+  "reply": "Lab technician, research assistant, science writer, teacher, or healthcare roles after further study.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-price-freedom",
+  "area": "chitchat",
+  "prompt": "what's the price of freedom",
+  "reply": "It's often said to be eternal vigilance: freedom lasts only while people protect it.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-price-course",
+  "area": "chitchat",
+  "prompt": "how should I price my online course",
+  "reply": "Look at what similar courses charge, price for the outcome it gives, and test two price points.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-elasticity",
+  "area": "chitchat",
+  "prompt": "what is price elasticity of demand",
+  "reply": "It measures how much demand changes when the price changes.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-chess-openings",
+  "area": "chitchat",
+  "prompt": "chess openings for beginners",
+  "reply": "Try the Italian Game, the London System and the Queen's Gambit.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-visa-card",
+  "area": "chitchat",
+  "prompt": "my Visa card was declined at the store, what should I do?",
+  "reply": "Check your balance and card limits, then call the number on the back of the card.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-what-is-visa",
+  "area": "chitchat",
+  "prompt": "what is a visa",
+  "reply": "A visa is permission from a country to enter, stay or work there for a set time.",
+  "expect": "answer"
+ },
+ {
+  "id": "mj-jobs-today",
+  "area": "search",
+  "prompt": "find software jobs posted today",
+  "reply": "- **Software Engineer** at Initech, posted 3 hours ago",
+  "expect": "search"
+ },
+ {
+  "id": "mj-python-openings",
+  "area": "search",
+  "prompt": "remote python developer openings",
+  "reply": "- **Python Developer** at Hooli, remote",
+  "expect": "search"
+ },
+ {
+  "id": "mj-nurse-nairobi",
+  "area": "search",
+  "prompt": "find me a job as a nurse in Nairobi",
+  "reply": "- **Registered Nurse** at Aga Khan Hospital, Nairobi",
+  "expect": "search"
+ },
+ {
+  "id": "mj-who-hiring",
+  "area": "search",
+  "prompt": "who is hiring react developers right now",
+  "reply": "Several companies list React roles this week, including Vercel and Shopify.",
+  "expect": "search"
+ },
+ {
+  "id": "mj-iphone-price",
+  "area": "search",
+  "prompt": "how much does the iPhone 17 Pro cost?",
+  "reply": "The iPhone 17 Pro starts at $1,099.",
+  "expect": "search"
+ },
+ {
+  "id": "mj-bitcoin-price",
+  "area": "search",
+  "prompt": "what is the current price of bitcoin?",
+  "reply": "About $68,000 right now.",
+  "expect": "search"
+ },
+ {
+  "id": "mj-usd-etb",
+  "area": "search",
+  "prompt": "USD to ETB exchange rate",
+  "reply": "One US dollar is about 120 birr today.",
+  "expect": "search"
+ },
+ {
+  "id": "mj-gold-price",
+  "area": "search",
+  "prompt": "price of gold today",
+  "reply": "Gold is trading near $2,400 an ounce.",
+  "expect": "search"
+ },
+ {
+  "id": "mj-uk-visa",
+  "area": "search",
+  "prompt": "UK visa rules for Ethiopian citizens",
+  "reply": "Ethiopian citizens need a visa for the UK; apply online before you travel.",
+  "expect": "search"
+ },
+ {
+  "id": "mj-japan-visa",
+  "area": "search",
+  "prompt": "do I need a visa for Japan?",
+  "reply": "It depends on your passport; many visitors can stay 90 days visa-free.",
+  "expect": "search"
+ }
+]

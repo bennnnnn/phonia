@@ -1,0 +1,1139 @@
+{
+  "about": "How an assistant reply is presented before anyone reads it: a Python >>> transcript becomes a code block, closed inline tokens get a word space (at**40** -> at **40**), and a chain of transformations becomes one reasoning state per row ($v = d/t = 5$ -> $v = d/t$ / $v = 5$). apps/api/app/modules/chat/presentation.py does it before a reply is saved, so a persisted row is already presented; apps/mobile/lib/markdown/presentation.ts does it for the text still streaming and for rows saved before the server did (SERVER_PRESENTATION_CUTOVER). Both test suites present every input and expect the output exactly, and present the output again and expect no change. Change a rule on both sides and update these cases in the same change. areas: boundaries, inline_code, calculation, maths, fences, lists, repl, replies.",
+  "cases": [
+    {
+      "id": "bold-glued-train",
+      "area": "boundaries",
+      "input": "A train travels at**60 km/h** and returns at**40 km/h**.",
+      "expected": "A train travels at **60 km/h** and returns at **40 km/h**."
+    },
+    {
+      "id": "bold-glued-cyclist",
+      "area": "boundaries",
+      "input": "A cyclist rides **12 km** at**20 km/h**, then**8 km** at**10 km/h**.",
+      "expected": "A cyclist rides **12 km** at **20 km/h**, then **8 km** at **10 km/h**."
+    },
+    {
+      "id": "bold-punctuation-stays-tight",
+      "area": "boundaries",
+      "input": "The answer is **48 km/h** — not **50 km/h**.",
+      "expected": "The answer is **48 km/h** — not **50 km/h**."
+    },
+    {
+      "id": "bold-in-parentheses",
+      "area": "boundaries",
+      "input": "(**important**)",
+      "expected": "(**important**)"
+    },
+    {
+      "id": "bold-before-period",
+      "area": "boundaries",
+      "input": "**48 km/h**.",
+      "expected": "**48 km/h**."
+    },
+    {
+      "id": "bold-before-comma",
+      "area": "boundaries",
+      "input": "**48 km/h**,",
+      "expected": "**48 km/h**,"
+    },
+    {
+      "id": "bold-glued-percent",
+      "area": "boundaries",
+      "input": "about**12%**of the sample",
+      "expected": "about **12%** of the sample"
+    },
+    {
+      "id": "bold-then-maths",
+      "area": "boundaries",
+      "input": "**speed**$v=5$",
+      "expected": "**speed** $v=5$"
+    },
+    {
+      "id": "bold-glued-inside-parentheses",
+      "area": "boundaries",
+      "input": "(see**this**)",
+      "expected": "(see **this**)"
+    },
+    {
+      "id": "bold-glued-digits",
+      "area": "boundaries",
+      "input": "x**2**y",
+      "expected": "x **2** y"
+    },
+    {
+      "id": "bold-price",
+      "area": "boundaries",
+      "input": "Price: **$5**and up",
+      "expected": "Price: **$5** and up"
+    },
+    {
+      "id": "bold-after-escaped-dollar",
+      "area": "boundaries",
+      "input": "\\$5**bold**",
+      "expected": "\\$5 **bold**"
+    },
+    {
+      "id": "bold-after-percent-stays",
+      "area": "boundaries",
+      "input": "100%**done**",
+      "expected": "100%**done**"
+    },
+    {
+      "id": "bold-in-curly-quotes",
+      "area": "boundaries",
+      "input": "“**quoted**”",
+      "expected": "“**quoted**”"
+    },
+    {
+      "id": "bold-before-em-dash",
+      "area": "boundaries",
+      "input": "**bold**—dash",
+      "expected": "**bold**—dash"
+    },
+    {
+      "id": "bold-around-slash",
+      "area": "boundaries",
+      "input": "**a**/**b**",
+      "expected": "**a**/**b**"
+    },
+    {
+      "id": "bold-italic-run",
+      "area": "boundaries",
+      "input": "It is ***very*** important",
+      "expected": "It is ***very*** important"
+    },
+    {
+      "id": "horizontal-rule",
+      "area": "boundaries",
+      "input": "***\n\nAfter the rule",
+      "expected": "***\n\nAfter the rule"
+    },
+    {
+      "id": "bold-unclosed",
+      "area": "boundaries",
+      "input": "at**40",
+      "expected": "at**40"
+    },
+    {
+      "id": "maths-glued",
+      "area": "boundaries",
+      "input": "speed is$v=5$km/h",
+      "expected": "speed is $v=5$ km/h"
+    },
+    {
+      "id": "maths-spaced",
+      "area": "boundaries",
+      "input": "speed is $v=5$ km/h",
+      "expected": "speed is $v=5$ km/h"
+    },
+    {
+      "id": "maths-unclosed",
+      "area": "boundaries",
+      "input": "speed is $v = 5",
+      "expected": "speed is $v = 5"
+    },
+    {
+      "id": "maths-negative-glued",
+      "area": "boundaries",
+      "input": "dropped to$-5$ overnight",
+      "expected": "dropped to $-5$ overnight"
+    },
+    {
+      "id": "currency-pair",
+      "area": "boundaries",
+      "input": "It costs $5 and $10.",
+      "expected": "It costs $5 and $10."
+    },
+    {
+      "id": "currency-equals-currency",
+      "area": "boundaries",
+      "input": "Half of $38.40 = $19.20, plus the $12 from last week = $31.20.",
+      "expected": "Half of $38.40 = $19.20, plus the $12 from last week = $31.20."
+    },
+    {
+      "id": "currency-rate-equals-total",
+      "area": "boundaries",
+      "input": "*   **Food:** $30/day for local spots, street food, and groceries = $210.",
+      "expected": "*   **Food:** $30/day for local spots, street food, and groceries = $210."
+    },
+    {
+      "id": "currency-tex-arithmetic",
+      "area": "boundaries",
+      "input": "- Hotel: $80 \\times 7 = $560",
+      "expected": "- Hotel: $80 \\times 7 = $560"
+    },
+    {
+      "id": "maths-glued-digit",
+      "area": "boundaries",
+      "input": "the term $a_n$2 here, and $\\frac{1}{2}$3 ways",
+      "expected": "the term $a_n$ 2 here, and $\\frac{1}{2}$ 3 ways"
+    },
+    {
+      "id": "escaped-currency",
+      "area": "boundaries",
+      "input": "Escaped \\$5 and \\$10",
+      "expected": "Escaped \\$5 and \\$10"
+    },
+    {
+      "id": "link-spaced",
+      "area": "boundaries",
+      "input": "See [the documentation](https://example.com/docs).",
+      "expected": "See [the documentation](https://example.com/docs)."
+    },
+    {
+      "id": "link-glued",
+      "area": "boundaries",
+      "input": "See[the documentation](https://example.com/docs)now",
+      "expected": "See [the documentation](https://example.com/docs) now"
+    },
+    {
+      "id": "image-glued",
+      "area": "boundaries",
+      "input": "Image:![alt](https://x.com/a.png)here",
+      "expected": "Image:![alt](https://x.com/a.png) here"
+    },
+    {
+      "id": "reference-link-glued",
+      "area": "boundaries",
+      "input": "Ref[link][1]text",
+      "expected": "Ref [link][1] text"
+    },
+    {
+      "id": "url-keeps-stars",
+      "area": "boundaries",
+      "input": "see https://example.com/a**b** now",
+      "expected": "see https://example.com/a**b** now"
+    },
+    {
+      "id": "multiplication-stars",
+      "area": "boundaries",
+      "input": "2*3*4",
+      "expected": "2*3*4"
+    },
+    {
+      "id": "cjk-has-no-word-spaces",
+      "area": "boundaries",
+      "input": "速度**40**米",
+      "expected": "速度**40**米"
+    },
+    {
+      "id": "cyrillic-glued-bold",
+      "area": "boundaries",
+      "input": "скорость**40 км/ч**.",
+      "expected": "скорость **40 км/ч**."
+    },
+    {
+      "id": "quote-left-alone",
+      "area": "boundaries",
+      "input": "> at**40 km/h**",
+      "expected": "> at**40 km/h**"
+    },
+    {
+      "id": "indented-code-left-alone",
+      "area": "boundaries",
+      "input": "    at**40**",
+      "expected": "    at**40**"
+    },
+    {
+      "id": "amharic-glued-bold",
+      "area": "boundaries",
+      "input": "ዋጋው**40 ብር**ነው።",
+      "expected": "ዋጋው **40 ብር** ነው።",
+      "note": "Ethiopic has no letter case; it still separates words with spaces."
+    },
+    {
+      "id": "arabic-glued-bold",
+      "area": "boundaries",
+      "input": "السعر**40 ريال**فقط",
+      "expected": "السعر **40 ريال** فقط"
+    },
+    {
+      "id": "superscript-before-bold",
+      "area": "boundaries",
+      "input": "The area is 25 m²**exactly**.",
+      "expected": "The area is 25 m² **exactly**."
+    },
+    {
+      "id": "cyrillic-glued-emphasis",
+      "area": "boundaries",
+      "input": "слово*привет*слово",
+      "expected": "слово *привет* слово"
+    },
+    {
+      "id": "amharic-glued-emphasis",
+      "area": "boundaries",
+      "input": "ማስታወሻ:*ይህ*ጠቃሚ ነው",
+      "expected": "ማስታወሻ:*ይህ* ጠቃሚ ነው"
+    },
+    {
+      "id": "mnemonic-bold-first-letters",
+      "area": "boundaries",
+      "input": "**A**ffect is **A**ction; **E**ffect is the **E**nd.",
+      "expected": "**A**ffect is **A**ction; **E**ffect is the **E**nd."
+    },
+    {
+      "id": "glued-bold-word-still-spaced",
+      "area": "boundaries",
+      "input": "the**answer**is here",
+      "expected": "the **answer** is here"
+    },
+    {
+      "id": "bare-number-with-point",
+      "area": "boundaries",
+      "input": "Step one gives $1.$ Step two gives $2$.",
+      "expected": "Step one gives $1.$ Step two gives $2$."
+    },
+    {
+      "id": "price-tiers-stay-as-written",
+      "area": "boundaries",
+      "input": "Try Joe's ($$) or Bob's ($$$) tonight.",
+      "expected": "Try Joe's ($$) or Bob's ($$$) tonight.",
+      "note": "A price tier is not a $$ pair."
+    },
+    {
+      "id": "code-spaced",
+      "area": "inline_code",
+      "input": "Use `yield` when appropriate.",
+      "expected": "Use `yield` when appropriate."
+    },
+    {
+      "id": "code-glued",
+      "area": "inline_code",
+      "input": "Use`yield`when appropriate.",
+      "expected": "Use `yield` when appropriate."
+    },
+    {
+      "id": "code-glued-formula",
+      "area": "inline_code",
+      "input": "Use the formula`v = d/t`to find speed.",
+      "expected": "Use the formula `v = d/t` to find speed."
+    },
+    {
+      "id": "code-glued-after",
+      "area": "inline_code",
+      "input": "Run `python main.py`and check.",
+      "expected": "Run `python main.py` and check."
+    },
+    {
+      "id": "iteration-line",
+      "area": "inline_code",
+      "input": "- **Iteration 1**: `n` is $2$. `total += n` means `total = total + n`. So, `total` becomes $0 + 2 = 2$.",
+      "expected": "- **Iteration 1**: `n` is $2$. `total += n` means `total = total + n`. So, `total` becomes $0 + 2 = 2$."
+    },
+    {
+      "id": "label-code-then-line",
+      "area": "inline_code",
+      "input": "**Line 1:** `total = 0`\nCreates a variable `total` and sets it to `0`.",
+      "expected": "**Line 1:** `total = 0`\nCreates a variable `total` and sets it to `0`."
+    },
+    {
+      "id": "dollars-inside-code",
+      "area": "inline_code",
+      "input": "`total` is `$5` and `x$` then $y = 2$.",
+      "expected": "`total` is `$5` and `x$` then $y = 2$."
+    },
+    {
+      "id": "code-then-sum",
+      "area": "inline_code",
+      "input": "Each loop adds `n` to `total`: $2 + 4 + 6 = 12$.",
+      "expected": "Each loop adds `n` to `total`: $2 + 4 + 6 = 12$."
+    },
+    {
+      "id": "prices-in-prose",
+      "area": "inline_code",
+      "input": "It costs $5 and the tip is $10.",
+      "expected": "It costs $5 and the tip is $10."
+    },
+    {
+      "id": "code-and-bare-numbers",
+      "area": "inline_code",
+      "input": "`n` is $2$, `total` is $2$, and `total += n` gives $4$.",
+      "expected": "`n` is $2$, `total` is $2$, and `total += n` gives $4$."
+    },
+    {
+      "id": "bare-numbers",
+      "area": "inline_code",
+      "input": "Then $2$ and $3$ are both even.",
+      "expected": "Then $2$ and $3$ are both even."
+    },
+    {
+      "id": "code-between-numbers",
+      "area": "inline_code",
+      "input": "`x` starts at $2$ and `y = x + 1` gives $3$.",
+      "expected": "`x` starts at $2$ and `y = x + 1` gives $3$."
+    },
+    {
+      "id": "prices-around-code",
+      "area": "inline_code",
+      "input": "Prices: $5 and $10, and `total` is $15.",
+      "expected": "Prices: $5 and $10, and `total` is $15."
+    },
+    {
+      "id": "code-inside-dollars",
+      "area": "inline_code",
+      "input": "The value $`total`$ is 2.",
+      "expected": "The value $`total` $ is 2."
+    },
+    {
+      "id": "code-opens-dollar-pair",
+      "area": "inline_code",
+      "input": "If $`total` + 2$ is even, stop.",
+      "expected": "If $`total` + 2$ is even, stop."
+    },
+    {
+      "id": "equals-chain",
+      "area": "calculation",
+      "input": "$v = d/t = 50/10 = 5$",
+      "expected": "$v = d/t$  \n$v = 50/10$  \n$v = 5$"
+    },
+    {
+      "id": "independent-equations-quad",
+      "area": "calculation",
+      "input": "$t_1=d/60,\\quad t_2=d/40$",
+      "expected": "$t_1=d/60$  \n$t_2=d/40$"
+    },
+    {
+      "id": "chain-with-text-subscript",
+      "area": "calculation",
+      "input": "$t_{\\text{total}} = d/60 + d/40 = (2d+3d)/120 = 5d/120$",
+      "expected": "$t_{\\text{total}} = d/60 + d/40$  \n$t_{\\text{total}} = (2d+3d)/120$  \n$t_{\\text{total}} = 5d/120$"
+    },
+    {
+      "id": "atomic-evaluation-with-unit",
+      "area": "calculation",
+      "input": "$12 + 8 = 20\\text{ km}$",
+      "expected": "$12 + 8 = 20\\text{ km}$"
+    },
+    {
+      "id": "or-keeps-one-row",
+      "area": "calculation",
+      "input": "$x = 2 or x = -2$",
+      "expected": "$x = 2 or x = -2$"
+    },
+    {
+      "id": "arrow-keeps-one-row",
+      "area": "calculation",
+      "input": "$2x - 1 = 0 \\rightarrow x = \\frac{1}{2}$",
+      "expected": "$2x - 1 = 0 \\rightarrow x = \\frac{1}{2}$"
+    },
+    {
+      "id": "implies-keeps-one-row",
+      "area": "calculation",
+      "input": "$r^2 + 1 = \\frac{17}{4}r \\quad \\Rightarrow \\quad 4r^2 - 17r + 4 = 0$",
+      "expected": "$r^2 + 1 = \\frac{17}{4}r \\quad \\Rightarrow \\quad 4r^2 - 17r + 4 = 0$"
+    },
+    {
+      "id": "quadratic-formula",
+      "area": "calculation",
+      "input": "$x = \\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}$",
+      "expected": "$x = \\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}$"
+    },
+    {
+      "id": "factorial-expansion",
+      "area": "calculation",
+      "input": "$4! = 4 \\times 3 \\times 2 \\times 1 = 24$",
+      "expected": "$4! = 4 \\times 3 \\times 2 \\times 1 = 24$"
+    },
+    {
+      "id": "matrix",
+      "area": "calculation",
+      "input": "$\\begin{pmatrix} 1 & 0 \\\\ 0 & 1 \\end{pmatrix}$",
+      "expected": "$\\begin{pmatrix} 1 & 0 \\\\ 0 & 1 \\end{pmatrix}$"
+    },
+    {
+      "id": "function-of-two-variables",
+      "area": "calculation",
+      "input": "$f(x, y) = 1$",
+      "expected": "$f(x, y) = 1$"
+    },
+    {
+      "id": "division-evaluation",
+      "area": "calculation",
+      "input": "$20 \\div 4 = 5$",
+      "expected": "$20 \\div 4 = 5$"
+    },
+    {
+      "id": "all-numeric-chain",
+      "area": "calculation",
+      "input": "Compute: $3 + 4 = 7 = 7$",
+      "expected": "Compute: $3 + 4 = 7 = 7$"
+    },
+    {
+      "id": "plain-symbol-chain",
+      "area": "calculation",
+      "input": "n = m/M = 10/18",
+      "expected": "$n = m/M$  \n$n = 10/18$"
+    },
+    {
+      "id": "english-sentence-equals",
+      "area": "calculation",
+      "input": "Atoms of each element in water = 2",
+      "expected": "Atoms of each element in water = 2"
+    },
+    {
+      "id": "scientific-notation",
+      "area": "calculation",
+      "input": "$N = 6.02 \\times 10^{23}$",
+      "expected": "$N = 6.02 \\times 10^{23}$"
+    },
+    {
+      "id": "sample-standard-deviation",
+      "area": "calculation",
+      "input": "$s = \\sqrt{\\frac{\\sum (x-\\bar x)^2}{n-1}}$",
+      "expected": "$s = \\sqrt{\\frac{\\sum (x-\\bar x)^2}{n-1}}$"
+    },
+    {
+      "id": "unit-conversion-chain",
+      "area": "calculation",
+      "input": "$1\\text{ km} = 1000\\text{ m} = 100000\\text{ cm}$",
+      "expected": "$1\\text{ km} = 1000\\text{ m}$  \n$1\\text{ km} = 100000\\text{ cm}$"
+    },
+    {
+      "id": "given-conversion-stays-one-row",
+      "area": "calculation",
+      "input": "$v = 100\\,\\mathrm{km/h} \\times \\frac{1000}{3600} = 27.7778\\,\\mathrm{m/s}$",
+      "expected": "$v = 100\\,\\mathrm{km/h} \\times \\frac{1000}{3600} = 27.7778\\,\\mathrm{m/s}$"
+    },
+    {
+      "id": "given-zero-conversion-stays-one-row",
+      "area": "calculation",
+      "input": "$u = 0\\,\\mathrm{km/h} = 0\\,\\mathrm{m/s}$",
+      "expected": "$u = 0\\,\\mathrm{km/h} = 0\\,\\mathrm{m/s}$"
+    },
+    {
+      "id": "given-ohm-conversion-stays-one-row",
+      "area": "calculation",
+      "input": "$R = 10\\,\\mathrm{kΩ} \\times 1000 = 10000\\,\\Omega$",
+      "expected": "$R = 10\\,\\mathrm{kΩ} \\times 1000 = 10000\\,\\Omega$"
+    },
+    {
+      "id": "given-text-subscript-conversion-stays-one-row",
+      "area": "calculation",
+      "input": "$t_{\\text{day}} = 5\\,\\mathrm{h} \\times 3600 = 18000\\,\\mathrm{s}$",
+      "expected": "$t_{\\text{day}} = 5\\,\\mathrm{h} \\times 3600 = 18000\\,\\mathrm{s}$"
+    },
+    {
+      "id": "worked-value-chain-splits",
+      "area": "calculation",
+      "input": "$a = \\frac{27.7778 - 0}{8} = \\frac{27.7778}{8} = 3.47\\,\\mathrm{m/s^2}$",
+      "expected": "$a = \\frac{27.7778 - 0}{8}$  \n$a = \\frac{27.7778}{8}$  \n$a = 3.47\\,\\mathrm{m/s^2}$"
+    },
+    {
+      "id": "molar-amount-chain",
+      "area": "calculation",
+      "input": "$n = \\frac{m}{M} = \\frac{10}{18}$",
+      "expected": "$n = \\frac{m}{M}$  \n$n = \\frac{10}{18}$"
+    },
+    {
+      "id": "energy-chain",
+      "area": "calculation",
+      "input": "$E = mc^2 = (2)(3 \\times 10^8)^2 = 1.8 \\times 10^{17}\\text{ J}$",
+      "expected": "$E = mc^2$  \n$E = (2)(3 \\times 10^8)^2$  \n$E = 1.8 \\times 10^{17}\\text{ J}$"
+    },
+    {
+      "id": "displacement-chain",
+      "area": "calculation",
+      "input": "$\\Delta x = v_0 t + \\tfrac{1}{2} a t^2 = 0 + \\tfrac{1}{2}(9.8)(2)^2 = 19.6\\,\\text{m}$",
+      "expected": "$\\Delta x = v_0 t + \\tfrac{1}{2} a t^2$  \n$\\Delta x = 0 + \\tfrac{1}{2}(9.8)(2)^2$  \n$\\Delta x = 19.6\\,\\text{m}$"
+    },
+    {
+      "id": "approx-chain",
+      "area": "calculation",
+      "input": "$x \\approx 3.14 \\approx 3.1$",
+      "expected": "$x \\approx 3.14$  \n$x \\approx 3.1$"
+    },
+    {
+      "id": "comma-separated-givens",
+      "area": "calculation",
+      "input": "$a = 2, b = 3, c = 4$",
+      "expected": "$a = 2$  \n$b = 3$  \n$c = 4$"
+    },
+    {
+      "id": "definition-then-value",
+      "area": "calculation",
+      "input": "$f(x) = x^2, x = 2$",
+      "expected": "$f(x) = x^2$  \n$x = 2$"
+    },
+    {
+      "id": "thousands-separator",
+      "area": "calculation",
+      "input": "$P = 1,500 \\times 2 = 3,000$",
+      "expected": "$P = 1,500 \\times 2$  \n$P = 3,000$"
+    },
+    {
+      "id": "system-of-equations-comma",
+      "area": "calculation",
+      "input": "Solve the system $x + y = 10, 2x - y = 5$ for x and y.",
+      "expected": "Solve the system $x + y = 10, 2x - y = 5$ for x and y."
+    },
+    {
+      "id": "comma-list-of-values",
+      "area": "calculation",
+      "input": "$x = 1, 2, 3$",
+      "expected": "$x = 1, 2, 3$"
+    },
+    {
+      "id": "grouped-digits-chain",
+      "area": "calculation",
+      "input": "$N = 12,345,678 = 1.2 \\times 10^7$",
+      "expected": "$N = 12,345,678$  \n$N = 1.2 \\times 10^7$"
+    },
+    {
+      "id": "separate-inline-equations",
+      "area": "calculation",
+      "input": "We get $x = 2$, $y = 3$, so $x + y = 5$.",
+      "expected": "We get $x = 2$, $y = 3$, so $x + y = 5$."
+    },
+    {
+      "id": "bold-label-glued-chain",
+      "area": "calculation",
+      "input": "**Step 1:**$x = 2 + 3 = 5$",
+      "expected": "**Step 1:**\n$x = 2 + 3$  \n$x = 5$"
+    },
+    {
+      "id": "chain-in-prose",
+      "area": "calculation",
+      "input": "The speed is $v = d/t = 100/20 = 5$ m/s, so it is slow.",
+      "expected": "The speed is $v = d/t = 100/20 = 5$ m/s, so it is slow."
+    },
+    {
+      "id": "chain-mid-sentence",
+      "area": "calculation",
+      "input": "For example, $x^2 - 3x + 2 = 0$ has $\\Delta = 9 - 8 = 1$, giving $x = \\frac{3 \\pm 1}{2}$, so $x = 2$ or $x = 1$.",
+      "expected": "For example, $x^2 - 3x + 2 = 0$ has $\\Delta = 9 - 8 = 1$, giving $x = \\frac{3 \\pm 1}{2}$, so $x = 2$ or $x = 1$."
+    },
+    {
+      "id": "chain-then-word",
+      "area": "calculation",
+      "input": "Then $a = 120/2 = 60$ here.",
+      "expected": "Then $a = 120/2 = 60$ here."
+    },
+    {
+      "id": "chain-then-unit-power",
+      "area": "calculation",
+      "input": "So $a = (27.8 - 0)/8 = 3.47$ m/s².",
+      "expected": "So\n$a = (27.8 - 0)/8$  \n$a = 3.47$ m/s²."
+    },
+    {
+      "id": "display-chain-one-line",
+      "area": "calculation",
+      "input": "$$v = d/t = 50/10 = 5$$",
+      "expected": "$$v = d/t$$  \n$$v = 50/10$$  \n$$v = 5$$"
+    },
+    {
+      "id": "display-chain-in-prose",
+      "area": "calculation",
+      "input": "The speed is $$v = d/t = 5$$ here.",
+      "expected": "The speed is $$v = d/t = 5$$ here."
+    },
+    {
+      "id": "display-chain-indented",
+      "area": "calculation",
+      "input": "  $$v = d/t = 5$$",
+      "expected": "  $$v = d/t$$  \n  $$v = 5$$"
+    },
+    {
+      "id": "escaped-currency-in-formula",
+      "area": "calculation",
+      "input": "$\\$43 \\text{ per hour} \\times 40 \\text{ hours} = \\$1{,}720 \\text{ per week}$",
+      "expected": "$\\$43 \\text{ per hour} \\times 40 \\text{ hours} = \\$1{,}720 \\text{ per week}$"
+    },
+    {
+      "id": "escaped-currency-amount",
+      "area": "calculation",
+      "input": "$\\$1,505$",
+      "expected": "$\\$1,505$"
+    },
+    {
+      "id": "escaped-currency-bold",
+      "area": "calculation",
+      "input": "$\\mathbf{\\$3,440}$",
+      "expected": "$\\mathbf{\\$3,440}$"
+    },
+    {
+      "id": "table-row-left-alone",
+      "area": "calculation",
+      "input": "| $v = d/t = 5$ | **48 km/h** |",
+      "expected": "| $v = d/t = 5$ | **48 km/h** |"
+    },
+    {
+      "id": "table-cell-glued-bold",
+      "area": "calculation",
+      "input": "| at**40** | **50** |\n| --- | --- |",
+      "expected": "| at **40** | **50** |\n| --- | --- |"
+    },
+    {
+      "id": "heading-left-alone",
+      "area": "calculation",
+      "input": "# $v = d/t = 5$",
+      "expected": "# $v = d/t = 5$"
+    },
+    {
+      "id": "cyrillic-sentence-equals",
+      "area": "calculation",
+      "input": "Площадь = a × b = 4 × 5 = 20",
+      "expected": "Площадь = a × b = 4 × 5 = 20",
+      "note": "A Russian word is a sentence, not a symbol: the line stays prose."
+    },
+    {
+      "id": "unicode-pi-chain",
+      "area": "calculation",
+      "input": "$π × 5^2 = 25π \\approx 78.5$",
+      "expected": "$π × 5^2 = 25π$  \n$π × 5^2 \\approx 78.5$",
+      "note": "π is a symbol, as \\pi is."
+    },
+    {
+      "id": "unicode-pi-numeric-chain",
+      "area": "calculation",
+      "input": "$2π = 6.28 = 6.3$",
+      "expected": "$2π = 6.28$  \n$2π = 6.3$"
+    },
+    {
+      "id": "paren-chain-across-lines",
+      "area": "maths",
+      "input": "  \\(\n  v = d/t = 50/10 = 5\n  \\)",
+      "expected": "  $v = d/t$  \n  $v = 50/10$  \n  $v = 5$"
+    },
+    {
+      "id": "paren-unclosed",
+      "area": "maths",
+      "input": "  \\(\n  \\frac{1}{2} = x",
+      "expected": "  \\(\n  \\frac{1}{2} = x"
+    },
+    {
+      "id": "paren-in-quote",
+      "area": "maths",
+      "input": "> \\(v = d/t = 5\\)",
+      "expected": "> \\(v = d/t = 5\\)"
+    },
+    {
+      "id": "paren-chain-in-prose",
+      "area": "maths",
+      "input": "Then \\(v = d/t = 50/10 = 5\\) m/s.",
+      "expected": "Then\n$v = d/t$  \n$v = 50/10$  \n$v = 5$ m/s."
+    },
+    {
+      "id": "paren-singles",
+      "area": "maths",
+      "input": "So \\(x = 2\\) and \\(y = 3\\).",
+      "expected": "So $x = 2$ and $y = 3$."
+    },
+    {
+      "id": "display-block-with-commands",
+      "area": "maths",
+      "input": "$$\nv = \\frac{d}{t} = \\frac{100}{20} = 5\n$$",
+      "expected": "$$\nv = \\frac{d}{t} = \\frac{100}{20} = 5\n$$"
+    },
+    {
+      "id": "display-block-steps",
+      "area": "maths",
+      "input": "$$\nF = ma\n= 2 \\times 3\n= 6\n$$",
+      "expected": "$$\nF = ma\n= 2 \\times 3\n= 6\n$$"
+    },
+    {
+      "id": "bracket-block-with-commands",
+      "area": "maths",
+      "input": "\\[\nv = \\frac{d}{t} = \\frac{100}{20} = 5\n\\]",
+      "expected": "\\[\nv = \\frac{d}{t} = \\frac{100}{20} = 5\n\\]"
+    },
+    {
+      "id": "bracket-line-with-commands",
+      "area": "maths",
+      "input": "\\[ F = ma = 2 \\times 3 = 6 \\]",
+      "expected": "\\[ F = ma = 2 \\times 3 = 6 \\]"
+    },
+    {
+      "id": "display-block-plain-chain",
+      "area": "maths",
+      "input": "$$\nv = d/t = 50/10 = 5\n$$",
+      "expected": "$$\nv = d/t = 50/10 = 5\n$$",
+      "note": "The phone draws the block as one maths fence and lays its rows out."
+    },
+    {
+      "id": "bracket-block-plain-chain",
+      "area": "maths",
+      "input": "\\[\nv = d/t = 50/10 = 5\n\\]",
+      "expected": "\\[\nv = d/t = 50/10 = 5\n\\]"
+    },
+    {
+      "id": "bracket-line-plain-chain",
+      "area": "maths",
+      "input": "\\[ v = d/t = 50/10 = 5 \\]",
+      "expected": "\\[ v = d/t = 50/10 = 5 \\]"
+    },
+    {
+      "id": "bracket-line-in-prose",
+      "area": "maths",
+      "input": "Then \\[ a = b = c \\] here",
+      "expected": "Then \\[ a = b = c \\] here"
+    },
+    {
+      "id": "display-block-then-inline-chain",
+      "area": "maths",
+      "input": "Speed:\n\n$$\nv = d/t = 100/20 = 5\n$$\n\nSo $v = d/t = 5$.",
+      "expected": "Speed:\n\n$$\nv = d/t = 100/20 = 5\n$$\n\nSo\n$v = d/t$  \n$v = 5$."
+    },
+    {
+      "id": "price-tiers-are-not-maths",
+      "area": "maths",
+      "input": "Joe's ($$) and Bob's ($$$) are open.\n\nThen $v = d/t = 50/10 = 5$.",
+      "expected": "Joe's ($$) and Bob's ($$$) are open.\n\nThen\n$v = d/t$  \n$v = 50/10$  \n$v = 5$."
+    },
+    {
+      "id": "code-span-dollars-are-not-maths",
+      "area": "maths",
+      "input": "Write `$$` around display maths.\n\nThen $v = d/t = 50/10 = 5$.",
+      "expected": "Write `$$` around display maths.\n\nThen\n$v = d/t$  \n$v = 50/10$  \n$v = 5$."
+    },
+    {
+      "id": "code-fence-left-alone",
+      "area": "fences",
+      "input": "```python\nprint('at**40**')\n```",
+      "expected": "```python\nprint('at**40**')\n```"
+    },
+    {
+      "id": "code-fence-equals",
+      "area": "fences",
+      "input": "```python\nx = y = 0\n```",
+      "expected": "```python\nx = y = 0\n```"
+    },
+    {
+      "id": "math-fence-chain",
+      "area": "fences",
+      "input": "```math\nv = d/t = 50/10 = 5\n```",
+      "expected": "$v = d/t$  \n$v = 50/10$  \n$v = 5$"
+    },
+    {
+      "id": "latex-fence-chain",
+      "area": "fences",
+      "input": "```latex\nv = d/t = 50/10 = 5\n```",
+      "expected": "$v = d/t$  \n$v = 50/10$  \n$v = 5$"
+    },
+    {
+      "id": "math-fence-dollar-lines",
+      "area": "fences",
+      "input": "```math\n$v = d/t = 5$\n$a = b$\n```",
+      "expected": "$v = d/t$  \n$v = 5$  \n$a = b$"
+    },
+    {
+      "id": "math-fence-single-equation",
+      "area": "fences",
+      "input": "```math\nE = mc^2\n```",
+      "expected": "```math\nE = mc^2\n```"
+    },
+    {
+      "id": "chart-fence-left-alone",
+      "area": "fences",
+      "input": "```chart\n{\"a\": \"b = c = d\"}\n```",
+      "expected": "```chart\n{\"a\": \"b = c = d\"}\n```"
+    },
+    {
+      "id": "longer-fence-holds-shorter",
+      "area": "fences",
+      "input": "````markdown\n```python\nx = a = b\n```\n````",
+      "expected": "````markdown\n```python\nx = a = b\n```\n````"
+    },
+    {
+      "id": "tilde-fence-left-alone",
+      "area": "fences",
+      "input": "~~~\na = b = c\n~~~",
+      "expected": "~~~\na = b = c\n~~~"
+    },
+    {
+      "id": "tilde-fence-holds-backticks",
+      "area": "fences",
+      "input": "~~~\n```python\nx = a = b\n```\n~~~",
+      "expected": "~~~\n```python\nx = a = b\n```\n~~~"
+    },
+    {
+      "id": "short-closer-does-not-close",
+      "area": "fences",
+      "input": "````\na = b = c\n```\nstill = code = here\n````",
+      "expected": "````\na = b = c\n```\nstill = code = here\n````"
+    },
+    {
+      "id": "indented-four-is-not-a-fence",
+      "area": "fences",
+      "input": "Before:\n\n    ```\n    a = b\n    ```\n\nAfter.",
+      "expected": "Before:\n\n    ```\n    a = b\n    ```\n\nAfter."
+    },
+    {
+      "id": "quoted-fence-is-quoted",
+      "area": "fences",
+      "input": "> ```\n> a = b = c\n> ```",
+      "expected": "> ```\n> a = b = c\n> ```"
+    },
+    {
+      "id": "text-fence-left-alone",
+      "area": "fences",
+      "input": "```text\nv = d/t = 5\n```",
+      "expected": "```text\nv = d/t = 5\n```"
+    },
+    {
+      "id": "unclosed-fence-left-alone",
+      "area": "fences",
+      "input": "Unclosed fence\n```python\nx = a = b",
+      "expected": "Unclosed fence\n```python\nx = a = b"
+    },
+    {
+      "id": "prose-after-fence",
+      "area": "fences",
+      "input": "text\n```\ncode\n```\nmore $a = b = c$",
+      "expected": "text\n```\ncode\n```\nmore\n$a = b$  \n$a = c$"
+    },
+    {
+      "id": "list-glued-bold",
+      "area": "lists",
+      "input": "- rides **12 km** at**20 km/h**",
+      "expected": "- rides **12 km** at **20 km/h**"
+    },
+    {
+      "id": "list-glued-bold-short",
+      "area": "lists",
+      "input": "- at**40 km/h**",
+      "expected": "- at **40 km/h**"
+    },
+    {
+      "id": "numbered-chains",
+      "area": "lists",
+      "input": "1. Speed: $v = d/t = 50/10 = 5$ m/s\n2. Time: $t = d/v = 10/5 = 2$ s",
+      "expected": "1. Speed:\n   $v = d/t$  \n   $v = 50/10$  \n   $v = 5$ m/s\n2. Time:\n   $t = d/v$  \n   $t = 10/5$  \n   $t = 2$ s"
+    },
+    {
+      "id": "nested-bullet-chains",
+      "area": "lists",
+      "input": "- $F = ma = 2 \\times 3 = 6$ N\n  - $a = F/m = 6/2 = 3$",
+      "expected": "- $F = ma$  \n  $F = 2 \\times 3$  \n  $F = 6$ N\n  - $a = F/m$  \n    $a = 6/2$  \n    $a = 3$"
+    },
+    {
+      "id": "two-digit-number",
+      "area": "lists",
+      "input": "10. $x = 1 + 2 = 3$",
+      "expected": "10. $x = 1 + 2$  \n    $x = 3$"
+    },
+    {
+      "id": "quote-chain-left-alone",
+      "area": "lists",
+      "input": "> $v = d/t = 50/10 = 5$",
+      "expected": "> $v = d/t = 50/10 = 5$"
+    },
+    {
+      "id": "quote-then-prose-chain",
+      "area": "lists",
+      "input": "> quote with $a = b = c$\n\nnormal $a = b = c$",
+      "expected": "> quote with $a = b = c$\n\nnormal\n$a = b$  \n$a = c$"
+    },
+    {
+      "id": "hard-break-then-chain",
+      "area": "lists",
+      "input": "Line one  \n$a = b = c$",
+      "expected": "Line one  \n$a = b$  \n$a = c$"
+    },
+    {
+      "id": "indented-chain-left-alone",
+      "area": "lists",
+      "input": "    indented $a = b = c$",
+      "expected": "    indented $a = b = c$"
+    },
+    {
+      "id": "transcript",
+      "area": "repl",
+      "input": "Test it:\n\n>>> two_sum([2, 7, 11, 15], 9)\n[0, 1]\n\nIt returns the indexes.",
+      "expected": "Test it:\n\n```python\n>>> two_sum([2, 7, 11, 15], 9)\n[0, 1]\n```\n\nIt returns the indexes."
+    },
+    {
+      "id": "continuation-lines",
+      "area": "repl",
+      "input": ">>> for n in [1, 2]:\n...     print(n)\n1\n2",
+      "expected": "```python\n>>> for n in [1, 2]:\n...     print(n)\n1\n2\n```"
+    },
+    {
+      "id": "several-prompts",
+      "area": "repl",
+      "input": ">>> 2 + 2\n4\n>>> x = 5\n>>> x * 2\n10",
+      "expected": "```python\n>>> 2 + 2\n4\n>>> x = 5\n>>> x * 2\n10\n```"
+    },
+    {
+      "id": "short-transcript",
+      "area": "repl",
+      "input": ">>> print(1)\n1",
+      "expected": "```python\n>>> print(1)\n1\n```"
+    },
+    {
+      "id": "transcript-after-label",
+      "area": "repl",
+      "input": "Example:\n>>> print('hi')\nhi\n\nDone.",
+      "expected": "Example:\n```python\n>>> print('hi')\nhi\n```\n\nDone."
+    },
+    {
+      "id": "indented-prompt",
+      "area": "repl",
+      "input": "   >>> print(1)\n   1",
+      "expected": "```python\n>>> print(1)\n1\n```"
+    },
+    {
+      "id": "fenced-transcript-left-alone",
+      "area": "repl",
+      "input": "```python\n>>> two_sum([2, 7], 9)\n[0, 1]\n```",
+      "expected": "```python\n>>> two_sum([2, 7], 9)\n[0, 1]\n```"
+    },
+    {
+      "id": "real-quote-left-alone",
+      "area": "repl",
+      "input": "> A real quote.",
+      "expected": "> A real quote."
+    },
+    {
+      "id": "operator-in-prose",
+      "area": "repl",
+      "input": "Compare a >>> b in prose.",
+      "expected": "Compare a >>> b in prose."
+    },
+    {
+      "id": "indented-code-prompt",
+      "area": "repl",
+      "input": "    >>> print(1)",
+      "expected": "    >>> print(1)"
+    },
+    {
+      "id": "transcript-then-fence",
+      "area": "repl",
+      "input": ">>> print(1)\n1\n```python\nx = 1\n```",
+      "expected": "```python\n>>> print(1)\n1\n```\n```python\nx = 1\n```",
+      "note": "The transcript ends where the fence starts."
+    },
+    {
+      "id": "cyclist-reply",
+      "area": "replies",
+      "input": "A cyclist rides **12 km** at**20 km/h**, then**8 km** at**10 km/h**.\n\n$v = d/t = 50/10 = 5$",
+      "expected": "A cyclist rides **12 km** at **20 km/h**, then **8 km** at **10 km/h**.\n\n$v = d/t$  \n$v = 50/10$  \n$v = 5$"
+    },
+    {
+      "id": "physics-workout",
+      "area": "replies",
+      "input": "**Given**  \n$d = 100\\,\\mathrm{m}$  \n$t = 20\\,\\mathrm{s}$\n\n**Find**  \n$v$\n\n**Formula**  \n$v = \\frac{d}{t}$ — Average speed\n\n**Substitution**  \n$v = \\frac{100}{20} = 5\\,\\mathrm{m/s}$\n\n**Answer**\n\n```answer\n5\\,\\mathrm{m/s}\n```\n",
+      "expected": "**Given**  \n$d = 100\\,\\mathrm{m}$  \n$t = 20\\,\\mathrm{s}$\n\n**Find**  \n$v$\n\n**Formula**  \n$v = \\frac{d}{t}$ — Average speed\n\n**Substitution**  \n$v = \\frac{100}{20}$  \n$v = 5\\,\\mathrm{m/s}$\n\n**Answer**\n\n```answer\n5\\,\\mathrm{m/s}\n```\n"
+    },
+    {
+      "id": "chemistry-workout",
+      "area": "replies",
+      "input": "**Given**  \nFormula = H₂O\n\n**Find**  \nMolar mass, M\n\n**Formula**  \nM = Σ(nᵢ × atomic massᵢ) — Molar mass from atomic masses\n\n**Substitution**  \nM = 2(1.008) + 1(15.999)\n\n**Answer**\n\n```answer\nnotation: chemistry\nM(H₂O) = 18.02 g/mol\n```\n",
+      "expected": "**Given**  \nFormula = H₂O\n\n**Find**  \nMolar mass, M\n\n**Formula**  \nM = Σ(nᵢ × atomic massᵢ) — Molar mass from atomic masses\n\n**Substitution**  \nM = 2(1.008) + 1(15.999)\n\n**Answer**\n\n```answer\nnotation: chemistry\nM(H₂O) = 18.02 g/mol\n```\n"
+    },
+    {
+      "id": "average-speed-steps",
+      "area": "replies",
+      "input": "A car drives**120 km** in**2 h**, then**60 km** in**1 h**.\n\n1. Total distance: $d = 120 + 60 = 180$ km\n2. Total time: $t = 2 + 1 = 3$ h\n3. Average speed: $v = d/t = 180/3 = 60$ km/h\n\nSo the average speed is**60 km/h**, not the mean of the two speeds.",
+      "expected": "A car drives **120 km** in **2 h**, then **60 km** in **1 h**.\n\n1. Total distance:\n   $d = 120 + 60$  \n   $d = 180$ km\n2. Total time:\n   $t = 2 + 1$  \n   $t = 3$ h\n3. Average speed:\n   $v = d/t$  \n   $v = 180/3$  \n   $v = 60$ km/h\n\nSo the average speed is **60 km/h**, not the mean of the two speeds."
+    },
+    {
+      "id": "code-walkthrough",
+      "area": "replies",
+      "input": "Here is how `two_sum` works:\n\n```python\ndef two_sum(nums, target):\n    seen = {}\n    for i, n in enumerate(nums):\n        if target - n in seen:\n            return [seen[target - n], i]\n        seen[n] = i\n```\n\nTry it:\n\n>>> two_sum([2, 7, 11, 15], 9)\n[0, 1]\n\n- **Line 2:** `seen` maps each value to its index.\n- **Line 4:** if`target - n`is already in `seen`, the pair is found.",
+      "expected": "Here is how `two_sum` works:\n\n```python\ndef two_sum(nums, target):\n    seen = {}\n    for i, n in enumerate(nums):\n        if target - n in seen:\n            return [seen[target - n], i]\n        seen[n] = i\n```\n\nTry it:\n\n```python\n>>> two_sum([2, 7, 11, 15], 9)\n[0, 1]\n```\n\n- **Line 2:** `seen` maps each value to its index.\n- **Line 4:** if `target - n` is already in `seen`, the pair is found."
+    },
+    {
+      "id": "quadratic-solution",
+      "area": "replies",
+      "input": "Solve $x^2 - 5x + 6 = 0$.\n\n**Factor:** $(x - 2)(x - 3) = 0$\n\n**Roots:** $x = 2$ or $x = 3$\n\n**Check:** $2^2 - 5(2) + 6 = 4 - 10 + 6 = 0$ ✓",
+      "expected": "Solve $x^2 - 5x + 6 = 0$.\n\n**Factor:** $(x - 2)(x - 3) = 0$\n\n**Roots:** $x = 2$ or $x = 3$\n\n**Check:** $2^2 - 5(2) + 6 = 4 - 10 + 6 = 0$ ✓"
+    },
+    {
+      "id": "table-and-chain",
+      "area": "replies",
+      "input": "| Quantity | Value |\n|---|---|\n| Mass | **2 kg** |\n| Force | $F = ma = 6$ N |\n\nWith $a = 3$: $F = ma = 2 \\times 3 = 6$ N.",
+      "expected": "| Quantity | Value |\n|---|---|\n| Mass | **2 kg** |\n| Force | $F = ma = 6$ N |\n\nWith $a = 3$:\n$F = ma$  \n$F = 2 \\times 3$  \n$F = 6$ N."
+    },
+    {
+      "id": "price-explanation",
+      "area": "replies",
+      "input": "The ticket is $15 and the parking is $5, so you pay **$20** in total.\n\nWith a 10% discount: $0.9 \\times 20 = 18$, so**$18**.",
+      "expected": "The ticket is $15 and the parking is $5, so you pay **$20** in total.\n\nWith a 10% discount: $0.9 \\times 20 = 18$, so **$18**."
+    },
+    {
+      "id": "note-stays-on-first-row",
+      "area": "calculation",
+      "input": "**Formula**  \n$h = -\\frac{b}{2a}, \\quad k = y(h)$ — Vertex of a parabola",
+      "expected": "**Formula**  \n$h = -\\frac{b}{2a}$ — Vertex of a parabola  \n$k = y(h)$"
+    },
+    {
+      "id": "chain-keeps-its-hard-break",
+      "area": "calculation",
+      "input": "$h = 6 - 3 = 3$  \n$k = 3^2 = 9$ — y at x = 3",
+      "expected": "$h = 6 - 3$  \n$h = 3$  \n$k = 3^2$ — y at x = 3  \n$k = 9$"
+    },
+    {
+      "id": "smiles-line-is-notation-not-a-chain",
+      "area": "notation",
+      "input": "Here is the structure of caffeine:\n\nCN1C=NC2=C1C(=O)N(C(=O)N2C)C",
+      "expected": "Here is the structure of caffeine:\n\n`CN1C=NC2=C1C(=O)N(C(=O)N2C)C`"
+    },
+    {
+      "id": "smiles-in-a-sentence-is-notation",
+      "area": "notation",
+      "input": "Benzaldehyde is O=Cc1ccccc1, and aspirin is CC(=O)OC1=CC=CC=C1C(=O)O.",
+      "expected": "Benzaldehyde is `O=Cc1ccccc1`, and aspirin is `CC(=O)OC1=CC=CC=C1C(=O)O`."
+    },
+    {
+      "id": "equations-links-and-code-are-not-notation",
+      "area": "notation",
+      "input": "F=ma, f(x)=2x+1, print(total), https://x.com/a#b and `CC(=O)O` stay.",
+      "expected": "F=ma, f(x)=2x+1, print(total), https://x.com/a#b and `CC(=O)O` stay."
+    },
+    {
+      "id": "a-chain-still-splits",
+      "area": "calculation",
+      "input": "a = b = c",
+      "expected": "$a = b$  \n$a = c$"
+    },
+    {
+      "id": "chemistry-notation-stays-text",
+      "area": "calculation",
+      "input": "n(C₃H₈) = 10.0 / 44.097 = 0.227 mol",
+      "expected": "n(C₃H₈) = 10.0 / 44.097 = 0.227 mol"
+    },
+    {
+      "id": "plain-arithmetic-chain-still-splits",
+      "area": "calculation",
+      "input": "x = 3 × 4 = 12",
+      "expected": "$x = 3 × 4$  \n$x = 12$"
+    },
+    {
+      "id": "lead-lines-flags",
+      "area": "lead_lines",
+      "input": "Pick by what matters:\n\n🇨🇭 **Switzerland — best for quality of life** (high salaries)\n🇩🇪 **Germany — best for career growth** (strong economy)\n🇨🇦 **Canada — best for immigration** (clear path)\n\n**But let me ask you one thing.**",
+      "expected": "Pick by what matters:\n\n🇨🇭 **Switzerland — best for quality of life** (high salaries)\n\n🇩🇪 **Germany — best for career growth** (strong economy)\n\n🇨🇦 **Canada — best for immigration** (clear path)\n\n**But let me ask you one thing.**"
+    },
+    {
+      "id": "lead-lines-plain",
+      "area": "lead_lines",
+      "input": "**Pros:** fast and light\n**Cons:** short battery life",
+      "expected": "**Pros:** fast and light\n\n**Cons:** short battery life"
+    },
+    {
+      "id": "lead-lines-list-untouched",
+      "area": "lead_lines",
+      "input": "- **Python** for data\n- **JavaScript** for the web",
+      "expected": "- **Python** for data\n- **JavaScript** for the web"
+    },
+    {
+      "id": "lead-lines-single-untouched",
+      "area": "lead_lines",
+      "input": "**Note** the price\nchanges every week.",
+      "expected": "**Note** the price\nchanges every week."
+    },
+    {
+      "id": "lead-lines-code-untouched",
+      "area": "lead_lines",
+      "input": "```md\n**One** a\n**Two** b\n```",
+      "expected": "```md\n**One** a\n**Two** b\n```"
+    },
+    {
+      "id": "lead-lines-quote-untouched",
+      "area": "lead_lines",
+      "input": "> **One** a\n> **Two** b",
+      "expected": "> **One** a\n> **Two** b"
+    }
+  ]
+}

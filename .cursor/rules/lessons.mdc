@@ -1,0 +1,919 @@
+---
+description: Hard-won lessons (symptom, cause, fix). Read this when a bug looks familiar — races, cache, network, streaming, or a math, physics, or chemistry answer — and append a new entry when you solve one.
+alwaysApply: false
+---
+
+# Lessons learned (don't relearn the hard way)
+
+When you figure out a tricky, non-obvious **technical** problem (races, cache,
+network, blocking, correctness), **append a short entry below** so it isn’t lost.
+Skip obvious UI polish (colors, icon choice, spacing, copy). Format each as
+**symptom → cause → fix** in 1–3 lines. Newest first. Keep it tight; prune duplicates.
+
+## Lessons
+
+- **A line-by-line code explanation showed `n is $2 $`, `total + = total + n` and a stray backtick.** The string passes that pair dollars (`inlineBoundaries` `readMath`, `calculationLayout` `readMathSpan`, `normalizeImplicitMath`) paired a `$` with one on the far side of an inline code span, and a `$2$` skipped as a price let its closer open a new pair, so the "chain" split at the `=` inside the code; `unwrapProseMathBackticks` also cut every line-final code span's closing tick and typeset `0` or `x = 5` as maths. markdown-it reads code spans first: no `$` pair crosses one (`lib/markdown/inlineCode.ts`), a bare number is a maths span, only an unpaired trailing tick is dropped, and only unmistakable maths leaves a code span. The API mirrors (`inline_boundaries.py`, `calculation_layout.py`) run on the saved reply and must follow the first two rules too.
+
+- **A physics question the catalog could answer still got no verified answer.** `_extract_physics_intent` takes the first extractor that claims the text; when `complete_physics_intent` then rejects that claim, the binder never runs. "orbits Earth at a radius of 7 x 10^6 m" was claimed as `orbital_velocity` (planet radius + altitude) and refused. A refused claim now falls through to the binder, which still answers only one exact fit and passes the same completion check. A probe that tests only the binder misses this kind of bug; run `extract_physics_intent`.
+
+- **“solve 2sin(t)=1” was certified “no solution”.** `guess_variables` stripped function names with `\b`, but in `2sin(t)` the digit joins the word, so `sin` survived and the guesser solved for `i`; `theta` split into letters and solved for `a`. Match names by the letters around them (`(?<![A-Za-z])`), and keep a Greek name as one unknown.
+
+- **“convert pi/2 radians to degrees” was certified 114.59°.** The unit extractor took the first bare number, the 2 of π/2. Anything between “convert” and the number means the quantity is an expression: read it whole, and keep an angle with π exact (π/2 rad = 90°).
+
+- **The next maths question after a slow one went unverified.** A timeout kills the SymPy worker; its replacement imports SymPy and the solvers (about 4s) inside the next job's 5s budget, and times out too. A restarted slot runs the start-up warmup before its timed job. A script that calls the solver without the API's start-up warmup sees the same cold timeouts, so warm it or raise the timeout before trusting a “None”.
+
+- **“[4,4]” and “What?” after “convert 1 m to cm” were both answered “1 m = 100 cm”.** `open_math_problem` reopened the last maths question for any message of 24 characters or fewer that was not a greeting, so the solver re-ran the conversion and the model restated it. It is for `x` or `5` after an equation: reopen only for a lone value or unknown, only an equation or inequality, and stop at any other message in between. “What?” then reaches the referential follow-up path.
+
+- **The math keypad typed `2(x)+3` for `2(x+3)`.** An operator at the end of a filled box jumped out of it (only a fraction's numerator kept it), and with no arrow keys that rule was the only way out of a box. A key now types into the box the caret is in; ← → (`lib/math/caretStops.ts`) move between boxes and out of a template. Two-box keys (□/□, ⁿ√, logₙ, ∫□, ∑, ∏, nCr) jump to their second box when pressed again.
+
+- **Keypad labels wrapped and changed font on Android.** Key height was the pad divided by each page's row count (the 123 page's keys were twice Calc's), labels had no `numberOfLines`, and they drew in Roboto, which lacks `⁻ ₙ ∠ ∬ □ 𝑥`. Every page is now 6 × 6, and `MathKey` draws words in Source Sans 3, symbols in the KaTeX face that has them (Size1 for ∬ ∭ ∮), and scripts as raised text. Check a new label against a 52pt key at 115% text.
+
+- **`expo run:ios` said “No code signing certificates” for a Simulator.** Sign in with Apple's entitlement makes Expo require development signing even for a simulator, and Expo applies the Apple plugin on its own once the package is installed, so dropping it from `plugins` changes nothing. `pnpm ios:sim` sets `RECALL_IOS_SIMULATOR=1`; `plugins/withoutAppleSignIn.js`, registered first so its mod runs last, deletes the entitlement, and an `ios/` that still has it is regenerated.
+
+- **Numbered maths steps disappeared, twice.** The one-layout refactor told every subject “no numbered steps”, so both the verified lesson and the model's own maths replies lost their numbers. Maths numbers each move (`**1. Subtract 4 from both sides**`, the both-sides line, then the simplified line): the lesson in `math/tools/lesson.py`, the model through `MATH_WORKOUT_PROMPT_RULE`. Physics and chemistry keep the note after the line. Do not remove the numbering.
+
+- **An equation lesson skipped the both-sides line.** `trace_lines` replaced `4x + 4 - 4 = 0 - 4` with `$4x = -4$ — subtract 4`. Number each move, keep the written-out equation, then the simplified equation on the next line. `Simplify` is that result, not its own number.
+
+- **`ot` and `rac` sat on a radical, and the root index floated above the bar.** “simplify to $2\sqrt{2}$” copied the word “to” into the formula as `t o` / `o t`, and `\frac` lost `\f` so the screen showed `rac`. The nth-root layout also reserved a full line above the vinculum. Drop that leaked “to”, restore `rac{` to `\frac`, and hang the index in the hook.
+
+- **A tapped follow-up showed a dot, and “How” did not explain the sum.** A question with `$...$` went through the math-key preview, which draws no words, so the bubble was empty. A fragment such as “How” was offered as the next question, and “what is the result of 7 + 9” was not the sum that “How” continues. A sent sentence stays text. A follow-up has to be a full question with the letter and the number apart, and “How” after that sum explains it.
+
+- **“Second” after “what is my first language” asked again.** That one word was not a profile question, so the saved English fact was never read. A first/second follow-up to a language question answers that language.
+
+- **“You tell me” still asked which language.** Loading memory and hoping the model would read it was not enough, and that follow-up never looked back to “my second language.” A direct profile question, including “you tell me” after one, is answered from the saved fact.
+
+- **A Python lesson ignored who the user is, and Schedule held todos plus two current places.** Teaching and career questions never loaded memory, so examples stayed generic. One-off reminders were saved as facts, and “in Avon” stayed next to “in Russia.” Those questions now load memory and ask for one real detail in an example. A dated errand is not stored, and the newer place or school stage replaces the other.
+
+- **The same short equation took about ten times as long on Qwen Max as on Mercury.** Thinking stayed at the provider default on every question, and Qwen’s default is a long pass. Qwen rejects a full disable, so an ordinary question sends its lowest effort (`minimal`); a hard job leaves the default. Models that accept `none` or `enabled: false` get that. R1 rejects every disable and is left alone.
+
+- **“Where did you get that?” had no source.** That follow-up was sent to the search classifier, which said no, so the previous question was never looked up. A source question searches the prior question and skips the classifier.
+
+- **Camera and File paused, and Photo opened Settings.** The attach sheet was a modal, so the native picker waited for it to leave, and a denied Photos status skipped the system picker. Draw the sheet in the screen and open the picker on the tap. Photos does not need library permission.
+
+- **A short chat sat on the composer and would not scroll up.** FlashList padded the top once a thread passed two messages, so the rows filled the screen from the bottom and the max scroll was zero. Only a thread that already has older pages starts there. A page that fits stays under the header.
+
+- **“Forget that I’m a nurse” left the nurse fact stored.** The extractor returned no delete, and an empty result was treated as nothing to do. When the user names the fact, delete the stored row that contains that word even if the model returns no op.
+
+- **Stop dropped the reply after tokens had already arrived.** A task cancel stays pending after it is caught, so the next await raised again and the save never ran. Cancelling the consumer also left the generator parked at a yield, and closing the provider socket cancelled the task again during the save. Clear the pending cancel, cancel the producer only once, resume the generator, and run the save on its own task.
+
+- **“3 days after” Sunday, October 11 was called Monday, October 14.** The date was 11 plus 3, and the weekday was remembered separately, so they did not have to agree. A short “N days ago/after” is answered from the calendar, and a weekday that does not match the date written next to it is replaced.
+
+- **After the clock showed 11:05, the next reply said it has no clock.** The time, year, and month were only added on long prompts, so a short question never saw them and the model said it has no clock. Every prompt now includes that local time and says not to deny it.
+
+- **“Remind me tomorrow” stopped enqueueing the todos job.** The reply is replaced with “When should I remind you?” before the transcript is checked, so “I'll set a reminder” is gone and the extractor must not invent a clock. A confirmation that is left on screen still enqueues.
+
+- **“Make it for everyday” said it was daily, and the row was still once.** The model wrote “Got it! Set:” with no fence, and that sentence does not start with `Set:`, so it was left on screen. “Make it” changes the latest reminder’s repeat, clock, or category, “it” is that reminder, a schedule question is answered from the saved rows, and a success sentence is dropped when the row did not change.
+
+- **“6” after “what time tomorrow” was saved as today at 6:00 PM, which had already passed, and the row was not there.** The model wrote `Set:` without a fence, and the hour was applied to today. A day without a clock is not saved, a reply that is only a clock finishes that reminder on the day already named, and a past time is not kept.
+
+- **“Mark done” deleted the reminder, and reopen created a new one at 2:30 AM.** The reply confirmed a change the fence never saved, then a later extractor wrote a different action. Done, reopen, delete, and move are taken from the user’s words, the reply is that result, and the extractor does not run again for that turn.
+
+- **√9 = 3 still ended with “I couldn’t automatically verify.”** A declined solve appended that italic line, and the model could write the same sentence when it was not checked. The line is removed from every reply. A verified reply still shows a check. Nothing in the chat says the result was not verified.
+
+- **A reminder after a price question sat for a couple of seconds, and the price question itself waited twice.** A short line was treated as a follow-up of any older search, so the web classifier ran and said no. A current-price question then spent another model round deciding to search. A follow-up continues only the previous message, a reminder never searches, and an obvious lookup searches before the reply is written.
+
+- **A suggestion after 3 + 4 searched the web and opened with 7.** “always result” matched a team-score pattern, so a why-question was treated as a live lookup. The chip had also dropped 3 and 4. “result” counts as a score only after an apostrophe, a follow-up has to keep a number or a word from the problem, and a digit-free why-question does not start with the previous sum.
+
+- **A paired dilution and quadratic printed `notation: chemistry` and raw `\\text`.** The direct reply already had two ```answer fences, and a paired turn has no single verified subject, so the unverified math rewrite unwrapped both. A direct reply keeps its fences.
+
+- **“Add milk” answered “Added” at 6:00 PM and saved nothing.** The model invented the hour and skipped the reminder fence. A chat create needs a clock in the user’s message, and a Set/Added line is removed when nothing was saved.
+
+- **The math keypad froze the thread.** A full-screen tap target sat over the list, so it could not bounce, and the composer scrim was pinned under the keys. The list stays the touch target. Messages dim in the gap between the pill and the keypad.
+
+- **Delete on d²/dx² painted `frac{d ² }{dx ²}`.** The `\` was gone, so the preview split `^{2}` into superscripts and printed the braces and the command name. A missing slash inside `$...$` is put back; a native edit that only drops that slash deletes one math atom instead.
+
+- **Tapping n! showed `{}!`, and nCr showed the word binom.** An empty `{…}` with no backslash is painted as those brace characters. Empty `\binom{}{}` only becomes `C(n,k)` when both groups have text, so it fell through as the command name; empty `\vec{}` drew nothing; `d{}` inside a derivative was swallowed. An empty n! inserts the label `n!` and selects the n so the next digit replaces it. Draw the binomial, vector, and `d/d□` as slots, and keep a power or limit on its symbol.
+
+- **A label's number was the previous quantity, a point charge needed the word radius, and 10^-52 refused the question.** The nearer span bound the length before "screen distance of" and "image height is", so accounting declined. A keyword with only a label before the next number names that number. Gauss's outside field read the distance, then returned unless a shell radius was written. A finite exponent past 36 decimal places stays scientific instead of refusing the whole question.
+
+- **A lens power written D declined, and a magnetic moment in tesla was taken as a complex.** D is a dioptre, the unit the chip already prints. “magnetic moment of 0.200” is a magnitude; a crystal-field moment names a complex such as \([\mathrm{Co}(\mathrm{NH}_3)_6]^{3+}\).
+
+- **A number density, a Hubble constant, and an expansivity written in words declined.** “per cubic meter” is \(1/\mathrm{m}^3\), “per second” is \(1/\mathrm{s}\), and “per kelvin” is \(1/\mathrm{K}\). The slash spellings already answered those laws.
+
+- **A stated moment of inertia and angular speed declined when the question asked for angular momentum.** The shape branch returns None as soon as the sentence says "moment of inertia" without a hoop or a disc, so \(L = I\omega\) never runs. Rotational kinetic energy already binds those two inputs. Angular momentum needs the same binding.
+
+- **Magnetic flux density was read as a flux and a density, angular separation as a length, and a rocket that ejects gas never opened.** "magnetic flux" is a weber and "separation" is a meter, so those longer asks never fit a tesla or an angle. The exhaust speed is named by ejects, the same verb as ejected.
+
+- **A speed in rad/s was read as an angle, Stefan's law never opened, and a volume flow rate was read as a volume.** `rad` inside `rad/s` matched the angle pattern, so 2 rad/s for 3 s verified 0.667 rad/s. The word stefan opens that law, as Wien's law already does. Volume flow rate is a flow, in m³/s.
+
+- **Parallel resistors across a voltage declined after the series form answered.** The current was \(I = V/R_\mathrm{eq}\), but accountability only treats a sum or a difference as a derivation, so 4 Ω and 12 Ω were left unbound by \(R = 3\,\Omega\). The reciprocal sum accounts for those resistances, and only on the ohm dimension.
+
+- **Centripetal acceleration declined when the given was called an angular speed.** "Angular speed" was read as the question, and a stated ω is not an input of ω = v/r, so \(a = \omega^2 r\) never ran. The quantity after the ask verb is the question.
+
+- **A stated specific heat declined, 1e15 Hz published the photoelectric energy, and /m and J/mol/K were not units.** "specific heat of 900 J/kg/K" matched the ask word "heat", so \(Q = mc\Delta T\) never ran. The photoelectric reader returns kinetic energy whenever it sees a frequency, so a stopping potential written as 1e15 Hz never reached the volt law. /s and J/kg/K were spellings; /m and J/mol/K were not.
+
+- **An ideal gas with two states declined, "how many molecules" declined, and a stated water density was read as the object's density.** The single-state reader kept the first pressure and temperature, so the combined-gas law never ran. "How many" was dropped before the ask, unlike "how long". A density already written is the fluid's; \(m/V\) is only when no density is given.
+
+- **A grating's resolving power declined when the order was "second order".** \(R = mN\) already reads a numbered order. "Second order" is the order the grating angle already takes as 2, so that phrase fills \(m\) here too.
+
+- **A spring asked for its frequency was withheld as the period, and six stated forms of owned laws declined.** \(m\) and \(k\) asked as a frequency are \(f = (1/2\pi)\sqrt{k/m}\). Turns per meter are \(n = N/L\), Earth's surface is the potential's \(r\), a volume strain is \(\Delta V/V\), decibels use \(I_0 = 10^{-12}\), the colder of two reservoirs is \(T_C\), and an adiabatic gas stated in L and atm stays in those units.
+
+- **A stated mass crashed centripetal acceleration, and a series pair across a voltage verified the resistance when the question asked for the current.** \(a = v^2/r\) does not take mass, so sending \(m\) made the catalog reject the intent. Only the force law keeps the mass. A network that asks for current, with one voltage, is \(I = V/R_\mathrm{eq}\); without that voltage it declines instead of answering the ohm sum.
+
+- **Labeled M1V1 with the stock concentration missing was left to algebra.** The dilution reader required M1 and V1 already, so "find M1" never closed. Any three of M1, V1, M2, and V2 name the fourth, and M1 = M2 V2 / V1.
+
+- **High-spin d5 crystal-field energy printed CFSE = −4.44×10^-14 kJ/mol.** −0.4 and 0.6 do not cancel in floating point, so three t2g and two eg electrons were not zero. Evaluate (−2 n_t2g + 3 n_eg) Δo / 5, which is 0 for that count.
+
+- **Hill saturation with [L] = Kd and n = 2 printed θ = 0.75, and uranium-238 printed N = 1.5×10^2.** Kd is a concentration, so the half-saturation form is θ = [L]^n / (Kd^n + [L]^n), which is 0.500 when [L] = Kd. Mass number and atomic number are counts, so 238 − 92 stays 146. A formula-law pOH also used significant figures, so pKb 4.20 printed 3.6 instead of 3.60.
+
+- **0.050 M sodium acetate with acetic acid's Ka was verified as pH 3.03.** The only molarity and the Ka filled the weak-acid law, so the salt was treated as its parent acid. A named conjugate salt is that salt: Kb = Kw / Ka, then the weak-base quadratic (pH 8.72).
+
+- **"5.00 g of NaCl dissolved in 250 mL" did not give a molarity.** The molarity reader wanted moles and liters already, and a named solute plus water counted as two compounds. Read the mass through the solute's molar mass, and treat water as the solvent so the solute is still the one compound.
+
+- **An ammonia buffer, "what is the pOH of 0.0025 M HNO3", and "the rate constant is 0.045 1/s" all declined.** The base-buffer law wanted pKb and the word conjugate, and it answered pOH. A strong acid or base was only asked as pH. The rate reader wanted `k =` and `s^-1`, so `1/s` looked unitless and was refused. "Oxidation number of chromium" also missed, because the reader accepted a one- or two-letter symbol after "of", not the element name.
+
+- **"How many neutrons?" with mass number 56 and atomic number 26 was solved as the algebra 56 = 26 + n.** The chemistry ask was "number of neutrons", so the law never closed and math rearranged an equation it invented. Ask for "neutrons" itself. The same gap was "charge of the ion", "rises by", "Mw"/"Mn", "Xn", "what is D?", "what is q?", and "free-energy" with a hyphen.
+
+- **A 10 cm magnetic-sector radius crashed, and an activity coefficient was verified as the activity.** Chemistry reads `m` as molal, and the law spelled the radius unit `m`, so echoing 10 cm asked Pint to convert molal into centimeters. `activity` also matches the start of `activity coefficient`. Spell the radius `meter`, and name that activity with `activity is` so a coefficient stays a coefficient.
+
+- **A conjugate-fraction question that also stated pH was verified as pH = 4.** The pH extractor treated any `[H+]` plus the word pH anywhere as "find the pH". pH has to be in the asked clause.
+
+- **"What about the kinetic energy" was rewritten onto an F = ma problem and still verified as the force.** The force extractor does not read the asked quantity, so the rewritten sentence still matched it. Accept a follow-up rewrite only when the verified block survives the ask guard.
+
+- **A telescope's two focal lengths were verified as m = −v/u.** "Objective" and "eyepiece" are lengths, and magnification from two distances does not say they are an object and an image. Exclude a telescope from that law and use M = f_o/f_e.
+
+- **A diverging-lens reply ended on the word Answer.** The solver declined, and the unverified note told the model to write that heading and not to invent a result or emit an answer fence, so it stopped before the number. An unverified calculation still has to put the result under Answer, and it must not end on the heading.
+
+- **A drop from 50 m drew its height at 2 s as a curve that stopped between 25 and 30, with a soft blue stroke.** The samples ran to `t * 1.05`, so the marker was h(2.1) ≈ 28.4 m while the answer was h(2) = 30.4 m. A 7px stroke at 25% opacity sat under the real line. Sample through the answered instant only, and draw the trajectory as one solid stroke.
+
+- **`$$ \$43 \times 40 = \mathbf{\$1,720} $$` rendered as `43 × 40 = 1,720`.** The display-math fence strip treated each `$` inside `\$` as a wrap and deleted the pair, leaving `\43` and `\1,720`. Skip a `$` that is escaped.
+
+- **`43 × 35 = \$1,505$` rendered as `1,505` with the dollar gone.** Markdown turns `\$` into `$`, so the leftover `$1,505$` is a math span of the number. Rewrite that amount to `$1,505` before markdown, and skip the rewrite when the backslash is already inside `$\$...$`.
+
+- **`$43 per hour` rendered as `\43`, and `$1,505` as `\1,505$`.** A `$` scanner closed the span on the `$` inside `\$`. Rewrapping the rest made `\$$`, which became a broken math fence. Protecting the backslash alone left that `$` in place, so the next scanner closed there and the marker drew as `\`. Do not close a span on an escaped dollar, and replace the whole `\$` with one marker that restores to `$`.
+
+- **`t_\textit{rel}`, `F_\mathbf{g}`, and `x^\{2\}` still showed a backslash, the command name, or an emoji in the script.** The one-character read after `_` or `^` only special-cased `\text` / `\mathrm` markers. A space, `\mathbf`, `\textit`, `\max`, or the private-use brace for `\{` was that one character. Skip spaces and take the whole command or `\{...\}` group as the script; mark `\textit` and `\operatorname*` the same way as `\text`.
+
+- **An LLM formula showed emoji inside `t_flight`, while the same subscript from SymPy did not.** SymPy writes `t_{\mathrm{flight}}`. The model writes `t_\text{flight}` with no braces. The native parser marks `\text` with private-use characters, and a bare `_` kept only the opening mark as the subscript, so iOS drew that mark and the closing mark as emoji around the word. A bare `^` or `_` before those marks is the whole upright script.
+
+- **"ΔH = -10 kcal/mol" was echoed as "-10 J/mol = -41.84 kJ/mol", a year of electrolysis as "1 s", and 700 mmHg as 0.921052762798 atm.** The Gibbs row named the unit its template converts from, but the binder converts others. The time table lacked years. And a converted value kept every digit of its float, which is right for 3600 s and wrong for a repeating decimal. Read the typed unit from the conversion factor, over a table of the units the readers accept, and when no unit fits, show only the value used. A conversion keeps its own digits only when they terminate (six or fewer); otherwise it keeps the typed figures.
+
+- **Bragg's law with d = 0.200 nm lost the given's SI step, though the substitution used 2 × 10⁻¹⁰.** A given's SI row is skipped when its written value appears in the working, meaning the solver worked in the typed unit. The answer's conversion row ("λ = 2 × 10⁻¹⁰ m = 0.2 nm") was searched too, and at 30° λ equals d. Look for a given only in the arithmetic rows, never in a row that restates the answer.
+
+- **Moving chemistry's readers into topic modules left `_ELEMENT_BY_NAME.update(...)` behind, so the old file named a dict that now lived elsewhere.** A move that takes definitions (functions, classes, assignments) misses a module-level statement that changes one of them. Before a verbatim move, list a file's top-level statements that are not definitions, and move each with what it changes. Then hold the move to a byte-identical golden dump; ruff's F821 caught this one only because the dict was gone.
+
+- **"How many times slower does O2 effuse than H2?" answered 0.251, and a substitution printed `n = N / 6.022 × 10^23`.** The Graham reader took the gases in the order the question named them, which is right for "faster" and backwards for "slower". A time ratio is the rate ratio inverted. The working wrote a power-of-ten constant as a divisor without brackets, which reads as `(N / 6.022) × 10^23`. A comparison word sets the direction: swap on "slower", and decline a time or both directions. Bracket a divisor written as a product.
+
+- **"0.50 A for 30 min" echoed its time as "t = 0.50 h = 1800 s".** A converted value was traced to its typed literal by the first literal that some unit factor maps onto it, and 0.50 × 3600 is 1800 just as 30 × 60 is. A reverse lookup by value must collect every candidate: two candidates mean the value is ambiguous, so it limits precision by both and is echoed as neither.
+
+- **"What is the pH of 5 mM HCl?" declined though the binder read 5 mM as 0.005 mol/L.** The asked phrase was found in a lowercased copy of the question, and the unit after a value was read from that copy too: "5 mM" became "5 mm", a length, so the 5 looked like the pH's label and the law was never named. "0.005 M" only worked because lowercase "m" is molal. Read a unit from the text as written and match the words without case; a case-sensitive symbol table is meaningless on lowercased text.
+
+- **Boyle's law with V1 = 2 L showed an SI substitution ending in 0.004 and then "4 L", and a 5-day decay constant's conversion row began with a bare "= ".** The conversion check compared the solver's result with the shown one, but the relation solver had already converted to the givens' unit, so both read L; and a catalog law's quantity carries no symbol. A unit change belongs to the working wherever it happens: the solver that converts writes the row, and a row takes its symbol from the substitution when the quantity has none. Adding those rows then let "4 µF" match inside "2.4 µF" in a substring test, so C₁ lost its SI step: match a written value at a number boundary, never as a bare substring.
+
+- **Horizontal Bernoulli on Jupiter declined, while the height form must.** The body guard treated "the catalog declares g" as "this answer uses g". Bernoulli declares g only for the height variant; the horizontal equation never multiplies by it. Refuse and fill a body's school g from the equation the selected inputs actually use.
+
+- **A short physics formula streamed as a thick black bar, and `gt` looked smashed.** `MathSvgView` forced every SVG to at least 48px tall while the width stayed natural, so a one-line formula stretched into a bar. MathJax paints an incomplete formula as an `merror` rect with `data-background="true"` filled with `currentColor` (the solid bar); a path-less `\\` spacer is the small square. Size the SVG from its ex metrics with `preserveAspectRatio="xMidYMid meet"`, and fall back to MathText when the SVG is an merror or has no glyph path. A real fraction bar is a thin rect without `data-background` and stays.
+
+- **152 mmHg verified Kp = 0.2, and "cathode 0.80 V, anode 0.8 V" printed 0.00 V.** Precision was read by looking each given's value up among the typed literals, so a value an extractor had converted (152 mmHg to 0.2 atm, 25 °C to 298.15 K, 50 kJ to 50000 J) matched nothing and silently stopped limiting the answer, and one value typed two ways kept whichever came first, including a reaction coefficient. Trace a converted value back to its literal by the conversion itself (an exact unit ratio or the Celsius offset), let every way a value was written limit the answer, and skip the equation's coefficients. A value lookup that misses must be treated as a missed given, not as no given.
+
+- **"2 mol of gas at 300 K and 1 atm" was answered 0.0492 m³ by physics and 49.2 L by chemistry, from two copies of PV = nRT with different R, precision and units.** Keep one implementation (physics' catalog) and carry the question's units into the answer: a gas stated in L or atm reads in L and atm, and a rate from a half-life in years is per year. Show the conversion as the last substitution row, or the SI substitution will not reproduce the answer. Before deleting a subject's copy, run the routing dump over every subject's test strings (each flip must be intended) and route the corpus through `detect_subject`. The corpus caught 3.83 × 10⁻¹² 1/s for a 5730-year half-life: a right value in an unexpected unit is still a wrong answer to read.
+
+- **"What is the pH of 0.01 M HCl?" declined while "Strong acid: 0.01 M HCl" answered, and "Ka = 1.8 × 10^-5. Find" read Ka as 1.8.** Chemistry only had labelled templates, and the scientific-notation reader refused an exponent followed by a full stop, mistaking a sentence end for a decimal exponent. Read a question in its own words with the shared law engine (`chemistry/binding.py`), but prepare the text first. Spell out case-sensitive symbols (`pH` → `p_h`), since the word windows lowercase. Replace each named substance with its role (`acid_strong`), so the 2 of `Ca(OH)2` is never a number and the words after a value can say whose it is. A word window cannot pair a titration's volumes with their solutions ("10 mL of NaOH added to 25 mL of HCl" would swap them): pair each volume with the concentration and species written right after it, or decline. An exponent ends at `(?!\d|\.\d)`, not `(?![\d.])`.
+
+- **4 g of H₂ verified 35.68 g of water (35.74 is right), "1.10 V" came back as "1.1 V", and a cell potential of 0.34 − (−0.76) printed 1.1 V.** Molar masses were rounded to two decimals before the arithmetic, and one formatter trimmed every trailing zero at four figures whatever the data said. Keep a molar mass at full precision until it is the answer (`molar_mass_working` shows the table's three decimals), and format from the question: `sig_figs.written_numbers` records each typed literal, and the solve formats inside `numbers_as_written`. Count figures only on measured givens (an electron count or a Hess multiplier is exact), take a logarithm's precision as decimals, and a sum's as the fewest decimal places (`ADDITIVE_OPS`), or a textbook's 1.10 V and −184.6 kJ come out as 1.1 and −185. `model_copy(update=...)` skips validation, so a field set that way must respect the schema's bounds by construction.
+
+- **After the physics stack was rebase-merged, every impulse question declined on main, and "3 km/h and 3 m/s" answered with one speed.** A conflict resolution kept `number_format=".2f"` on a `QuantityResult` that no longer has that field, so each impulse solve raised and was declined; and numeric accountability counted a given as bound when its bare number matched, whatever its unit (it also verified "1 radian" bound as 1°). After a stack lands, rerun the golden dump on main, not only on the branches; a bare number matches a bound value only in units of one size (`accounting._same_scale`), otherwise the SI values must.
+- **A KE at 3, 4 and 7 m/s verified as the 3 m/s answer.** Accountability let a given through when a signed sum of givens hit a bound value, and 4 − 7 = −3 "derived" the stated 3. A tolerance did the same by accident: 1000.001 Pa is `isclose` to 1000 Pa, which hid that `0.001 Pa*s` was scanned as a pressure. Only a value no given states can be a derivation, and a unit the scanner cannot read whole is a scanner bug, not a tolerance. An impulse direction is relative to a real initial motion only: F·Δt and a start from rest keep their sign.
+
+- **A module split passed its byte-for-byte check while the old module still answered.** `git rm` refused the original (it had an uncommitted edit), the `&&` chain stopped before the imports were repointed, and the dump compared the old code against itself. When splitting, delete the original first (`git rm -f` after backing it up) and grep for its import path before trusting an identity check; split by moving top-level blocks verbatim (`ast` line ranges) so nothing is retyped.
+
+- **"Heat 2 kg of water at 20 °C" verified 167 kJ, "falls from n = 3 to n = 2" verified E₃ = −1.51 eV, and "0.8c" was read as coulombs.** The heat, expansion and conduction readers took the first temperature as the change when no change word was there; the hydrogen reader took the first `n =` of two; and `_UNIT_ALIASES` is keyed lowercase, so `c` became `C`. A temperature change is named as one (`_temperature_change`), and a °C difference converts with `delta_degC` (50 °C of rise is 50 K, not 323 K); two levels are a transition; a unit whose case is its meaning is checked before the lowercase table. In the binder, words after a value stop at the first connector ("300 K is heated to 450 K": the `to` names 450 K), and values after a bare "and" share the words before the list.
+
+- **A drop on Jupiter used Earth's g, a satellite "400 km above Earth" orbited at r = 400 km (79.6 s), and 3000 g outweighed 5 kg.** `_detect_gravity` falls back to 9.81 for any body it does not know, a lone length filled Kepler's r whatever the words, and a largest-first pair was sorted by bare number with its units left behind. A default g on a body with no school value declines at the request boundary (`bodies.SCHOOL_GRAVITY`); Kepler binds only radius wording and `excludes` altitude; compare a pair in SI and move each value with its unit.
+
+- **A train whistle approaching at 72 km/h was solved at 72 m/s, "find the cost" was answered in joules, and a bound "500 turns" became 3142.** The Doppler extractor labelled every speed `m/s`, the ask guard had no word for a price, and Pint reads `turns` as the angle unit (2π rad each). A count is a number with a name (`solvers/common._COUNT_UNITS`), an extractor passes the unit it read with the value, and an ask no law answers is a dimension of its own (`ask._MONEY`) that every result fails. A law whose inputs are roles, not kinds (Doppler: who moves, toward whom), stays a role reader (`extractors/doppler.py`): the binder put "a cyclist rides toward a stationary siren" into the source speed.
+
+- **"Accelerates at 2 m/s² for 6 s and reaches 18 m/s. What is its speed?" verified 30 m/s.** The SUVAT extractor bound speeds in written order, so a lone final speed became u and v was "solved". Words before a value say which input it is ("reaches", "to", "final" → v), and a value marked as the asked result means the question already states it. The catalog binder makes this the rule for every law it reads (`binding.py`, `Binding.result_words`), and it reads units only after the word checks pass: loading Pint on a cold detection call cost 275 ms on the first chat turn.
+
+- **A physics photo was answered with math hints, and its confirmed reading was read as an equation.** The physics camera caption says "solve" beside an image, so it fell through to the math gate, and the `I read this as:` line was taken as a math reading under any caption. Route a scanner caption by its subject before any keyword gate, and read the confirmed line only for the subject that owns it. A scanner protocol line belongs in `services/subject_scan.py`: in a subject's module, a peer subject cannot import it. Match captions on the raw text, because `prepare()` folds the newline that ends the caption.
+
+- **A physics scene said 59.0 N beside a 59.1 N answer.** The solver wrote the label as `59.05 N` (already rounded from 59.050000000000004), and re-rounding that string to three figures rounded the decimal 59.05 down. Format labels from the true value at the source (`display.plain_number`), never by re-rounding text. Units inside `\mathrm{…}` are the plain spelling (`m/s²`, `µC`): MathText draws the group as written, so `\mathrm{m/s^{2}}` or `\mathrm{\mu C}` would show the braces and the backslash.
+
+- **Verified physics answered numbers the question never meant.** `2 × 10^-6 C` was read as −6 C (the scanners only knew `e` notation); "from 20 °C to 80 °C" became ΔT = 20; "its speed just before it hits the ground" fell to the time default (4.04 s); a rebound was a second forward speed. Fold notation once at the boundary (`services/number_text.py`), decline a solve that leaves a stated given of a dimension it uses unbound (`physics/accounting.py`; a distractor of another kind and a sum or difference of givens are fine), and refuse a result whose dimension is not the asked one (`physics/ask.py`). `tests/modules/physics/corpus.py` holds hand-worked answers; a verified value there must match or the solve must decline.
+
+- **A pasted 3,000-character report stalled every chat turn by 0.7 s, and 12,000 characters by 11.5 s.** Physics detection runs 5–7 times a turn on the event loop, and 21 of its regexes were quadratic: `-?\d+…\s*unit` retried a digit run from every digit, whole-text `(?=.*…)` cues retried from every position, and an unbounded `(?:, \d+)+` list re-scanned a CSV from every number. Start numbers with `-?(?<!\d)\d+`, anchor lookahead-only cues with `\A`, bound repeats, read only the head and tail of long messages, and cache detection per text. `test_physics_detection_speed.py` scans every module-level physics pattern on adversarial text.
+
+- **A chemistry scan rate limit said the photo could not be read.** `readChemistryScan` turned every error into null, so 429 and 404 used the bad-photo line. Those two statuses show their API detail. A network or vision failure stays on that line.
+
+- **Send photo dropped a confirmed chemistry reading.** The scanner sent only the caption, and a photo always skipped the verified reply. Put `I read this as:` after the chemistry caption and solve that line even when the photo is attached. A caption with no reading still does not direct-reply.
+
+- **A PubChem timeout left the reply with no chemistry note.** The name lookup returned `(None, None, False)`, so the turn never declined. When a compound name was found, a timeout or lookup error returns the unverified note. A sentence that is not chemistry stays untouched.
+
+- **`hess's law` and `find kp` matched the chemistry gate and then extracted nothing.** Those cues were case-sensitive, so a lowercase template never became an intent and never got the unverified note. Match Hess, ICE equilibrium, Find Kp, and Kc/Kp conversion without case.
+
+- **Hydroxide on chloromethane returned nothing.** SN2 required exactly one carbon neighbor, which excludes methyl. Allow zero carbon neighbors and still refuse secondary and tertiary halides.
+
+- **1.2 ppm verified as amine alone.** The amine N–H window is 0.5–5 ppm and there was no alkyl row. List alkyl C–H at 0.7–1.3 ppm as well, so a methyl peak is not a single functional-group name.
+
+- **`O2-` was parsed as oxide, charge −2.** Digits before a trailing sign are the charge only for a metal such as `Fe2+`. H, N, O, F, Cl, Br, and I keep the subscript, so `O2-` is superoxide and `H2+` is H₂⁺. `O2^2-` stays peroxide.
+
+- **Negative moles verified as `c = -2 mol/L`, and a spiked signal below the sample verified as `c = -1.667`.** Molarity and molality require a non-negative amount. Standard addition requires the spiked signal to be greater than the sample signal.
+
+- **Half-equivalence always verified pH = pKa.** That holds only while Ka is under 5% of the buffer concentration. A Ka of 0.1 at 0.00333 mol/L is pH 2.50, not 1. Solve the charge-balance root in that case.
+
+- **A rate law with `[B]` held verified as order 0 in B.** Two points only measure the reactant that changed. If both concentrations are supplied and one is constant, refuse instead of writing `rate = k[A]`.
+
+- **`H + Cl -> HCl` verified ΔH° as −92.3 kJ/mol.** The monatomic fallback treated every one-atom formula with no phase as a metal, so H, O, N, F, Cl, Br, and I got ΔH°f = 0. Those elements are standard as molecules. Return false for the free atom; H₂ + Cl₂ stays −184.6.
+
+- **A reaction-plus-braking stop was answered by the model, and “slows to a stop, how far” became `d = vt`.** The two-time sentence never matched a cue. The one-time sentence matched `rate_distance` first, so 15 m/s for 3 s while stopping was 45 m. Own that shape as `stopping_distance` before the rate extractor, and make rate refuse “to a stop” / brake wording so SUVAT can answer 22.5 m.
+
+- **A scanner caption `I read this as: x^2 - 5x + 6 = 0` never verified.** The English prefix failed the consumption check, so the equation on the confirmed line was dropped. Extract that line before the rest of the caption.
+
+- **`3x2+4=4` solved as `6x+4=4`, a bare equation after `[File:]` never reached SymPy, and “Do it” answered the offered equation with the model.** Implicit multiplication split `x2` into `x*2`. The algebraic gate judged the file label, not the equation after it. A sentence period in “this file.” stuck to the left side, so the verified block was dropped. “Do it” only reread earlier user lines. Lift a single letter plus exponent digits in `_normalize_expr` (`x0`, `x1`, `sin2`, and `log2(` stay names), ignore a file label or one caption sentence when the equation is its own line, stop the walker at a non-decimal period, and solve the one equation in the previous assistant message.
+
+- **`x^2` drew as `x2` except inside a cancelled fraction.** iOS ignores `translateY` on a `Text` nested in `Text`, so the smaller exponent sat on the baseline. A fraction is already a `View`, which is why only that step looked raised. Host any superscript or subscript in a `View` (`hasTallMath` and `latexHasNestedMathView`); keep the measured raise as padding so the shift stays inside the box.
+
+- **Chat died on launch after the VisionCamera pull, and a generic simulator compile sat there.** Expo Go evaluates a top-level `react-native-vision-camera` import and throws because Nitro is not in that binary. Load the live scanner with `import()` only when the scanner view mounts. A `generic/platform=iOS Simulator` xcodebuild also compiles the unused Intel slice.
+
+- **Android math and bold text drew Roboto while the simulator kept Computer Modern.** Each weight file is registered as the regular face. `fontWeight: "700"` looks up a bold slot that was never loaded, so Android substitutes the system font, and the default font padding clips the KaTeX box. Ask Android for weight 400 on that file, and turn font padding off for math.
+
+- **A catalog variable the extractor sends but the spec does not declare raises out of the turn, and `in` verified the wrong inertia.** `PhysicsIntent` raises when a key is missing from `FormulaSpec.variables`, and turn prep does not catch it, so a cliff height, a Faraday area, a third resistor, or an impedance from L, C, and f failed the chat. Declare every input the solver already reads. A shape matched with `name in text` treated "ring" inside "during" and "disc" inside "discuss" as the object; match with `word_index`, longest name first.
+
+- **A physics decline never said it was unverified, and the check sniffed `Math note:`.** `SubjectAugmentation.unverified` was dropped in the web/tool fetch, then turn prep rebuilt the flag from that prefix, so only math reached the italic line. The fetch now returns the adapter flag. The line stays italic; a blockquote would paint a gray card.
+
+- **A verified chemistry result could be replaced, or typeset as algebra.** ```answer always went through MathText, so chemistry kept the value in bold prose and the stream skipped chemistry finalization. Answer fences now start with `notation: chemistry` when the body is not LaTeX, and the chemistry finalizer replaces model answer, scene, and structure fences from the solver.
+
+- **A Pint pin rejected the unit pad's rpm, acre, and BTU.** Pint's `rpm` is angular (`2π/60`), its `acre` is the survey acre, and its `BTU` is `1055.056 J`. The frequency pad is cyclic (`1/minute`), the acre is `43560` international square feet, and the BTU factor has to be Pint's joule value or the preview drifts from a verified convert.
+
+- **Read-aloud smashed `\frac{x^{2}}{4}` into `fracx^24`.** `speakMath` matched fractions with `[^}]+`, so a superscript never matched and the brace strip ate the command. Copy already walked `MathSegment`. Speech has to use that same tree.
+
+- **A geometry diagram printed area and acute angles the server never sent.** Label helpers filled Heron, `πr²`, and hypotenuse when the fence omitted them, and vertex marks spoke atan of the drawn corners. Format a provided number or `labels` string; draw the arc without a degree when that string is missing.
+
+- **`3x=3` answered `x = 1` and “couldn't automatically verify”.** The numbered Given / divide lesson only ships from the SymPy worker. `sem_open` returned ENOSPC because the macOS POSIX semaphore table was full, so the process pool never started and the turn fell through to the model. When that pool cannot be created, verify in-process instead of dropping the lesson.
+
+- **A verified crystal-field answer treated every CN=4 complex as tetrahedral, and a bare `mass =` was used as a nuclear mass.** Coordination number 4 is also square planar, and an atomic mass is not the nucleus. Require tetrahedral or square planar before a CN=4 answer, and accept only `nuclear mass =`. Scene rows come from the solver’s numbers; do not parse the formatted substitution back into a table.
+
+- **A closed `\(...\)` chain stayed one row until the stream settled.** The live tail skips full preprocess, so `\(` never became `$` before the row split, and a reply with no trailing newline kept that formula unstable. Fold a finished `\(...\)` into `$...$` inside the shared layout, and leave an opener with no closer literal so the pending tail still hides `\frac`.
+
+- **Nuclear mass defect was answered as unverified physics.** The advanced-physics cue treats “mass defect” and “binding energy” as physics, so a supplied nuclear mass never reached chemistry. Skip that cue when the nuclear mass is written out; chemistry owns Δm and E/A only then.
+
+- **A θ-form rotational or SUVAT solve still opened on the time equation.** `select_formula` only knew each op’s base law, so the reply called `ω² = ω₀² + 2αΔθ` a rearrangement of `ω = ω₀ + αt` (and the same for `v² = u² + 2as`). The variant latex has to be the string the solver stores, and it must set `absent` for the variable that would have taken the earlier branch. `suvat_velocity` and `suvat_time` also have to declare `d`, or that branch never validates.
+
+- **Constant-α rotation and rolling energy were rejected after the catalog got strict.** The solvers already accepted `θ` for `ω` and `α`, `ω` for `θ`, and `ω` for rolling kinetic energy, but those names were missing from `FormulaSpec.variables`, so `PhysicsIntent` dropped the branch. Declare every real input. A substitution row is the same equation with the supplied numbers inserted; copying the symbolic formula is not one. The verified prompt lists those rows plus the chip, and leaves the dense `answer` chain off the model.
+
+- **Follow-up “Another” glued `at**40 km/h**` and chained `v = d/t = 50/10 = 5`.** Subject hints were chosen from the current line, so a pure continuation dropped the calculation contract, and CommonMark kept the missing space the model omitted. Inherit the prior subject for an exact continuation, and repair closed inline delimiters outside code, URLs, and math.
+
+- **A reverse solve the solver supported was rejected, and the prompt line was still being split.** `parallel_axis` listed `inertia` in `solve_for` but omitted it from `variables`, so the strict validator never reached `I = I_cm + Md^2`. `rotational_theta` read `theta0` with a default the catalog does not declare; measure that angle from zero. Solvers store `formulas` and `substitutions` themselves — an empty row raises rather than being parsed back out of `answer`.
+
+- **RPM became 120 rad/s after the catalog gave it a real dimension.** Empty unit means "already SI", so a revolution/minute dimension does not convert `120` by itself. The extractor must send unit `rpm`, `_params_in_si` converts once, and the solver must not multiply by `2π/60` again. The shown factor still reads the original rpm.
+
+- **A vertical throw's maximum height failed once the catalog owned kind and operation.** `max_height` is the angled projectile, and the kinematics extractor reused that id, so the validator rejected a real upward launch. Split it to `vertical_max_height`. One operation id belongs to one kind.
+
+- **Water's verified bond angle was the tetrahedral 109.5°, and HCN had no Lewis structure.** One angle was stored per steric number, so a lone pair never compressed it, and two unique non-hydrogen atoms were always refused. Keep the ideal electron-domain angle separate from the approximate molecular angle, center a single carbon when the other non-hydrogen atoms are terminal nonmetals, and drop a structure whose formal charges do not sum to the charge.
+
+- **RL decay was answered as an inductor emf, and a refrigerator COP used one temperature twice.** Keyword search was a substring, so `in` matched `inductor` and bound the only seconds value. Nearest-either-side then preferred `300 K` over the `250 K` that follows `cold`, because the earlier number is fewer characters away. School cues are whole words, and a named reservoir is the temperature after that word.
+
+- **School E&M, fluids, and Doppler answered a narrower law than the sentence.** Perpendicular force, horizontal Bernoulli, and source-only Doppler are the special cases. Use the general form only when the angle, both heights, or observer motion is stated; otherwise decline. An incomplete Kirchhoff loop must return nothing so the circuit extractor cannot answer it as Ohm's law.
+
+- **Bare `2−6` / `-2-6` and `what is -1 + 0` grew a picture or lost `expr`.** The signed-move matcher claimed every leading minus, including subtraction and a zero step, and a unicode minus never entered written subtraction so the eval fallback drew a number line. Picture only a rightward jump that starts negative, keep `expr` on that intent, and let a jump that does not fit fall through to arithmetic. The answer fence leads the picture so `7*8` stays a chip.
+
+- **Single-digit addition drew a column, so a ten frame never appeared, and a picture stored as column arithmetic disappeared on an ordinary solve.** Column traces stay hidden unless the learner asks for steps. A teaching picture uses its own type and rides the direct reply; “just the answer” still omits it.
+
+- **Relations and blackboard bold fell back to the UI font.** `≠`, `∉`, `ℝ`, and `·` are not in KaTeX_Main or KaTeX_AMS. Routing every relation to AMS painted missing glyphs with the system face. Keep a glyph on the face that contains it: Main for `≤` `∈` and the not-slash overlay, AMS Latin capitals for `\mathbb`, U+22C5 for `\cdot`.
+
+- **Radical bars and overlines missed the ink, and superscripts fell back to the UI font.** Width was a flat 9px per character, and `\overline` / `^2` were Unicode combining marks and superscripts that KaTeX's faces do not contain. Measure from the layout tree (`lib/math/layout.ts`); draw rules from the child ink; raise KaTeX glyphs instead of Unicode scripts. Do not set a horizontal `ScrollView`'s width to the formula — `maxWidth: 100%` is the viewport, `minWidth` is the math.
+
+- **Ionic `+` was read as another reactant, and `25 °C` never became kelvin.** A glued sign (`Fe2+`, `MnO4-`) is charge only when the next character is space, end, or another sign; `H2 + O2` stays a separator. Pint cannot multiply an offset unit, so Celsius goes through `registry.Quantity`. Pure solids and liquids leave `Kc`/`Kp` only when the phase is explicit — an unlabeled species still counts, or homogeneous equilibria change.
+
+- **Adding a second arithmetic grammar made dates and phone numbers look solvable again.** The original bare-expression gate rejected ambiguous `9/9`, `2026-09`, and `555-1234`, but the new school-method matcher ran afterward and accepted them. Every new extractor must preserve the gate’s ambiguity rules; only a calculation/long-division cue may admit a bare ASCII slash.
+
+- **A math answer chip followed by “how?” drifted to model-written steps.** Short style suppressed verified `key_steps`, and the terse follow-up never re-entered math augmentation. Always render supported equation/system/inequality traces unless the user says “just the answer”; adjacency-gate working follow-ups and solve the prior problem again. Native `√` plus a separate border cannot enclose `\frac{x}{y}`—draw one scalable SVG radical path, and keep fraction-bar padding to a minimal overhang.
+
+- **Composer caret jumps onto the previous line when the field wraps.** `paddingTop` on the multiline `TextInput` makes iOS draw the caret a line too high. Size the text box to the lines and keep the button-centering slack on the wrapper. Do not reset `contentOffset` on each keystroke — that scrolls the caret up a line and then snaps it back.
+
+- **Expo Go aborts on the chat screen (SIGABRT in a Reanimated frame).** `useAnimatedStyle` called `composerGapFadeHeight` from another module. That runs on the UI runtime, throws, and the display-link callback abort-traps the app. Keep the height math inline in the worklet.
+
+- **Composer text clips at the end of a line until Return.** `inputSingleLine` locks the field at 44pt, and iOS skips `onContentSizeChange` for a soft wrap that does not grow the box, so the next line never appears. Grow from the field width (`composerSoftWrapLineCount`) on that keystroke. Do not trust that content size once the width is known — iOS echoes the height you just set and the pill ratchets, and do not push list padding for a soft wrap or the thread jumps with every line.
+
+- **The line under the composer stayed sharp.** The scrim used `bottom: 0`, which sits on the pill, above the bottom padding where the thread actually shows. Hang it at `bottom: -bottomPad`, and start the veil already mostly opaque so that line is not clear.
+
+- **Chat titles vanish under the drawer header.** `topOverlay` was an opaque page color painted over the fade, so rows hit a hard edge under Recall and search. Keep that overlay transparent and dissolve the fade across the title row.
+
+- **Message text stays sharp in the gap under the composer.** The composer block is transparent through the home-indicator pad, so the thread paints there in full. The bottom scrim stays clear for about one line, then solid to the screen edge.
+
+- **A choice list inside the to-do sheet pushes the form up.** An in-modal overlay still joins that sheet’s layout. Keep the editor as an embedded sheet (not a Modal) and open choices in a popup that floats in its own layer (`ui/overlay` Menu / SelectMenu / Dialog — `FullWindowOverlay` on iOS), so the form does not move. iOS will not present a second RN Modal over an open one; the overlay layer avoids that limit.
+
+- **The first direct math answer still paid a multi-second SymPy cold start.** Startup warmed one of three isolated slots, then returned that slot to the back of the free queue, so the first real solve selected an untouched process. Warm every configured slot concurrently before the API reports ready.
+
+- **Physics answers narrate “doing math”.** A physics question still trips `needs_symbolic_math`, so the status is “Working through the math…”, the prompt gets `MATH_INTENT_HINT` / `MATH_TUTORING_HINT`, and the numbers are wrapped `[BEGIN VERIFIED MATH]`. The model copies that voice. On the subject split, physics gets its own status, hint, and verified block. Do not leave physics inside the math hint or a `modules/stem/` package.
+
+- **Equation step math sat on the same line as “2. Simplify”.** CommonMark tight lists make `2. Label\n$3x=3$` one paragraph, so a short formula wraps beside the label. Emit `**1. Add 3 to both sides**` plus a blank line then `$formula$`; keep `— this cancels…` only for Detailed / explain. Divide steps wrap matching factors in `\cancel{…}` (native MathText slash). Answer chips use `theme.bg`, not gray `surfaceAlt`.
+
+- **`Show steps: 2x+3=11` never extracted.** `_extract_equation_intent` treats
+  leading `show ` as an unclaimed plot verb, and leftover English (`show`+`steps`)
+  also blocked the solve. Strip show-steps / just-the-answer wrappers before
+  the plot-verb and leftover checks; keep generic `explain` so `explain why y=mx+b`
+  stays unverified. Server-render the lesson from `key_steps` instead of handing
+  Detailed to the model.
+
+- **Pinch on an in-chat graph never zoomed.** `Gesture.Exclusive(doubleTap, pinch)` waits out the second tap, and FlashList plus the drawer pan steal two-finger touches. Open a full-screen `Modal` with its own `GestureHandlerRootView` and `Gesture.Simultaneous(pinch, pan)`.
+- **`graph it` after `4x^2-5x-12=0` stamped Couldn't verify, then drew two vertical lines.** `sample_function` rejects Equalities; solve-for-y needs `y`. Rewrite `f(x)=0` (no y) as lhs-rhs; resolve pronoun follow-ups from a prior equation. `schoolViewBounds` then origin-cropped y to ±4, hiding the vertex at y≈-13 — keep a modest vertex in the window so the U is visible. Ellipse `x^2+y^2=1` stays a relation.
+- **Shifted parabola looked like a needle under the x-axis.** Equal-scale + ±10 x put the axis at the top and clipped the arms at y≈4. Zoom x to the roots and let y run from the vertex up the arms (~30); do not expand x to match that tall y.
+- **Marsh fell at Mars g; textbook `h = 20 m` became `m = 0`.** `_detect_gravity` substring-matched moon/mars; `has_equation` treated `h0=`/`v0=` as algebra; an unlabeled `15 m away` bound as launch height. Word-index moon/mars; strip those param labels; `require_keyword` on h0; gate cues = extractor union. Do not ship `acceleration of` as −g; `speed after` is a magnitude.
+- **`4x=4` still showed raw `\\frac` plus a gray Simplify card after closing interrupted fences.** CommonMark 4-space indent of `2. **Simplify:**` + nested ` ```math ` is an indented `code_block` (Prism), and ` ```[\\s\\S]*?``` ` in `normalizeImplicitMath` treated the next ` ```math ` as a closer so `\\frac` never got `$...$`. Dedent those step labels; skip whitespace/` ````` ` in glued openers; don't protect mid-line ` ```math `; untagged walkthrough bodies are prose not code.
+- **Solve steps showed raw `\\frac` plus a code card.** Model glued ` ```math ` to the sentence and skipped the closer; `/```math[\\s\\S]*?```/` treated the next ` ```math ` as a closer (even when the callback returned the match), so step 2 became code. Close interrupted math fences with CommonMark closer rules (` ```math ` is never a closer).
+
+- **Settings tone/style still expanded in the gray card.** The ChatGPT-style
+  popup was committed on `feat/memory-v2-atomic` and never merged; FEATURES
+  still said “expand inline”, so later work kept `SettingsInlinePicker` as an
+  accordion. Choices open the `SelectMenu` popover; do not expand in the card.
+- **Leftover SSE reported the next chat's TTFT.** Leave must not abort SSE, and
+  `parseChatWsPayload` used to record first token before the active-view filter.
+  Key the sample by optimistic turn id; mark transport/token only for that id
+  after the payload is accepted; drop leftover samples on fail/stop/regenerate.
+- **`8-8*2` got the right answer plus Couldn't verify.** `first_dim_pair`
+  treats `8*2` as a rectangle size so the gate fired, then extract returned
+  None (no shape word) and stamped the disclaimer — plus a ~6s tool-loop.
+  Shared `bare_arithmetic_expr` is the gate and the arithmetic extractor
+  (`*`/`^`/`×`/`÷` or 2+ ops; a lone `-`/`/` is a date/phone unless "what is").
+  Do not use dim-pair alone as the math gate.
+- **Math scanner close froze; Photos then died for the whole session.**
+  `if (!visible) return null` above `<Modal>` skips RN’s iOS dismiss path and
+  can tear down the picker presenter so `nativePickerActive` never clears.
+  Keep `<Modal visible={…}>` mounted until `onDismiss`; throw on overlapping
+  pick instead of returning `null`; watchdog the hung native promise.
+- **Solve-with-camera generated an image instead of solving.** The caption
+  “Solve the math problem in this image…” is ≤80 chars and matches the short
+  image-noun heuristic; a short “I read this as: x=2” line often stays under
+  80 too. Skip image-gen when `is_math_camera_prompt` / `isMathCameraPrompt`.
+- **Asked for a dog image, got a DALL-E copy-paste prompt.** Intercept only
+  sees the current line (`Image` / `that works` are not `draw me a dog`),
+  and compact turns never get the image-gen hint (viz_intent is
+  chart/mermaid/HTML). Follow-up `Dog` then `Image`; never tell the model
+  Recall cannot generate or to send the user off-app. `do it` after the
+  topic moved (`draw a dog` → `Paris`) must not generate — only the current
+  image exchange. If generation is off, do not tell them to resubmit.
+- **RAG said “first 500 PDF pages” after a 6-page OCR extract.** Indexing
+  called OCR with the inline 12k/6-page caps, stored no coverage, and the
+  prompt prefix was a static 500/200k string. Pass index char/page caps into
+  `ocr_scanned_pdf`, persist `index_coverage_json`, and build the prefix from
+  stored ceilings (OCR names the 20-page cap). Page count comes from the
+  render worker, not a second parse on the event loop.
+- **Worker crash mid-index dropped the job forever.** Dedupe SET NX used a 300s
+  running TTL while reclaim idle is 60s; skip then always `xack`ed. Mark
+  success as `done`; skip without ack while still `1`; keepalive refreshes
+  the running TTL. Chip keeps polling past that 300s claim so a retry around
+  five minutes can flip “Still indexing…” instead of a permanent fail.
+- **Generic Retry regenerated a turn that never reached the server.** SSE/WS
+  transport failure left the optimistic user bubble looking sent and the error
+  CTA called `regenerate`. Queue it as `send_rejected` (Retry = resend);
+  Regenerate only after tokens already arrived.
+- **Account B saw Account A's unsent composer draft.** Provider stays mounted
+  above the login Redirect; `switchThread` no-ops on the shared `"new"` key.
+  Reset drafts on session change and from `clearSignedOutAccount`.
+- **`1+1=x` sat ~1 minute then the LLM said `2`.** One shared SymPy worker plus a
+  60s queue wait ran *before* the 5s solve timeout, then the turn still called
+  the model. Isolated 1-worker slots (default 3) with a 2s slot wait; short
+  closed answers skip the LLM unless the user asked for steps. Do not raise
+  `math_solve_timeout_seconds` to hide queueing; do not SIGTERM a shared N-worker
+  pool (one timeout would kill siblings).
+- **`Couldn't verify` under a correct ∫ x².** `Integrate x squared` (speech /
+  typed English) hit the calculus verb so a Math note stamped, but
+  `squared` is an unknown letter-run so extract returned None. Rewrite
+  `x squared` / `x cubed` → `x^2` / `x^3` only after a 1-letter or digit
+  (not `area squared`).
+- **Graph y=x^2 asked for Python/Colab instead of plotting.** Keyword checks
+  missed it (```graph was attached). CLARIFICATION_HINT treated domain as a
+  missing fact. Exception like mermaid: default window, never offer code.
+- **Gray `x = 0` under steps that say `x = 2`.** Solver-owned ```answer is
+  appended after the stream. Chained `2x+3=3=7` solved `2x+3=3`; the model
+  solved `2x+3=7`. Collapse `a=b=c` to `a=c`. Skip the chip when prose already
+  states a different `x = N`. `Let x = 5. What is x + 2?` substitutes then
+  evals (`5+2`); returning no intent still injected the unverified footer.
+- **`Couldn't verify this with SymPy` under a correct `y'' = 6x`.** Intent
+  saw calculus but `y = x^3-3x` was differentiated as an equation (fails) and
+  `dy/dx` was not a `d/dx` cue. Peel `y=` / `f(x)=`; treat `dy/dx` as Leibniz.
+
+- **Assistant said “Recall will attach the verified diagram.”** That sentence
+  was a system instruction (`DIAGRAM_OWNED_NOTE`) in declarative voice; the
+  model copied it into the chat. Phrase as “do not mention attaching / fences”;
+  never tell the user the app will attach anything.
+- **`X=6graph` became 6·g·r·a·p·h then a broken Vega chart.** Equation walk +
+  implicit multiplication split unknown 3+ letter tokens; `"graph" in text`
+  also matched `paragraph` (`"graph "` inside `"paragraph "`). Peel/mask
+  whole alpha-runs; viz commands are tokens (or `graph`/`plot` glued onto a
+  1-letter variable), not substrings. Composer `$` around the 6 (`X=$6$graph`)
+  hid the number from `vertical_line_x`, so we explained x=6 in prose and
+  never attached the plot. Unwrap `$`/`\\(...\\)` in `prepare`. `x=6` + graph
+  cue is a vertical ```graph, not ```chart. `x=2y` stays y=x/2.
+
+- **Library thumbs vanished on slow or flaky radios.** A 20s `Image` timeout and `onError` called `onMissing`, which dropped the row as if the file were gone; the full viewer then spun forever. Keep the tile, show Retry, and drop only after `GET /attachments/{id}/url` returns 404.
+- **Second Google product connect failed (“no refresh token”).** Google omits
+  `refresh_token` on incremental grants; `getCurrentUser().serverAuthCode` is
+  leftover from identity sign-in (already exchanged). `forceCodeForRefreshToken`
+  (Android) + never reuse cached codes; reuse sibling ciphertext only when Google
+  emails match. Disconnect of one product revokes the shared grant — refresh both
+  Settings panels.
+- **Library Share threw `ERR_FILESYSTEM_CANNOT_DOWNLOAD`.** Image painted via
+  `Image` + Bearer headers, but `downloadAsync` / `createDownloadResumable`
+  cannot pull authed `/attachments/{id}/file`. Fetch bytes (`fetchAttachmentBase64`)
+  and `writeAsStringAsync` Base64 into the cache, then share the `file://` URI.
+- **Live Talk UI chime silenced the mic / GPT Audio.** `setAudioModeAsync`
+  before WebRTC `getUserMedia` leaves Simulator capture dead. A leftover
+  `createAudioPlayer` also keeps the session in playback, so the assistant
+  has no speaker. Play the open chime from `open()`, `remove()` the player,
+  then connect; close WebRTC before the end chime. Overlay animation only
+  — never `setAudioModeAsync` for those cues.
+- **Live Talk echo loop, mid-sentence cuts, then 34s of silence.** Simulator
+  RemoteIO has no AEC, so speaker audio is VAD’d as the user; `create_response:
+  true` starts a new reply from that echo. `response.done` is not end of
+  playback. A client `session.update` of nested `audio.input` replaced the
+  input object and killed VAD. Mint `create_response`/`interrupt_response`
+  false with threshold 0.5; never `session.update` from the app; unmute on
+  `output_audio_buffer.stopped` + 500ms tail, not `response.done`.
+- **Live Talk overlay up, no answer after a reload.** Fast Refresh kept
+  `visible` and dropped the WebRTC peer, so the UI looked live with no mic.
+  Reset the overlay on mount when there is no session. Do not let expo-audio
+  `setAudioModeAsync` run before getUserMedia after TTS — capture stays silent.
+- **Live Talk connected then went silent.** `useEffect(() => close, [close])`
+  re-ran whenever `close`’s identity changed (status / new chat id) and tore
+  down the WebRTC peer right after `setRemoteDescription`. Unmount-only
+  cleanup via a `close` ref; keep the session unless open-generation changed.
+- **Live talk device TTS stole GPT Audio.** Client spoke the transcript
+  with expo-speech as soon as assistant text arrived, which blocked clip
+  playback (`playbackStarted`). Play GPT Audio clips as the voice; device
+  TTS only if no clip arrives. Do not start Siri on assistant SSE.
+- **Live talk “fixed” clip waits and still spoke late / not at all.** Server
+  PCM was ready in ~1s (`play()` logged at ~150ms) but expo-audio file
+  splices stayed silent on simulator; Whisper also returned empty on 6s
+  WAVs. Speak the assistant transcript with expo-speech when clips are
+  not the voice yet; do not skip STS when Whisper hears nothing.
+- **Live talk still spoke after ~60s though the API had PCM in ~1s.**
+  Clips play strictly in series and waited up to 20s each when
+  `didJustFinish` / duration never arrived. Cap each splice to the WAV
+  length (max 2.5s) and treat `playing` false as finished.
+- **Live talk cancel left an empty chat after a spoken turn.** No-speech
+  timeout uploaded silence (Whisper empty, no user SSE). Cancel bumped
+  sessionGen so later events were dropped, and skip-load never GET
+  `/messages`. Do not upload when the meter never heard speech; fail closed
+  on empty Whisper; persist the user row as soon as Whisper returns; keep
+  transcript events after cancel and refetch if the stream aborts.
+- **Live talk spoke after ~60s, crackled, user line appeared late, stayed
+  Untitled.** Whisper + GPT Audio shared the OpenRouter key (STS waited on
+  the 60s transcribe timeout). Tiny WAV splices + `didJustFinish` misses
+  clicked; wrapping a provider WAV as PCM was static. User SSE came after
+  audio; first-turn `handleFirstReply` used React `chatId` still null so
+  the topic poll never ran. Whisper first, unwrap WAV to PCM, clip wait
+  from the WAV duration, pass the ensured chat id into title poll.
+- **TTS rest stole another utterance's quota.** Follow-up Redis key was
+  `user_id` only, so a second speak's `rest` consumed the first lead's
+  unbilled budget. Store `clips:chars:lead_hash`; rest must send that hash
+  or it is billed. Speaker does not need the mic; cloud 502 falls back to
+  `expo-speech` (not API-down).
+- **SSE New chat aborted the in-flight reply.** SSE has no `cancel` message —
+  Stop *is* abort (close the fetch). New chat / leave must not `abort()`; latch
+  `chatId` so leftover events cannot paint the next thread. Register the SSE
+  producer with `register_inflight_stream` so `GET /messages` can wait like WS.
+- **Live talk abort skipped refund.** `body_iter` refunded in `except Exception`;
+  abort is `CancelledError` / `GeneratorExit`. Settle in `finally`: no audio →
+  refund; audio → clear pending + persist. Unsupported containers fail closed
+  (no Whisper+TTS echo). Client abort before the first `audio` event hits
+  `POST /live/refund`.
+- **Live talk waited 20s and left no chat.** `/speech/live/speak` drained the
+  full OpenRouter SSE, wrapped one WAV, then JSON; the client ignored
+  `transcript`. Stream WAV clips as PCM arrives, Whisper the user in
+  parallel, persist both sides as chat rows, play clips as they land.
+- **Live talk hid the chat hamburger.** Full-screen `Modal` is a new window, so
+  ChatHeader under it cannot open the drawer. In-tree overlay with `top:
+  headerInset` and `bottom: composerClearance` (0 header inset while the
+  drawer is open) so type/attach still work. Mute is the mic next to close
+  (red = model cannot hear); not the orb.
+- **Gallery `GET /attachments/{id}/file` 404 after a reboot.** List 200s from Neon, then each thumb 404s. Cause: local backend defaulted to `/tmp/recall-attachments`; macOS wipes `/tmp`, rows stay. Fix: store under `~/.recall/attachments` (`expanduser`); omit local rows whose blob is gone from the gallery list; log `attachment blob missing on disk` on `/file`.
+- **Repeat on New reminder did nothing.** Nested `AppSheet` is a second RN
+  `Modal`; iOS will not present it over the add-reminder sheet. Put the
+  pick-one list in the same sheet (expand in place).
+- **Library always skeletoned after Back.** `useGalleryData` stored lastFetchAt in
+  the hook, so leaving `/gallery` dropped the 20s skip. Use a module
+  `StaleResourceCache` (hydrate + drawer prefetch All); invalidate on logout,
+  chat delete, upload, and image-gen. Keep per-tab snapshots so filter switches
+  do not paint the previous tab. Drop a 404 thumb from the list in-session.
+- **Chat ⋮ Share icon did nothing (no Messages/Mail sheet).** `onShareFromMenu` called
+  `closeMenu()` then `Share.share`. AppSheet is an RN `Modal`; presenting the OS
+  activity sheet on a dismissing modal makes iOS drop it. Keep the sheet up until
+  `Share.share` returns, then close. Don't swallow share errors except user cancel
+  (`did not share` / cancel / dismiss).
+- **Isolate-x step showed raw `1\cdot x = 2 - 3^{\frac{2}{3}}`; `3^{2/3}` looked like `32/3`.**
+  Model `$`-wrapped the bullet (`$- 1\cdot x = …$`); prose-bullet unwrap stripped
+  dollars after command-wrap had skipped the interior, so `\cdot`/`\frac` never
+  reached MathText. Keep `$…$` when the inner span is math. Wrapping only
+  `\frac` also shattered `3^{$\frac{2}{3}$}`. Wrap the whole island. `toSuperscript("2/3")`
+  was null so styles.sup sat at baseline next to `3` — map `2/3` → `²⁄³`.
+- **Chart / bare email interviewed; coffee mermaid parse-failed.** `CLARIFICATION_HINT`
+  is on every non-quiz turn and fought the layout hints: no rainfall numbers or a
+  bare `escribeme un correo` became 1–3 questions instead of ` ```chart ` /
+  ` ```email `. Chart/email/flowchart exceptions draft immediately. Unquoted
+  `E[Grind Beans (Medium Grind)]` is invalid Mermaid — quote labels in the hint
+  and run a linear sanitizer on persist + `MermaidBlock`.
+- **Famous quote rendered as italic `"…" - Author` prose.** Slim turns get
+  `COMPACT_RESPONSE_FORMAT_HINT` (plain prose) and QuoteBlock only fires on
+  markdown `>` blockquotes. Swap compact for `QUOTE_FORMAT_HINT`; promote
+  wrapped `"quote" - Author` paragraphs; split same-line ` — Name` (space
+  before the dash). Even hairline — no left stripe. Never ` ```quote `.
+- **4-week Spanish plan became a clipped 3-column table.** FORMAT_CONTRACT
+  allows pipe tables for "schedules," so a learning plan looked like a grid.
+  Full learning roadmaps now use `LEARNING_PLAN_HINT`: match the requested duration,
+  give concrete outcomes/examples/practice/projects/milestones, and do not collapse
+  a named 70-day plan into ten vague weekly bullets. Procedural how-tos still use
+  `HOWTO_FORMAT_HINT`.
+- **Tutor replayed Step 1 after a wrong/random reply.** The old teach-me policy treated
+  every check as a gate: wrong/confused meant re-teach and refuse to advance. Tutor
+  checks are diagnostic, never gates. Correct/next → advance; plausible wrong/partial
+  → correct the misconception briefly with a fresh example, then advance unless the
+  learner explicitly says they are confused; confusion → explain differently; keyboard
+  smash/accidental input is not graded. Never replay an already-delivered step verbatim
+  unless the learner asks to see it again. Auto model routing uses Gemini Flash for
+  interactive tutoring, its answer/confusion/random-input follow-ups, and full learning
+  roadmaps: live QA measured ~1-3s first-token latency versus 10-20s on the reasoning
+  route. Preserve quality with explicit step/day contracts, tagged programming examples,
+  and compact daily entries that fit the output budget. Derive active lesson state from the
+  latest assistant `Step N/M` reply rather than guessing from the user's short text.
+- **Study tips were a jokey essay, no Tip/Warning cards.** Slim turns get
+  `COMPACT_RESPONSE_FORMAT_HINT` (plain prose) and never see FORMAT_CONTRACT's
+  callout line, so "include a warning" became `## A Friendly Warning`. Swap
+  compact for `CALLOUT_FORMAT_HINT` (`> Tip:` / `> Warning:` blockquotes).
+- **Chart leftover `3.1` pill + expand did nothing.** After overflow-clip, the
+  gray centered `3.1` was still the rainfall *mean* as `looksLikeMathAnswer` →
+  AnswerBlock (empty-lang / ```answer after the fence), not Vega paint. Strip
+  that bare-number crumb after chart fences. Expand used already-clamped
+  `heightRef`, so toggle was a no-op; keep raw `reportedHeight` and hide the
+  control unless the SVG is clipped.
+- **Email card showed `[Manager's Name]` / `[Your Name]`.** The copy hint already banned
+  placeholders, but models still emit `To: [Manager's Email Address]`. Drop those
+  form-slots in `parseEmailDraft` (omit To, greet `Hi,`, strip from subject) so
+  copy/Gmail are send-ready even when the model ignores the hint.
+- **“Near me” asked for a city instead of the OS location sheet.** An in-app
+  “Turn on Location” Alert sat in front of `requestForegroundPermissionsAsync`,
+  so the system prompt never appeared and the LLM interviewed for a neighborhood.
+  Geo asks go straight to the OS sheet; Expo Go alerts and does not send.
+- **Right triangle 3-4-5 became 6x4 with a gray `12` pill.** `first_dim_pair`
+  only sees `8 x 5` / `by`, so "legs 3 and 4" missed and the draw default
+  (base=6, height=4) shipped — area 12 as ```answer. Parse two numbers after
+  `legs`; skip the area pill unless they asked for area. Pad the SVG so the
+  base length label is not clipped.
+- **Chart vs ChatGPT: months clipped, stray “3.1”, thumbs gone.** Vega
+  `height` is the inner plot, so x-axis labels (and a tick/tooltip) painted
+  *below* the 350px WebView onto the action row. Prefer horizontal bars
+  (category on y), size the WebView to the SVG bbox, `overflow: hidden`,
+  `tooltip: false`.
+- **Bar chart months came out Apr, Feb, Jan… with a device-tall white card.**
+  Vega-Lite alphabetizes nominal x unless `sort` is null; the preview body used
+  `min-height: 100vh`, so the WebView ate the screen and the scroll-to-bottom
+  chevron sat on the last prose line. Normalize `encoding.x.sort = null` before
+  embed; drop the 100vh body. Prompt: listed order + stop after the fence.
+- **Chart card showed a CSP eval error instead of bars.** Vega compiles
+  filter/calc expressions with `new Function()`. Default preview CSP is
+  `script-src 'unsafe-inline'` only, so the WebView painted "Refused to
+  evaluate a string as JavaScript". Use `CHART_PREVIEW_CSP` (`unsafe-eval`)
+  on that document only — keep eval off user-HTML `PREVIEW_CSP`.
+- **Coffee mermaid was a jokey 2-node card, clipped at 220px.** Slim turns
+  get `COMPACT_RESPONSE_FORMAT_HINT` (plain prose) and no mermaid layout, so
+  the model invents a bit instead of the requested steps. Swap compact for
+  `MERMAID_FORMAT_HINT` on flowchart asks. The WebView was a fixed 220px with
+  scroll off — size to the SVG via `mermaid-size` postMessage (cap 640).
+- **Bar chart became a joke + markdown table (or broken Mermaid).** Slim
+  turns get `COMPACT_RESPONSE_FORMAT_HINT` and no ```chart example, so
+  "make a bar chart" claims it cannot draw and dumps a rainfall table —
+  or, after a mermaid thread, `graph TDJan: 5.7in`. Swap compact for
+  `CHART_FORMAT_HINT` (Vega-Lite ```chart; you CAN draw; never a table).
+- **Compare Python vs Java was a wall of text, no code cards.** Slim/casual
+  turns inject `COMPACT_RESPONSE_FORMAT_HINT` (plain prose, no `##` headings).
+  `FORMAT_CONTRACT` only lands on rich turns, and `COMPARISON_FORMAT_HINT` was
+  never appended. On vs/compare queries, swap compact for that hint (table,
+  then `###` + tagged fences as code cards). Tone guard must not ban leading
+  with that table.
+- **Comparison table inside a python code block + no horizontal pan.**
+  `breakAttachedMathFences` lifted `| … | ```python` onto its own line; the
+  closer (` ``` | ```java`) never matched, so the next GFM table was fence
+  body. Don't detach fences from table rows; split a swallowed `| --- |`
+  table back out of ` ```python `. A ScrollView that grows to content width
+  cannot pan — lock the viewport to the bubble, hide the indicator (no
+  purple overflow strip). Prompt: short prose cells; code under ### after.
+- **Inline `\frac` numerators vanished over the line above.** iOS sizes a
+  stacked-frac View inside markdown `Text` as 0×0, so the numerator paints on
+  the previous sentence. Host those runs in a row-wrap View (`md-math-inline-wrap`);
+  keep `mathRunLineHeight` at MATH_TALL (46) for any `\frac`/`\sqrt` — shrinking
+  to 34 when the paragraph was long clipped the 40px stack. Real vinculum
+  (num / bar / den), not `¹─₂` / `½`.
+- **Web GFM tables vanished.** marked parsed pipe tables, then DOMPurify
+  `ALLOWED_TAGS` omitted `table`/`img` so the cells disappeared. Allow table tags
+  and `img`; replace JSON rich fences with a short label before parse.
+- **Settled assistant showed chain-of-thought.** `ReasoningBlock` rendered live
+  CoT and kept `reasoning_preview` after `done`. Status/waiting is enough; do not
+  copy reasoning onto `Message` (second door, same class as recalled-memory chips).
+- **user_quota still ~1s after persist left the first-token path.** Every
+  send ran `COUNT(*)` plus a Redis usage EXISTS while holding a Neon
+  checkout. Use `len(recent)` when the window is not full; only COUNT when
+  it is (older rows may exist). Check the Redis usage key before opening
+  Neon so a warm day does not pin a connection on EXISTS.
+- **Lightweight send still waited ~650ms after prompt was ready.** Persist
+  overlapped prompt assembly, but gather waited for the Neon commit before
+  LiteLLM. Start the model as soon as the prompt is ready; await the user-row
+  task before finalize so the assistant cannot commit first.
+- **Send still hesitated ~4s after the 10s self-wait.** Persist (Neon insert)
+  then prompt `list_recent` / `has_chunks` ran in series, and Pro revision
+  intercept re-fetched the same recent window. Load user+chat+recent+mode in
+  one session; overlap persist with prompt; skip the chunk probe unless this
+  turn has files, recent rows show `[File:`/`[Image:`, or the thread is at
+  the recent-window cap.
+- **`$x^{6}=1$` waited ~30s then "model isn't responding".** Composer
+  `$` / `x^{6}` failed the ASCII equation walker, so heuristic SymPy
+  missed and the tool loop ran non-streaming `complete_with_tools` on
+  R1 (smart-chat). Unwrap `$`/`^{n}` in latex normalize; tool selection
+  uses the fast alias; timeout is a warning + stream, not a traceback.
+- **Drawer titles copied the first user line (`hi`).** `firstReplyTitlePlan`
+  stamped that as the title and skipped GET poll, so the topic job never
+  reached the sidebar. Insert untitled (Image/File overlay only) and poll;
+  keep patching the left-behind row after New chat. Greetings store
+  `Greeting`, not the opener.
+- **New chat mid-stream stopped the reply.** Pencil sent WS `cancel` and
+  disconnect cancelled the producer, so the left-behind thread only kept a
+  truncated bubble. New chat must not stop; disconnect drains the model
+  stream and persists the full assistant. Stop still cancels. Only DELETE
+  (`force`) stops on leave.
+- **New chat mid-stream vanished from the drawer.** Pencil closes the per-chat
+  WS before `done`, and `handleFirstReply` (insert row) only ran on `done`.
+  Empty-check also deleted user-only threads. Insert the row from the first
+  user line before leaving; only DELETE unused empty drafts; WS disconnect
+  awaits finalize like SSE.
+- **First chat send waited 8s on a silent proxy.** WebSocket connect had no
+  TCP reject, so `CONNECT_TIMEOUT_MS` (8000) blocked SSE. Typing already showed;
+  first token did not. Fall back at 1.5s and latch SSE — do not dual-stream.
+- **Wi-Fi “connected” hid API-down and captive portals.** NetInfo `isConnected === true`
+  skipped probes so a sticky iOS `isInternetReachable` would not pin the offline banner.
+  Keep that immediate “not no-internet” path, but always probe: API up → online; public
+  204 only → `api_unreachable`; both fail → `no_internet`. Do not treat connected as offline.
+- **STT silence returned 502.** Whisper `text: ""` was coerced to `None`, and
+  the router treated every None as a Bad Gateway. Return `""` for no-speech;
+  502 only on HTTP/provider failure. Mobile already maps empty to
+  `chat.voice_transcribe_empty`.
+- **Home overdue card only after logout.** `overduePresented` hid the card after
+  first paint; leaving Home remounted with an empty session set, so it vanished
+  until logout wiped the nudge file. Hide only on dismiss (X) or complete.
+- **Chat-extract deletes from Gmail/OCR text.** `build_todo_sync_transcript`
+  used raw assistant/user bodies, including UNTRUSTED and `[Image:]` excerpts.
+  Strip those blocks (linear scan) and cap deletes per turn.
+- **Chat delete left billed R2 objects.** Rows committed, then `delete_bytes`
+  failures were discarded — GDPR wipe cannot see key-only orphans. Detach
+  `commit=False`, commit chat, enqueue failed keys for the reaper.
+- **Quiz try counter reset after a second hint.** `find_original_quiz_fence_created_at`
+  broke on the first earlier fence, and `list_recent_assistants` is newest-first,
+  so it found the previous re-emit not the original. Scan all matches; take min
+  `created_at`.
+- **Same Gmail suggestion re-pushed every 60s.** `_push_cycle` collects on
+  session A, then finalize mutates those ORM rows on session B. Writes look
+  fine (`expire_on_commit=False`) but no UPDATE flushes. `session.get` the
+  row on the finalize session. Single-session `run_push_cycle` tests miss this.
+- **Metro: `messagesRef` already declared.** Rebase of stacked chat-loader
+  PRs kept both `useRef(messages)` blocks. One ref at the top of the hook;
+  later code only reads `.current`.
+- **“Create music” rendered a chemistry molecule.** Default rich-turn
+  hints taught ```smiles / ```tip / ```steps, and settled render ran
+  `looksLikeMathAnswer` before explicit code langs. One Markdown
+  `FORMAT_CONTRACT`; chemistry protocol only with chem context; one
+  `classifyFence` (tagged lang wins). Keep old fence renderers for
+  stored messages.
+- **Attach send spun in the composer and the thread.** Optimistic bubble
+  landed first, but the chip + `attachBusy` + `sendPhase` stayed until
+  upload finished. Clear the chip immediately. Do not treat
+  `pendingOutboundId` as "Sending" — show typing once the placeholder
+  mounts, not after socket `start`.
+- **Attach/upload photo polled `GET /chats/{id}` five times.** Image-only
+  send has empty user text (`defaultAttachmentPrompt` is `""`), so the
+  Home-chip provisional title was null and the topic poll still ran. Use
+  "Image" / "File" as a local overlay; still poll until the topic job lands.
+- **Back from Reminders still hit `GET /home`.** #1005 skipped
+  Home only while a thread was open, so empty Home refetched after the
+  20s window went stale. Skip if login already fetched Home.
+- **First assistant bubble sat above the composer.** FlashList
+  `startRenderingFromBottom` plus keyboard/`scrollToEnd` pin a short
+  thread to the bottom. First turn (1–2 messages) renders from the top;
+  skip `scrollToEnd` when content still fits (`maxOffset === 0`).
+- **Pencil New chat hit `GET /home` and `GET …/messages?limit=20`.** Skipping
+  Home while a thread is open lets the 20s cache go stale, so New chat
+  refetched. Skip if login already fetched Home. Empty-probe ran because
+  `startNewChat` clears messages before the route effect — remember chats
+  that already had an assistant.
+- **Reminders back reloaded the open thread.** Focus
+  silent-refetched `GET …/messages` (20s TTL still fired). Do not refetch
+  on in-app Back; App resume still recovers a truncated stream. Skip Home
+  when a thread is open; reuse the message cache + drawer row on remount.
+- **Help-me-think from Home still hit `/suggestions`, title poll, and TTS.**
+  First reply reused `POST /chats` for the drawer row, then still fetched
+  chips (job not ready) and warmed speak. Skip those; keep title poll or
+  the drawer stays Untitled until pull-to-refresh. Speak loads on tap.
+- **Opening a chat from the drawer refetched `/chats`, `/chats/{id}`, and
+  Gmail suggested-reminders.** Close-drawer idle-warm hit the list again;
+  opening the sidebar also `GET /chats` after titles were already cached;
+  route load always `GET` the chat row; composer focus fetched reminders.
+  Warm `/chats` only before first paint; skip reopen if the list is loaded;
+  reuse the drawer row; composer reads reminder cache only.
+- **Help-me-think / STT still hit `/suggestions` three times.** User bubble
+  lands before the socket (`pendingOutboundId`); stream-end flips busy off
+  before `refreshKey` bumps — each was a fetch. Hold while turn-busy; fetch
+  only on refreshKey or when opening an idle thread. Don't refresh `/home`
+  after a chat turn; idle TTS warms clip 0 only.
+- **Home open listed the last chat twice (`limit=20`) and POSTed a draft.**
+  New chat discarded the routed id, then clearing `chatId` ran the same
+  `deleteChatIfEmpty`; warmup also pre-created an empty chat. Discard only
+  when the route will not and the thread has no assistant; create on send.
+- **Banned chip fields were still copied onto Message.** Backend may send
+  `recalled` / `fallback_used` / `context_summarized` for logs; putting them
+  on the client message is a second entry point for chips we already removed.
+- **Calendar-write blocked Phase B, and calendar-only turns loaded priors.**
+  `_load_has_calendar_write` + `_load_prior_user_messages` ran before Tavily/
+  Calendar API. Priors only matter when augmenting; write access belongs in
+  the integration gather, and only for a create-event hint.
+- **Assistant bubbles still wrapped a no-op Show more/less.** `CollapsibleMessageBody`
+  with `collapsible={false}` is a passthrough and a second door to fold LLM
+  replies. User-message folding stays; assistant body is unwrapped.
+- **Composer suggested-reminder chips refetched on every chat focus.** `fetchSuggestedReminders(..., { force: true })` bypassed the 20s cache that Lists already respect. Load without force; invalidate on add/dismiss/Gmail sync still busts.
+- **Drawer open, settings tab, and app resume re-hit chat/usage/gallery/home.** Silent
+  refetch ignored the 20s stale window home/lists already use. Skip when fresh;
+  keep a forced chat pull after backgrounding mid-stream (socket dead, truncated
+  bubble). Login must not `force` `/home` twice (token then name).
+- **Gallery showed blank tiles (404) after deleting every chat.** Message
+  delete SET NULLs `attachments.message_id`, so rows linger after chats/titles
+  are gone; chat purge already removed the bytes. List only attachments still
+  linked to a message; on local `/file` miss, drop the row. Purge before
+  deleting a replaced image-gen assistant so that path does not SET NULL.
+- **Every chat turn paid a serial Redis+Neon start plus lookups that cannot apply.**
+  Finalize wait ran before user/quota; prompt assembly re-opened Neon for
+  user/chat already loaded; new chats
+  probed attachment chunks; time/location opened a session. Overlap wait with
+  user/seed on a *new* message (`gather` finishes before any message read). Do
+  not overlap wait with last-message reads — regenerate would race the in-flight
+  assistant insert. Skip the rest unless they can apply.
+- **Help-me-think home chip took ~6s to first token.** Casual turns still
+  loaded the full format/viz/math-solver pack (~4.5k tokens) and ran Gmail
+  nudge + web/math/chem prefetch just because they weren't greetings.
+  Slim/non-rich turns get the compact math-safety hint; extra prep only
+  when `rich_context` or real search/math/chem/calendar/gmail intent.
+- **Models invented geometry/graph JSON with fake numbers.** Asking the LLM to
+  copy ` ```answer` / ` ```graph` / ` ```geometry` from the hint taught Qwen/GLM
+  the JSON protocol, so they emitted fences on unverified turns. Keep those
+  fences off the prompt; store them on `canonical_*` and append in
+  `validate_math_fences`.
+- **Hard physics word problems stayed on DeepSeek Chat, and free Auto threw away smart-chat.** `needs_symbolic` only flags solver-supported templates (digit + drop/projectile/F=ma/energy), so incline/momentum/escape-velocity never escalated. Separately, when Auto wanted `smart-chat` and the free pool had none, `_pick_smart_from_pool` fell through to cheapest (`free-chat`) instead of strongest (`glm-4-flash`). Keep the solver gate on `needs_symbolic`; add a routing-only physics-homework cue; when the preferred tier is missing pick strongest in-pool; sort `chat_fallback_models` by tier proximity to the primary, then price.
+- **Live talk `POST /speech/live/speak` 502.** OpenAI `gpt-audio-mini` rejects `audio.format=wav` when `stream=true` (only `pcm16`) and only accepts `wav`/`mp3` input — Expo’s default m4a 400s. Stream pcm16 and wrap WAV; record LINEARPCM wav for live talk (composer mic can stay m4a for Whisper).
+- **Physics solver existed but free-fall stayed unverified; KE gained fake height.**
+  The pre-stream gate had no physics cues, and a length regex matched `m` inside
+  `m/s`. Gate supported templates explicitly; use unit-suffix boundaries and
+  bind multiple quantities to their nearest semantic label.
+- **Radicals looked like `√` + subscript, and `\sqrt{8^3}` printed a caret.** The
+  radical is a row of `[√ Text][radicand View with borderTop]`, so it only holds
+  together when both sides share one line box and the bar sits on the ink. Three
+  causes stacked: (1) `MathText` fed the radicand to `renderFracSide`, i.e. 11px
+  fraction size, then `alignItems: "flex-end"` dropped that short box to the
+  baseline; (2) that same helper flattens with `segmentsToPlain`, which turns a
+  `sup` segment back into literal `^3`; (3) content kept the base `lineHeight`
+  28 while the sign was 20, so the border floated in the leading — 6px above
+  both the hook and the digits. Fix: `renderRadicand` renders real segments at
+  base size in a tight 20px box (`sqrtSign` / `sqrtBody`), `sqrtRow`
+  `flex-start`, nested frac/sqrt keep the flattened View path (a View cannot
+  live in that Text); `MathText compact` gives the composer slot the same box.
+  Fixing only the composer's `alignItems` (first attempt) left both bugs.
+  Related: `\cdot` ate `\cdots` → `·s`; replace `\cdots` / `\ldots` / `\dots`
+  before `\cdot`.
+- **CI `db_session` ERROR: Future attached to a different loop.** Symptom: `test_chats_db` (or any `*_db.py`) fails in fixture setup, not the test body. Cause: the process-wide async engine still holds asyncpg connections from TestClient/anyio or the previous pytest-asyncio function loop. Dispose-after-test is too late. Fix: `await engine.dispose(close=False)` at the **start** of `db_session` so setup never checks out a foreign-loop connection.
+- **Mic stop opened the drawer; New chat then focused the composer.** Parent
+  `Gesture.Pan` used view-local `e.x` (~0 on a composer tap) so a mic press
+  looked like an edge swipe. Settle could leave the panel on screen with
+  `drawerOpen` false → `pointerEvents: none` on the panel, taps hit the
+  composer, keyboard opens. Fix: claim with `absoluteX`; keep the panel
+  `pointerEvents` auto; no nested `GestureHandlerRootView` in ConversationList.
+- **Cloud TTS waited for a full MP3/JSON clip.** `POST /speech/tts` buffered OpenRouter
+  `response.content`, wrapped WAV, then `audio_base64`. The app could not start sound until
+  the last byte. Fix: `POST /speech/tts/stream` proxies PCM with `aiter_bytes`; mobile plays
+  ~120ms WAV clips as they arrive (`ttsPcm.ts`).
+- **GitHub “Compare & pull request” on a branch you thought was merged.** Squash-merge
+  does not put those SHAs on `main`; pushing more onto the old head (or leaving
+  `claude/*` agent branches) recreates a PR prompt. Fix: never push a merged head;
+  cherry-pick leftovers onto a new branch from `origin/main`; `git push origin --delete`
+  the old branch. See `execution.mdc`.
+- **“square root” became a geometry square.** `_extract_square_intent` matched
+  substring `"square"` and invented a 5 cm square before algebra/graph
+  extractors. Fix: exclude algebraic phrases; default dimensions only with
+  draw/show cues (`has_draw_shape`).
+- **HTML Run tab solid blank (toolbar ok).** Often not the WebView: HMR left a
+  missing symbol (`htmlDependsOnNetwork` / `isWebViewAvailable`); error boundary
+  fell back to script-stripped static HTML → white. Also: nav-guard/CSP/onLayout
+  stack. Fix: show the real error (no silent static fallback); Run path =
+  chart-like `source={{ html }}` only + `prepareHtmlRunDocument` (live CSP,
+  page in a sandboxed iframe); clear Metro cache after preview edits.
+- **“No internet” banner stuck after Wi‑Fi returns.** Cause: NetInfo
+  `isConnected`/`isInternetReachable` can stay stale and `NetInfo.refresh()` can
+  remain unresolved; 1.5s polling also overlapped slower probes. Fix: bound the
+  refresh, race API + public generate_204 checks, and keep offline polling
+  single-flight; online NetInfo still clears immediately.
+- **Login “Rate limit unavailable” / auth 429 with API healthy.** Cause: Upstash free tier
+  hit max-requests; REST limiter fails closed on any Redis error, and token issue needs Redis
+  too. Fix: point local `REDIS_URL` at Homebrew Redis (`redis://127.0.0.1:6379`); keep Upstash
+  for prod. Expo `react` must stay on SDK pin (`19.2.3` for Expo 57) — Dependabot patch bumps
+  break Hermes boot with `property is not writable`.
+- **CO₂ diagram looked like O₂.** Cause: smiles-drawer skeletal mode hides chain carbons
+  (`O=C=O` → only “O=O” labels). Fix: after `processGraph`, set `drawExplicit` on every C
+  before `drawVertices`.
+- **Chemistry SMILES WebView: “Could not render that structure.”** Cause: smiles-drawer
+  2.1.7 `Drawer.draw(..., infoOnly)` forwards `infoOnly` as `SvgDrawer`’s `weights`, so
+  `false.every` throws (caught as parse/draw failure). Fix: use `SvgDrawer` on an `<svg>`
+  and call `draw(tree, el, theme)` with no 4th arg.
+- **Image-gen sheet came back after “composer only”.** Cause: attach row was removed but
+  `useChatSend` still opened `ImageGenPromptSheet` on intent. Fix: delete the sheet + call
+  `submitPrompt` on send. Rule: replace UX → delete old path (chat-ux-bans).
+- **Raw `(\frac{...})` inline math on screen.** Model `\(...\)` survived preprocess, then
+  CommonMark escaped `\(`/`\)` to bare parens before `splitInlineMath` — MathText never
+  ran. Also `looksLikeProseParenthetical` counted `\neq`/`\frac` letter-runs as English.
+  Fix (#450): convert `\(...\)` → `$...$` in `protectMathEscapes`; strip `\\[a-zA-Z]+`
+  before the prose-word count; wrap bare cmds outside existing `$` spans.
+- **Chat “falls then snaps back” when stream ends.** ChatGPT drops copy/thumbs
+  into the empty space above the composer; the prose does not move. Recall
+  reserved that height both as list pad and as an in-bubble slot, and native
+  autoscroll + JS `scrollToEnd` + a leftover streaming catch-up all wrote at
+  the 280ms settle — spring, and the scroll-to-bottom chevron appeared. Fix:
+  pad = composer gap only while the last row is the `streaming` placeholder;
+  mount icons when that row persists (same render, net zero). Later: the row
+  that streamed is the row that settles (no remount, no 280ms hold), native
+  autoscroll is off for good, and `useChatScroll` alone pins, from FlashList's
+  layout commit.
+- **Streaming math boxes flicker (blank → repaint).** Pending stream tail re-parsed
+  every flush; `react-native-markdown-display` re-keys the tree so KaTeX WebViews in that
+  tail remount. Short closed ` ```math ` / `$$` blocks sat under the 320-char settle
+  threshold for many flushes. Fix (#443): `advanceStreamBlocks` eagerly cuts at the next
+  safe blank line once a fence/`$$` has closed — don’t wait on char volume.
+- **Chat cold start pulled Mermaid/Vega/MathJax.** Static imports from `RichFence` /
+  `mathHtml` evaluated ~6MB of inlined vendors on every markdown message graph load.
+  Fix: `React.lazy` Chart/Mermaid via `LazyHeavyRich`; MathJax in `mathHtmlMathjax`
+  loaded only for multline/eqnarray when a WebView can mount.
+- **Drawer menu needs many taps after Reanimated migrate.** Opaque left-edge hit strip
+  (`zIndex` 210) sat on the hamburger; failed pan `onFinalize` also raced `settle(false)`
+  against `open()`. Fix: `manualActivation` (claim only after horizontal move) + settle
+  cancel only if the pan actually activated.
+- **RNSVG “Codegen didn't run” flood.** Metro `resolveRequest` used Node `require.resolve('react-native-svg')` → `lib/commonjs`, skipping package.json `"react-native": "src/"`. Fabric babel codegen never ran. Dedupe via Metro's resolver with a pinned `originModulePath` instead.
+- **Model toggles snap back mid-flip.** Controlled Switch waited on Auth context; racing
+  bootstrap `updateMe({timezone|location}).then(setUser)` replaced the whole user with
+  stale `enabled_models`. Fix: local draft prefs; `updateUser` generation guard; bootstrap
+  merges only patched fields (`useBootstrapSync`).
+- **Memory screen always waits on network.** Settings already `GET /memories` for the count,
+  then `/memory` refetched from empty. Fix: shared `memoryListCache` (20s TTL + inflight
+  dedupe); prefetch on Settings→Memory; hydrate on mount; invalidate on logout.
+- **Header actions flicker while a chat is open.** `hasMessages={messages.length > 0}` drops
+  the action group if the list briefly clears during load/refetch. Gate on
+  `messages.length > 0 || routeChatId` so an active chat route keeps controls mounted.
+- **iOS Simulator soft keyboard missing.** Host Connect Hardware Keyboard hides it.
+  `defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false` (+ device
+  prefs) and relaunch; ⌘K if needed. osascript cannot toggle Simulator without Accessibility.
+- **TTS 502 ≠ API down.** OpenRouter has no OpenAI GPT TTS (`gpt-4o-mini-tts*` 400
+  “does not exist”). Use a listed speech model such as
+  `google/gemini-3.1-flash-tts-preview` (PCM only — wrap as WAV). `/speech/tts` 502
+  while the rest of the API stays healthy is a model-id / format bug, not an outage.
+- **WS ASGI Traceback on navigate.** `WebSocketDisconnect(1000)` while `chat_websocket` waits
+  for auth JSON = client closed mid-reconnect; noisy, not a fatal server failure.
+- **Image goes blurry/gray after the assistant replies.** Focus refetch after `streaming→false` replaces `local-*` ids with server UUIDs; id-only `mergeLocalAttachmentUris` dropped `local_image_uri` and restarted blur reveal. Also match orphaned local URIs onto incoming user attachment messages; user thumbs use `animatedReveal={false}`.
+- **Attachment send showed `[BEGIN UNTRUSTED…]` + blurry spinner.** `wrap_untrusted` was persisted into the user message; focus refetch then dropped `local_image_uri` so ChatMessageImage remounted on a remote auth URL. Persist plain `[Image:]`/`[File:]` only; merge local URIs on refetch; skip blur reveal for `file://`.
+- **CodeQL poly-ReDoS not cleared by `collapse_ws` / length caps.** CodeQL ignores those as sanitizers; rewrite sinks to linear scans (`find` / digit parse). See `.cursor/skills/security-alert-pitfalls/SKILL.md`.
+- **Dependabot on transitive npm (markdown-it@10, uuid@7).** Direct pins don't help — use `pnpm.overrides` + regenerate lock with `npx pnpm@9.15.9 install`. See security-alert-pitfalls skill.
+- **Raw LaTeX + smashed prose in math bubbles.** `normalizeImplicitMath` re-wrapped `(excluded values: $x …$)` / `(e.g., … like $x^4$)` as `$…$$`, inventing a trailing `$$` that stole the next display-math opener — equations showed raw and Wait—prose became a MathBlock (italic, no spaces). Fix: skip parens that already contain `$` or look like English prose (2+ letter-words).
+- **SecureStore Keychain “required entitlement isn’t present” on simulator.** Linker-signed/adhoc builds (`TeamIdentifier=not set`, no identities) get `errSecMissingEntitlement` (-34018) on `setItemAsync`. Don’t put non-secrets (list order) in SecureStore — use filesystem; catch SecureStore writes. Proper Keychain needs a local Apple signing identity + `expo run:ios` rebuild.
+- **Unpushed local diffs cause real pain.** User runs other machines/simulators off `main` /
+  remote — finish every change with commit + push (see `execution.mdc`); don't say done with
+  local-only work.
+- **User rejected “Recalled N memories” chip + assistant Show more/less.** Do not reintroduce —
+  see `.cursor/rules/chat-ux-bans.mdc`. Code-block fold only; assistant body stays unfolded.
+- **User rejected model-fallback / context-summarized chips** (`chat.model_fallback` raw key
+  flashed in chat). Do not reintroduce — see chat-ux-bans §4.
+- **`ERR_PNPM_LOCKFILE_CONFIG_MISMATCH` on patchedDependencies.** Regenerating `pnpm-lock.yaml`
+  with pnpm 11 drops patch metadata while `package.json` still declares patches; CI uses pnpm 9 and
+  fails frozen install. Regenerate with `npx pnpm@9.15.9 install` (or pin `"packageManager"`).
+- **Simulator can't reach LAN API URL.** Physical device needs `EXPO_PUBLIC_API_URL=http://<lan-ip>:8000`
+  (`./scripts/set-lan-ip.sh`); iOS Simulator needs `http://127.0.0.1:8000` (`./scripts/set-sim-ip.sh`
+  or `./scripts/dev.sh mobile-sim`). Wrong URL → login/chat fails with network errors, not a code bug.
+- **"Coverage is failing" but really lint/types are.** CI order is `ruff check → ruff format
+  --check → mypy → pytest --cov-fail-under=80`; an earlier step failing means pytest never runs.
+  Run the whole chain locally before committing, not just pytest.
+- **Unpinned dev tooling silently breaks CI.** `mypy`/`ruff` were `>=`, so CI pulled a newer,
+  stricter mypy and failed. Keep them capped in `pyproject.toml` and pin Python (`<3.14`).
+- **SQLAlchemy `.rowcount` fails mypy.** `await session.execute(delete(...))` is typed `Result`
+  (no `.rowcount`) → `cast(CursorResult[Any], await session.execute(...))`. Also never
+  `from sqlalchemy import update` in a repo that defines its own `update()` (F811 shadow → wrong
+  symbol at type-check).
+- **mypy won't narrow a doubled `.get()`.** `usage.get("x") if usage.get("x") is not None else …`
+  stays `int | None`. Assign to a local first, then branch on the local.
+- **HTML/JS WebView preview "not working" = wrong build, not a bug.** `react-native-webview` is a
+  native module; it never works in Expo Go. Rebuild the dev client (`pnpm expo run:ios`). It
+  falls back to static HTML (scripts stripped) otherwise.
+- **System dark mode on a static `C` palette.** Keep `C` (light) for unmigrated screens; add
+  `useTheme()` and convert module-level `StyleSheet.create` into `makeX(t: Theme)` factories
+  called via `useMemo`. Low-churn and incremental.
+- **A leading minus inside `$...$` became a blue bullet.** The implicit-math normalizer
+  treated every `$- ...$` line as a Markdown list item, so `$- x = -2$` visibly became the
+  false equation `x = -2`. Only unwrap dollar-wrapped prose bullets; keep math-like bodies
+  intact so their unary sign stays inside the math span.
+- **"Show steps" bypassed the verified lesson.** The equation extractor stripped lesson
+  metadata, but the earlier symbolic-math gate inspected the unstripped sentence and returned
+  false, sending a closed equation to the model. Strip the same lesson prefixes before gating;
+  cover the full augmentation path, not only direct-formatter unit tests.
+- **Mobile deps won't install in this env.** npm points at an auth-gated internal registry, so
+  `tsc`/Expo can't run here — verify mobile changes with `pnpm typecheck`/`pnpm lint` locally.
+- **expo-av / voice crash (`ExponentAV` not found).** `expo-av` is incompatible with SDK 56 — use
+  `expo-audio` instead; lazy-load via `lib/speech/voiceAudio.ts` for Expo Go; rebuild dev client with
+  `pnpm expo run:ios` (not Expo Go).

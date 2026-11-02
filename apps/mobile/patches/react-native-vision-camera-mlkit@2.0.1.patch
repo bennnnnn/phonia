@@ -1,0 +1,28 @@
+diff --git a/ios/Bridge/Hybrid/BarcodeFormat+toDomain.swift b/ios/Bridge/Hybrid/BarcodeFormat+toDomain.swift
+index 3daeedc..aaf560b 100644
+--- a/ios/Bridge/Hybrid/BarcodeFormat+toDomain.swift
++++ b/ios/Bridge/Hybrid/BarcodeFormat+toDomain.swift
+@@ -1,5 +1,7 @@
++#if MLKIT_BARCODE_SCANNING
+ extension BarcodeFormat {
+   func toDomainBarcodeFormat() -> BarcodeFormatOption {
+     return BarcodeFormatOption(rawValue: stringValue) ?? .formatUnknown
+   }
+ }
++#endif
+diff --git a/ios/Bridge/Hybrid/BarcodeScannerOptions+toDomain.swift b/ios/Bridge/Hybrid/BarcodeScannerOptions+toDomain.swift
+index f7f174f..f354120 100644
+--- a/ios/Bridge/Hybrid/BarcodeScannerOptions+toDomain.swift
++++ b/ios/Bridge/Hybrid/BarcodeScannerOptions+toDomain.swift
+@@ -1,5 +1,6 @@
+ import Foundation
+ 
++#if MLKIT_BARCODE_SCANNING
+ extension BarcodeScannerOptions {
+   func toDomainBarcodeScanningOptions() -> BarcodeScanningOptions {
+     return BarcodeScanningOptions(
+@@ -19,3 +20,4 @@ extension BarcodeScannerOptions {
+     )
+   }
+ }
++#endif

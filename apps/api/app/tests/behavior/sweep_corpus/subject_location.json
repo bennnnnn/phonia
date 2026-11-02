@@ -1,0 +1,299 @@
+[
+ {
+  "id": "sbl-001",
+  "area": "physics",
+  "prompt": "A ball is dropped from a height of 20 m. How long does it take to reach the ground?",
+  "reply": "**Given:** $h = 20$ m, $u = 0$, $g = 9.81$ m/s²\n\n**Formula:** $h = \\tfrac{1}{2}gt^2$, so $t = \\sqrt{2h/g}$\n\n**Substitution:** $t = \\sqrt{2(20)/9.81}$\n\n**Answer:** about **2.02 s**.",
+  "expect": "answer"
+ },
+ {
+  "id": "sbl-002",
+  "area": "physics",
+  "prompt": "A ball is dropped from a height of 20 m. How long does it take to reach the ground?",
+  "reply": "**Given:** $h = 20$ m, $u = 0$, $g = 9.81$ m/s²\n\n**Formula:** $h = \\tfrac{1}{2}gt^2$, so $t = \\sqrt{2h/g}$\n\n**Substitution:** $t = \\sqrt{2(20)/9.81}$\n\n**Answer:** about **2.02 s**.",
+  "expect": "answer",
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "sbl-003",
+  "area": "physics",
+  "prompt": "A stone falls from the top of a cliff 45 m high. How long does it take to reach the bottom?",
+  "reply": "**Given:** $h = 45$ m, $u = 0$, $g = 9.81$ m/s²\n\n**Formula:** $h = \\tfrac{1}{2}gt^2$, so $t = \\sqrt{2h/g}$\n\n**Substitution:** $t = \\sqrt{2(45)/9.81}$\n\n**Answer:** about **3.03 s**.",
+  "expect": "answer"
+ },
+ {
+  "id": "sbl-004",
+  "area": "physics",
+  "prompt": "A coin is dropped from a height of 1.8 m. How long does it take to reach the floor?",
+  "reply": "**Given:** $h = 1.8$ m, $u = 0$, $g = 9.81$ m/s²\n\n**Formula:** $h = \\tfrac{1}{2}gt^2$, so $t = \\sqrt{2h/g}$\n\n**Substitution:** $t = \\sqrt{2(1.8)/9.81}$\n\n**Answer:** about **0.61 s**.",
+  "expect": "answer"
+ },
+ {
+  "id": "sbl-005",
+  "area": "physics",
+  "prompt": "A rock is dropped from a bridge 30 m above the river. How long does it take to reach the water?",
+  "reply": "**Given:** $h = 30$ m, $u = 0$, $g = 9.81$ m/s²\n\n**Formula:** $h = \\tfrac{1}{2}gt^2$, so $t = \\sqrt{2h/g}$\n\n**Substitution:** $t = \\sqrt{2(30)/9.81}$\n\n**Answer:** about **2.47 s**.",
+  "expect": "answer"
+ },
+ {
+  "id": "sbl-006",
+  "area": "physics",
+  "prompt": "If a ball is dropped from 10 m, how long does it take to get to the ground?",
+  "reply": "**Given:** $h = 10$ m, $u = 0$, $g = 9.81$ m/s²\n\n**Formula:** $h = \\tfrac{1}{2}gt^2$, so $t = \\sqrt{2h/g}$\n\n**Substitution:** $t = \\sqrt{2(10)/9.81}$\n\n**Answer:** about **1.43 s**.",
+  "expect": "answer"
+ },
+ {
+  "id": "sbl-007",
+  "area": "physics",
+  "prompt": "A stone is dropped down a well and hits the water after 2 s. How far down is the water?",
+  "reply": "**Given:** $t = 2$ s, $u = 0$, $g = 9.81$ m/s²\n\n**Formula:** $h = \\tfrac{1}{2}gt^2$\n\n**Substitution:** $h = \\tfrac{1}{2}(9.81)(2)^2$\n\n**Answer:** the water is about **19.6 m** down.",
+  "expect": "answer"
+ },
+ {
+  "id": "sbl-008",
+  "area": "physics",
+  "prompt": "A stone is thrown upward at 15 m/s from the top of a cliff. How long does it take to reach the top of the cliff again?",
+  "reply": "**Given:** $u = 15$ m/s up, $g = 9.81$ m/s²\n\n**Formula:** back at the launch height, $t = 2u/g$\n\n**Substitution:** $t = 2(15)/9.81$\n\n**Answer:** about **3.06 s**.",
+  "expect": "answer"
+ },
+ {
+  "id": "sbl-009",
+  "area": "physics",
+  "prompt": "A skier starts from rest at the top of the slope and accelerates at 2 m/s². How long does it take to reach the bottom of the slope 100 m away?",
+  "reply": "**Given:** $u = 0$, $a = 2$ m/s², $s = 100$ m\n\n**Formula:** $s = \\tfrac{1}{2}at^2$\n\n**Substitution:** $t = \\sqrt{2(100)/2}$\n\n**Answer:** **10 s**.",
+  "expect": "answer"
+ },
+ {
+  "id": "sbl-010",
+  "area": "physics",
+  "prompt": "A boat moves at 3 m/s. How long does it take to reach the other bank 90 m away?",
+  "reply": "**Given:** $v = 3$ m/s, $d = 90$ m\n\n**Formula:** $t = d/v$\n\n**Substitution:** $t = 90/3$\n\n**Answer:** **30 s**.",
+  "expect": "answer"
+ },
+ {
+  "id": "sbl-011",
+  "area": "physics",
+  "prompt": "A train moves at 20 m/s. How long does it take to reach the station 4 km away?",
+  "reply": "**Given:** $v = 20$ m/s, $d = 4000$ m\n\n**Formula:** $t = d/v$\n\n**Substitution:** $t = 4000/20$\n\n**Answer:** **200 s** (3 min 20 s).",
+  "expect": "answer"
+ },
+ {
+  "id": "sbl-012",
+  "area": "physics",
+  "prompt": "A bus travels at 15 m/s. How long does it take to arrive at the station 900 m away?",
+  "reply": "**Given:** $v = 15$ m/s, $d = 900$ m\n\n**Formula:** $t = d/v$\n\n**Substitution:** $t = 900/15$\n\n**Answer:** **60 s**.",
+  "expect": "answer"
+ },
+ {
+  "id": "sbl-013",
+  "area": "physics",
+  "prompt": "A car travels at 90 km/h. How far does it go in 40 minutes?",
+  "reply": "**Given:** $v = 90$ km/h, $t = 40$ min $= \\tfrac{2}{3}$ h\n\n**Formula:** $d = vt$\n\n**Substitution:** $d = 90 \\times \\tfrac{2}{3}$\n\n**Answer:** **60 km**.",
+  "expect": "answer"
+ },
+ {
+  "id": "sbl-014",
+  "area": "physics",
+  "prompt": "A cyclist rides at 6 m/s. How long does it take to get to school 1.8 km away?",
+  "reply": "**Given:** $v = 6$ m/s, $d = 1800$ m\n\n**Formula:** $t = d/v$\n\n**Substitution:** $t = 1800/6$\n\n**Answer:** **300 s** (5 minutes).",
+  "expect": "answer"
+ },
+ {
+  "id": "sbl-015",
+  "area": "places",
+  "prompt": "How long does it take to reach the airport?",
+  "reply": "I need your location to tell you that.",
+  "expect": "instant"
+ },
+ {
+  "id": "sbl-016",
+  "area": "places",
+  "prompt": "how long to get to the beach?",
+  "reply": "I need your location to tell you that.",
+  "expect": "instant"
+ },
+ {
+  "id": "sbl-017",
+  "area": "places",
+  "prompt": "How far is the nearest hospital?",
+  "reply": "I need your location to tell you that.",
+  "expect": "instant"
+ },
+ {
+  "id": "sbl-018",
+  "area": "places",
+  "prompt": "How long does it take to reach the top of the nearest mountain?",
+  "reply": "I need your location to tell you that.",
+  "expect": "instant"
+ },
+ {
+  "id": "sbl-019",
+  "area": "places",
+  "prompt": "How far is the nearest gas station? My car does 30 mpg",
+  "reply": "I need your location to tell you that.",
+  "expect": "instant"
+ },
+ {
+  "id": "sbl-020",
+  "area": "places",
+  "prompt": "What's the weather like here today?",
+  "reply": "I need your location to tell you that.",
+  "expect": "instant"
+ },
+ {
+  "id": "sbl-021",
+  "area": "places",
+  "prompt": "coffee shops near me",
+  "reply": "I need your location to tell you that.",
+  "expect": "instant"
+ },
+ {
+  "id": "sbl-022",
+  "area": "places",
+  "prompt": "How long does it take to reach the airport?",
+  "reply": "From Bole it's about **6 km** to **Bole International Airport**, roughly **15 minutes** by car outside rush hour.",
+  "expect": "search",
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "sbl-023",
+  "area": "places",
+  "prompt": "How far is the nearest hospital?",
+  "reply": "The nearest is **Hayat Hospital** on Ring Road, about **1.5 km** from you (5 minutes by car).",
+  "expect": "search",
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "sbl-024",
+  "area": "places",
+  "prompt": "What's the weather like here today?",
+  "reply": "Today in Addis Ababa: **partly cloudy**, high of **23°C**, low of **11°C**, with a **30%** chance of an afternoon shower.",
+  "expect": "search",
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "sbl-025",
+  "area": "physics",
+  "prompt": "A ball rolls off a table 1.2 m high. How long does it take to reach the floor?",
+  "reply": "Its fall is free fall from rest vertically.\n\n**Given:** $h = 1.2$ m\n\n**Formula:** $t = \\sqrt{2h/g}$\n\n**Substitution:** $t = \\sqrt{2(1.2)/9.81}$\n\n**Answer:** about **0.49 s**.",
+  "expect": "answer"
+ },
+ {
+  "id": "sbl-026",
+  "area": "physics",
+  "prompt": "A block slides down a frictionless slope 10 m long inclined at 30 degrees. How long does it take to reach the bottom of the slope?",
+  "reply": "**Given:** $s = 10$ m, $\\theta = 30^\\circ$\n\n**Formula:** $a = g\\sin\\theta$, $s = \\tfrac{1}{2}at^2$\n\n**Substitution:** $a = 9.81 \\times 0.5 = 4.905$ m/s², $t = \\sqrt{2(10)/4.905}$\n\n**Answer:** about **2.02 s**.",
+  "expect": "answer"
+ },
+ {
+  "id": "sbl-027",
+  "area": "physics",
+  "prompt": "The height of a ball is h = 80 - 5t^2. How long does it take to reach the ground?",
+  "reply": "The ball reaches the ground when $h = 0$:\n\n$$80 - 5t^2 = 0 \\Rightarrow t^2 = 16 \\Rightarrow t = 4$$\n\nIt reaches the ground after **4 s**.",
+  "expect": "answer"
+ },
+ {
+  "id": "sbl-028",
+  "area": "physics",
+  "prompt": "An apple falls 5 m. How long does it take to reach the floor?",
+  "reply": "**Given:** $h = 5$ m\n\n**Formula:** $t = \\sqrt{2h/g}$\n\n**Substitution:** $t = \\sqrt{2(5)/9.81}$\n\n**Answer:** about **1.01 s**.",
+  "expect": "answer"
+ },
+ {
+  "id": "sbl-029",
+  "area": "math",
+  "prompt": "How long does it take to get to 100 if you start at 4 and double every day?",
+  "reply": "Doubling from 4: 8, 16, 32, 64, 128. You pass 100 on **day 5** (exactly, $4 \\cdot 2^t = 100$ gives $t = \\log_2 25 \\approx 4.64$ days).",
+  "expect": "answer"
+ },
+ {
+  "id": "sbl-030",
+  "area": "places",
+  "prompt": "how hot is it here",
+  "reply": "I need your location to tell you that.",
+  "expect": "instant"
+ },
+ {
+  "id": "sbl-031",
+  "area": "places",
+  "prompt": "how hot is it here",
+  "reply": "It's **24°C** in Addis Ababa right now, sunny with a light breeze.",
+  "expect": "search",
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "sbl-032",
+  "area": "places",
+  "prompt": "how far is the airport from me",
+  "reply": "I need your location to tell you that.",
+  "expect": "instant"
+ },
+ {
+  "id": "sbl-033",
+  "area": "places",
+  "prompt": "What's the temperature in my area?",
+  "reply": "I need your location to tell you that.",
+  "expect": "instant"
+ },
+ {
+  "id": "sbl-034",
+  "area": "places",
+  "prompt": "How long does it take to drive 10 km to the airport from my location?",
+  "reply": "I need your location to tell you that.",
+  "expect": "instant"
+ },
+ {
+  "id": "sbl-035",
+  "area": "physics",
+  "prompt": "A ball is dropped from a height of 20 m and lands on the ground here. How long does it take to reach the ground?",
+  "reply": "**Given:** $h = 20$ m\n\n**Formula:** $t = \\sqrt{2h/g}$\n\n**Substitution:** $t = \\sqrt{2(20)/9.81}$\n\n**Answer:** about **2.02 s**.",
+  "expect": "answer"
+ },
+ {
+  "id": "sbl-036",
+  "area": "multi",
+  "prompt": "What's the weather like today? Also solve 2x + 3 = 7",
+  "reply": "### Today\n\nPartly cloudy in Addis Ababa, a high of **23°C**.\n\n### Solving 2x + 3 = 7\n\nSubtract 3: $2x = 4$, so $x = 2$.",
+  "expect": [
+   "search",
+   "answer"
+  ],
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "sbl-037",
+  "area": "multi",
+  "prompt": "What's the weather today and how fast does a ball fall from 20 m?",
+  "reply": "### Today\n\nSunny in Addis Ababa, a high of **24°C**.\n\n### The falling ball\n\n$v = \\sqrt{2gh} = \\sqrt{2(9.81)(20)} \\approx 19.8$ m/s when it lands.",
+  "expect": [
+   "search",
+   "answer"
+  ],
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "sbl-038",
+  "area": "search",
+  "prompt": "Will it rain tomorrow? And what's 15% of 80?",
+  "reply": "Tomorrow looks dry in Addis Ababa, with a **10%** chance of a shower.\n\n15% of 80 is $0.15 \\times 80 = 12$.",
+  "expect": [
+   "search",
+   "answer"
+  ],
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "sbl-039",
+  "area": "places",
+  "prompt": "How far is the nearest pharmacy? Also, a ball is dropped from 20 m, how long to reach the ground?",
+  "reply": "I need your location to tell you that.",
+  "expect": "instant"
+ },
+ {
+  "id": "sbl-040",
+  "area": "physics",
+  "prompt": "A ball is dropped from 20 m. What is its speed after 1 s? How long does it take to reach the ground?",
+  "reply": "**Speed after 1 s:** $v = gt = 9.81$ m/s.\n\n**Time to the ground:** $t = \\sqrt{2h/g} = \\sqrt{2(20)/9.81} \\approx 2.02$ s.",
+  "expect": "answer"
+ }
+]

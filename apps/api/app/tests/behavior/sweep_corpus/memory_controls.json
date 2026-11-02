@@ -1,0 +1,294 @@
+[
+  {
+    "id": "mc-001",
+    "area": "memory",
+    "prompt": "stop mentioning my job",
+    "history": [],
+    "reply": "Got it, I won't bring up your job.",
+    "expect": "memory"
+  },
+  {
+    "id": "mc-002",
+    "area": "memory",
+    "prompt": "don't bring up my divorce again",
+    "history": [],
+    "reply": "Understood. I won't bring that up.",
+    "expect": "memory"
+  },
+  {
+    "id": "mc-003",
+    "area": "memory",
+    "prompt": "stop using my location in answers",
+    "history": [],
+    "reply": "Okay, I'll leave your location out of my answers.",
+    "expect": "memory"
+  },
+  {
+    "id": "mc-004",
+    "area": "memory",
+    "prompt": "Please stop bringing up my weight",
+    "history": [],
+    "reply": "Of course. I won't mention it.",
+    "expect": "memory"
+  },
+  {
+    "id": "mc-005",
+    "area": "memory",
+    "prompt": "From now on, don't mention my age",
+    "history": [],
+    "reply": "Got it, your age stays out of it.",
+    "expect": "memory"
+  },
+  {
+    "id": "mc-006",
+    "area": "memory",
+    "prompt": "forget everything you know about me",
+    "history": [],
+    "reply": "I can delete everything Recall has saved about you. This can't be undone. Tap Confirm, or do it any time in Settings → Memory.",
+    "expect": "memory"
+  },
+  {
+    "id": "mc-007",
+    "area": "memory",
+    "prompt": "stop remembering things about me",
+    "history": [],
+    "reply": "I can turn memory off, so Recall stops saving new things about you and stops using what's saved. Saved facts stay until you delete them.",
+    "expect": "memory"
+  },
+  {
+    "id": "mc-008",
+    "area": "memory",
+    "prompt": "can you clear your memory of me?",
+    "history": [],
+    "reply": "I can delete everything Recall has saved about you. This can't be undone.",
+    "expect": "memory"
+  },
+  {
+    "id": "mc-009",
+    "area": "memory",
+    "prompt": "never mention my ex again",
+    "history": [],
+    "reply": "Understood.",
+    "expect": "memory"
+  },
+  {
+    "id": "mc-010",
+    "area": "lookalike",
+    "prompt": "how do I stop mentioning my ex in every conversation?",
+    "history": [],
+    "reply": "It helps to notice the urge and steer to something else: ask the other person about their week, or bring up a plan you're looking forward to. If it keeps coming up, a friend or therapist can help you work through it.",
+    "expect": "answer"
+  },
+  {
+    "id": "mc-011",
+    "area": "lookalike",
+    "prompt": "My mom keeps telling me to stop bringing up politics at dinner, how do I handle it?",
+    "history": [],
+    "reply": "Agree on a few topics you both enjoy, and when politics comes up, say you'd rather keep dinner relaxed and suggest talking about it another time.",
+    "expect": "answer"
+  },
+  {
+    "id": "mc-012",
+    "area": "writing",
+    "prompt": "Write a scene where she says 'don't bring up my past again'",
+    "history": [],
+    "reply": "The kettle clicked off. Mara didn't turn around. \"Don't bring up my past again,\" she said, and the kitchen went quiet except for the rain.",
+    "expect": "answer"
+  },
+  {
+    "id": "mc-013",
+    "area": "lookalike",
+    "prompt": "I want to forget everything about my ex, how do I move on?",
+    "history": [],
+    "reply": "Moving on takes time. Put away reminders for a while, lean on friends, and give yourself new routines that are yours alone.",
+    "expect": "answer"
+  },
+  {
+    "id": "mc-014",
+    "area": "writing",
+    "prompt": "forget everything I said, let's start over with the essay",
+    "history": [
+      ["user", "help me write an essay about climate change"],
+      ["assistant", "Sure. What angle do you want: causes, effects, or solutions?"]
+    ],
+    "reply": "Fresh start. What's the essay about, and how long does it need to be?",
+    "expect": "answer"
+  },
+  {
+    "id": "mc-015",
+    "area": "lookalike",
+    "prompt": "Actually I meant the second one",
+    "history": [
+      ["user", "which is faster, a hash map or a list lookup?"],
+      ["assistant", "A hash map lookup is O(1) on average; a list lookup is O(n)."]
+    ],
+    "reply": "Got it: a list lookup is O(n) because it checks each item in turn.",
+    "expect": "answer"
+  },
+  {
+    "id": "mc-016",
+    "area": "code",
+    "prompt": "how do I clear my memory cache in Chrome?",
+    "history": [],
+    "reply": "Open Chrome's settings, go to Privacy and security, choose Delete browsing data, tick Cached images and files, and press Delete data.",
+    "expect": "answer"
+  },
+  {
+    "id": "mc-017",
+    "area": "code",
+    "prompt": "turn off memory leak warnings in Xcode",
+    "history": [],
+    "reply": "In the scheme editor, open Run, then Diagnostics, and untick Malloc Stack Logging and the memory graph options.",
+    "expect": "answer"
+  },
+  {
+    "id": "mc-018",
+    "area": "lookalike",
+    "prompt": "Clear my memory of that awful movie and recommend something better",
+    "history": [],
+    "reply": "Try Paddington 2: warm, funny and beautifully made.",
+    "expect": "answer"
+  },
+  {
+    "id": "mc-019",
+    "area": "lookalike",
+    "prompt": "Never mention the war, Basil",
+    "history": [],
+    "reply": "A Fawlty Towers classic.",
+    "expect": "answer"
+  },
+  {
+    "id": "mc-020",
+    "area": "lookalike",
+    "prompt": "stop using my phone before bed is hard, any tips?",
+    "history": [],
+    "reply": "Charge it outside the bedroom, set a wind-down alarm an hour before bed, and keep a book by the bed instead.",
+    "expect": "answer"
+  },
+  {
+    "id": "mc-021",
+    "area": "writing",
+    "prompt": "Don't mention my name in the email, just sign it from the team",
+    "history": [
+      ["user", "write an email to our customers about the outage"],
+      ["assistant", "```email\nSubject: About today's outage\n\nHi,\n\nOur app was down for two hours today. It's back now.\n\nBini\n```"]
+    ],
+    "reply": "```email\nSubject: About today's outage\n\nHi,\n\nOur app was down for two hours today. It's back now.\n\nThe team\n```",
+    "expect": "answer"
+  },
+  {
+    "id": "mc-022",
+    "area": "lookalike",
+    "prompt": "Do you remember everything about me?",
+    "history": [],
+    "reply": "I remember what you've told me that's saved in your memory. You can see and edit it in Settings, Memory.",
+    "expect": "answer"
+  },
+  {
+    "id": "mc-023",
+    "area": "lookalike",
+    "prompt": "Please don't bring up the budget in the meeting tomorrow",
+    "history": [],
+    "reply": "Got it. Want help planning what to cover instead?",
+    "expect": "answer"
+  },
+  {
+    "id": "mc-024",
+    "area": "memory",
+    "prompt": "Remember, I'm allergic to peanuts.",
+    "history": [],
+    "reply": "Noted, I'll remember that you're allergic to peanuts and keep it out of recipes.",
+    "expect": "memory"
+  },
+  {
+    "id": "mc-025",
+    "area": "memory",
+    "prompt": "remember: my wife's name is Sara",
+    "history": [],
+    "reply": "Got it, your wife's name is Sara.",
+    "expect": "memory"
+  },
+  {
+    "id": "mc-026",
+    "area": "memory",
+    "prompt": "Remember I've got a gluten intolerance",
+    "history": [],
+    "reply": "Got it, I'll keep meals gluten-free for you.",
+    "expect": "memory"
+  },
+  {
+    "id": "mc-027",
+    "area": "memory",
+    "prompt": "Save to memory that I'm lactose intolerant",
+    "history": [],
+    "reply": "Saved: you're lactose intolerant.",
+    "expect": "memory"
+  },
+  {
+    "id": "mc-028",
+    "area": "memory",
+    "prompt": "add this to your memory: I take insulin twice a day",
+    "history": [],
+    "reply": "Got it, I'll keep that in mind.",
+    "expect": "memory"
+  },
+  {
+    "id": "mc-029",
+    "area": "lookalike",
+    "prompt": "Remember, the answer has to be in centimetres. What's the perimeter of a 3 by 4 rectangle?",
+    "history": [],
+    "reply": "The perimeter is 2 × (3 + 4) = **14 cm**.",
+    "expect": "answer"
+  },
+  {
+    "id": "mc-030",
+    "area": "lookalike",
+    "prompt": "Remember, remember the fifth of November: where is that rhyme from?",
+    "history": [],
+    "reply": "It's an English folk verse about the Gunpowder Plot of 1605, when Guy Fawkes was caught guarding explosives under the House of Lords.",
+    "expect": "answer"
+  },
+  {
+    "id": "mc-031",
+    "area": "lookalike",
+    "prompt": "how do I save to memory instead of disk on an Arduino?",
+    "history": [],
+    "reply": "Keep the values in a variable or array in RAM instead of writing them to EEPROM or an SD card; they are lost when the board loses power.",
+    "expect": "answer"
+  },
+  {
+    "id": "mc-032",
+    "area": "lookalike",
+    "prompt": "Remember when I asked you about Lisbon?",
+    "history": [],
+    "reply": "I can't find that conversation. What would you like to know about Lisbon?",
+    "expect": "answer"
+  },
+  {
+    "id": "mc-033",
+    "area": "memory",
+    "prompt": "what was the hotel I mentioned earlier?",
+    "history": [
+      ["user", "We're staying at the Memmo Alfama in Lisbon, any tips for the area?"],
+      ["assistant", "Great pick: Alfama is walkable, hilly and full of fado bars."]
+    ],
+    "reply": "The **Memmo Alfama** in Lisbon.",
+    "expect": "answer"
+  },
+  {
+    "id": "mc-034",
+    "area": "lookalike",
+    "prompt": "I said hello to my neighbour and he ignored me, what should I do?",
+    "history": [],
+    "reply": "He may not have heard you. Try once more when you see him; if he still ignores you, keep it polite and don't take it personally.",
+    "expect": "answer"
+  },
+  {
+    "id": "mc-035",
+    "area": "lookalike",
+    "prompt": "When I said no to my friend she got upset, was I wrong?",
+    "history": [],
+    "reply": "Not necessarily. Saying no is fair; it can help to tell her why and what you can do instead.",
+    "expect": "answer"
+  }
+]

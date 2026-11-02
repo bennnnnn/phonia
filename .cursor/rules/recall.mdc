@@ -1,0 +1,45 @@
+---
+description: Recall project golden rules and architecture — always read before coding
+alwaysApply: true
+---
+
+# Recall — project rules
+
+Read `CLAUDE.md` at repo root for the engineering map (catalog + seams). Product status is `FEATURES.md`. This is not a week-one MVP (~168k API, ~100k mobile).
+
+## Golden rules
+
+1. Never put provider API keys in the mobile app — backend `.env` only.
+2. Use model aliases in app code: `free-chat`, `smart-chat`, `title-model`, `memory-model`. Alias → provider mapping lives in `apps/api/app/services/model_catalog.py` (LiteLLM calls via `gateways/litellm_gateway.py`).
+3. Never send full chat history to the model — memory + recent window (~10–20 messages) only.
+4. Topic, memory, todos, and other post-turn work are best-effort jobs — must never block streaming. Enqueue from `modules/chat/post_turn.py` via `core/jobs.py`.
+5. No arbitrary code execution — render/highlight code only. The sole exception: HTML/CSS/JS preview in a sandboxed WebView (and chart/diagram rendering). Never run Python/shell/etc., and never run code outside that isolated WebView. The preview WebView needs a dev build (not Expo Go).
+6. Validate all LLM structured outputs with Pydantic before DB writes.
+7. Symbolic math is server-side SymPy only — mobile renders; it does not solve. See `docs/math.md`.
+
+## Ownership (backend)
+
+Migrate product domains into `modules/<domain>/`; each module owns API, service, persistence,
+jobs, and tools. Shared infrastructure stays in `core/`, `gateways/`, and `repositories/` and
+must not import product modules. Legacy `routers/` → `services/` remains valid until migrated.
+No business logic in routers or compatibility imports.
+
+New chat-loop code belongs in `apps/api/app/modules/chat/`. Quota + prepare lock: `async with turn_resources(...)` in `stream.py`. New external IO belongs in `gateways/`. Migrated modules own their adapters and jobs; legacy adapters/jobs remain in `services/mcp/` and `background/handlers.py`. All adapters register through `gateways/mcp/`; all durable jobs use `core/jobs.py`, never the stream path.
+
+## Mobile
+
+- Product code belongs in `apps/mobile/features/<feature>/`; `app/` files are routes only
+- Feature API slices use the shared request client and compose through `apps/mobile/lib/api.ts`
+- Tokens in `expo-secure-store` only
+- Screens stay dumb; logic in hooks (`useChat*`, `useMemoryDocuments`, auth context)
+- Rich fences: `lib/fenceRegistry.ts` + `components/rich/RichFence.tsx`
+
+## In scope (current)
+
+Chat + memory, todos/reminders, search, suggestions, attachments/RAG, calendar/Gmail, speech, image gen, web search, i18n, Pro, and rich rendering (markdown, math, geometry/graph, charts, Mermaid, chemistry, sandboxed HTML/JS). Conversational tutoring (math, physics, chemistry, programming, “teach me…”) stays in chat. The dedicated language-learning product is gone. MCP tool loop is shipped and **on** (`mcp_tool_loop_enabled` defaults true). The legacy one-shot `mcp_tools_enabled` pre-stream round stays off.
+
+## v1 non-goals
+
+No multi-user, no execution of non-web code or execution outside the sandboxed preview WebView, no duplex voice, no arbitrary user MCP servers. Do not treat “no tools/agents” as a hard absence — the owned tool loop is on by default.
+
+A **web client** exists at `apps/web` as slice 1 (login + chat SSE). Remaining web slices are deferred. Keep `lib/api.ts` the single mobile network boundary and rich-block rendering swappable so clients stay portable.

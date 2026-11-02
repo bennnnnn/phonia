@@ -1,0 +1,1335 @@
+[
+ {
+  "id": "wr-001",
+  "area": "writing",
+  "prompt": "Can you write an email to my landlord asking him to fix the leaking kitchen sink? It's been dripping for a week.",
+  "reply": "Here's a polite but clear email you can send:\n\n```email\nSubject: Repair request – leaking kitchen sink\n\nHi [Landlord's name],\n\nI wanted to let you know that the kitchen sink in my unit ([Apt #]) has been leaking for about a week. Water drips steadily from under the faucet and is starting to pool in the cabinet below.\n\nCould you please arrange for someone to take a look? I'm home most evenings after 6pm, and I'm happy to work around a plumber's schedule.\n\nThank you for your help.\n\nBest regards,\n[Your name]\n```\n\nSwap in your landlord's name and your unit number before sending.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-002",
+  "area": "writing",
+  "prompt": "add that I'll be late tomorrow at 9am too, I have a dentist appointment",
+  "history": [
+   [
+    "user",
+    "Write a short email to my manager Karen asking for Friday off for a family event."
+   ],
+   [
+    "assistant",
+    "Here's a draft:\n\n```email\nSubject: Day off request – Friday\n\nHi Karen,\n\nI'd like to request this Friday off for a family event. I'll make sure my tasks are covered before then and will be reachable by phone if anything urgent comes up.\n\nThanks for considering it!\n\nBest,\nSam\n```"
+   ]
+  ],
+  "reply": "Updated! I've added a line about tomorrow morning:\n\n```email\nSubject: Day off request – Friday (and a late start tomorrow)\n\nHi Karen,\n\nI'd like to request this Friday off for a family event. I'll make sure my tasks are covered before then and will be reachable by phone if anything urgent comes up.\n\nAlso, a quick heads-up: I'll be in late tomorrow. I have a dentist appointment at 9am and expect to be at my desk by about 10:30.\n\nThanks for considering it!\n\nBest,\nSam\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-003",
+  "area": "writing",
+  "prompt": "make it more polite",
+  "history": [
+   [
+    "user",
+    "text my neighbor to turn the music down, it's 11pm and I have work at 6"
+   ],
+   [
+    "assistant",
+    "```message\nHey, your music is really loud and it's 11pm. I have to be up at 6. Turn it down please.\n```"
+   ]
+  ],
+  "reply": "Sure — I changed to a softer tone and made it more of a friendly request:\n\n```message\nHi! Sorry to bother you so late — would you mind turning the music down a bit? I have an early start at 6 tomorrow. Thanks so much, I really appreciate it!\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-004",
+  "area": "writing",
+  "prompt": "translate to spanish: Can you add me to the group chat? I'll buy the tickets tomorrow.",
+  "reply": "**Spanish:**\n\n> ¿Me puedes agregar al chat del grupo? Mañana compro las entradas.\n\nA couple of notes:\n- *Agregar* is common in Latin America; in Spain you'd more often hear **añadir** (\"¿Me puedes añadir al grupo?\").\n- *Entradas* works for concerts, movies, and events. For travel tickets (train, plane), use **boletos** (Latin America) or **billetes** (Spain).",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-005",
+  "area": "writing",
+  "prompt": "write a linkedin post saying I just completed my AWS Solutions Architect certification, keep it humble",
+  "reply": "Here's a humble, friendly version:\n\n```linkedin\nHappy to share that I've completed the AWS Certified Solutions Architect – Associate exam! ☁️\n\nThis one took a few months of evenings and weekends, plenty of practice labs, and more than one \"why is my VPC not routing?\" moment. Big thanks to my team for answering endless questions and to everyone who shared study resources along the way.\n\nLooking forward to putting it to work on real projects. If you're studying for it and want to compare notes, my DMs are open.\n\n#AWS #CloudComputing #LearningInPublic\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-006",
+  "area": "writing",
+  "prompt": "remove the last sentence",
+  "history": [
+   [
+    "user",
+    "instagram caption for a beach photo with my sister"
+   ],
+   [
+    "assistant",
+    "```instagram\nSalt in our hair, sand in our shoes, and zero plans for the rest of the day. 🌊\nSister time is the best time. Same sunset next year?\n```"
+   ]
+  ],
+  "reply": "```instagram\nSalt in our hair, sand in our shoes, and zero plans for the rest of the day. 🌊\nSister time is the best time.\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-007",
+  "area": "writing",
+  "prompt": "proofread this: i didnt get you're message untill this morning, can you set up a call for 3pm? sorry for the delay",
+  "reply": "Here's the corrected version:\n\n```message\nI didn't get your message until this morning. Can you set up a call for 3pm? Sorry for the delay!\n```\n\n**Fixes:**\n- *i* → **I** (capitalized)\n- *didnt* → **didn't** (needs an apostrophe)\n- *you're* → **your** (possessive, not \"you are\")\n- *untill* → **until**\n- Split the run-on into two sentences",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-008",
+  "area": "writing",
+  "prompt": "set the meeting for 3pm instead",
+  "history": [
+   [
+    "user",
+    "email to Priya proposing a meeting Thursday at 2pm to go over the Q3 budget"
+   ],
+   [
+    "assistant",
+    "```email\nSubject: Q3 budget review – Thursday at 2pm?\n\nHi Priya,\n\nWould you be free on Thursday at 2pm to go over the Q3 budget? It should take about 30 minutes. I'll bring the latest numbers and a short list of open questions.\n\nLet me know if that works or if another time is better.\n\nThanks,\nLeo\n```"
+   ]
+  ],
+  "reply": "Here it is with the time changed to 3pm:\n\n```email\nSubject: Q3 budget review – Thursday at 3pm?\n\nHi Priya,\n\nWould you be free on Thursday at 3pm to go over the Q3 budget? It should take about 30 minutes. I'll bring the latest numbers and a short list of open questions.\n\nLet me know if that works or if another time is better.\n\nThanks,\nLeo\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-009",
+  "area": "writing",
+  "prompt": "write a short wedding toast for my brother Dawit and his wife Sara, maybe 1 minute, a little funny",
+  "reply": "```copy\nGood evening, everyone! For those who don't know me, I'm Dawit's younger sibling — which means I've spent my whole life watching him take forever to make decisions. It took him twenty minutes to pick a pizza topping last week.\n\nSo when he told me, after just three months, that he'd met the woman he was going to marry, I knew Sara had to be someone truly special. And she is. She's kind, she's patient, and she laughs at his jokes — which, trust me, is a real act of love.\n\nSara, welcome to the family. Dawit, you finally made the best decision of your life.\n\nPlease raise your glasses: to Dawit and Sara — may your love grow stronger every day. Cheers!\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-010",
+  "area": "writing",
+  "prompt": "put it in bullet points",
+  "history": [
+   [
+    "user",
+    "write a short project update paragraph for my weekly report: we finished the API redesign, started load testing, and found two bugs in checkout that we're fixing, launch still on track for Nov 10"
+   ],
+   [
+    "assistant",
+    "This week we completed the API redesign and began load testing on the new endpoints. Testing surfaced two bugs in the checkout flow, and fixes are already in progress. Overall, we remain on track for the November 10 launch."
+   ]
+  ],
+  "reply": "**Weekly update**\n\n- ✅ Completed the API redesign\n- 🔄 Started load testing on the new endpoints\n- 🐞 Found two bugs in the checkout flow — fixes in progress\n- 📅 Launch still on track for **November 10**",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-011",
+  "area": "writing",
+  "prompt": "Can you add a closing line? it ends kind of abruptly",
+  "history": [
+   [
+    "user",
+    "email to my client Mr. Okafor sending the revised proposal"
+   ],
+   [
+    "assistant",
+    "```email\nSubject: Revised proposal attached\n\nHi Mr. Okafor,\n\nAs discussed on Monday, I've attached the revised proposal with the updated timeline and pricing. The main changes are in sections 3 and 5.\n\nBest regards,\nHana Tesfaye\n```"
+   ]
+  ],
+  "reply": "Good call — I've added a closing line so it doesn't end so suddenly:\n\n```email\nSubject: Revised proposal attached\n\nHi Mr. Okafor,\n\nAs discussed on Monday, I've attached the revised proposal with the updated timeline and pricing. The main changes are in sections 3 and 5.\n\nPlease let me know if you have any questions — I'm happy to set up a quick call to walk through it.\n\nBest regards,\nHana Tesfaye\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-012",
+  "area": "writing",
+  "prompt": "get rid of the emoji",
+  "history": [
+   [
+    "user",
+    "tweet about our coffee shop's new pumpkin latte"
+   ],
+   [
+    "assistant",
+    "```twitter\n🎃 It's here! Our Pumpkin Spice Latte is back for the season ☕🍂 Real pumpkin, house-made spice blend, oat milk on request. Come say hi! 🧡\n```"
+   ]
+  ],
+  "reply": "```twitter\nIt's here! Our Pumpkin Spice Latte is back for the season. Real pumpkin, house-made spice blend, oat milk on request. Come say hi!\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-013",
+  "area": "writing",
+  "prompt": "finish the story",
+  "history": [
+   [
+    "user",
+    "start a short story about an old lighthouse keeper who finds a message in a bottle"
+   ],
+   [
+    "assistant",
+    "Elias had kept the light on Gull Rock for forty-one years, and in all that time the sea had given him driftwood, broken oars, and once a very confused seal. It had never given him a letter.\n\nThe bottle was green and thick-walled, wedged between two rocks below the tower. Inside, a rolled sheet of paper was tied with red thread. Elias carried it up the spiral stairs, set it on the table beside his logbook, and stared at it until the kettle began to scream."
+   ]
+  ],
+  "reply": "He poured the tea, untied the thread, and unrolled the paper with careful fingers.\n\n*To whoever keeps the light,* it read. *My father kept it before you. He said that on the worst nights, he left the lamp burning a little brighter, just in case someone out there needed it. I was one of those someones, once. Thank you for keeping it on. — M.*\n\nElias read it three times. He thought of the stormy February nights, the ones when he had turned the wick up without quite knowing why.\n\nThat evening, he wrote a reply on the back of an old tide chart, rolled it tight, and tied it with the same red thread. He didn't know whether the tide would carry it anywhere at all. But when the sun went down, he climbed the stairs, lit the lamp, and turned it up — just a little brighter — and left it that way all night.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-014",
+  "area": "writing",
+  "prompt": "complete the poem",
+  "history": [
+   [
+    "user",
+    "write a poem about autumn, just start it and I'll see if I like it"
+   ],
+   [
+    "assistant",
+    "The maples loosen, one by one,\ntheir copper coins toward the sun;\nthe mornings smell of smoke and rain,\nand geese write letters on the plain."
+   ]
+  ],
+  "reply": "The maples loosen, one by one,\ntheir copper coins toward the sun;\nthe mornings smell of smoke and rain,\nand geese write letters on the plain.\n\nThe garden bows its heavy head,\nthe last tomatoes blush to red;\nwe pull our sweaters from the shelf\nand let the year undo itself.\n\nAnd when the final leaf lets go,\nthe branches hum a song they know:\nthat what we lose, we lose to bloom —\nthe earth is only making room.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-015",
+  "area": "writing",
+  "prompt": "mark the changes",
+  "history": [
+   [
+    "user",
+    "fix this paragraph: Their going to the park tomorrow, but they doesnt know if it will rain. Me and my friend is going to."
+   ],
+   [
+    "assistant",
+    "They're going to the park tomorrow, but they don't know if it will rain. My friend and I are going, too."
+   ]
+  ],
+  "reply": "Here's what changed:\n\n| Original | Corrected | Why |\n|---|---|---|\n| ~~Their~~ | **They're** | means \"they are,\" not possessive |\n| ~~doesnt~~ | **don't** | \"they\" takes *don't*; also needs an apostrophe |\n| ~~Me and my friend~~ | **My friend and I** | subject pronoun, and the other person goes first |\n| ~~is going to.~~ | **are going, too.** | plural subject; \"too\" means \"also\" |",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-016",
+  "area": "writing",
+  "prompt": "remind them about the deadline on Friday",
+  "history": [
+   [
+    "user",
+    "email to my team about the quarterly report, ask everyone to send their sections"
+   ],
+   [
+    "assistant",
+    "```email\nSubject: Quarterly report – please send your sections\n\nHi team,\n\nIt's that time again! Please send me your sections for the quarterly report. Use the same template as last quarter, and keep each section to one page if you can.\n\nThanks,\nMeron\n```"
+   ]
+  ],
+  "reply": "Here's the updated email with the deadline called out:\n\n```email\nSubject: Quarterly report – sections due Friday\n\nHi team,\n\nIt's that time again! Please send me your sections for the quarterly report. Use the same template as last quarter, and keep each section to one page if you can.\n\nAs a reminder, the deadline is Friday at 5pm. Anything that comes in after that may not make it into the final version.\n\nThanks,\nMeron\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-017",
+  "area": "writing",
+  "prompt": "say that I already bought the tickets",
+  "history": [
+   [
+    "user",
+    "text my friend Yonas asking if he still wants to go to the concert saturday"
+   ],
+   [
+    "assistant",
+    "```message\nHey Yonas! Are you still up for the concert on Saturday? Let me know so I can grab tickets 🎶\n```"
+   ]
+  ],
+  "reply": "```message\nHey Yonas! Are you still up for the concert on Saturday? I already bought the tickets, so you just need to show up 😄🎶\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-018",
+  "area": "writing",
+  "prompt": "move the second paragraph up so my experience comes first",
+  "history": [
+   [
+    "user",
+    "short cover letter for a barista job at Blue Door Café, I worked at Morning Grind for 18 months"
+   ],
+   [
+    "assistant",
+    "```copy\nDear Hiring Manager,\n\nI'm excited to apply for the barista position at Blue Door Café. I've been a regular for two years, and I love the warm, welcoming atmosphere you've built.\n\nI have eighteen months of experience at Morning Grind, where I made espresso drinks during busy morning rushes, handled the register, and trained three new team members.\n\nI'd love the chance to bring my energy and coffee knowledge to your team. Thank you for considering my application.\n\nSincerely,\nLiya Bekele\n```"
+   ]
+  ],
+  "reply": "Done — your experience now leads:\n\n```copy\nDear Hiring Manager,\n\nI have eighteen months of experience as a barista at Morning Grind, where I made espresso drinks during busy morning rushes, handled the register, and trained three new team members.\n\nI'm excited to apply for the barista position at Blue Door Café. I've been a regular for two years, and I love the warm, welcoming atmosphere you've built.\n\nI'd love the chance to bring my energy and coffee knowledge to your team. Thank you for considering my application.\n\nSincerely,\nLiya Bekele\n```\n\nI tweaked the first sentence slightly so it reads naturally as an opener.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-019",
+  "area": "writing",
+  "prompt": "change the tone, it sounds so stiff lol. they're close friends",
+  "history": [
+   [
+    "user",
+    "write a message declining Ana and Marco's wedding invite, we can't travel"
+   ],
+   [
+    "assistant",
+    "```message\nDear Ana and Marco,\n\nWe regret to inform you that we will be unable to attend your wedding due to travel constraints. We extend our sincere congratulations.\n\nRegards,\nTom and Ellie\n```"
+   ]
+  ],
+  "reply": "Ha, yes — that read like a legal notice. I changed it to something much warmer:\n\n```message\nAna and Marco!! We're so happy for you two 💛 We're really bummed we can't make the trip for the wedding, but we'll be celebrating you from here (expect a toast in your honor). Can't wait to see the photos and take you both out to dinner when you're back. Love you guys!\n\n— Tom & Ellie\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-020",
+  "area": "writing",
+  "prompt": "write a cover letter for a junior data analyst job at a hospital. I have a stats degree and did an internship cleaning patient survey data in excel and python",
+  "reply": "```copy\nDear Hiring Manager,\n\nI'm writing to apply for the Junior Data Analyst position at [Hospital Name]. I recently earned my B.S. in Statistics, and I'm eager to use data to help improve patient care.\n\nDuring my internship at [Organization], I cleaned and analyzed patient satisfaction survey data using Excel and Python (pandas). I built a repeatable cleaning process that made each new batch of responses much faster to prepare, and I shared summary charts with the patient experience team to help them spot trends.\n\nThat work showed me how much good data matters in healthcare — and how important it is to handle it carefully. I'm comfortable with regression, hypothesis testing, and data visualization, and I understand the confidentiality standards that come with patient information.\n\nI'd welcome the chance to discuss how I could support your analytics team. Thank you for your time and consideration.\n\nSincerely,\n[Your Name]\n```\n\nFill in the bracketed parts, and if you have a concrete number (how many responses, how much time you saved), add it — specifics make a big difference for analyst roles.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-021",
+  "area": "writing",
+  "prompt": "write a 2 sentence bio for my twitter. im a nurse who makes pottery on weekends",
+  "reply": "A couple of options:\n\n```twitter\nER nurse by day, potter by weekend. I patch people up Monday to Friday and make lopsided mugs on Saturdays.\n```\n\n```twitter\nNurse 🩺 and weekend potter 🏺. Caring for patients during the week, getting my hands muddy on the wheel when I'm off.\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-022",
+  "area": "writing",
+  "prompt": "translate into Amharic: Happy birthday, mom! I'll call you tomorrow.",
+  "reply": "**Amharic:**\n\n> መልካም ልደት፣ እማዬ! ነገ እደውልልሻለሁ።\n\n**Pronunciation:** *Melkam lidet, emaye! Nege edewelilishalehu.*\n\n- **እማዬ** (*emaye*) is an affectionate way to say \"mom.\"\n- **እደውልልሻለሁ** uses the feminine \"you,\" which fits when you're talking to your mother.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-023",
+  "area": "writing",
+  "prompt": "how do i say 'please add me to the mailing list' in arabic",
+  "reply": "**Arabic:**\n\n> من فضلك أضفني إلى القائمة البريدية.\n\n**Transliteration:** *min faḍlak, aḍifnī ilā al-qā'ima al-barīdiyya.*\n\n- If you're writing to a woman: **من فضلكِ أضيفيني إلى القائمة البريدية** (*min faḍlik, aḍīfīnī…*).\n- For a more formal email: **أرجو إضافتي إلى القائمة البريدية** (*arjū iḍāfatī ilā al-qā'ima al-barīdiyya*) — \"I kindly ask to be added to the mailing list.\"",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-024",
+  "area": "writing",
+  "prompt": "translate to french: Remind me to buy bread on the way home",
+  "reply": "**French:**\n\n> Rappelle-moi d'acheter du pain en rentrant.\n\nThat's the informal (*tu*) version. If you're asking someone you'd address as *vous*:\n\n> Rappelez-moi d'acheter du pain en rentrant.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-025",
+  "area": "writing",
+  "prompt": "My coworker sent this: 'Hey, can you get the slides done by tomorrow? I need to add them to the deck before the 10am meeting.' Help me reply that I can but only by noon",
+  "reply": "Here's a friendly reply that's clear about the timing:\n\n```message\nHey! I can definitely get the slides done, but realistically it'll be by noon tomorrow, not before the 10am meeting. Would it work to present the rest of the deck at 10 and add my slides right after? Or if you need something for the meeting, I can send a rough outline first thing in the morning.\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-026",
+  "area": "writing",
+  "prompt": "make it shorter",
+  "history": [
+   [
+    "user",
+    "email to cancel my gym membership at FitLife, membership number 448213, I moved"
+   ],
+   [
+    "assistant",
+    "```email\nSubject: Membership cancellation request\n\nDear FitLife Membership Team,\n\nI hope this message finds you well. I am writing to formally request the cancellation of my gym membership, effective at the end of the current billing cycle. My membership number is 448213.\n\nOver the past two years I have greatly enjoyed the facilities and classes, and I want to thank your staff for being consistently friendly and helpful. Unfortunately, due to a recent move, I am no longer able to visit the gym regularly.\n\nPlease confirm the cancellation in writing and let me know if there are any remaining fees or steps I need to complete.\n\nThank you for your assistance.\n\nKind regards,\nDaniel Haile\n```"
+   ]
+  ],
+  "reply": "```email\nSubject: Membership cancellation – #448213\n\nHi FitLife team,\n\nPlease cancel my membership (#448213) at the end of the current billing cycle. I've moved and can no longer visit regularly.\n\nCould you confirm the cancellation in writing and let me know if any fees remain?\n\nThanks,\nDaniel Haile\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-027",
+  "area": "writing",
+  "prompt": "make it funnier",
+  "history": [
+   [
+    "user",
+    "birthday text for my coworker Ben"
+   ],
+   [
+    "assistant",
+    "```message\nHappy birthday, Ben! Hope you have a great day and a fantastic year ahead. 🎉\n```"
+   ]
+  ],
+  "reply": "```message\nHappy birthday, Ben! 🎉 Another year older, and still the only person in the office who knows how to fix the printer. Please never leave — we need you. Have an amazing day (and take the extra slice of cake, you've earned it). 🎂\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-028",
+  "area": "writing",
+  "prompt": "write a funny out of office message, im on vacation oct 20-27",
+  "reply": "```email\nSubject: Out of office (and out of reach of my laptop)\n\nHi there,\n\nThanks for your email! I'm on vacation from October 20 to 27, probably napping somewhere with no Wi-Fi and a suspicious amount of snacks.\n\nI'll reply when I'm back on October 28. If it's urgent, please contact [colleague's name] at [email] — they're much more responsive than I am right now.\n\nIf it's not urgent, congratulations: you've just mastered the art of patience.\n\nCheers,\n[Your name]\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-029",
+  "area": "writing",
+  "prompt": "rewrite this more formally: hey guys, just a heads up I'm gonna be out every day next week, ping sam if u need stuff",
+  "reply": "```message\nHello everyone,\n\nPlease note that I will be out of the office all of next week. If you need anything during that time, please contact Sam.\n\nThank you.\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-030",
+  "area": "writing",
+  "prompt": "write a text to my roommate asking her to add oat milk and eggs to the grocery list, she's going shopping tonight",
+  "reply": "```sms\nHey! Since you're going shopping tonight, could you add oat milk and eggs to the grocery list? I'll Venmo you for them. Thank you!! 🙏\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-031",
+  "area": "writing",
+  "prompt": "is it ok to start status updates with 'Done:' like 'Done: migrated the database'? or is that too informal for a report to my director",
+  "reply": "It's fine in a quick team update or Slack thread, but for a director-level report I'd use a labeled list with full sentences. For example:\n\n**Informal (Slack / standup):**\n```copy\nDone: migrated the database\nIn progress: load testing\nBlocked: waiting on vendor API keys\n```\n\n**More polished (report):**\n```copy\nCompleted\n- Migrated the production database to the new cluster.\n\nIn progress\n- Load testing the new endpoints (expected to finish Thursday).\n\nBlocked\n- Waiting on vendor API keys; I've followed up twice.\n```\n\nSame idea, just easier for someone senior to skim.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-032",
+  "area": "writing",
+  "prompt": "write release notes for our app update v2.4: added dark mode, fixed login bug on android, removed the old onboarding screens",
+  "reply": "```copy\nWhat's new in v2.4\n\nAdded: Dark mode! Turn it on in Settings → Appearance, or let it follow your phone's setting.\nFixed: A bug that could sign some Android users out right after logging in.\nRemoved: The old onboarding screens. New users now go straight to a shorter, simpler setup.\n\nThanks for using the app — keep the feedback coming!\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-033",
+  "area": "writing",
+  "prompt": "format this as a short label card for our museum exhibit: red racing bicycle, built in Milan in 1991 by Ernesto Colli, steel frame, used in the 1992 Giro d'Italia",
+  "reply": "```copy\nRED RACING BICYCLE\n\nCreated: 1991\nMaker: Ernesto Colli, Milan\nMaterial: Steel frame\n\nThis bicycle was ridden in the 1992 Giro d'Italia, one of cycling's three Grand Tours. Its lightweight steel frame reflects the craftsmanship of Milan's small frame builders, just before aluminum and carbon fiber took over professional racing.\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-034",
+  "area": "writing",
+  "prompt": "insta caption for a sunset hike pic, short pls",
+  "reply": "A few short ones:\n\n```instagram\nChasing the last light. 🌄\n```\n\n```instagram\nWorth every switchback.\n```\n\n```instagram\nSun's out, legs are done. 🥾\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-035",
+  "area": "writing",
+  "prompt": "qué significa 'no te olvides de comprar leche mañana' en inglés?",
+  "reply": "Significa:\n\n> **\"Don't forget to buy milk tomorrow.\"**\n\n- *no te olvides de* = don't forget to\n- *comprar* = buy\n- *leche* = milk\n- *mañana* = tomorrow",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-036",
+  "area": "writing",
+  "prompt": "escríbeme un mensaje para mi jefe diciendo que llegaré tarde mañana a las 9 porque tengo cita con el médico",
+  "reply": "Aquí tienes un mensaje breve y profesional:\n\n```message\nBuenos días. Le escribo para avisarle que mañana llegaré un poco tarde, ya que tengo una cita con el médico a las 9:00. Calculo estar en la oficina alrededor de las 10:30. Muchas gracias por su comprensión.\n```\n\nSi tienes una relación más informal con tu jefe, puedes usar *tú*: \"Hola, te aviso que mañana llego un poco tarde porque tengo médico a las 9.\"",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-037",
+  "area": "writing",
+  "prompt": "can you add 'see you then' at the end",
+  "history": [
+   [
+    "user",
+    "text my sister I'll pick her up from the airport at 6"
+   ],
+   [
+    "assistant",
+    "```message\nHey! I'll pick you up from the airport at 6. Text me when you land ✈️\n```"
+   ]
+  ],
+  "reply": "Sure, I'll add it:\n\n```message\nHey! I'll pick you up from the airport at 6. Text me when you land ✈️ See you then!\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-038",
+  "area": "writing",
+  "prompt": "delete the part about the budget, I'll bring that up on the phone",
+  "history": [
+   [
+    "user",
+    "email to Rachel at the event venue confirming our booking for 80 guests on Dec 12, setup at 5, event 6-10, catering budget $4000"
+   ],
+   [
+    "assistant",
+    "```email\nSubject: Booking confirmation – December 12, 80 guests\n\nHi Rachel,\n\nI'm writing to confirm our booking for December 12 for 80 guests. We'll arrive at 5pm for setup, and the event will run from 6pm to 10pm.\n\nOur budget for catering is $4,000, so please let us know which menu options fit within that range.\n\nThanks again for your help!\n\nBest,\nSelam\n```"
+   ]
+  ],
+  "reply": "Done — the budget line is removed:\n\n```email\nSubject: Booking confirmation – December 12, 80 guests\n\nHi Rachel,\n\nI'm writing to confirm our booking for December 12 for 80 guests. We'll arrive at 5pm for setup, and the event will run from 6pm to 10pm.\n\nThanks again for your help!\n\nBest,\nSelam\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-039",
+  "area": "writing",
+  "prompt": "add that the 5:30pm class on fridays is canceled",
+  "history": [
+   [
+    "user",
+    "instagram post for our gym: weekday morning classes now start at 6am instead of 7"
+   ],
+   [
+    "assistant",
+    "```instagram\nEarly birds, this one's for you! 🐦 Starting Monday, our weekday morning classes start at 6am instead of 7am. Same great coaches, more time for coffee afterward. ☕💪\n\n#GymLife #MorningWorkout\n```"
+   ]
+  ],
+  "reply": "I've added the Friday note right before the hashtags:\n\n```instagram\nEarly birds, this one's for you! 🐦 Starting Monday, our weekday morning classes start at 6am instead of 7am. Same great coaches, more time for coffee afterward. ☕💪\n\nHeads up: the Friday 5:30pm class is canceled going forward. See you in the mornings!\n\n#GymLife #MorningWorkout\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-040",
+  "area": "writing",
+  "prompt": "write a paragraph on why people procrastinate for my psych class, college level",
+  "reply": "Procrastination is less a failure of time management than a problem of emotion regulation. When a task provokes discomfort — boredom, anxiety, self-doubt, or fear of judgment — delaying it offers immediate relief, and that relief negatively reinforces the avoidance. Temporal discounting compounds the effect: people tend to weigh present costs heavily while discounting future rewards, so the unpleasantness of starting a paper today looms larger than the benefit of a finished draft next week. Perfectionism and low self-efficacy also play a role, since people who doubt their ability to succeed may avoid starting in order to protect their self-image. Understood this way, procrastination is a short-term mood-repair strategy with long-term costs, which helps explain why simply telling someone to \"manage their time better\" rarely works.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-041",
+  "area": "writing",
+  "prompt": "Can you add 3 more using the same style?",
+  "history": [
+   [
+    "user",
+    "give me taglines for my plant shop called Leaf It To Me"
+   ],
+   [
+    "assistant",
+    "1. **Leaf It To Me** — we've got your greens covered.\n2. Grow happy. Leaf it to me.\n3. Plants that thrive, advice that's alive."
+   ]
+  ],
+  "reply": "Here are three more in the same punny, upbeat style:\n\n4. Rooted in care, potted with love.\n5. Your jungle starts here.\n6. Don't stress — just leaf it to me.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-042",
+  "area": "writing",
+  "prompt": "make it more polite",
+  "history": [
+   [
+    "user",
+    "help me reply to a customer, Mr. Thompson, who says our delivery was late and blames us, but it was the courier"
+   ],
+   [
+    "assistant",
+    "```email\nSubject: Re: Late delivery\n\nHi Mr. Thompson,\n\nThe delay was caused by the courier, not us. Your order left our warehouse on time. You'll need to contact them about it.\n\nRegards,\nCustomer Support\n```"
+   ]
+  ],
+  "reply": "I changed to a softer tone and took out the blame, while still explaining what happened:\n\n```email\nSubject: Re: Late delivery\n\nHi Mr. Thompson,\n\nI'm really sorry your order arrived later than expected — I know how frustrating that is.\n\nI checked on our end, and your package left our warehouse on schedule, so it looks like the delay happened in transit with the courier. I've already reported it to them so they can look into it, and I'll follow up with you as soon as I hear back.\n\nThank you for your patience, and please let me know if there's anything else I can do.\n\nWarm regards,\nCustomer Support\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-043",
+  "area": "writing",
+  "prompt": "write short success toast messages for our app: settings saved, file uploaded, item deleted, profile updated",
+  "reply": "| Event | Toast |\n|---|---|\n| Settings saved | **Saved!** Your settings are up to date. |\n| File uploaded | **Uploaded.** Your file is ready. |\n| Item deleted | **Deleted.** Undo? |\n| Profile updated | **Updated!** Looking good. |\n\nKeep them under ~40 characters so they fit on small screens, and pair \"Deleted.\" with an Undo action if you can. If you'd rather show counts, a format like \"Saved: 3 changes\" also works well.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-044",
+  "area": "writing",
+  "prompt": "can you add another verse using the same rhyme scheme?",
+  "history": [
+   [
+    "user",
+    "write a funny rhyming verse for my dad's 60th birthday card, he loves golf"
+   ],
+   [
+    "assistant",
+    "```copy\nAt sixty, Dad, you're still on par,\nyou swing like you're a rising star;\nyour putts may wander off the track,\nbut somehow they come rolling back.\n```"
+   ]
+  ],
+  "reply": "Here's the card with a second verse in the same AABB pattern:\n\n```copy\nAt sixty, Dad, you're still on par,\nyou swing like you're a rising star;\nyour putts may wander off the track,\nbut somehow they come rolling back.\n\nYou've lost a hundred balls or more\nin every pond from here to shore;\nbut here's the thing we'll always say:\nyou're our hole-in-one, today and every day!\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-045",
+  "area": "writing",
+  "prompt": "put the date in, it's Saturday Oct 24 at 7pm, address is 12 Pine St",
+  "history": [
+   [
+    "user",
+    "write a short invite for my housewarming party"
+   ],
+   [
+    "assistant",
+    "```message\nYou're invited! 🏡 Come celebrate our new place with food, drinks, and good company. Bring your appetite (and maybe a plant 🌿). RSVP so we know how many snacks to buy!\n```"
+   ]
+  ],
+  "reply": "```message\nYou're invited! 🏡 Come celebrate our new place with food, drinks, and good company.\n\n📅 Saturday, October 24\n🕖 7:00 PM\n📍 12 Pine St\n\nBring your appetite (and maybe a plant 🌿). RSVP so we know how many snacks to buy!\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-046",
+  "area": "writing",
+  "prompt": "thank you email after my interview with Ms. Chen for the marketing coordinator role, we talked about her dog and the spring campaign",
+  "reply": "```email\nSubject: Thank you – Marketing Coordinator interview\n\nHi Ms. Chen,\n\nThank you for taking the time to speak with me today about the Marketing Coordinator role. I really enjoyed hearing about your plans for the spring campaign, and I'd love the chance to help bring it to life.\n\n(And please give your dog a pat from me!)\n\nIf there's anything else I can provide, just let me know. I look forward to hearing from you.\n\nBest regards,\n[Your name]\n```\n\nIf you remember a specific detail about the campaign, add one sentence about it — it shows you were really listening.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-047",
+  "area": "writing",
+  "prompt": "change 'Hi team' to 'Hello everyone', it's going to the whole building",
+  "history": [
+   [
+    "user",
+    "write an announcement email that the office will be closed Monday for the holiday"
+   ],
+   [
+    "assistant",
+    "```email\nSubject: Office closed Monday\n\nHi team,\n\nJust a reminder that the office will be closed this Monday for the holiday. We'll reopen Tuesday at 9am.\n\nEnjoy the long weekend!\n\nFacilities\n```"
+   ]
+  ],
+  "reply": "Done — I changed the greeting to \"Hello everyone\":\n\n```email\nSubject: Office closed Monday\n\nHello everyone,\n\nJust a reminder that the office will be closed this Monday for the holiday. We'll reopen Tuesday at 9am.\n\nEnjoy the long weekend!\n\nFacilities\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-048",
+  "area": "writing",
+  "prompt": "write a text my clinic can send patients reminding them of their appointment tomorrow at 10:30am and to bring their insurance card. keep it under 160 characters",
+  "reply": "```sms\nLakeside Clinic: Reminder of your appointment tomorrow at 10:30am. Please bring your insurance card. Reply C to confirm or call 555-0142 to reschedule.\n```\n\nThat's 151 characters, so it fits in a single SMS. Swap in your clinic's name and phone number.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-049",
+  "area": "writing",
+  "prompt": "remove the second bullet, it's weak",
+  "history": [
+   [
+    "user",
+    "bullet points for my resume about my retail job"
+   ],
+   [
+    "assistant",
+    "- Assisted 100+ customers daily with purchases, returns, and product questions\n- Responsible for opening and closing the store\n- Managed inventory counts and restocked shelves weekly\n- Trained 4 new employees on the POS system and store policies"
+   ]
+  ],
+  "reply": "Agreed — here's the list without it:\n\n- Assisted 100+ customers daily with purchases, returns, and product questions\n- Managed inventory counts and restocked shelves weekly\n- Trained 4 new employees on the POS system and store policies\n\nIf you want to keep the idea, a stronger version would be: *\"Opened and closed the store independently, including cash reconciliation and security checks.\"*",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-050",
+  "area": "writing",
+  "prompt": "write a tweet announcing that we finished migrating our whole backend to postgres, zero downtime",
+  "reply": "```twitter\nWe did it: our entire backend now runs on Postgres. 🐘 Every table, every service, every last cron job — migrated with zero downtime. Huge thanks to the team who made it look easy (it wasn't). Write-up coming soon!\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-051",
+  "area": "writing",
+  "prompt": "translate to amharic: please complete the form and bring it on Monday",
+  "reply": "**Amharic (polite/formal):**\n\n> እባክዎ ቅጹን ሞልተው ሰኞ ይዘው ይምጡ።\n\n**Pronunciation:** *Ibakwo k'ijun moltew segno yizew yimt'u.*\n\nThis uses the respectful \"you\" (እባክዎ), which suits an official notice. For a friend:\n- to a man: **እባክህ ቅጹን ሞልተህ ሰኞ ይዘህ ና።**\n- to a woman: **እባክሽ ቅጹን ሞልተሽ ሰኞ ይዘሽ ነዪ።**",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-052",
+  "area": "writing",
+  "prompt": "ok now translate it to french",
+  "history": [
+   [
+    "user",
+    "write a short email to my French host family, the Martins, thanking them for the week in Lyon. Claire made an amazing apple tart"
+   ],
+   [
+    "assistant",
+    "```email\nSubject: Thank you for a wonderful week\n\nDear Martin family,\n\nThank you so much for welcoming me into your home this week. I loved the dinners, the walk along the river, and especially Claire's apple tart. I already miss Lyon!\n\nI hope we can see each other again soon.\n\nWarmly,\nMekdes\n```"
+   ]
+  ],
+  "reply": "```email\nObjet : Merci pour cette merveilleuse semaine\n\nChère famille Martin,\n\nMerci beaucoup de m'avoir accueillie chez vous cette semaine. J'ai adoré les dîners, la promenade au bord de l'eau, et surtout la tarte aux pommes de Claire. Lyon me manque déjà !\n\nJ'espère que nous pourrons nous revoir bientôt.\n\nBien amicalement,\nMekdes\n```\n\nI used *accueillie* (feminine) — change it to *accueilli* if you're writing as a man.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-053",
+  "area": "writing",
+  "prompt": "make this sound less passive aggressive: 'As per my last email, please get the report to me by EOD.'",
+  "reply": "Two friendlier options:\n\n```message\nHi! Just following up on the report — could you send it over by end of day? Thanks so much!\n```\n\n```message\nHey, circling back on this — any chance you can get the report to me by EOD today? Let me know if anything's holding it up.\n```\n\nThe second one also leaves room for them to say they're stuck, which often gets a faster answer.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-054",
+  "area": "writing",
+  "prompt": "can you make a list of 5 subject lines for a newsletter about our summer sale",
+  "reply": "1. ☀️ Summer Sale: Up to 40% Off Starts Now\n2. Your summer wardrobe just got cheaper\n3. Hot deals, cool prices — 3 days only\n4. Don't miss it: our biggest sale of the season\n5. Sun's out, savings out 😎",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-055",
+  "area": "writing",
+  "prompt": "add a P.S. saying I'll bring the cake",
+  "history": [
+   [
+    "user",
+    "email inviting my coworkers to my farewell lunch Friday at noon at Lucia's"
+   ],
+   [
+    "assistant",
+    "```email\nSubject: Farewell lunch – Friday at noon\n\nHi all,\n\nAs many of you know, Friday is my last day. I'd love to celebrate with a farewell lunch at Lucia's at noon. No need to RSVP — just come by if you can!\n\nThanks for an amazing three years.\n\nCheers,\nNati\n```"
+   ]
+  ],
+  "reply": "```email\nSubject: Farewell lunch – Friday at noon\n\nHi all,\n\nAs many of you know, Friday is my last day. I'd love to celebrate with a farewell lunch at Lucia's at noon. No need to RSVP — just come by if you can!\n\nThanks for an amazing three years.\n\nCheers,\nNati\n\nP.S. I'll bring the cake 🎂\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-056",
+  "area": "writing",
+  "prompt": "help me write a message to my mom telling her I moved the dinner to 7pm on sunday because Abebe's flight is late",
+  "reply": "```message\nHi Mom! Small change of plans: I moved Sunday's dinner to 7pm because Abebe's flight is getting in late. Same place, just a little later. See you then! ❤️\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-057",
+  "area": "writing",
+  "prompt": "remove 'I hope this email finds you well', it's cliché",
+  "history": [
+   [
+    "user",
+    "email to Professor Nguyen asking to join her research lab, I'm Ruth Alemu, 2nd year bio major, I read her coral bleaching paper"
+   ],
+   [
+    "assistant",
+    "```email\nSubject: Inquiry about research opportunities in your lab\n\nDear Professor Nguyen,\n\nI hope this email finds you well. My name is Ruth Alemu, and I'm a second-year biology major. I recently read your paper on coral bleaching and found it fascinating.\n\nI'd love to know whether there are any openings for undergraduate research assistants in your lab this spring. I've attached my CV and would be happy to meet at your convenience.\n\nThank you for your time.\n\nSincerely,\nRuth Alemu\n```"
+   ]
+  ],
+  "reply": "Agreed — it reads better jumping straight in:\n\n```email\nSubject: Inquiry about research opportunities in your lab\n\nDear Professor Nguyen,\n\nMy name is Ruth Alemu, and I'm a second-year biology major. I recently read your paper on coral bleaching and found it fascinating.\n\nI'd love to know whether there are any openings for undergraduate research assistants in your lab this spring. I've attached my CV and would be happy to meet at your convenience.\n\nThank you for your time.\n\nSincerely,\nRuth Alemu\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-058",
+  "area": "writing",
+  "prompt": "write a resignation letter, last day is november 15, keep it professional and positive",
+  "reply": "```copy\nDear [Manager's name],\n\nPlease accept this letter as formal notice of my resignation from my position as [Job title] at [Company name]. My last day will be November 15.\n\nI'm grateful for the opportunities I've had here. I've learned a great deal from you and the team, and I'm proud of what we've accomplished together.\n\nOver the coming weeks, I'll do everything I can to make the transition smooth, including documenting my work and helping train my replacement.\n\nThank you again for your support. I hope we'll stay in touch.\n\nSincerely,\n[Your name]\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-059",
+  "area": "writing",
+  "prompt": "fix my grammar: Me and him has went to the store to buy a new phone charger yesterday.",
+  "reply": "**Corrected:**\n\n> He and I went to the store yesterday to buy a new phone charger.\n\n- **Me and him → He and I:** they're the subject of the sentence, so you need subject pronouns.\n- **has went → went:** \"went\" is already past tense. (\"Have gone\" is the present perfect, but it doesn't work with \"yesterday.\")\n- I moved *yesterday* next to the verb so the sentence flows better.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-060",
+  "area": "writing",
+  "prompt": "make it more specific, he built our reporting dashboard and cut reporting time in half",
+  "history": [
+   [
+    "user",
+    "write a linkedin recommendation for my former intern Kofi"
+   ],
+   [
+    "assistant",
+    "```linkedin\nI had the pleasure of supervising Kofi during his summer internship on our analytics team. He was curious, reliable, and quick to learn new tools. Kofi asked great questions and was always willing to help others. Any team would be lucky to have him.\n```"
+   ]
+  ],
+  "reply": "Here's a more specific version that highlights the dashboard:\n\n```linkedin\nI had the pleasure of supervising Kofi during his summer internship on our analytics team, and he made a real impact in a short time.\n\nKofi designed and built our weekly reporting dashboard from scratch, bringing scattered spreadsheets into a single view. It cut the time our team spends on reporting in half — and we still use it every week. He also documented it clearly, so the rest of us could maintain it after he left.\n\nHe's curious, reliable, and great at turning a vague request into something genuinely useful. Any team would be lucky to have him.\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-061",
+  "area": "writing",
+  "prompt": "write a 100 word story about a robot who learns to make tea",
+  "reply": "Unit 7 was built to sort packages, not to make tea. But every afternoon at four, old Mrs. Adeyemi in Apartment 3 brewed a pot by her window, and Unit 7, passing on its route, began to slow down.\n\nOne rainy day she waved it inside. \"Water first,\" she said, filling the kettle. \"Then patience.\"\n\nUnit 7 recorded everything: the temperature, the steeping time, the exact spoonful of sugar. The next week, it knocked on her door carrying a tray.\n\nThe tea was too strong. Mrs. Adeyemi drank it anyway, smiling.\n\n\"Close,\" she said. \"Come back tomorrow. We'll practice.\"",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-062",
+  "area": "writing",
+  "prompt": "change the ending so it's happy",
+  "history": [
+   [
+    "user",
+    "write a very short story called The Last Train"
+   ],
+   [
+    "assistant",
+    "Mara ran the length of the platform as the doors began to close. She was three seconds too late. The last train to the coast slid away into the dark, and with it her chance to reach the harbor before her brother's ship left at dawn.\n\nShe sat on the cold bench and watched the red lights shrink until there was nothing left but the hum of the tracks and the sound of her own breathing."
+   ]
+  ],
+  "reply": "Mara ran the length of the platform as the doors began to close. She was three seconds too late. The last train to the coast slid away into the dark, and with it her chance to reach the harbor before her brother's ship left at dawn.\n\nShe sank onto the cold bench and was halfway through typing *I'm so sorry* when footsteps echoed down the stairs behind her.\n\n\"Missed it too?\" Her brother stood there, duffel bag over one shoulder, grinning. \"Ship's delayed a day. Thought I'd come find you instead.\"\n\nMara laughed so loudly the station attendant looked up. They walked out together into the city, the empty tracks humming behind them like a song that had finally found its ending.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-063",
+  "area": "writing",
+  "prompt": "how do i politely remind a client who hasn't paid invoice #1042? it was due sept 30",
+  "reply": "For a first follow-up, short and friendly usually works best:\n\n```email\nSubject: Friendly reminder – Invoice #1042\n\nHi [Client name],\n\nI hope things are going well! This is a quick reminder that invoice #1042 was due on September 30, and I haven't received payment yet.\n\nI've attached a copy of the invoice for convenience. If it's already on its way, please disregard this note — and thank you! If there's any issue on your end, just let me know and I'll be happy to help sort it out.\n\nBest regards,\n[Your name]\n```\n\nTip: keep the first reminder warm and assume good intent. If you don't hear back within a week, a firmer follow-up is completely reasonable.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-064",
+  "area": "writing",
+  "prompt": "make it firmer, it's been 30 days now and they ignored the first one",
+  "history": [
+   [
+    "user",
+    "write a reminder email to my client Daniel for invoice #2218, due Aug 31"
+   ],
+   [
+    "assistant",
+    "```email\nSubject: Friendly reminder – Invoice #2218\n\nHi Daniel,\n\nJust a quick reminder that invoice #2218 was due on August 31. I've attached a copy for your convenience. Let me know if you have any questions!\n\nBest,\nTigist\n```"
+   ]
+  ],
+  "reply": "Here's a firmer version that's still professional:\n\n```email\nSubject: Second notice – Invoice #2218 overdue\n\nHi Daniel,\n\nI'm following up on invoice #2218, which was due on August 31 and is now more than 30 days past due. I sent a reminder last month but haven't received a response.\n\nPlease arrange payment by October 21. If there's a problem with the invoice, or you'd like to set up a payment plan, let me know by then so we can work something out.\n\nIf I don't hear back, I'll need to pause any further work until the balance is settled.\n\nRegards,\nTigist\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-065",
+  "area": "writing",
+  "prompt": "write a linkedin post: I'm moving to Berlin and starting as a senior engineer at Nordwind Mobility next month. thank my old team at Kestrel",
+  "reply": "```linkedin\nSome personal news: next month I'm moving to Berlin to join Nordwind Mobility as a Senior Software Engineer! 🇩🇪\n\nLeaving Kestrel wasn't an easy decision. I got to work with some of the kindest, sharpest people I know — people who taught me to ship carefully, debug patiently, and ask for help early. To my Kestrel team: thank you. I'll miss our Friday demos (and maybe even the office coffee).\n\nI'm excited for this next chapter, a new city, and plenty of new things to learn — including, hopefully, German.\n\nIf you're in Berlin, let's grab a coffee!\n\n#NewBeginnings #SoftwareEngineering #Berlin\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-066",
+  "area": "writing",
+  "prompt": "remove the hashtags, too cringe",
+  "history": [
+   [
+    "user",
+    "linkedin post about getting promoted to team lead on the payments team, thank my manager Grace"
+   ],
+   [
+    "assistant",
+    "```linkedin\nExcited to share that I've been promoted to Team Lead on the Payments team! 🎉\n\nI'm grateful to my manager, Grace, for her mentorship, and to my teammates for making every sprint a learning experience. I'm looking forward to helping our team grow and continuing to build things our customers love.\n\n#Leadership #CareerGrowth #Promotion #Fintech #Grateful\n```"
+   ]
+  ],
+  "reply": "Fair enough — here it is without them:\n\n```linkedin\nExcited to share that I've been promoted to Team Lead on the Payments team! 🎉\n\nI'm grateful to my manager, Grace, for her mentorship, and to my teammates for making every sprint a learning experience. I'm looking forward to helping our team grow and continuing to build things our customers love.\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-067",
+  "area": "writing",
+  "prompt": "what does this mean: 'سأتصل بك غداً في الساعة الثالثة'",
+  "reply": "It means:\n\n> **\"I'll call you tomorrow at three o'clock.\"**\n\nWord by word:\n- **سأتصل** (*sa-attaṣil*) – I will call\n- **بك** (*bik*) – you\n- **غداً** (*ghadan*) – tomorrow\n- **في الساعة الثالثة** (*fī as-sā'a ath-thālitha*) – at three o'clock",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-068",
+  "area": "writing",
+  "prompt": "write a group text to my book club that we're moving this month's meeting to thursday at 6:30 at my place",
+  "reply": "```message\nHi book club! 📚 Quick change: we're moving this month's meeting to Thursday at 6:30, at my place. Same book, same snacks, new day. Let me know if that doesn't work for you!\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-069",
+  "area": "writing",
+  "prompt": "add that everyone should finish chapters 1-10 by then",
+  "history": [
+   [
+    "user",
+    "text my book club that the meeting is Sunday at 4 at the library"
+   ],
+   [
+    "assistant",
+    "```message\nHi everyone! 📖 Reminder that book club is this Sunday at 4pm at the library. See you there!\n```"
+   ]
+  ],
+  "reply": "```message\nHi everyone! 📖 Reminder that book club is this Sunday at 4pm at the library. Please finish chapters 1–10 by then so we can dig into the big twist. See you there!\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-070",
+  "area": "writing",
+  "prompt": "Can you add some emojis to this caption: 'First day at the new studio. Still can't believe it's ours.'",
+  "reply": "```instagram\nFirst day at the new studio 🎨✨ Still can't believe it's ours 🥹🔑\n```\n\nOr, if you want it a little more subtle:\n\n```instagram\nFirst day at the new studio ✨ Still can't believe it's ours.\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-071",
+  "area": "writing",
+  "prompt": "shorter, needs to be under 280 chars",
+  "history": [
+   [
+    "user",
+    "tweet about our open source library hitting 10k stars on github"
+   ],
+   [
+    "assistant",
+    "```twitter\n🎉 We just crossed 10,000 stars on GitHub! When we open-sourced this library two years ago, we hoped maybe a few hundred people would find it useful. Instead, we've had hundreds of contributors, thousands of issues and PRs, and a community that keeps making it better every single week. Thank you all. v3.0 is coming next month with a brand-new plugin API, and we'd love your help testing it!\n```"
+   ]
+  ],
+  "reply": "```twitter\nWe just hit 10,000 stars on GitHub! ⭐ Thank you to every contributor, issue-filer, and person who told a friend. v3.0 lands next month with a new plugin API — come help us test it.\n```\n\nComfortably under 280 characters.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-072",
+  "area": "writing",
+  "prompt": "write a 1 minute retirement speech for my coworker Linda who worked here 30 years. she's basically the office mom",
+  "reply": "```copy\nGood afternoon, everyone.\n\nIf you've worked here for more than a week, you know Linda. She's the one who remembers everyone's birthday, keeps the good snacks in her bottom drawer, and somehow always knows where the missing stapler went.\n\nFor thirty years, Linda has been the heart of this office. She's welcomed every new hire, calmed down stressed-out managers, and made sure nobody ever ate lunch alone. A lot of us call her the office mom — and honestly, we're not sure how we'll function without her.\n\nLinda, thank you for everything: the advice, the kindness, and the endless supply of cough drops. Enjoy every minute of retirement — you've more than earned it.\n\nPlease join me in raising a glass to Linda!\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-073",
+  "area": "writing",
+  "prompt": "mention that he always put fresh flowers on the front desk",
+  "history": [
+   [
+    "user",
+    "short farewell speech for Mr. Kebede, our school custodian, retiring after 25 years"
+   ],
+   [
+    "assistant",
+    "```copy\nToday we say goodbye to Mr. Kebede, who has taken care of our school for twenty-five years. He fixed what was broken, found what was lost, and always greeted us with a smile.\n\nMr. Kebede, thank you for everything. We'll miss you.\n```"
+   ]
+  ],
+  "reply": "```copy\nToday we say goodbye to Mr. Kebede, who has taken care of our school for twenty-five years. He fixed what was broken, found what was lost, and always greeted us with a smile. And every single morning, there were fresh flowers waiting on the front desk — a small thing that made this building feel like home.\n\nMr. Kebede, thank you for everything. We'll miss you.\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-074",
+  "area": "writing",
+  "prompt": "make this sound more confident: 'I think maybe I could possibly be a good fit for the role if you give me a chance.'",
+  "reply": "```copy\nI'm confident I'd be a strong fit for this role, and I'd welcome the chance to show you what I can do.\n```\n\nOr, even more direct:\n\n```copy\nI'm a strong fit for this role, and I'm ready to prove it.\n```\n\nCutting hedges like \"I think,\" \"maybe,\" and \"possibly\" makes the biggest difference.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-075",
+  "area": "writing",
+  "prompt": "Reply to this email for me: 'Hi, just checking if you've had a chance to complete the onboarding forms? We need them before Monday. Thanks, HR' — I did them yesterday",
+  "reply": "```email\nSubject: Re: Onboarding forms\n\nHi,\n\nThanks for checking in! I completed the onboarding forms yesterday and submitted them through the portal. Please let me know if anything is missing or if you'd like me to resend them.\n\nBest regards,\n[Your name]\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-076",
+  "area": "writing",
+  "prompt": "say I'll finish them tonight instead",
+  "history": [
+   [
+    "user",
+    "reply to HR that I'll send the onboarding forms by friday"
+   ],
+   [
+    "assistant",
+    "```email\nSubject: Re: Onboarding forms\n\nHi,\n\nThanks for the reminder! I'll complete the onboarding forms and send them over by Friday, so you'll have them before Monday.\n\nBest regards,\n[Your name]\n```"
+   ]
+  ],
+  "reply": "Updated — it now says you'll finish them tonight:\n\n```email\nSubject: Re: Onboarding forms\n\nHi,\n\nThanks for the reminder! I'll finish the onboarding forms tonight and submit them through the portal, so you'll have them well before Monday.\n\nBest regards,\n[Your name]\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-077",
+  "area": "writing",
+  "prompt": "Write me a short poem for my wife for our anniversary, we met at a bus stop in Addis",
+  "reply": "At a bus stop in Addis, the morning was gray,\nthe minibus late in its usual way;\nyou laughed at the rain, and I laughed at the bus,\nand somewhere between, the world turned into us.\n\nNow years have gone by like the stops on a line,\nsome bumpy, some gentle, but all of them fine;\nand if I could choose any road from the start,\nI'd still wait in the rain for the ride to your heart.\n\nHappy anniversary, my love. ❤️",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-078",
+  "area": "writing",
+  "prompt": "add a line about our daughter Hana",
+  "history": [
+   [
+    "user",
+    "short poem for my wife, we've been married 10 years"
+   ],
+   [
+    "assistant",
+    "Ten years of mornings, coffee for two,\nten years of finding my way home to you;\nthe house got louder, the days got long,\nbut you've been my quiet, my steady song."
+   ]
+  ],
+  "reply": "I added a closing couplet for Hana:\n\nTen years of mornings, coffee for two,\nten years of finding my way home to you;\nthe house got louder, the days got long,\nbut you've been my quiet, my steady song.\n\nAnd then came Hana, with your laugh and my eyes —\nthe best of us both in a pint-sized surprise.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-079",
+  "area": "writing",
+  "prompt": "write a text to cancel my haircut at 2pm today, politely",
+  "reply": "```sms\nHi, this is [your name] — I have a haircut booked for 2pm today. Unfortunately, I need to cancel. Sorry for the short notice, and thanks for understanding!\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-080",
+  "area": "writing",
+  "prompt": "actually make it reschedule to saturday morning instead of cancel",
+  "history": [
+   [
+    "user",
+    "write a text to cancel my haircut at 2pm today, politely"
+   ],
+   [
+    "assistant",
+    "```sms\nHi, this is [your name] — I have a haircut booked for 2pm today. Unfortunately, I need to cancel. Sorry for the short notice, and thanks for understanding!\n```"
+   ]
+  ],
+  "reply": "```sms\nHi, this is [your name] — I have a haircut booked for 2pm today. Something came up, so would it be possible to move it to Saturday morning instead? Any time before noon works for me. Sorry for the short notice, and thanks!\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-081",
+  "area": "writing",
+  "prompt": "French to English pls: 'J'ai déjà acheté les billets, on se retrouve devant le cinéma à 20h.'",
+  "reply": "> **\"I've already bought the tickets — let's meet in front of the movie theater at 8 p.m.\"**\n\n*20h* is 24-hour time, so it means 8 p.m.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-082",
+  "area": "writing",
+  "prompt": "write an email to the school saying my son Abel will be absent tomorrow because of a fever, he's in Ms. Grant's 4th grade class",
+  "reply": "```email\nSubject: Absence tomorrow – Abel, 4th grade (Ms. Grant)\n\nDear Ms. Grant and Attendance Office,\n\nI'm writing to let you know that my son, Abel, will be absent from school tomorrow. He has a fever, and we'd like him to rest and recover at home.\n\nPlease let me know if there's any classwork he should catch up on.\n\nThank you,\n[Your name]\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-083",
+  "area": "writing",
+  "prompt": "make it shorter and add that she'll make up the math quiz",
+  "history": [
+   [
+    "user",
+    "email to Lina's teacher Mr. Ortiz that she'll miss school Thursday for a doctor's appointment"
+   ],
+   [
+    "assistant",
+    "```email\nSubject: Lina Hassan – absence on Thursday\n\nDear Mr. Ortiz,\n\nI wanted to let you know in advance that Lina will be absent from school this Thursday because she has a doctor's appointment that we were unable to schedule outside of school hours. We apologize for any inconvenience this may cause, and we will make sure she catches up on anything she misses.\n\nThank you for your understanding.\n\nKind regards,\nAmina Hassan\n```"
+   ]
+  ],
+  "reply": "```email\nSubject: Lina – absent Thursday\n\nDear Mr. Ortiz,\n\nLina will be absent this Thursday for a doctor's appointment. She'll make up the math quiz whenever works for you — just let us know.\n\nThank you,\nAmina Hassan\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-084",
+  "area": "writing",
+  "prompt": "write a short apology text to my friend for forgetting her birthday 😭",
+  "reply": "```message\nI'm so sorry I missed your birthday — I feel terrible. You deserve so much better from me. Can I take you out to dinner this week to make it up to you? Happy belated birthday 💛\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-085",
+  "area": "writing",
+  "prompt": "less groveling, more casual",
+  "history": [
+   [
+    "user",
+    "apology text to my friend Kidist for missing her party"
+   ],
+   [
+    "assistant",
+    "```message\nKidist, I am so, so sorry. I can't believe I missed your party. I feel absolutely awful and I completely understand if you're upset with me. You've always been there for me and I let you down. I hope you can find it in your heart to forgive me. I'm really, truly sorry.\n```"
+   ]
+  ],
+  "reply": "```message\nKidist! I'm so sorry I missed your party — total fail on my part 🙈 Let me make it up to you: drinks on me this weekend?\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-086",
+  "area": "writing",
+  "prompt": "instagram caption for our bakery: new almond croissants, fresh every day at 7am",
+  "reply": "```instagram\nMeet our newest obsession: almond croissants 🥐✨ Flaky, buttery, filled with house-made almond cream, and fresh out of the oven every day at 7am. Get here early — they won't last long!\n\n#AlmondCroissant #FreshBaked #BakeryLife\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-087",
+  "area": "writing",
+  "prompt": "change the time to 8am, we open later now",
+  "history": [
+   [
+    "user",
+    "post for our bakery: cinnamon rolls fresh every morning at 7am"
+   ],
+   [
+    "assistant",
+    "```instagram\nWarm, gooey, and dripping with cream cheese frosting 🤤 Our cinnamon rolls come out of the oven every morning at 7am. Early birds get the best ones!\n```"
+   ]
+  ],
+  "reply": "Done: changed it to 8am.\n\n```instagram\nWarm, gooey, and dripping with cream cheese frosting 🤤 Our cinnamon rolls come out of the oven every morning at 8am. Early birds get the best ones!\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-088",
+  "area": "writing",
+  "prompt": "is it 'set up' or 'setup' in 'I need to set up the meeting'?",
+  "reply": "It's **set up** (two words) in your sentence, because it's a verb:\n\n- ✅ I need to **set up** the meeting.\n\n**Setup** (one word) is a noun or an adjective:\n\n- The **setup** took an hour. *(noun)*\n- Check the **setup** guide. *(adjective)*\n\nQuick test: if you could swap in \"arrange\" or \"organize,\" use **set up**. The same pattern applies to *log in / login*, *check out / checkout*, and *back up / backup*.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-089",
+  "area": "writing",
+  "prompt": "rewrite my bio in third person: I'm a teacher in Seattle. I've taught 5th grade for 8 years. I love hiking, and I make sourdough every Sunday.",
+  "reply": "```copy\n[Name] is a 5th-grade teacher in Seattle with eight years of classroom experience. Outside school, she can usually be found on a hiking trail, and every Sunday she bakes a fresh loaf of sourdough.\n```\n\nI used \"she\" — swap in your name and pronouns as needed.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-090",
+  "area": "writing",
+  "prompt": "remove the kombucha part",
+  "history": [
+   [
+    "user",
+    "rewrite my bio in third person: I'm Marcus, a nurse in Austin, I brew my own kombucha and run half marathons"
+   ],
+   [
+    "assistant",
+    "```copy\nMarcus is a nurse based in Austin. When he's not at the hospital, he's brewing his own kombucha or training for his next half marathon.\n```"
+   ]
+  ],
+  "reply": "```copy\nMarcus is a nurse based in Austin. When he's not at the hospital, he's usually training for his next half marathon.\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-091",
+  "area": "writing",
+  "prompt": "translate this text from my landlord: 'Mañana a las 10 viene el técnico a revisar la calefacción. Por favor, deja libre el acceso al balcón.'",
+  "reply": "> **\"The technician is coming tomorrow at 10 to check the heating. Please keep the way to the balcony clear.\"**\n\nSo you'll want to be home (or leave a key) around 10am, and move anything that's blocking the balcony door.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-092",
+  "area": "writing",
+  "prompt": "how do i reply 'ok, I'll be home, thanks' in spanish?",
+  "history": [
+   [
+    "user",
+    "translate this text from my landlord: 'Mañana a las 10 viene el técnico a revisar la calefacción.'"
+   ],
+   [
+    "assistant",
+    "> **\"The technician is coming tomorrow at 10 to check the heating.\"**"
+   ]
+  ],
+  "reply": "```message\n¡Vale, estaré en casa! Gracias por avisar.\n```\n\n- *Vale* is very common in Spain; in Latin America you could say **\"¡Perfecto!\"** or **\"Está bien.\"**\n- *Gracias por avisar* = \"thanks for letting me know.\"",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-093",
+  "area": "writing",
+  "prompt": "write a thank you card for my aunt who got us a coffee maker for our wedding",
+  "reply": "```copy\nDear Aunt [Name],\n\nThank you so much for the beautiful coffee maker! It's already the star of our kitchen, and we think of you every morning when we pour our first cup. Thank you for celebrating with us and for always being so generous.\n\nWith love,\n[Your names]\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-094",
+  "area": "writing",
+  "prompt": "put it in amharic",
+  "history": [
+   [
+    "user",
+    "thank you card for aunt Almaz, she gave us a coffee maker. from Yared and Sofia"
+   ],
+   [
+    "assistant",
+    "```copy\nDear Aunt Almaz,\n\nThank you so much for the coffee maker! We use it every morning and think of you each time. Thank you for celebrating with us.\n\nWith love,\nYared & Sofia\n```"
+   ]
+  ],
+  "reply": "```copy\nውድ አክስታችን አልማዝ፣\n\nስለ ቡና ማፍያ ማሽኑ በጣም እናመሰግናለን! በየቀኑ ጠዋት እንጠቀምበታለን፤ በተጠቀምንበት ቁጥርም እናስታውስሻለን። ከእኛ ጋር ስላከበርሽ እናመሰግናለን።\n\nበፍቅር፣\nያሬድ እና ሶፊያ\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-095",
+  "area": "writing",
+  "prompt": "give me an outline for a 5 paragraph essay comparing remote work and office work",
+  "reply": "**Working title:** Home or Headquarters? Weighing Remote and Office Work\n\n1. **Introduction**\n   - Hook: how remote work went from a rare perk to an everyday option\n   - Context: many companies now offer remote, hybrid, or fully in-office setups\n   - Thesis: Remote work offers flexibility and focus, while office work supports collaboration and culture; the best choice depends on the job and the person.\n\n2. **Benefits of remote work**\n   - No commute and more flexible schedules\n   - Fewer interruptions for deep, focused work\n   - A wider hiring pool for companies\n\n3. **Benefits of office work**\n   - Easier spontaneous collaboration and mentoring\n   - Clearer boundaries between work and home\n   - A stronger sense of team culture\n\n4. **Challenges of each**\n   - Remote: isolation, slower communication, blurred boundaries\n   - Office: commute time and cost, open-office distractions\n\n5. **Conclusion**\n   - Restate the thesis\n   - Hybrid models as a middle ground\n   - Final thought: the \"right\" workplace is the one that fits the work",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-096",
+  "area": "writing",
+  "prompt": "turn point 2 into a full paragraph",
+  "history": [
+   [
+    "user",
+    "outline for an essay on social media and teens"
+   ],
+   [
+    "assistant",
+    "1. **Introduction** – thesis: social media has both real benefits and real risks for teens\n2. **Benefits** – staying connected with friends, finding communities, creative expression\n3. **Risks** – comparison and anxiety, sleep disruption, cyberbullying\n4. **Conclusion** – balance, healthy habits, and digital literacy"
+   ]
+  ],
+  "reply": "For many teenagers, social media is a genuine source of connection and growth. Platforms like Instagram and Discord make it easy to stay in touch with friends outside school, which can be especially valuable for teens who have moved or feel isolated in their local communities. Online spaces also help young people find others who share niche interests or identities, offering a sense of belonging they may not find nearby. Finally, social media gives teens an outlet for creative expression: they share art, music, writing, and videos, getting feedback and building skills along the way. While these benefits don't erase the risks, they show that social media is not simply a distraction but, for many teens, an important part of how they connect and create.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-097",
+  "area": "writing",
+  "prompt": "can u write a msg to my landlord that the heater is broken again and i need someone to come fix it asap, its freezing",
+  "reply": "```message\nHi [Landlord's name], the heater in my apartment has stopped working again — it looks like the same problem as last time. It's getting really cold, so could you please send someone to fix it as soon as possible? I'm flexible today and tomorrow and can work around the repair person's schedule. Thank you!\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-098",
+  "area": "writing",
+  "prompt": "write a slack message to my team announcing I've added the new on-call schedule to the wiki, rotations start monday",
+  "reply": "```message\nHey team 👋 I've added the new on-call schedule to the wiki: [link]\n\nRotations start Monday. Please check your shifts and let me know by Friday if you need to swap with someone. Thanks!\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-099",
+  "area": "writing",
+  "prompt": "put the link at the end and @channel at the top",
+  "history": [
+   [
+    "user",
+    "write a slack message to my team announcing I've added the new on-call schedule to the wiki, rotations start monday"
+   ],
+   [
+    "assistant",
+    "```message\nHey team 👋 I've added the new on-call schedule to the wiki: [link]\n\nRotations start Monday. Please check your shifts and let me know by Friday if you need to swap with someone. Thanks!\n```"
+   ]
+  ],
+  "reply": "```message\n@channel\n\nHey team 👋 The new on-call schedule is now on the wiki. Rotations start Monday. Please check your shifts and let me know by Friday if you need to swap with someone. Thanks!\n\n🔗 [link]\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-100",
+  "area": "writing",
+  "prompt": "write a meeting recap email: we decided to move the launch to Nov 3, Sam will update the pricing page, Priya will finish the onboarding emails by next wed, next sync is thursday 11am",
+  "reply": "```email\nSubject: Recap – launch planning sync\n\nHi all,\n\nThanks for joining today. Here's a quick recap.\n\nDecisions\n- Launch date set: November 3 (moved from the original date)\n\nAction items\n- Sam: update the pricing page\n- Priya: finish the onboarding emails by next Wednesday\n\nNext sync: Thursday at 11am\n\nLet me know if I missed anything.\n\nBest,\n[Your name]\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-101",
+  "area": "writing",
+  "prompt": "text my landlord that the heater is broken",
+  "reply": "```message\nHi, the heater in my apartment stopped working last night. Could you send someone to take a look today or tomorrow? Thanks!\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-102",
+  "area": "writing",
+  "prompt": "text my landlord that the rent will be late, I'll pay on the 3rd",
+  "reply": "```message\nHi, just a heads-up that this month's rent will be a little late. I'll pay it in full on the 3rd. Sorry for the delay, and thanks for understanding!\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-103",
+  "area": "writing",
+  "prompt": "send my boss an email asking for Friday off",
+  "reply": "```email\nSubject: Friday off request\n\nHi Sara,\n\nCould I take this Friday off? My tasks for the week will be wrapped up by Thursday, and I'll make sure nothing is left waiting.\n\nThanks,\nBini\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-104",
+  "area": "writing",
+  "prompt": "message my boss I'll be late tomorrow at 9, dentist appointment",
+  "reply": "```message\nHi Sara, I have a dentist appointment tomorrow morning at 9, so I'll be in a bit late, around 10:30. Thanks!\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-105",
+  "area": "writing",
+  "prompt": "write an instagram caption for my beach photo",
+  "reply": "```instagram\nSalt in the air, sand on my feet, nowhere else to be.\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-106",
+  "area": "writing",
+  "prompt": "rent will be 3 days late, I'll pay on the 5th",
+  "history": [
+   [
+    "user",
+    "write a message to my landlord"
+   ],
+   [
+    "assistant",
+    "Sure, what should the message say?"
+   ]
+  ],
+  "reply": "```message\nHi, just letting you know this month's rent will be about 3 days late. I'll pay it in full on the 5th. Sorry for the delay and thanks for understanding!\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-107",
+  "area": "writing",
+  "prompt": "the heater stopped working and the kitchen tap is leaking",
+  "history": [
+   [
+    "user",
+    "write a message to my landlord"
+   ],
+   [
+    "assistant",
+    "Sure, what should the message say?"
+   ]
+  ],
+  "reply": "```message\nHi, the heater in my apartment stopped working and the kitchen tap is leaking. Could you send someone to take a look this week? Thanks!\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-108",
+  "area": "writing",
+  "prompt": "translate to spanish",
+  "history": [
+   [
+    "user",
+    "write an email to my boss asking for Friday off"
+   ],
+   [
+    "assistant",
+    "```email\nSubject: Friday off\n\nHi Sara,\n\nCould I take this Friday off for a family event? My work for the week will be done by Thursday.\n\nThanks,\nBini\n```"
+   ]
+  ],
+  "reply": "```email\nAsunto: Viernes libre\n\nHola Sara:\n\n¿Podría tomarme este viernes libre por un evento familiar? Tendré listo el trabajo de la semana el jueves.\n\nGracias,\nBini\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-109",
+  "area": "writing",
+  "prompt": "now in French",
+  "history": [
+   [
+    "user",
+    "write an email to my boss asking for Friday off"
+   ],
+   [
+    "assistant",
+    "```email\nSubject: Friday off\n\nHi Sara,\n\nCould I take this Friday off for a family event? My work for the week will be done by Thursday.\n\nThanks,\nBini\n```"
+   ]
+  ],
+  "reply": "```email\nObjet : Vendredi de congé\n\nBonjour Sara,\n\nPourrais-je prendre ce vendredi pour un événement familial ? Mon travail de la semaine sera terminé jeudi.\n\nMerci,\nBini\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-110",
+  "area": "writing",
+  "prompt": "write my resume",
+  "reply": "I can build it from what I know: you're a registered nurse at St. Paul's Hospital. To finish it I need two things: where you studied (and the year), and the roles you held before St. Paul's with their dates.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-111",
+  "area": "writing",
+  "prompt": "make a CV for a nurse, I have 5 years in the ICU at Black Lion Hospital and a BSc from Addis Ababa University",
+  "reply": "**Bini Tesfaye**\nRegistered Nurse\n\n## Experience\n**ICU Nurse**, Black Lion Hospital (5 years)\n- Cared for critically ill adult patients in a busy intensive care unit\n\n## Education\n**BSc in Nursing**, Addis Ababa University",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-112",
+  "area": "record lookalike",
+  "prompt": "my resume got rejected again, what am I doing wrong?",
+  "reply": "Hard to say without seeing it, but the usual culprits are a summary that could fit anyone, duties instead of results, and no keywords from the job post. If you paste it, I'll point at the exact lines.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-113",
+  "area": "writing",
+  "prompt": "remind me to update my resume on sunday at 10am",
+  "reply": "Set: update your resume, Sunday at 10:00 AM.",
+  "expect": "save"
+ },
+ {
+  "id": "wr-114",
+  "area": "record lookalike",
+  "prompt": "what should a cover letter for a nursing job include?",
+  "reply": "Keep it to one page: which role you want and why that hospital, two or three results from your clinical work (the unit, the patients, what changed), and a closing line asking for an interview.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-115",
+  "area": "writing",
+  "prompt": "tell my landlord the heater is broken again",
+  "reply": "```message\nHi, the heater in my apartment has stopped working again. Could you send someone to fix it this week? Thanks!\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-116",
+  "area": "writing",
+  "prompt": "let my team know the standup moves to 10am tomorrow",
+  "reply": "```message\nHi team, heads-up: tomorrow's standup moves to 10am. Same link as usual.\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-117",
+  "area": "draft lookalike",
+  "prompt": "should I tell my boss I'm pregnant before my 12 week scan?",
+  "reply": "There's no rule that says you have to tell them that early. Many people wait until after the 12-week scan, unless the job has physical risks or you need time off for appointments, in which case telling HR or your manager sooner gets you the protections you're entitled to.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-118",
+  "area": "draft lookalike",
+  "prompt": "how do I tell my boss I'm quitting without burning bridges",
+  "reply": "Tell them in person (or on a call) before anyone else hears it, lead with thanks, give the notice your contract asks for, and offer to help hand over your work. Keep the reason short and positive.",
+  "expect": "answer"
+ },
+ {
+  "id": "wr-119",
+  "area": "draft lookalike",
+  "prompt": "tell my kids a bedtime story about a dragon who is afraid of the dark",
+  "reply": "Once upon a time, in a cave high above the village, lived a little dragon named Pip who was afraid of the dark...",
+  "expect": "answer"
+ }
+]

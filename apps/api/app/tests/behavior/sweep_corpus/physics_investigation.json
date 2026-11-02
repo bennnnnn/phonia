@@ -1,0 +1,291 @@
+[
+  {
+    "id": "pi-001",
+    "area": "lookalike",
+    "prompt": "I need to dig a hole 3 m deep in the garden, how fast can two people do it?",
+    "history": [],
+    "reply": "Two people with spades can usually dig about half a cubic metre an hour in ordinary soil, so a narrow hole 3 m deep is a full day's work or more. Clay or rock slows it a lot, and past about 1.5 m you need shoring so the sides cannot collapse.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-002",
+    "area": "lookalike",
+    "prompt": "the water tank is 3 m below the roof, how fast does it fill from the mains?",
+    "history": [],
+    "reply": "That depends on your mains pressure and the inlet valve rather than the height: a typical float valve lets in 10 to 20 litres a minute, so a 200 litre tank fills in roughly 10 to 20 minutes.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-003",
+    "area": "lookalike",
+    "prompt": "my 2 kg cake exploded in the oven lol, what went wrong?",
+    "history": [],
+    "reply": "Usually too much raising agent or too hot an oven: the outside sets before the middle has finished rising, and the trapped gas bursts through. Check the baking powder amount and try 10 to 20 °C lower.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-004",
+    "area": "lookalike",
+    "prompt": "someone rear-ended my 1500 kg car at the lights, what do I tell insurance?",
+    "history": [],
+    "reply": "Give them the date, time and place, the other driver's name, plate and insurer, photos of both cars, and any witness details. Say plainly that you were stopped and were hit from behind; do not guess at speeds.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-005",
+    "area": "lookalike",
+    "prompt": "my boat heads straight across the bay tomorrow, what should I pack?",
+    "history": [],
+    "reply": "Life jackets for everyone, water, sunscreen, a hat, a dry bag for phones, a charged radio or phone, and a light jacket for the wind on the water.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-006",
+    "area": "lookalike",
+    "prompt": "how fast is my wifi",
+    "history": [],
+    "reply": "I can't measure it from here. Run a speed test such as fast.com on the device you care about, ideally next to the router and then in the room you use most.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-007",
+    "area": "lookalike",
+    "prompt": "I'm recovering from rest days then going back to the gym at 6, any tips?",
+    "history": [],
+    "reply": "Warm up for 10 minutes, start a little lighter than your last session, and keep the volume moderate for the first day back.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-008",
+    "area": "lookalike",
+    "prompt": "the road narrows to one lane after the bridge, how long is the delay usually?",
+    "history": [],
+    "reply": "Single-lane sections under traffic lights usually add 5 to 10 minutes at busy times and next to nothing off-peak.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-009",
+    "area": "lookalike",
+    "prompt": "the river current is strong today, is it safe to swim across?",
+    "history": [],
+    "reply": "Not if the current is strong: it can carry you downstream faster than you can swim, and cold water tires you quickly. Swim only where there is a lifeguard or with a float and a spotter.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-010",
+    "area": "lookalike",
+    "prompt": "we fly north to Oslo and then east to Helsinki, what's the ground speed of a typical A320?",
+    "history": [],
+    "reply": "An A320 cruises at roughly 830 km/h true airspeed; its ground speed is that plus or minus the wind along the route.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-011",
+    "area": "lookalike",
+    "prompt": "my phone battery drops from 80% to 20% in 3 hours, what's the half-life of my battery lol",
+    "history": [],
+    "reply": "Ha, batteries don't really have half-lives, they drain roughly linearly with use. Losing 60% in 3 hours is heavy though: check which apps use the most battery in settings.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-012",
+    "area": "lookalike",
+    "prompt": "whats the pressure drop I should expect on a long flight for my ears?",
+    "history": [],
+    "reply": "Cabins are pressurised to about the air pressure at 1,800 to 2,400 m, roughly a quarter less than at sea level. Swallowing or yawning on the way down helps your ears equalise.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-013",
+    "area": "physics",
+    "prompt": "a boat heads straight across a river at 4 m/s while the current flows at 3 m/s. what is the boat's resultant speed relative to the bank?",
+    "history": [],
+    "reply": "The two velocities are at right angles, so they add like the sides of a right triangle:\n\n$$v = \\sqrt{4^2 + 3^2} = 5\\,\\text{m/s}$$\n\nThe boat moves at **5 m/s** relative to the bank.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-014",
+    "area": "physics",
+    "prompt": "A 6 kg shell at rest explodes into two pieces, 2 kg and 4 kg. The 2 kg piece flies off at 30 m/s. how fast does the 4 kg piece move?",
+    "history": [],
+    "reply": "Momentum is conserved and starts at zero, so the pieces move apart with equal momenta:\n\n$$v_2 = \\frac{2 \\cdot 30}{4} = 15\\,\\text{m/s}$$\n\nThe 4 kg piece moves at **15 m/s**, the other way.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-015",
+    "area": "physics",
+    "prompt": "how long until only 1/16 of a carbon-14 sample remains? half life 5730 years",
+    "history": [],
+    "reply": "1/16 is four halvings, so the time is four half-lives:\n\n$$t = 4 \\times 5730 = 22920\\ \\text{years}$$\n\nAbout **22,900 years**.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-016",
+    "area": "physics",
+    "prompt": "a sprinter reaches her top speed of 11 m/s in 2.2 s starting from rest and holds it to the finish. how long does she take to run 100 m?",
+    "history": [],
+    "reply": "While speeding up she covers $\\tfrac{1}{2} \\cdot 11 \\cdot 2.2 = 12.1$ m. The remaining 87.9 m at 11 m/s takes 7.99 s, so the whole race takes **10.2 s**.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-017",
+    "area": "lookalike",
+    "prompt": "I'm away for a week, what should I do with my plants?",
+    "history": [],
+    "reply": "Group them together out of direct sun, water them well the day before, and stand pots on a tray of wet pebbles. A self-watering spike or a friend popping in once covers a week for most houseplants.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-018",
+    "area": "lookalike",
+    "prompt": "can you plan meals for a week for 2 people on 50 dollars?",
+    "history": [],
+    "reply": "Yes: build it around rice, oats, eggs, beans, a whole chicken and seasonal veg. Cook the chicken on day one, use the bones for soup, and repeat two dinners so nothing goes to waste.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-019",
+    "area": "lookalike",
+    "prompt": "how many hours of sleep does a 30 year old need?",
+    "history": [],
+    "reply": "Most adults need 7 to 9 hours a night. If you wake without an alarm and feel alert through the afternoon, you are probably getting enough.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-020",
+    "area": "lookalike",
+    "prompt": "how many calories are in 100 g of rice?",
+    "history": [],
+    "reply": "About 130 kcal cooked, or about 360 kcal dry, for white rice. Brown rice is very similar per gram.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-021",
+    "area": "lookalike",
+    "prompt": "what's the best way to heat 2 litres of soup without burning it?",
+    "history": [],
+    "reply": "Warm it gently on a low to medium hob in a wide pan, stirring every couple of minutes and scraping the bottom. Add a splash of water if it has thickened.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-022",
+    "area": "lookalike",
+    "prompt": "my dog keeps chasing the neighbour's cat that is 20 m ahead of him, how do I stop it?",
+    "history": [],
+    "reply": "Keep him on a lead near the cat's usual spots, reward him for looking at you instead of the cat, and practise a solid recall at home first.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-023",
+    "area": "lookalike",
+    "prompt": "my 5 year old is chasing a ball at 3 m/s around the garden all day, is that normal?",
+    "history": [],
+    "reply": "Completely normal: young children have lots of energy and repeat games they enjoy. It is good exercise, just make sure they drink enough.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-024",
+    "area": "lookalike",
+    "prompt": "I walked 3 km east then 4 km north to the cafe, can you recommend a coffee?",
+    "history": [],
+    "reply": "After a walk like that a flat white or a cappuccino is a good choice; if it is warm out, try a cold brew.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-025",
+    "area": "lookalike",
+    "prompt": "we drove 200 km north and then 150 km east on holiday, which towns should we see next time?",
+    "history": [],
+    "reply": "Tell me where you started and I can suggest towns along that route. Small market towns and coastal villages are usually worth a stop.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-026",
+    "area": "lookalike",
+    "prompt": "my car got towed, the 1200 kg tow truck charged me 150 dollars, is that fair?",
+    "history": [],
+    "reply": "It depends on your area: many cities cap towing fees, often between 100 and 300 dollars. Ask for an itemised receipt and check your local rules.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-027",
+    "area": "lookalike",
+    "prompt": "how do I pump up a bike tyre to 80 psi?",
+    "history": [],
+    "reply": "Match the pump head to the valve (Presta or Schrader), open a Presta valve first, pump while watching the gauge until it reads 80 psi, then close the valve.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-028",
+    "area": "lookalike",
+    "prompt": "my 2 kW kettle takes ages, is it broken?",
+    "history": [],
+    "reply": "Probably not: limescale on the element is the usual cause. Descale it with citric acid or vinegar and only fill it with the water you need.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-029",
+    "area": "lookalike",
+    "prompt": "how many mAh is a good power bank for a week away?",
+    "history": [],
+    "reply": "10,000 mAh charges most phones two to three times; for a week without mains power, 20,000 mAh is more comfortable.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-030",
+    "area": "lookalike",
+    "prompt": "is 75 degrees fahrenheit warm enough for the beach?",
+    "history": [],
+    "reply": "Yes, 75 °F is pleasant beach weather. The sea may still feel cool, so check the water temperature if you plan to swim.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-031",
+    "area": "lookalike",
+    "prompt": "how many miles is a 5k run?",
+    "history": [],
+    "reply": "A 5k is about 3.1 miles.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-032",
+    "area": "lookalike",
+    "prompt": "how many km is a half marathon?",
+    "history": [],
+    "reply": "A half marathon is **21.0975 km** (13.1 miles).",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-033",
+    "area": "lookalike",
+    "prompt": "how many minutes in a day?",
+    "history": [],
+    "reply": "**1,440 minutes**: 24 hours × 60 minutes.",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-034",
+    "area": "lookalike",
+    "prompt": "how many miles are in 10 km?",
+    "history": [],
+    "reply": "10 km is about **6.2 miles** (1 km ≈ 0.621 miles).",
+    "expect": "answer"
+  },
+  {
+    "id": "pi-035",
+    "area": "places",
+    "prompt": "how many miles is it to Hawassa from here?",
+    "history": [],
+    "reply": "Hawassa is about **170 miles (275 km)** south of you by road, around 4½ hours by car via the Addis–Adama expressway.",
+    "expect": "search",
+    "location": "Addis Ababa, Ethiopia"
+  },
+  {
+    "id": "pi-036",
+    "area": "places",
+    "prompt": "how many minutes is the drive to work?",
+    "history": [],
+    "reply": "I need your location to tell you that.",
+    "expect": "instant"
+  }
+]

@@ -1,0 +1,63 @@
+packages:
+  - "."
+nodeLinker: hoisted
+allowBuilds:
+  '@sentry/cli': true
+  core-js: true
+  unrs-resolver: true
+# Allow installing current Expo SDK packages when pnpm's minimumReleaseAge
+# would otherwise block freshly published versions.
+minimumReleaseAgeExclude:
+  - '@expo/cli'
+  - '@expo/config-plugins'
+  - '@expo/config'
+  - '@expo/env'
+  - '@expo/fingerprint'
+  - '@expo/image-utils'
+  - '@expo/inline-modules'
+  - '@expo/local-build-cache-provider'
+  - '@expo/metro-config'
+  - '@expo/prebuild-config'
+  - '@expo/require-utils'
+  - '@expo/schema-utils'
+  - '@expo/dom-webview'
+  - '@expo/log-box'
+  - '@expo/metro-runtime'
+  - '@expo/vector-icons'
+  - expo
+  - expo-apple-authentication
+  - expo-audio
+  - expo-clipboard
+  - expo-constants
+  - expo-crypto
+  - expo-dev-client
+  - expo-dev-launcher
+  - expo-dev-menu
+  - expo-document-picker
+  - expo-file-system
+  - expo-font
+  - expo-haptics
+  - expo-image-manipulator
+  - expo-image-picker
+  - expo-linear-gradient
+  - expo-linking
+  - expo-location
+  - expo-modules-autolinking
+  - expo-modules-core
+  - expo-modules-jsi
+  - expo-notifications
+  - expo-print
+  - expo-router
+  - expo-secure-store
+  - expo-speech
+  - expo-splash-screen
+  - expo-status-bar
+  - expo-web-browser
+  - eslint-config-expo
+  - react-native
+  - react-native-gesture-handler
+  - react-native-reanimated
+  - react-native-webview
+  - react-native-worklets
+  - '@react-native/jest-preset'
+  - '@react-native/metro-config'

@@ -1,0 +1,144 @@
+name: Deploy
+
+# Production only: run it from main ("Use workflow from: main"). The gate job
+# refuses any other branch and any commit whose CI has not passed, before a
+# job that holds a deploy secret starts. The deploy jobs run in the GitHub
+# environment "production": add required reviewers and a "main only"
+# deployment-branch rule there, and keep FLY_API_TOKEN / EXPO_TOKEN as that
+# environment's secrets (docs/PRODUCTION.md §4).
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploy_api:
+        description: Deploy API to Fly.io
+        type: boolean
+        default: true
+      deploy_mobile:
+        description: Build mobile with EAS (production profile)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+# One production deploy at a time; a second one waits instead of racing it.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  gate:
+    name: Gate (main, CI green for this commit)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+      checks: read
+    steps:
+      - name: Only main deploys to production
+        if: github.ref != 'refs/heads/main'
+        env:
+          REF: ${{ github.ref }}
+        run: |
+          echo "::error title=Not main::Production deploys run from main only, not $REF. Merge first, then run Deploy on main."
+          exit 1
+
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 100
+          persist-credentials: false
+
+      - name: API CI passed for this commit's API code
+        if: inputs.deploy_api
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          scripts/require-green-ci.sh api-ci.yml "$GITHUB_SHA"
+          apps/api scripts/check_file_sizes.py scripts/file_size_baseline.json
+          .github/workflows/api-ci.yml
+
+      - name: Mobile CI passed for this commit's app code
+        if: inputs.deploy_mobile
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          scripts/require-green-ci.sh mobile-ci.yml "$GITHUB_SHA"
+          apps/mobile scripts/check_file_sizes.py scripts/file_size_baseline.json
+          .github/workflows/mobile-ci.yml
+
+  deploy-api:
+    needs: gate
+    if: inputs.deploy_api
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      FLY_APP: recall-api
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      # Third-party code in a job that holds FLY_API_TOKEN: pinned to a commit
+      # (superfly/flyctl-actions 1.6), and flyctl itself to a release.
+      - uses: superfly/flyctl-actions/setup-flyctl@ed8efb33836e8b2096c7fd3ba1c8afe303ebbff1 # 1.6
+        with:
+          version: 0.4.110
+
+      - name: Deploy API
+        # Fly runs the release command (alembic upgrade head) first; a failed
+        # migration stops the deploy with the old release still serving. The
+        # blue-green strategy (fly.toml) then waits for the new Machines'
+        # health checks, app and worker, before moving traffic. The image is
+        # labelled with the commit so `fly releases --image` maps back to it.
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: flyctl deploy --app "$FLY_APP" --remote-only --image-label "git-$GITHUB_SHA"
+
+      - name: Smoke check the new release
+        # Postgres and Redis must both answer (/health/dependencies); Fly's own
+        # readiness check tolerates Redis down on purpose.
+        env:
+          API_URL: https://${{ env.FLY_APP }}.fly.dev
+        run: ./scripts/qa-smoke.sh --live-only
+
+  deploy-mobile:
+    needs: gate
+    if: inputs.deploy_mobile
+    runs-on: ubuntu-latest
+    environment: production
+    defaults:
+      run:
+        working-directory: apps/mobile
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: apps/mobile/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - uses: expo/expo-github-action@9da89d3617bb88139671bad31b09c65714c2ee06 # 9.0.1
+        with:
+          eas-version: 24.10.0
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: EAS production build
+        # EXPO_PUBLIC_* values are NOT injected by this workflow — EAS Build runs
+        # on EAS's cloud, so GitHub Actions `env:` does not reach the build
+        # environment. Set every EXPO_PUBLIC_* (API_URL, EAS_PROJECT_ID,
+        # GOOGLE_WEB/IOS_CLIENT_ID, DEV_AUTH_ENABLED=false, REVENUECAT_*_API_KEY,
+        # SENTRY_DSN) as EAS Secrets (dashboard → Secrets, or `eas env:push`).
+        # app.config.ts fails release builds when the API URL, EAS project ID,
+        # Google client IDs, or platform RevenueCat key is missing.
+        run: eas build --platform all --profile production --non-interactive --no-wait

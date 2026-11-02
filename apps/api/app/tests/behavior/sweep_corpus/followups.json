@@ -1,0 +1,1737 @@
+[
+ {
+  "id": "hf-001",
+  "area": "math",
+  "prompt": "Can you add 3 + 4 using the same method?",
+  "history": [
+   [
+    "user",
+    "what is 3+3"
+   ],
+   [
+    "assistant",
+    "3 + 3 = **6**\n\nOne way to see it: start at 3 and count up three more.\n\n3 → **4, 5, 6**\n\nSo you land on **6**."
+   ]
+  ],
+  "reply": "Sure! Start at 3 and count up **four** more:\n\n3 → **4, 5, 6, 7**\n\nYou land on **7**, so **3 + 4 = 7**.\n\nWant to try 3 + 5 yourself the same way?",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-002",
+  "area": "math",
+  "prompt": "can you add 12 and 15 the same way?",
+  "history": [
+   [
+    "user",
+    "add 25 and 38 by breaking them into tens and ones"
+   ],
+   [
+    "assistant",
+    "Let's split each number into tens and ones:\n\n- 25 = 20 + 5\n- 38 = 30 + 8\n\n**Add the tens:** 20 + 30 = 50\n**Add the ones:** 5 + 8 = 13\n\n**Combine:** 50 + 13 = **63**\n\nSo 25 + 38 = **63**."
+   ]
+  ],
+  "reply": "Of course! Split each number into tens and ones:\n\n- 12 = 10 + 2\n- 15 = 10 + 5\n\n**Add the tens:** 10 + 10 = 20\n**Add the ones:** 2 + 5 = 7\n\n**Combine:** 20 + 7 = **27**\n\nSo 12 + 15 = **27**. This one is a bit easier because the ones (2 + 5) don't go past 10, so there's nothing to carry.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-003",
+  "area": "math",
+  "prompt": "explain step 2",
+  "history": [
+   [
+    "user",
+    "solve 2x + 5 = 17"
+   ],
+   [
+    "assistant",
+    "**Step 1 — Subtract 5 from both sides:**\n$$2x + 5 - 5 = 17 - 5 \\quad\\Rightarrow\\quad 2x = 12$$\n\n**Step 2 — Divide both sides by 2:**\n$$\\frac{2x}{2} = \\frac{12}{2} \\quad\\Rightarrow\\quad x = 6$$\n\n**Check:** 2(6) + 5 = 12 + 5 = 17 ✓\n\n**x = 6**"
+   ]
+  ],
+  "reply": "In Step 2 we have **2x = 12**. That means \"2 times some number is 12\", and we want x by itself.\n\nThe opposite of multiplying by 2 is **dividing by 2**, so we undo it:\n\n$$\\frac{2x}{2} = \\frac{12}{2}$$\n\n- On the left, 2x ÷ 2 leaves just **x** (the 2s cancel).\n- On the right, 12 ÷ 2 = **6**.\n\nWe do it to **both sides** so the equation stays balanced — like taking the same weight off both pans of a scale.\n\nResult: **x = 6**.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-004",
+  "area": "math",
+  "prompt": "give me another one",
+  "history": [
+   [
+    "user",
+    "give me a fraction practice problem"
+   ],
+   [
+    "assistant",
+    "Here's one:\n\n**What is 1/3 + 1/4?**\n\nHint: find a common denominator first."
+   ],
+   [
+    "user",
+    "7/12"
+   ],
+   [
+    "assistant",
+    "Correct! 🎉\n\n1/3 = 4/12 and 1/4 = 3/12, so 4/12 + 3/12 = **7/12**.\n\nNice work finding the common denominator of 12."
+   ]
+  ],
+  "reply": "Here's the next one — a little trickier:\n\n**What is 2/5 + 1/3?**\n\nHint: the smallest number both 5 and 3 divide into is 15.\n\nTake your time and send me your answer when you're ready!",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-005",
+  "area": "math",
+  "prompt": "now do 20%",
+  "history": [
+   [
+    "user",
+    "whats 15% of 80"
+   ],
+   [
+    "assistant",
+    "15% of 80 = **12**\n\n- 10% of 80 = 8\n- 5% of 80 = 4\n- 8 + 4 = **12**"
+   ]
+  ],
+  "reply": "20% of 80 = **16**\n\n- 10% of 80 = 8\n- 20% is double that: 8 × 2 = **16**\n\n(Or: 0.20 × 80 = 16.)",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-006",
+  "area": "math",
+  "prompt": "what if it leaves at 10am instead",
+  "history": [
+   [
+    "user",
+    "A train leaves at 9am and travels at 60 km/h. How far has it gone by 11:30am?"
+   ],
+   [
+    "assistant",
+    "**Time traveled:** 9:00 AM → 11:30 AM = **2.5 hours**\n\n**Distance = speed × time**\n= 60 km/h × 2.5 h = **150 km**\n\nThe train has gone **150 km** by 11:30 AM."
+   ]
+  ],
+  "reply": "**Time traveled:** 10:00 AM → 11:30 AM = **1.5 hours**\n\n**Distance = speed × time**\n= 60 km/h × 1.5 h = **90 km**\n\nLeaving an hour later means it's traveled **90 km** by 11:30 AM — exactly 60 km less, since it loses one hour at 60 km/h.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-007",
+  "area": "math",
+  "prompt": "make it harder",
+  "history": [
+   [
+    "user",
+    "solve x^2 - 5x + 6 = 0"
+   ],
+   [
+    "assistant",
+    "Factor the quadratic — we need two numbers that multiply to 6 and add to −5: **−2 and −3**.\n\n$$x^2 - 5x + 6 = (x - 2)(x - 3) = 0$$\n\nSo **x = 2** or **x = 3**.\n\n**Check:** 2² − 5(2) + 6 = 0 ✓ and 3² − 5(3) + 6 = 0 ✓"
+   ]
+  ],
+  "reply": "Here's a harder one — it doesn't factor nicely, so you'll need the quadratic formula:\n\n$$2x^2 - 3x - 7 = 0$$\n\nReminder of the formula:\n\n$$x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$$\n\nHere a = 2, b = −3, c = −7. Give it a try and send me your answer (exact form with a square root is fine) — I'll check it step by step.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-008",
+  "area": "math",
+  "prompt": "make it 7 instead",
+  "history": [
+   [
+    "user",
+    "what is 3 × 5"
+   ],
+   [
+    "assistant",
+    "3 × 5 = **15**\n\nThat's 3 groups of 5: 5 + 5 + 5 = 15."
+   ]
+  ],
+  "reply": "3 × 7 = **21**\n\nThat's 3 groups of 7: 7 + 7 + 7 = **21**.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-009",
+  "area": "math",
+  "prompt": "remind me again how you got the 3",
+  "history": [
+   [
+    "user",
+    "i forgot how long division works. can you do 156 ÷ 12"
+   ],
+   [
+    "assistant",
+    "Sure! **156 ÷ 12**\n\n1. 12 goes into **15** once → write **1**. 15 − 12 = **3**.\n2. Bring down the **6** → now you have **36**.\n3. 12 goes into **36** three times → write **3**. 36 − 36 = **0**.\n\n**156 ÷ 12 = 13**, no remainder."
+   ]
+  ],
+  "reply": "Sure! The **3** comes from the second round:\n\n- After the first step you had a leftover of **3** (15 − 12).\n- You **brought down the 6** next to it, making **36**.\n- Then you ask: *how many 12s fit in 36?* → 12 × 3 = 36, so the answer is **3**.\n\nThat 3 goes in the ones place of the answer, next to the 1 → **13**.\n\nQuick check: 12 × 13 = 156 ✓",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-010",
+  "area": "math",
+  "prompt": "and if he saves 300 a week starting tomorrow?",
+  "history": [
+   [
+    "user",
+    "Abebe saves 250 birr every week. How many weeks until he has 3000 birr?"
+   ],
+   [
+    "assistant",
+    "3000 ÷ 250 = **12 weeks**\n\nAfter 12 weeks Abebe will have exactly 3,000 birr."
+   ]
+  ],
+  "reply": "3000 ÷ 300 = **10 weeks**\n\nIf his first deposit is tomorrow (Thursday, Oct 15) and he saves every Thursday, his **10th deposit lands on Thursday, Dec 17** — that's when he'll hit 3,000 birr.\n\nSaving 50 birr more each week gets him there **2 weeks sooner**.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-011",
+  "area": "math",
+  "prompt": "what if it drops back to 12,000, what % decrease is that",
+  "history": [
+   [
+    "user",
+    "my salary went from 12,000 to 15,000 birr. what percent increase is that"
+   ],
+   [
+    "assistant",
+    "**Increase:** 15,000 − 12,000 = 3,000 birr\n\n**Percent increase** = 3,000 ÷ 12,000 × 100 = **25%** 🎉"
+   ]
+  ],
+  "reply": "**Decrease:** 15,000 − 12,000 = 3,000 birr\n\n**Percent decrease** = 3,000 ÷ **15,000** × 100 = **20%**\n\nNotice it's not 25% — the percent is measured from the *starting* value, and now you start from the bigger number (15,000), so the same 3,000 birr is a smaller share.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-012",
+  "area": "math",
+  "prompt": "now 35/50",
+  "history": [
+   [
+    "user",
+    "simplify 18/24"
+   ],
+   [
+    "assistant",
+    "The greatest common factor of 18 and 24 is **6**.\n\n18 ÷ 6 = 3, 24 ÷ 6 = 4\n\n**18/24 = 3/4**"
+   ]
+  ],
+  "reply": "The greatest common factor of 35 and 50 is **5**.\n\n35 ÷ 5 = 7, 50 ÷ 5 = 10\n\n**35/50 = 7/10**\n\n7 and 10 share no common factors, so that's fully simplified.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-013",
+  "area": "math",
+  "prompt": "where did i mess up",
+  "history": [
+   [
+    "user",
+    "check my work: 4(x - 2) = 20, i got x = 3"
+   ],
+   [
+    "assistant",
+    "Close, but not quite — the answer is **x = 7**.\n\nCheck x = 3: 4(3 − 2) = 4(1) = 4, not 20.\nCheck x = 7: 4(7 − 2) = 4(5) = 20 ✓"
+   ]
+  ],
+  "reply": "My guess is the sign when you moved the 8. Here's the correct path:\n\n1. Distribute: 4(x − 2) = **4x − 8** = 20\n2. **Add 8** to both sides: 4x = 28\n3. Divide by 4: **x = 7**\n\nIf you got 3, you probably did **4x = 20 − 8 = 12** — subtracting the 8 instead of adding it. When you move −8 to the other side it becomes **+8**.\n\nAn even quicker way: divide both sides by 4 first → x − 2 = 5 → x = 7.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-014",
+  "area": "math",
+  "prompt": "ok now 3 + 5 the same way 😊",
+  "history": [
+   [
+    "user",
+    "whats 3+3"
+   ],
+   [
+    "assistant",
+    "3 + 3 = **6** — start at 3 and count up 3: 4, 5, **6**."
+   ],
+   [
+    "user",
+    "and 3+4"
+   ],
+   [
+    "assistant",
+    "3 + 4 = **7** — start at 3 and count up 4: 4, 5, 6, **7**."
+   ]
+  ],
+  "reply": "3 + 5 = **8** 😊\n\nStart at 3 and count up 5: 4, 5, 6, 7, **8**.\n\nSee the pattern? Each time you add one more, the answer goes up by one: 6, 7, 8…",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-015",
+  "area": "physics",
+  "prompt": "and if the mass doubles?",
+  "history": [
+   [
+    "user",
+    "What's the kinetic energy of a 2 kg ball moving at 3 m/s?"
+   ],
+   [
+    "assistant",
+    "$$KE = \\tfrac{1}{2} m v^2 = \\tfrac{1}{2}(2\\text{ kg})(3\\text{ m/s})^2 = 9\\text{ J}$$\n\nThe ball has **9 J** of kinetic energy."
+   ]
+  ],
+  "reply": "Kinetic energy is directly proportional to mass, so doubling the mass doubles the energy:\n\n$$KE = \\tfrac{1}{2}(4\\text{ kg})(3\\text{ m/s})^2 = 18\\text{ J}$$\n\n**18 J** — twice the original 9 J.\n\n(Compare: doubling the *speed* instead would **quadruple** it to 36 J, because v is squared.)",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-016",
+  "area": "physics",
+  "prompt": "how far did it go in that time",
+  "history": [
+   [
+    "user",
+    "a car goes from 0 to 20 m/s in 5 seconds. whats the acceleration"
+   ],
+   [
+    "assistant",
+    "$$a = \\frac{\\Delta v}{\\Delta t} = \\frac{20 - 0}{5} = 4\\text{ m/s}^2$$\n\nThe car accelerates at **4 m/s²**."
+   ]
+  ],
+  "reply": "Starting from rest with constant acceleration:\n\n$$s = \\tfrac{1}{2} a t^2 = \\tfrac{1}{2}(4)(5)^2 = 50\\text{ m}$$\n\nQuick check with average speed: it goes from 0 to 20 m/s, so the average is 10 m/s, and 10 m/s × 5 s = **50 m** ✓",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-017",
+  "area": "physics",
+  "prompt": "draw the free body diagram",
+  "history": [
+   [
+    "user",
+    "a 5 kg block slides down a frictionless incline at 30 degrees. what is its acceleration"
+   ],
+   [
+    "assistant",
+    "Only the component of gravity along the slope accelerates the block:\n\n$$a = g\\sin\\theta = 9.8 \\times \\sin 30^\\circ = 9.8 \\times 0.5 = 4.9\\text{ m/s}^2$$\n\nThe acceleration is **4.9 m/s²** down the incline (the mass doesn't matter when there's no friction)."
+   ]
+  ],
+  "reply": "Here's the free-body diagram for the block on the 30° incline. Draw the block as a box on the slope, then add two arrows from its center:\n\n1. **Weight (W)** — pointing straight down toward the ground\n2. **Normal force (N)** — pointing out of the slope, at 90° to the surface\n\nThere's no friction arrow because the incline is frictionless.\n\n**Forces on the block:**\n\n| Force | Direction | Size |\n|---|---|---|\n| Weight **W = mg** | straight down | 5 × 9.8 = **49 N** |\n| Normal force **N** | perpendicular to the surface, away from it | mg cos 30° = **42.4 N** |\n\n**Splitting the weight along the incline axes:**\n- Parallel to the slope: mg sin 30° = **24.5 N** (this drives the motion)\n- Perpendicular to the slope: mg cos 30° = **42.4 N** (cancelled exactly by N)\n\nNet force = 24.5 N down the slope → a = 24.5 / 5 = **4.9 m/s²** ✓",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-018",
+  "area": "physics",
+  "prompt": "what about on the moon",
+  "history": [
+   [
+    "user",
+    "if i drop a ball from 20 m how long until it hits the ground"
+   ],
+   [
+    "assistant",
+    "Ignoring air resistance:\n\n$$h = \\tfrac{1}{2} g t^2 \\;\\Rightarrow\\; t = \\sqrt{\\frac{2h}{g}} = \\sqrt{\\frac{2(20)}{9.8}} \\approx 2.02\\text{ s}$$\n\nIt hits the ground after about **2.0 seconds**, moving at roughly 19.8 m/s."
+   ]
+  ],
+  "reply": "On the Moon, g ≈ **1.62 m/s²** (about 1/6 of Earth's):\n\n$$t = \\sqrt{\\frac{2(20)}{1.62}} \\approx \\sqrt{24.7} \\approx 4.97\\text{ s}$$\n\nIt takes about **5 seconds** — roughly 2.5× longer than on Earth — and it lands much more gently, at about **8.0 m/s** instead of 19.8 m/s.\n\nAnd with no air on the Moon, a feather would fall at exactly the same rate as the ball.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-019",
+  "area": "physics",
+  "prompt": "now add another 4 ohm in series",
+  "history": [
+   [
+    "user",
+    "12V battery connected to a 4 ohm resistor. current?"
+   ],
+   [
+    "assistant",
+    "Using Ohm's law:\n\n$$I = \\frac{V}{R} = \\frac{12\\text{ V}}{4\\ \\Omega} = 3\\text{ A}$$\n\nThe current is **3 A**."
+   ]
+  ],
+  "reply": "In series, resistances add:\n\n$$R_{total} = 4 + 4 = 8\\ \\Omega$$\n\n$$I = \\frac{12\\text{ V}}{8\\ \\Omega} = 1.5\\text{ A}$$\n\nThe current drops to **1.5 A** (half of before). The same 1.5 A flows through both resistors, and each one gets half the voltage: **6 V** across each.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-020",
+  "area": "physics",
+  "prompt": "explain why 45 gives the max",
+  "history": [
+   [
+    "user",
+    "ball thrown at 20 m/s at 45 degrees. how far does it go (flat ground)"
+   ],
+   [
+    "assistant",
+    "Range on level ground:\n\n$$R = \\frac{v^2 \\sin(2\\theta)}{g} = \\frac{20^2 \\sin 90^\\circ}{9.8} = \\frac{400}{9.8} \\approx 40.8\\text{ m}$$\n\nThe ball lands about **40.8 m** away."
+   ]
+  ],
+  "reply": "It comes straight from the range formula:\n\n$$R = \\frac{v^2 \\sin(2\\theta)}{g}$$\n\nFor a given speed, the only part you can change is **sin(2θ)**. The sine function is largest — exactly **1** — when its angle is **90°**. So:\n\n$$2\\theta = 90^\\circ \\;\\Rightarrow\\; \\theta = 45^\\circ$$\n\n**Intuition:** launching is a trade-off between two things:\n- **Horizontal speed** (v cos θ) — how fast it moves forward\n- **Time in the air** (depends on v sin θ) — how long it keeps moving forward\n\nToo low (say 15°) and it's fast but lands quickly. Too high (say 75°) and it stays up long but barely moves forward. At **45°** the two are balanced, so their product — the distance — is biggest.\n\nFun fact: complementary angles give the same range — 30° and 60° both land at about 35.3 m.\n\n(This assumes flat ground and no air resistance; in real life with air drag the best angle is usually a bit below 45°.)",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-021",
+  "area": "chemistry",
+  "prompt": "what about with 2 moles?",
+  "history": [
+   [
+    "user",
+    "how many grams are in 1 mole of NaCl"
+   ],
+   [
+    "assistant",
+    "Molar mass of NaCl = Na (22.99) + Cl (35.45) = **58.44 g/mol**\n\nSo 1 mole of NaCl weighs **58.44 g**."
+   ]
+  ],
+  "reply": "mass = moles × molar mass\n\n= 2 mol × 58.44 g/mol = **116.88 g**\n\nSo 2 moles of NaCl weigh about **116.9 g**.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-022",
+  "area": "chemistry",
+  "prompt": "now do methane burning",
+  "history": [
+   [
+    "user",
+    "balance H2 + O2 -> H2O"
+   ],
+   [
+    "assistant",
+    "**2H₂ + O₂ → 2H₂O**\n\n- H: 4 on the left, 4 on the right ✓\n- O: 2 on the left, 2 on the right ✓"
+   ]
+  ],
+  "reply": "Combustion of methane:\n\n**CH₄ + 2O₂ → CO₂ + 2H₂O**\n\n**Balancing it step by step:**\n1. Carbon: 1 C on the left → 1 CO₂ on the right ✓\n2. Hydrogen: 4 H on the left → need **2** H₂O on the right ✓\n3. Oxygen: right side has 2 (in CO₂) + 2 (in 2H₂O) = 4 O → need **2** O₂ on the left ✓\n\n| Atom | Left | Right |\n|---|---|---|\n| C | 1 | 1 |\n| H | 4 | 4 |\n| O | 4 | 4 |",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-023",
+  "area": "chemistry",
+  "prompt": "and 0.001 M?",
+  "history": [
+   [
+    "user",
+    "pH of 0.01 M HCl?"
+   ],
+   [
+    "assistant",
+    "HCl is a strong acid, so it dissociates completely: [H⁺] = 0.01 M = 10⁻² M.\n\n$$\\text{pH} = -\\log(10^{-2}) = 2$$\n\n**pH = 2**"
+   ]
+  ],
+  "reply": "[H⁺] = 0.001 M = 10⁻³ M\n\n$$\\text{pH} = -\\log(10^{-3}) = 3$$\n\n**pH = 3**\n\nEach time you dilute a strong acid 10×, the pH goes up by 1.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-024",
+  "area": "chemistry",
+  "prompt": "can you show me what the molecule looks like",
+  "history": [
+   [
+    "user",
+    "what is the structure of ethanol"
+   ],
+   [
+    "assistant",
+    "Ethanol is **C₂H₅OH** (also written CH₃CH₂OH): a two-carbon chain with a hydroxyl (–OH) group on the end.\n\n- CH₃ – the methyl end\n- CH₂ – the middle carbon\n- OH – the alcohol group that makes it an alcohol\n\nMolar mass: 46.07 g/mol."
+   ]
+  ],
+  "reply": "Here's the structure of ethanol:\n\n```smiles\nCCO\n```\n\nReading it left to right: a **CH₃** carbon bonded to a **CH₂** carbon, which is bonded to an **O–H** group.\n\n```\n    H   H\n    |   |\nH – C – C – O – H\n    |   |\n    H   H\n```\n\nEvery carbon makes 4 bonds, oxygen makes 2, and each hydrogen makes 1. The O–H at the end is what lets ethanol hydrogen-bond and mix with water.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-025",
+  "area": "chemistry",
+  "prompt": "and if i heat it to 546 K at the same pressure",
+  "history": [
+   [
+    "user",
+    "volume of 1 mol of ideal gas at 273 K and 1 atm?"
+   ],
+   [
+    "assistant",
+    "$$V = \\frac{nRT}{P} = \\frac{(1)(0.08206)(273)}{1} \\approx 22.4\\text{ L}$$\n\n**22.4 L** — the familiar molar volume at STP."
+   ]
+  ],
+  "reply": "At constant pressure, volume is proportional to temperature (Charles's law):\n\n$$\\frac{V_2}{V_1} = \\frac{T_2}{T_1} = \\frac{546}{273} = 2$$\n\n$$V_2 = 2 \\times 22.4 = 44.8\\text{ L}$$\n\nDoubling the absolute temperature doubles the volume → **44.8 L**.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-026",
+  "area": "writing",
+  "prompt": "make it shorter",
+  "history": [
+   [
+    "user",
+    "write an email to my manager Martha saying im sick today"
+   ],
+   [
+    "assistant",
+    "**Subject:** Sick Leave Today\n\nHi Martha,\n\nI wanted to let you know that I'm not feeling well today and won't be able to come in to work. I've had a fever since last night, and I think it's best that I rest so I recover quickly and don't pass anything on to the team.\n\nI'll keep an eye on my email for anything urgent, and I've asked Dawit to keep the client report on track while I'm out. I expect to be back tomorrow, but I'll let you know if anything changes.\n\nThank you for understanding.\n\nBest regards,\nBini"
+   ]
+  ],
+  "reply": "**Subject:** Sick Today\n\nHi Martha,\n\nI'm unwell today and won't be able to come in. I'll check email for anything urgent, and Dawit is covering the client report. I hope to be back tomorrow.\n\nThanks for understanding,\nBini",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-027",
+  "area": "writing",
+  "prompt": "add that ill be there at 8",
+  "history": [
+   [
+    "user",
+    "write a whatsapp msg to my friend sara that im running late to dinner"
+   ],
+   [
+    "assistant",
+    "Hey Sara! 🙈 So sorry, I'm running a bit late for dinner — traffic is crazy right now. Go ahead and order if you're hungry, I'll be there as soon as I can! ❤️"
+   ]
+  ],
+  "reply": "Hey Sara! 🙈 So sorry, I'm running a bit late for dinner — traffic is crazy right now. I'll be there **at 8**! Go ahead and order if you're hungry. See you soon ❤️",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-028",
+  "area": "writing",
+  "prompt": "add a line reminding him the rent for this month is already paid",
+  "history": [
+   [
+    "user",
+    "write an email to my landlord ato tesfaye asking him to fix the kitchen sink, its been leaking for a week"
+   ],
+   [
+    "assistant",
+    "**Subject:** Kitchen Sink Leak – Repair Request\n\nDear Ato Tesfaye,\n\nI hope you are well. I'm writing to let you know that the kitchen sink in the apartment has been leaking for about a week. The leak seems to come from the pipe under the sink, and water is starting to collect in the cabinet.\n\nCould you please arrange for a plumber to take a look at your earliest convenience? I'm available most evenings after 6 PM and on weekends.\n\nThank you for your help.\n\nBest regards,\nBini"
+   ]
+  ],
+  "reply": "**Subject:** Kitchen Sink Leak – Repair Request\n\nDear Ato Tesfaye,\n\nI hope you are well. I'm writing to let you know that the kitchen sink in the apartment has been leaking for about a week. The leak seems to come from the pipe under the sink, and water is starting to collect in the cabinet.\n\nCould you please arrange for a plumber to take a look at your earliest convenience? I'm available most evenings after 6 PM and on weekends.\n\nAlso, just as a reminder, this month's rent has already been paid in full.\n\nThank you for your help.\n\nBest regards,\nBini",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-029",
+  "area": "writing",
+  "prompt": "make it more formal and remove the emojis",
+  "history": [
+   [
+    "user",
+    "write a linkedin post about finishing my data science certificate"
+   ],
+   [
+    "assistant",
+    "🎉 Big milestone unlocked! 🎉\n\nI just finished my **Data Science Professional Certificate**! 📊🐍\n\nOver the past 6 months I learned Python, SQL, data visualization, and machine learning — and built a project predicting coffee export prices in Ethiopia ☕📈\n\nHuge thanks to my mentors and everyone who cheered me on 🙏\n\nOn to the next challenge! 🚀\n\n#DataScience #Python #MachineLearning #Learning"
+   ]
+  ],
+  "reply": "I am pleased to share that I have completed the **Data Science Professional Certificate**.\n\nOver the past six months, I developed practical skills in Python, SQL, data visualization, and machine learning. As a capstone project, I built a model to forecast Ethiopian coffee export prices, which gave me valuable experience working with real-world economic data.\n\nI am grateful to my mentors and colleagues for their guidance and support throughout this program. I look forward to applying these skills to data-driven projects and continuing to grow in the field.\n\n#DataScience #Python #MachineLearning #ProfessionalDevelopment",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-030",
+  "area": "writing",
+  "prompt": "add an emoji ☕ and make it funnier",
+  "history": [
+   [
+    "user",
+    "caption for my coffee ceremony photo on instagram"
+   ],
+   [
+    "assistant",
+    "Here are a few options:\n\n1. Slow mornings, three rounds, endless stories.\n2. Abol, tona, bereka — the only schedule I follow.\n3. Where every cup comes with conversation."
+   ]
+  ],
+  "reply": "Here you go ☕😄\n\n1. Three rounds of buna and I can now see through time ☕⚡\n2. Abol, tona, bereka — and somehow still nobody's leaving ☕😂\n3. My love language is someone roasting beans while I pretend to help ☕🔥\n4. Came for one cup, stayed for three rounds and all the family gossip ☕👀",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-031",
+  "area": "writing",
+  "prompt": "make the opening paragraph stronger",
+  "history": [
+   [
+    "user",
+    "write a cover letter for a junior accountant role at Ethio Telecom. I have a BA in accounting from AAU and did an internship at Dashen Bank"
+   ],
+   [
+    "assistant",
+    "Dear Hiring Manager,\n\nI am writing to apply for the Junior Accountant position at Ethio Telecom. I recently graduated with a Bachelor of Arts in Accounting from Addis Ababa University, and I am eager to begin my career with an organization that plays such an important role in Ethiopia's growth.\n\nDuring my internship at Dashen Bank, I supported the finance team with account reconciliations, preparing journal entries, and organizing documentation for monthly closing. This experience strengthened my attention to detail and taught me how to work accurately under tight deadlines.\n\nI am proficient in Excel and Peachtree, and I am comfortable learning new systems quickly. I would welcome the opportunity to contribute to Ethio Telecom's finance department while continuing to develop my professional skills.\n\nThank you for considering my application. I look forward to the opportunity to discuss how I can contribute to your team.\n\nSincerely,\nBini"
+   ]
+  ],
+  "reply": "Here's a stronger opening paragraph:\n\n> As a recent Accounting graduate from Addis Ababa University with hands-on reconciliation and month-end closing experience at Dashen Bank, I am excited to apply for the Junior Accountant position at Ethio Telecom. I am drawn to Ethio Telecom's role in connecting millions of Ethiopians, and I want to bring accurate, reliable financial work to the team that supports that mission.\n\n**What changed:**\n- It leads with your **most relevant experience** instead of just stating that you're applying.\n- It names a **specific skill** (reconciliations, month-end closing) right away.\n- It gives a concrete **reason you want this company**, not just any job.\n\nWant me to update the rest of the letter so it matches this tone?",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-032",
+  "area": "writing",
+  "prompt": "now in french",
+  "history": [
+   [
+    "user",
+    "translate 'thank you for coming to my birthday' to amharic"
+   ],
+   [
+    "assistant",
+    "**ወደ ልደቴ ስለመጣችሁ በጣም አመሰግናለሁ።**\n\n*Wede lidetē sileme'tachihu beťam amesegnalehu.*\n\nThis is the plural \"you\" (ስለመጣችሁ), so it works for a group of guests."
+   ]
+  ],
+  "reply": "**Merci beaucoup d'être venus à mon anniversaire !**\n\nThis is the plural form, for a group of guests.\n\n- To one man: *Merci beaucoup d'être venu à mon anniversaire !*\n- To one woman: *Merci beaucoup d'être venue à mon anniversaire !*\n- To a group of only women: *Merci beaucoup d'être venues à mon anniversaire !*",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-033",
+  "area": "writing",
+  "prompt": "forget the last stanza its too sad",
+  "history": [
+   [
+    "user",
+    "write a short poem about rain in addis"
+   ],
+   [
+    "assistant",
+    "**Kiremt in Addis**\n\nThe sky above Entoto turns to slate,\nthe taxis hiss on Bole's shining street,\nand vendors pull their plastic sheets in haste\nas thunder rolls in steady, heavy beat.\n\nThe eucalyptus breathe their silver scent,\nthe gutters sing a song of muddy brown,\nand every roof of tin becomes a drum\nthat plays the long gray music of the town.\n\nBut rain, like every guest, must someday go;\nthe hills will miss the voice they used to know,\nand in the quiet after, cold and still,\nI'll wait alone beside the window sill."
+   ]
+  ],
+  "reply": "**Kiremt in Addis**\n\nThe sky above Entoto turns to slate,\nthe taxis hiss on Bole's shining street,\nand vendors pull their plastic sheets in haste\nas thunder rolls in steady, heavy beat.\n\nThe eucalyptus breathe their silver scent,\nthe gutters sing a song of muddy brown,\nand every roof of tin becomes a drum\nthat plays the long gray music of the town.\n\nWant me to add a brighter closing stanza — maybe the sun coming out over Meskel Square and the Meskel flowers blooming after the rains?",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-034",
+  "area": "writing",
+  "prompt": "say ill call at 9 instead of tonight",
+  "history": [
+   [
+    "user",
+    "write a text to my mom that ill call her tonight"
+   ],
+   [
+    "assistant",
+    "Hi Mom ❤️ Hope your day is going well! I'll call you tonight — can't wait to catch up. Love you!"
+   ]
+  ],
+  "reply": "Hi Mom ❤️ Hope your day is going well! I'll call you at 9 — can't wait to catch up. Love you!",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-035",
+  "area": "writing",
+  "prompt": "now a version for my boss",
+  "history": [
+   [
+    "user",
+    "write an email to my team that the friday meeting is moving to 3pm"
+   ],
+   [
+    "assistant",
+    "**Subject:** Friday Meeting Moved to 3 PM\n\nHi team,\n\nQuick update: this Friday's meeting has been moved to **3:00 PM** (same room / same link). The agenda stays the same.\n\nPlease update your calendars, and let me know if the new time doesn't work for you.\n\nThanks,\nBini"
+   ]
+  ],
+  "reply": "**Subject:** Friday Team Meeting – New Time: 3:00 PM\n\nDear Mr. Haile,\n\nI wanted to let you know that this Friday's team meeting has been rescheduled to **3:00 PM**. The agenda remains unchanged, and I have already informed the rest of the team.\n\nPlease let me know if the new time is inconvenient for you, and I will be happy to find an alternative.\n\nBest regards,\nBini",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-036",
+  "area": "writing",
+  "prompt": "and how do i say what time does it leave",
+  "history": [
+   [
+    "user",
+    "how do i say 'where is the bus station' in spanish"
+   ],
+   [
+    "assistant",
+    "**¿Dónde está la estación de autobuses?**\n\nPronunciation: *DON-deh es-TAH lah es-tah-SYON deh ow-toh-BOO-ses*"
+   ]
+  ],
+  "reply": "**¿A qué hora sale?**\n\nPronunciation: *ah keh OH-rah SAH-leh*\n\nIf you want to be specific about the bus:\n\n**¿A qué hora sale el autobús?** — *What time does the bus leave?*\n\nThey'll usually answer with something like *\"Sale a las tres\"* — \"It leaves at three.\"",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-037",
+  "area": "writing",
+  "prompt": "make it funnier but keep it under a minute",
+  "history": [
+   [
+    "user",
+    "write a short toast for my brother's wedding. his name is Yonas, bride is Hanna"
+   ],
+   [
+    "assistant",
+    "Good evening, everyone. For those who don't know me, I'm Bini, Yonas's younger brother.\n\nGrowing up, Yonas was always the one who looked out for me — and the one who ate the last piece of injera before I could reach it. Today, I'm proud to see him standing next to someone who brings out the very best in him.\n\nHanna, thank you for your kindness, your patience, and for loving my brother the way you do. Welcome to our family.\n\nPlease raise your glasses: to Yonas and Hanna — may your home be full of love, laughter, and endless buna. Cheers!"
+   ]
+  ],
+  "reply": "Good evening, everyone! I'm Bini — Yonas's younger, better-looking brother. 😄\n\nGrowing up, Yonas taught me a lot: how to ride a bike, how to fix a radio, and how to finish the last piece of injera before anyone else even notices it's there. Hanna — guard your plate. Forever.\n\nWhen Yonas first told me about Hanna, he talked for two hours straight. This is a man who usually answers questions with \"fine.\" That's when I knew it was serious.\n\nHanna, thank you for loving him, for being patient with him, and for finally getting him to own an ironed shirt. Welcome to the family — no returns, no refunds.\n\nPlease raise your glasses: to Yonas and Hanna — may your home be full of love, laughter, and a fair share of injera. Cheers! 🥂",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-038",
+  "area": "writing",
+  "prompt": "make it 5pm friday and more friendly",
+  "history": [
+   [
+    "user",
+    "write an email reminding my students the assignment is due friday"
+   ],
+   [
+    "assistant",
+    "**Subject:** Reminder: Assignment Due Friday\n\nDear students,\n\nThis is a reminder that your assignment is due this **Friday, October 16**. Please submit it through the course portal before the deadline.\n\nLate submissions will not be accepted without prior approval.\n\nBest regards,\nMr. Bini"
+   ]
+  ],
+  "reply": "**Subject:** Friendly Reminder: Assignment Due Friday at 5 PM 📚\n\nHi everyone,\n\nJust a friendly reminder that your assignment is due this **Friday, October 16, at 5:00 PM**. Please upload it through the course portal when you're done.\n\nIf you have any questions or get stuck on anything, feel free to email me or drop by during office hours — I'm happy to help!\n\nGood luck, and I'm looking forward to reading your work.\n\nBest,\nMr. Bini",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-039",
+  "area": "writing",
+  "prompt": "add the english translation under it",
+  "history": [
+   [
+    "user",
+    "write a birthday message for my sister in amharic"
+   ],
+   [
+    "assistant",
+    "**መልካም ልደት እህቴ! 🎂**\n\nእግዚአብሔር ረጅም እድሜና ጤና ይስጥሽ። ሁሌም ደስተኛ ሁኚ። በጣም እወድሻለሁ! ❤️"
+   ]
+  ],
+  "reply": "**መልካም ልደት እህቴ! 🎂**\n\nእግዚአብሔር ረጅም እድሜና ጤና ይስጥሽ። ሁሌም ደስተኛ ሁኚ። በጣም እወድሻለሁ! ❤️\n\n---\n\n**Happy birthday, my sister! 🎂**\n\nMay God give you a long life and good health. Always be happy. I love you so much! ❤️",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-040",
+  "area": "writing",
+  "prompt": "add an emoji and say 7pm",
+  "history": [
+   [
+    "user",
+    "write a message for the family group that dinner is moved to sunday"
+   ],
+   [
+    "assistant",
+    "Hi everyone! Quick change of plans — this week's family dinner is moved to **Sunday** instead. Same place as always. Let me know if you can make it!"
+   ]
+  ],
+  "reply": "Hi everyone! 🍲 Quick change of plans — this week's family dinner is moved to **Sunday at 7 PM** instead. Same place as always. Let me know if you can make it! ❤️",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-041",
+  "area": "writing",
+  "prompt": "make it say next tuesday at 10am instead",
+  "history": [
+   [
+    "user",
+    "draft an email to my dentist's office to reschedule my appointment on thursday"
+   ],
+   [
+    "assistant",
+    "**Subject:** Request to Reschedule Appointment\n\nDear Bright Smile Dental team,\n\nI have an appointment scheduled for **Thursday, October 15, at 2:00 PM**, but unfortunately something has come up and I won't be able to make it.\n\nCould you please let me know what other times are available next week? I'm flexible in the mornings.\n\nThank you, and sorry for any inconvenience.\n\nBest regards,\nBini\n+251 9XX XXX XXX"
+   ]
+  ],
+  "reply": "**Subject:** Request to Reschedule Appointment to Tuesday, October 20\n\nDear Bright Smile Dental team,\n\nI have an appointment scheduled for **Thursday, October 15, at 2:00 PM**, but unfortunately something has come up and I won't be able to make it.\n\nWould it be possible to move it to **next Tuesday, October 20, at 10:00 AM**? If that slot isn't available, I'm happy to take another morning time that week.\n\nThank you, and sorry for any inconvenience.\n\nBest regards,\nBini\n+251 9XX XXX XXX",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-042",
+  "area": "writing",
+  "prompt": "remove the last line and make it rhyme better",
+  "history": [
+   [
+    "user",
+    "write a 4 line poem for my wife"
+   ],
+   [
+    "assistant",
+    "In every sunrise, you're the light I see,\nyour laughter is the song that sets me free,\nthrough every storm, you are my steady shore,\nand every day I love you even more."
+   ]
+  ],
+  "reply": "In every sunrise, you're the light I see,\nyour laughter is the song that sets me free,\nmy home, my heart, my forever — you and me.\n\nNow all three lines rhyme on the same \"-ee\" sound (see / free / me), which gives it a tighter, sweeter ring.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-043",
+  "area": "writing",
+  "prompt": "make it more formal, its for a professor",
+  "history": [
+   [
+    "user",
+    "translate to french: Hi, I can't come to class tomorrow because I'm sick. Can you send me the notes? Thanks"
+   ],
+   [
+    "assistant",
+    "Salut, je ne peux pas venir en cours demain parce que je suis malade. Tu peux m'envoyer les notes ? Merci !"
+   ]
+  ],
+  "reply": "Here's a formal version for a professor:\n\n> Bonjour Madame / Monsieur [Nom],\n>\n> Je me permets de vous écrire pour vous informer que je ne pourrai pas assister au cours de demain, car je suis malade.\n>\n> Serait-il possible de m'envoyer les notes du cours ? Je vous en remercie par avance.\n>\n> Je vous prie d'agréer, Madame / Monsieur, l'expression de mes salutations distinguées.\n>\n> Bini\n\n**What changed:**\n- **Tu → vous** (formal \"you\")\n- \"Salut\" → **\"Bonjour Madame / Monsieur\"**\n- \"Tu peux…\" → **\"Serait-il possible…\"** (more polite)\n- A formal closing line, which is standard in French emails to professors.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-044",
+  "area": "writing",
+  "prompt": "make it more polite and add that i can do sunday morning",
+  "history": [
+   [
+    "user",
+    "my boss asked if i can work this saturday. i cant. help me reply"
+   ],
+   [
+    "assistant",
+    "Hi, thanks for asking. Unfortunately I can't work this Saturday because I already have plans. Let me know if there's anything I can do before Friday."
+   ]
+  ],
+  "reply": "Hi Mr. Haile,\n\nThank you for thinking of me. Unfortunately, I won't be able to work this Saturday because of a prior commitment that I can't move.\n\nHowever, I'd be happy to come in on **Sunday morning** if that helps. I can also wrap up anything urgent before I leave on Friday.\n\nPlease let me know what works best.\n\nBest regards,\nBini",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-045",
+  "area": "writing",
+  "prompt": "add that we open at 8am and there's free coffee for the first 20 people",
+  "history": [
+   [
+    "user",
+    "write an instagram post announcing my bakery opening on saturday. its called Habesha Crumbs in Bole"
+   ],
+   [
+    "assistant",
+    "✨ The wait is over! ✨\n\n**Habesha Crumbs** opens its doors this **Saturday** in Bole! 🥐🍞\n\nFresh bread, buttery pastries, and a few Ethiopian twists you won't find anywhere else — baked with love every single morning.\n\nCome say hi, grab something warm, and be part of our very first day. 💛\n\n📍 Bole, Addis Ababa\n\n#HabeshaCrumbs #AddisAbaba #Bakery #GrandOpening #Bole"
+   ]
+  ],
+  "reply": "✨ The wait is over! ✨\n\n**Habesha Crumbs** opens its doors this **Saturday at 8 AM** in Bole! 🥐🍞\n\nFresh bread, buttery pastries, and a few Ethiopian twists you won't find anywhere else — baked with love every single morning.\n\n☕ **The first 20 people through the door get a FREE coffee!** Come early!\n\nCome say hi, grab something warm, and be part of our very first day. 💛\n\n📍 Bole, Addis Ababa\n🕗 Opening Saturday, 8:00 AM\n\n#HabeshaCrumbs #AddisAbaba #Bakery #GrandOpening #Bole #FreeCoffee",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-046",
+  "area": "code",
+  "prompt": "now add error handling",
+  "history": [
+   [
+    "user",
+    "write a react component that fetches users from /api/users and lists them"
+   ],
+   [
+    "assistant",
+    "```jsx\nimport { useEffect, useState } from \"react\";\n\nexport default function UserList() {\n  const [users, setUsers] = useState([]);\n\n  useEffect(() => {\n    fetch(\"/api/users\")\n      .then((res) => res.json())\n      .then(setUsers);\n  }, []);\n\n  return (\n    <ul>\n      {users.map((u) => (\n        <li key={u.id}>{u.name}</li>\n      ))}\n    </ul>\n  );\n}\n```"
+   ]
+  ],
+  "reply": "Here's the component with loading and error states, an HTTP status check, and cleanup if the component unmounts mid-request:\n\n```jsx\nimport { useEffect, useState } from \"react\";\n\nexport default function UserList() {\n  const [users, setUsers] = useState([]);\n  const [loading, setLoading] = useState(true);\n  const [error, setError] = useState(null);\n\n  useEffect(() => {\n    const controller = new AbortController();\n\n    async function load() {\n      try {\n        const res = await fetch(\"/api/users\", { signal: controller.signal });\n        if (!res.ok) {\n          throw new Error(`Request failed with status ${res.status}`);\n        }\n        const data = await res.json();\n        setUsers(data);\n      } catch (err) {\n        if (err.name !== \"AbortError\") {\n          setError(err.message || \"Something went wrong\");\n        }\n      } finally {\n        setLoading(false);\n      }\n    }\n\n    load();\n    return () => controller.abort();\n  }, []);\n\n  if (loading) return <p>Loading users…</p>;\n  if (error) return <p role=\"alert\">Couldn't load users: {error}</p>;\n  if (users.length === 0) return <p>No users found.</p>;\n\n  return (\n    <ul>\n      {users.map((u) => (\n        <li key={u.id}>{u.name}</li>\n      ))}\n    </ul>\n  );\n}\n```\n\n**What changed:**\n- `res.ok` check — `fetch` doesn't throw on 404/500, so we throw ourselves.\n- `try/catch` around the request and JSON parsing, with the message stored in `error`.\n- `AbortController` cancels the request on unmount, and we ignore the resulting `AbortError`.\n- Separate UI for loading, error, and empty states.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-047",
+  "area": "code",
+  "prompt": "delete the unused import",
+  "history": [
+   [
+    "user",
+    "python script that reads a csv and prints the average of the price column"
+   ],
+   [
+    "assistant",
+    "```python\nimport csv\nimport os\nimport sys\n\n\ndef average_price(path):\n    with open(path, newline=\"\") as f:\n        reader = csv.DictReader(f)\n        prices = [float(row[\"price\"]) for row in reader]\n    return sum(prices) / len(prices)\n\n\nprint(average_price(\"products.csv\"))\n```"
+   ]
+  ],
+  "reply": "Both `os` and `sys` are unused, so I removed them — only `csv` is needed:\n\n```python\nimport csv\n\n\ndef average_price(path):\n    with open(path, newline=\"\") as f:\n        reader = csv.DictReader(f)\n        prices = [float(row[\"price\"]) for row in reader]\n    return sum(prices) / len(prices)\n\n\nprint(average_price(\"products.csv\"))\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-048",
+  "area": "code",
+  "prompt": "mark it as async",
+  "history": [
+   [
+    "user",
+    "write a function that gets weather json for a city"
+   ],
+   [
+    "assistant",
+    "```python\nimport requests\n\n\ndef fetch_weather(city: str) -> dict:\n    resp = requests.get(\n        \"https://api.example.com/weather\",\n        params={\"q\": city},\n        timeout=10,\n    )\n    resp.raise_for_status()\n    return resp.json()\n```"
+   ]
+  ],
+  "reply": "`requests` is synchronous, so for a real `async` function you'll want an async HTTP client like **httpx**:\n\n```python\nimport httpx\n\n\nasync def fetch_weather(city: str) -> dict:\n    async with httpx.AsyncClient(timeout=10) as client:\n        resp = await client.get(\n            \"https://api.example.com/weather\",\n            params={\"q\": city},\n        )\n        resp.raise_for_status()\n        return resp.json()\n```\n\nUsage:\n\n```python\nimport asyncio\n\ndata = asyncio.run(fetch_weather(\"Addis Ababa\"))\nprint(data)\n```\n\nInstall it with `pip install httpx`. If you call this for many cities, create one `AsyncClient` and reuse it instead of opening a new one each call.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-049",
+  "area": "code",
+  "prompt": "now only for orders in the last 30 days",
+  "history": [
+   [
+    "user",
+    "sql to get the top 5 customers by number of orders"
+   ],
+   [
+    "assistant",
+    "```sql\nSELECT c.id,\n       c.name,\n       COUNT(o.id) AS total_orders\nFROM customers c\nJOIN orders o ON o.customer_id = c.id\nGROUP BY c.id, c.name\nORDER BY total_orders DESC\nLIMIT 5;\n```"
+   ]
+  ],
+  "reply": "Add a date filter on the orders before grouping:\n\n```sql\nSELECT c.id,\n       c.name,\n       COUNT(o.id) AS total_orders\nFROM customers c\nJOIN orders o ON o.customer_id = c.id\nWHERE o.created_at >= NOW() - INTERVAL '30 days'\nGROUP BY c.id, c.name\nORDER BY total_orders DESC\nLIMIT 5;\n```\n\nThat's PostgreSQL syntax. For MySQL use `o.created_at >= NOW() - INTERVAL 30 DAY`, and for SQL Server `o.created_at >= DATEADD(day, -30, GETDATE())`. Replace `created_at` with whatever your order date column is called.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-050",
+  "area": "code",
+  "prompt": "add a test",
+  "history": [
+   [
+    "user",
+    "write an is_prime function in python"
+   ],
+   [
+    "assistant",
+    "```python\ndef is_prime(n: int) -> bool:\n    if n < 2:\n        return False\n    for i in range(2, int(n ** 0.5) + 1):\n        if n % i == 0:\n            return False\n    return True\n```\n\nIt only checks divisors up to √n, which keeps it fast."
+   ]
+  ],
+  "reply": "Here's a pytest test file covering the edge cases:\n\n```python\n# test_primes.py\nimport pytest\n\nfrom primes import is_prime\n\n\n@pytest.mark.parametrize(\n    \"n, expected\",\n    [\n        (-7, False),\n        (0, False),\n        (1, False),\n        (2, True),\n        (3, True),\n        (4, False),\n        (9, False),    # perfect square of a prime\n        (17, True),\n        (25, False),\n        (97, True),\n        (7919, True),  # larger prime\n        (7921, False), # 89 * 89\n    ],\n)\ndef test_is_prime(n, expected):\n    assert is_prime(n) is expected\n```\n\nRun it with:\n\n```bash\npytest test_primes.py -v\n```\n\n(This assumes your function lives in `primes.py` — adjust the import if not.) The perfect-square cases like 9, 25 and 7921 are the important ones: they catch an off-by-one in the `+ 1` of the range.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-051",
+  "area": "code",
+  "prompt": "ok move this into a function",
+  "history": [
+   [
+    "user",
+    "scores = [78, 92, 65, 88]\ntotal = 0\nfor s in scores:\n    total += s\navg = total / len(scores)\nprint(f\"Average: {avg:.1f}\")\n\nwhy does this print 80.8"
+   ],
+   [
+    "assistant",
+    "The scores add up to 78 + 92 + 65 + 88 = **323**, and 323 / 4 = **80.75**.\n\nThe `:.1f` in the f-string rounds to **1 decimal place**, so 80.75 is printed as **80.8**. Use `:.2f` if you want to see 80.75."
+   ]
+  ],
+  "reply": "```python\ndef average(scores: list[float]) -> float:\n    \"\"\"Return the mean of a non-empty list of scores.\"\"\"\n    if not scores:\n        raise ValueError(\"scores must not be empty\")\n    return sum(scores) / len(scores)\n\n\nscores = [78, 92, 65, 88]\nprint(f\"Average: {average(scores):.1f}\")\n```\n\n**Changes:**\n- The loop is replaced by the built-in `sum()`, which does the same thing.\n- The function **returns** the value instead of printing it, so you can reuse it anywhere.\n- It raises a clear error for an empty list instead of crashing with `ZeroDivisionError`.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-052",
+  "area": "code",
+  "prompt": "make it remind the user to save before they leave the page",
+  "history": [
+   [
+    "user",
+    "simple react note editor with a textarea and save button"
+   ],
+   [
+    "assistant",
+    "```jsx\nimport { useState } from \"react\";\n\nexport default function NoteEditor({ onSave }) {\n  const [text, setText] = useState(\"\");\n\n  return (\n    <div>\n      <textarea\n        value={text}\n        onChange={(e) => setText(e.target.value)}\n        rows={10}\n      />\n      <button onClick={() => onSave(text)}>Save</button>\n    </div>\n  );\n}\n```"
+   ]
+  ],
+  "reply": "Track whether there are unsaved changes, and use the browser's `beforeunload` event to warn the user when they try to leave:\n\n```jsx\nimport { useEffect, useState } from \"react\";\n\nexport default function NoteEditor({ onSave }) {\n  const [text, setText] = useState(\"\");\n  const [savedText, setSavedText] = useState(\"\");\n  const isDirty = text !== savedText;\n\n  useEffect(() => {\n    if (!isDirty) return;\n\n    const handleBeforeUnload = (e) => {\n      e.preventDefault();\n      e.returnValue = \"\"; // required for Chrome to show the prompt\n    };\n\n    window.addEventListener(\"beforeunload\", handleBeforeUnload);\n    return () => window.removeEventListener(\"beforeunload\", handleBeforeUnload);\n  }, [isDirty]);\n\n  const handleSave = () => {\n    onSave(text);\n    setSavedText(text);\n  };\n\n  return (\n    <div>\n      <textarea\n        value={text}\n        onChange={(e) => setText(e.target.value)}\n        rows={10}\n      />\n      <button onClick={handleSave} disabled={!isDirty}>\n        Save\n      </button>\n      {isDirty && <p style={{ color: \"#b45309\" }}>You have unsaved changes</p>}\n    </div>\n  );\n}\n```\n\nNotes:\n- Browsers show their **own generic message** (\"Leave site? Changes you made may not be saved\") — custom text isn't allowed anymore.\n- The listener is only attached while there are unsaved changes, so it won't nag after saving.\n- This covers closing the tab / reloading. If you use React Router, also add its `useBlocker` hook to catch in-app navigation.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-053",
+  "area": "code",
+  "prompt": "make it 6pm instead",
+  "history": [
+   [
+    "user",
+    "how do i run a python function every day at 7am"
+   ],
+   [
+    "assistant",
+    "The simplest way is the `schedule` library (`pip install schedule`):\n\n```python\nimport time\n\nimport schedule\n\n\ndef job():\n    print(\"Running daily task…\")\n\n\nschedule.every().day.at(\"07:00\").do(job)\n\nwhile True:\n    schedule.run_pending()\n    time.sleep(30)\n```\n\nThe script has to keep running for this to work."
+   ]
+  ],
+  "reply": "Just change the time string to 24-hour format — 6 PM is `\"18:00\"`:\n\n```python\nimport time\n\nimport schedule\n\n\ndef job():\n    print(\"Running daily task…\")\n\n\nschedule.every().day.at(\"18:00\").do(job)\n\nwhile True:\n    schedule.run_pending()\n    time.sleep(30)\n```\n\nIt uses the machine's local time by default. If the server isn't on Addis Ababa time, you can pin the timezone (schedule ≥ 1.2):\n\n```python\nschedule.every().day.at(\"18:00\", \"Africa/Addis_Ababa\").do(job)\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-054",
+  "area": "code",
+  "prompt": "now write a query to mark one as done",
+  "history": [
+   [
+    "user",
+    "create a sql table for todos with title, due date and done"
+   ],
+   [
+    "assistant",
+    "```sql\nCREATE TABLE todos (\n    id        SERIAL PRIMARY KEY,\n    title     TEXT NOT NULL,\n    due_date  TIMESTAMPTZ,\n    done      BOOLEAN NOT NULL DEFAULT FALSE\n);\n```"
+   ]
+  ],
+  "reply": "```sql\nUPDATE todos\nSET done = TRUE\nWHERE id = 42;\n```\n\nReplace `42` with the id of the todo. A couple of useful variations:\n\n```sql\n-- Mark done by title (careful: affects every row with that title)\nUPDATE todos\nSET done = TRUE\nWHERE title = 'Buy groceries';\n\n-- Mark done and get the updated row back (PostgreSQL)\nUPDATE todos\nSET done = TRUE\nWHERE id = 42\nRETURNING id, title, done;\n```\n\nTo undo it, run the same query with `SET done = FALSE`.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-055",
+  "area": "plans",
+  "prompt": "add a stop in Hawassa on Saturday at 10am",
+  "history": [
+   [
+    "user",
+    "plan a road trip from addis to arba minch, leaving friday morning and back monday"
+   ],
+   [
+    "assistant",
+    "**Addis → Arba Minch road trip (Fri–Mon)**\n\n**Friday, Oct 16**\n- 7:00 AM — Leave Addis, head south via Mojo\n- 10:00 AM — Coffee and birdwatching at Lake Ziway (Batu)\n- 1:00 PM — Lunch in Shashamane\n- 3:00 PM — Wondo Genet hot springs, overnight there\n\n**Saturday, Oct 17**\n- 8:00 AM — Drive Wondo Genet → Sodo (~3 h)\n- 12:00 PM — Lunch in Sodo\n- 1:30 PM — Continue to Arba Minch (~2.5 h), check in and relax\n\n**Sunday, Oct 18**\n- 7:00 AM — Boat trip on Lake Chamo (the \"crocodile market\")\n- 2:00 PM — Nech Sar National Park — zebras and the \"Bridge of God\" view\n\n**Monday, Oct 19**\n- 6:00 AM — Drive back to Addis via Sodo–Hosaena–Butajira (~8 h)"
+   ]
+  ],
+  "reply": "Good call — Hawassa is right on the way. Here's the updated Saturday:\n\n**Saturday, Oct 17**\n- 8:45 AM — Leave Wondo Genet (~1 h to Hawassa)\n- **10:00 AM — Hawassa stop:** Amora Gedel fish market and a walk along the lakefront (go early, the fish market is busiest in the morning)\n- 12:00 PM — Lunch by the lake — fresh tilapia is the thing to order\n- 1:00 PM — Drive Hawassa → Sodo (~2.5 h)\n- 3:30 PM — Short break in Sodo\n- 4:00 PM — Continue to Arba Minch (~2.5 h), arriving around 6:30 PM\n\nThe rest of the trip stays the same. Since you'll now arrive close to sunset, I'd book your Arba Minch hotel in advance and avoid driving the last stretch after dark if you can.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-056",
+  "area": "plans",
+  "prompt": "remove the gym on monday i have class that day",
+  "history": [
+   [
+    "user",
+    "make me a weekly workout plan. gym mon wed fri, running tue thu"
+   ],
+   [
+    "assistant",
+    "**Weekly Workout Plan**\n\n| Day | Workout |\n|---|---|\n| **Mon** | Gym — Push (chest, shoulders, triceps) |\n| **Tue** | Run — 5 km easy pace |\n| **Wed** | Gym — Pull (back, biceps) |\n| **Thu** | Run — intervals: 6 × 400 m fast, 2 min rest |\n| **Fri** | Gym — Legs and core |\n| **Sat** | Optional: long walk or stretching |\n| **Sun** | Rest |"
+   ]
+  ],
+  "reply": "No problem — with only two gym days, it's better to switch to **full-body** sessions so nothing gets skipped:\n\n| Day | Workout |\n|---|---|\n| **Mon** | Rest (class day) |\n| **Tue** | Run — 5 km easy pace |\n| **Wed** | Gym — Full body A: squats, bench press, rows, plank |\n| **Thu** | Run — intervals: 6 × 400 m fast, 2 min rest |\n| **Fri** | Gym — Full body B: deadlifts, overhead press, pull-ups, lunges |\n| **Sat** | Optional: long walk or stretching |\n| **Sun** | Rest |\n\nIf you'd rather keep the push/pull/legs split, you could move Monday's push day to **Saturday** instead.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-057",
+  "area": "plans",
+  "prompt": "add a rest day",
+  "history": [
+   [
+    "user",
+    "i want to train every day this week for my 10k on sunday the 25th"
+   ],
+   [
+    "assistant",
+    "**10K prep — this week**\n\n| Day | Session |\n|---|---|\n| **Thu** | 6 km easy run |\n| **Fri** | Intervals: 5 × 800 m at race pace, 2 min jog between |\n| **Sat** | 8 km steady run |\n| **Sun** | 10 km long, easy pace |\n| **Mon** | 5 km easy + strides |\n| **Tue** | Tempo: 20 min at comfortably hard pace |\n| **Wed** | 6 km easy run |"
+   ]
+  ],
+  "reply": "Good idea — rest is when your legs actually get stronger. I've made **Monday** a rest day, right after your longest run:\n\n| Day | Session |\n|---|---|\n| **Thu** | 6 km easy run |\n| **Fri** | Intervals: 5 × 800 m at race pace, 2 min jog between |\n| **Sat** | 8 km steady run |\n| **Sun** | 10 km long, easy pace |\n| **Mon** | **Rest** — light stretching or a walk is fine |\n| **Tue** | Tempo: 20 min at comfortably hard pace |\n| **Wed** | 6 km easy run |\n\nI'd also suggest a second rest day on the Saturday right before the race (Oct 24) so you start fresh.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-058",
+  "area": "plans",
+  "prompt": "move day 3 to friday",
+  "history": [
+   [
+    "user",
+    "my exams start monday the 26th. make me a 5 day study plan for next week: math, physics, chemistry"
+   ],
+   [
+    "assistant",
+    "**Study plan — Mon Oct 19 to Fri Oct 23**\n\n- **Day 1 (Mon):** Math — algebra and functions, 2 past-paper sections\n- **Day 2 (Tue):** Physics — mechanics (motion, forces, energy)\n- **Day 3 (Wed):** Chemistry — stoichiometry and the mole concept\n- **Day 4 (Thu):** Math — calculus (derivatives and integrals)\n- **Day 5 (Fri):** Physics — electricity and circuits + mixed review\n\nEach day: 2 × 90-minute blocks with a 20-minute break, then 30 minutes of flashcards in the evening."
+   ]
+  ],
+  "reply": "Done — chemistry now goes on Friday, and the other days shift up:\n\n- **Mon:** Math — algebra and functions, 2 past-paper sections\n- **Tue:** Physics — mechanics (motion, forces, energy)\n- **Wed:** Math — calculus (derivatives and integrals)\n- **Thu:** Physics — electricity and circuits + mixed review\n- **Fri:** Chemistry — stoichiometry and the mole concept\n\nEach day is still 2 × 90-minute blocks with a 20-minute break, plus 30 minutes of flashcards in the evening. Chemistry is now the freshest subject going into the weekend, so use Saturday for a quick mixed review of math and physics before exams start.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-059",
+  "area": "plans",
+  "prompt": "make it vegetarian",
+  "history": [
+   [
+    "user",
+    "give me a recipe for doro wat"
+   ],
+   [
+    "assistant",
+    "**Doro Wat (serves 4)**\n\n**Ingredients:**\n- 1 whole chicken, cut into 12 pieces, skin removed\n- 1 lemon + water for washing the chicken\n- 4 large red onions, finely chopped\n- ½ cup niter kibbeh (spiced butter)\n- ¼–⅓ cup berbere\n- 4 cloves garlic, 1 tbsp ginger, minced\n- 6 hard-boiled eggs\n- Salt to taste\n\n**Steps:**\n1. Soak the chicken in lemon water for 30 minutes, then rinse.\n2. Cook the onions in a dry pot on low heat for 30–40 minutes, stirring, until deep brown.\n3. Add niter kibbeh and berbere; cook 15 minutes.\n4. Add garlic, ginger and a cup of water, then the chicken. Simmer 45 minutes.\n5. Score the eggs and add them for the last 10 minutes.\n\nServe hot with injera."
+   ]
+  ],
+  "reply": "**Mushroom Wat — a vegetarian doro wat (serves 4)**\n\nSame deep, slow-cooked berbere sauce, with mushrooms standing in for the chicken.\n\n**Ingredients:**\n- 500 g mushrooms (oyster or button), torn or cut into large pieces\n- 4 large red onions, finely chopped\n- ½ cup niter kibbeh (or spiced oil to make it vegan)\n- ¼–⅓ cup berbere\n- 4 cloves garlic, 1 tbsp ginger, minced\n- 6 hard-boiled eggs (leave out for vegan)\n- 1 tbsp tomato paste (optional, for extra body)\n- Salt to taste\n\n**Steps:**\n1. Cook the onions in a dry pot on low heat for 30–40 minutes, stirring often, until deep brown and jammy.\n2. Add niter kibbeh (or oil), berbere and tomato paste; cook 15 minutes, adding a splash of water if it sticks.\n3. Add garlic, ginger and 1 cup of water; simmer 10 minutes.\n4. Add the mushrooms and simmer 15–20 minutes until tender and coated in sauce.\n5. Score the eggs and add them for the last 10 minutes.\n\nServe hot with injera and a side of ayib (or gomen for a fully plant-based plate).",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-060",
+  "area": "plans",
+  "prompt": "remember that im vegetarian btw so you dont have to ask next time",
+  "history": [
+   [
+    "user",
+    "make the doro wat recipe vegetarian"
+   ],
+   [
+    "assistant",
+    "Here's a **mushroom wat** version: same slow-cooked onions and berbere sauce, with oyster mushrooms instead of chicken, and the hard-boiled eggs kept in. Use spiced oil instead of niter kibbeh if you want it vegan. Serve with injera and gomen."
+   ]
+  ],
+  "reply": "Got it — I'll remember that you're **vegetarian**. 🥗 From now on I'll keep recipes and food suggestions meat-free without you having to ask.",
+  "expect": "memory"
+ },
+ {
+  "id": "hf-061",
+  "area": "plans",
+  "prompt": "add tomatoes and remove the garlic",
+  "history": [
+   [
+    "user",
+    "make a shopping list for shiro and injera for 4 people"
+   ],
+   [
+    "assistant",
+    "**Shopping list — shiro & injera for 4**\n\n**Shiro**\n- Shiro powder — 1 cup\n- Red onions — 2 large\n- Garlic — 1 head\n- Oil — ½ cup\n- Green chilies — 2\n- Salt\n\n**Injera**\n- Injera — 12 pieces (from the bakery or market)\n\n**Sides (optional)**\n- Ayib (cottage cheese) — 250 g\n- Gomen (collard greens) — 1 bunch"
+   ]
+  ],
+  "reply": "**Shopping list — shiro & injera for 4**\n\n**Shiro**\n- Shiro powder — 1 cup\n- Red onions — 2 large\n- Tomatoes — 2 medium\n- Oil — ½ cup\n- Green chilies — 2\n- Salt\n\n**Injera**\n- Injera — 12 pieces (from the bakery or market)\n\n**Sides (optional)**\n- Ayib (cottage cheese) — 250 g\n- Gomen (collard greens) — 1 bunch\n\nTip: dice the tomatoes and cook them with the onions before adding the shiro — they make the stew a little richer and slightly tangy.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-062",
+  "area": "plans",
+  "prompt": "make it 2 weeks instead",
+  "history": [
+   [
+    "user",
+    "make me a plan to read atomic habits in a month"
+   ],
+   [
+    "assistant",
+    "**Atomic Habits in 4 weeks** (~320 pages → about 11 pages a day)\n\n- **Week 1:** Introduction + Part 1 — The Fundamentals (ch. 1–3)\n- **Week 2:** Law 1 — Make It Obvious + Law 2 — Make It Attractive (ch. 4–10)\n- **Week 3:** Law 3 — Make It Easy (ch. 11–14)\n- **Week 4:** Law 4 — Make It Satisfying + Advanced Tactics (ch. 15–20)\n\nTip: read at the same time every day — like right after your morning coffee — so it becomes a habit itself."
+   ]
+  ],
+  "reply": "**Atomic Habits in 2 weeks** (~320 pages → about 23 pages a day, roughly 35–40 minutes)\n\n- **Days 1–3:** Introduction + Part 1 — The Fundamentals (ch. 1–3)\n- **Days 4–7:** Law 1 — Make It Obvious + Law 2 — Make It Attractive (ch. 4–10)\n- **Days 8–10:** Law 3 — Make It Easy (ch. 11–14)\n- **Days 11–14:** Law 4 — Make It Satisfying + Advanced Tactics (ch. 15–20)\n\nIf a whole session feels like too much, split it: ~12 pages in the morning and ~11 before bed. And use the book's own advice — \"never miss twice\": if you skip a day, just pick up the next one.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-063",
+  "area": "plans",
+  "prompt": "can you remind me to pack the day before?",
+  "history": [
+   [
+    "user",
+    "plan a 2 day trip to gondar, i fly out saturday morning"
+   ],
+   [
+    "assistant",
+    "**Gondar in 2 days**\n\n**Saturday, Oct 17**\n- Morning flight Addis → Gondar (~1 h)\n- Afternoon: Fasil Ghebbi royal enclosure\n- Evening: dinner and live music at a local azmari bet\n\n**Sunday, Oct 18**\n- Morning: Debre Berhan Selassie church (the famous angel ceiling)\n- Midday: Fasilides' Bath\n- Afternoon: Kuskuam palace, then evening flight back to Addis\n\n**Pack:** a warm layer for the evenings, comfortable walking shoes, a scarf for church visits, and cash for entry fees."
+   ]
+  ],
+  "reply": "Sure! I'll remind you on **Friday, Oct 16** to pack for Gondar. What time should I send it — maybe 7:00 PM?",
+  "expect": "ask_time"
+ },
+ {
+  "id": "hf-064",
+  "area": "plans",
+  "prompt": "wait whats the date today",
+  "history": [
+   [
+    "user",
+    "plan my week: work mon to fri 9-5, gym 3 times, study arabic 30 min every day"
+   ],
+   [
+    "assistant",
+    "**Your week**\n\n| Day | Morning | After work |\n|---|---|---|\n| **Mon** | Arabic 30 min (7:30 AM) | Gym 6:00 PM |\n| **Tue** | Arabic 30 min (7:30 AM) | Free evening |\n| **Wed** | Arabic 30 min (7:30 AM) | Gym 6:00 PM |\n| **Thu** | Arabic 30 min (7:30 AM) | Free evening |\n| **Fri** | Arabic 30 min (7:30 AM) | Gym 6:00 PM |\n| **Sat** | Arabic 30 min + review | Rest |\n| **Sun** | Arabic 30 min | Rest / plan next week |"
+   ]
+  ],
+  "reply": "Today is **Wednesday, October 14, 2026**.",
+  "expect": "instant"
+ },
+ {
+  "id": "hf-065",
+  "area": "plans",
+  "prompt": "move the church visits to the mornings, it gets too hot in the afternoon",
+  "history": [
+   [
+    "user",
+    "3 day itinerary for lalibela"
+   ],
+   [
+    "assistant",
+    "**Lalibela in 3 days**\n\n**Day 1**\n- Morning: arrive, check in, rest (Lalibela is ~2,500 m — take it easy)\n- Afternoon: Northern Group of churches — Bete Medhane Alem, Bete Maryam\n\n**Day 2**\n- Morning: hike or mule ride to Asheten Maryam monastery\n- Afternoon: Eastern Group — Bete Amanuel, Bete Abba Libanos, and the tunnels\n\n**Day 3**\n- Morning: market and town walk\n- Afternoon: Bete Giyorgis (the cross-shaped church), then sunset at Ben Abeba restaurant"
+   ]
+  ],
+  "reply": "Good thinking — the rock courtyards trap the heat in the afternoon. Here's the rearranged plan:\n\n**Day 1**\n- Morning: arrive, check in, rest (altitude ~2,500 m)\n- Late afternoon (after 4 PM, when it cools): easy town walk\n\n**Day 2**\n- **Early morning (7–11 AM):** Northern Group — Bete Medhane Alem, Bete Maryam\n- Afternoon: rest at the hotel, or a shaded café\n- Evening: sunset dinner at Ben Abeba\n\n**Day 3**\n- **Early morning (7–11 AM):** Eastern Group — Bete Amanuel, Bete Abba Libanos and the tunnels, then **Bete Giyorgis** before noon\n- Afternoon: market (busiest on Saturdays)\n\nI dropped the Asheten Maryam hike to fit everything into mornings — if you'd still like it, you could do it at sunrise on Day 1 if you arrive the night before. Also: carry water and a hat, and wear shoes you can slip off easily at each church.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-066",
+  "area": "plans",
+  "prompt": "ok remind me to leave for the doctor tomorrow at 8:30am",
+  "history": [
+   [
+    "user",
+    "plan my day tomorrow: doctor at 9, work 10 to 5, gym after"
+   ],
+   [
+    "assistant",
+    "**Thursday, Oct 15**\n\n- 7:30 AM — Breakfast\n- 8:30 AM — Leave for the doctor\n- 9:00 AM — Doctor's appointment\n- 10:00 AM – 5:00 PM — Work (lunch around 1:00 PM)\n- 5:30 PM — Gym\n- 7:00 PM — Dinner and wind down"
+   ]
+  ],
+  "reply": "```reminder\n{\"title\": \"Leave for the doctor\", \"due_at\": \"2026-10-15T08:30:00+03:00\"}\n```\n\nSet: leave for the doctor — Thursday, Oct 15, 8:30 AM.",
+  "expect": "save"
+ },
+ {
+  "id": "hf-067",
+  "area": "search",
+  "prompt": "what about in Nairobi?",
+  "history": [
+   [
+    "user",
+    "weather in addis today?"
+   ],
+   [
+    "assistant",
+    "**Addis Ababa today** 🌤️\n\n- Partly cloudy, high around **22°C**, low around **11°C**\n- Chance of a light shower in the late afternoon\n- Light breeze from the east\n\nThe rainy season is winding down, so mornings are mostly clear — bring a light jacket for the evening."
+   ]
+  ],
+  "reply": "**Nairobi today** ⛅\n\n- Mostly sunny with some afternoon clouds\n- High around **25°C**, low around **13°C**\n- Low chance of rain — an isolated afternoon shower is possible, but the short rains usually don't start in earnest until later in October or November\n\nA bit warmer than Addis, so a T-shirt during the day and a light sweater for the evening.",
+  "expect": "search"
+ },
+ {
+  "id": "hf-068",
+  "area": "search",
+  "prompt": "and tomorrow?",
+  "history": [
+   [
+    "user",
+    "weather in addis today?"
+   ],
+   [
+    "assistant",
+    "**Addis Ababa today** 🌤️\n\n- Partly cloudy, high around **22°C**, low around **11°C**\n- Chance of a light shower in the late afternoon\n- Light breeze from the east\n\nThe rainy season is winding down, so mornings are mostly clear — bring a light jacket for the evening."
+   ]
+  ],
+  "reply": "**Addis Ababa — tomorrow (Thursday, Oct 15)** 🌦️\n\n- Morning sun, clouds building in the afternoon\n- High around **21°C**, low around **11°C**\n- About a **40% chance** of showers after 3 PM\n\nSimilar to today, just a little wetter in the afternoon — worth keeping an umbrella in your bag.",
+  "expect": "search"
+ },
+ {
+  "id": "hf-069",
+  "area": "search",
+  "prompt": "what about in Nairobi?",
+  "history": [
+   [
+    "user",
+    "how do you say good morning in amharic"
+   ],
+   [
+    "assistant",
+    "In Amharic, \"good morning\" depends on who you're greeting:\n\n- To a man: **እንደምን አደርክ?** (*endemin aderk?*)\n- To a woman: **እንደምን አደርሽ?** (*endemin adersh?*)\n- To a group or politely: **እንደምን አደራችሁ?** (*endemin aderachihu?*)\n\nIt literally means \"How did you pass the night?\""
+   ]
+  ],
+  "reply": "In Nairobi people mostly speak **Swahili** (and English), so \"good morning\" is:\n\n- **Habari za asubuhi?** — literally \"What's the news of the morning?\"\n- The usual reply is **Nzuri!** (\"Good!\")\n\nOther common morning greetings you'll hear:\n- **Umeamkaje?** — \"How did you wake up?\" (very close to the Amharic idea!)\n- **Mambo?** — a casual \"what's up?\", answered with **Poa!**\n\nAnd of course plain English \"Good morning\" works everywhere in Nairobi.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-070",
+  "area": "search",
+  "prompt": "and the euro?",
+  "history": [
+   [
+    "user",
+    "dollar to birr rate today?"
+   ],
+   [
+    "assistant",
+    "As of today, the **Commercial Bank of Ethiopia** rate is roughly:\n\n- **Buying:** ~154.6 ETB per USD\n- **Selling:** ~157.7 ETB per USD\n\nRates at private banks are usually within 1–2 birr of these. Check your bank's app before exchanging, since the rate is updated daily."
+   ]
+  ],
+  "reply": "Today's **Commercial Bank of Ethiopia** rate for the euro is roughly:\n\n- **Buying:** ~179.9 ETB per EUR\n- **Selling:** ~183.5 ETB per EUR\n\nAs with the dollar, private banks are usually within a couple of birr of this, and the rate changes daily — confirm in your bank's app before you exchange.",
+  "expect": "search"
+ },
+ {
+  "id": "hf-071",
+  "area": "search",
+  "prompt": "and the red terror martyrs museum?",
+  "history": [
+   [
+    "user",
+    "what time does the national museum in addis open"
+   ],
+   [
+    "assistant",
+    "The **National Museum of Ethiopia** (home of \"Lucy\") is usually open **daily from 8:30 AM to 5:30 PM**. It's on King George VI Street near Addis Ababa University's Sidist Kilo campus. Entry for foreigners is a small fee; it's cheaper for Ethiopian residents."
+   ]
+  ],
+  "reply": "The **Red Terror Martyrs' Memorial Museum** is generally open **every day from about 8:30 AM to 6:00 PM**, including weekends.\n\n- **Where:** at Meskel Square, on Bole Road (easy to combine with a walk around the square)\n- **Entry:** free — donations are welcome\n- **Tip:** many visitors are guided by survivors or volunteers, and the visit takes about an hour\n\nHours can change around public holidays, so it's worth calling ahead if you're going on one.",
+  "expect": "search"
+ },
+ {
+  "id": "hf-072",
+  "area": "search",
+  "prompt": "what about in Nairobi?",
+  "history": [
+   [
+    "user",
+    "whats the time difference between addis and london"
+   ],
+   [
+    "assistant",
+    "Addis Ababa is on **East Africa Time (UTC+3)**, and London is currently on **British Summer Time (UTC+1)**, so **Addis is 2 hours ahead** of London.\n\nAfter the clocks change on **October 25**, London goes back to UTC+0 and the difference becomes **3 hours**."
+   ]
+  ],
+  "reply": "**No difference at all** — Nairobi is also on **East Africa Time (UTC+3)**, exactly like Addis Ababa.\n\nAnd since neither Kenya nor Ethiopia uses daylight saving time, the two cities share the same clock all year round. So compared to London, Nairobi is also **2 hours ahead** now, and **3 hours ahead** after October 25.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-073",
+  "area": "search",
+  "prompt": "which one is closest to bole medhanialem",
+  "history": [
+   [
+    "user",
+    "any pharmacy open now near me?"
+   ],
+   [
+    "assistant",
+    "Here are a few pharmacies near you that appear to be open right now:\n\n1. **Kenema Pharmacy** — Bole Rwanda area, open until 10 PM\n2. **Gishen Pharmacy** — near Edna Mall, open 24 hours\n3. **Selam Pharmacy** — Atlas area, open until 9 PM\n\nHours can change, so it's worth calling before you go."
+   ]
+  ],
+  "reply": "Of those three, **Gishen Pharmacy near Edna Mall** is the closest to Bole Medhanialem — it's only about a 5-minute walk from the church, and it's open **24 hours**, so you won't have to worry about closing time.\n\n- **Selam Pharmacy (Atlas)** is roughly 2 km away — about 10 minutes by taxi.\n- **Kenema Pharmacy (Bole Rwanda)** is the farthest, around 3 km.\n\nIf you need a specific medicine, call ahead to make sure it's in stock.",
+  "expect": "search",
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "hf-074",
+  "area": "search",
+  "prompt": "what did egypt say about it",
+  "history": [
+   [
+    "user",
+    "latest news on the GERD dam"
+   ],
+   [
+    "assistant",
+    "Here's the latest on the **Grand Ethiopian Renaissance Dam (GERD)**:\n\n- Ethiopia says the dam is now generating power from all of its installed turbines, and officials highlighted increased electricity exports to neighboring countries.\n- The government reported that this year's rainy-season filling went smoothly.\n- Talks with Egypt and Sudan over a binding agreement on filling and operation remain stalled.\n\nWant more detail on any of these?"
+   ]
+  ],
+  "reply": "According to recent reports, **Egypt's position** has been:\n\n- **Criticism of unilateral operation:** Egypt's foreign and irrigation ministries again said that Ethiopia is filling and operating the dam without a legally binding agreement, which Cairo says violates international law and threatens its water security.\n- **Concern about downstream flows:** Egyptian officials raised concerns about how water releases are coordinated, especially during dry years.\n- **Keeping options open:** Cairo said it would \"take all measures\" to protect its water interests, while also continuing to press for renewed negotiations with international mediation.\n\nEthiopia, for its part, maintains that the dam doesn't significantly harm downstream countries and that it's committed to a fair, negotiated outcome.\n\nWant me to pull up Sudan's latest statements too?",
+  "expect": "search"
+ },
+ {
+  "id": "hf-075",
+  "area": "photo",
+  "prompt": "show me a picture of it",
+  "history": [
+   [
+    "user",
+    "what is a gelada"
+   ],
+   [
+    "assistant",
+    "The **gelada** (*Theropithecus gelada*) is a primate found only in the **highlands of Ethiopia**, especially the Simien Mountains.\n\n- Sometimes called the \"bleeding-heart monkey\" because of the bright red patch of bare skin on its chest\n- The only primate that lives mainly on **grass**\n- Lives in huge herds — sometimes several hundred together\n- Sleeps on cliff ledges at night to stay safe from predators"
+   ]
+  ],
+  "reply": "Here are some photos of geladas in the Simien Mountains 🐒\n\nLook for the **hourglass-shaped red patch** on the chest — it's brighter on males, and the long golden-brown mane makes the males look like small lions.",
+  "expect": "photo"
+ },
+ {
+  "id": "hf-076",
+  "area": "photo",
+  "prompt": "what does bete giyorgis look like",
+  "history": [
+   [
+    "user",
+    "tell me about the lalibela churches"
+   ],
+   [
+    "assistant",
+    "The **rock-hewn churches of Lalibela** are 11 medieval churches carved directly out of solid volcanic rock in the 12th–13th centuries, during the reign of King Lalibela.\n\n- They're grouped into the **Northern** and **Eastern** groups, plus the standalone **Bete Giyorgis**\n- Connected by trenches, tunnels and passageways\n- Still active places of worship — especially during Genna (Ethiopian Christmas)\n- A UNESCO World Heritage Site since 1978"
+   ]
+  ],
+  "reply": "Here are photos of **Bete Giyorgis** (Church of St. George) ⛪\n\nIt's carved straight down into the rock in the shape of a **Greek cross**, so from above you see a perfect cross sitting in a deep pit about 12 m deep. You reach it through a trench and tunnel cut into the surrounding rock.",
+  "expect": "photo"
+ },
+ {
+  "id": "hf-077",
+  "area": "photo",
+  "prompt": "can you show me that again but simpler",
+  "history": [
+   [
+    "user",
+    "how do i tie a tie"
+   ],
+   [
+    "assistant",
+    "**Four-in-hand knot (the easiest):**\n\n1. Drape the tie around your neck with the wide end on your right, hanging about 30 cm lower than the narrow end.\n2. Cross the wide end over the narrow end.\n3. Bring the wide end under the narrow end.\n4. Cross it over the front again.\n5. Push the wide end up through the loop around your neck.\n6. Bring it down through the front knot you just made.\n7. Hold the narrow end and slide the knot up to tighten."
+   ]
+  ],
+  "reply": "Sure — here's the super-short version:\n\n1. **Wide end on the right**, hanging longer.\n2. **Over, under, over** — wrap the wide end around the narrow end.\n3. **Up** through the neck loop.\n4. **Down** through the front knot.\n5. **Pull** the narrow end and slide the knot up. Done! 👔\n\nMemory trick: **\"over, under, over, up, down\"**. If it ends too long or short, start again with the wide end hanging a little higher or lower.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-078",
+  "area": "photo",
+  "prompt": "generate an image of the first one",
+  "history": [
+   [
+    "user",
+    "i need a logo idea for my coffee shop called Buna Time"
+   ],
+   [
+    "assistant",
+    "Here are three logo ideas for **Buna Time**:\n\n1. **Jebena clock** — a jebena (traditional clay coffee pot) whose round base is a clock face, with the spout as the hour hand. Warm brown and gold.\n2. **Three cups** — three small sini cups in a row for abol, tona and bereka, with \"Buna Time\" in a simple rounded font underneath.\n3. **Coffee bean sun** — a single coffee bean rising like a sun over a green hill, a nod to Ethiopia as the birthplace of coffee."
+   ]
+  ],
+  "reply": "Here's a generated logo concept for **Buna Time** — a **jebena** whose round base doubles as a clock face, with the spout pointing like an hour hand. Warm coffee browns with gold accents, on a cream background.\n\nWant me to try a version with the shop name integrated into the design, or a simpler flat style for signage?",
+  "expect": "image_gen"
+ },
+ {
+  "id": "hf-079",
+  "area": "photo",
+  "prompt": "show me both side by side",
+  "history": [
+   [
+    "user",
+    "whats the difference between a cheetah and a leopard"
+   ],
+   [
+    "assistant",
+    "**Cheetah vs leopard:**\n\n| | Cheetah | Leopard |\n|---|---|---|\n| **Spots** | Solid round black spots | Rosettes (rose-shaped rings) |\n| **Face** | Black \"tear marks\" from eyes to mouth | No tear marks |\n| **Build** | Slim, long legs, small head | Stocky, muscular, bigger head |\n| **Hunting** | Speed — up to ~110 km/h in short bursts | Stealth and ambush, often drags prey up trees |\n| **Active** | Mostly daytime | Mostly at night |"
+   ]
+  ],
+  "reply": "Here are photos of a **cheetah** and a **leopard** side by side 🐆\n\nWhat to compare:\n- **Spots:** the cheetah's are solid dots; the leopard's are rosettes with a lighter center.\n- **Face:** the cheetah has the dark **tear lines** running down from its eyes.\n- **Body:** the cheetah looks lean and long-legged, like a greyhound; the leopard looks heavier and more powerful.",
+  "expect": "photo"
+ },
+ {
+  "id": "hf-080",
+  "area": "photo",
+  "prompt": "why does it look like that? what are the scales made of",
+  "history": [
+   [
+    "user",
+    "show me a pangolin"
+   ],
+   [
+    "assistant",
+    "Here's a pangolin! 🦔 This one is a ground pangolin, curled halfway into a ball — the overlapping scales make it look like a walking pinecone."
+   ]
+  ],
+  "reply": "Those scales are made of **keratin** — the same protein as your fingernails and hair (and rhino horn).\n\n**Why it looks like that:**\n- **Armor:** the overlapping scales cover almost the whole body. When threatened, a pangolin curls into a tight ball, and the sharp scale edges make it very hard for lions or hyenas to bite through.\n- **Flexibility:** because they overlap like roof tiles, the scales let it bend and roll while staying protected.\n- **Diet:** it has no teeth and a very long sticky tongue (sometimes longer than its body) for slurping up ants and termites, which is why it has that narrow, pointed snout.\n- **Digging:** strong front claws tear open termite mounds, so it walks a bit hunched on its back legs.\n\nSadly, that same armor is why pangolins are among the most trafficked mammals in the world — the scales are falsely believed to have medicinal value.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-081",
+  "area": "todo",
+  "prompt": "6pm",
+  "history": [
+   [
+    "user",
+    "remind me to call the bank tomorrow"
+   ],
+   [
+    "assistant",
+    "Sure — what time tomorrow should I remind you to call the bank?"
+   ]
+  ],
+  "reply": "Set: call the bank — Thursday, Oct 15, 6:00 PM.",
+  "expect": "save"
+ },
+ {
+  "id": "hf-082",
+  "area": "todo",
+  "prompt": "make it 7 instead",
+  "history": [
+   [
+    "user",
+    "remind me about the gym tomorrow at 6pm"
+   ],
+   [
+    "assistant",
+    "Set: gym — Thursday, Oct 15, 6:00 PM."
+   ]
+  ],
+  "reply": "Done — moved **gym** to Thursday, Oct 15, 7:00 PM.",
+  "expect": "change"
+ },
+ {
+  "id": "hf-083",
+  "area": "todo",
+  "prompt": "i paid the rent, mark it done",
+  "history": [
+   [
+    "user",
+    "whats on my list today"
+   ],
+   [
+    "assistant",
+    "Here's what you have today:\n\n- **Pay rent** — due today\n- **Water the plants** — 6:00 PM"
+   ]
+  ],
+  "reply": "Nice — marked **pay rent** as done ✅\n\nYou still have **water the plants** at 6:00 PM today.",
+  "expect": "change"
+ },
+ {
+  "id": "hf-084",
+  "area": "todo",
+  "prompt": "delete it, my roommate does it now",
+  "history": [
+   [
+    "user",
+    "do i have a reminder to water the plants?"
+   ],
+   [
+    "assistant",
+    "Yes — **water the plants** is set for Friday, Oct 16, 8:00 AM."
+   ]
+  ],
+  "reply": "Deleted **water the plants** 🌱 — one less thing on your list.",
+  "expect": "change"
+ },
+ {
+  "id": "hf-085",
+  "area": "todo",
+  "prompt": "tomorrow morning",
+  "history": [
+   [
+    "user",
+    "remind me to buy injera"
+   ],
+   [
+    "assistant",
+    "Sure! When should I remind you to buy injera?"
+   ]
+  ],
+  "reply": "What time tomorrow morning — would **8:00 AM** work?",
+  "expect": "ask_time"
+ },
+ {
+  "id": "hf-086",
+  "area": "todo",
+  "prompt": "actually move it to sunday same time",
+  "history": [
+   [
+    "user",
+    "remind me to call mom saturday 10am"
+   ],
+   [
+    "assistant",
+    "Set: call mom — Saturday, Oct 17, 10:00 AM."
+   ]
+  ],
+  "reply": "Moved **call mom** to Sunday, Oct 18, 10:00 AM. 📞",
+  "expect": "change"
+ },
+ {
+  "id": "hf-087",
+  "area": "todo",
+  "prompt": "what else do i have this week?",
+  "history": [
+   [
+    "user",
+    "remind me to read 20 pages tonight at 9"
+   ],
+   [
+    "assistant",
+    "Set: read 20 pages — today, Oct 14, 9:00 PM."
+   ]
+  ],
+  "reply": "Here's what's on your list this week:\n\n- **Today (Wed, Oct 14), 9:00 PM** — read 20 pages\n- **Thu, Oct 15, 2:00 PM** — dentist appointment\n- **Thu, Oct 15, 6:00 PM** — gym\n- **Fri, Oct 16, 8:00 AM** — water the plants\n- **Sat, Oct 17, 10:00 AM** — call mom\n\nNothing else after Saturday so far.",
+  "expect": "read"
+ },
+ {
+  "id": "hf-088",
+  "area": "todo",
+  "prompt": "thanks! btw how much of my salary should rent be?",
+  "history": [
+   [
+    "user",
+    "remind me to pay rent on the 1st at 9am"
+   ],
+   [
+    "assistant",
+    "Set: pay rent — Sunday, Nov 1, 9:00 AM."
+   ]
+  ],
+  "reply": "A common rule of thumb is to keep rent at about **30% of your take-home pay** or less.\n\nFor example:\n\n| Monthly take-home | 30% for rent |\n|---|---|\n| 10,000 birr | 3,000 birr |\n| 15,000 birr | 4,500 birr |\n| 25,000 birr | 7,500 birr |\n\nA popular way to plan the rest is the **50/30/20 budget**:\n- **50%** for needs — rent, food, transport, utilities\n- **30%** for wants — eating out, entertainment\n- **20%** for savings or paying off debt\n\nIn Addis, many people end up spending more than 30% on rent, especially in areas like Bole. If that's you, the key is to cut back on the \"wants\" part so you can still save something each month.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-089",
+  "area": "todo",
+  "prompt": "9 in the morning",
+  "history": [
+   [
+    "user",
+    "remind me to submit the report friday"
+   ],
+   [
+    "assistant",
+    "Got it — what time on Friday should I remind you?"
+   ]
+  ],
+  "reply": "```reminder\n{\"title\": \"Submit the report\", \"due_at\": \"2026-10-16T09:00:00+03:00\"}\n```\n\nSet: submit the report — Friday, Oct 16, 9:00 AM.",
+  "expect": "save"
+ },
+ {
+  "id": "hf-090",
+  "area": "todo",
+  "prompt": "push it to next week same day",
+  "history": [
+   [
+    "user",
+    "when is my dentist appointment"
+   ],
+   [
+    "assistant",
+    "Your **dentist appointment** reminder is set for **Thursday, Oct 15, 2:00 PM**."
+   ]
+  ],
+  "reply": "Moved **dentist appointment** to Thursday, Oct 22, 2:00 PM. 🦷",
+  "expect": "change"
+ },
+ {
+  "id": "hf-091",
+  "area": "physics",
+  "prompt": "how far did it go?",
+  "history": [
+   [
+    "user",
+    "A 1000 kg car accelerates at 2 m/s^2. Find the force."
+   ],
+   [
+    "assistant",
+    "$$F = ma = 1000 \\times 2 = 2000\\text{ N}$$\n\nThe net force on the car is **2000 N**."
+   ]
+  ],
+  "reply": "I can't tell from what we have: the distance depends on how long the car accelerated (and how fast it started). If it started from rest and accelerated for $t$ seconds, it covers $s = \\tfrac{1}{2}(2)t^2 = t^2$ metres. Tell me the time and I'll work it out.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-092",
+  "area": "places",
+  "prompt": "thanks! how far is it to the airport from here?",
+  "history": [
+   [
+    "user",
+    "A 1000 kg car accelerates at 2 m/s^2. Find the force."
+   ],
+   [
+    "assistant",
+    "$$F = ma = 1000 \\times 2 = 2000\\text{ N}$$\n\nThe net force on the car is **2000 N**."
+   ]
+  ],
+  "reply": "Bole International Airport is about **6.8 km** from you, roughly 18 minutes by car in current traffic.",
+  "expect": "search",
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "hf-093",
+  "area": "places",
+  "prompt": "thanks! how far is it to the airport from here?",
+  "history": [
+   [
+    "user",
+    "A 1000 kg car accelerates at 2 m/s^2. Find the force."
+   ],
+   [
+    "assistant",
+    "$$F = ma = 1000 \\times 2 = 2000\\text{ N}$$\n\nThe net force on the car is **2000 N**."
+   ]
+  ],
+  "reply": "I need your location to tell you that.",
+  "expect": "instant"
+ },
+ {
+  "id": "hf-094",
+  "area": "math",
+  "prompt": "What if 2½ + 1½ instead?",
+  "history": [
+   [
+    "user",
+    "what is 2½ + 1¾"
+   ],
+   [
+    "assistant",
+    "```answer\nverified: true\n\\frac{17}{4}\n```"
+   ]
+  ],
+  "reply": "$2\\frac{1}{2} + 1\\frac{1}{2} = 3\\frac{2}{2}$\n\n$3\\frac{2}{2} = 4$",
+  "expect": "instant"
+ },
+ {
+  "id": "hf-095",
+  "area": "math",
+  "prompt": "what about 7 × 8?",
+  "history": [
+   [
+    "user",
+    "what is 6 × 8"
+   ],
+   [
+    "assistant",
+    "```answer\nverified: true\n6 × 8 = 48\n```"
+   ]
+  ],
+  "reply": "7 × 8 = **56**.",
+  "expect": "instant"
+ },
+ {
+  "id": "hf-096",
+  "area": "math",
+  "prompt": "what if I invest 500 at 5%?",
+  "history": [
+   [
+    "user",
+    "is a savings account worth it?"
+   ],
+   [
+    "assistant",
+    "It's a safe place for an emergency fund; the rate decides how much it earns."
+   ]
+  ],
+  "reply": "At 5% a year, $500 earns about **$25** in the first year.",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-097",
+  "area": "math",
+  "prompt": "what about tomorrow?",
+  "history": [
+   [
+    "user",
+    "what is 15 + 27"
+   ],
+   [
+    "assistant",
+    "```answer\nverified: true\n15 + 27 = 42\n```"
+   ]
+  ],
+  "reply": "Do you mean another sum for tomorrow, or something else?",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-098",
+  "area": "search",
+  "prompt": "im in indianapolis",
+  "history": [
+   [
+    "user",
+    "is it gonna rain tonight"
+   ],
+   [
+    "assistant",
+    "I don't have your location yet, so I can't answer that for where you are.\n\nTell me the city, or turn on **Location** in **Settings** (or allow location when prompted)."
+   ]
+  ],
+  "reply": "Yes, rain is likely in Indianapolis tonight, about a 70% chance after 9 PM.",
+  "expect": "search"
+ },
+ {
+  "id": "hf-099",
+  "area": "places",
+  "prompt": "Indianapolis",
+  "history": [
+   [
+    "user",
+    "best coffee near me"
+   ],
+   [
+    "assistant",
+    "I don't have your location yet, so I can't answer that for where you are.\n\nTell me the city, or turn on **Location** in **Settings** (or allow location when prompted)."
+   ]
+  ],
+  "reply": "A few well-rated coffee shops in Indianapolis: …",
+  "expect": "search"
+ },
+ {
+  "id": "hf-100",
+  "area": "chitchat",
+  "prompt": "im in indianapolis",
+  "history": [
+   [
+    "user",
+    "hi"
+   ],
+   [
+    "assistant",
+    "Hey! How's your day going?"
+   ]
+  ],
+  "reply": "Nice! Visiting or based there?",
+  "expect": "answer"
+ },
+ {
+  "id": "hf-101",
+  "area": "chitchat",
+  "prompt": "how do I turn it on?",
+  "history": [
+   [
+    "user",
+    "is it gonna rain tonight"
+   ],
+   [
+    "assistant",
+    "I don't have your location yet, so I can't answer that for where you are.\n\nTell me the city, or turn on **Location** in **Settings** (or allow location when prompted)."
+   ]
+  ],
+  "reply": "Open **Settings**, then **Data controls**, and turn on **Location**.",
+  "expect": "answer"
+ }
+]

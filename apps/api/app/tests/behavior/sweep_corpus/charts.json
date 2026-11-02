@@ -1,0 +1,251 @@
+[
+ {
+  "id": "ch-001",
+  "area": "math lookalike",
+  "prompt": "Plot this experiment as a scatter plot with a best-fit line: x = 1,2,3,4,5 and y = 2.1,3.9,6.2,7.8,10.1",
+  "reply": "Here are your five measurements with the least-squares line:\n\n```chart\n{\"$schema\":\"https://vega.github.io/schema/vega-lite/v5.json\",\"data\":{\"values\":[{\"x\":1,\"y\":2.1},{\"x\":2,\"y\":3.9},{\"x\":3,\"y\":6.2},{\"x\":4,\"y\":7.8},{\"x\":5,\"y\":10.1}]},\"encoding\":{\"x\":{\"field\":\"x\",\"type\":\"quantitative\"},\"y\":{\"field\":\"y\",\"type\":\"quantitative\"}},\"layer\":[{\"mark\":\"point\"},{\"mark\":\"line\",\"transform\":[{\"regression\":\"y\",\"on\":\"x\"}]}]}\n```\n\nThe points rise almost perfectly along a straight line.",
+  "expect": "answer"
+ },
+ {
+  "id": "ch-002",
+  "area": "math lookalike",
+  "prompt": "draw a scatter plot of height vs weight: (150,50), (160,55), (170,65), (180,72)",
+  "reply": "Taller people in this sample weigh more:\n\n```chart\n{\"$schema\":\"https://vega.github.io/schema/vega-lite/v5.json\",\"data\":{\"values\":[{\"height\":150,\"weight\":50},{\"height\":160,\"weight\":55},{\"height\":170,\"weight\":65},{\"height\":180,\"weight\":72}]},\"mark\":\"point\",\"encoding\":{\"x\":{\"field\":\"height\",\"type\":\"quantitative\"},\"y\":{\"field\":\"weight\",\"type\":\"quantitative\"}}}\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "ch-003",
+  "area": "math lookalike",
+  "prompt": "make a line graph of my monthly sales: jan 10, feb 12, mar 9, apr 15",
+  "reply": "Your sales by month:\n\n```chart\n{\"$schema\":\"https://vega.github.io/schema/vega-lite/v5.json\",\"data\":{\"values\":[{\"month\":\"Jan\",\"sales\":10},{\"month\":\"Feb\",\"sales\":12},{\"month\":\"Mar\",\"sales\":9},{\"month\":\"Apr\",\"sales\":15}]},\"mark\":\"line\",\"encoding\":{\"x\":{\"field\":\"month\",\"type\":\"ordinal\",\"sort\":null},\"y\":{\"field\":\"sales\",\"type\":\"quantitative\"}}}\n```\n\nApril was your best month.",
+  "expect": "answer"
+ },
+ {
+  "id": "ch-004",
+  "area": "math lookalike",
+  "prompt": "Make a histogram of these test scores: 55, 62, 68, 70, 71, 75, 78, 80, 82, 85, 88, 90, 95",
+  "reply": "Most scores fall in the 70s and 80s:\n\n```chart\n{\"$schema\":\"https://vega.github.io/schema/vega-lite/v5.json\",\"data\":{\"values\":[{\"score\":55},{\"score\":62},{\"score\":68},{\"score\":70},{\"score\":71},{\"score\":75},{\"score\":78},{\"score\":80},{\"score\":82},{\"score\":85},{\"score\":88},{\"score\":90},{\"score\":95}]},\"mark\":\"bar\",\"encoding\":{\"x\":{\"field\":\"score\",\"bin\":{\"maxbins\":10}},\"y\":{\"aggregate\":\"count\"}}}\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "ch-005",
+  "area": "math lookalike",
+  "prompt": "give me a pie graph of my budget: rent 1200, food 400, transport 150",
+  "reply": "Rent is most of it:\n\n```chart\n{\"$schema\":\"https://vega.github.io/schema/vega-lite/v5.json\",\"data\":{\"values\":[{\"item\":\"Rent\",\"amount\":1200},{\"item\":\"Food\",\"amount\":400},{\"item\":\"Transport\",\"amount\":150}]},\"mark\":{\"type\":\"arc\"},\"encoding\":{\"theta\":{\"field\":\"amount\",\"type\":\"quantitative\"},\"color\":{\"field\":\"item\",\"type\":\"nominal\"}}}\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "ch-006",
+  "area": "math lookalike",
+  "prompt": "scatterplot of study hours vs exam score: 1 hour 52, 2 hours 60, 3 hours 71, 4 hours 79",
+  "reply": "More study hours, higher scores:\n\n```chart\n{\"$schema\":\"https://vega.github.io/schema/vega-lite/v5.json\",\"data\":{\"values\":[{\"hours\":1,\"score\":52},{\"hours\":2,\"score\":60},{\"hours\":3,\"score\":71},{\"hours\":4,\"score\":79}]},\"mark\":\"point\",\"encoding\":{\"x\":{\"field\":\"hours\",\"type\":\"quantitative\"},\"y\":{\"field\":\"score\",\"type\":\"quantitative\"}}}\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "ch-007",
+  "area": "chart lookalike",
+  "prompt": "my bar graph homework is due tomorrow, any tips for staying focused tonight?",
+  "reply": "Put your phone in another room, work in 25-minute blocks with five-minute breaks, and start with the part you understand best so you build momentum.",
+  "expect": "answer"
+ },
+ {
+  "id": "ch-008",
+  "area": "chart lookalike",
+  "prompt": "what is a scatter plot?",
+  "reply": "A scatter plot shows pairs of numbers as dots: one value along the bottom, the other up the side. It is how you spot whether two things rise and fall together.",
+  "expect": "answer"
+ },
+ {
+  "id": "ch-009",
+  "area": "chart lookalike",
+  "prompt": "is a bar graph or a pie chart better for survey results?",
+  "reply": "Usually a bar graph: bars are easier to compare than slices. A pie chart only works when there are a few categories that add up to a whole.",
+  "expect": "answer"
+ },
+ {
+  "id": "ch-010",
+  "area": "chart lookalike",
+  "prompt": "what do you think of the plot of Inception?",
+  "reply": "It is a clever heist story built on dreams within dreams; the layered timeline is the fun part, and the ending stays ambiguous on purpose.",
+  "expect": "answer"
+ },
+ {
+  "id": "ch-011",
+  "area": "chart lookalike",
+  "prompt": "I drew a dot plot in class today and my teacher loved it",
+  "reply": "That's great! A dot plot is a neat way to show how often each value appears, so it sounds like you made the data easy to read.",
+  "expect": "answer"
+ },
+ {
+  "id": "ch-012",
+  "area": "chart lookalike",
+  "prompt": "how do I read a pie graph?",
+  "reply": "Each slice is one part of the whole. The bigger the slice, the bigger that share; the slices together make 100%.",
+  "expect": "answer"
+ },
+ {
+  "id": "ch-013",
+  "area": "chart lookalike",
+  "prompt": "I have a box of plots for my garden, what should I plant in early spring?",
+  "reply": "Peas, spinach, lettuce and radishes all handle cool soil, so they are good first crops for your plots.",
+  "expect": "answer"
+ },
+ {
+  "id": "ch-014",
+  "area": "chart lookalike",
+  "prompt": "help me plot the boxes in my moving truck so the heavy ones go first",
+  "reply": "Load the heaviest boxes against the front wall, then stack lighter ones on top, and fill gaps with soft items.",
+  "expect": "answer"
+ },
+ {
+  "id": "ch-015",
+  "area": "chart lookalike",
+  "prompt": "what is a box plot used for?",
+  "reply": "A box plot shows how data spread out: the middle half of the values sits in the box, and the whiskers reach toward the extremes.",
+  "expect": "answer"
+ },
+ {
+  "id": "ch-016",
+  "area": "math lookalike",
+  "history": [
+   [
+    "user",
+    "Monthly rainfall in Addis Ababa: Jan 15, Feb 30, Mar 60, Apr 85 mm"
+   ],
+   [
+    "assistant",
+    "Hey! How's it going?"
+   ]
+  ],
+  "prompt": "make that a bar chart",
+  "reply": "```chart\ntype: bar\ntitle: Monthly rainfall in Addis Ababa (mm)\ndata:\n  - label: Jan\n    value: 15\n  - label: Feb\n    value: 30\n  - label: Mar\n    value: 60\n  - label: Apr\n    value: 85\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "ch-017",
+  "area": "math lookalike",
+  "history": [
+   [
+    "user",
+    "Here are my exam marks: math 85, physics 78, chemistry 92, biology 88"
+   ],
+   [
+    "assistant",
+    "Nice marks!"
+   ]
+  ],
+  "prompt": "what about a pie chart?",
+  "reply": "Here's how your marks split:\n\n```chart\npie\n  title \"Exam marks\"\n  data:\n    Math: 85\n    Physics: 78\n    Chemistry: 92\n    Biology: 88\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "ch-018",
+  "area": "chart lookalike",
+  "prompt": "make it a habit to check the chart every morning, how do I stick to that?",
+  "reply": "Tie it to something you already do: open the chart right after your first coffee, and keep it on your home screen so it's one tap away.",
+  "expect": "answer"
+ },
+ {
+  "id": "ch-019",
+  "area": "chart lookalike",
+  "prompt": "In a pie chart, what does each slice mean?",
+  "reply": "Each slice is one category's share of the whole: its angle is that share of 360\u00b0, so a quarter of the total is a 90\u00b0 slice.",
+  "expect": "answer"
+ },
+ {
+  "id": "ch-020",
+  "area": "chart lookalike",
+  "prompt": "make that a priority for this week",
+  "reply": "Got it. Put it first on your list and block an hour for it early in the week, before other tasks crowd it out.",
+  "expect": "answer"
+ },
+ {
+  "id": "ch-021",
+  "area": "chart lookalike",
+  "prompt": "Rewrite the ending and make it a plot twist",
+  "reply": "The butler, who had been dead the whole time, turns out to have written the will himself.",
+  "expect": "answer"
+ },
+ {
+  "id": "ch-022",
+  "area": "chart lookalike",
+  "prompt": "can we make this a graph problem and solve it with BFS?",
+  "reply": "Yes: treat each cell as a node and each open neighbour as an edge, then BFS from the start gives the shortest path.",
+  "expect": "answer"
+ },
+ {
+  "id": "ch-023",
+  "area": "chart lookalike",
+  "prompt": "write me a pop song and make it a chart-topper",
+  "reply": "**Neon Hearts**\n\nVerse 1: City lights are calling out your name\u2026",
+  "expect": "answer"
+ },
+ {
+  "id": "ch-024",
+  "area": "chart lookalike",
+  "history": [
+   [
+    "user",
+    "I'm driving from Addis to Bahir Dar next week"
+   ],
+   [
+    "assistant",
+    "That's a beautiful drive, about 9 hours. Should I chart a course with good stops?"
+   ]
+  ],
+  "prompt": "yes",
+  "reply": "Stop in Debre Markos for lunch, then the Blue Nile gorge viewpoint before the last stretch.",
+  "expect": "answer"
+ },
+ {
+  "id": "ch-025",
+  "area": "chart lookalike",
+  "history": [
+   [
+    "user",
+    "I have gym Mon, Wed, Fri and work 9 to 5"
+   ],
+   [
+    "assistant",
+    "That's a solid routine. Ok! Should I chart out your week?"
+   ]
+  ],
+  "prompt": "yes",
+  "reply": "Mon: work 9\u20135, gym after. Tue: work 9\u20135. Wed: work 9\u20135, gym after. Thu: work 9\u20135. Fri: work 9\u20135, gym after.",
+  "expect": "answer"
+ },
+ {
+  "id": "ch-026",
+  "area": "chart lookalike",
+  "history": [
+   [
+    "user",
+    "Just finished season 2 of Severance"
+   ],
+   [
+    "assistant",
+    "What a finale! Want me to summarize the plot?"
+   ]
+  ],
+  "prompt": "yes",
+  "reply": "Mark and the others push further into Lumon's secrets, and the finale forces each of them to choose between their two lives.",
+  "expect": "answer"
+ },
+ {
+  "id": "ch-027",
+  "area": "chart lookalike",
+  "history": [
+   [
+    "user",
+    "I have 3 kids ages 5, 8, 11 and chores are chaos"
+   ],
+   [
+    "assistant",
+    "Very normal at those ages. Want me to put together a chore chart for the kids?"
+   ]
+  ],
+  "prompt": "yes",
+  "reply": "Age 5: feed the pet, tidy toys. Age 8: set the table, sort laundry. Age 11: dishes, take out the trash.",
+  "expect": "answer"
+ }
+]

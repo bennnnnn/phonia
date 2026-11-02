@@ -1,0 +1,21 @@
+---
+description: Recall FastAPI backend conventions
+globs: apps/api/**/*.py
+alwaysApply: false
+---
+
+# Recall API (Python)
+
+~168k lines in `app/` excluding tests. Product domains are migrating from horizontal
+routers/services folders into `modules/<domain>/`; infrastructure stays in core/gateways/repositories.
+
+- async/await for all IO; full type hints; Pydantic v2 schemas
+- Config / feature flags via `app/core/config.py` — never read `os.environ` elsewhere
+- Chat loop in `app/modules/chat/`; quota/lock via `turn_resources`
+- Migrated modules own their API, service, models/schemas, jobs, scheduler, and tool adapter
+- Jobs: a module job or `background/handlers.py` registers; `core/jobs.py` is the queue only
+- MCP tools: module-owned or legacy `services/mcp/` adapters register via `gateways/mcp/`
+- Background jobs: wrap body in try/except; never raise into chat path
+- Mock LiteLLM, Redis, Google, Neon in tests — zero real network calls
+- Format/lint: `uv run ruff format . && uv run ruff check .`
+- Coverage target 80%+ (`pytest --cov=app --cov-fail-under=80`)

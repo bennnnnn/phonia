@@ -1,0 +1,1498 @@
+{
+ "  dog  ": {
+  "extract": null,
+  "request": null
+ },
+ "  draw   a dog  ": {
+  "extract": "dog",
+  "request": "dog"
+ },
+ "0.2 + 0.1": {
+  "extract": null,
+  "request": null
+ },
+ "2 images": {
+  "extract": null,
+  "request": null
+ },
+ "2x+5=17": {
+  "extract": null,
+  "request": null
+ },
+ "4 g of H2 reacts with excess O2. what mass of water is produced?": {
+  "extract": null,
+  "request": null
+ },
+ "6:30am": {
+  "extract": null,
+  "request": null
+ },
+ "A 0.5 kg ball moving at 8 m/s has how much kinetic energy?": {
+  "extract": null,
+  "request": null
+ },
+ "A 1000 kg car rounds a curve of radius 40 m at 12 m/s. What centripetal force is required?": {
+  "extract": null,
+  "request": null
+ },
+ "A 2 kg ball is dropped from 20 m. I got 19.8 m/s for its impact speed. Am I right?": {
+  "extract": null,
+  "request": null
+ },
+ "A 3 kg cart moving at 4 m/s collides and sticks to a 1 kg cart at rest. how much kinetic energy is lost?": {
+  "extract": null,
+  "request": null
+ },
+ "A 5 kg block slides down a frictionless 30° incline. What's its acceleration?": {
+  "extract": null,
+  "request": null
+ },
+ "A 60 kg sprinter runs up stairs 4.5 m high in 3.2 s. What is her power output?": {
+  "extract": null,
+  "request": null
+ },
+ "A ball is dropped from 80 m.": {
+  "extract": null,
+  "request": null
+ },
+ "A ball is thrown straight down at 8 m/s from the top of a 40 m building. what is its height after 1 s?": {
+  "extract": null,
+  "request": null
+ },
+ "A block slides down an incline with friction coefficient 0.3. Find the acceleration.": {
+  "extract": null,
+  "request": null
+ },
+ "A car goes around a curve of radius 50 m at 15 m/s. What is its centripetal acceleration?": {
+  "extract": null,
+  "request": null
+ },
+ "A coin is flipped in a game: heads Alice wins, tails Bob wins. It lands tails. Did Bob win?": {
+  "extract": null,
+  "request": null
+ },
+ "A force of 500 N acts on a ball for 0.02 s. What impulse does it give?": {
+  "extract": null,
+  "request": null
+ },
+ "A kettle draws 10 A from a 230 V supply. What is its power?": {
+  "extract": null,
+  "request": null
+ },
+ "A lens has focal length 15 cm. Where's the image?": {
+  "extract": "lens has focal length 15 cm. Where's the",
+  "request": "lens has focal length 15 cm. Where's the"
+ },
+ "A pebble is dropped off a 78 m bridge. How long until it splashes into the river?": {
+  "extract": null,
+  "request": null
+ },
+ "A rock is thrown horizontally off a cliff at 12 m/s. how long until it lands?": {
+  "extract": null,
+  "request": null
+ },
+ "A soccer ball is kicked at 20 m/s at 30° above the ground. How far does it travel?": {
+  "extract": null,
+  "request": null
+ },
+ "A stone on a 1.5 m string is whirled in a horizontal circle, completing one turn every 2 s. what is its speed?": {
+  "extract": null,
+  "request": null
+ },
+ "A wheel speeds up uniformly from rest to 30 rad/s in 6 s. (a) whats the angular acceleration (b) how many revolutions does it make?": {
+  "extract": null,
+  "request": null
+ },
+ "An aluminium rod 1.5 m long is heated from 20 °C to 120 °C. how much does it lengthen? α = 23×10^-6 /K": {
+  "extract": null,
+  "request": null
+ },
+ "An object moves in a circle at 10 m/s. What is its acceleration?": {
+  "extract": null,
+  "request": null
+ },
+ "Buy milk tomorrow at 6pm": {
+  "extract": null,
+  "request": null
+ },
+ "Can you add 5 + 9 the same way?": {
+  "extract": null,
+  "request": null
+ },
+ "Can you create an image of a horse?": {
+  "extract": "a horse",
+  "request": "a horse"
+ },
+ "Can you draw a cat?": {
+  "extract": "cat",
+  "request": "cat"
+ },
+ "Can't you look it up?": {
+  "extract": null,
+  "request": null
+ },
+ "Could you remove the background": {
+  "extract": null,
+  "request": null
+ },
+ "Create a  cat   pic": {
+  "extract": "cat",
+  "request": "cat"
+ },
+ "Create a car from the 1950s on NW road": {
+  "extract": "car from the 1950s on NW road",
+  "request": "car from the 1950s on NW road"
+ },
+ "Create a cat pic": {
+  "extract": "cat",
+  "request": "cat"
+ },
+ "Create a cat pic\n": {
+  "extract": "cat",
+  "request": "cat"
+ },
+ "Create a picture of that car": {
+  "extract": "that car",
+  "request": "that car"
+ },
+ "Create a walking poor man on the streets of Addis Ababa": {
+  "extract": "walking poor man on the streets of Addis Ababa",
+  "request": "walking poor man on the streets of Addis Ababa"
+ },
+ "Create cat": {
+  "extract": "cat",
+  "request": "cat"
+ },
+ "Don't mention my name in the email, just sign it from the team": {
+  "extract": null,
+  "request": null
+ },
+ "Draw me a cat": {
+  "extract": "cat",
+  "request": "cat"
+ },
+ "Even if it rains we're still having the picnic, any food ideas?": {
+  "extract": null,
+  "request": null
+ },
+ "Find the percent yield of my reaction if the actual yield was 12 g": {
+  "extract": null,
+  "request": null
+ },
+ "GENERATE IMAGE: Dog": {
+  "extract": "Dog",
+  "request": "Dog"
+ },
+ "Generate an image of a cozy cabin in the snow at night": {
+  "extract": "a cozy cabin in the snow at night",
+  "request": "a cozy cabin in the snow at night"
+ },
+ "Generate an image of a lighthouse": {
+  "extract": "a lighthouse",
+  "request": "a lighthouse"
+ },
+ "Generate image: black cat": {
+  "extract": "black cat",
+  "request": "black cat"
+ },
+ "Generate image: black cat.": {
+  "extract": "black cat",
+  "request": "black cat"
+ },
+ "Generate image: milk": {
+  "extract": "milk",
+  "request": "milk"
+ },
+ "Generate image: owl": {
+  "extract": "owl",
+  "request": "owl"
+ },
+ "Get me the latest Lakers score": {
+  "extract": null,
+  "request": null
+ },
+ "H2 + I2 ⇌ 2HI, Kc = 49. if you start with 0.50 M H2 and 0.50 M I2, what is [HI] at equilibrium?": {
+  "extract": null,
+  "request": null
+ },
+ "How do rainbows form?": {
+  "extract": null,
+  "request": null
+ },
+ "How many grams in 0.50 mol of nitrogen gas?": {
+  "extract": null,
+  "request": null
+ },
+ "How much charge passes through a wire carrying 3 A for 2 minutes?": {
+  "extract": null,
+  "request": null
+ },
+ "How much is an iPhone 17 in Ethiopia?": {
+  "extract": null,
+  "request": null
+ },
+ "I calculated my budget at 2000 birr a week for food, is that enough for two people in Addis?": {
+  "extract": null,
+  "request": null
+ },
+ "I got 30 minutes of sleep last night, is that bad?": {
+  "extract": null,
+  "request": null
+ },
+ "I just got a job offer in Berlin!": {
+  "extract": null,
+  "request": null
+ },
+ "I need to lose 3 kg before my wedding in 6 weeks": {
+  "extract": null,
+  "request": null
+ },
+ "I usually wake up at 6am, how can I build a running habit?": {
+  "extract": null,
+  "request": null
+ },
+ "I work 9am to 5:30pm every day with a 45 min lunch. how many hours do I actually work in a 5-day week?": {
+  "extract": null,
+  "request": null
+ },
+ "I'm near the end of chapter 3 of my thesis and totally out of steam. Any tips?": {
+  "extract": null,
+  "request": null
+ },
+ "If 4.0 g of H2 reacts with 16.0 g of O2 to make water, which is the limiting reagent and how many grams of water form?": {
+  "extract": null,
+  "request": null
+ },
+ "In the reaction CaCO3 → CaO + CO2, heating 50.0 g of CaCO3 gave 25.0 g of CaO. What is the percent yield?": {
+  "extract": null,
+  "request": null
+ },
+ "It's 28° outside and sunny. Is that warm enough to swim in the lake?": {
+  "extract": null,
+  "request": null
+ },
+ "M1 = 12 M, M2 = 1.5 M, V2 = 500 mL. Find V1.": {
+  "extract": null,
+  "request": null
+ },
+ "Make me a picture of a dragon drinking buna in Addis": {
+  "extract": "a dragon drinking buna in Addis",
+  "request": "a dragon drinking buna in Addis"
+ },
+ "Monthly rainfall in Addis Ababa: Jan 15, Feb 30, Mar 60, Apr 85, May 80, Jun 135, Jul 280, Aug 290, Sep 190, Oct 30, Nov 6, Dec 5 mm": {
+  "extract": null,
+  "request": null
+ },
+ "Name: Abebe Kebede\nAge: 29\nCity: Addis Ababa": {
+  "extract": null,
+  "request": null
+ },
+ "Planning to grill burgers tonight for 4 people.": {
+  "extract": null,
+  "request": null
+ },
+ "Please can you draw a cat": {
+  "extract": "cat",
+  "request": "cat"
+ },
+ "Please create an image of a cat": {
+  "extract": "a cat",
+  "request": "a cat"
+ },
+ "R_1 = 5 Ω and R_2 = 5 Ω are in parallel. What is the equivalent resistance?": {
+  "extract": null,
+  "request": null
+ },
+ "Room 101 at 3pm": {
+  "extract": null,
+  "request": null
+ },
+ "Show me a picture of a golden retriever": {
+  "extract": null,
+  "request": null
+ },
+ "Sounds good!": {
+  "extract": null,
+  "request": null
+ },
+ "The CEO of my company gave a speech today and it was inspiring": {
+  "extract": null,
+  "request": null
+ },
+ "Tonight I'm cooking dinner for my family": {
+  "extract": null,
+  "request": null
+ },
+ "Two trains are 2.1 km apart heading toward each other on parallel tracks at 72 km/h and 54 km/h. how long until they meet?": {
+  "extract": null,
+  "request": null
+ },
+ "We're staying at the Memmo Alfama in Lisbon, any tips for the area?": {
+  "extract": null,
+  "request": null
+ },
+ "What if 2½ + 1½ instead?": {
+  "extract": null,
+  "request": null
+ },
+ "What is the density of a block with mass 2.4 kg and volume 0.003 m^3?": {
+  "extract": null,
+  "request": null
+ },
+ "What is the mass of 3.5 mol of H₂SO₄ in grams": {
+  "extract": null,
+  "request": null
+ },
+ "What is the pH of 0.01 M HCl?": {
+  "extract": null,
+  "request": null
+ },
+ "What is the standard cell potential of a galvanic cell made from silver and copper?": {
+  "extract": null,
+  "request": null
+ },
+ "What volume of 0.250 M H2SO4 is needed to neutralize 50.0 mL of 0.100 M NaOH?": {
+  "extract": null,
+  "request": null
+ },
+ "What's the weather today in Addis Ababa?": {
+  "extract": null,
+  "request": null
+ },
+ "Why do we see lightning before we hear thunder?": {
+  "extract": null,
+  "request": null
+ },
+ "Write a scene where she says 'don't bring up my past again'": {
+  "extract": null,
+  "request": null
+ },
+ "a 2 kg iron block (c = 450 J/kg K) cools from 300 °C to 50 °C. how much heat does it give out in kJ?": {
+  "extract": null,
+  "request": null
+ },
+ "a ball is dropped from 45 m. how long until it hits the ground": {
+  "extract": null,
+  "request": null
+ },
+ "a concave mirror has a radius of curvature of 40 cm. an object is placed 30 cm away. where is the image?": {
+  "extract": null,
+  "request": null
+ },
+ "a cute cat pic": {
+  "extract": "cute cat",
+  "request": "cute cat"
+ },
+ "a photo of a dog": {
+  "extract": "dog",
+  "request": "dog"
+ },
+ "a radioactive source has an activity of 800 Bq. after 12 hours it's 200 Bq. what's the half-life?": {
+  "extract": null,
+  "request": null
+ },
+ "a sprinter reaches her top speed of 11 m/s in 2.2 s starting from rest and holds it to the finish. how long does she take to run 100 m?": {
+  "extract": null,
+  "request": null
+ },
+ "add 'buy 2 kg of rice' to my to-do list": {
+  "extract": null,
+  "request": null
+ },
+ "add a reminder to renew my passport on monday at 10am": {
+  "extract": null,
+  "request": null
+ },
+ "add salt to taste?": {
+  "extract": null,
+  "request": null
+ },
+ "algorithm picture": {
+  "extract": null,
+  "request": null
+ },
+ "an image of the moon": {
+  "extract": "the moon",
+  "request": "the moon"
+ },
+ "and how do i say what time does it leave": {
+  "extract": null,
+  "request": null
+ },
+ "apology text to my friend Kidist for missing her party": {
+  "extract": null,
+  "request": null
+ },
+ "artwork of a dragon": {
+  "extract": "dragon",
+  "request": "dragon"
+ },
+ "añade comprar leche a mis tareas": {
+  "extract": null,
+  "request": null
+ },
+ "best coffee near me": {
+  "extract": null,
+  "request": null
+ },
+ "both. should I move? I don't speak German and all my friends are here": {
+  "extract": null,
+  "request": null
+ },
+ "call mom or text her? we had a fight yesterday": {
+  "extract": null,
+  "request": null
+ },
+ "can you check my essay and also fix the grammar": {
+  "extract": null,
+  "request": null
+ },
+ "can you draw a cat": {
+  "extract": "cat",
+  "request": "cat"
+ },
+ "can you draw me a cat": {
+  "extract": "cat",
+  "request": "cat"
+ },
+ "can you draw me a cute cartoon skeleton for my notes": {
+  "extract": "cute cartoon skeleton for my notes",
+  "request": "cute cartoon skeleton for my notes"
+ },
+ "can you make me a picture of a dog": {
+  "extract": "a dog",
+  "request": "a dog"
+ },
+ "can you quiz me on gas laws? 3 quick questions": {
+  "extract": null,
+  "request": null
+ },
+ "can you show me what the molecule looks like": {
+  "extract": null,
+  "request": null
+ },
+ "car shopping for 20k": {
+  "extract": null,
+  "request": null
+ },
+ "cat pic": {
+  "extract": "cat",
+  "request": "cat"
+ },
+ "cat pic?": {
+  "extract": "cat",
+  "request": "cat"
+ },
+ "cat pics": {
+  "extract": "cat",
+  "request": "cat"
+ },
+ "change the start time to 7pm": {
+  "extract": null,
+  "request": null
+ },
+ "chess openings for beginners": {
+  "extract": null,
+  "request": null
+ },
+ "complete this function:\n\n```python\ndef is_palindrome(s: str) -> bool:\n    # ignore case and anything that isn't a letter or digit\n    ...\n```": {
+  "extract": null,
+  "request": null
+ },
+ "create a banner for my website": {
+  "extract": "banner for my website",
+  "request": "banner for my website"
+ },
+ "create a beautiful image of a majestic snowy mountain at dawn with golden light": {
+  "extract": "beautiful image of a majestic snowy mountain at dawn with golden light",
+  "request": "beautiful image of a majestic snowy mountain at dawn with golden light"
+ },
+ "create a cat": {
+  "extract": "cat",
+  "request": "cat"
+ },
+ "create a cat image": {
+  "extract": "cat",
+  "request": "cat"
+ },
+ "create a cat pic": {
+  "extract": "cat",
+  "request": "cat"
+ },
+ "create a guide": {
+  "extract": "guide",
+  "request": "guide"
+ },
+ "create a logo with my name": {
+  "extract": "logo with my name",
+  "request": "logo with my name"
+ },
+ "create a picture of": {
+  "extract": null,
+  "request": null
+ },
+ "create a picture of it": {
+  "extract": "it",
+  "request": "it"
+ },
+ "create a picture of that car": {
+  "extract": "that car",
+  "request": "that car"
+ },
+ "create a portrait of a woman": {
+  "extract": "a woman",
+  "request": "a woman"
+ },
+ "create an anime style illustration of an ethiopian coffee ceremony": {
+  "extract": "anime style illustration of an ethiopian coffee ceremony",
+  "request": "anime style illustration of an ethiopian coffee ceremony"
+ },
+ "create an image of a sunset.": {
+  "extract": "a sunset",
+  "request": "a sunset"
+ },
+ "create an image of tips for studying": {
+  "extract": null,
+  "request": null
+ },
+ "create images of cats": {
+  "extract": "cats",
+  "request": "cats"
+ },
+ "create me a cat image": {
+  "extract": "cat",
+  "request": "cat"
+ },
+ "create pictures of dogs on a beach": {
+  "extract": "dogs on a beach",
+  "request": "dogs on a beach"
+ },
+ "create that car image": {
+  "extract": "that car",
+  "request": "that car"
+ },
+ "darker": {
+  "extract": null,
+  "request": null
+ },
+ "derive the escape velocity of earth": {
+  "extract": null,
+  "request": null
+ },
+ "design a logo": {
+  "extract": "logo",
+  "request": "logo"
+ },
+ "design a mascot for my game": {
+  "extract": "mascot for my game",
+  "request": "mascot for my game"
+ },
+ "design a picture of a house": {
+  "extract": "a house",
+  "request": "a house"
+ },
+ "design a poster for a concert": {
+  "extract": "poster for a concert",
+  "request": "poster for a concert"
+ },
+ "did the hero win in the end": {
+  "extract": null,
+  "request": null
+ },
+ "do I need a visa for Japan?": {
+  "extract": null,
+  "request": null
+ },
+ "do you remember my name?": {
+  "extract": null,
+  "request": null
+ },
+ "down payment assistance programs?": {
+  "extract": null,
+  "request": null
+ },
+ "draw\ta\tdog": {
+  "extract": "dog",
+  "request": "dog"
+ },
+ "draw\na dog": {
+  "extract": "dog",
+  "request": "dog"
+ },
+ "draw a card": {
+  "extract": "card",
+  "request": "card"
+ },
+ "draw a cartoon decision tree poster": {
+  "extract": "cartoon decision tree poster",
+  "request": "cartoon decision tree poster"
+ },
+ "draw a cat": {
+  "extract": "cat",
+  "request": "cat"
+ },
+ "draw a curved road at sunset": {
+  "extract": "curved road at sunset",
+  "request": "curved road at sunset"
+ },
+ "draw a dog": {
+  "extract": "dog",
+  "request": "dog"
+ },
+ "draw a dog!!": {
+  "extract": "dog",
+  "request": "dog"
+ },
+ "draw a dog.": {
+  "extract": "dog",
+  "request": "dog"
+ },
+ "draw a dog?": {
+  "extract": "dog",
+  "request": "dog"
+ },
+ "draw a fox": {
+  "extract": "fox",
+  "request": "fox"
+ },
+ "draw a free-body diagram of a crate pushed across a rough floor": {
+  "extract": null,
+  "request": null
+ },
+ "draw a little girl flying a red kite over the hills at sunset": {
+  "extract": "little girl flying a red kite over the hills at sunset",
+  "request": "little girl flying a red kite over the hills at sunset"
+ },
+ "draw a logo for my app": {
+  "extract": "logo for my app",
+  "request": "logo for my app"
+ },
+ "draw a mermaid": {
+  "extract": "mermaid",
+  "request": "mermaid"
+ },
+ "draw a milky way": {
+  "extract": "milky way",
+  "request": "milky way"
+ },
+ "draw a tour guide": {
+  "extract": "tour guide",
+  "request": "tour guide"
+ },
+ "draw a treasure map": {
+  "extract": "treasure map",
+  "request": "treasure map"
+ },
+ "draw a treasure map for my kid's pirate party": {
+  "extract": "treasure map for my kid's pirate party",
+  "request": "treasure map for my kid's pirate party"
+ },
+ "draw a tree in autumn": {
+  "extract": "tree in autumn",
+  "request": "tree in autumn"
+ },
+ "draw a triangle,": {
+  "extract": null,
+  "request": null
+ },
+ "draw a winding mountain road with sharp curves at sunset": {
+  "extract": "winding mountain road with sharp curves at sunset",
+  "request": "winding mountain road with sharp curves at sunset"
+ },
+ "draw blood": {
+  "extract": "blood",
+  "request": "blood"
+ },
+ "draw ethanol": {
+  "extract": "ethanol",
+  "request": "ethanol"
+ },
+ "draw it's tail": {
+  "extract": "it's tail",
+  "request": "it's tail"
+ },
+ "draw me a bath": {
+  "extract": "bath",
+  "request": "bath"
+ },
+ "draw me a cat": {
+  "extract": "cat",
+  "request": "cat"
+ },
+ "draw me a cat wearing a hat": {
+  "extract": "cat wearing a hat",
+  "request": "cat wearing a hat"
+ },
+ "draw me a cat!": {
+  "extract": "cat",
+  "request": "cat"
+ },
+ "draw me a cute cartoon atom for our chemistry club poster": {
+  "extract": "cute cartoon atom for our chemistry club poster",
+  "request": "cute cartoon atom for our chemistry club poster"
+ },
+ "draw me a cute cartoon atom with a smiley face for our chemistry club poster": {
+  "extract": "cute cartoon atom with a smiley face for our chemistry club poster",
+  "request": "cute cartoon atom with a smiley face for our chemistry club poster"
+ },
+ "draw me a dog": {
+  "extract": "dog",
+  "request": "dog"
+ },
+ "draw me a lion wearing a crown": {
+  "extract": "lion wearing a crown",
+  "request": "lion wearing a crown"
+ },
+ "draw me a mental picture of the situation": {
+  "extract": "mental picture of the situation",
+  "request": "mental picture of the situation"
+ },
+ "draw phases of the moon": {
+  "extract": null,
+  "request": null
+ },
+ "draw that's": {
+  "extract": "that's",
+  "request": "that's"
+ },
+ "draw that's it": {
+  "extract": "that's it",
+  "request": "that's it"
+ },
+ "draw the curtains": {
+  "extract": "the curtains",
+  "request": "the curtains"
+ },
+ "draw the forces on a block sliding up an incline with friction": {
+  "extract": "the forces on a block sliding up an incline with friction",
+  "request": "the forces on a block sliding up an incline with friction"
+ },
+ "draw the forces on a box pulled up a ramp by a rope": {
+  "extract": "the forces on a box pulled up a ramp by a rope",
+  "request": "the forces on a box pulled up a ramp by a rope"
+ },
+ "draw the forces on a car going around a flat curve": {
+  "extract": "the forces on a car going around a flat curve",
+  "request": "the forces on a car going around a flat curve"
+ },
+ "draw the forces on a lamp hanging from the ceiling by a cable": {
+  "extract": "the forces on a lamp hanging from the ceiling by a cable",
+  "request": "the forces on a lamp hanging from the ceiling by a cable"
+ },
+ "draw up a contract": {
+  "extract": null,
+  "request": null
+ },
+ "draw water": {
+  "extract": "water",
+  "request": "water"
+ },
+ "drawing of a horse": {
+  "extract": "horse",
+  "request": "horse"
+ },
+ "equation of the line through (1,2) and (3,8)": {
+  "extract": null,
+  "request": null
+ },
+ "explain": {
+  "extract": null,
+  "request": null
+ },
+ "explain recursion with an example": {
+  "extract": null,
+  "request": null
+ },
+ "factor it into the budget": {
+  "extract": null,
+  "request": null
+ },
+ "find the angle between the two walls in my room for the shelf": {
+  "extract": null,
+  "request": null
+ },
+ "find the inverse of y = e^x": {
+  "extract": null,
+  "request": null
+ },
+ "find the y-intercept of y = 3x + 2": {
+  "extract": null,
+  "request": null
+ },
+ "forget it, never mind": {
+  "extract": null,
+  "request": null
+ },
+ "function image": {
+  "extract": null,
+  "request": null
+ },
+ "generate a dog image": {
+  "extract": "dog",
+  "request": "dog"
+ },
+ "generate an image for my coffee shop's opening post: a jebena pouring coffee into small cups": {
+  "extract": "a jebena pouring coffee into small cups",
+  "request": "a jebena pouring coffee into small cups"
+ },
+ "generate an image for my coffee shop's opening post: a jebena pouring coffee into small cups, warm morning light, minimal style": {
+  "extract": "a jebena pouring coffee into small cups, warm morning light, minimal style",
+  "request": "a jebena pouring coffee into small cups, warm morning light, minimal style"
+ },
+ "generate an image of a futuristic Addis": {
+  "extract": "a futuristic Addis",
+  "request": "a futuristic Addis"
+ },
+ "generate an image of a robot teaching calculus on a chalkboard": {
+  "extract": "a robot teaching calculus on a chalkboard",
+  "request": "a robot teaching calculus on a chalkboard"
+ },
+ "generate an image of a sunset over mountains": {
+  "extract": "a sunset over mountains",
+  "request": "a sunset over mountains"
+ },
+ "generate an image of an old oak tree in autumn, watercolor": {
+  "extract": "an old oak tree in autumn, watercolor",
+  "request": "an old oak tree in autumn, watercolor"
+ },
+ "generate an image of the first one": {
+  "extract": "the first one",
+  "request": "the first one"
+ },
+ "generate artwork of a dragon": {
+  "extract": "a dragon",
+  "request": "a dragon"
+ },
+ "generate image of sunset over mountains": {
+  "extract": "sunset over mountains",
+  "request": "sunset over mountains"
+ },
+ "generate me a cat": {
+  "extract": "cat",
+  "request": "cat"
+ },
+ "generate me an image of a fox": {
+  "extract": "a fox",
+  "request": "a fox"
+ },
+ "get me some ideas for my wife's 30th birthday": {
+  "extract": null,
+  "request": null
+ },
+ "give me a chemical equation to balance for practice": {
+  "extract": null,
+  "request": null
+ },
+ "go ahead!": {
+  "extract": null,
+  "request": null
+ },
+ "haha that's the best answer I've heard all week": {
+  "extract": null,
+  "request": null
+ },
+ "help me plan a movie night": {
+  "extract": null,
+  "request": null
+ },
+ "hey! 😊 how are you?": {
+  "extract": null,
+  "request": null
+ },
+ "how do I add a task list in Google Docs": {
+  "extract": null,
+  "request": null
+ },
+ "how do I finish a merge after resolving conflicts?": {
+  "extract": null,
+  "request": null
+ },
+ "how do I mark it as skipped on Windows only?": {
+  "extract": null,
+  "request": null
+ },
+ "how do I tell my boss I'm quitting without burning bridges": {
+  "extract": null,
+  "request": null
+ },
+ "how do i run a python function every day at 7am": {
+  "extract": null,
+  "request": null
+ },
+ "how do you say 'see you tomorrow at 6' in amharic": {
+  "extract": null,
+  "request": null
+ },
+ "how long does it take to drive 240 km at 80 km/h": {
+  "extract": null,
+  "request": null
+ },
+ "how many factors does 36 have": {
+  "extract": null,
+  "request": null
+ },
+ "how many liters of water should I drink a day": {
+  "extract": null,
+  "request": null
+ },
+ "how many minutes to drive to the airport": {
+  "extract": null,
+  "request": null
+ },
+ "how many valence electrons does nitrogen have": {
+  "extract": null,
+  "request": null
+ },
+ "how much h2o2 is made from burning 4 g of h2": {
+  "extract": null,
+  "request": null
+ },
+ "how often should i water the plants in winter, its a snake plant and a pothos": {
+  "extract": null,
+  "request": null
+ },
+ "i love you but did you eat": {
+  "extract": null,
+  "request": null
+ },
+ "i^23": {
+  "extract": null,
+  "request": null
+ },
+ "if x = 3 and y = -2 find x^2 - 2xy + y^2": {
+  "extract": null,
+  "request": null
+ },
+ "illustrate me a fox": {
+  "extract": "fox",
+  "request": "fox"
+ },
+ "illustrate the point": {
+  "extract": "the point",
+  "request": "the point"
+ },
+ "illustration of a dragon": {
+  "extract": "dragon",
+  "request": "dragon"
+ },
+ "image of a sunset": {
+  "extract": "sunset",
+  "request": "sunset"
+ },
+ "in triangle ABC, a = 3, b = 5 and C = 150°, find c": {
+  "extract": null,
+  "request": null
+ },
+ "integrate these notes into one summary": {
+  "extract": null,
+  "request": null
+ },
+ "is a 15% tip enough in New York?": {
+  "extract": null,
+  "request": null
+ },
+ "is it gonna rain tonight": {
+  "extract": null,
+  "request": null
+ },
+ "it was two times better than last year": {
+  "extract": null,
+  "request": null
+ },
+ "latest version of Python": {
+  "extract": null,
+  "request": null
+ },
+ "lim x→∞ (3x^2+1)/(x^2-5)": {
+  "extract": null,
+  "request": null
+ },
+ "log(0)": {
+  "extract": null,
+  "request": null
+ },
+ "make a cake": {
+  "extract": "cake",
+  "request": "cake"
+ },
+ "make a choice between two jobs": {
+  "extract": null,
+  "request": null
+ },
+ "make a cool picture of a": {
+  "extract": "cool picture of a",
+  "request": "cool picture of a"
+ },
+ "make a cover image for my presentation": {
+  "extract": "cover image for my presentation",
+  "request": "cover image for my presentation"
+ },
+ "make a logo for our project": {
+  "extract": "logo for our project",
+  "request": "logo for our project"
+ },
+ "make a meme": {
+  "extract": "meme",
+  "request": "meme"
+ },
+ "make a playlist": {
+  "extract": null,
+  "request": null
+ },
+ "make a poster for my club: a lion reading a book": {
+  "extract": "a lion reading a book",
+  "request": "a lion reading a book"
+ },
+ "make a poster for my event": {
+  "extract": "poster for my event",
+  "request": "poster for my event"
+ },
+ "make a poster with the words Happy Birthday": {
+  "extract": "poster with the words Happy Birthday",
+  "request": "poster with the words Happy Birthday"
+ },
+ "make a red sports car photo": {
+  "extract": "red sports car",
+  "request": "red sports car"
+ },
+ "make a watercolor picture of a cat astronaut floating over the moon": {
+  "extract": "watercolor picture of a cat astronaut floating over the moon",
+  "request": "watercolor picture of a cat astronaut floating over the moon"
+ },
+ "make a way": {
+  "extract": "way",
+  "request": "way"
+ },
+ "make an app logo": {
+  "extract": "app logo",
+  "request": "app logo"
+ },
+ "make an icon for my app": {
+  "extract": "icon for my app",
+  "request": "icon for my app"
+ },
+ "make flashcards from this": {
+  "extract": null,
+  "request": null
+ },
+ "make it cuter": {
+  "extract": null,
+  "request": null
+ },
+ "make it shorter": {
+  "extract": null,
+  "request": null
+ },
+ "make it's color blue": {
+  "extract": "it's color blue",
+  "request": "it's color blue"
+ },
+ "make me a logo for my app": {
+  "extract": "logo for my app",
+  "request": "logo for my app"
+ },
+ "make me a photo of a fox": {
+  "extract": "a fox",
+  "request": "a fox"
+ },
+ "make me a sandwich": {
+  "extract": "sandwich",
+  "request": "sandwich"
+ },
+ "make me laugh": {
+  "extract": null,
+  "request": null
+ },
+ "make my profile picture": {
+  "extract": "my profile",
+  "request": "my profile"
+ },
+ "make your answers shorter": {
+  "extract": null,
+  "request": null
+ },
+ "max (Carnot) efficiency of a heat engine working between 500 K and 300 K?": {
+  "extract": null,
+  "request": null
+ },
+ "molar mass of MgSO4·7H2O": {
+  "extract": null,
+  "request": null
+ },
+ "move on": {
+  "extract": null,
+  "request": null
+ },
+ "my alarm is set for 6am but I keep snoozing. any tips?": {
+  "extract": null,
+  "request": null
+ },
+ "my dog": {
+  "extract": null,
+  "request": null
+ },
+ "my partner and I keep fighting about chores, any advice?": {
+  "extract": null,
+  "request": null
+ },
+ "my weight is 80 kg, how much protein should I eat a day?": {
+  "extract": null,
+  "request": null
+ },
+ "notes: kickoff Monday. design review Wednesday. launch Friday.": {
+  "extract": null,
+  "request": null
+ },
+ "now mark items as complete when clicked": {
+  "extract": null,
+  "request": null
+ },
+ "ok now 3 + 5 the same way 😊": {
+  "extract": null,
+  "request": null
+ },
+ "pH of 0.020 M H2SO4": {
+  "extract": null,
+  "request": null
+ },
+ "paint me an owl": {
+  "extract": "owl",
+  "request": "owl"
+ },
+ "paint the fence": {
+  "extract": "the fence",
+  "request": "the fence"
+ },
+ "photo of a cat": {
+  "extract": "cat",
+  "request": "cat"
+ },
+ "photos of cats": {
+  "extract": "cats",
+  "request": "cats"
+ },
+ "pick up where we left off": {
+  "extract": null,
+  "request": null
+ },
+ "pics of the simien mountains pls": {
+  "extract": "the simien mountains pls",
+  "request": "the simien mountains pls"
+ },
+ "picture of a 1967 Mustang": {
+  "extract": "1967 Mustang",
+  "request": "1967 Mustang"
+ },
+ "please": {
+  "extract": null,
+  "request": null
+ },
+ "please draw a cat": {
+  "extract": "cat",
+  "request": "cat"
+ },
+ "portrait of a woman": {
+  "extract": "woman",
+  "request": "woman"
+ },
+ "price of a casio fx-991es plus calculator in addis these days?": {
+  "extract": null,
+  "request": null
+ },
+ "produce a photo of a house": {
+  "extract": "a house",
+  "request": "a house"
+ },
+ "produce an illustration of a forest": {
+  "extract": "a forest",
+  "request": "a forest"
+ },
+ "python function to remove duplicates from a list but keep order": {
+  "extract": null,
+  "request": null
+ },
+ "remember im allergic to peanuts 🥜": {
+  "extract": null,
+  "request": null
+ },
+ "remind me at noon tomorrow to check on the bread dough": {
+  "extract": null,
+  "request": null
+ },
+ "remind me to buy 500 g of NaCl and 2 L of milk tomorrow at 10am": {
+  "extract": null,
+  "request": null
+ },
+ "remind me to call the bank": {
+  "extract": null,
+  "request": null
+ },
+ "remind me to pick up the dry cleaning on Saturday": {
+  "extract": null,
+  "request": null
+ },
+ "remind me to submit the report on friday at 4pm": {
+  "extract": null,
+  "request": null
+ },
+ "remind me why sleep matters": {
+  "extract": null,
+  "request": null
+ },
+ "remove the spectator ions: AgNO3(aq) + NaCl(aq) -> AgCl(s) + NaNO3(aq)": {
+  "extract": null,
+  "request": null
+ },
+ "render a 3d chair": {
+  "extract": "3d chair",
+  "request": "3d chair"
+ },
+ "render an image of a house": {
+  "extract": "a house",
+  "request": "a house"
+ },
+ "run this python code: print(1+1)": {
+  "extract": null,
+  "request": null
+ },
+ "see ya": {
+  "extract": null,
+  "request": null
+ },
+ "set a timer for 10 sec": {
+  "extract": null,
+  "request": null
+ },
+ "shape of SO3(2-)": {
+  "extract": null,
+  "request": null
+ },
+ "show a dog": {
+  "extract": null,
+  "request": null
+ },
+ "show me a fish hook": {
+  "extract": null,
+  "request": null
+ },
+ "show me an ear": {
+  "extract": null,
+  "request": null
+ },
+ "show me the bug": {
+  "extract": null,
+  "request": null
+ },
+ "show me the react hooks": {
+  "extract": null,
+  "request": null
+ },
+ "show me what 'happy new year' looks like in tigrinya, its for my insta story": {
+  "extract": null,
+  "request": null
+ },
+ "show the work": {
+  "extract": null,
+  "request": null
+ },
+ "simplify sin^2(x) + cos^2(x)": {
+  "extract": null,
+  "request": null
+ },
+ "solve 2(3x+1) - 4 = 5x + 9": {
+  "extract": null,
+  "request": null
+ },
+ "solve 5 - x = 2 for x": {
+  "extract": null,
+  "request": null
+ },
+ "solve x^2 - 5x + 6 = 0": {
+  "extract": null,
+  "request": null
+ },
+ "sqrt(-16)": {
+  "extract": null,
+  "request": null
+ },
+ "summarize what we covered so i can review before thursday": {
+  "extract": null,
+  "request": null
+ },
+ "sunset photo": {
+  "extract": "sunset",
+  "request": "sunset"
+ },
+ "teach me python": {
+  "extract": null,
+  "request": null
+ },
+ "tell me today's headlines": {
+  "extract": null,
+  "request": null
+ },
+ "thanks! btw how much of my salary should rent be?": {
+  "extract": null,
+  "request": null
+ },
+ "the dog": {
+  "extract": null,
+  "request": null
+ },
+ "the pipe is bent": {
+  "extract": null,
+  "request": null
+ },
+ "the water tank is 3 m below the roof, how fast does it fill from the mains?": {
+  "extract": null,
+  "request": null
+ },
+ "tomorrow at 7am": {
+  "extract": null,
+  "request": null
+ },
+ "translate to amharic: remind me to call you tomorrow at 6": {
+  "extract": null,
+  "request": null
+ },
+ "two 10 ohm resistors are in parallel across 5 V, total current?": {
+  "extract": null,
+  "request": null
+ },
+ "version 2.5 of the app crashes on Android, how do I get logs?": {
+  "extract": null,
+  "request": null
+ },
+ "we do it": {
+  "extract": null,
+  "request": null
+ },
+ "what about 100 g of water": {
+  "extract": null,
+  "request": null
+ },
+ "what about in Nairobi?": {
+  "extract": null,
+  "request": null
+ },
+ "what causes weather": {
+  "extract": null,
+  "request": null
+ },
+ "what does a gelada look like 🐒": {
+  "extract": null,
+  "request": null
+ },
+ "what does the intercept mean in my regression output?": {
+  "extract": null,
+  "request": null
+ },
+ "what if I pay 300 a month instead?": {
+  "extract": null,
+  "request": null
+ },
+ "what if my payment is 3%": {
+  "extract": null,
+  "request": null
+ },
+ "what is 15 + 27": {
+  "extract": null,
+  "request": null
+ },
+ "what is 6 × 8": {
+  "extract": null,
+  "request": null
+ },
+ "what is my mortgage for 300k dollars house if mr rate is 1 percent": {
+  "extract": null,
+  "request": null
+ },
+ "what is the discriminant of x^2 - 4x + 7 = 0": {
+  "extract": null,
+  "request": null
+ },
+ "what is the speed of light": {
+  "extract": null,
+  "request": null
+ },
+ "what shape is CaCl2": {
+  "extract": null,
+  "request": null
+ },
+ "what was the hotel I mentioned earlier?": {
+  "extract": null,
+  "request": null
+ },
+ "what's on my list for the party? i need ideas": {
+  "extract": null,
+  "request": null
+ },
+ "what's the limit on my credit card usually": {
+  "extract": null,
+  "request": null
+ },
+ "what's up with my code? it throws on line 3: print(items[3])": {
+  "extract": null,
+  "request": null
+ },
+ "whats the dollar to birr exchange rate today? im writing a post about prices": {
+  "extract": null,
+  "request": null
+ },
+ "when does my school start this year?": {
+  "extract": null,
+  "request": null
+ },
+ "which is faster, a hash map or a list lookup?": {
+  "extract": null,
+  "request": null
+ },
+ "who was marie curie?": {
+  "extract": null,
+  "request": null
+ },
+ "why is it harder to open a door if you push near the hinge": {
+  "extract": null,
+  "request": null
+ },
+ "would it be blue": {
+  "extract": null,
+  "request": null
+ },
+ "write a flask app with login and a todo list": {
+  "extract": null,
+  "request": null
+ },
+ "write a poem": {
+  "extract": null,
+  "request": null
+ },
+ "write a short invite for my housewarming party": {
+  "extract": null,
+  "request": null
+ },
+ "write a thank you card for my aunt who got us a coffee maker for our wedding": {
+  "extract": null,
+  "request": null
+ },
+ "write an email to my team saying the deadline for the q4 report got pushed to friday": {
+  "extract": null,
+  "request": null
+ },
+ "write my resume": {
+  "extract": null,
+  "request": null
+ },
+ "yeah that makes sense": {
+  "extract": null,
+  "request": null
+ },
+ "you're doing great today": {
+  "extract": null,
+  "request": null
+ },
+ "የውሃ ኬሚካላዊ ቀመር ምንድን ነው?": {
+  "extract": null,
+  "request": null
+ }
+}

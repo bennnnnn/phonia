@@ -1,0 +1,256 @@
+[
+ {
+  "id": "cb-001",
+  "area": "chat bound",
+  "history": [
+   [
+    "user",
+    "solve 2x + 5 = 0"
+   ],
+   [
+    "assistant",
+    "x = -2.5, a perfectly valid answer.\n\nDoes that make sense? 😊"
+   ]
+  ],
+  "prompt": "Yes",
+  "reply": "Great! Want to try another one?",
+  "expect": "answer"
+ },
+ {
+  "id": "cb-002",
+  "area": "chat bound",
+  "history": [
+   [
+    "user",
+    "why kelvin for charles's law"
+   ],
+   [
+    "assistant",
+    "Charles's law: V1/T1 = V2/T2, with temperatures in kelvin.\n\nWant to try a quick calculation?"
+   ]
+  ],
+  "prompt": "sure give me a practice problem",
+  "reply": "A balloon holds 2.0 L at 25 °C. What is its volume at 75 °C?",
+  "expect": "answer"
+ },
+ {
+  "id": "cb-003",
+  "area": "chat bound",
+  "history": [
+   [
+    "user",
+    "explain boyle's law"
+   ],
+   [
+    "assistant",
+    "Pressure and volume are inversely related."
+   ]
+  ],
+  "prompt": "summarize what we covered so i can review before thursday",
+  "reply": "**Recap:** Boyle's law, P1V1 = P2V2.",
+  "expect": "answer"
+ },
+ {
+  "id": "cb-004",
+  "area": "chat bound",
+  "history": [
+   [
+    "user",
+    "explain gas laws"
+   ],
+   [
+    "assistant",
+    "Boyle's and Charles's laws..."
+   ]
+  ],
+  "prompt": "can you quiz me on gas laws? 3 quick questions",
+  "reply": "Question 1: ...",
+  "expect": "answer"
+ },
+ {
+  "id": "cb-005",
+  "area": "chat bound",
+  "history": [
+   [
+    "user",
+    "give me a stoichiometry problem"
+   ],
+   [
+    "assistant",
+    "Burn 4.0 g of H2..."
+   ]
+  ],
+  "prompt": "another one",
+  "reply": "Burn 10.0 g of H2 with 64.0 g of O2...",
+  "expect": "answer"
+ },
+ {
+  "id": "cb-006",
+  "area": "chat bound",
+  "history": [
+   [
+    "user",
+    "what is a limiting reactant"
+   ],
+   [
+    "assistant",
+    "The reactant that runs out first."
+   ]
+  ],
+  "prompt": "explain that again simpler",
+  "reply": "It's the ingredient you run out of first.",
+  "expect": "answer"
+ },
+ {
+  "id": "cb-007",
+  "area": "search",
+  "history": [
+   [
+    "user",
+    "how much is the dollar in birr"
+   ],
+   [
+    "assistant",
+    "It changes daily. Want me to look up the latest exchange rate?"
+   ]
+  ],
+  "prompt": "yes",
+  "reply": "Today 1 USD is about 157 ETB.",
+  "expect": "search"
+ },
+ {
+  "id": "cb-008",
+  "area": "search",
+  "history": [],
+  "prompt": "give me the latest news on the iphone",
+  "reply": "Apple announced... [1]",
+  "expect": "search"
+ },
+ {
+  "id": "cb-009",
+  "area": "search",
+  "history": [
+   [
+    "user",
+    "who won the lakers game"
+   ],
+   [
+    "assistant",
+    "The Lakers won 110-102. Want the full box score?"
+   ]
+  ],
+  "prompt": "yes",
+  "reply": "LeBron had 28 points and 9 assists; Reaves added 21. [1]",
+  "expect": "search"
+ },
+ {
+  "id": "cb-010",
+  "area": "search",
+  "history": [
+   [
+    "user",
+    "how much is the dollar in birr"
+   ],
+   [
+    "assistant",
+    "About 157 ETB at the bank. Want the black-market rate too?"
+   ]
+  ],
+  "prompt": "yes",
+  "reply": "The parallel market is near 175 ETB. [1]",
+  "expect": "search"
+ },
+ {
+  "id": "cb-011",
+  "area": "search",
+  "history": [
+   [
+    "user",
+    "why kelvin for charles's law?"
+   ],
+   [
+    "assistant",
+    "Volume tracks absolute temperature, so it needs kelvin.\n\nDoes that make sense? 😊"
+   ]
+  ],
+  "prompt": "one more question: what's the weather in Addis tomorrow?",
+  "reply": "Tomorrow in Addis Ababa: 22°C and showers in the afternoon. [1]",
+  "expect": "search"
+ },
+ {
+  "id": "cb-012",
+  "area": "search",
+  "history": [
+   [
+    "user",
+    "why kelvin for charles's law?"
+   ],
+   [
+    "assistant",
+    "Volume tracks absolute temperature, so it needs kelvin.\n\nDoes that make sense? 😊"
+   ]
+  ],
+  "prompt": "another question, is the iPhone 17 out yet?",
+  "reply": "Yes, the iPhone 17 came out in September 2025. [1]",
+  "expect": "search"
+ },
+ {
+  "id": "cb-013",
+  "area": "search",
+  "history": [],
+  "prompt": "walk me through the visa requirements for Kenya",
+  "reply": "Most visitors need an eTA before travel; apply online at least two weeks ahead. [1]",
+  "expect": "search"
+ },
+ {
+  "id": "cb-014",
+  "area": "search",
+  "history": [
+   [
+    "user",
+    "why kelvin for charles's law?"
+   ],
+   [
+    "assistant",
+    "Volume tracks absolute temperature, so it needs kelvin.\n\nDoes that make sense? 😊"
+   ]
+  ],
+  "prompt": "yes please search",
+  "reply": "Here's what I found on absolute zero. [1]",
+  "expect": "search"
+ },
+ {
+  "id": "cb-015",
+  "area": "chat bound",
+  "history": [
+   [
+    "user",
+    "why kelvin for charles's law?"
+   ],
+   [
+    "assistant",
+    "Volume tracks absolute temperature, so it needs kelvin.\n\nDoes that make sense? 😊"
+   ]
+  ],
+  "prompt": "yeah that makes sense",
+  "reply": "Great! Want to try a practice problem?",
+  "expect": "answer"
+ },
+ {
+  "id": "cb-016",
+  "area": "chat bound",
+  "history": [
+   [
+    "user",
+    "why kelvin for charles's law?"
+   ],
+   [
+    "assistant",
+    "Volume tracks absolute temperature, so it needs kelvin.\n\nDoes that make sense? 😊"
+   ]
+  ],
+  "prompt": "ok im done studying for today. can you summarize what we covered?",
+  "reply": "Here's what we covered: Charles's law, why kelvin, and two practice problems.",
+  "expect": "answer"
+ }
+]

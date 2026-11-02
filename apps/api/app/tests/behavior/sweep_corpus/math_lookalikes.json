@@ -1,0 +1,643 @@
+[
+ {
+  "id": "ml-001",
+  "area": "math lookalike",
+  "prompt": "differentiate between weather and climate",
+  "reply": "**Weather** is what the atmosphere is doing right now or over a few days: today's rain, tomorrow's heat.\n\n**Climate** is the long-term pattern of weather in a place, usually averaged over 30 years or more.\n\nA simple way to remember it: weather is your mood, climate is your personality.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-002",
+  "area": "math lookalike",
+  "prompt": "how do I integrate Slack with Notion",
+  "reply": "You can connect them in a few minutes:\n\n1. In Notion, open **Settings → Connections** and choose **Slack**.\n2. Sign in to Slack and pick the workspace.\n3. In any Notion page, type `/slack` to choose a channel for updates.\n\nAfter that, page comments and mentions show up in the channel you picked.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-003",
+  "area": "math lookalike",
+  "prompt": "factor in the cost of shipping too",
+  "history": [
+   ["user", "I'm selling handmade candles for $18 each and each one costs me $7 to make. What's my profit per candle?"],
+   ["assistant", "Your profit per candle is **$11** ($18 − $7)."]
+  ],
+  "reply": "With shipping included, subtract that cost as well. If shipping is $4 per candle, your profit is $18 − $7 − $4 = **$7** per candle. Tell me your actual shipping cost and I'll redo it.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-004",
+  "area": "math lookalike",
+  "prompt": "expand on that",
+  "history": [
+   ["user", "why is sleep important?"],
+   ["assistant", "Sleep lets your body repair itself and your brain sort the day's memories."]
+  ],
+  "reply": "During deep sleep your body releases growth hormone, repairs muscle and tissue, and strengthens the immune system. During REM sleep the brain replays the day, moving useful memories into long-term storage and clearing out waste products that build up while you're awake.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-005",
+  "area": "math lookalike",
+  "prompt": "simplify this paragraph for a 10 year old",
+  "history": [
+   ["user", "Photosynthesis is the process by which chlorophyll-containing organisms convert light energy into chemical energy stored in glucose."],
+   ["assistant", "That's the textbook definition of photosynthesis."]
+  ],
+  "reply": "Plants are like tiny chefs. They use sunlight as their stove, take in water and air, and cook up sugar to eat. That's called photosynthesis!",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-006",
+  "area": "math lookalike",
+  "prompt": "simplify my morning routine",
+  "reply": "Try cutting it down to three anchors:\n\n1. **Wake and water**: a glass of water before your phone.\n2. **Move for 10 minutes**: a walk or a few stretches.\n3. **One priority**: write down the single most important task for the day.\n\nEverything else is optional.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-007",
+  "area": "math lookalike",
+  "prompt": "factor it into the budget",
+  "history": [
+   ["user", "the trip costs $400"],
+   ["assistant", "Got it, $400 for the trip."]
+  ],
+  "reply": "Added. With the $400 trip, set aside about $100 a month for the next four months so it doesn't squeeze any single paycheck.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-008",
+  "area": "math lookalike",
+  "prompt": "integrate it into the report",
+  "history": [
+   ["user", "here is a chart of our q3 sales"],
+   ["assistant", "Looks good. Sales grew each month of the quarter."]
+  ],
+  "reply": "Here's a paragraph for the report: \"Q3 sales grew steadily, with each month beating the one before. The chart below shows the monthly totals.\" Place the chart right after it.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-009",
+  "area": "math lookalike",
+  "prompt": "can you simplify it?",
+  "history": [
+   ["user", "Here is my essay intro: The industrial revolution changed how people lived and worked."],
+   ["assistant", "Nice intro! It reads well."]
+  ],
+  "reply": "Sure: \"The industrial revolution changed everyday life and work.\"",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-010",
+  "area": "math lookalike",
+  "prompt": "expand it",
+  "history": [
+   ["user", "my business plan has 3 sections: market, product, team"],
+   ["assistant", "Sounds good."]
+  ],
+  "reply": "Here's a fuller outline:\n\n1. **Market**: who the customers are, how big the market is, and who you compete with.\n2. **Product**: what it does, why it is better, and what it costs to build.\n3. **Team**: who is on it and why they can deliver.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-011",
+  "area": "math lookalike",
+  "prompt": "simplify it",
+  "reply": "Happy to. Paste the text you'd like me to simplify.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-012",
+  "area": "math lookalike",
+  "prompt": "x = everything I want in life lol",
+  "reply": "Ha, solving for x is easy when x is everything. What's the first thing on the list?",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-013",
+  "area": "math lookalike",
+  "prompt": "differentiate yourself from other candidates in an interview, how?",
+  "reply": "Three ways that work:\n\n1. Tell one specific story where you solved the exact problem the team has.\n2. Ask sharp questions about their roadmap.\n3. Follow up within 24 hours with something useful, not just thanks.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-014",
+  "area": "math lookalike",
+  "prompt": "how do I factor in inflation when saving for retirement",
+  "reply": "Plan in today's money, then raise your savings each year by the inflation rate. A simpler shortcut: assume a real return (your expected return minus inflation), for example 7% − 3% = 4% a year.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-015",
+  "area": "math lookalike",
+  "prompt": "can you expand on your last point",
+  "history": [
+   ["user", "how do I get better at running?"],
+   ["assistant", "Run more often at an easy pace, add one faster session a week, and rest properly."]
+  ],
+  "reply": "Rest is when you actually get fitter: muscles repair and grow back stronger between runs. Take at least one full rest day a week and sleep seven to nine hours.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-016",
+  "area": "math lookalike",
+  "prompt": "integrate these notes into one summary",
+  "history": [
+   ["user", "notes: kickoff Monday. design review Wednesday. launch Friday."],
+   ["assistant", "Got your notes."]
+  ],
+  "reply": "This week: kickoff on Monday, design review on Wednesday, and launch on Friday.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-017",
+  "area": "math lookalike",
+  "prompt": "find the vertex of the triangle on our logo and make it rounder",
+  "reply": "I can't edit the image file, but in most design tools you select the top vertex and raise its corner radius. In Figma that's the corner radius field in the right panel.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-018",
+  "area": "math lookalike",
+  "prompt": "I have 1,200 followers on Instagram, is that good for a bakery?",
+  "reply": "For a local bakery, 1,200 engaged followers is a solid start. Engagement matters more than the count: a handful of comments and saves on each post means people are paying attention.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-019",
+  "area": "math lookalike",
+  "prompt": "what's the slope of the hiking trail up to the waterfall?",
+  "reply": "I don't know which trail you mean. Tell me the trail name and I'll look up its elevation gain and length.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-020",
+  "area": "math lookalike",
+  "prompt": "simplify the wording of this email please",
+  "history": [
+   ["user", "Dear team, I am writing to inform you that the meeting which was previously scheduled for Thursday has been moved to Friday."],
+   ["assistant", "Got it."]
+  ],
+  "reply": "\"Hi team, Thursday's meeting has moved to Friday.\"",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-021",
+  "area": "math lookalike",
+  "prompt": "my answer is yes",
+  "history": [
+   ["user", "should I take the job offer?"],
+   ["assistant", "It depends on what matters most to you. Do you want the higher salary?"]
+  ],
+  "reply": "Then the offer looks like the right move. Ask for the start date and benefits in writing before you accept.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-022",
+  "area": "math lookalike",
+  "prompt": "expand on the history of the factor in the stock market",
+  "reply": "In finance a \"factor\" is a trait that explains returns, such as value, size or momentum. The idea grew from the 1960s capital asset pricing model into the Fama–French three-factor model in 1992.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-023",
+  "area": "math lookalike",
+  "prompt": "is a 1920 x 1080 monitor good for gaming",
+  "reply": "Yes for most games. 1920 × 1080 (1080p) is easy for mid-range graphics cards to run at high frame rates, so it suits fast shooters. On a screen larger than 24 inches it can look a little soft; 1440p is the usual step up.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-024",
+  "area": "math lookalike",
+  "prompt": "I need 2 x 4 lumber for the deck, what length should I buy",
+  "reply": "For deck framing, 2×4s usually come in 8, 10 and 12 foot lengths. Buy the length that spans your joists with the fewest cuts, and get a few extra for mistakes.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-025",
+  "area": "math lookalike",
+  "prompt": "factor 2 hours into the plan for the move",
+  "reply": "Done: I added a 2-hour buffer for loading the truck, so the move now runs from 9 am to 3 pm.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-026",
+  "area": "math lookalike",
+  "prompt": "factorise my reading list by topic",
+  "reply": "Here is your list grouped by topic:\n\n- **History:** SPQR, The Guns of August\n- **Science:** The Gene, Cosmos\n- **Fiction:** Middlemarch",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-027",
+  "area": "math lookalike",
+  "prompt": "the derivitive market crashed again, what happened",
+  "reply": "Derivatives such as options and futures fell sharply after a surprise rate rise. Leveraged positions had to be sold at once, which pushed prices down further.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-028",
+  "area": "math lookalike",
+  "prompt": "what is 0x10 in decimal",
+  "reply": "`0x10` is hexadecimal for **16** in decimal: the 1 is in the sixteens place.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-029",
+  "area": "math lookalike",
+  "prompt": "the speed limit as you approach the school is 20, right?",
+  "reply": "Usually, yes: many school zones are 20 mph while the signs are flashing. Check the posted sign, because the limit and the hours vary by town.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-030",
+  "area": "math lookalike",
+  "prompt": "slove this riddle: what has keys but cant open locks",
+  "reply": "A **piano**: it has keys, but none of them open a lock.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-031",
+  "area": "math lookalike",
+  "prompt": "take it 3 times a day with food?",
+  "reply": "Yes, three times a day with meals is the usual way to take it. Follow the label or your pharmacist if they say something different.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-032",
+  "area": "math lookalike",
+  "prompt": "my bag has 3 red and 5 blue scarves, which should I wear",
+  "reply": "With a navy coat, wear one of the red scarves: it adds colour. With a red top, pick a blue one so the colours don't clash.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-033",
+  "area": "math lookalike",
+  "prompt": "I bought 3 shirts and paid with my card, can I return one without the receipt",
+  "reply": "Most shops can find a card purchase without the receipt. Bring the card you paid with and the shirt with its tags on.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-034",
+  "area": "math lookalike",
+  "prompt": "how many liters of water should I drink a day",
+  "reply": "A common guide is about 2 to 3 litres a day, more in hot weather or when you exercise. Pale yellow urine is a good sign you're drinking enough.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-035",
+  "area": "math lookalike",
+  "prompt": "hcf meeting moved to 3pm, what should I bring",
+  "reply": "Bring the latest figures, your notes from last time and any questions for the agenda.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-036",
+  "area": "math lookalike",
+  "prompt": "det is short for detective in old films, right?",
+  "reply": "Yes. In old films and police dramas \"Det.\" is the usual short form of **Detective**, as in Det. Sergeant.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-037",
+  "area": "math lookalike",
+  "prompt": "my 4 x 4 truck needs new tires, which brand",
+  "reply": "For a 4×4 that sees some off-road use, all-terrain tires such as the BFGoodrich KO2 or Falken Wildpeak are popular choices.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-038",
+  "area": "math lookalike",
+  "prompt": "tickets cost $8 for adults at the zoo, is that a good deal",
+  "reply": "Yes, $8 for an adult ticket is cheaper than most zoos, which often charge $15 to $25.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-039",
+  "area": "math lookalike",
+  "prompt": "Sam is 4 years older than Ana but acts younger, any advice",
+  "reply": "Age gaps matter less than temperament. Talk to Sam about what you notice, and give examples instead of labels.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-040",
+  "area": "math lookalike",
+  "prompt": "how many days in a year",
+  "reply": "365, or 366 in a leap year. Leap years come every 4 years, except century years not divisible by 400.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-041",
+  "area": "math lookalike",
+  "prompt": "how many calories in a banana",
+  "reply": "A medium banana has about 105 calories, mostly from carbohydrates.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-042",
+  "area": "math lookalike",
+  "prompt": "how many arrangements of flowers for a wedding",
+  "reply": "Most weddings need a bridal bouquet, bridesmaid bouquets, buttonholes and two to four table centrepieces.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-043",
+  "area": "math lookalike",
+  "prompt": "how many factors affect house prices",
+  "reply": "The big ones are location, interest rates, local supply, the size and condition of the home, and the job market nearby.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-044",
+  "area": "math lookalike",
+  "prompt": "what are the odds of at least one sunny day this week",
+  "reply": "Good: the forecast shows sun on Thursday and Saturday.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-045",
+  "area": "math lookalike",
+  "prompt": "half of my 3/4 cup of sugar spilled, what do I do",
+  "reply": "You have about 3/8 cup left. Top it up with sugar to 3/4 cup, or halve the rest of the recipe to match.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-046",
+  "area": "math lookalike",
+  "prompt": "the cube root of my problems is procrastination lol",
+  "reply": "Ha, a relatable root cause. Try a 10-minute start: it's usually enough to get going.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-047",
+  "area": "math lookalike",
+  "prompt": "find the angle between the two walls in my room for the shelf",
+  "reply": "Use a protractor or an angle finder in the corner. Most rooms are 90°, but older houses often aren't, so measure before cutting the shelf.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-048",
+  "area": "math lookalike",
+  "prompt": "integrate by parts of the team into the new project",
+  "reply": "Bring people in gradually: start with one person from each team on the kickoff, then add the rest as tasks open up.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-049",
+  "area": "math lookalike",
+  "prompt": "My career has felt really linear lately. How do I make the next 5 years more interesting?",
+  "reply": "A few ways to bend the line: take a stretch project outside your usual lane, learn a skill next to your job for a few months, or try a sideways move into a team you rarely work with. Pick one and give it a real quarter before you judge it.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-050",
+  "area": "math lookalike",
+  "prompt": "Can you explain nonlinear storytelling, like in Memento or Pulp Fiction?",
+  "reply": "Nonlinear storytelling shows events out of the order they happened. **Memento** runs its main story backwards, so you know as little as the hero does; **Pulp Fiction** shuffles its chapters so the ending loops back to the start. You put the timeline together yourself.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-051",
+  "area": "math lookalike",
+  "prompt": "Our onboarding is too linear. How do I let new hires skip the first 2 weeks of training?",
+  "reply": "Split those two weeks into modules with a short check at the start of each. Anyone who passes a check skips that module; everyone still does the parts about your own tools and people.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-052",
+  "area": "math lookalike",
+  "prompt": "I'm near the end of chapter 3 of my thesis and totally out of steam. Any tips?",
+  "reply": "Shrink the goal: write the last section badly today and fix it tomorrow. Set a 25-minute timer, close everything else, and stop mid-sentence so tomorrow starts easily.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-053",
+  "area": "math lookalike",
+  "prompt": "We're nearly at 100 subscribers! How should I celebrate with my audience?",
+  "reply": "Congratulations! Thank people by name in a short post, run a small giveaway or a live Q&A, and share a peek at what's coming next.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-054",
+  "area": "math lookalike",
+  "prompt": "Rewrite this sentence: The nearby river rose 2 feet overnight.",
+  "reply": "Overnight, the river nearby climbed two feet.",
+  "expect": "answer",
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "ml-055",
+  "area": "math lookalike",
+  "prompt": "In my story the hero hears a nearby wolf howl 3 times. What should happen next?",
+  "reply": "After the third howl the forest goes quiet, which is worse. Have the hero find fresh tracks circling the camp, then a stranger steps out of the trees who seems to know why the pack is following them.",
+  "expect": "answer",
+  "location": "Addis Ababa, Ethiopia"
+ },
+ {
+  "id": "ml-056",
+  "area": "math lookalike",
+  "prompt": "It's 28° outside today. Do I need a jacket for a 20 minute walk?",
+  "reply": "If that's 28 °C, skip the jacket: a T-shirt, water and sunglasses are enough. If it's 28 °F, it's below freezing, so wear a warm coat, a hat and gloves.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-057",
+  "area": "math lookalike",
+  "prompt": "It's 28° outside and sunny. Is that warm enough to swim in the lake?",
+  "reply": "The air is warm, but lakes heat up slowly, so the water can still be cold early in summer. Try a toe first, and don't swim alone.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-058",
+  "area": "math lookalike",
+  "prompt": "Is 85°F weather too hot for a 5 mile run?",
+  "reply": "It's doable but hard. Go early in the morning, slow your pace, drink before and during the run, and stop if you feel dizzy.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-059",
+  "area": "math lookalike",
+  "prompt": "The hotel says breakfast is free and complementary. Does that usually include coffee?",
+  "reply": "Usually, yes: a free (\"complimentary\") breakfast nearly always includes coffee and tea. Specialty drinks like lattes sometimes cost extra, so ask at the desk.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-060",
+  "area": "math lookalike",
+  "prompt": "Which colours are complementary to teal for a 2 bedroom flat?",
+  "reply": "Teal pairs well with coral, terracotta and mustard as accents, with warm whites or soft greys on the walls so the rooms stay bright.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-061",
+  "area": "math lookalike",
+  "prompt": "Is a supplement of 1000 IU of vitamin D a day enough in winter?",
+  "reply": "1000 IU a day is a common winter dose for adults, but needs vary. A blood test is the surest guide, so check with your doctor before taking more.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-062",
+  "area": "math lookalike",
+  "prompt": "What's a light lunch that's a good supplement for 35° summer days?",
+  "reply": "Go cold and fresh: a watermelon and feta salad, gazpacho, or a chickpea and cucumber wrap, with plenty of water or iced tea.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-063",
+  "area": "math lookalike",
+  "prompt": "Is iron a good supplement to 20 minutes of sun a day in winter?",
+  "reply": "Sunlight helps your body make vitamin D, not iron, so they do different jobs. Take iron only if a blood test shows you're low; ask about vitamin D for winter instead.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-064",
+  "area": "math lookalike",
+  "prompt": "plus I'm over it, honestly",
+  "reply": "Fair enough. Want to talk about what's next instead?",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-065",
+  "area": "math lookalike",
+  "prompt": "times are tough right now",
+  "reply": "That sounds hard. Is there one thing that would help most this week?",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-066",
+  "area": "math lookalike",
+  "prompt": "that equals trouble with my boss",
+  "reply": "Sounds stressful. Want help planning what to say?",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-067",
+  "area": "math lookalike",
+  "prompt": "she's over thirty and still loves cartoons",
+  "reply": "Nothing wrong with that; plenty of adults do.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-068",
+  "area": "math lookalike",
+  "prompt": "it was two times better than last year",
+  "reply": "That's a big jump. What changed?",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-069",
+  "area": "math lookalike",
+  "prompt": "my score went from three to five",
+  "reply": "Nice improvement! What helped?",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-070",
+  "area": "math lookalike",
+  "prompt": "I'll be there in five minutes",
+  "reply": "Got it, see you soon.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-071",
+  "area": "math lookalike",
+  "prompt": "which one is bigger, the blue box or the red one?",
+  "reply": "I can't see them, but if you tell me their sizes I can compare.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-072",
+  "area": "math bare expression",
+  "prompt": "3x",
+  "reply": "**$3x$** means **3 times x**. For example, if $x = 4$, $3x = 12$.",
+  "expect": "instant"
+ },
+ {
+  "id": "ml-073",
+  "area": "math bare expression",
+  "prompt": "4x",
+  "reply": "**$4x$** means **4 times x**. For example, if $x = 4$, $4x = 16$.",
+  "expect": "instant"
+ },
+ {
+  "id": "ml-074",
+  "area": "math bare expression",
+  "prompt": "3x+2",
+  "reply": "**$3x + 2$** means **3 times x, plus 2**.",
+  "expect": "instant"
+ },
+ {
+  "id": "ml-075",
+  "area": "math bare expression",
+  "prompt": "x^2+3x+2",
+  "reply": "**$x^{2} + 3x + 2$** means **x squared, plus 3 times x, plus 2**.",
+  "expect": "instant"
+ },
+ {
+  "id": "ml-076",
+  "area": "math bare expression",
+  "prompt": "what does 2y mean",
+  "reply": "**$2y$** means **2 times y**.",
+  "expect": "instant"
+ },
+ {
+  "id": "ml-077",
+  "area": "math lookalike",
+  "prompt": "x",
+  "reply": "Did you mean to send something else? Tell me what you'd like help with.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-078",
+  "area": "math lookalike",
+  "prompt": "4K",
+  "reply": "4K is a screen resolution of about 3840 × 2160 pixels.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-079",
+  "area": "math lookalike",
+  "prompt": "5G",
+  "reply": "5G is the fifth generation of mobile networks.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-080",
+  "area": "math lookalike",
+  "prompt": "B12",
+  "reply": "Vitamin B12 helps make red blood cells and keeps nerves healthy.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-081",
+  "area": "math lookalike",
+  "prompt": "4x4",
+  "reply": "A 4x4 is a vehicle that drives all four wheels.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-082",
+  "area": "math lookalike",
+  "prompt": "x86",
+  "reply": "x86 is a family of processor instruction sets from Intel.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-083",
+  "area": "math lookalike",
+  "prompt": "5k",
+  "reply": "A 5K is a 5-kilometre race, about 3.1 miles.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-084",
+  "area": "math lookalike",
+  "prompt": "A4",
+  "reply": "A4 paper measures 210 × 297 mm.",
+  "expect": "answer"
+ },
+ {
+  "id": "ml-085",
+  "area": "math lookalike",
+  "prompt": "I am 3x faster now",
+  "reply": "That's a big jump! What changed?",
+  "expect": "answer"
+ }
+]

@@ -1,0 +1,5 @@
+[
+  {"id": "g8-01", "area": "kinematics", "prompt": "Raja travelled 15 kilometers in 3 hours. Calculate his average speed and write the correct unit of speed.", "expect": "answer", "answer": [5.0, "km/h"], "note": "Class 8 book (2026-10-30): 'and write the correct unit' read as a second request"},
+  {"id": "g8-02", "area": "kinematics", "prompt": "A car moves 100 m in 20 s. Find its speed and write the unit.", "expect": "answer", "answer": [5.0, "m/s"]},
+  {"id": "g8-03", "area": "dynamics", "prompt": "The surface area of an object is 20 m2 and a force of 10 N is applied on it, then what is the pressure?", "expect": "answer", "answer": [0.5, "Pa"]}
+]

@@ -1,0 +1,10 @@
+[
+  {"id": "echo-cube-root", "area": "restated", "prompt": "Find the cube root of 27a^3 + 54a^2b + 36ab^2 + 8b^3.", "expect": "decline", "note": "live, the model reader wrote cube_root(...): one symbol times the polynomial, 'simplified' to itself and certified (2026-11-01); right: 3a + 2b"},
+  {"id": "echo-simplify-rational", "area": "restated", "prompt": "simplify (x+1)/(x-1)", "expect": "answer", "note": "already simplest is an answer, its excluded value beside it; a restatement is a root of the given sum left untaken", "check": ["expr", "(x+1)/(x-1)"]},
+  {"id": "echo-simplify-polynomial", "area": "restated", "prompt": "simplify 27a^3 + 54a^2b + 36ab^2 + 8b^3", "expect": "decline"},
+  {"id": "echo-factor-cube", "area": "restated", "prompt": "factor 27a^3 + 54a^2b + 36ab^2 + 8b^3", "expect": "answer", "check": ["expr", "(3*a + 2*b)**3"], "note": "a factorisation that changes it keeps its card"},
+  {"id": "echo-simplify-cancels", "area": "restated", "prompt": "simplify (x^2 - 1)/(x - 1)", "expect": "answer", "check": ["expr", "x + 1"]},
+  {"id": "echo-simplify-like-terms", "area": "restated", "prompt": "simplify 2x + 3x", "expect": "answer", "check": ["expr", "5*x"]},
+  {"id": "echo-expand-bracket", "area": "restated", "prompt": "expand 2(x+3)", "expect": "answer", "check": ["expr", "2*x + 6"]},
+  {"id": "echo-fraction-part", "area": "restated", "prompt": "simplify (x+1)/(x-1) - x/(x-1)", "expect": "answer", "check": ["expr", "1/(x - 1)"], "note": "a fraction is compared whole, never inside the question's terms (Claude review)"}
+]

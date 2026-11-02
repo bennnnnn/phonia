@@ -1,0 +1,55 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.python-version
+*.egg-info/
+dist/
+build/
+.coverage
+coverage.json
+htmlcov/
+.pytest_cache/
+.ruff_cache/
+
+# Env
+.env
+.env.local
+.env.production
+.env.*.local
+
+# Expo / React Native
+apps/mobile/.expo/
+apps/mobile/dist/
+apps/mobile/web-build/
+apps/mobile/ios/
+apps/mobile/android/
+*.jks
+*.p8
+*.p12
+*.mobileprovision
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+tmp/
+
+# Accidental Simulator dumps at repo root
+/simulator_screenshot_*.png
+
+# Local Redis dev fallback (Homebrew Redis / raw redis-server) dumps here by default
+*.rdb
+
+# Hypothesis property-test example database
+.hypothesis/

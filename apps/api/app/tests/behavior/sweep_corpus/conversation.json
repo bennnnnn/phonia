@@ -1,0 +1,664 @@
+[
+ {
+  "id": "cv-001",
+  "area": "code",
+  "prompt": "fix that",
+  "history": [
+   [
+    "user",
+    "write a python function that averages a list of numbers"
+   ],
+   [
+    "assistant",
+    "```python\ndef average(numbers):\n    return sum(numbers) / len(numbers)\n```"
+   ],
+   [
+    "user",
+    "it crashes on an empty list"
+   ],
+   [
+    "assistant",
+    "Right: `len([])` is `0`, so `sum([]) / 0` raises `ZeroDivisionError`."
+   ]
+  ],
+  "reply": "Guard the empty case before dividing:\n\n```python\ndef average(numbers):\n    if not numbers:\n        return 0.0\n    return sum(numbers) / len(numbers)\n```\n\n`average([])` now returns `0.0` instead of raising."
+ },
+ {
+  "id": "cv-002",
+  "area": "writing",
+  "prompt": "continue",
+  "history": [
+   [
+    "user",
+    "tell me a long story about a dragon who is afraid of fire"
+   ],
+   [
+    "assistant",
+    "Ember was the only dragon in the Ashen Peaks who flinched at sparks. Every spring the young dragons lit the valley torches, and every spring Ember hid behind the waterfall.\n\nOne night a storm knocked out every torch in the village below, and the elders came to the waterfall looking for her. \"We need fire,\" they said, and Ember"
+   ]
+  ],
+  "reply": "stepped out from behind the water. She had never breathed a spark on purpose, but the village was dark and the children were cold. She closed her eyes, thought of the warm stones of her cave, and breathed out a small, steady flame onto the first torch."
+ },
+ {
+  "id": "cv-003",
+  "area": "code",
+  "prompt": "keep going",
+  "history": [
+   [
+    "user",
+    "write a flask app with login and a todo list"
+   ],
+   [
+    "assistant",
+    "```python\nfrom flask import Flask, request, session\n\napp = Flask(__name__)\n\n@app.route('/login', methods=['POST'])\ndef login():\n```"
+   ]
+  ],
+  "reply": "```python\n    session['user'] = request.form['name']\n    return {'ok': True}\n\n@app.route('/todos')\ndef todos():\n    return {'todos': session.get('todos', [])}\n```"
+ },
+ {
+  "id": "cv-004",
+  "area": "plans",
+  "prompt": "no, I said I'm vegetarian",
+  "history": [
+   [
+    "user",
+    "what should I cook tonight?"
+   ],
+   [
+    "assistant",
+    "How about **lemon garlic chicken** or a quick **beef stir-fry**?"
+   ]
+  ],
+  "reply": "Got it. Try a **chickpea and spinach curry** with rice, or **mushroom and black bean tacos** with lime crema. Both take about 30 minutes."
+ },
+ {
+  "id": "cv-005",
+  "area": "code",
+  "prompt": "actually I meant Python 2, not 3",
+  "history": [
+   [
+    "user",
+    "how do I print hello in python"
+   ],
+   [
+    "assistant",
+    "```python\nprint(\"hello\")\n```"
+   ]
+  ],
+  "reply": "In Python 2, `print` is a statement:\n\n```python\nprint \"hello\"\n```"
+ },
+ {
+  "id": "cv-006",
+  "area": "search",
+  "prompt": "that's wrong, it's 2024 not 2023",
+  "history": [
+   [
+    "user",
+    "when did the Paris Olympics happen?"
+   ],
+   [
+    "assistant",
+    "The Paris Summer Olympics ran from 26 July to 11 August 2023."
+   ]
+  ],
+  "reply": "You're right: the Paris Summer Olympics ran from 26 July to 11 August 2024."
+ },
+ {
+  "id": "cv-007",
+  "area": "chitchat",
+  "prompt": "I already told you I'm allergic to nuts",
+  "history": [
+   [
+    "user",
+    "I'm allergic to nuts. any snack ideas?"
+   ],
+   [
+    "assistant",
+    "Try **almond butter** on apple slices or a handful of **cashews**."
+   ]
+  ],
+  "reply": "Sorry about that. Nut-free picks: **apple slices with sunflower seed butter**, **hummus with carrots**, or **popcorn** with a little salt."
+ },
+ {
+  "id": "cv-008",
+  "area": "chitchat",
+  "prompt": "good morning!",
+  "reply": "Good morning, Bini! What's on your mind today?"
+ },
+ {
+  "id": "cv-009",
+  "area": "chitchat",
+  "prompt": "how are you?",
+  "reply": "Doing well, thanks for asking. How's your day going?"
+ },
+ {
+  "id": "cv-010",
+  "area": "code",
+  "prompt": "explain in detail how Raft handles split votes and network partitions",
+  "reply": "### Split votes\n\nEach follower waits a **randomized election timeout** (say 150-300 ms) before becoming a candidate, so two candidates rarely start at once. When they do and neither gets a majority, both time out again with fresh random timeouts and a higher term.\n\n### Partitions\n\nA leader in the **minority** side cannot commit new entries, because it never hears back from a majority. The majority side elects a new leader with a higher term; when the partition heals, the old leader sees that term and steps down."
+ },
+ {
+  "id": "cv-011",
+  "area": "chitchat",
+  "prompt": "why is the sky blue?",
+  "reply": "Sunlight is scattered by the molecules in the air, and shorter blue wavelengths scatter far more than red ones (Rayleigh scattering). So wherever you look away from the sun, you see that scattered blue light coming at you from every direction of the sky.\n\nLet me know if you have any other questions!"
+ },
+ {
+  "id": "cv-012",
+  "area": "code",
+  "prompt": "how do I reverse a list in python?",
+  "reply": "Use slicing for a new reversed copy, or `reverse()` to flip the list in place:\n\n```python\nnums = [1, 2, 3]\nprint(nums[::-1])  # [3, 2, 1]\nnums.reverse()\nprint(nums)  # [3, 2, 1]\n```\n\nHope this helps! 😊"
+ },
+ {
+  "id": "cv-013",
+  "area": "writing",
+  "prompt": "write an email to my landlord about the broken heater",
+  "reply": "```email\nSubject: Broken heater\n\nHi,\n\nThe heater in my apartment stopped working on Monday. Could you send someone to look at it this week? Let me know if you have any questions.\n\nBest,\nBini\n```"
+ },
+ {
+  "id": "cv-014",
+  "area": "writing",
+  "prompt": "rewrite this to sound friendlier: Send the report now. Let me know if you have any questions.",
+  "reply": "Could you send the report over when you get a chance? Thanks so much! Let me know if you have any questions."
+ },
+ {
+  "id": "cv-015",
+  "area": "opener lookalike",
+  "prompt": "good morning, what's the capital of Peru?",
+  "reply": "Good morning! The capital of Peru is **Lima**."
+ },
+ {
+  "id": "cv-016",
+  "area": "opener lookalike",
+  "prompt": "how are you different from ChatGPT?",
+  "reply": "I'm Recall: I remember your preferences and projects across chats, set reminders you confirm with a tap, and can search the web for current answers."
+ },
+ {
+  "id": "cv-017",
+  "area": "opener lookalike",
+  "prompt": "hello world in python",
+  "reply": "```python\nprint(\"Hello, world!\")\n```"
+ },
+ {
+  "id": "cv-018",
+  "area": "opener lookalike",
+  "prompt": "how do you say good morning in French",
+  "reply": "**Bonjour** is good morning (and hello) in French."
+ },
+ {
+  "id": "cv-019",
+  "area": "opener lookalike",
+  "prompt": "what's up with my code? it throws on line 3: print(items[3])",
+  "reply": "`items` has fewer than four elements, so `items[3]` raises `IndexError`. Use `items[-1]` for the last item or check `len(items)` first."
+ },
+ {
+  "id": "cv-020",
+  "area": "correction lookalike",
+  "prompt": "no, I said it was fine — thanks",
+  "history": [
+   [
+    "user",
+    "here's my cover letter intro, is it ok? I am writing to apply for the role."
+   ],
+   [
+    "assistant",
+    "It reads well. Want me to tighten the second sentence?"
+   ]
+  ],
+  "reply": "You're welcome. Good luck with the application!"
+ },
+ {
+  "id": "cv-021",
+  "area": "correction lookalike",
+  "prompt": "actually, can you also add error handling?",
+  "history": [
+   [
+    "user",
+    "write a python function that averages a list of numbers"
+   ],
+   [
+    "assistant",
+    "```python\ndef average(numbers):\n    return sum(numbers) / len(numbers)\n```"
+   ]
+  ],
+  "reply": "```python\ndef average(numbers):\n    if not numbers:\n        raise ValueError(\"average() of an empty list\")\n    return sum(numbers) / len(numbers)\n```"
+ },
+ {
+  "id": "cv-022",
+  "area": "correction lookalike",
+  "prompt": "I said hello to my neighbour and she ignored me, what should I do?",
+  "reply": "She may not have heard you, or had a bad day. Say hello again next time; if it keeps happening, a short friendly chat can clear things up."
+ },
+ {
+  "id": "cv-023",
+  "area": "correction lookalike",
+  "prompt": "I said yes to the job offer but I'm not sure now",
+  "reply": "Second thoughts after a yes are common. Write down what made you say yes and what worries you now, then decide whether it is a real deal-breaker."
+ },
+ {
+  "id": "cv-024",
+  "area": "correction lookalike",
+  "prompt": "I meant to call my mom yesterday, how do I apologize?",
+  "reply": "Call her today and keep it simple: say you meant to call, you're sorry you didn't, and ask how her day was."
+ },
+ {
+  "id": "cv-025",
+  "area": "correction lookalike",
+  "prompt": "no, I'm good thanks",
+  "history": [
+   [
+    "user",
+    "here's my cover letter intro, is it ok? I am writing to apply for the role."
+   ],
+   [
+    "assistant",
+    "It reads well. Want me to tighten the second sentence?"
+   ]
+  ],
+  "reply": "Sounds good. Good luck with the application!"
+ },
+ {
+  "id": "cv-026",
+  "area": "detail lookalike",
+  "prompt": "how do I thoroughly clean an oven",
+  "reply": "1. **Remove the racks** - soak them in hot soapy water.\n2. **Coat the inside** - spread a baking soda and water paste and leave it overnight.\n3. **Wipe and rinse** - scrape off the paste and wipe with vinegar."
+ },
+ {
+  "id": "cv-027",
+  "area": "detail lookalike",
+  "prompt": "what is comprehensive car insurance",
+  "reply": "Comprehensive cover pays for damage to your own car that isn't from a collision, such as theft, fire, hail or a falling tree."
+ },
+ {
+  "id": "cv-028",
+  "area": "detail lookalike",
+  "prompt": "the devil is in the details, what does that mean?",
+  "reply": "It means small details that look unimportant are often where the real problems hide."
+ },
+ {
+  "id": "cv-029",
+  "area": "continue lookalike",
+  "prompt": "how do I continue a for loop in python",
+  "reply": "Use `continue` to skip to the next iteration:\n\n```python\nfor n in range(5):\n    if n == 2:\n        continue\n    print(n)\n```"
+ },
+ {
+  "id": "cv-030",
+  "area": "continue lookalike",
+  "prompt": "fix that bug in my login form: the button does nothing",
+  "reply": "The button needs `type=\"submit\"` inside the form, or an `onClick` that calls your login function."
+ },
+ {
+  "id": "cv-031",
+  "area": "quiz lookalike",
+  "prompt": "I have a quiz tomorrow on cell biology, can you explain mitosis?",
+  "history": [],
+  "reply": "**Mitosis** is how one cell becomes two identical cells.\n\n1. **Prophase**: chromosomes condense.\n2. **Metaphase**: they line up in the middle.\n3. **Anaphase**: the copies are pulled apart.\n4. **Telophase**: two nuclei form, then the cell splits.\n\nGood luck tomorrow!",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-032",
+  "area": "quiz lookalike",
+  "prompt": "how do I make flashcards in Anki?",
+  "history": [],
+  "reply": "1. Open Anki and pick a deck.\n2. Tap **Add**.\n3. Type the front and the back.\n4. Tap **Add** again to save it.",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-033",
+  "area": "quiz lookalike",
+  "prompt": "my teacher gave us a true or false test and I got 6/10, is that bad?",
+  "history": [],
+  "reply": "6/10 is a pass, but true/false tests reward careful reading. Check which ones you missed: were they the trick wording ones?",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-034",
+  "area": "quiz lookalike",
+  "prompt": "write 10 multiple choice questions on photosynthesis with the answers for my class",
+  "history": [],
+  "reply": "1. Where does photosynthesis happen?\n   A. Mitochondria  B. Chloroplasts  C. Nucleus  D. Ribosome\n   **Answer: B**",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-035",
+  "area": "quiz lookalike",
+  "prompt": "is it true or false that goldfish have a 3-second memory?",
+  "history": [],
+  "reply": "False. Goldfish remember things for months; they can be trained to push levers for food.",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-036",
+  "area": "quiz lookalike",
+  "prompt": "create a quiz app in React with a score at the end",
+  "history": [],
+  "reply": "Here's a small quiz app:\n\n```tsx\nexport function Quiz() {\n  return null;\n}\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-037",
+  "area": "quiz lookalike",
+  "prompt": "give me tips for my quiz tomorrow on the French revolution",
+  "history": [],
+  "reply": "- Know the order: 1789, the Terror, Napoleon.\n- Learn three causes: debt, bread prices, Enlightenment ideas.\n- Sleep well tonight.",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-038",
+  "area": "quiz lookalike",
+  "prompt": "make sure I pass my history quiz: what were the causes of World War I?",
+  "history": [],
+  "reply": "The main causes are often remembered as **MAIN**: militarism, alliances, imperialism and nationalism, with the assassination of Franz Ferdinand as the spark.",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-039",
+  "area": "quiz lookalike",
+  "prompt": "give me a checklist to study for my biology quiz",
+  "history": [],
+  "reply": "- [ ] Reread the cell chapter\n- [ ] Draw mitosis from memory\n- [ ] Do the end-of-chapter questions",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-040",
+  "area": "profile lookalike",
+  "prompt": "who is the principal of my school?",
+  "history": [],
+  "reply": "I don't know who the principal of your school is. Which school is it? I can help you find out.",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-041",
+  "area": "profile lookalike",
+  "prompt": "when does my school start this year?",
+  "history": [],
+  "reply": "That depends on your school. Most schools post the first day on their website or calendar; which one is it?",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-042",
+  "area": "profile lookalike",
+  "prompt": "what language should I learn next?",
+  "history": [],
+  "reply": "If you speak English and Amharic, Spanish or French are easy next steps; Arabic is great for work in the Gulf.",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-043",
+  "area": "profile lookalike",
+  "prompt": "what grade should my son be in if he's 9?",
+  "history": [],
+  "reply": "At 9, most children are in 3rd or 4th grade, depending on the cut-off date where you live.",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-044",
+  "area": "profile lookalike",
+  "prompt": "I'm worried about school",
+  "history": [],
+  "reply": "That's a lot to carry. What part worries you most: the work, the people, or something else?",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-045",
+  "area": "profile lookalike",
+  "prompt": "how do I improve my grades fast?",
+  "history": [],
+  "reply": "1. Find the topics you lose most marks on.\n2. Do past papers under time.\n3. Ask your teacher what a top answer looks like.",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-046",
+  "area": "clarify lookalike",
+  "prompt": "Name: Abebe Kebede\nAge: 29\nCity: Addis Ababa",
+  "history": [],
+  "reply": "Nice to meet you, Abebe! Anything I can help you with in Addis?",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-047",
+  "area": "clarify lookalike",
+  "prompt": "Subject: Rent increase\nTo: my landlord",
+  "history": [],
+  "reply": "Do you want me to draft that email to your landlord about the rent increase? Tell me what you'd like to say.",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-048",
+  "area": "clarify lookalike",
+  "prompt": "Ingredients: flour, sugar, eggs\nTime: 30 minutes",
+  "history": [],
+  "reply": "You can make simple pancakes: whisk the eggs and sugar, fold in the flour, and cook on a hot pan.",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-049",
+  "area": "clarify lookalike",
+  "prompt": "what about double integrals?",
+  "history": [
+   [
+    "user",
+    "how can I understand integrals"
+   ],
+   [
+    "assistant",
+    "Two quick questions:\n\n```clarify\n{\"when\": \"first\", \"questions\": [{\"id\": \"level\", \"label\": \"Studied it before\", \"question\": \"Have you studied integrals before?\", \"options\": [\"No, never\", \"A little\", \"Yes, I'm revising\"], \"multi\": false}]}\n```"
+   ]
+  ],
+  "reply": "A double integral adds up a function over an area instead of along a line.",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-050",
+  "area": "walkthrough lookalike",
+  "prompt": "I don't understand why she left",
+  "history": [],
+  "reply": "That sounds painful. Do you want to talk about what happened before she left?",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-051",
+  "area": "walkthrough lookalike",
+  "prompt": "I don't understand step 3",
+  "history": [
+   [
+    "user",
+    "I don't understand recursion"
+   ],
+   [
+    "assistant",
+    "### Lesson 1: Recursion\n\nA function that calls itself on a smaller input.\n\n1. **Base case**: stop at 0.\n2. **Recursive step**: n * fact(n - 1).\n3. **Trace**: fact(3) = 3 * 2 * 1.\n\n### Your turn\nWhat does fact(4) return?"
+   ]
+  ],
+  "reply": "Step 3 just multiplies on the way back: fact(3) asks fact(2), which asks fact(1), then 3 * 2 * 1 = 6.",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-052",
+  "area": "walkthrough lookalike",
+  "prompt": "life makes no sense right now",
+  "history": [],
+  "reply": "That's a heavy feeling. What's been going on lately?",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-053",
+  "area": "walkthrough lookalike",
+  "prompt": "I'm stuck on the highway, I'll be late to the meeting",
+  "history": [],
+  "reply": "Sorry to hear that! Want me to draft a quick message saying you're running late?",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-054",
+  "area": "walkthrough lookalike",
+  "prompt": "I'm struggling with grief since my dad died",
+  "history": [],
+  "reply": "I'm so sorry about your dad. Grief can come in waves; would it help to talk about him?",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-055",
+  "area": "walkthrough lookalike",
+  "prompt": "your answer makes no sense",
+  "history": [
+   [
+    "user",
+    "what is 2+2"
+   ],
+   [
+    "assistant",
+    "2 + 2 = 4."
+   ]
+  ],
+  "reply": "Sorry about that: 2 + 2 is 4. Which part was unclear?",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-056",
+  "area": "clarify answer",
+  "prompt": "Primary focus: Finish my thesis",
+  "history": [
+   [
+    "user",
+    "plan my week"
+   ],
+   [
+    "assistant",
+    "To build a plan that fits, one quick question:\n\n```clarify\n{\"when\": \"first\", \"questions\": [{\"id\": \"focus\", \"label\": \"Primary focus\", \"question\": \"What is the main goal for your week?\", \"options\": [\"Work projects\", \"Study or exams\", \"Health and fitness\", \"Rest\"], \"multi\": false}]}\n```"
+   ]
+  ],
+  "reply": "Got it! A couple more questions so the plan is realistic:\n\n```clarify\n{\"when\": \"first\", \"questions\": [{\"id\": \"hours\", \"label\": \"Hours per week\", \"question\": \"How many hours a week can you give the thesis?\", \"options\": [\"Under 10\", \"10-20\", \"Over 20\"], \"multi\": false}, {\"id\": \"deadline\", \"label\": \"Deadline\", \"question\": \"When is it due?\", \"options\": [\"This month\", \"Next month\", \"Later\"], \"multi\": false}]}\n```",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-057",
+  "area": "clarify lookalike",
+  "prompt": "Main priority: not sure yet, what do most people pick?",
+  "history": [
+   [
+    "user",
+    "What is the best country"
+   ],
+   [
+    "assistant",
+    "Strong contenders: Switzerland, Norway, Singapore.\n\n**But let me ask you one thing.**\n\nWhat do you mean by *best*?\n\n```clarify\n{\"request\":\"Recommend the best country for me.\",\"questions\":[{\"id\":\"priority\",\"label\":\"Main priority\",\"question\":\"What matters most to you?\",\"options\":[\"💰 Making money\",\"🌿 Quality of life\",\"🛡️ Safety\"]},{\"id\":\"region\",\"label\":\"Geographic preference\",\"question\":\"Which region are you considering?\",\"options\":[\"🌍 Anywhere\",\"🇪🇺 Europe\",\"🌎 The Americas\"]}],\"closing\":\"Compare the strongest options with practical pros and cons.\",\"submit\":\"Find my best country\"}\n```"
+   ]
+  ],
+  "reply": "Most people weigh quality of life first, then cost of living and job prospects.",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-058",
+  "area": "clarify lookalike",
+  "prompt": "which one has the lowest taxes?",
+  "history": [
+   [
+    "user",
+    "What is the best country"
+   ],
+   [
+    "assistant",
+    "Strong contenders: Switzerland, Norway, Singapore.\n\n**But let me ask you one thing.**\n\nWhat do you mean by *best*?\n\n```clarify\n{\"request\":\"Recommend the best country for me.\",\"questions\":[{\"id\":\"priority\",\"label\":\"Main priority\",\"question\":\"What matters most to you?\",\"options\":[\"💰 Making money\",\"🌿 Quality of life\",\"🛡️ Safety\"]},{\"id\":\"region\",\"label\":\"Geographic preference\",\"question\":\"Which region are you considering?\",\"options\":[\"🌍 Anywhere\",\"🇪🇺 Europe\",\"🌎 The Americas\"]}],\"closing\":\"Compare the strongest options with practical pros and cons.\",\"submit\":\"Find my best country\"}\n```"
+   ]
+  ],
+  "reply": "Of those three, Singapore has the lowest income tax rates.",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-059",
+  "area": "purpose given",
+  "prompt": "What are the best countries for business",
+  "reply": "1. 🇸🇬 **Singapore** — low taxes, fast setup and strong IP law.\n2. 🇦🇪 **UAE** — 0% income tax in free zones.\n3. 🇺🇸 **United States** — the biggest market and easy Delaware setup.\n\nWant me to narrow it down for your kind of business?",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-060",
+  "area": "purpose given",
+  "prompt": "best laptop for coding",
+  "reply": "1. 💻 **MacBook Air M4** — long battery life and a great screen.\n2. 🐧 **Lenovo ThinkPad X1 Carbon** — the best keyboard, runs Linux well.\n\nTell me your budget and I can narrow it down.",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-061",
+  "area": "purpose given",
+  "prompt": "what's the best way to learn Spanish",
+  "reply": "1. 🗣️ **Speak early** — a weekly conversation partner beats months of drills.\n2. 📱 **Daily practice** — 15 minutes a day with an app keeps it going.",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-062",
+  "area": "purpose given",
+  "prompt": "best phone under $500",
+  "reply": "1. 📱 **Google Pixel 9a** — the best camera at the price.\n2. 🍏 **iPhone 16e** — the cheapest way into iOS.",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-063",
+  "area": "greeting lookalike",
+  "prompt": "hi",
+  "history": [
+   [
+    "user",
+    "what's 2+2"
+   ],
+   [
+    "assistant",
+    "4"
+   ]
+  ],
+  "reply": "Hey! Anything else you want to work out?",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-064",
+  "area": "greeting lookalike",
+  "prompt": "hello",
+  "history": [
+   [
+    "user",
+    "thanks!"
+   ],
+   [
+    "assistant",
+    "You're welcome!"
+   ]
+  ],
+  "reply": "Hi again! What's next?",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-065",
+  "area": "greeting lookalike",
+  "prompt": "hey",
+  "history": [
+   [
+    "user",
+    "hey can you help me with my essay"
+   ],
+   [
+    "assistant",
+    "Sure! What's it about?"
+   ]
+  ],
+  "reply": "Hey! Tell me the topic and I'll help.",
+  "expect": "answer"
+ },
+ {
+  "id": "cv-066",
+  "area": "greeting lookalike",
+  "prompt": "good morning",
+  "history": [
+   [
+    "user",
+    "remind me to call mom at 6"
+   ],
+   [
+    "assistant",
+    "Done, I'll remind you at 6."
+   ]
+  ],
+  "reply": "Good morning! Ready for the day?",
+  "expect": "answer"
+ }
+]
