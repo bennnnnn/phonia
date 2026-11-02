@@ -136,7 +136,7 @@ def verified_structure(
     text = (
         f"[Verified structure of {name} (PubChem)]\n"
         f"Molecular formula: {formula}. Molar mass: {molar_mass:.2f} g/mol.\n"
-        "Recall draws the structure under your reply from PubChem's SMILES. Do not write "
+        "Phonia draws the structure under your reply from PubChem's SMILES. Do not write "
         "SMILES, a smiles fence, maths or ASCII art for it. Say in one to three sentences what "
         "the compound is and what the drawing shows (its rings and functional groups)."
     )

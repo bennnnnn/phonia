@@ -13,8 +13,8 @@ from app.core.config import Settings, get_settings
 
 logger = logging.getLogger("app.core.jobs")
 
-JOBS_STREAM = "recall:jobs"
-JOBS_DLQ_STREAM = "recall:jobs:dlq"
+JOBS_STREAM = "phonia:jobs"
+JOBS_DLQ_STREAM = "phonia:jobs:dlq"
 JOBS_GROUP = "workers"
 # The floor under the stream's hard ceiling (``jobs_stream_max_len``).
 _MAXLEN = 10_000

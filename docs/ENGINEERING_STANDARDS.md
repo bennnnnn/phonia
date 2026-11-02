@@ -1,6 +1,6 @@
 # Engineering standards
 
-Every feature, module and pull request follows these rules. They keep Recall easy to change as
+Every feature, module and pull request follows these rules. They keep Phonia easy to change as
 maths, physics and chemistry grow and biology arrives. `CLAUDE.md` is the map of where things
 live; this file is how code there is shaped. The ranked list of current violations, with the
 fix for each, is [ENGINEERING_STANDARDS_TICKETS.md](./ENGINEERING_STANDARDS_TICKETS.md).

@@ -2,7 +2,7 @@
 
 Scope: the worked-solution ("workout") format, who solves what (SymPy or a model, and which
 model), code structure, test and curriculum coverage, geometry drawing and Skia, and the
-scanner. The goal is for Recall to be the app students reach for in maths, physics, and
+scanner. The goal is for Phonia to be the app students reach for in maths, physics, and
 chemistry, with biology and economics to follow.
 
 Method: about 120 prompts run through the real pre-stream path
@@ -106,7 +106,7 @@ constructions, and multi-step stories outside one system of equations are model-
 
 Each row is a **direct reply with no model**, as the student sees it.
 
-| Input | Recall replies | Correct | Root cause | Fix |
+| Input | Phonia replies | Correct | Root cause | Fix |
 |---|---|---|---|---|
 | `solve log2(x) + log2(x-2) = 3` | Given `2glox + 2glo(x − 2) = 3`, answer `x = 1 + 3/(4glo)` | `x = 4` | `log2(` is not rewritten (only `log_2` is). Implicit multiplication splits it into `l·o·g·2`. | Rewrite `log<digits>(`. Reject any parse with a free symbol the student did not write as a variable. |
 | `F = 20 N, m = 5 kg, find a` | "infinitely many solutions, `g = m/(5k)`" | `a = 4 m/s²` (physics) | The physics gate misses `X = value unit` givens. Math reads `kg` as `k·g`. | Same free-symbol guard. Unit tokens block a math claim. Physics accepts a list of given values. |

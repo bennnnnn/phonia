@@ -19,7 +19,7 @@ from app.tests.modules.memory.test_instruct import _patches
         ({"topic": "goals"}, "focus"),  # no type: the topic's
         ({"type": "goal"}, "focus"),  # a word for a type
         ({"type": "goal", "topic": "preferences"}, "preference"),  # the topic wins
-        ({"type": "hobby", "topic": "area:recall"}, "project"),  # an area stores projects
+        ({"type": "hobby", "topic": "area:phonia"}, "project"),  # an area stores projects
         ({"type": "Preference"}, "preference"),
         ({"type": "hobby"}, "fact"),
         ({}, "fact"),

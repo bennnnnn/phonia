@@ -103,7 +103,7 @@ async def test_consumer_recreates_a_lost_group() -> None:
     redis = redis_mock()
     redis.xautoclaim = AsyncMock(return_value=("0-0", [], []))
     redis.xreadgroup = AsyncMock(
-        side_effect=[Exception("NOGROUP No such key 'recall:jobs'"), asyncio.CancelledError()]
+        side_effect=[Exception("NOGROUP No such key 'phonia:jobs'"), asyncio.CancelledError()]
     )
     with (
         patch("app.core.jobs.worker.get_jobs_redis_client", return_value=redis),

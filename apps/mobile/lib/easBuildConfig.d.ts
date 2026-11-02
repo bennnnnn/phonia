@@ -5,7 +5,7 @@ type BuildEnvironment = Record<string, string | undefined>;
 
 export function includeDevClientPlugin(buildProfile: string): boolean;
 
-/** EAS Build sets EAS_BUILD_PROFILE; an over-the-air update sets RECALL_UPDATE_PROFILE
+/** EAS Build sets EAS_BUILD_PROFILE; an over-the-air update sets PHONIA_UPDATE_PROFILE
  * so its bundle is checked like a release build of the same profile. */
 export function releaseProfile(env: BuildEnvironment): string;
 
@@ -17,7 +17,7 @@ export function requirePublicApiUrlForReleaseBuild(
   apiUrl: string | undefined,
 ): void;
 
-/** `pnpm ios:sim` sets RECALL_IOS_SIMULATOR=1: a local simulator build without Sign in
+/** `pnpm ios:sim` sets PHONIA_IOS_SIMULATOR=1: a local simulator build without Sign in
  * with Apple and ML Kit. A release build never drops either. */
 export function simulatorWithoutAppleSignIn(buildProfile: string, env: BuildEnvironment): boolean;
 

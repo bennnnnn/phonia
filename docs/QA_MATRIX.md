@@ -1,4 +1,4 @@
-# Recall — On-Device QA Matrix
+# Phonia — On-Device QA Matrix
 
 Manual QA checklist for iOS and Android before store submission. Run against a **dev build** (not Expo Go) for native features; use **Expo Go + Dev User** for quick smoke only.
 
@@ -43,7 +43,7 @@ Manual QA checklist for iOS and Android before store submission. Run against a *
 | 2.7 | Quota exceeded shows plan-aware alert | ☐ | ☐ | Free vs Pro copy |
 | 2.8 | Teach-me lesson, one step at a time | ☐ | ☐ | “Teach me python dictionary step by step”: one line on how it will go, a complete short outline, then only `Step 1/N` with a plain explanation, one small code example, and a low-pressure question/optional check. Right / “ok” / “next” → `Step 2/N`. Plausible wrong → targeted correction with a fresh example, then `Step 2/N` (no retry gate). “I’m confused” / “why?” → keep `Step 1/N`, explain differently, preserve the step heading. Keyboard smash → brief acknowledgment and `Step 2/N`, never replay Step 1. Last step → short recap. “Just give me everything” → full reference. “How to install python step by step” / “Walk me through changing a tire” stay numbered how-tos. |
 | 2.9 | Full named-duration learning roadmap | ☐ | ☐ | Try “Create a 70-day Python plan”, “70-day roadmap for Python”, and “Teach me Python over the next 70 days.” Result is a complete mobile-scannable progression (`Foundations → Core skills → Projects`) with explicit ordered `Day 1` through `Day 70` entries, compact `Topic → Practice/build → Done when` lines, 4–6 tagged runnable examples across phases, checkpoints, milestones, and an honest production-experience caveat. First useful text should normally arrive in the app’s under-6-second telemetry bands. “I studied Python for 70 days and now plan to apply for jobs” must not trigger a new roadmap. |
-| 2.10 | Composer typing | ☐ | ☐ | Empty: “Reply to Recall”, caret level with the middle of + and send. Type a long message: at each wrap the box grows upward by one line and the line being typed stays level with the buttons, with no up-and-down jumps. Delete back to one line, or send: the box returns to one line. Largest text size: nothing clips. |
+| 2.10 | Composer typing | ☐ | ☐ | Empty: “Reply to Phonia”, caret level with the middle of + and send. Type a long message: at each wrap the box grows upward by one line and the line being typed stays level with the buttons, with no up-and-down jumps. Delete back to one line, or send: the box returns to one line. Largest text size: nothing clips. |
 | 2.11 | A reply that stalls mid-stream | ☐ | ☐ | Hold the provider stream after the first words (a proxy breakpoint between the API and OpenRouter; the phone's own network stays up): after 20 s without new text, "Still working on it… Tap Stop to end the reply." shows under the reply; VoiceOver/TalkBack reads it. Stop works. New text clears it. The server gives up after its idle limit (30 s in production) and keeps what arrived. |
 
 ---
@@ -76,7 +76,7 @@ Manual QA checklist for iOS and Android before store submission. Run against a *
 | 4.7 | Export learning topic as PDF | ☐ | ☐ | Vocab words / trivia facts from project screen |
 | 4.8 | Daily image cap enforced (free) | ☐ | ☐ | |
 | 4.9 | Daily speech STT / TTS caps | ☐ | ☐ | Free: no voice input (the mic opens the plans) and read-aloud uses the phone's voice only. Plus and Pro: 200 dictations and 100 natural read-alouds a day (`core/settings/plans.py`); over the cap shows the limit message. |
-| 4.10 | Dictation with the microphone denied | ☐ | ☐ | Turn Recall's microphone off in system Settings, tap the mic: "Microphone access needed" alert; no recording starts and nothing uploads. Airplane mode after recording: "network" message, not a transcription failure. |
+| 4.10 | Dictation with the microphone denied | ☐ | ☐ | Turn Phonia's microphone off in system Settings, tap the mic: "Microphone access needed" alert; no recording starts and nothing uploads. Airplane mode after recording: "network" message, not a transcription failure. |
 | 4.11 | A geotagged photo leaves without its location | ☐ | ☐ | Attach a photo with GPS (taken with camera location tagging on), small (a screenshot-sized crop under 2048 px) and full size, from the library, the camera and Files; also a scanner capture and a profile photo. Download each stored file (Library → ⋮ → Save, or `GET /attachments/{id}/file`) and run `exiftool -gps:all -xmp:all <file>`: nothing. Portrait photos stay upright; a PNG with transparency keeps it; an animated GIF still animates. |
 
 ---
@@ -103,7 +103,7 @@ Manual QA checklist for iOS and Android before store submission. Run against a *
 |---|------|-----|---------|-------|
 | 6.1 | "Remind me to call mom tomorrow at 6pm" shows a card; nothing is saved until Add is tapped | ☐ | ☐ | |
 | 6.2 | Completing, moving or deleting a to-do from chat shows a card; the list changes only on tap | ☐ | ☐ | |
-| 6.3 | "What's on my calendar?" says Recall does not connect to calendars and answers from To-do | ☐ | ☐ | Calendar/Gmail removed |
+| 6.3 | "What's on my calendar?" says Phonia does not connect to calendars and answers from To-do | ☐ | ☐ | Calendar/Gmail removed |
 
 ---
 
@@ -300,8 +300,8 @@ Checks only a release build shows. A dev build carries dev-launcher keys and dif
 
 | # | Test | iOS | Android | Notes |
 |---|------|-----|---------|-------|
-| 20.1 | First mic use (dictation) | ☐ | ☐ | iOS prompt: "Recall uses the microphone so you can dictate messages." Never "Allow Recall to access your microphone". |
-| 20.2 | First camera use: attach a photo, and the maths scanner | ☐ | ☐ | iOS prompt: "Recall uses the camera so you can take photos to attach in chat and scan math problems from your notes or worksheets." |
+| 20.1 | First mic use (dictation) | ☐ | ☐ | iOS prompt: "Phonia uses the microphone so you can dictate messages." Never "Allow Phonia to access your microphone". |
+| 20.2 | First camera use: attach a photo, and the maths scanner | ☐ | ☐ | iOS prompt: "Phonia uses the camera so you can take photos to attach in chat and scan math problems from your notes or worksheets." |
 | 20.3 | Location question ("where am I?") | ☐ | ☐ | No location prompt: the reply says the app does not use the device's location. No Face ID or Motion prompt anywhere. |
 | 20.4 | First launch | ☐ | n/a | No "find and connect to devices on your local network" prompt. |
 | 20.5 | Read-aloud, then press Home | ☐ | ☐ | Read-aloud stops. No audio keeps playing; Android shows no media notification. |

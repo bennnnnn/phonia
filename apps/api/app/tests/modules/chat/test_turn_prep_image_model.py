@@ -1,6 +1,6 @@
 """A turn uses a photo model only when it shows the model an image (R4.4).
 
-A picture Recall generated earlier no longer moves later turns to the photo
+A picture Phonia generated earlier no longer moves later turns to the photo
 model; a re-sent photo gets backups that can read it.
 """
 

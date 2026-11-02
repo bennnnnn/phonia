@@ -13,7 +13,7 @@ type SyncKind = "push";
 
 type SyncRecord = { account: string; variant: string; at: number };
 
-const pushRecord = cacheFile("recall-synced-push.json");
+const pushRecord = cacheFile("phonia-synced-push.json");
 
 function recordFile(_kind: SyncKind) {
   return pushRecord;

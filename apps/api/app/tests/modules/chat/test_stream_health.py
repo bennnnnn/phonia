@@ -239,7 +239,7 @@ _LIVE = Settings(
 
 
 async def _open_since_cool_down(redis: Any, alias: str) -> None:
-    key = f"recall:model_health:samples:{model_health._model_of(alias)}"
+    key = f"phonia:model_health:samples:{model_health._model_of(alias)}"
     stale = time.time() - _LIVE.model_health_cooldown_seconds - 1
     await redis.zadd(key, {f"0|900|{int(stale * 1e9)}": stale})
 

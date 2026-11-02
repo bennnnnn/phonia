@@ -1,9 +1,9 @@
 ---
-description: Recall project golden rules and architecture — always read before coding
+description: Phonia project golden rules and architecture — always read before coding
 alwaysApply: true
 ---
 
-# Recall — project rules
+# Phonia — project rules
 
 Read `CLAUDE.md` at repo root for the engineering map (catalog + seams). Product status is `FEATURES.md`. This is not a week-one MVP (~168k API, ~100k mobile).
 

@@ -702,7 +702,7 @@ beforeEach(() => {
 });
 
 it("keeps every step of an everyday session within its requests", async () => {
-  mockSecure.set("recall_session_v1", JSON.stringify({ accessToken: accessToken(NOW_S + 3600), refreshToken: "r" }));
+  mockSecure.set("phonia_session_v1", JSON.stringify({ accessToken: accessToken(NOW_S + 3600), refreshToken: "r" }));
   mockFiles.set("file:///cache/cached-user.json", JSON.stringify({
     id: USER_ID, name: "Ann", avatar_url: null, plan: "free", ai_data_consent_at: NOW, locale: "en",
   }));
@@ -899,7 +899,7 @@ it("keeps a server outage within its requests, with nothing in a loop", async ()
   steps.length = 0;
   mockSecure.clear();
   mockFiles.clear();
-  mockSecure.set("recall_session_v1", JSON.stringify({ accessToken: accessToken(NOW_S + 3600), refreshToken: "r" }));
+  mockSecure.set("phonia_session_v1", JSON.stringify({ accessToken: accessToken(NOW_S + 3600), refreshToken: "r" }));
   mockFiles.set("file:///cache/cached-user.json", JSON.stringify({
     id: USER_ID, name: "Ann", avatar_url: null, plan: "free", ai_data_consent_at: NOW, locale: "en",
   }));
@@ -1047,7 +1047,7 @@ it("reads the list on screen again once, 0 to 10 s after an outage ends, and not
   steps.length = 0;
   mockSecure.clear();
   mockFiles.clear();
-  mockSecure.set("recall_session_v1", JSON.stringify({ accessToken: accessToken(NOW_S + 3600), refreshToken: "r" }));
+  mockSecure.set("phonia_session_v1", JSON.stringify({ accessToken: accessToken(NOW_S + 3600), refreshToken: "r" }));
   mockFiles.set("file:///cache/cached-user.json", JSON.stringify({
     id: USER_ID, name: "Ann", avatar_url: null, plan: "free", ai_data_consent_at: NOW, locale: "en",
   }));
@@ -1143,7 +1143,7 @@ it("reads a list on screen as the API came back once: its own read is the reconn
   steps.length = 0;
   mockSecure.clear();
   mockFiles.clear();
-  mockSecure.set("recall_session_v1", JSON.stringify({ accessToken: accessToken(NOW_S + 3600), refreshToken: "r" }));
+  mockSecure.set("phonia_session_v1", JSON.stringify({ accessToken: accessToken(NOW_S + 3600), refreshToken: "r" }));
   mockFiles.set("file:///cache/cached-user.json", JSON.stringify({
     id: USER_ID, name: "Ann", avatar_url: null, plan: "free", ai_data_consent_at: NOW, locale: "en",
   }));
@@ -1181,7 +1181,7 @@ it("clears the banner at the first 200 after an outage and reads the open chat o
   savedTurn = [];
   mockSecure.clear();
   mockFiles.clear();
-  mockSecure.set("recall_session_v1", JSON.stringify({ accessToken: accessToken(NOW_S + 3600), refreshToken: "r" }));
+  mockSecure.set("phonia_session_v1", JSON.stringify({ accessToken: accessToken(NOW_S + 3600), refreshToken: "r" }));
   mockFiles.set("file:///cache/cached-user.json", JSON.stringify({
     id: USER_ID, name: "Ann", avatar_url: null, plan: "free", ai_data_consent_at: NOW, locale: "en",
   }));
@@ -1238,7 +1238,7 @@ it("checks the connection once for a burst of reads that find no API, then reads
   steps.length = 0;
   mockSecure.clear();
   mockFiles.clear();
-  mockSecure.set("recall_session_v1", JSON.stringify({ accessToken: accessToken(NOW_S + 3600), refreshToken: "r" }));
+  mockSecure.set("phonia_session_v1", JSON.stringify({ accessToken: accessToken(NOW_S + 3600), refreshToken: "r" }));
   mockFiles.set("file:///cache/cached-user.json", JSON.stringify({
     id: USER_ID, name: "Ann", avatar_url: null, plan: "free", ai_data_consent_at: NOW, locale: "en",
   }));
@@ -1312,7 +1312,7 @@ it("checks the connection once for a socket that meets an outage, and shows the 
   socketDrops.length = 0;
   mockSecure.clear();
   mockFiles.clear();
-  mockSecure.set("recall_session_v1", JSON.stringify({ accessToken: accessToken(NOW_S + 3600), refreshToken: "r" }));
+  mockSecure.set("phonia_session_v1", JSON.stringify({ accessToken: accessToken(NOW_S + 3600), refreshToken: "r" }));
   mockFiles.set("file:///cache/cached-user.json", JSON.stringify({
     id: USER_ID, name: "Ann", avatar_url: null, plan: "free", ai_data_consent_at: NOW, locale: "en",
   }));

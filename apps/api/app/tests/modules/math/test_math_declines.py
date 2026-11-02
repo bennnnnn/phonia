@@ -40,7 +40,7 @@ def decline_counts(caplog) -> Callable[[], Counter[tuple[str, str]]]:
 
 @pytest.fixture(params=[True, False], ids=["strict", "production"])
 def strict(request, monkeypatch) -> bool:
-    monkeypatch.setenv("RECALL_STRICT_DECLINES", "1" if request.param else "0")
+    monkeypatch.setenv("PHONIA_STRICT_DECLINES", "1" if request.param else "0")
     return request.param
 
 
@@ -152,12 +152,12 @@ def test_declines_base_exception_and_pool_timeout_pass_through(
 
 
 def test_declines_strict_mode_reads_the_environment(monkeypatch) -> None:
-    monkeypatch.setenv("RECALL_STRICT_DECLINES", "1")
+    monkeypatch.setenv("PHONIA_STRICT_DECLINES", "1")
     assert strict_declines()
     for value in ("0", "", "true"):
-        monkeypatch.setenv("RECALL_STRICT_DECLINES", value)
+        monkeypatch.setenv("PHONIA_STRICT_DECLINES", value)
         assert not strict_declines()
-    monkeypatch.delenv("RECALL_STRICT_DECLINES")
+    monkeypatch.delenv("PHONIA_STRICT_DECLINES")
     assert not strict_declines()
 
 
@@ -177,7 +177,7 @@ def test_declines_is_programming_error_classifies_by_raising_frame() -> None:
 
 
 def test_declines_counts_and_logs_each_decline(monkeypatch, caplog, decline_counts) -> None:
-    monkeypatch.setenv("RECALL_STRICT_DECLINES", "1")
+    monkeypatch.setenv("PHONIA_STRICT_DECLINES", "1")
 
     @declines(None)
     def parse_twice() -> object:

@@ -44,7 +44,7 @@ import {
   type ServerLogout,
 } from "@/lib/pendingLogout";
 
-const KEY = "recall_pending_logouts_v1";
+const KEY = "phonia_pending_logouts_v1";
 const LOGOUT_A: ServerLogout = { accessToken: "access-a", refreshToken: "refresh-a", pushToken: "Expo[phone]" };
 const LOGOUT_B: ServerLogout = { accessToken: "access-b", refreshToken: "refresh-b", pushToken: null };
 

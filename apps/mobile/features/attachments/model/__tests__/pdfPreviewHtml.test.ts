@@ -86,7 +86,7 @@ describe("buildPdfPreviewHtml", () => {
     };
     const getDocument = jest.fn(() => ({ promise: new Promise(() => undefined) }));
     const page = {
-      window: { RECALL_PDF: { allPages: false, colors: {} }, innerWidth: 320, devicePixelRatio: 2 },
+      window: { PHONIA_PDF: { allPages: false, colors: {} }, innerWidth: 320, devicePixelRatio: 2 },
       document: { documentElement: { style: { setProperty: () => undefined } }, getElementById: (id: string) => elements[id] },
       pdfjsLib: { GlobalWorkerOptions: {} as { workerSrc?: string }, getDocument },
       URL: { createObjectURL: () => "blob:worker" },

@@ -10,7 +10,7 @@ jest.mock("expo-file-system/legacy", () => ({
 }));
 
 const listing: Record<string, string[]> = {
-  "file:///cache/": ["recall-export-1.json", "other.txt"],
+  "file:///cache/": ["phonia-export-1.json", "other.txt"],
   "file:///cache/Print/": ["3F2A.pdf", "Spanish verbs.pdf", "Café #2.pdf", "notes.txt"],
   "file:///cache/ExpoAudio/": ["recording-1.m4a"],
   "file:///cache/ImagePicker/": ["A1.jpg"],
@@ -49,7 +49,7 @@ it("sign-out deletes a named PDF by the URI it was written under", async () => {
   const deleted = jest.mocked(deleteAsync).mock.calls.map(([uri]) => uri);
   expect(deleted.sort()).toEqual(
     [
-      "file:///cache/recall-export-1.json",
+      "file:///cache/phonia-export-1.json",
       "file:///cache/Print/3F2A.pdf",
       namedPdfFile("Spanish verbs.pdf"),
       namedPdfFile("Café #2.pdf"),

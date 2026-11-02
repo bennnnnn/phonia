@@ -1,6 +1,6 @@
 """A fact that may have changed is looked up, never guessed.
 
-Recall named a made-up Ethiopian president, called a 2018 iPhone the newest, and
+Phonia named a made-up Ethiopian president, called a 2018 iPhone the newest, and
 answered a question about Abiy Ahmed with "I don't have information in my
 memory about an individual named Ahmed". When the turn searched, its results are
 in the prompt. When it did not, a reply that has the web_search tool calls it first

@@ -6,7 +6,7 @@ import { isExpoGo } from "@/lib/expoRuntime";
 export const TONE_ANDROID_CHANNELS = "tone";
 
 /** Bundled in app.json. Android resource name is the basename. */
-const BUNDLED_SOUND = "recall_notify.wav";
+const BUNDLED_SOUND = "phonia_notify.wav";
 
 /**
  * The sound a reminder plays: the bundled cue in a build, the system sound in Expo Go, which
@@ -17,7 +17,7 @@ export function notificationSound(): string {
 }
 
 export const AndroidNotificationChannel = {
-  reminders: "recall-reminders-v2",
+  reminders: "phonia-reminders-v2",
 } as const;
 
 /** One short pulse. The old pattern was three long buzzes. */

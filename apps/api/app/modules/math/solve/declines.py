@@ -16,7 +16,7 @@ Outside strict mode every ``Exception`` declines except ``TimeoutError`` (the Sy
 timeout), as the plain ``except Exception`` it replaces did. A ``BaseException`` (cancellation,
 ``KeyboardInterrupt``) always passes through.
 
-With ``RECALL_STRICT_DECLINES=1`` (the test run sets it in ``app/tests/conftest.py``) a
+With ``PHONIA_STRICT_DECLINES=1`` (the test run sets it in ``app/tests/conftest.py``) a
 programming error raises instead: an ``AttributeError``, ``NameError`` (``UnboundLocalError``),
 ``KeyError``, ``ImportError``, ``AssertionError`` or ``TypeError`` raised in our own code. The
 same types raised inside SymPy or mpmath are SymPy failing on the input, so they still decline:
@@ -37,7 +37,7 @@ from types import TracebackType
 
 logger = logging.getLogger(__name__)
 
-STRICT_ENV = "RECALL_STRICT_DECLINES"
+STRICT_ENV = "PHONIA_STRICT_DECLINES"
 
 # Raised in our own code these are bugs, not maths a SymPy step could not do.
 _PROGRAMMING_ERRORS: tuple[type[Exception], ...] = (

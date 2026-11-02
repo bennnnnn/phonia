@@ -62,7 +62,7 @@ const MAX_SCANNER_ZOOM = 6;
 /**
  * Native VisionCamera preview + low-resolution ML Kit frame OCR.
  *
- * The live OCR is only a targeting signal. Recall still performs the final,
+ * The live OCR is only a targeting signal. Phonia still performs the final,
  * high-quality Mathpix/vision read after capture, so live frames never hit a
  * paid cloud OCR endpoint.
  */

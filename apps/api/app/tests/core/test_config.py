@@ -33,7 +33,7 @@ def test_validate_production_settings_ok():
             mock_llm_enabled=False,
             jwt_secret="super-secret-key-that-is-at-least-32-chars!!",
             google_client_id="client-id",
-            cors_origins="https://app.recall.app",
+            cors_origins="https://app.phonia.app",
             openrouter_api_key="sk-or-xxx",
             revenuecat_webhook_auth="whsec-xxx",
             revenuecat_secret_key="sk_rc_xxx",
@@ -59,7 +59,7 @@ def test_validate_production_settings_rejects_process_role_all():
         mock_llm_enabled=False,
         jwt_secret="super-secret-key-that-is-at-least-32-chars!!",
         google_client_id="client-id",
-        cors_origins="https://app.recall.app",
+        cors_origins="https://app.phonia.app",
         openrouter_api_key="sk-or-xxx",
         revenuecat_webhook_auth="whsec-xxx",
         revenuecat_secret_key="sk_rc_xxx",
@@ -105,7 +105,7 @@ def test_validate_production_settings_rejects_dev_flags():
                 mock_llm_enabled=False,
                 jwt_secret="super-secret-key-that-is-at-least-32-chars!!",
                 google_client_id="client-id",
-                cors_origins="https://app.recall.app",
+                cors_origins="https://app.phonia.app",
                 openrouter_api_key="sk-or-xxx",
                 revenuecat_webhook_auth="whsec-xxx",
             )
@@ -133,7 +133,7 @@ def test_validate_production_settings_rejects_empty_cors_and_missing_secrets():
         validate_production_settings(
             Settings(
                 **base,
-                cors_origins="https://app.recall.app",
+                cors_origins="https://app.phonia.app",
                 openrouter_api_key="",
                 revenuecat_webhook_auth="whsec-xxx",
             )
@@ -142,7 +142,7 @@ def test_validate_production_settings_rejects_empty_cors_and_missing_secrets():
         validate_production_settings(
             Settings(
                 **base,
-                cors_origins="https://app.recall.app",
+                cors_origins="https://app.phonia.app",
                 openrouter_api_key="sk-or-xxx",
                 revenuecat_webhook_auth="",
             )
@@ -151,7 +151,7 @@ def test_validate_production_settings_rejects_empty_cors_and_missing_secrets():
         validate_production_settings(
             Settings(
                 **base,
-                cors_origins="https://app.recall.app",
+                cors_origins="https://app.phonia.app",
                 openrouter_api_key="sk-or-xxx",
                 revenuecat_webhook_auth="whsec-xxx",
                 revenuecat_secret_key="",
@@ -166,7 +166,7 @@ def test_validate_production_settings_requires_r2():
         mock_llm_enabled=False,
         jwt_secret="super-secret-key-that-is-at-least-32-chars!!",
         google_client_id="client-id",
-        cors_origins="https://app.recall.app",
+        cors_origins="https://app.phonia.app",
         openrouter_api_key="sk-or-xxx",
         revenuecat_webhook_auth="whsec-xxx",
     )
@@ -194,7 +194,7 @@ def test_validate_production_settings_rejects_mock_llm_and_weak_jwt():
         environment="production",
         dev_auth_enabled=False,
         google_client_id="client-id",
-        cors_origins="https://app.recall.app",
+        cors_origins="https://app.phonia.app",
         openrouter_api_key="sk-or-xxx",
         revenuecat_webhook_auth="whsec-xxx",
         storage_backend="r2",
@@ -222,7 +222,7 @@ def test_validate_production_settings_rejects_missing_core_urls():
         mock_llm_enabled=False,
         jwt_secret="super-secret-key-that-is-at-least-32-chars!!",
         google_client_id="client-id",
-        cors_origins="https://app.recall.app",
+        cors_origins="https://app.phonia.app",
         openrouter_api_key="sk-or-xxx",
         revenuecat_webhook_auth="whsec-xxx",
         storage_backend="r2",
@@ -268,7 +268,7 @@ def test_validate_production_settings_requires_global_spend_cap():
                 mock_llm_enabled=False,
                 jwt_secret="super-secret-key-that-is-at-least-32-chars!!",
                 google_client_id="client-id",
-                cors_origins="https://app.recall.app",
+                cors_origins="https://app.phonia.app",
                 openrouter_api_key="sk-or-xxx",
                 revenuecat_webhook_auth="whsec-xxx",
                 revenuecat_secret_key="sk_rc_xxx",
@@ -288,7 +288,7 @@ def test_validate_production_settings_requires_global_spend_cap():
         (PROD_URLS["database_url"], PROD_URLS["redis_url"], []),
         # The Settings defaults: an unset secret used to pass every check.
         (
-            "postgresql+asyncpg://postgres:dev@localhost:5432/recall",
+            "postgresql+asyncpg://postgres:dev@localhost:5432/phonia",
             "redis://localhost:6379",
             ["DATABASE_URL points at localhost", "REDIS_URL points at localhost"],
         ),
@@ -315,7 +315,7 @@ def test_validate_production_settings_rejects_the_default_redis_url():
         mock_llm_enabled=False,
         jwt_secret="super-secret-key-that-is-at-least-32-chars!!",
         google_client_id="client-id",
-        cors_origins="https://app.recall.app",
+        cors_origins="https://app.phonia.app",
         openrouter_api_key="sk-or-xxx",
         revenuecat_webhook_auth="whsec-xxx",
         revenuecat_secret_key="sk_rc_xxx",

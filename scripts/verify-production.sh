@@ -5,24 +5,24 @@
 #
 # Usage:
 #   ./scripts/verify-production.sh
-#   API_URL=https://recall-api.fly.dev ./scripts/verify-production.sh --live
+#   API_URL=https://phonia-api.fly.dev ./scripts/verify-production.sh --live
 #
 # --live also checks, through flyctl (`fly auth login` first; FLY_APP, default
-# recall-api), that the worker answers its health check and that the database
+# phonia-api), that the worker answers its health check and that the database
 # is at the repository's migration head. A check that cannot run is not a pass:
 # with --live it fails the run, and the report lists it.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 API_URL="${API_URL:-}"
-FLY_APP="${FLY_APP:-recall-api}"
+FLY_APP="${FLY_APP:-phonia-api}"
 LIVE=0
 [[ "${1:-}" == "--live" ]] && LIVE=1
 
 fail=0
 not_checked=()
 
-echo "=== Recall production verification ==="
+echo "=== Phonia production verification ==="
 echo ""
 
 # Reuse smoke checks (static, plus API health and readiness with --live)
@@ -131,7 +131,7 @@ if [[ "$LIVE" -eq 1 ]]; then
 
   echo ""
   echo "==> CORS preflight (OPTIONS) — informational"
-  ORIGIN="${CORS_TEST_ORIGIN:-https://app.recall.app}"
+  ORIGIN="${CORS_TEST_ORIGIN:-https://app.phonia.app}"
   STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X OPTIONS \
     -H "Origin: $ORIGIN" \
     -H "Access-Control-Request-Method: GET" \

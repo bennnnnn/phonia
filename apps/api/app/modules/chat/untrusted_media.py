@@ -5,13 +5,13 @@ tell the model to put the user's memory, schedule or location into a URL.
 Whatever a client fetches without a tap would then send it to the attacker: a
 markdown image, an ``[Image: …]`` line (the app's attachment marker), the
 favicon chips of a ``sources`` fence. The server's own pictures are always
-Recall attachments (``[Image: /attachments/<id>/file]``), added after this pass
+Phonia attachments (``[Image: /attachments/<id>/file]``), added after this pass
 by the photo pass or before it by the image tools (whose turns skip
 finalizing), and its chips come from ``add_search_sources``. So on model text,
 before those passes, this one:
 
 - drops an ``[Image: …]`` line unless it is an attachment marker (those load
-  only from Recall's own API, as the signed-in user);
+  only from Phonia's own API, as the signed-in user);
 - turns a markdown image or HTML ``<img>`` whose source could reach another
   host into a link, labelled with its alt text or host: a tap opens it,
   nothing loads (inside a link's text, the label alone stays);
@@ -72,7 +72,7 @@ def neutralize_untrusted_media(state: FinalizeState) -> str:
 
 def drop_media_lines(text: str) -> str:
     """What stands in when neutralizing fails: every line that could load a picture or
-    a chip goes, in code too, and so does any ``sources`` fence. A Recall attachment
+    a chip goes, in code too, and so does any ``sources`` fence. A Phonia attachment
     marker alone on its line stays."""
     kept: list[str] = []
     for line in without_source_fences(text).split("\n"):
@@ -138,7 +138,7 @@ def neutralize_media(text: str, *, searched: bool) -> str:
 
 
 def _drop_image_markers(prose: str) -> str:
-    """Drop ``[Image: …]`` lines that are not a Recall attachment marker."""
+    """Drop ``[Image: …]`` lines that are not a Phonia attachment marker."""
     if _IMAGE_MARKER_HEAD not in prose:
         return prose
     kept: list[str] = []

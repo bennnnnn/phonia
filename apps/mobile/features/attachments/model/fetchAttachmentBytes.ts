@@ -1,5 +1,5 @@
 import { File } from "expo-file-system";
-import { recallAttachmentPath } from "@/features/attachments/model/attachmentUri";
+import { phoniaAttachmentPath } from "@/features/attachments/model/attachmentUri";
 import { attachmentSessionGuard } from "@/features/attachments/model/attachmentSession";
 import { authorizeNativeTransfer, requestRaw } from "@/lib/api/client";
 import { serverUnreachableError } from "@/lib/api/deadline";
@@ -16,8 +16,8 @@ export async function fetchAttachmentBytes(
     requireCurrent();
     return bytes;
   }
-  const path = recallAttachmentPath(uri);
-  // External and local file URLs never receive Recall credentials. API
+  const path = phoniaAttachmentPath(uri);
+  // External and local file URLs never receive Phonia credentials. API
   // downloads share the same session fences and refresh policy as JSON/SSE.
   const response = path ? await requestRaw(path, token, { signal }) : await fetch(uri, { signal });
   if (!response.ok) throw new Error("Could not load attachment.");
@@ -65,7 +65,7 @@ function noAnswer(error: unknown): boolean {
 
 /**
  * Stream an attachment straight to `dest` natively: the bytes never cross
- * into JavaScript. Recall URLs get the Bearer header (refreshed like fetch);
+ * into JavaScript. Phonia URLs get the Bearer header (refreshed like fetch);
  * any other URL is downloaded without credentials. No answer from the server
  * rejects with `serverUnreachableError()`, worded by `isServerUnreachable`.
  */
@@ -85,6 +85,6 @@ export async function downloadAttachmentFile(
       throw noAnswer(error) ? Object.assign(serverUnreachableError(), { cause: error }) : error;
     }
   };
-  const status = recallAttachmentPath(uri) ? await authorizeNativeTransfer(token, send) : await send({});
+  const status = phoniaAttachmentPath(uri) ? await authorizeNativeTransfer(token, send) : await send({});
   if (status !== 200) throw new Error("Could not load attachment.");
 }

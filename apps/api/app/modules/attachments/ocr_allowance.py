@@ -43,11 +43,11 @@ _TEXT_TTL_SECONDS = 60 * 60
 
 
 def _slot_key(attachment_id: UUID) -> str:
-    return f"recall:attachment_ocr_slot:{attachment_id}"
+    return f"phonia:attachment_ocr_slot:{attachment_id}"
 
 
 def _text_key(attachment_id: UUID) -> str:
-    return f"recall:attachment_ocr_text:{attachment_id}"
+    return f"phonia:attachment_ocr_text:{attachment_id}"
 
 
 def _as_day(raw: object) -> date | None:

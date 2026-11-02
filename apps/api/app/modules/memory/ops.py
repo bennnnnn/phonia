@@ -130,7 +130,7 @@ def exact_fact(facts: list[Memory], text: str) -> Memory | None:
     """An active or muted fact of any type with exactly this text.
 
     An add matches only this: "User uses React Native" must not overwrite the
-    richer "User uses React Native and FastAPI for Recall".
+    richer "User uses React Native and FastAPI for Phonia".
     """
     needle = normalize_memory_text(text).lower()
     for fact in facts:

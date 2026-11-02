@@ -50,7 +50,7 @@ jest.mock("@/lib/pendingLogout", () => ({
   watchPendingLogouts: jest.fn(() => () => {}),
 }));
 
-const SESSION_KEY = "recall_session_v1";
+const SESSION_KEY = "phonia_session_v1";
 const alice = { id: "account-a", name: "Alice", locale: "en" } as User;
 
 function Probe() {

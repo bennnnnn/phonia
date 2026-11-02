@@ -2,7 +2,7 @@
 
 Builds the system-prompt hint for kinematics/projectile/force/energy/momentum
 intents: a verified answer (so the model doesn't recompute) plus an
-optional trajectory graph Recall attaches after the stream.
+optional trajectory graph Phonia attaches after the stream.
 """
 
 from __future__ import annotations

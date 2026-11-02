@@ -6,7 +6,7 @@ alwaysApply: true
 # Clean & scalable code
 
 The full policy is `docs/ENGINEERING_STANDARDS.md` (layers, subject isolation, sizes, STEM
-correctness, CI gates). Complements the layering in `recall.mdc` / `recall-api.mdc` and the
+correctness, CI gates). Complements the layering in `phonia.mdc` / `phonia-api.mdc` and the
 gate in `execution.mdc`. Be concrete, not clever. Optimize real bottlenecks — don't gold-plate.
 
 ## Structure & placement

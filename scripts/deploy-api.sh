@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Deploy Recall API to Fly.io (recall-api) from this checkout. Requires flyctl auth
+# Deploy Phonia API to Fly.io (phonia-api) from this checkout. Requires flyctl auth
 # and secrets set. The normal path is GitHub Actions → Deploy (from main, after CI);
 # this script is the break-glass path and builds exactly the local tree, so it
 # refuses uncommitted changes and any branch but main unless you pass --force.
@@ -8,7 +8,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-FLY_APP="${FLY_APP:-recall-api}"
+FLY_APP="${FLY_APP:-phonia-api}"
 FORCE=0
 if [[ "${1:-}" == "--force" ]]; then
   FORCE=1

@@ -55,10 +55,10 @@ class SendBackoff:
         )
 
     def _hold_key(self, occurrence: str) -> str:
-        return f"recall:{self.channel}:hold:{occurrence}"
+        return f"phonia:{self.channel}:hold:{occurrence}"
 
     def _attempts_key(self, occurrence: str) -> str:
-        return f"recall:{self.channel}:attempts:{occurrence}"
+        return f"phonia:{self.channel}:attempts:{occurrence}"
 
     async def held(self, occurrences: Sequence[str]) -> set[str]:
         """The occurrences still waiting out a hold. Redis down: none (the cycle's own

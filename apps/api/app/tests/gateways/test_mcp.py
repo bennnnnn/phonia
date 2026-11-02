@@ -201,7 +201,7 @@ def test_mcp_registry_setup():
     clear()
     setup_mcp_adapters(Settings())
     assert get("web_search") is not None
-    # Recall has no calendar integration, so the model is never offered one.
+    # Phonia has no calendar integration, so the model is never offered one.
     assert get("calendar") is None
     clear()
 

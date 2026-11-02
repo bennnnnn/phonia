@@ -14,7 +14,7 @@ jest.mock("@/contexts/AuthContext", () => ({
   useAuth: () => ({ token: "tok", user: mockUser, updateUser: mockUpdateUser }),
 }));
 jest.mock("@/contexts/actionFeedbackCore", () => ({ useActionFeedbackOptional: () => null }));
-jest.mock("@/lib/config", () => ({ getApiUrl: () => "https://api.recall.test" }));
+jest.mock("@/lib/config", () => ({ getApiUrl: () => "https://api.phonia.test" }));
 jest.mock("@/lib/auth", () => ({ getSessionGeneration: () => 0 }));
 jest.mock("@/lib/api", () => ({ api: { cancelAttachment: jest.fn() } }));
 jest.mock("@/features/account/model/profilePhoto", () => ({
@@ -40,7 +40,7 @@ beforeEach(() => {
   mockUser = {
     id: "22222222-2222-4222-8222-222222222222",
     name: "bini",
-    email: "dev@recall.local",
+    email: "dev@phonia.local",
     age: 54,
     country: "Ethiopia",
     job: null,

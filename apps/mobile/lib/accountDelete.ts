@@ -16,7 +16,7 @@ export function isAccountDeleteComplete(error: unknown): boolean {
 export type AccountDeleteFailure = "unavailable" | "failed";
 
 /**
- * A refused delete: Recall could not serve it for now (its 503 `unavailable`, refused with
+ * A refused delete: Phonia could not serve it for now (its 503 `unavailable`, refused with
  * nothing deleted and still signed in when Redis or the database fails before the account's
  * rows are deleted, or a gateway's 502/503/504), or anything else.
  */

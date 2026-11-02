@@ -59,7 +59,7 @@ def _hints(text: str, prior: tuple[str, str] | None = None) -> list[str]:
         ("send my boss an email asking for Friday off", "email"),
         ("send Sara a text saying I'm running late", "message"),
         ("send my mom a message about dinner on Sunday", "message"),
-        # Recall cannot pass it on: a message for the user to send.
+        # Phonia cannot pass it on: a message for the user to send.
         ("tell my landlord the heater is broken", "message"),
         ("can you tell my boss I'm sick today", "message"),
         ("let my team know that we moved the sync to 3pm", "message"),

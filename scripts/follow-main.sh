@@ -39,7 +39,7 @@ say() { printf '\033[36m[follow-main]\033[0m %s\n' "$*"; }
 notify() {
   command -v osascript >/dev/null 2>&1 || return 0
   local text="${1//\"/\'}"
-  osascript -e "display notification \"$text\" with title \"Recall dev\"" >/dev/null 2>&1 || true
+  osascript -e "display notification \"$text\" with title \"Phonia dev\"" >/dev/null 2>&1 || true
 }
 
 LAST_NOTICE=""
@@ -63,9 +63,9 @@ merged_into_main() {
   ! git cherry origin/main HEAD 2>/dev/null | grep -q '^+'
 }
 
-# dev.sh up sets RECALL_DEV_UP: "starting" before Metro runs, "running" after.
+# dev.sh up sets PHONIA_DEV_UP: "starting" before Metro runs, "running" after.
 restart_metro() {
-  case "${RECALL_DEV_UP:-}" in
+  case "${PHONIA_DEV_UP:-}" in
     starting) ;; # Metro starts next, with the new packages.
     running)
       say "Restarting Metro with them; the app reloads when it is back."
@@ -78,7 +78,7 @@ restart_metro() {
 }
 
 reload_app() {
-  [[ "${RECALL_DEV_UP:-}" == "starting" ]] && return
+  [[ "${PHONIA_DEV_UP:-}" == "starting" ]] && return
   sleep 2 # Let Metro see the pulled files first.
   node "$ROOT/scripts/reload-app.mjs" && say "Reloaded the app."
 }

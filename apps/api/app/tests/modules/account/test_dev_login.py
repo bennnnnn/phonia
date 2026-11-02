@@ -88,7 +88,7 @@ async def test_login_dev_updates_name_for_existing_user():
     uid = uuid4()
     fake_user_out = UserOut(
         id=uid,
-        email="dev@recall.local",
+        email="dev@phonia.local",
         name="bini",
         avatar_url=None,
         memory_enabled=True,
@@ -113,7 +113,7 @@ async def test_login_dev_updates_name_for_existing_user():
         result = await auth_service.login_dev(
             AsyncMock(),
             settings,
-            email="dev@recall.local",
+            email="dev@phonia.local",
             name="bini",
             redis=redis_mock(),
         )

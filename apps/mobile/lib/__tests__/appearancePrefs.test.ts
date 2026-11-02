@@ -62,7 +62,7 @@ describe("appearancePrefs", () => {
   it("persists manual preference to the filesystem, not Keychain", async () => {
     await setAppearancePreference("dark");
     expect(writeAsStringAsync).toHaveBeenCalledWith(
-      "file:///docs/recall.appearance-preference.txt",
+      "file:///docs/phonia.appearance-preference.txt",
       "dark",
     );
     expect(SecureStore.setItemAsync).not.toHaveBeenCalled();
@@ -82,7 +82,7 @@ describe("appearancePrefs", () => {
 
   it("reads the saved preference synchronously for the first frame", async () => {
     expect(readAppearancePreferenceSync()).toBeNull();
-    mockSyncFiles.set("file:///docs/recall.appearance-preference.txt", "dark");
+    mockSyncFiles.set("file:///docs/phonia.appearance-preference.txt", "dark");
     expect(readAppearancePreferenceSync()).toBe("dark");
     // The asynchronous reader then answers from memory.
     await expect(getAppearancePreference()).resolves.toBe("dark");

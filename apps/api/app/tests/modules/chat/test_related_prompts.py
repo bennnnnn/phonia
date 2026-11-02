@@ -380,7 +380,7 @@ async def test_reopen_reads_the_cache_and_does_not_call_the_model(fake_redis) ->
 
 BIKE = "A bike travels 45 km in 3 hours. What's its average speed?"
 BIKE_WINDOW = [
-    {"role": "system", "content": "You are Recall."},
+    {"role": "system", "content": "You are Phonia."},
     {"role": "user", "content": BIKE},
     {"role": "assistant", "content": "v = 45 km / 3 h = 15 km/h"},
 ]

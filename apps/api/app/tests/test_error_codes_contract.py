@@ -216,7 +216,7 @@ def _sign_in(
     bodies = {
         "google": {"id_token": "token"},
         "apple": {"id_token": "token", "nonce": "nonce"},
-        "dev": {"email": "dev@recall.local"},
+        "dev": {"email": "dev@phonia.local"},
     }
     with (
         patch("app.gateways.google_auth.id_token.verify_oauth2_token", verify),

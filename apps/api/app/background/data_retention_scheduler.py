@@ -29,7 +29,7 @@ from app.repositories import usage as usage_repo
 logger = logging.getLogger(__name__)
 
 _NAME = "data_retention"
-LOCK_KEY = "recall:data_retention:lock"
+LOCK_KEY = "phonia:data_retention:lock"
 
 _Delete = Callable[[AsyncSession, int], Awaitable[int]]
 

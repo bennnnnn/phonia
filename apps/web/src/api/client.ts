@@ -17,7 +17,7 @@ class ApiRequestError extends Error {
 }
 
 const AUTH_TIMEOUT_MS = 15_000;
-const CSRF_KEY = "recall.csrf";
+const CSRF_KEY = "phonia.csrf";
 
 async function fetchWithTimeout(
   url: string,
@@ -30,7 +30,7 @@ async function fetchWithTimeout(
     return await fetch(url, { ...init, signal: controller.signal, credentials: "include" });
   } catch (error) {
     if (error instanceof Error && error.name === "AbortError") {
-      throw new Error("Could not reach the Recall API. Is it running?", { cause: error });
+      throw new Error("Could not reach the Phonia API. Is it running?", { cause: error });
     }
     throw error;
   } finally {

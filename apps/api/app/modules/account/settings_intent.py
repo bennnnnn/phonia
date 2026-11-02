@@ -87,7 +87,7 @@ _QUESTION_OPENERS = frozenset(
     {"is", "are", "was", "were", "does", "do", "did", "which", "what", "whats", "why", "should"}
 )
 _EXPLICIT_SETTINGS_WORDS = frozenset(
-    {"setting", "settings", "default", "app", "recall", "preference", "preferences"}
+    {"setting", "settings", "default", "app", "phonia", "preference", "preferences"}
 )
 
 

@@ -35,7 +35,7 @@ const HTML_RUN_FRAME_SANDBOX = "allow-scripts allow-forms allow-modals";
 export const HTML_RUN_EMPTY_KIND = "preview-empty";
 
 /** What the page frame posts to the wrapper when it drew nothing. */
-const EMPTY_SIGNAL = "recall-run:empty";
+const EMPTY_SIGNAL = "phonia-run:empty";
 
 /**
  * Cancels a tapped link, which would replace the page inside its frame (or,

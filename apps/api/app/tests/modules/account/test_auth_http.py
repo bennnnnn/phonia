@@ -296,7 +296,7 @@ def test_dev_login():
     uid = uuid4()
     fake_user_out = UserOut(
         id=uid,
-        email="dev@recall.local",
+        email="dev@phonia.local",
         name="Dev",
         avatar_url=None,
         plan="free",
@@ -328,7 +328,7 @@ def test_dev_login():
         client = TestClient(app)
         r = client.post(
             "/auth/dev",
-            json={"email": "dev@recall.local", "name": "Dev"},
+            json={"email": "dev@phonia.local", "name": "Dev"},
         )
     assert r.status_code == 200
     assert r.json()["access_token"] == "fake-token"

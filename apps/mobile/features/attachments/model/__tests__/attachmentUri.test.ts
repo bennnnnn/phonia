@@ -2,7 +2,7 @@ import {
   MAX_ATTACHMENT_THUMB_WIDTH,
   attachmentRequestHeaders,
   attachmentThumbWidth,
-  recallAttachmentPath,
+  phoniaAttachmentPath,
   resolveAttachmentUri,
 } from "@/features/attachments/model/attachmentUri";
 jest.mock("@/lib/config", () => ({ getApiUrl: () => "https://api.test/v1/" }));
@@ -38,12 +38,12 @@ it.each([
   "https://external.test/v1/attachments/a/file",
   "file:///image.jpg",
 ])("never authorizes non-API image sources: %s", (uri) => {
-  expect(recallAttachmentPath(uri)).toBeNull();
+  expect(phoniaAttachmentPath(uri)).toBeNull();
   expect(attachmentRequestHeaders(uri, "token")).toEqual({});
 });
 
 it("authorizes images only within the configured API attachment route", () => {
   const uri = "https://api.test/v1/attachments/a/file?w=300";
-  expect(recallAttachmentPath(uri)).toBe("/attachments/a/file?w=300");
+  expect(phoniaAttachmentPath(uri)).toBe("/attachments/a/file?w=300");
   expect(attachmentRequestHeaders(uri, "token")).toEqual({ Authorization: "Bearer token" });
 });

@@ -39,7 +39,7 @@ type Props = {
   note?: string;
   preview: {
     title: string;
-    /** Second line, e.g. "Recall · Sep 26". */
+    /** Second line, e.g. "Phonia · Sep 26". */
     meta?: string;
     /** App icon or thumbnail; an icon in a tinted circle otherwise. */
     image?: ImageSourcePropType;

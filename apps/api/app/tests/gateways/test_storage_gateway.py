@@ -53,13 +53,13 @@ def test_get_storage_gateway_defaults_to_local(monkeypatch, tmp_path: Path):
 
 def test_local_storage_expands_home_dir(tmp_path: Path, monkeypatch):
     monkeypatch.setenv("HOME", str(tmp_path))
-    gateway = LocalStorageGateway(Path("~/.recall/attachments"))
-    assert gateway.base_path == (tmp_path / ".recall" / "attachments").resolve()
+    gateway = LocalStorageGateway(Path("~/.phonia/attachments"))
+    assert gateway.base_path == (tmp_path / ".phonia" / "attachments").resolve()
     assert gateway.base_path.is_dir()
 
 
 def test_default_local_storage_path_is_not_tmp():
-    assert Settings.model_fields["storage_local_path"].default == "~/.recall/attachments"
+    assert Settings.model_fields["storage_local_path"].default == "~/.phonia/attachments"
 
 
 def _r2_settings() -> Settings:
@@ -68,7 +68,7 @@ def _r2_settings() -> Settings:
         r2_account_id="acct",
         r2_access_key_id="key",
         r2_secret_access_key="secret",
-        r2_bucket="recall-attachments",
+        r2_bucket="phonia-attachments",
         environment="development",
     )
 

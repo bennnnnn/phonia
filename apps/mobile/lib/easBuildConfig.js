@@ -6,10 +6,10 @@ function includeDevClientPlugin(buildProfile) {
   return !buildProfile || buildProfile === "development";
 }
 
-/** EAS Build sets EAS_BUILD_PROFILE; an over-the-air update sets RECALL_UPDATE_PROFILE
+/** EAS Build sets EAS_BUILD_PROFILE; an over-the-air update sets PHONIA_UPDATE_PROFILE
  * so its bundle is checked like a release build of the same profile. */
 function releaseProfile(env) {
-  return env.EAS_BUILD_PROFILE?.trim() || env.RECALL_UPDATE_PROFILE?.trim() || "";
+  return env.EAS_BUILD_PROFILE?.trim() || env.PHONIA_UPDATE_PROFILE?.trim() || "";
 }
 
 /** EAS Update's address for the project. Without a project ID, updates stay off. */
@@ -49,15 +49,15 @@ function requirePublicApiUrlForReleaseBuild(buildProfile, apiUrl) {
   }
 }
 
-/** `pnpm ios:sim` sets RECALL_IOS_SIMULATOR=1: a local simulator build without Sign in
+/** `pnpm ios:sim` sets PHONIA_IOS_SIMULATOR=1: a local simulator build without Sign in
  * with Apple, whose entitlement makes Expo demand a signing certificate even for a
  * simulator, and without ML Kit (an Intel-only simulator slice). A release build never
  * drops either. */
 function simulatorWithoutAppleSignIn(buildProfile, env) {
-  if (env.RECALL_IOS_SIMULATOR?.trim() !== "1") return false;
+  if (env.PHONIA_IOS_SIMULATOR?.trim() !== "1") return false;
   if (buildProfile === "production" || buildProfile === "preview") {
     throw new Error(
-      `RECALL_IOS_SIMULATOR is for local simulator builds, not a ${buildProfile} build`,
+      `PHONIA_IOS_SIMULATOR is for local simulator builds, not a ${buildProfile} build`,
     );
   }
   return true;

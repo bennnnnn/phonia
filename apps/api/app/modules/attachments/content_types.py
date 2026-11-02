@@ -1,4 +1,4 @@
-"""Which attachment types Recall accepts, and whether the bytes match the claimed type.
+"""Which attachment types Phonia accepts, and whether the bytes match the claimed type.
 
 The allowlist, MIME aliases, magic-byte sniffing and the DOCX zip-bomb guard.
 Extraction itself lives in ``content.py``.

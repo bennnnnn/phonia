@@ -20,7 +20,7 @@ from app.modules.account import lifecycle
 def _user(*, apple_sub: str | None) -> MagicMock:
     user = MagicMock()
     user.id = uuid4()
-    user.email = "t@recall.local"
+    user.email = "t@phonia.local"
     user.apple_sub = apple_sub
     user.created_at = datetime(2024, 1, 1)
     return user
@@ -137,7 +137,7 @@ def test_user_out_says_whether_apple_signs_in():
 
     base = {
         "id": uuid4(),
-        "email": "t@recall.local",
+        "email": "t@phonia.local",
         "name": None,
         "avatar_url": None,
         "memory_enabled": True,
@@ -157,7 +157,7 @@ def _production(**overrides: str) -> Settings:
         mock_llm_enabled=False,
         jwt_secret="super-secret-key-that-is-at-least-32-chars!!",
         google_client_id="client-id",
-        cors_origins="https://app.recall.app",
+        cors_origins="https://app.phonia.app",
         openrouter_api_key="sk-or-xxx",
         revenuecat_webhook_auth="whsec-xxx",
         revenuecat_secret_key="sk_rc_xxx",

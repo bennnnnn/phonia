@@ -53,7 +53,7 @@ export function AiConsent() {
       <div className="login-card consent-card">
         <h1>Before you start</h1>
         <p className="subtitle">
-          Recall answers you with help from outside AI and search services. This is what they
+          Phonia answers you with help from outside AI and search services. This is what they
           receive. Nothing goes to them until you agree.
         </p>
         <ul>
@@ -68,7 +68,7 @@ export function AiConsent() {
           <a href={apiUrl("/legal/privacy")} target="_blank" rel="noreferrer">
             privacy policy
           </a>{" "}
-          lists every service, what Recall keeps and how to delete it.
+          lists every service, what Phonia keeps and how to delete it.
         </p>
         <div className="consent-actions">
           <button type="button" onClick={() => void agree()} disabled={busy}>

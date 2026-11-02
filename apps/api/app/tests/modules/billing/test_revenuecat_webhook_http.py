@@ -32,7 +32,7 @@ def test_revenuecat_webhook_enqueues_receipt_on_purchase():
             "type": "INITIAL_PURCHASE",
             "app_user_id": str(uid),
             "store": "app_store",
-            "product_id": "recall.pro.monthly",
+            "product_id": "phonia.pro.monthly",
             "expiration_at_ms": 1753977600000,
         }
     }
@@ -56,7 +56,7 @@ def test_revenuecat_webhook_enqueues_receipt_on_purchase():
     kwargs = enq.await_args.kwargs
     assert kwargs["event_type"] == "INITIAL_PURCHASE"
     assert kwargs["store"] == "app_store"
-    assert kwargs["product_id"] == "recall.pro.monthly"
+    assert kwargs["product_id"] == "phonia.pro.monthly"
     assert kwargs["expiration"] is not None
 
 

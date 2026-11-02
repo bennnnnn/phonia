@@ -8,7 +8,7 @@ where a rule hijacked, replaced or mangled it is listed.
 
     uv run python -m app.tests.behavior.sweep [--only id,id] [--area writing] [--show]
 
-The sweep models production, so a maths decline stays silent; ``RECALL_STRICT_DECLINES=1``
+The sweep models production, so a maths decline stays silent; ``PHONIA_STRICT_DECLINES=1``
 in front raises the programming errors a decline would hide (``math/solve/declines.py``).
 
 ``expect`` per entry: "answer" (an ordinary reply that must reach the user),
@@ -95,7 +95,7 @@ NO_SEARCH_AREAS = {
 # sample CSV data"): not even a model round that may choose to search.
 # Works on the chat itself ("Yes" to "Does that make sense?", "give me a practice problem",
 # "summarize what we covered"): a search wrapped these in unrelated pages.
-# "Can you search the web?" asks what Recall does: a search took the line before it.
+# "Can you search the web?" asks what Phonia does: a search took the line before it.
 NO_SEARCH_ROUND_AREAS = {"statement", "made data", "chat bound", "search capability"}
 # Turns that answer the clarify card before them: they never ask again.
 AFTER_CARD_AREAS = {"clarify answer"}

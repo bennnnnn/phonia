@@ -53,14 +53,14 @@ describe("shareAccountExport", () => {
     await shareAccountExport('{"ok":true}');
 
     expect(writeAsStringAsync).toHaveBeenCalledWith(
-      expect.stringMatching(/^\/cache\/recall-export-\d+\.json$/),
+      expect.stringMatching(/^\/cache\/phonia-export-\d+\.json$/),
       '{"ok":true}',
       { encoding: EncodingType.UTF8 },
     );
     // React Native's Share ignores `url` on Android: the file must go through shareLocalFile.
     expect(shareLocalFile).toHaveBeenCalledWith(
-      expect.stringMatching(/^\/cache\/recall-export-\d+\.json$/),
-      { title: "recall-export.json", mimeType: "application/json" },
+      expect.stringMatching(/^\/cache\/phonia-export-\d+\.json$/),
+      { title: "phonia-export.json", mimeType: "application/json" },
     );
     expect(Share.share).not.toHaveBeenCalled();
   });
@@ -78,6 +78,6 @@ describe("shareAccountExport", () => {
     const unavailable = new SharingUnavailableError();
     (shareLocalFile as jest.Mock).mockRejectedValueOnce(unavailable);
     await expect(shareAccountExport("{}")).rejects.toBe(unavailable);
-    expect(deleteAsync).toHaveBeenCalledWith(expect.stringMatching(/recall-export-/), { idempotent: true });
+    expect(deleteAsync).toHaveBeenCalledWith(expect.stringMatching(/phonia-export-/), { idempotent: true });
   });
 });

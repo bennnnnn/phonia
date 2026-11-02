@@ -35,7 +35,7 @@ from app.services.text_normalize import collapse_ws
 logger = logging.getLogger(__name__)
 
 _MEMORY_IN_SETTINGS = {
-    "clear": "You can delete everything Recall has saved about you in Settings → Memory.",
+    "clear": "You can delete everything Phonia has saved about you in Settings → Memory.",
     "off": "You can turn memory off in Settings → Memory.",
 }
 

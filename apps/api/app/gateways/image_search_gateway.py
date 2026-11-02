@@ -3,7 +3,7 @@
 Separate from ``web_search_gateway`` (text results). Returns real,
 source-linked photo URLs for "what does X
 look like" asks; the caller (``services.image_search``) mirrors the bytes
-into Recall's own storage via ``safe_fetch`` before ever showing a URL to
+into Phonia's own storage via ``safe_fetch`` before ever showing a URL to
 a client, so no arbitrary third-party URL is ever rendered on mobile.
 """
 

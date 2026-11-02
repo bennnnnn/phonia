@@ -1,6 +1,6 @@
 """Reference-photo lookup — search + SSRF-safe mirror + chat persistence.
 
-Finds a real photo via Tavily image search, mirrors the bytes into Recall's
+Finds a real photo via Tavily image search, mirrors the bytes into Phonia's
 own storage (SSRF-safe fetch, size/type validated exactly like any other
 attachment upload), and attaches it to the chat as an ``[Image: …]`` marker
 — the client never renders a third-party URL directly.

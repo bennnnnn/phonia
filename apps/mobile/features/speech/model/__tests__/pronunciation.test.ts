@@ -103,10 +103,10 @@ describe("cloud read-aloud lifetime", () => {
     player.emit({ didJustFinish: true });
     await expect(speaking).resolves.toEqual({ ok: true });
     // A finished player kept the audio session in playback until the next
-    // tap, and every clip left a recall-tts-*.mp3 behind in the cache.
+    // tap, and every clip left a phonia-tts-*.mp3 behind in the cache.
     expect(player.remove).toHaveBeenCalledTimes(1);
     const path = jest.mocked(writeAsStringAsync).mock.calls[0]?.[0];
-    expect(path).toMatch(/^file:\/\/\/cache\/recall-tts-\d+\.mp3$/);
+    expect(path).toMatch(/^file:\/\/\/cache\/phonia-tts-\d+\.mp3$/);
     expect(deleteAsync).toHaveBeenCalledWith(path, { idempotent: true });
   });
 

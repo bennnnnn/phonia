@@ -27,7 +27,7 @@ export function makeConversationListStyles(theme: Theme) {
       left: 0,
       right: 0,
       zIndex: 100,
-      // Transparent so the header fade can blur titles sliding under Recall
+      // Transparent so the header fade can blur titles sliding under Phonia
       // and search. The title and search button paint above that veil.
       backgroundColor: "transparent",
     },

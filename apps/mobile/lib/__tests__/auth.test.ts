@@ -62,7 +62,7 @@ it("reports read failures instead of returning a stale memory credential", async
 });
 
 it("reads only the one session record (no pre-launch build kept two, DEAD-07)", async () => {
-  storage.set("recall_access_token", "never-shipped");
+  storage.set("phonia_access_token", "never-shipped");
   await expect(auth.getToken()).resolves.toBeNull();
   expect(mockSetItem).not.toHaveBeenCalled();
 });
@@ -89,7 +89,7 @@ it("deletes the session record when signing out cannot overwrite it", async () =
   await auth.setTokenPair("access-a", "refresh-a");
   mockSetItem.mockRejectedValueOnce(new Error("Keychain full"));
   await auth.clearToken();
-  expect(mockDeleteItem).toHaveBeenCalledWith("recall_session_v1");
+  expect(mockDeleteItem).toHaveBeenCalledWith("phonia_session_v1");
   jest.resetModules();
   auth = await import("@/lib/auth");
   await expect(auth.getToken()).resolves.toBeNull();
@@ -116,7 +116,7 @@ it("reports an invalid secure record instead of reimporting old credentials", as
   await auth.setTokenPair("access-a", "refresh-a");
   const canonicalKey = mockSetItem.mock.calls[0][0] as string;
   storage.set(canonicalKey, "{truncated");
-  storage.set("recall_access_token", "legacy-access");
+  storage.set("phonia_access_token", "legacy-access");
   await expect(auth.getToken()).rejects.toThrow(/secure/i);
 });
 
@@ -156,7 +156,7 @@ describe("a record that is there but is no session", () => {
     ["an empty token", '{"accessToken":"","refreshToken":"refresh-a"}'],
     ["a bare string", '"access-a"'],
   ])("is reported as corrupt when %s", async (_case, record) => {
-    storage.set("recall_session_v1", record);
+    storage.set("phonia_session_v1", record);
     await expect(auth.getToken()).rejects.toBeInstanceOf(auth.CorruptSessionError);
     await expect(auth.getRefreshToken()).rejects.toBeInstanceOf(auth.CorruptSessionError);
   });
@@ -170,7 +170,7 @@ describe("a record that is there but is no session", () => {
   });
 
   it("is gone after sign-out clears it", async () => {
-    storage.set("recall_session_v1", "{truncated");
+    storage.set("phonia_session_v1", "{truncated");
     await auth.clearToken();
     await expect(auth.getToken()).resolves.toBeNull();
   });

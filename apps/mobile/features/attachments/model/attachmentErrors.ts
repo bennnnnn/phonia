@@ -37,7 +37,7 @@ const MESSAGE_KEYS: Record<AttachmentFailure, string> = {
 type Translate = (key: string, options?: Record<string, unknown>) => string;
 
 /**
- * The toast for a failed pick or upload. No answer from Recall (offline at the presign)
+ * The toast for a failed pick or upload. No answer from Phonia (offline at the presign)
  * is the unreachable line, as everywhere else; it said "Could not attach". Anything else
  * untyped is the generic message, never raw text.
  */
@@ -50,11 +50,11 @@ export function attachmentErrorMessage(error: unknown, t: Translate): string {
 /**
  * The words for a failed action on a stored file (the Library's share, attach and delete; a
  * PDF card's share), always the phone's own. A refusal from the API: over a request limit,
- * Recall down, or the action's own line. Its English showed ("Too many requests. Please
- * slow down.", a delete's "Not found"). No answer from Recall is the unreachable line; a
+ * Phonia down, or the action's own line. Its English showed ("Too many requests. Please
+ * slow down.", a delete's "Not found"). No answer from Phonia is the unreachable line; a
  * build that cannot share files says to update the app; any other failure on this phone
  * (a file it could not fetch, open or share) is the action's own. Their English showed too:
- * "Could not reach the Recall server…", "Could not attach", "Could not open this
+ * "Could not reach the Phonia server…", "Could not attach", "Could not open this
  * attachment.", "Network request failed".
  */
 export function libraryActionMessage(error: unknown, fallbackKey: string, t: Translate): string {

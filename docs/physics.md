@@ -1,4 +1,4 @@
-# Recall physics pipeline
+# Phonia physics pipeline
 
 Server-side extractors and pure solvers verify physics. The app shows the result; it never
 solves physics on-device. A physics answer is either right, with its working, or declined to

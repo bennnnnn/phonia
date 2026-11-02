@@ -95,7 +95,7 @@ async def test_loading_a_turn_claims_no_probe() -> None:
     """Regression: every new turn claimed the probe of each cooled-down model, so a
     free "hi" used up smart-chat's one retry."""
     redis = fakeredis.aioredis.FakeRedis(decode_responses=True)
-    key = f"recall:model_health:samples:{model_health._model_of('smart-chat')}"
+    key = f"phonia:model_health:samples:{model_health._model_of('smart-chat')}"
     stale = time.time() - 31
     await redis.zadd(key, {f"0|900|{int(stale * 1e9)}": stale})
     deps, user, chat = _deps(MagicMock(return_value="qwen-3.7-flash"))
@@ -111,7 +111,7 @@ async def test_a_regenerate_reads_health_for_its_backups_and_claims_nothing() ->
     redis = fakeredis.aioredis.FakeRedis(decode_responses=True)
     now = time.time()
     for alias, at in (("smart-chat", now - 31), ("glm-5.2", now - 5)):
-        key = f"recall:model_health:samples:{model_health._model_of(alias)}"
+        key = f"phonia:model_health:samples:{model_health._model_of(alias)}"
         await redis.zadd(key, {f"0|900|{int(at * 1e9)}": at})
     user: Any = SimpleNamespace(plan="pro")
     fallbacks, half_open = await _fallback_models(user, Settings(), redis, "gpt-6-luna")

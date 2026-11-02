@@ -1,6 +1,6 @@
-# Recall
+# Phonia
 
-Personal AI mobile chat that remembers who you are, what you prefer, and what you're working on.
+A mobile AI tutor for students in maths, physics and chemistry. It remembers each student's grade, subjects, goals and progress.
 
 **Stack:** Expo React Native · FastAPI · Neon Postgres · Upstash Redis · LiteLLM
 
@@ -75,7 +75,7 @@ Only if you want local Postgres/Redis instead of Neon/Upstash:
 
 ```bash
 ./scripts/dev.sh infra
-# then set DATABASE_URL=postgresql+asyncpg://postgres:dev@localhost:5432/recall
+# then set DATABASE_URL=postgresql+asyncpg://postgres:dev@localhost:5432/phonia
 # and REDIS_URL=redis://localhost:6379
 ```
 
@@ -104,7 +104,7 @@ host that keeps the process alive — not a serverless function platform. A Dock
    - `DATABASE_URL=` · `REDIS_URL=`
    - `GOOGLE_CLIENT_ID=` (Google Sign-In only)
    - `OPENROUTER_API_KEY=`
-   - `CORS_ORIGINS=https://app.recall.app` (explicit; never `*` in prod)
+   - `CORS_ORIGINS=https://app.phonia.app` (explicit; never `*` in prod)
    - `REVENUECAT_WEBHOOK_AUTH=` · `REVENUECAT_SECRET_KEY=`
    - `STORAGE_BACKEND=r2` · `R2_ACCOUNT_ID` · `R2_ACCESS_KEY_ID` ·
      `R2_SECRET_ACCESS_KEY` · `R2_BUCKET`
@@ -148,4 +148,4 @@ purchases. Configure your EAS `projectId`.
 
 ## Remote
 
-https://github.com/bennnnnn/recall
+https://github.com/bennnnnn/phonia

@@ -71,7 +71,7 @@ export function getPreviewWebView(): PreviewWebViewResult | null {
  *
  * react-native-webview hands any URL that misses `originWhitelist` to
  * `Linking.openURL` — Safari, the dialer, Messages, or a deep link into
- * Recall — with no tap from the user. The Run tab executes model-written
+ * Phonia — with no tap from the user. The Run tab executes model-written
  * JavaScript, so `location = "https://…"` in a reply opened a page outside
  * the app. Matching everything here leaves the decision to the guard, which
  * blocks without opening anything.

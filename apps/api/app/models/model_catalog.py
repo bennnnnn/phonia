@@ -123,7 +123,7 @@ def _or(
 
 # Capabilities shared by every entry on one underlying model, so an internal alias
 # can never claim more than the model it runs on. Sources: each model's OpenRouter
-# card (input modalities, supported parameters, context length) and how Recall
+# card (input modalities, supported parameters, context length) and how Phonia
 # already calls it (structured JSON jobs, the photo reader, the tool selector).
 # Context windows are the smallest any of its OpenRouter providers serves.
 class _Caps(TypedDict):

@@ -232,7 +232,7 @@ function settleDroppedSocketTurn(s: ChatTurnState, out: Out, pending: PendingSen
 
 /**
  * What a refused SSE stream said (its `ApiRequestError`), reported as the socket's error frame
- * is: a 503 `unavailable` says Recall is unavailable, where it said "Couldn't reach the server".
+ * is: a 503 `unavailable` says Phonia is unavailable, where it said "Couldn't reach the server".
  */
 function refusalReport(error: unknown): { message?: string; code?: string } {
   if (!(error instanceof ApiRequestError) || !error.code) return {};

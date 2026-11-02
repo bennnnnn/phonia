@@ -47,7 +47,7 @@ const SCRIPT_NAVIGATIONS = [
   "sms:+15550100?body=hi",
   "https://evil.example/phish",
   "intent://scan/#Intent;scheme=zxing;end",
-  "recall://settings/data-controls",
+  "phonia://settings/data-controls",
   "mailto:someone@example.com",
 ];
 

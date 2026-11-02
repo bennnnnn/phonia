@@ -1,4 +1,4 @@
-# Recall API — production image.
+# Phonia API — production image.
 # Deployed as two Fly processes from this one image (see fly.toml):
 #   app    = FastAPI HTTP + WebSocket (PROCESS_ROLE=api)
 #   worker = Redis-stream jobs + schedulers (PROCESS_ROLE=worker)

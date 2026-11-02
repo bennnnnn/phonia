@@ -28,7 +28,7 @@ from app.repositories import users as users_repo
 logger = logging.getLogger(__name__)
 
 _NAME = "billing_reconcile"
-LOCK_KEY = "recall:billing_reconcile:lock"
+LOCK_KEY = "phonia:billing_reconcile:lock"
 
 
 def _scheduler_enabled(settings: Settings) -> bool:

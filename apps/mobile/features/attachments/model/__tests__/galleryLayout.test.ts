@@ -38,7 +38,7 @@ describe("galleryLayout", () => {
   it("persists column layout to the filesystem", async () => {
     await setGalleryLayout("column");
     expect(writeAsStringAsync).toHaveBeenCalledWith(
-      "file:///docs/recall.gallery-layout.txt",
+      "file:///docs/phonia.gallery-layout.txt",
       "column",
     );
   });

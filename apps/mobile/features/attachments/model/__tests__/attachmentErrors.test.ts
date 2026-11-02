@@ -48,7 +48,7 @@ describe("attachmentErrorMessage", () => {
     [new AttachmentError("camera_permission"), "chat.camera_permission:10"],
     [new Error("{\"detail\":\"Invalid file size\"}"), "chat.attach_failed"],
     ["not an error", "chat.attach_failed"],
-    // Offline at the presign: no answer from Recall, said as everywhere else.
+    // Offline at the presign: no answer from Phonia, said as everywhere else.
     [new TypeError("Network request failed"), "chat.error_unreachable"],
   ])("maps %p to a message key, never raw text", (error, message) => {
     expect(attachmentErrorMessage(error, translate)).toBe(message);

@@ -13,7 +13,7 @@ import { LazyCircularClockBlock } from "@/components/rich/LazyHeavyRich";
 import { ClarifyMessageScope } from "@/components/rich/clarifyContext";
 import { ReplyMarkdown } from "@/components/markdown/ReplyMarkdown";
 import { MarkdownErrorBoundary } from "@/features/chat/components/MarkdownErrorBoundary";
-import { RecallTypingIndicator } from "@/features/chat/components/RecallTypingIndicator";
+import { PhoniaTypingIndicator } from "@/features/chat/components/PhoniaTypingIndicator";
 import { StreamProgressLabel } from "@/features/chat/components/StreamProgressLabel";
 import { AssistantMessageScope } from "@/features/drafts/context/emailDraftPersist";
 import {
@@ -196,7 +196,7 @@ export const MessageBubble = React.memo(function MessageBubble({
         <View style={b.assistantBubble}>
             {showWaitingIndicator ? (
               <View style={b.waitingWrap}>
-                <RecallTypingIndicator phase={streamStatus} />
+                <PhoniaTypingIndicator phase={streamStatus} />
                 {streamStatus && isProgressStreamPhase(streamStatus) ? (
                   <StreamProgressLabel
                     phase={streamStatus}

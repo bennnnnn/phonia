@@ -55,9 +55,9 @@ def test_is_image_content_type():
 
 
 def test_extract_text_from_plain_text():
-    details = extract_text_details("text/plain", b"Hello, Recall.")
+    details = extract_text_details("text/plain", b"Hello, Phonia.")
     assert details is not None
-    assert details.text == "Hello, Recall."
+    assert details.text == "Hello, Phonia."
 
 
 def test_bytes_match_claimed_accepts_word_documents():

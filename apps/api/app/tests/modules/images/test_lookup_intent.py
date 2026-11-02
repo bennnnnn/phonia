@@ -56,7 +56,7 @@ def test_extracts_lookup_subject(text: str, expected: str) -> None:
         "any photo of a person counts as personal data under GDPR?",
         # News, not a request.
         "got a picture of the northern lights last night!",
-        # The user, Recall, the user's own files, code.
+        # The user, Phonia, the user's own files, code.
         "do you have a picture of me?",
         "is there a picture of you?",
         "do you have a photo of the receipt I uploaded?",

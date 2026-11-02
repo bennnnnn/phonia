@@ -1087,8 +1087,8 @@ async def test_build_prompt_minimal_for_who_am_i():
     assert "secret@example.com" not in system
     assert "San Francisco" not in system
     assert BROAD_SELF_ANSWER_HINT in system
-    assert "Recall has two features" not in system
-    assert "Recall has two todo features" not in system
+    assert "Phonia has two features" not in system
+    assert "Phonia has two todo features" not in system
 
 
 @pytest.mark.asyncio
@@ -1299,7 +1299,7 @@ async def test_build_prompt_capabilities_overview_uses_memory_not_email_card():
         patch.object(messages_repository, "list_recent", return_value=[]),
         patch(
             "app.modules.memory.retrieval.get_memory_block",
-            AsyncMock(return_value="Building Recall. Learning FastAPI and async Python."),
+            AsyncMock(return_value="Building Phonia. Learning FastAPI and async Python."),
         ) as memory_mock,
         patch(
             "app.modules.todos.build_todos_system_section",
@@ -1320,7 +1320,7 @@ async def test_build_prompt_capabilities_overview_uses_memory_not_email_card():
     memory_mock.assert_awaited()
     todos_mock.assert_not_awaited()
     system = system_prompt(messages)
-    assert "Building Recall" in system
+    assert "Building Phonia" in system
     assert "capabilities overview" in system.lower()
     assert CAPABILITIES_FORMAT_HINT in system
     assert ADVICE_PERSONALIZE_HINT not in system

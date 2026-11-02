@@ -37,7 +37,7 @@ describe("scanFailureMessage", () => {
   });
 
   // A Redis outage said "Too many scans in a row" (its 429), then "couldn't scan that photo".
-  it("says Recall is down for an outage: the API's own 503, or a gateway's", () => {
+  it("says Phonia is down for an outage: the API's own 503, or a gateway's", () => {
     const down = refused(503, { code: "unavailable", message: "Service temporarily unavailable." });
     expect(scanFailureMessage(down, t)).toBe("common.service_unavailable");
     expect(scanFailureMessage(refused(502, "Bad Gateway"), t)).toBe("common.service_unavailable");

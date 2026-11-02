@@ -1,9 +1,9 @@
-"""A yes/no question about whether Recall searches: "can you search the web?".
+"""A yes/no question about whether Phonia searches: "can you search the web?".
 
 "Show me how u work", then "Can you search the web?" (live chat, 2026-10-25): the
 question read as a search request that names nothing, so the turn searched the line
 before it and showed song lyrics. A question about the app asks nothing to look up;
-the reply says what Recall can do. A request that names what to search ("can you
+the reply says what Phonia can do. A request that names what to search ("can you
 search for the latest news on Tesla?") or points at the chat ("can you look it up?",
 "can you search the web for that?") is not this question and still searches. These
 are the words alone: after a question it could not answer or an offer to search, the
@@ -52,7 +52,7 @@ _OPENERS: tuple[Phrase, ...] = (
         )
     ),
 )
-# "can you …?" asks what Recall does; "would you …" and "can't you …" ask it to.
+# "can you …?" asks what Phonia does; "would you …" and "can't you …" ask it to.
 _ABILITY_LEADS: tuple[Phrase, ...] = (
     ("is", "it", "possible", "for", "you", "to"),
     ("do", "you", "know", "how", "to"),
@@ -74,7 +74,7 @@ _HAVE_LEADS: tuple[Phrase, ...] = (
     ("do", "u", "have"),
     ("have", "you", "got"),
     ("you", "have"),
-    ("does", "recall", "have"),
+    ("does", "phonia", "have"),
     ("does", "this", "app", "have"),
     ("is", "there"),
     ("are", "you", "connected", "to"),
@@ -185,7 +185,7 @@ def _names_the_feature(words: list[str]) -> bool:
 
 
 def asks_whether_it_searches(text: str) -> bool:
-    """The whole message asks whether Recall can search: "do you search online?"."""
+    """The whole message asks whether Phonia can search: "do you search online?"."""
     cleaned = straighten_apostrophes(collapse_ws(text))
     if not cleaned or len(cleaned) > 120:
         return False

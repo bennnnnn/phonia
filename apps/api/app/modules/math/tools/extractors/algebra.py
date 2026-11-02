@@ -366,7 +366,7 @@ def _extract_equation_intent(cleaned: str) -> MathIntent | None:
     if response_intent.mode == MathResponseMode.EXPLAIN and not any(
         cue in lower for cue in (" solve ", "solve ", " find ", "calculate ", " step", "working")
     ):
-        # “Explain why y=mx+b” asks about a statement; it does not ask Recall
+        # “Explain why y=mx+b” asks about a statement; it does not ask Phonia
         # to solve that equality for one of its symbols.
         return None
     requested_method = (

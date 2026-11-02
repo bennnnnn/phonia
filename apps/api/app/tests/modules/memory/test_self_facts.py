@@ -21,7 +21,7 @@ def test_im_working_on_cuts_the_help_request() -> None:
 def test_building_software_or_naming_a_project_is_not_a_memory() -> None:
     """Memory holds what learning needs, not what the user builds at work."""
     assert stated_self_facts("I'm building a SaaS app with FastAPI") == []
-    assert stated_self_facts("My project is called Recall") == []
+    assert stated_self_facts("My project is called Phonia") == []
 
 
 def test_story_character_working_on_is_not_the_user() -> None:
@@ -34,15 +34,15 @@ def test_pronoun_and_problem_are_not_projects() -> None:
 
 
 def test_conditional_and_reported_work_are_not_projects() -> None:
-    assert stated_self_facts("If I am working on Recall, what should I prioritize?") == []
-    assert stated_self_facts("My friend asked whether I am working on Recall") == []
+    assert stated_self_facts("If I am working on Phonia, what should I prioritize?") == []
+    assert stated_self_facts("My friend asked whether I am working on Phonia") == []
 
 
 def test_another_memory_mentioning_the_name_does_not_hide_the_project() -> None:
     writes = stated_fact_writes(
-        "I am working on Recall",
+        "I am working on Phonia",
         chat_id=uuid4(),
-        existing_facts=[("preference", "User likes the Recall app")],
+        existing_facts=[("preference", "User likes the Phonia app")],
         already=[],
         include_sensitive=False,
     )
@@ -52,9 +52,9 @@ def test_another_memory_mentioning_the_name_does_not_hide_the_project() -> None:
 
 def test_stored_project_is_not_added_again() -> None:
     writes = stated_fact_writes(
-        "I am working on Recall",
+        "I am working on Phonia",
         chat_id=uuid4(),
-        existing_facts=[("focus", "User is working on Recall")],
+        existing_facts=[("focus", "User is working on Phonia")],
         already=[],
         include_sensitive=False,
     )

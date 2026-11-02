@@ -1,6 +1,6 @@
-# Recall web client
+# Phonia web client
 
-A Vite + React + TypeScript web app that talks to the existing Recall FastAPI
+A Vite + React + TypeScript web app that talks to the existing Phonia FastAPI
 over HTTP + SSE. Slice 1: login + chat list + chat stream (markdown text only).
 
 This is a **separate web app**, not react-native-web of `apps/mobile`. It
@@ -40,7 +40,7 @@ Add the web origin to `CORS_ORIGINS` in `apps/api/.env` (required for cookie
 sessions — an empty value falls back to `*`, which cannot send credentials):
 
 ```
-CORS_ORIGINS=https://app.recall.app,http://localhost:5173
+CORS_ORIGINS=https://app.phonia.app,http://localhost:5173
 ```
 
 The web origin and API must be same-site (e.g. sibling subdomains) so the

@@ -205,7 +205,7 @@ async def login_with_google(
         # Decide against the current locked row: a profile save may have
         # finished after the identity lookup above. This flow locks no photos.
         await users_repo.refresh_for_update(session, user)
-        # A selected profile photo belongs to Recall; subsequent Google login
+        # A selected profile photo belongs to Phonia; subsequent Google login
         # may refresh a provider picture but must not replace a custom upload.
         current_avatar = user.avatar_url
         if isinstance(current_avatar, str) and current_avatar.startswith("/attachments/"):
@@ -276,7 +276,7 @@ async def login_with_apple(
     if user is None:
         if not email:
             raise AuthenticationError(
-                "Apple did not share an email. Revoke Recall in Apple ID settings "
+                "Apple did not share an email. Revoke Phonia in Apple ID settings "
                 "and sign in again, or use Google Sign-In.",
                 code="apple_email_missing",
             )

@@ -851,7 +851,7 @@
   "area": "lookalike",
   "prompt": "Is the pro model worth it?",
   "history": [],
-  "reply": "It depends on what you use Recall for.\n\n**Flash** is fast and handles most everyday things well: quick questions, rewrites, summaries, simple planning.\n\n**Pro** is worth it if you regularly:\n- Work through multi-step math, physics, or coding problems\n- Need longer, more careful writing or analysis\n- Hit tricky reasoning where Flash sometimes slips\n\nA good test: next time Flash gives you a so-so answer, pick Pro in the composer's model picker and ask the same question. If the difference matters to you most days, it's worth it.",
+  "reply": "It depends on what you use Phonia for.\n\n**Flash** is fast and handles most everyday things well: quick questions, rewrites, summaries, simple planning.\n\n**Pro** is worth it if you regularly:\n- Work through multi-step math, physics, or coding problems\n- Need longer, more careful writing or analysis\n- Hit tricky reasoning where Flash sometimes slips\n\nA good test: next time Flash gives you a so-so answer, pick Pro in the composer's model picker and ask the same question. If the difference matters to you most days, it's worth it.",
   "expect": "answer"
  },
  {

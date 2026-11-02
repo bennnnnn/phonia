@@ -167,7 +167,7 @@ function untranslated(code: Locale, bundle: Bundle): string[] {
 
 describe("i18n translations", () => {
   it("sees an English value and a dropped placeholder", () => {
-    expect(untranslated("de", { "chat.stop": "Stop", "app.name": "Recall" })).toEqual(["chat.stop"]);
+    expect(untranslated("de", { "chat.stop": "Stop", "app.name": "Phonia" })).toEqual(["chat.stop"]);
     expect(placeholders("Open PDF {{fileName}}")).toEqual(["fileName"]);
     expect(hasWords("{{status}}, {{percent}}")).toBe(false);
   });

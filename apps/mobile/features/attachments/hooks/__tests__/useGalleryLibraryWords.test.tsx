@@ -1,6 +1,6 @@
 /**
  * A Library action that failed on this phone or got no answer, in the phone's language. Its
- * English showed as it came in a German Library: "Could not reach the Recall server…",
+ * English showed as it came in a German Library: "Could not reach the Phonia server…",
  * "Network request failed", "Could not attach", "Could not open this attachment.".
  */
 import React from "react";

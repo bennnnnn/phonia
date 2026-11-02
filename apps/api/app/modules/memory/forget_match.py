@@ -2,7 +2,7 @@
 
 The memory model decides first. When it names no fact, this backup matches the
 phrase the user said, never a single word of it: "forget that I use React" drops
-"User uses React", not "User builds Recall with React Native and FastAPI", and
+"User uses React", not "User builds Phonia with React Native and FastAPI", and
 "forget that I live in Nairobi" leaves "User's sister lives in Nairobi suburbs".
 """
 

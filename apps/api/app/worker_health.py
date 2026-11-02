@@ -26,7 +26,7 @@ READY_REDIS_TIMEOUT_SECONDS = 3.0
 
 
 def create_worker_health_app() -> FastAPI:
-    app = FastAPI(title="Recall Worker Health")
+    app = FastAPI(title="Phonia Worker Health")
 
     @app.get("/health")
     async def health() -> dict[str, str]:

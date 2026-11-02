@@ -159,7 +159,7 @@ it.each(["rate_limited", "chat_rate_limited", "refresh_rate_limited"])("words a 
 });
 
 // The account delete refused while Redis is down (the usage carry-over, the session purge)
-// said "Could not delete your account", not that Recall was unavailable for a moment.
+// said "Could not delete your account", not that Phonia was unavailable for a moment.
 it.each([
   ["service_unavailable", "unavailable"],
   ["rate_limited", "failed"],

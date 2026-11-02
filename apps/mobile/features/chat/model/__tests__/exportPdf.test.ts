@@ -86,7 +86,7 @@ it.each([
   ["Spanish verbs", "Spanish verbs.pdf"],
   ["a/b: c?", "a b c.pdf"],
   ["Report.pdf", "Report.pdf"],
-  ["   ", "Recall.pdf"],
+  ["   ", "Phonia.pdf"],
   ["x".repeat(120), `${"x".repeat(80)}.pdf`],
 ])("names %p as %p", (title, name) => {
   expect(pdfFileName(title)).toBe(name);

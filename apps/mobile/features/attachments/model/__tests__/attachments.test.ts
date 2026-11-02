@@ -137,7 +137,7 @@ it("reads picked native files with Expo File and uploads API bytes through refre
   expect(mockFetch).not.toHaveBeenCalled();
 });
 
-it("never adds Recall authorization to a storage URL sharing only the API host prefix", async () => {
+it("never adds Phonia authorization to a storage URL sharing only the API host prefix", async () => {
   jest.mocked(api.presignAttachment).mockResolvedValue({ attachment_id: "a1", upload_url: "https://api.test.external.test/upload", api_upload: false, headers: {} });
   await uploadChatAttachment("token", pending);
   const remote = mockFetch.mock.calls.find(([url]) => url === "https://api.test.external.test/upload");

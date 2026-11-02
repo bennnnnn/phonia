@@ -1,7 +1,7 @@
 import { deletePrefFile, prefFilePath, readPrefFile, safePrefUserId, writePrefFile } from "@/lib/filePrefs";
 
 function filePath(userId: string): string | null {
-  return prefFilePath(`recall.reminder-seen.${safePrefUserId(userId)}.json`);
+  return prefFilePath(`phonia.reminder-seen.${safePrefUserId(userId)}.json`);
 }
 
 function parseIds(raw: string): Set<string> {

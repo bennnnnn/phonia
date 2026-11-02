@@ -258,7 +258,7 @@ async def ensure_verified_or_purge(
 def _unread_in_time_note(content_type: str, settings: Settings) -> str:
     """A file the parse could not finish within the turn's budget: slow, not a scan."""
     lead = (
-        f"[File attached: {content_type}. Recall could not read it in time "
+        f"[File attached: {content_type}. Phonia could not read it in time "
         "(a large or complex file). Do not guess its contents. "
     )
     if settings.attachment_rag_enabled:
@@ -277,11 +277,11 @@ def _scanned_pdf_note(settings: Settings) -> str:
     )
     if settings.attachment_ocr_enabled and settings.attachment_rag_enabled:
         return (
-            f"{lead}Recall will try to read its pages in the background, within the user's "
+            f"{lead}Phonia will try to read its pages in the background, within the user's "
             "daily photo allowance; if that works, the text can be searched on later turns. "
             "Do not promise it; suggest a text-based PDF or pasting the text if needed.]"
         )
-    return f"{lead}Recall cannot read scanned pages; suggest a text-based PDF or pasting the text.]"
+    return f"{lead}Phonia cannot read scanned pages; suggest a text-based PDF or pasting the text.]"
 
 
 async def format_attachment_lines(
@@ -325,7 +325,7 @@ async def format_attachment_lines(
             return (
                 [
                     file_ref,
-                    f"[File attached: {content_type}. Recall can't read this file type yet — "
+                    f"[File attached: {content_type}. Phonia can't read this file type yet — "
                     "tell the user to try a PDF, Word (.docx), or plain text file instead.]",
                 ],
                 False,

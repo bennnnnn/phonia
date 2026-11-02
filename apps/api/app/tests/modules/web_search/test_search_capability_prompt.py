@@ -1,4 +1,4 @@
-"""The model is told Recall searches and shows photos, and the classifier sees the reply."""
+"""The model is told Phonia searches and shows photos, and the classifier sees the reply."""
 
 from __future__ import annotations
 

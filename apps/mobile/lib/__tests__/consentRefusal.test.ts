@@ -18,7 +18,7 @@ const mockFetch = jest.fn();
 globalThis.fetch = mockFetch as unknown as typeof fetch;
 
 const CONSENT_BODY = JSON.stringify({
-  detail: { code: "consent_required", message: "Agree to how Recall uses outside AI services." },
+  detail: { code: "consent_required", message: "Agree to how Phonia uses outside AI services." },
 });
 const flush = () => new Promise((resolve) => setTimeout(resolve, 0));
 
@@ -39,7 +39,7 @@ describe("a consent_required refusal", () => {
     await expect(request("/speech/transcribe", "tok")).rejects.toMatchObject({
       status: 403,
       code: "consent_required",
-      message: "Agree to how Recall uses outside AI services.",
+      message: "Agree to how Phonia uses outside AI services.",
     });
     await flush();
     expect(opened).toHaveBeenCalledTimes(1);

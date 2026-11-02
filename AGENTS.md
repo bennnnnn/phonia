@@ -1,4 +1,4 @@
-# Recall
+# Phonia
 
 Personal AI mobile chat with persistent memory.
 
@@ -24,7 +24,7 @@ Cursor rules live in `.cursor/rules/`. Subject pipelines: [docs/math.md](./docs/
 ## Cursor Cloud specific instructions
 
 - System Python on the base image can be 3.12.3, which segfaults while compiling API tests. Use `uv run` from `apps/api` (uv installs CPython 3.12.4+). Do not run the suite on the system interpreter.
-- Local Postgres is `postgresql+asyncpg://postgres:dev@127.0.0.1:5432/recall` with the `vector` extension (`postgresql-16-pgvector`). Redis is `redis://127.0.0.1:6379`. Start both with `sudo service postgresql start` and `sudo service redis-server start`, then `./scripts/dev.sh migrate`.
+- Local Postgres is `postgresql+asyncpg://postgres:dev@127.0.0.1:5432/phonia` with the `vector` extension (`postgresql-16-pgvector`). Redis is `redis://127.0.0.1:6379`. Start both with `sudo service postgresql start` and `sudo service redis-server start`, then `./scripts/dev.sh migrate`.
 - `apps/api/.env` enables `DEV_AUTH_ENABLED` and `MOCK_LLM_ENABLED`, so chat works without OpenRouter. The web client at http://127.0.0.1:5173 signs in with **Continue (dev)**. API health is http://127.0.0.1:8000/health.
 - iOS Simulator and Android emulators are not available here. Check mobile with `pnpm typecheck`, `pnpm lint`, and `pnpm test` in `apps/mobile`. Use `apps/web` (`./scripts/dev.sh web`) for the browser UI.
 - Install and boot helpers: `.cursor/cloud-agent-install.sh` (deps only) and `.cursor/cloud-agent-start.sh` (Postgres, Redis, migrate, API, web).

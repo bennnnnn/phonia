@@ -6,7 +6,7 @@ import { isExpoGo } from "@/lib/expoRuntime";
 export { isExpoGo } from "@/lib/expoRuntime";
 
 const EXPO_GO_MESSAGE =
-  "Google Sign-In does not work in Expo Go. Build and run the Recall app on your simulator or device:\n\ncd apps/mobile && pnpm expo run:ios";
+  "Google Sign-In does not work in Expo Go. Build and run the Phonia app on your simulator or device:\n\ncd apps/mobile && pnpm expo run:ios";
 
 type GoogleSignInModule = typeof import("@react-native-google-signin/google-signin");
 
@@ -72,7 +72,7 @@ export function formatGoogleSignInError(error: unknown): string {
   return "generic";
 }
 
-/** Recall account sign-in — identity only (an ID token, no extra OAuth scopes). */
+/** Phonia account sign-in — identity only (an ID token, no extra OAuth scopes). */
 async function signInWithGoogleNative(): Promise<string> {
   await ensureGoogleConfigured();
   const { GoogleSignin, statusCodes } = await loadGoogleSignIn();

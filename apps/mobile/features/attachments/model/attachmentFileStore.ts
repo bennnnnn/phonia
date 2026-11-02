@@ -1,7 +1,7 @@
 import { CryptoDigestAlgorithm, digestStringAsync } from "expo-crypto";
 import { cacheDirectory, deleteAsync, getInfoAsync, readDirectoryAsync } from "expo-file-system/legacy";
 
-import { recallAttachmentPath } from "@/features/attachments/model/attachmentUri";
+import { phoniaAttachmentPath } from "@/features/attachments/model/attachmentUri";
 
 /** Only this store writes att-* files. Basenames only: never a directory or a path. */
 const ATTACHMENT_FILE = /^att-[\w.-]+$/;
@@ -26,11 +26,11 @@ async function digest(value: string, chars: number): Promise<string> {
   return (await digestStringAsync(CryptoDigestAlgorithm.SHA256, value)).slice(0, chars);
 }
 
-/** Which file a URL names, never its credentials: a Recall attachment by API path. */
+/** Which file a URL names, never its credentials: a Phonia attachment by API path. */
 function fileIdentity(uri: string): { file: string; variant: string } {
-  const recallPath = recallAttachmentPath(uri);
-  if (recallPath) {
-    const [file, variant = ""] = recallPath.split("?");
+  const phoniaPath = phoniaAttachmentPath(uri);
+  if (phoniaPath) {
+    const [file, variant = ""] = phoniaPath.split("?");
     return { file, variant };
   }
   const url = new URL(uri);
@@ -66,8 +66,8 @@ export async function listAttachmentFiles(): Promise<string[]> {
   return names.filter((name) => ATTACHMENT_FILE.test(name)).map((name) => `${dir}${name}`);
 }
 
-/** The cache files of one Recall attachment, whichever run wrote them. */
-export async function listRecallAttachmentFiles(attachmentId: string): Promise<string[]> {
+/** The cache files of one Phonia attachment, whichever run wrote them. */
+export async function listPhoniaAttachmentFiles(attachmentId: string): Promise<string[]> {
   const prefix = await filePrefix(`/attachments/${attachmentId}/file`);
   return (await listAttachmentFiles()).filter((path) => path.slice(path.lastIndexOf("/") + 1).startsWith(prefix));
 }

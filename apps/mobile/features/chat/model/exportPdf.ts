@@ -18,7 +18,7 @@ export function pdfFileName(title: string): string {
     .trim()
     .slice(0, 80)
     .trim();
-  return `${base || "Recall"}.pdf`;
+  return `${base || "Phonia"}.pdf`;
 }
 
 async function removeQuietly(uri: string): Promise<void> {

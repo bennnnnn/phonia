@@ -26,7 +26,7 @@ from app.repositories import push_tokens as push_repo
 logger = logging.getLogger(__name__)
 
 _NAME = "push"
-LOCK_KEY = "recall:push:lock"
+LOCK_KEY = "phonia:push:lock"
 INTERVAL_SECONDS = 60
 # Refreshed before every Expo request, so a live cycle keeps it however long it runs,
 # and a crashed holder costs at most one tick. The fixed 600 s hold, never refreshed,
@@ -34,7 +34,7 @@ INTERVAL_SECONDS = 60
 LOCK_TTL_SECONDS = 2 * INTERVAL_SECONDS
 
 _RECEIPTS_NAME = "push_receipts"
-RECEIPTS_LOCK_KEY = "recall:push:receipts:lock"
+RECEIPTS_LOCK_KEY = "phonia:push:receipts:lock"
 RECEIPTS_INTERVAL_SECONDS = 300
 RECEIPTS_LOCK_TTL_SECONDS = lock_ttl_hold_across_ticks(RECEIPTS_INTERVAL_SECONDS)
 

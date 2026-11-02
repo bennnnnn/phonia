@@ -2,11 +2,11 @@
 name: security-alert-pitfalls
 description: >-
   Common pitfalls fixing CodeQL polynomial-ReDoS and Dependabot npm alerts in
-  Recall. Use when clearing CodeQL py/polynomial-redos, workflow permissions,
+  Phonia. Use when clearing CodeQL py/polynomial-redos, workflow permissions,
   or Dependabot alerts on apps/mobile lockfile / transitive deps.
 ---
 
-# Security alert pitfalls (Recall)
+# Security alert pitfalls (Phonia)
 
 Hard-won from clearing CodeQL High ReDoS + Dependabot npm alerts. Fix the sink; don't paper over it.
 

@@ -188,6 +188,6 @@ async def test_a_push_expo_may_have_accepted_is_not_resent_next_minute():
     )
     assert first == ["collect after=None", "dispatch 2", "mark 2"]
     assert second == ["collect after=None", "dispatch 1", "mark 1"]
-    held = [key async for key in redis.scan_iter("recall:push:hold:*")]
+    held = [key async for key in redis.scan_iter("phonia:push:hold:*")]
     assert len(held) == 1
     assert await redis.ttl(held[0]) > 14 * 60  # push_ambiguous_hold_seconds

@@ -41,7 +41,7 @@ _MESSAGE_WRITING = re.compile(
 )
 
 # "Tell my landlord the heater is broken", "let my team know we moved to 3pm":
-# Recall cannot pass it on, so it is a message to send. "Should I tell my boss
+# Phonia cannot pass it on, so it is a message to send. "Should I tell my boss
 # I'm pregnant?" asks for advice: the line has to start with the request.
 _TELL_RECIPIENT = re.compile(
     r"^(?:(?:(?:can|could|would|will) you|please)[,\s]+)*"
@@ -348,7 +348,7 @@ def writing_request_kind(text: str) -> str | None:
     if _REPLY_HOWTO.search(cleaned):
         return "message"
     # Questions about how to produce or manage a writing artifact are advice,
-    # not requests for Recall to draft it. A later sentence can still contain
+    # not requests for Phonia to draft it. A later sentence can still contain
     # an explicit deliverable request and must keep its output contract.
     had_initial_howto = bool(_WRITING_HOWTO.search(cleaned))
     writing_candidate = _after_initial_writing_howto(cleaned)

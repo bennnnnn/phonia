@@ -45,7 +45,7 @@ from app.tests.behavior.sweep import frozen_clock
 from app.tests.modules.chat.chat_test_support import system_prompt
 from app.tests.modules.chat.test_prompt_golden import _DEFAULTS, render, resolve
 
-_IDENTITY = "You are Recall, a helpful personal AI assistant."
+_IDENTITY = "You are Phonia, a helpful personal AI assistant."
 _NINE = datetime(2026, 10, 14, 6, 0, tzinfo=UTC)
 _SEVEN_PAST = datetime(2026, 10, 14, 6, 7, tzinfo=UTC)
 _QUERY = "what should I cook tonight?"

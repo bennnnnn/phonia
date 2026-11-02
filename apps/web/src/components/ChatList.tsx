@@ -50,7 +50,7 @@ export function ChatList() {
   return (
     <div className="chat-list">
       <header>
-        <h1>Recall</h1>
+        <h1>Phonia</h1>
         <div className="header-actions">
           <button onClick={newChat} className="primary">New chat</button>
           <button onClick={() => signOut().then(() => navigate("/"))}>Sign out</button>

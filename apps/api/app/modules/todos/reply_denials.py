@@ -1,8 +1,8 @@
-"""Sentences in a reply that say Recall cannot keep reminders.
+"""Sentences in a reply that say Phonia cannot keep reminders.
 
 Live (2026-10-25): asked "what do you remember about me so far?", a reply listed the
 reminder card offered earlier and went on "I can't set reminders from here, though, so
-you'll want to set that one in your own reminder app." Recall sets them: a card the user
+you'll want to set that one in your own reminder app." Phonia sets them: a card the user
 taps. ``without_denials`` drops those sentences and keeps the rest of the reply.
 
 A denial says the assistant cannot set or add reminders at all, or sends the user to their
@@ -47,7 +47,7 @@ _DENIAL = re.compile(
     ),
     re.IGNORECASE,
 )
-# A sentence about the phone or another app states a real limit: Recall keeps its own list.
+# A sentence about the phone or another app states a real limit: Phonia keeps its own list.
 _ELSEWHERE = re.compile(
     r"\b(?:apple|ios|iphone|ipad|android|google|outlook|alexa|siri|samsung|calendar|clock"
     r"|alarm|phone|device|watch)\b",

@@ -5,7 +5,7 @@ The whole message must be the request; a cue inside a longer question is
 
 ``SearchCommand.subject`` is None when the request names nothing to search
 ("do a search", "look it up", "check that online"): the conversation says what.
-Whether "can you search the web?" asks about Recall or for a search depends on the chat
+Whether "can you search the web?" asks about Phonia or for a search depends on the chat
 before it: ``detection.asks_only_whether_it_searches`` reads it there.
 """
 

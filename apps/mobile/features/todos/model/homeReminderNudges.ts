@@ -20,7 +20,7 @@ type Stored = {
 };
 
 function filePath(userId: string): string | null {
-  return prefFilePath(`recall.home-nudges.${safePrefUserId(userId)}.json`);
+  return prefFilePath(`phonia.home-nudges.${safePrefUserId(userId)}.json`);
 }
 
 function emptyState(): HomeNudgeState {

@@ -53,6 +53,6 @@ describe("speechRate", () => {
   it("saves a new speed and uses it at once", async () => {
     await setSpeechRate(0.75);
     expect(currentSpeechRate()).toBe(0.75);
-    expect(writeAsStringAsync).toHaveBeenCalledWith("file:///docs/recall.speech-rate.txt", "0.75");
+    expect(writeAsStringAsync).toHaveBeenCalledWith("file:///docs/phonia.speech-rate.txt", "0.75");
   });
 });

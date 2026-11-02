@@ -31,7 +31,7 @@ function seen(markdown: string) {
   return { prepared, code, math, text: text.trim() };
 }
 
-// Recall's reply to "Explain this code line by line, then show the value of
+// Phonia's reply to "Explain this code line by line, then show the value of
 // total after each iteration" rendered as
 // "n is $2 $. total += n means total$ $. total + = total + n. So, total` becomes$ 0 + 2 = 2$."
 const ITERATION =

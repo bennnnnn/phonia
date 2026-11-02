@@ -1,6 +1,6 @@
 """Validate solver-owned answer, arithmetic, geometry, and graph fences.
 
-The model is asked to explain in Markdown + ``$...$``. Recall attaches
+The model is asked to explain in Markdown + ``$...$``. Phonia attaches
 solver-owned `` ```answer `` / `` ```graph `` / `` ```geometry `` after the
 stream from ``VerifiedMathBlock``. If the model still emitted a same-kind
 fence, it is replaced with the canonical JSON (or answer body) so a

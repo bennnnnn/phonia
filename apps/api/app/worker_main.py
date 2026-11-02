@@ -78,7 +78,7 @@ async def _run_worker() -> int:
     with contextlib.suppress(NotImplementedError, RuntimeError, ValueError):
         loop.add_signal_handler(signal.SIGTERM, stop.set)
 
-    logger.info("Recall worker started (process_role=worker)")
+    logger.info("Phonia worker started (process_role=worker)")
     try:
         dead = await wait_for_stop_or_death(stop, WATCHDOG_INTERVAL_SECONDS)
         if dead:

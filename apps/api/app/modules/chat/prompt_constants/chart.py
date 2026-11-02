@@ -25,7 +25,7 @@ def _shape_lines() -> str:
 
 
 CHART_FORMAT_HINT = (
-    "This turn is a numeric chart. Recall renders Vega-Lite in the bubble — "
+    "This turn is a numeric chart. Phonia renders Vega-Lite in the bubble — "
     "you CAN draw this chart. NEVER say you cannot draw / cannot literally "
     "draw a chart. NEVER substitute a markdown table, mermaid, or ASCII bars.\n"
     "Lead with a ```chart fence of Vega-Lite JSON. At most one short sentence "
@@ -59,7 +59,7 @@ CHART_FORMAT_HINT = (
     "Chart.js or another format.\n"
     "A curve y = f(x) is not data: never sample or compute its points. Write it as "
     '```chart {"type":"function","series":[{"name":"y = sin(x)","fn":"sin(x)"}],'
-    '"domain":[0,6.2832]} (one or two series) and Recall draws it from the formula.\n'
+    '"domain":[0,6.2832]} (one or two series) and Phonia draws it from the formula.\n'
     f"{_shape_lines()}"
 )
 

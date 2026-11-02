@@ -22,7 +22,7 @@ const ACCOUNT_EXISTS = JSON.stringify({
   detail: {
     code: "account_exists",
     sign_in_with: "apple",
-    message: "This email already has a Recall account.",
+    message: "This email already has a Phonia account.",
   },
 });
 
@@ -120,8 +120,8 @@ describe("a sign-in that gets no answer", () => {
     ["Apple", () => loginWithApple("id-token", null, "nonce")],
     ["dev", () => loginWithDev()],
   ])("%s names the unreachable line, not the English", async (_name, login) => {
-    // "Could not reach the Recall server…" or "Network request failed" was shown as it came.
-    for (const failure of [new TypeError("Network request failed"), new Error("Could not reach the Recall server.")]) {
+    // "Could not reach the Phonia server…" or "Network request failed" was shown as it came.
+    for (const failure of [new TypeError("Network request failed"), new Error("Could not reach the Phonia server.")]) {
       jest.mocked(fetchWithTimeout).mockRejectedValueOnce(failure);
       const error = await login().catch((caught: unknown) => caught);
       expect(error).toEqual(new SignInRefusedError("login.error_unreachable"));

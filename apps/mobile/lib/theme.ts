@@ -59,7 +59,7 @@ export type Theme = {
   textDisabled: string;
 
   // Bubbles — user chip is a quiet brand tint, not success-green.
-  // Indigo = Recall / interactive; green is reserved for success.
+  // Indigo = Phonia / interactive; green is reserved for success.
   userBubble: string;
   userText: string;
   assistantBubble: string;

@@ -41,7 +41,7 @@ from app.services.reminder_timing import OVERDUE_MAX_HOURS, reminder_title
 
 logger = logging.getLogger(__name__)
 
-RECEIPT_PENDING_ZSET = "recall:push:receipts:pending"
+RECEIPT_PENDING_ZSET = "phonia:push:receipts:pending"
 RECEIPT_MIN_AGE_SECONDS = 15 * 60
 RECEIPT_MAX_AGE_SECONDS = 24 * 60 * 60
 # Receipts polled per batch, and tickets kept at most (the oldest go past it). A pass
@@ -62,7 +62,7 @@ class OutboundPush:
 
 
 def _receipt_token_key(ticket_id: str) -> str:
-    return f"recall:push:receipt:token:{ticket_id}"
+    return f"phonia:push:receipt:token:{ticket_id}"
 
 
 def _redis_str_members(raw: list[object]) -> list[str]:
@@ -165,18 +165,18 @@ async def _poll_receipt_batch(session: AsyncSession, redis: Redis, ticket_ids: l
     return len(decided)
 
 
-# "split" installs created recall-reminders. "tone" installs created the v2
+# "split" installs created phonia-reminders. "tone" installs created the v2
 # channels that play the bundled cue. Older builds only have
-# recall-notifications; Expo drops a channelId the device never created.
+# phonia-notifications; Expo drops a channelId the device never created.
 SPLIT_ANDROID_CHANNELS = "split"
 TONE_ANDROID_CHANNELS = "tone"
-PUSH_SOUND = "recall_notify.wav"
+PUSH_SOUND = "phonia_notify.wav"
 
 
 def android_channel_id(data: dict[str, Any], channels: str = SPLIT_ANDROID_CHANNELS) -> str:
     """Match the Android channels created in the mobile app."""
     suffix = "-v2" if channels == TONE_ANDROID_CHANNELS else ""
-    return f"recall-reminders{suffix}"
+    return f"phonia-reminders{suffix}"
 
 
 def channel_id_for_token(token: PushToken, data: dict[str, Any]) -> str | None:

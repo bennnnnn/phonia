@@ -464,5 +464,5 @@ def test_a_side_that_parses_to_no_expression_has_no_trace(monkeypatch, trace, em
     The trace then subtracted it and the silent ``except`` took the TypeError for a decline;
     strict declines raised it. Such a side is now unparsed.
     """
-    monkeypatch.setenv("RECALL_STRICT_DECLINES", "1")
+    monkeypatch.setenv("PHONIA_STRICT_DECLINES", "1")
     assert trace() == empty

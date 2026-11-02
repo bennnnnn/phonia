@@ -48,7 +48,7 @@ def denies_live_data(reply: str) -> bool:
 
 
 def _asks_only_whether_it_searches(ctx: StreamContext) -> bool:
-    """ "Can you search the web?" with nothing in the chat to search asks about Recall: a
+    """ "Can you search the web?" with nothing in the chat to search asks about Phonia: a
     retry offering search could search whatever the chat said before it."""
     asked = ctx.user_message_content
     if not isinstance(asked, str):

@@ -240,7 +240,7 @@
  {
   "id": "sl-035",
   "area": "statement",
-  "prompt": "Hey Recall, just wanted to say you've been super helpful this week",
+  "prompt": "Hey Phonia, just wanted to say you've been super helpful this week",
   "reply": "That sounds like a lot. Want to talk about it, or should we plan something to make the evening easier?",
   "expect": "answer"
  },

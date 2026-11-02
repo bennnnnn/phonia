@@ -26,7 +26,7 @@ from app.core.jobs.queue import append_entry, job_fields
 
 logger = logging.getLogger("app.core.jobs")
 
-DELAYED_ZSET = "recall:jobs:delayed"
+DELAYED_ZSET = "phonia:jobs:delayed"
 ATTEMPT_FIELD = "attempt"
 # Attempts in all, the first included: 15 s, 1 min, 4 min, 16 min and 30 min apart.
 MAX_ATTEMPTS = 6

@@ -142,7 +142,7 @@ async def test_a_mute_keeps_the_fact_but_stops_its_recall(db_session):
 async def test_a_short_add_never_overwrites_a_richer_fact(db_session):
     """M1: an add matches by exact text only."""
     user = await _user(db_session)
-    rich = "User uses React Native and FastAPI for Recall"
+    rich = "User uses React Native and FastAPI for Phonia"
     await apply_fact_ops(db_session, user.id, [_write("add", rich)], None, active_cap=150)
     await apply_fact_ops(
         db_session, user.id, [_write("add", "User uses React Native")], None, active_cap=150

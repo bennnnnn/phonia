@@ -37,7 +37,7 @@ describe("getInstallationId", () => {
   it("creates and persists a new id when missing", async () => {
     await expect(getInstallationId()).resolves.toBe("install-uuid-1");
     expect(writeAsStringAsync).toHaveBeenCalledWith(
-      `${documentDirectory}recall.installation-id.txt`,
+      `${documentDirectory}phonia.installation-id.txt`,
       "install-uuid-1",
     );
   });

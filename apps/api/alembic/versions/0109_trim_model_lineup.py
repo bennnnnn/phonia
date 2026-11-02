@@ -3,7 +3,7 @@
 Revision ID: 0109_trim_model_lineup
 Revises: 0108_model_aliases_oct_2026
 
-Recall is not a coding assistant, so the expensive coding and frontier models
+Phonia is not a coding assistant, so the expensive coding and frontier models
 leave the catalog: gpt-6-sol, kimi-k3, minimax-m3, glm-5.3 and llama-70b.
 qwen-3.8-max goes too; OpenRouter no longer lists it, so picking it failed.
 

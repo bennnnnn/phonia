@@ -305,7 +305,7 @@ async def test_extract_forget_does_not_save_the_project_being_forgotten():
             Settings(),
             user_id=uuid4(),
             chat_id=uuid4(),
-            transcript="User: Please forget that I am working on Recall",
+            transcript="User: Please forget that I am working on Phonia",
         )
     apply.assert_not_awaited()
 
@@ -563,7 +563,7 @@ async def test_extract_forget_does_not_clear_unrelated_nonempty_sections():
 async def test_extract_applies_add_without_rewriting_unrelated_facts():
     settings = Settings(memory_min_confidence=0.4)
     prior = "User's name is Bini. User works at Hooh. User is a developer."
-    extraction = _ops(_add("profile", "Bini is building Recall."))
+    extraction = _ops(_add("profile", "Bini is building Phonia."))
     apply = AsyncMock()
     existing = [SimpleNamespace(id=uuid4(), type="profile", text=prior, status="active")]
     _, session_locals = _extraction_sessions()
@@ -575,13 +575,13 @@ async def test_extract_applies_add_without_rewriting_unrelated_facts():
         listed=existing,
     ):
         await extract_and_store_memories(
-            settings, user_id=uuid4(), chat_id=uuid4(), transcript="I am building Recall"
+            settings, user_id=uuid4(), chat_id=uuid4(), transcript="I am building Phonia"
         )
 
     apply.assert_awaited_once()
     writes: list[MemoryFactWrite] = apply.await_args.kwargs["writes"]
     assert writes[0].op == "add"
-    assert "Recall" in writes[0].text
+    assert "Phonia" in writes[0].text
     assert "Hooh" not in writes[0].text
 
 
@@ -809,10 +809,10 @@ async def test_extract_files_facts_into_documents():
         MemoryFactOp(
             op="add",
             type="fact",
-            text="User is building Recall, a personal AI chat app.",
+            text="User is building Phonia, a personal AI chat app.",
             confidence=0.9,
-            topic="area:recall",
-            topic_title="Recall",
+            topic="area:phonia",
+            topic_title="Phonia",
             topic_summary="Personal AI chat app built with Expo",
         ),
         MemoryFactOp(
@@ -840,8 +840,8 @@ async def test_extract_files_facts_into_documents():
 
     writes: list[MemoryFactWrite] = apply.await_args.kwargs["writes"]
     area, preference, unknown = writes[:3]
-    assert (area.topic, area.type) == ("area:recall", "project")
-    assert area.area_title == "Recall"
+    assert (area.topic, area.type) == ("area:phonia", "project")
+    assert area.area_title == "Phonia"
     assert area.area_summary == "Personal AI chat app built with Expo"
     # The document decides the type.
     assert (preference.topic, preference.type) == ("preferences", "preference")
@@ -856,12 +856,12 @@ async def test_extract_shows_the_model_existing_topics_and_areas():
             id=uuid4(),
             user_id=uuid4(),
             type="project",
-            topic="area:recall",
-            text="User is building Recall.",
+            topic="area:phonia",
+            text="User is building Phonia.",
             status="active",
         )
     ]
-    area = SimpleNamespace(key="area:recall", title="Recall", summary="AI chat app")
+    area = SimpleNamespace(key="area:phonia", title="Phonia", summary="AI chat app")
     revise = AsyncMock(return_value=None)
     _, session_locals = _extraction_sessions()
     with (
@@ -879,9 +879,9 @@ async def test_extract_shows_the_model_existing_topics_and_areas():
         )
 
     kwargs = revise.await_args.kwargs
-    assert kwargs["existing_facts"][0]["topic"] == "area:recall"
+    assert kwargs["existing_facts"][0]["topic"] == "area:phonia"
     assert kwargs["existing_areas"] == [
-        {"topic": "area:recall", "title": "Recall", "summary": "AI chat app"}
+        {"topic": "area:phonia", "title": "Phonia", "summary": "AI chat app"}
     ]
 
 
@@ -1035,7 +1035,7 @@ async def test_forget_word_does_not_delete_broader_fact():
     _, session_locals = _extraction_sessions()
     listed = _listed(
         "User uses React",
-        "User builds Recall with React Native and FastAPI",
+        "User builds Phonia with React Native and FastAPI",
         "User's sister lives in Nairobi suburbs",
     )
     with _extract_patches(

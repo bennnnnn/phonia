@@ -17,7 +17,7 @@ export async function loginWithGoogle(idToken: string): Promise<AuthResult> {
 }
 
 export async function loginWithDev(
-  email = "dev@recall.local",
+  email = "dev@phonia.local",
   name = "bini",
 ): Promise<AuthResult> {
   const response = await fetchWithTimeout(apiUrl("/auth/dev"), {

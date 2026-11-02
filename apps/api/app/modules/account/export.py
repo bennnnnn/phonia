@@ -1,4 +1,4 @@
-"""Assemble a user's data export: everything Recall stores about them.
+"""Assemble a user's data export: everything Phonia stores about them.
 
 Profile and settings, chats and messages, every memory row and memory area,
 to-dos, attachments, daily usage, push devices (no token) and

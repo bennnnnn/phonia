@@ -31,7 +31,7 @@ const CODE_KEYS: Record<string, string> = {
  * nothing for them.
  */
 export function scanFailureMessage(error: unknown, t: (key: string) => string): string | null {
-  // Recall down (a Redis outage said "Too many scans in a row"): not the photo's fault.
+  // Phonia down (a Redis outage said "Too many scans in a row"): not the photo's fault.
   if (error instanceof ApiRequestError && isServiceUnavailable(error)) return t("common.service_unavailable");
   if (!(error instanceof ApiRequestError) || !NAMED_STATUSES.has(error.status)) return null;
   const key = error.code == null ? undefined : CODE_KEYS[error.code];

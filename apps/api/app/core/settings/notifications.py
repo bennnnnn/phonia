@@ -35,4 +35,4 @@ class NotificationSettings(BaseModel):
     email_reminders_scheduler_enabled: bool = True
     resend_api_key: str = ""
     resend_api_url: str = "https://api.resend.com/emails"
-    email_from: str = "Recall <noreply@recall.app>"
+    email_from: str = "Phonia <noreply@phonia.app>"

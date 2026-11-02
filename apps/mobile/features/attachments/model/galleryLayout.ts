@@ -6,7 +6,7 @@ import { prefFilePath, readPrefFile, writePrefFile } from "@/lib/filePrefs";
 
 export type GalleryLayout = "grid" | "column";
 
-const FILE_NAME = "recall.gallery-layout.txt";
+const FILE_NAME = "phonia.gallery-layout.txt";
 
 let cachedLayout: GalleryLayout | null = null;
 

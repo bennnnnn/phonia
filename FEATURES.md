@@ -1,7 +1,7 @@
-# Recall — Feature Coverage & Roadmap
+# Phonia — Feature Coverage & Roadmap
 
 A reference of what the app does **today** versus what is **deferred** to a future version.
-Recall is a personal AI chat app: a snappy chatbot with clean formatted answers, multi-model
+Phonia is a personal AI chat app: a snappy chatbot with clean formatted answers, multi-model
 support, and long-term memory of the user. Mobile = Expo (React Native). Backend = FastAPI +
 Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
 
@@ -131,7 +131,7 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   dictation so they cannot send into the wrong conversation.
 - ✅ **Clarifying questions as a tap card, like ChatGPT** ([docs/clarify.md](./docs/clarify.md)) —
   when the best answer depends on what the user means or wants ("What is the best country?")
-  and memory and the chat do not say, Recall starts the answer (the strongest few options,
+  and memory and the chat do not say, Phonia starts the answer (the strongest few options,
   one bold line each), asks "**But let me ask you one thing.** What do you mean by *best*?",
   and ends on a `clarify` card: 1-3 questions, 2-8 emoji-led choices each, the first one
   picked, and one full-width button named for what it does ("Find my best country"). The
@@ -299,7 +299,7 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   (`title-model`, flag `math_word_problems_enabled`) that translates the problem into
   unknowns and equations; when every number is stated and SymPy finds exactly one
   solution in the stated domain, the model gets that setup to check against the words,
-  never as a verified card. A process that never ends gets no setup. Recall attaches geometry, graph, and
+  never as a verified card. A process that never ends gets no setup. Phonia attaches geometry, graph, and
   algebra ` ```answer ` after the stream when the model did write. The composer **math keypad** inserts
   LaTeX on one 6 × 6 grid per page: Basics (digits, the four operations, x and y, fractions,
   roots, powers), Symbols (relations, sets, geometry), Trig, Calc and Greek, each ending in
@@ -587,7 +587,7 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   a mute ("stop mentioning my grades") and a correction ("that's wrong, I'm in 11th grade
   now") still extract when N>1. No remember/forget chip or confirmation sheet.
 - ✅ **Forget, mute, reset** (`modules/memory/commands.py`) — "forget that I use React"
-  deletes the fact the phrase names, never a broader one sharing a word ("builds Recall with
+  deletes the fact the phrase names, never a broader one sharing a word ("builds Phonia with
   React Native") or someone else's ("my sister lives in Nairobi"). "Stop mentioning my job" /
   "don't bring up my divorce again" **mutes** the fact (kept, never injected, its past-chat
   snippets dropped); a do-not-mention preference is kept even when sensitive. "Forget
@@ -1015,7 +1015,7 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
 
 ## 16. Model tools
 
-**Google Calendar and Gmail are removed.** Recall does not connect to a calendar or an email
+**Google Calendar and Gmail are removed.** Phonia does not connect to a calendar or an email
 inbox: To-do holds the user's own tasks and reminders, and the prompt tells the model to say so
 plainly rather than suggest connecting an account. Migration `0106_drop_google_integrations`
 drops `user_calendar_connections`, `user_gmail_connections` and `suggested_reminders`, the two
@@ -1026,7 +1026,7 @@ with them; it only ever carried the calendar hint. Sign-in with Google is unchan
 only `GOOGLE_CLIENT_ID`.
 
 - ✅ **MCP gateway** — `gateways/mcp/` with registry + module-owned adapters (`web_search`,
-  `sympy`, `search_image`). Tools are owned by Recall; arbitrary user MCP
+  `sympy`, `search_image`). Tools are owned by Phonia; arbitrary user MCP
   servers stay out of scope.
 - ✅ **Full tool-calling loop** — **on by default**, but **not on every turn.**
   Ordinary chat streams immediately. Pre-stream `complete_with_tools` runs only
@@ -1220,7 +1220,7 @@ Infra + store steps live in Lists → **Launch** (local Dev User) and
 - ✅ **DB session scope in `_prepare_chat_turn`** — attachment S3 reads and web-search
   augmentation run outside the DB session.
 - ✅ **Background-job DLQ** — failed jobs (including unknown type / bad JSON) go to
-  `recall:jobs:dlq` before ACK. Stream trim uses pending MINID so approximate maxlen
+  `phonia:jobs:dlq` before ACK. Stream trim uses pending MINID so approximate maxlen
   cannot drop unacked entries.
 - ✅ **JWT refresh / logout** — 1h access + refresh rotation; mobile auto-refresh on 401.
 - ✅ **HTTP SSE chat fallback** — `POST /chats/{id}/messages/stream` when WebSocket fails.
@@ -1296,7 +1296,7 @@ magic-byte validation, daily caps). Blobs never live in Postgres.
 | Image upload → vision-chat routing (Qwen3.7 Flash, GLM 5.3 Flash backup, via OpenRouter) | ✅ Shipped |
 | Reference-photo lookup (`show me an ear` / what-X-looks-like / "can you show me…" / "send me a photo of X"; "show me her image" reads who from the chat; Tavily + mirrored attachment; not listed in Library) | ✅ Shipped (free+Pro; daily cap; flag `image_search_enabled`) |
 | Answer photos (one real photo above an answer about something worth seeing, no "show me"; the model's hidden ```photo query, searched while the text streams) | ✅ Shipped (free+Pro; same daily cap and flag) |
-| Library (drawer grid of uploaded images and files; lookup photos stay on the chat) | ✅ Shipped (local blobs under `~/.recall/attachments`, not `/tmp`) |
+| Library (drawer grid of uploaded images and files; lookup photos stay on the chat) | ✅ Shipped (local blobs under `~/.phonia/attachments`, not `/tmp`) |
 | PDF / doc upload + server text extract into prompt | ✅ Text-layer PDFs / DOCX + scanned-PDF OCR (page render → vision) |
 | PDF inline preview (pdf.js WebView, dev build) | ✅ Shipped |
 | Audio in (Whisper STT → composer) | ✅ Shipped (dev build) |
@@ -1349,7 +1349,7 @@ Internal product snapshot for leadership, engineering, design, GTM, and App Stor
 **Status:** pre–public launch on `main`. Supersedes one-off chat summaries when they disagree.
 
 ### Mission
-Recall is a **personal AI utility** — not a generic chatbot. It remembers who you are, helps you
+Phonia is a **personal AI utility** — not a generic chatbot. It remembers who you are, helps you
 act (reminders, drafts, settings), and teaches in ordinary chat (math, physics, chemistry,
 programming, and “teach me…” lessons). One trusted assistant combining ChatGPT-grade conversation
 with durable memory and everyday productivity.

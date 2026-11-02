@@ -38,7 +38,7 @@ _DECLINES_REMINDER_CREATE_RE = re.compile(
 
 
 def explicitly_declines_reminder_creation(user_text: str | None) -> bool:
-    """True when this turn explicitly asks Recall not to save a reminder."""
+    """True when this turn explicitly asks Phonia not to save a reminder."""
     return bool(user_text and _DECLINES_REMINDER_CREATE_RE.search(user_text))
 
 

@@ -9,7 +9,7 @@ import { tokenSubject } from "@/lib/tokenSubject";
  */
 export type SettledStatus = { indexed: boolean; failed: boolean; fileName?: string | null };
 
-const settledFile = cacheFile("recall-attachment-status.json");
+const settledFile = cacheFile("phonia-attachment-status.json");
 
 /** Statuses kept; the oldest goes first. */
 const MAX_SETTLED = 500;

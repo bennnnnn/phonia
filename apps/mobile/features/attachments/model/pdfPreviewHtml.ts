@@ -5,7 +5,7 @@ import type { Theme } from "@/lib/theme";
 export const PDF_LIBRARIES = ["pdf", "pdfWorker"] as const;
 export type PdfSources = Readonly<Record<(typeof PDF_LIBRARIES)[number], string>>;
 
-/** How one preview draws; the page reads it as `window.RECALL_PDF`. */
+/** How one preview draws; the page reads it as `window.PHONIA_PDF`. */
 type PdfPreviewConfig = {
   /** Every page, drawn as it scrolls near; otherwise page 1 only. */
   allPages: boolean;
@@ -25,7 +25,7 @@ export function pdfPreviewColors(theme: Theme): PdfPreviewConfig["colors"] {
 // Runs inside the WebView. Pages are drawn when they come near the viewport and
 // cleared when they move far away, so a long PDF never holds every page's pixels.
 const PAGE_SCRIPT = `(function () {
-  var cfg = window.RECALL_PDF || {};
+  var cfg = window.PHONIA_PDF || {};
   var colors = cfg.colors || {};
   var style = document.documentElement.style;
   if (colors.bg) style.setProperty('--bg', colors.bg);
@@ -139,7 +139,7 @@ export function buildPdfPreviewHtml(
 <meta http-equiv="Content-Security-Policy" content="${PDF_PREVIEW_CSP}">
 <meta charset="UTF-8">
 <meta name="viewport" content="${PREVIEW_VIEWPORT}">
-<script>${inlineScript(`window.RECALL_PDF = ${JSON.stringify(config)};`)}</script>
+<script>${inlineScript(`window.PHONIA_PDF = ${JSON.stringify(config)};`)}</script>
 <script>${inlineScript(sources.pdf)}</script>
 <script type="text/pdf-worker" id="pdf-worker-src">${inlineScript(sources.pdfWorker)}</script>
 <script type="application/pdf" id="pdf-data">${base64}</script>

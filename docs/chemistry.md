@@ -1,4 +1,4 @@
-# Recall chemistry pipeline
+# Phonia chemistry pipeline
 
 Server-side typed extractors, pure solvers, RDKit, SymPy, and PubChem verify
 chemistry. The mobile app renders the result; it does not solve chemistry on-device.

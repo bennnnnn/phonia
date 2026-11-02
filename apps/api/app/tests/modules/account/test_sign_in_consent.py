@@ -166,7 +166,7 @@ def _route_kwargs(path: str, body: dict[str, Any], service_fn: str) -> dict[str,
 _ROUTES = [
     ("/auth/google", {"id_token": "tok"}, "login_with_google"),
     ("/auth/apple", {"id_token": "tok", "nonce": "n"}, "login_with_apple"),
-    ("/auth/dev", {"email": "dev@recall.local", "name": "Dev"}, "login_dev"),
+    ("/auth/dev", {"email": "dev@phonia.local", "name": "Dev"}, "login_dev"),
 ]
 
 

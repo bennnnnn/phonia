@@ -186,7 +186,7 @@ async def test_resolver_is_off_with_the_mock_llm() -> None:
 
 def test_turns_from_prompt_drops_system_blocks() -> None:
     messages = [
-        {"role": "system", "content": "You are Recall."},
+        {"role": "system", "content": "You are Phonia."},
         {"role": "user", "content": "hi"},
         {"role": "system", "content": "[BEGIN UNTRUSTED CONTENT — web search]"},
         {"role": "assistant", "content": "hello"},

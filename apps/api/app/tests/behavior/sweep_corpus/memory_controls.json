@@ -44,7 +44,7 @@
     "area": "memory",
     "prompt": "forget everything you know about me",
     "history": [],
-    "reply": "I can delete everything Recall has saved about you. This can't be undone. Tap Confirm, or do it any time in Settings → Memory.",
+    "reply": "I can delete everything Phonia has saved about you. This can't be undone. Tap Confirm, or do it any time in Settings → Memory.",
     "expect": "memory"
   },
   {
@@ -52,7 +52,7 @@
     "area": "memory",
     "prompt": "stop remembering things about me",
     "history": [],
-    "reply": "I can turn memory off, so Recall stops saving new things about you and stops using what's saved. Saved facts stay until you delete them.",
+    "reply": "I can turn memory off, so Phonia stops saving new things about you and stops using what's saved. Saved facts stay until you delete them.",
     "expect": "memory"
   },
   {
@@ -60,7 +60,7 @@
     "area": "memory",
     "prompt": "can you clear your memory of me?",
     "history": [],
-    "reply": "I can delete everything Recall has saved about you. This can't be undone.",
+    "reply": "I can delete everything Phonia has saved about you. This can't be undone.",
     "expect": "memory"
   },
   {

@@ -90,7 +90,7 @@ export function loginWithApple(
 }
 
 export function loginWithDev(
-  email = "dev@recall.local",
+  email = "dev@phonia.local",
   name = "bini",
 ): Promise<AuthResult> {
   const body = { email, name, ...AGREED_BY_SIGNING_IN, ...deviceSessionFields() };

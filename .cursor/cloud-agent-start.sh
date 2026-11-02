@@ -15,8 +15,8 @@ sudo service redis-server start
 
 # Password login for asyncpg over TCP. Local sockets stay peer auth.
 sudo -u postgres psql -v ON_ERROR_STOP=1 -c "ALTER USER postgres PASSWORD 'dev';"
-if ! sudo -u postgres psql -tAc "SELECT 1 FROM pg_database WHERE datname='recall'" | grep -q 1; then
-  sudo -u postgres createdb recall
+if ! sudo -u postgres psql -tAc "SELECT 1 FROM pg_database WHERE datname='phonia'" | grep -q 1; then
+  sudo -u postgres createdb phonia
 fi
 
 for _ in $(seq 1 30); do
@@ -31,7 +31,7 @@ redis-cli ping | grep -q PONG
 API_ENV="${ROOT}/apps/api/.env"
 if [[ ! -f "${API_ENV}" ]]; then
   cat > "${API_ENV}" <<'EOF'
-DATABASE_URL=postgresql+asyncpg://postgres:dev@127.0.0.1:5432/recall
+DATABASE_URL=postgresql+asyncpg://postgres:dev@127.0.0.1:5432/phonia
 REDIS_URL=redis://127.0.0.1:6379
 JWT_SECRET=cloud-agent-dev-secret-not-for-production-32
 DEV_AUTH_ENABLED=true

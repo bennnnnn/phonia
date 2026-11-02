@@ -52,7 +52,7 @@ def _document() -> MemoryDocument:
         key="preferences",
         group="you",
         title="Preferences",
-        summary="How you want Recall to respond",
+        summary="How you want Phonia to respond",
         updated_at=now,
         facts=[fact],
     )
@@ -147,7 +147,7 @@ def test_document_facts_say_where_they_were_learned_and_if_muted():
 @pytest.mark.parametrize(
     "topic,result,status",
     [
-        ("area:recall", True, 204),
+        ("area:phonia", True, 204),
         ("subjects", False, 404),
         ("not-a-topic", None, 404),
     ],

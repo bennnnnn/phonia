@@ -11,12 +11,12 @@ import {
 describe("easBuildConfig", () => {
   it("drops Sign in with Apple only for a local simulator build", () => {
     expect(simulatorWithoutAppleSignIn("", {})).toBe(false);
-    expect(simulatorWithoutAppleSignIn("", { RECALL_IOS_SIMULATOR: "1" })).toBe(true);
-    expect(simulatorWithoutAppleSignIn("development", { RECALL_IOS_SIMULATOR: "1" })).toBe(true);
-    expect(() => simulatorWithoutAppleSignIn("production", { RECALL_IOS_SIMULATOR: "1" })).toThrow(
+    expect(simulatorWithoutAppleSignIn("", { PHONIA_IOS_SIMULATOR: "1" })).toBe(true);
+    expect(simulatorWithoutAppleSignIn("development", { PHONIA_IOS_SIMULATOR: "1" })).toBe(true);
+    expect(() => simulatorWithoutAppleSignIn("production", { PHONIA_IOS_SIMULATOR: "1" })).toThrow(
       /not a production build/,
     );
-    expect(() => simulatorWithoutAppleSignIn("preview", { RECALL_IOS_SIMULATOR: "1" })).toThrow(
+    expect(() => simulatorWithoutAppleSignIn("preview", { PHONIA_IOS_SIMULATOR: "1" })).toThrow(
       /not a preview build/,
     );
     expect(simulatorWithoutAppleSignIn("production", {})).toBe(false);
@@ -58,7 +58,7 @@ describe("easBuildConfig", () => {
   });
 
   const completeEnv = {
-    EXPO_PUBLIC_API_URL: "https://api.recall.test",
+    EXPO_PUBLIC_API_URL: "https://api.phonia.test",
     EXPO_PUBLIC_EAS_PROJECT_ID: "project-id",
     EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID: "web.apps.googleusercontent.com",
     EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID: "ios.apps.googleusercontent.com",
@@ -99,7 +99,7 @@ describe("easBuildConfig", () => {
     EXPO_PUBLIC_SENTRY_DSN: "https://key@o1.ingest.sentry.io/2",
     EAS_BUILD: "true",
     SENTRY_ORG: "recall",
-    SENTRY_PROJECT: "recall-mobile",
+    SENTRY_PROJECT: "phonia-mobile",
     SENTRY_AUTH_TOKEN: "sntrys_test",
   };
 
@@ -156,7 +156,7 @@ describe("easBuildConfig", () => {
   it("names the Sentry org and project for the upload step when they are set", () => {
     expect(sentryPluginOptions(sentryUpload)).toEqual({
       organization: "recall",
-      project: "recall-mobile",
+      project: "phonia-mobile",
     });
     expect(sentryPluginOptions({ SENTRY_ORG: " recall ", SENTRY_PROJECT: "" })).toEqual({
       organization: "recall",
@@ -170,13 +170,13 @@ describe("easBuildConfig", () => {
 
   it("checks an over-the-air update like a release build of the same profile", () => {
     expect(releaseProfile({ EAS_BUILD_PROFILE: "preview" })).toBe("preview");
-    expect(releaseProfile({ RECALL_UPDATE_PROFILE: "production" })).toBe("production");
+    expect(releaseProfile({ PHONIA_UPDATE_PROFILE: "production" })).toBe("production");
     expect(
-      releaseProfile({ EAS_BUILD_PROFILE: "preview", RECALL_UPDATE_PROFILE: "production" }),
+      releaseProfile({ EAS_BUILD_PROFILE: "preview", PHONIA_UPDATE_PROFILE: "production" }),
     ).toBe("preview");
     expect(releaseProfile({})).toBe("");
     // A production update without its API URL fails instead of shipping a broken bundle.
-    const profile = releaseProfile({ RECALL_UPDATE_PROFILE: "production" });
+    const profile = releaseProfile({ PHONIA_UPDATE_PROFILE: "production" });
     expect(() => requireReleaseBuildSecrets(profile, "", {})).toThrow(/EXPO_PUBLIC_API_URL/);
   });
 

@@ -2,8 +2,8 @@
 
 People rarely ask in full the first time ("What is the best country?"). When the best answer
 depends on what the user means or wants (what "best" means to them, their goal, budget, level),
-Recall starts the answer, then asks with a card of choices instead of a paragraph of questions.
-The user taps, presses the card's button, and the picks go back as their next message; Recall
+Phonia starts the answer, then asks with a card of choices instead of a paragraph of questions.
+The user taps, presses the card's button, and the picks go back as their next message; Phonia
 then answers with them in mind. It works like ChatGPT's; decided with the user on 2026-10-23
 (replacing the first/after card of 2026-10-22).
 
@@ -17,20 +17,20 @@ Three parts, in this order:
 2. **The ask.** A bold lead-in on its own line that fits the start and the card: **But let me
    ask you one thing.** for one question, **But let me ask you a couple of things.** for two or
    three, and no "But" when no options came before it (**Let me ask you one thing.**). Then one
-   short line naming what Recall needs (What do you mean by *best*?).
+   short line naming what Phonia needs (What do you mean by *best*?).
 3. **The card**, last.
 
-Recall asks only when the picks would change the answer in a real way. When a good general
+Phonia asks only when the picks would change the answer in a real way. When a good general
 answer exists it gives it in full and does not ask. **Never** for a plain fact, a sum or a
 STEM problem, a greeting, a reminder, a picture, a draft whose purpose was given, a question
-about an idea or project the chat is already about (it takes Recall's view), or a message
+about an idea or project the chat is already about (it takes Phonia's view), or a message
 that is merely garbled (that keeps its one-line "did you mean…?" reply,
 `prompt_constants/unclear.py`). It never asks what a plain word means ("clean food",
 "healthy", "cheap") when the everyday sense, or the chat's, is enough to answer, and it reads
 a typo as the word meant. Live (2026-10-25): "Don't uses want to see clean food?", in a chat
 about a grocery app that scores food, got a card asking what "clean food" means. "Best" is
 different: what it means is the user's own criterion. Memory, the chat so far and the
-question itself come first: Recall never asks what it already knows.
+question itself come first: Phonia never asks what it already knows.
 
 ## The card
 

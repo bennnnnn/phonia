@@ -12,7 +12,7 @@ create() {
 }
 
 EPIC=$(gh issue create \
-  --title "Code review tracker: Recall end-to-end (claude/recall-app-review-tge8il)" \
+  --title "Code review tracker: Phonia end-to-end (claude/recall-app-review-tge8il)" \
   --label "enhancement,priority/high" \
   --body "$(cat <<'EOF'
 Tracking issue for the end-to-end code review (34 findings + nits).

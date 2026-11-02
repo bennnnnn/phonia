@@ -134,7 +134,7 @@ _FILLER_WORDS = frozenset(
         "hey",
         "hi",
         "hello",
-        "recall",
+        "phonia",
         "por",
         "favor",
         "s'il",

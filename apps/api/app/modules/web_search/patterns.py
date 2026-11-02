@@ -243,7 +243,7 @@ _PERSONAL_PLANNING = re.compile(
     re.IGNORECASE,
 )
 
-# The user's own calendar or schedule. Recall cannot see it and neither can the web.
+# The user's own calendar or schedule. Phonia cannot see it and neither can the web.
 _OWN_CALENDAR = re.compile(
     r"\b("
     r"google calendar|my calendar|check my calendar|connect my calendar|"

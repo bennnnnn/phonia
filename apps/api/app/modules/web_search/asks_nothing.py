@@ -23,7 +23,7 @@ import re
 
 from app.modules.web_search.patterns import _LATEST_NEWS, _NEWS, collapse_ws, is_weather_request
 
-_LEAD_IN = r"(?:(?:hey|hi|hello|ok(?:ay)?|so|and|also|but|well|please|recall|there)\b[\s,!.]*)*"
+_LEAD_IN = r"(?:(?:hey|hi|hello|ok(?:ay)?|so|and|also|but|well|please|phonia|there)\b[\s,!.]*)*"
 # "Can you tell me", "do you know": a polite way in to the question itself.
 _POLITE = re.compile(
     r"^(?:(?:can|could|would|will)\s+you\s+(?:please\s+)?(?:tell\s+me\s+)?"
@@ -101,10 +101,10 @@ _PLACE = re.compile(
     r"|\b(?:in|around|for)\s+my\s+(?:area|city|town|country|neighbou?rhood|region|state)\b",
     re.IGNORECASE,
 )
-# Something named in the world ("Kenya", "London"). "I" is the user, Recall is
+# Something named in the world ("Kenya", "London"). "I" is the user, Phonia is
 # the assistant, and a day or month is the calendar.
 _NAMED = re.compile(
-    r"(?<!^)(?<![.!?]\s)\b(?!I\b|Recall\b|(?:Mon|Tues|Wednes|Thurs|Fri|Satur|Sun)day\b|"
+    r"(?<!^)(?<![.!?]\s)\b(?!I\b|Phonia\b|(?:Mon|Tues|Wednes|Thurs|Fri|Satur|Sun)day\b|"
     r"(?:January|February|March|April|May|June|July|August|September|October|November|"
     r"December)\b)[A-Z][a-z]+"
 )

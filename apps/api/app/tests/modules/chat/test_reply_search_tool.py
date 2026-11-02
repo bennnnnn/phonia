@@ -376,7 +376,7 @@ def test_a_live_data_denial_is_read(reply: str) -> None:
         "I can't check your calendar, but you could add it to To-do.",
         "The Bears beat the Patriots 30-24 on Thursday.",
         # Talk about a denial, not one (review, 2026-10-25).
-        'Some assistants say "I can\'t access real-time data", but Recall can search.',
+        'Some assistants say "I can\'t access real-time data", but Phonia can search.',
         "A good line is: 'I don't have real-time information on that.'",
         "When I can't check live scores I say so.",
         # A long answer that mentions live data in passing is an answer.

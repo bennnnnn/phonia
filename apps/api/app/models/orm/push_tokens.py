@@ -25,7 +25,7 @@ class PushToken(Base):
     platform: Mapped[str] = mapped_column(String(20), nullable=False)
     device_id: Mapped[str | None] = mapped_column(String(128), nullable=True)
     # Null until this install registers after creating the split Android channels.
-    # Older builds only have recall-notifications; a channelId they never created
+    # Older builds only have phonia-notifications; a channelId they never created
     # is dropped by Expo.
     android_channels: Mapped[str | None] = mapped_column(String(32), nullable=True)
     updated_at: Mapped[datetime] = mapped_column(

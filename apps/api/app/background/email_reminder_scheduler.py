@@ -18,7 +18,7 @@ from app.modules.notifications import reminder_email as reminder_emails
 logger = logging.getLogger(__name__)
 
 _NAME = "email_reminders"
-LOCK_KEY = "recall:email_reminders:lock"
+LOCK_KEY = "phonia:email_reminders:lock"
 INTERVAL_SECONDS = 60
 # Refreshed before every send (see push_scheduler.LOCK_TTL_SECONDS).
 LOCK_TTL_SECONDS = 2 * INTERVAL_SECONDS

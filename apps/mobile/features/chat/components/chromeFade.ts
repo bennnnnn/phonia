@@ -33,7 +33,7 @@ function clampUnit(value: number, min: number, max: number): number {
 
 /**
  * Drawer header veil. Solid through the status bar, then dissolves across the
- * Recall / search row so chat titles blur as they slide underneath.
+ * Phonia / search row so chat titles blur as they slide underneath.
  */
 export function drawerHeaderFade(
   theme: Theme,

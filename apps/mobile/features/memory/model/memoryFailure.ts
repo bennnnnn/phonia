@@ -26,7 +26,7 @@ export function memoryFailure(error: unknown): MemoryFailure {
   if (error.code === "rate_limited") return "limited";
   // The day's spend cap: "couldn't be updated. Try again." asked for a retry that fails all day.
   if (error.code === "memory_spend_cap") return "paused";
-  // Recall down: a Redis outage said "Too many memory changes", "being updated" (the write
+  // Phonia down: a Redis outage said "Too many memory changes", "being updated" (the write
   // lock) or "couldn't be updated" (the spend cap's refusal).
   if (isServiceUnavailable(error)) return "unavailable";
   if (error.status === 404) return "gone";

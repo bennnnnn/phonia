@@ -170,7 +170,7 @@ async def test_the_global_rest_limit_skips_google_and_apple_but_not_dev_login(si
     loopback = sign_in.client("127.0.0.1")
     fake = AuthResponse(access_token="a", refresh_token="r", user=_user_out())
     with patch.object(auth_service, "login_dev", AsyncMock(return_value=fake)):
-        assert loopback.post("/auth/dev", json={"email": "dev@recall.local"}).status_code == 200
+        assert loopback.post("/auth/dev", json={"email": "dev@phonia.local"}).status_code == 200
     assert await fake_redis.get("rest_rl:ip:127.0.0.1") == "1"
 
 
@@ -180,7 +180,7 @@ def test_dev_login_keeps_its_per_address_limit(sign_in):
     fake = AuthResponse(access_token="a", refresh_token="r", user=_user_out())
     with patch.object(auth_service, "login_dev", AsyncMock(return_value=fake)):
         codes = [
-            client.post("/auth/dev", json={"email": f"dev-{i}@recall.local"}).status_code
+            client.post("/auth/dev", json={"email": f"dev-{i}@phonia.local"}).status_code
             for i in range(signin_limit.DEV_PER_IP_LIMIT + 1)
         ]
     assert codes == [200] * signin_limit.DEV_PER_IP_LIMIT + [429]

@@ -1,6 +1,6 @@
-# CLAUDE.md — Recall (Personal AI Chat)
+# CLAUDE.md — Phonia (STEM tutor)
 
-A personal mobile AI chat app that remembers the user's preferences, projects, and context across chats. Mobile = Expo React Native. Backend = FastAPI. Models routed via LiteLLM. This file is the **engineering map** (rules, layers, catalog, seams). Product status lives in [FEATURES.md](./FEATURES.md). Architecture migration: [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md). Math: [docs/math.md](./docs/math.md) (tutoring roadmap: [docs/MATH_TUTORING_TICKETS.md](./docs/MATH_TUTORING_TICKETS.md)). Physics: [docs/physics.md](./docs/physics.md) (interactive scenes roadmap: [docs/INTERACTIVE_SCENES_TICKETS.md](./docs/INTERACTIVE_SCENES_TICKETS.md)). Chemistry: [docs/chemistry.md](./docs/chemistry.md). Making math/physics/chemistry true peer subjects at the type level: [docs/SUBJECT_SEPARATION_TICKETS.md](./docs/SUBJECT_SEPARATION_TICKETS.md) (complete: `PhysicsIntent` is a peer of `MathIntent`). Engineering standards (layers, subject isolation, size limits, CI gates): [docs/ENGINEERING_STANDARDS.md](./docs/ENGINEERING_STANDARDS.md). Structure work from the 2026-10-31 review (chat's modules below it, one decision per turn, a subject registry, the phone's thread owner), each proven to change no behaviour: [docs/STRUCTURE_TICKETS.md](./docs/STRUCTURE_TICKETS.md). Launch: [docs/PRODUCTION.md](./docs/PRODUCTION.md), [docs/SCALING.md](./docs/SCALING.md), [docs/QA_MATRIX.md](./docs/QA_MATRIX.md), [docs/ROLLBACK.md](./docs/ROLLBACK.md). Security: [SECURITY.md](./SECURITY.md).
+A mobile AI tutor for students in maths, physics and chemistry, which remembers each student's grade, subjects, goals and progress across chats. It started as a copy of Recall (bennnnnn/recall). Mobile = Expo React Native. Backend = FastAPI. Models routed via LiteLLM. This file is the **engineering map** (rules, layers, catalog, seams). Product status lives in [FEATURES.md](./FEATURES.md). Architecture migration: [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md). Math: [docs/math.md](./docs/math.md) (tutoring roadmap: [docs/MATH_TUTORING_TICKETS.md](./docs/MATH_TUTORING_TICKETS.md)). Physics: [docs/physics.md](./docs/physics.md) (interactive scenes roadmap: [docs/INTERACTIVE_SCENES_TICKETS.md](./docs/INTERACTIVE_SCENES_TICKETS.md)). Chemistry: [docs/chemistry.md](./docs/chemistry.md). Making math/physics/chemistry true peer subjects at the type level: [docs/SUBJECT_SEPARATION_TICKETS.md](./docs/SUBJECT_SEPARATION_TICKETS.md) (complete: `PhysicsIntent` is a peer of `MathIntent`). Engineering standards (layers, subject isolation, size limits, CI gates): [docs/ENGINEERING_STANDARDS.md](./docs/ENGINEERING_STANDARDS.md). Structure work from the 2026-10-31 review (chat's modules below it, one decision per turn, a subject registry, the phone's thread owner), each proven to change no behaviour: [docs/STRUCTURE_TICKETS.md](./docs/STRUCTURE_TICKETS.md). Launch: [docs/PRODUCTION.md](./docs/PRODUCTION.md), [docs/SCALING.md](./docs/SCALING.md), [docs/QA_MATRIX.md](./docs/QA_MATRIX.md), [docs/ROLLBACK.md](./docs/ROLLBACK.md). Security: [SECURITY.md](./SECURITY.md).
 
 **This is not a week-one MVP.** Approximate size (app code, excluding generated/`node_modules`):
 
@@ -23,7 +23,7 @@ Do not review or extend the app from the historical MVP screen list. Use **Domai
 
 ## Service Overview
 
-**What it does:** authenticated users chat with LLMs; the app persists chats, auto-generates titles, injects structured personal memory, and layers productivity (to-dos and reminders) plus rich rendering. Recall does not connect to calendars or email inboxes.
+**What it does:** authenticated users chat with LLMs; the app persists chats, auto-generates titles, injects structured personal memory, and layers productivity (to-dos and reminders) plus rich rendering. Phonia does not connect to calendars or email inboxes.
 
 **Domain concepts:**
 
@@ -49,7 +49,7 @@ Do not review or extend the app from the historical MVP screen list. Use **Domai
 Monorepo:
 
 ```
-recall/
+phonia/
   apps/
     mobile/        # Expo React Native — app/ routes + features/ product ownership
     api/           # FastAPI — modules/ product ownership + shared infrastructure

@@ -6,7 +6,7 @@
 import { DEFAULT_ACCENT, normalizeAccentPreference, type AccentPreference } from "@/lib/accent";
 import { prefFilePath, readPrefFile, readPrefFileSync, writePrefFile } from "@/lib/filePrefs";
 
-const FILE_NAME = "recall.accent-preference.txt";
+const FILE_NAME = "phonia.accent-preference.txt";
 
 let cachedAccent: AccentPreference | null = null;
 

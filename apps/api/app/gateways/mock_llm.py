@@ -6,7 +6,7 @@ from app.core.config import Settings
 from app.core.validation import normalize_chat_title
 
 MOCK_REPLY = (
-    "I'm Recall (mock mode). Add OPENROUTER_API_KEY in apps/api/.env "
+    "I'm Phonia (mock mode). Add OPENROUTER_API_KEY in apps/api/.env "
     "to get real responses. Memory, history, and quotas still work end-to-end."
 )
 

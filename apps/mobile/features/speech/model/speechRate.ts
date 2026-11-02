@@ -7,7 +7,7 @@ import { prefFilePath, readPrefFile, writePrefFile } from "@/lib/filePrefs";
 export const SPEECH_RATES = [0.75, 1, 1.25, 1.5] as const;
 export type SpeechRate = (typeof SPEECH_RATES)[number];
 
-const FILE_NAME = "recall.speech-rate.txt";
+const FILE_NAME = "phonia.speech-rate.txt";
 
 let cachedRate: SpeechRate | null = null;
 

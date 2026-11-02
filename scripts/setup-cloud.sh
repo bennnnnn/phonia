@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Provision Neon + Upstash for Recall (no Docker).
+# Provision Neon + Upstash for Phonia (no Docker).
 #
 # Option A — paste URLs manually:
 #   ./scripts/setup-cloud.sh
@@ -84,7 +84,7 @@ provision_upstash() {
 
 prompt_manual() {
   echo ""
-  echo "=== Recall cloud setup (manual) ==="
+  echo "=== Phonia cloud setup (manual) ==="
   echo ""
   echo "1. Neon:  https://console.neon.tech → New Project → name it 'recall'"
   echo "   Copy the connection string (pooled is fine)."

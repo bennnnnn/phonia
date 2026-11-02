@@ -45,7 +45,7 @@ it("never requests OS permission from background synchronization", async () => {
 });
 
 it.each([
-  [false, "recall_notify.wav"],
+  [false, "phonia_notify.wav"],
   [true, "default"],
 ])("a reminder in Expo Go %s plays %s, never a sound Expo Go lacks", async (expoGo, sound) => {
   mockExpoGo = expoGo;

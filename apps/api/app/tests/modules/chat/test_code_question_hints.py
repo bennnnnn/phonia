@@ -238,7 +238,7 @@ async def test_code_ink_reminder_sits_next_to_the_question() -> None:
     assert CODE_EXPLAIN_HINT in system_prompt(messages)
 
 
-# "Run this python code: print(1+1)" got a bare "2", as if Recall had run it.
+# "Run this python code: print(1+1)" got a bare "2", as if Phonia had run it.
 @pytest.mark.parametrize(
     "text",
     [

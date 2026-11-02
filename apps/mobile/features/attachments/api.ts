@@ -93,7 +93,7 @@ export async function attachmentRecordExists(
 
 const ATTACHMENT_UPLOAD_TIMEOUT_MS = 120_000;
 
-/** API uploads share refresh/retry; presigned storage requests never receive Recall credentials. */
+/** API uploads share refresh/retry; presigned storage requests never receive Phonia credentials. */
 export async function uploadAttachmentBytes(
   token: string,
   target: { attachment_id: string; upload_url: string; api_upload: boolean; headers?: Record<string, string> },

@@ -67,10 +67,10 @@ jest.mock("@/features/chat/components/MarkdownErrorBoundary", () => ({
   MarkdownErrorBoundary: ({ children }: { children: React.ReactNode }) =>
     children,
 }));
-jest.mock("@/features/chat/components/RecallTypingIndicator", () => {
+jest.mock("@/features/chat/components/PhoniaTypingIndicator", () => {
   const { View: MockView } = jest.requireActual("react-native") as typeof import("react-native");
   return {
-    RecallTypingIndicator: ({ phase }: { phase?: string }) => (
+    PhoniaTypingIndicator: ({ phase }: { phase?: string }) => (
       <MockView testID={`typing-indicator-${phase ?? "none"}`} />
     ),
   };

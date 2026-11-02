@@ -60,7 +60,7 @@ QUOTE_FORMAT_HINT = (
 )
 
 
-# One layout contract. The model writes Markdown; Recall upgrades presentation.
+# One layout contract. The model writes Markdown; Phonia upgrades presentation.
 # Do NOT teach steps / comparison / details / answer / tip fences as layout.
 # A quote card is only a citation. A callout is only Warning or Note.
 FORMAT_CONTRACT = (

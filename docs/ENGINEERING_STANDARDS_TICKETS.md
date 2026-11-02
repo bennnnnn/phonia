@@ -1,4 +1,4 @@
-# Recall — Engineering standards tickets
+# Phonia — Engineering standards tickets
 
 The October 2026 audit measured the production code in `apps/api/app` and `apps/mobile` against
 the engineering-standards policy: single responsibility, one authoritative implementation of each
@@ -1045,12 +1045,12 @@ not counted. ES-27 covers `layoutSimulationScene` and `readScene`, ES-36 covers
   `except` did; each decline is logged at debug (function, exception type, 120 characters of
   message) and counted in an in-process `Counter` keyed by (function, exception type),
   `decline_counts()` (per process: a SymPy worker keeps its own; nothing exports it yet).
-  `RECALL_STRICT_DECLINES=1`, which `app/tests/conftest.py` sets unless the run already set it,
+  `PHONIA_STRICT_DECLINES=1`, which `app/tests/conftest.py` sets unless the run already set it,
   re-raises an `AttributeError`, `NameError`, `KeyError`, `ImportError`, `AssertionError` or
   `TypeError` raised in our code; the same types raised in SymPy, mpmath or `lambdify` code (the
   nearest frame outside the standard library, or a class SymPy defines) still decline. The
   behavior tests and sweeps keep production's declines unless the variable is set
-  (`app/tests/behavior/conftest.py`; `RECALL_STRICT_DECLINES=1 uv run python -m
+  (`app/tests/behavior/conftest.py`; `PHONIA_STRICT_DECLINES=1 uv run python -m
   app.tests.behavior.stem_sweep math`). All 16 handlers of `traces.py` and `key_steps.py` moved (4
   decorated functions, 12 blocks). Strict mode over the capture's direct grid of both files found
   two bugs, each fixed with a regression test:
@@ -1123,7 +1123,7 @@ not counted. ES-27 covers `layoutSimulationScene` and `readScene`, ES-36 covers
   - It catches SymPy and arithmetic failures, logs at debug with the function name, and counts a
     metric.
   - It re-raises `AttributeError`, `NameError`, `TypeError`-from-our-code and `KeyError` when
-    `RECALL_STRICT_DECLINES=1`, which `conftest.py` sets for the test run.
+    `PHONIA_STRICT_DECLINES=1`, which `conftest.py` sets for the test run.
   - Migrate one file per PR.
 - **Tests:** the full math suite under strict mode. Each programming error it surfaces gets its
   own regression test.

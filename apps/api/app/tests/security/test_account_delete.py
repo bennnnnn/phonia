@@ -86,7 +86,7 @@ async def test_delete_account_leaves_nothing_of_the_user_behind(world: World) ->
     # follow-up questions it drops (keyed by reply id, so only the rows could find them).
     sweeps = [
         json.loads(fields["payload"])
-        for _id, fields in await redis.xrange("recall:jobs")
+        for _id, fields in await redis.xrange("phonia:jobs")
         if fields.get("type") == "storage_sweep"
     ]
     assert len(sweeps) == 1

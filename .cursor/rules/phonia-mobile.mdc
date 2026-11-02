@@ -1,10 +1,10 @@
 ---
-description: Recall Expo mobile app conventions
+description: Phonia Expo mobile app conventions
 globs: apps/mobile/**/*.{ts,tsx}
 alwaysApply: false
 ---
 
-# Recall Mobile (Expo)
+# Phonia Mobile (Expo)
 
 ~50k TS/TSX excluding tests. Migrated product code lives in `features/<feature>/`; Expo `app/`
 files are route adapters. History/search = drawer.

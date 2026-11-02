@@ -1,6 +1,6 @@
 """What ``repository.list_scored_for_user`` returns, for facts built in memory.
 
-Recall ranks in SQL now. A test gives a fact its stored vector with ``embedding_json``
+Phonia ranks in SQL now. A test gives a fact its stored vector with ``embedding_json``
 (a transient row keeps it) and this pairs each fact with the cosine similarity Postgres
 would compute against ``query``, or None for a fact with no vector.
 """

@@ -9,7 +9,7 @@ class AuthSettings(BaseModel):
     # (gateways/signing_keys.py). The google-auth default HTTP timeout is 120s; a
     # slow fetch now fails fast as a 503 instead of holding the sign-in (and a thread).
     google_auth_timeout_seconds: float = 10.0
-    apple_client_id: str = "com.recall.app"
+    apple_client_id: str = "com.phonia.app"
     # Sign in with Apple key (the .p8 contents): account delete revokes the Apple grant.
     apple_team_id: str = ""
     apple_key_id: str = ""

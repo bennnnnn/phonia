@@ -1,4 +1,4 @@
-# Recall maths pipeline
+# Phonia maths pipeline
 
 Server-side SymPy verifies and samples; the mobile app only renders. Do not add on-device solving.
 
@@ -114,8 +114,8 @@ base `ln(x)/ln(10)` as `\log_{10} x`. An answer that still has a variable stays 
 - **Simple roots/powers:** one exact equality chain and an optional approximation are usually enough. Group fractional exponents (`9^{1/6}`); avoid duplicated answer headings and Note/Tip cards that restate the result.
 - **Steps / intermediates:** maths numbers each move, in the verified equation lesson and in a reply the model writes itself (`MATH_WORKOUT_PROMPT_RULE` in `services/workout.py`). The number is the instruction (the amount in bold), then the equation with that move written on both sides, then the simplified equation, each on its own line. `4x + 4 = 0` is subtract 4 (`4x + 4 - 4 = 0 - 4`, then `4x = -4`), then divide by 4 (`4x/4 = -4/4`, then `x = -1`). A `Simplify` row is that second line, not its own number. Other subjects keep one state per line with the move as a short note. Inline `$...$` only (no backticks around `$`, no ` ```math` inside a section).
 - **Standalone display:** ` ```math` OK for a final equation on its own lines.
-- **Diagrams:** Recall attaches ` ```geometry` / ` ```graph` from `canonical_fence`. The model describes the figure in words (`$...$`); it must not emit diagram JSON.
-- **Final algebra answer:** Recall attaches ` ```answer ` from `canonical_answer` after the stream. The model writes the result in `$...$`.
+- **Diagrams:** Phonia attaches ` ```geometry` / ` ```graph` from `canonical_fence`. The model describes the figure in words (`$...$`); it must not emit diagram JSON.
+- **Final algebra answer:** Phonia attaches ` ```answer ` from `canonical_answer` after the stream. The model writes the result in `$...$`.
 
 ## Composer input (mobile)
 

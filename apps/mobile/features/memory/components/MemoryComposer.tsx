@@ -23,7 +23,7 @@ type Props = {
 };
 
 /**
- * "Tell Recall what to change": a plain-words edit box docked under the memory
+ * "Tell Phonia what to change": a plain-words edit box docked under the memory
  * pages. On iOS it rides above the keyboard; Android resizes the window itself.
  */
 export function MemoryComposer({ placeholder, onSubmit }: Props) {

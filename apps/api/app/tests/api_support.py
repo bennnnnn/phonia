@@ -18,7 +18,7 @@ def api_user(**kw: Any) -> MagicMock:
     """A ``User`` with every column the account endpoints read; any can be given."""
     u = MagicMock(spec=User)
     u.id = kw.get("id", uuid4())
-    u.email = kw.get("email", "test@recall.local")
+    u.email = kw.get("email", "test@phonia.local")
     u.name = kw.get("name", "Tester")
     u.avatar_url = None
     u.plan = kw.get("plan", "free")

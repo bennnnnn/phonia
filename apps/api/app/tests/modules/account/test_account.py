@@ -18,7 +18,7 @@ from app.main import create_app
 def _fake_user():
     u = MagicMock()
     u.id = uuid4()
-    u.email = "t@recall.local"
+    u.email = "t@phonia.local"
     u.name = "Tester"
     u.created_at = datetime(2024, 1, 1)
     return u
@@ -128,7 +128,7 @@ _UNAVAILABLE = {
 @pytest.mark.parametrize("step", ["carry", "backstop_sweep"])
 def test_delete_account_with_redis_failing_is_refused_503_unavailable(step: str) -> None:
     """Redis failing before the rows commit refuses the delete with the shared outage body:
-    the phone says Recall is unavailable and to try again. The carry-over was best-effort
+    the phone says Phonia is unavailable and to try again. The carry-over was best-effort
     (its failure lost the day's counters, ``security/test_quota_carryover.py``). A refusal
     undoes nothing, sessions included: the retry needs no sign-in."""
     user = _fake_user()

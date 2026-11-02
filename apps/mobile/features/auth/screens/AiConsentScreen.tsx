@@ -19,7 +19,7 @@ import { Icon } from "@/ui/icons/Icon";
 import { IconSize } from "@/ui/icons/sizes";
 
 /**
- * What Recall sends to which outside service, with agree, sign out or delete. A
+ * What Phonia sends to which outside service, with agree, sign out or delete. A
  * sign-in agrees by its tap (the line on LoginScreen), so this asks only an account
  * without the agreement: one from before that, or one that withdrew in Data controls.
  * Agreeing here keeps the user signed in; signing out leads back to the sign-in page,

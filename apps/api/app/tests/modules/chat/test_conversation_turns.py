@@ -27,7 +27,7 @@ from app.modules.turn_reading.routing import is_lightweight_chat_turn
         "hi, how's it going",
         "hey how r u",
         "Morning!",
-        "good evening, Recall",
+        "good evening, Phonia",
         "what’s up?",
         "how have you been?",
         "how was your weekend?",

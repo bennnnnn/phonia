@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 
 class InfrastructureSettings(BaseModel):
-    database_url: str = "postgresql+asyncpg://postgres:dev@localhost:5432/recall"
+    database_url: str = "postgresql+asyncpg://postgres:dev@localhost:5432/phonia"
     redis_url: str = "redis://localhost:6379"
     # Connections per process (core/redis.py), a blocking pool each: the request
     # client, and the worker's jobs client (one blocked XREADGROUP, plus the leases,

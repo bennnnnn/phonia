@@ -19,20 +19,20 @@ describe("notification channels", () => {
     await ensureAndroidNotificationChannels({ reminders: "Reminders" });
     expect(Notifications.setNotificationChannelAsync).toHaveBeenCalledTimes(1);
     expect(Notifications.setNotificationChannelAsync).toHaveBeenCalledWith(
-      "recall-reminders-v2",
-      expect.objectContaining({ name: "Reminders", importance: 4, sound: "recall_notify.wav" }),
+      "phonia-reminders-v2",
+      expect.objectContaining({ name: "Reminders", importance: 4, sound: "phonia_notify.wav" }),
     );
   });
 
   it.each([
-    [false, "recall_notify.wav"],
+    [false, "phonia_notify.wav"],
     [true, "default"],
   ])("Expo Go %s plays %s, since Expo Go has none of the app's sounds", async (expoGo, sound) => {
     mockExpoGo = expoGo;
     expect(notificationSound()).toBe(sound);
     await ensureAndroidNotificationChannels({ reminders: "Reminders" });
     expect(Notifications.setNotificationChannelAsync).toHaveBeenCalledWith(
-      "recall-reminders-v2",
+      "phonia-reminders-v2",
       expect.objectContaining({ sound }),
     );
   });

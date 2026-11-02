@@ -41,7 +41,7 @@ SEQUENCE_FORMAT_HINT = (
 
 
 DIAGRAM_KIND_HINT = (
-    "This turn names a diagram Recall draws from a ```mermaid fence. Lead with that "
+    "This turn names a diagram Phonia draws from a ```mermaid fence. Lead with that "
     "fence — never an image, HTML/SVG, ASCII art, or a list in its place, and no joke "
     "setup. At most one short sentence, then the fence. Use the Mermaid type that fits "
     "what they named:\n"

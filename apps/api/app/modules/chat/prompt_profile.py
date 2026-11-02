@@ -33,7 +33,7 @@ def should_include_profile_email(query_text: str | None) -> bool:
     return is_email_or_message_request(cleaned)
 
 
-# The user sends the drafts Recall writes, so the sign-off is their own name.
+# The user sends the drafts Phonia writes, so the sign-off is their own name.
 _SIGN_DRAFTS_WITH = (
     "Sign emails and messages the user will send as {first}. Never write [Your Name] "
     "or another placeholder."

@@ -2,7 +2,7 @@ import type { IconName } from "@/ui/icons/names";
 import type { User } from "@/lib/api/types";
 
 /**
- * True when a signed-in account has not yet agreed to what Recall sends to outside
+ * True when a signed-in account has not yet agreed to what Phonia sends to outside
  * AI and search services (App Store 5.1.2(i), Play User Data). A sign-in from this
  * app agrees by its tap (features/auth/api.ts), so this is an account from before
  * that, or one that withdrew in Data controls. The server answers null until then. Undefined comes only from an older server or a
