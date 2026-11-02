@@ -2,7 +2,7 @@
 
 "Subtract 5 from 25% of 80" is 25% of 80 - 5; read from the percent alone it verified 20.
 So did "halve 25% of 80" and "the square root of 25% of 80", and "Is 15 less than 25% of
-80?" asks a comparison, not a sum (2026-10-31, the model reader's translated questions
+80?" asks a comparison, not a sum (2026-10-31, translated questions
 and their review). The clause that holds the percent is read only when it is fully read:
 a stem from the list below, then one of "subtract A from", "take A (away) from", "A
 subtracted from", "add A to", "A more/less than", or nothing. Anything else declines.

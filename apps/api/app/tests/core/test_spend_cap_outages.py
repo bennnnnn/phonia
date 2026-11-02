@@ -191,8 +191,6 @@ def test_every_spend_gate_is_listed() -> None:
         "modules/chat/related_prompts.py",
         # Skips the tool loop: the turn was admitted. modules/chat/test_post_turn_spend.py.
         "modules/chat/stream_paths.py",
-        # Skips the model reader's shadow read: nothing waits on it. test_model_read_shadow.py.
-        "modules/chat/turn_prep/model_read_shadow.py",
         # The chat turn: the socket's and SSE's unavailable frame. test_turn_quota_reserve.py.
         "modules/chat/turn_resources.py",
         # Image generation: "image generation" above, and the chat's picture turns.

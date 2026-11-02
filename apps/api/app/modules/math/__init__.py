@@ -56,6 +56,4 @@ _MODULE_EXPORTS = (
     "tools.extract",
     "tools.prompt",
     "tools.school.curve_points",
-    # The model reader (modules/model_reader) keeps maths' own typed read.
-    "tools.llm_extract",
 )

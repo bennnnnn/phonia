@@ -22,7 +22,6 @@ from app.modules.chat.turn_prep.followups import (
 )
 from app.modules.chat.turn_prep.instant import location_not_set_reply
 from app.modules.chat.turn_prep.mode import _should_augment_web_and_tools
-from app.modules.chat.turn_prep.model_read_shadow import start_model_read_shadow
 from app.modules.chat.turn_prep.reading import plan_of
 from app.modules.chat.turn_prep.request import TurnIdentity, TurnRequest
 from app.modules.chat.whole_question import whole_question_fetch
@@ -103,8 +102,6 @@ async def gather_and_inject(
         has_image_attachment=request.has_image_attachment,
         image_math_extract=request.image_math_extract,
     )
-    if instant_reply is None:
-        start_model_read_shadow(request.content, settings, redis, subject=detected_subject)
     needs_math, needs_search, needs_chem = _turn_needs(
         request, settings, prompt_messages, followup, plan, detected_subject
     )

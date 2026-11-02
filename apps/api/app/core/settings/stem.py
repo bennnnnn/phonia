@@ -61,15 +61,6 @@ class StemSettings(BaseModel):
     # (two 3 s translation attempts), so it only stops a call that outlives its
     # own timeout; a finished extraction is used when the translation runs long.
     math_model_intent_budget_seconds: float = 7.0
-    # A model reads each question beside the patterns, and the turn's trace line says
-    # whether the two agree (docs/MODEL_READER.md). Off: a measurement, not a feature;
-    # nothing it reads reaches a reply. Each of its two calls has this long: the measured
-    # p95 of a call (docs/MODEL_READER.md); the turn never waits for the read.
-    model_reader_shadow_enabled: bool = False
-    # The share of STEM turns read in shadow when it is on (0 none, 1 every one): each read
-    # costs two model calls.
-    model_reader_shadow_rate: float = 0.1
-    model_reader_timeout_seconds: float = 3.5
     # POST /{math,physics,chemistry}/scan/read runs OCR (Mathpix, then vision)
     # so the student can confirm what the camera read before it is solved.
     # Per user, per hour, shared by every subject's reader (it was

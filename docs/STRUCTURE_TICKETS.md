@@ -227,8 +227,6 @@ for presentation and the post-turn jobs, not for reading.
     confirmations, lightweight turns, locale cues, code syntax, the emoji pattern.
   - `prompt_constants/` keeps only prompt copy.
   - Other modules import `turn_reading`, never chat.
-  - The model reader (`docs/MODEL_READER.md`) is not a pure reader: it calls a model and reads
-    the subjects' menus, so it lives in `modules/model_reader/`, never here.
 - **Seam:** the place ST-05's arbiter lives, and the one list of "what a message says" other
   modules may ask.
 - **Proof:** the decision diff is unchanged, and the #2151 cycle baseline shrinks again (the 50-module
@@ -591,8 +589,8 @@ printed "no decision changed".
     injection. `tool_loop/calls.py` asks maths' `tool` where it imported `tool_check`,
     `text_plot` and the trig-domain check.
   - `MathImageExtract` reaches chat through the registry, the type of what `photo` reads.
-    Maths' public list keeps only what the order, the solving types and the model reader
-    import, beside `subject`.
+    Maths' public list keeps only what the order and the solving types import, beside
+    `subject`.
   - Decision diff over 5,232 turns: no decision changed.
 - **Status, step 2e (money as a peer): done.** Chat imports no subject: 4 files → 0.
   - `modules/money/subject.py` holds `MoneyPeer` (`prepare`, `prepare_standing`, `finish`,

@@ -3,7 +3,7 @@
 A student writes those velocities $v_i$ and $v_f$: $v_f = v_i + at$, not $v = u + at$.
 The catalog and the solvers keep their short letters (``u`` and ``v`` in the
 constant-acceleration laws, ``v_1`` and ``v_2`` for before and after an impulse),
-because those letters are what the binder, the model reader and the solvers name.
+because those letters are what the binder and the solvers name.
 This table is the one place that decides what the reply shows instead: every row a
 solver stores (``working.attach_recorded_working``), and every symbol the direct
 reply takes from the catalog (the givens, their meanings, Required, the law's own

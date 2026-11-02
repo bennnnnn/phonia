@@ -137,16 +137,8 @@ def to_math_intent(extract: LLMMathExtract) -> MathIntent | None:
 async def llm_extract_math_intent(
     text: str,
     settings: Settings,
-    *,
-    usage: dict[str, int] | None = None,
-    timeout_seconds: float | None = None,
-    alone: bool = False,
 ) -> MathIntent | None:
-    """One bounded structured-extraction call. Never raises into the chat path.
-
-    The model reader (``modules/model_reader``) counts its tokens (``usage``), gives it its
-    own time (``timeout_seconds``) and asks it ``alone``: no fallback model, and a timeout
-    logged quietly, since nothing waits on it."""
+    """One bounded structured-extraction call. Never raises into the chat path."""
     if not settings.math_llm_extract_enabled:
         return None
     cleaned = text.strip()
@@ -166,11 +158,9 @@ async def llm_extract_math_intent(
             ],
             schema=LLMMathExtract,
             max_tokens=256,
-            timeout_seconds=timeout_seconds or settings.math_llm_extract_timeout_seconds,
-            usage=usage,
-            allow_fallback=not alone,
-            fallback_on_invalid=not alone,
-            quiet_timeout=alone,
+            timeout_seconds=settings.math_llm_extract_timeout_seconds,
+            allow_fallback=True,
+            fallback_on_invalid=True,
         )
     except Exception:
         # complete_structured already swallows provider/parse failures; this is

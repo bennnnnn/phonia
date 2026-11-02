@@ -2,7 +2,7 @@
 
 A value stated once for several items is that value in each. Read as one item, two 10 Ω
 resistors in parallel across 5 V drew 0.5 A, not 1 A, and two 5 kg blocks weighed 49.1 N
-(2026-10-31, the model reader's translated questions and their review). Values and their
+(2026-10-31, translated questions and their review). Values and their
 units come from the shared givens scanner, whose prefixes are case-sensitive ("500 mΩ" is
 half an ohm, not 500 MΩ). The resistor network readers repeat a counted resistance; every
 solve is held to the counts at the claim check (``physics.counted``).
