@@ -86,7 +86,6 @@ async def test_export_includes_profile_all_memory_and_every_owned_record(world: 
     assert "recurrence_rule" in todo
     names = {item["original_filename"] for item in export["attachments"]}
     assert f"{data.secret_word}.png" in names
-    assert [s["text"] for s in export["suggestions"]] == [f"Follow up on {data.secret_word}"]
     assert export["usage"] == [{"day": "2026-10-14", "input_tokens": 100, "output_tokens": 50}]
     assert [device["platform"] for device in export["push_devices"]] == ["ios"]
     assert data.push_token not in response.text

@@ -34,7 +34,6 @@ Do not review or extend the app from the historical MVP screen list. Use **Domai
 - **model alias** — product-level model name mapped to a provider by the gateway.
 - **quota** — per-user daily token budget (free tier 100k/day).
 - **todo** — a lightweight task the user tracks; optionally linked to a chat.
-- **suggestion** — retired: the old proactive prompts are no longer generated or served. Stored rows are kept only for the data export and account deletion until a later release drops the table.
 - **search** — full-text lookup across the user's chats and messages.
 - **attachment** — an uploaded image/file (R2 in production) with extracted text chunked into `attachment_chunks` for retrieval.
 - **push token** — a registered Expo device token for reminder/nudge notifications.
@@ -123,7 +122,7 @@ What exists in code today. Product caveats: FEATURES.md.
 | Models / quota | `routers/models.py`, `models/model_catalog.py`, `services/quota/`; the user's pool in `modules/billing/plan.py`, Auto's pick and the reasoning pass in `modules/chat/model_routing/` | `features/account/screens/ModelsSettingsScreen.tsx` (settings only, no composer picker; with Auto off it names and sets the model messages use) |
 | Search | `modules/search/` (HTTP `/search`) | `features/search/`; drawer search |
 | Clarifying questions | `modules/chat/clarify_card.py` (the `clarify` card checked at finalize), `clarify_turn.py` (history line, the turn after a card), `prompt_constants/clarify.py`; [docs/clarify.md](./docs/clarify.md) | `components/rich/ClarifyCard.tsx` (the card), `lib/clarify/clarifyCard.ts` (the sent message, read back onto its card) |
-| Follow-up questions | `modules/chat/related_prompts.py` (after `done`; rules in `related_questions.py`; the old `/suggestions` routes and job are removed; `modules/suggestions/` keeps only the table reads for export) | `features/suggestions/` (`RelatedPromptLines`) |
+| Follow-up questions | `modules/chat/related_prompts.py` (after `done`; rules in `related_questions.py`) | `features/suggestions/` (`RelatedPromptLines`) |
 | Todos / reminders | `modules/todos/` (HTTP `/todos`; chat changes wait for a tap: `write_log.py` + `proposals.py`, `POST /todos/proposals/{id}/confirm`; the reply above an untapped card claims nothing, `reply_claims.py`; chat changes them only from an English message, another language gets an Open To-do button, `chat_language.py`) | `features/todos/` (`ReminderProposalCard`, `TodoLinkButton`); `app/todos.tsx` route only |
 | Home | (none: the phone builds it) | `features/home/`; a translated greeting with the first name + one overdue reminder, from the to-dos it already holds |
 | Attachments + RAG | `modules/attachments/` (HTTP `/attachments`) | `features/attachments/`; `app/gallery.tsx` route only |

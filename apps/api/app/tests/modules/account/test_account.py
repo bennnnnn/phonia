@@ -67,10 +67,6 @@ def _empty_product_events_for_exports():
             AsyncMock(return_value=[]),
         ),
         patch(
-            "app.modules.account.export.suggestions_service.list_for_export",
-            AsyncMock(return_value=[]),
-        ),
-        patch(
             "app.modules.account.export.usage_repo.list_for_user",
             AsyncMock(return_value=[]),
         ),

@@ -1,7 +1,7 @@
 """Assemble a user's data export: everything Recall stores about them.
 
 Profile and settings, chats and messages, every memory row and memory area,
-to-dos, attachments, suggestions, daily usage, push devices (no token) and
+to-dos, attachments, daily usage, push devices (no token) and
 product events. Every query is scoped to the caller's user id.
 """
 
@@ -33,7 +33,6 @@ from app.models.orm import (
 from app.modules import memory as memory_service
 from app.modules.attachments import service as attachments_service
 from app.modules.conversation import history as chat_history
-from app.modules.suggestions import service as suggestions_service
 from app.modules.todos import service as todos_service
 from app.repositories import product_events as product_events_repo
 from app.repositories import push_tokens as push_tokens_repo
@@ -53,7 +52,6 @@ EXPORT_MAX_TODOS = 2_000
 EXPORT_TODO_PAGE_SIZE = 200
 EXPORT_MAX_ATTACHMENTS = 2_000
 EXPORT_MAX_PRODUCT_EVENTS = 2_000
-EXPORT_MAX_SUGGESTIONS = 2_000
 EXPORT_MAX_USAGE_DAYS = 3_660
 
 # Profile and settings the user entered or chose. Sign-in subject ids and
@@ -153,16 +151,6 @@ def _memory_payload(memory: Memory) -> dict[str, Any]:
 
 def _memory_area_payload(area: Any) -> dict[str, Any]:
     return {"key": area.key, "title": area.title, "summary": area.summary}
-
-
-def _suggestion_payload(suggestion: Any) -> dict[str, Any]:
-    return {
-        "text": suggestion.text,
-        "category": _json_safe(suggestion.category),
-        "dismissed": _json_safe(suggestion.dismissed),
-        "created_at": _json_safe(suggestion.created_at),
-        "expires_at": _json_safe(suggestion.expires_at),
-    }
 
 
 def _usage_payload(row: Any) -> dict[str, Any]:
@@ -412,16 +400,6 @@ async def _iter_export_json(
         if attachment_index:
             yield ","
         yield json.dumps(await _attachment_payload(attachment, settings=settings, gateway=gateway))
-
-    yield '],"suggestions":['
-    async with session_factory() as session:
-        suggestion_chunks = [
-            json.dumps(_suggestion_payload(item))
-            for item in await suggestions_service.list_for_export(
-                session, user.id, limit=EXPORT_MAX_SUGGESTIONS
-            )
-        ]
-    yield ",".join(suggestion_chunks)
 
     yield '],"usage":['
     async with session_factory() as session:

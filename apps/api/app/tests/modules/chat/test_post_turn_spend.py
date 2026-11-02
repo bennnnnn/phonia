@@ -190,21 +190,6 @@ async def test_spend_cap_keeps_topic_drops_llm_jobs(spend_read):
 
 
 @pytest.mark.asyncio
-async def test_a_turn_enqueues_no_proactive_suggestions():
-    """Follow-ups come from the reply itself (related prompts), not from a job
-    that reads other chats: their chips were off the topic the user was on."""
-    ctx = _ctx(prior_count=10, run_title=False)
-    with patch("app.core.jobs.enqueue", AsyncMock()) as enqueue:
-        await enqueue_post_turn_jobs(
-            AsyncMock(),
-            Settings(history_compression_enabled=False, chat_history_rag_enabled=False),
-            ctx,
-            "ok",
-        )
-    assert "suggestions" not in [c.args[1] for c in enqueue.call_args_list]
-
-
-@pytest.mark.asyncio
 async def test_day_planning_snapshot_skips_learning_extract():
     """Home 'anything left tonight' lists quiz progress — that is not a write."""
     ctx = _ctx(prior_count=0, run_title=True)

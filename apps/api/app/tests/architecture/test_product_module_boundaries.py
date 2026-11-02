@@ -62,22 +62,6 @@ def test_notifications_runtime_code_has_one_owner() -> None:
     assert (APP_ROOT / "tests" / "services" / "test_push_notifications.py").is_file()
 
 
-def test_suggestions_keeps_only_the_table_reads() -> None:
-    """The proactive suggestions are retired: no route, no generator, no job.
-    The table stays for the data export and account deletion until it is dropped."""
-    module_root = APP_ROOT / "modules" / "suggestions"
-    assert {path.name for path in module_root.glob("*.py")} == {
-        "__init__.py",
-        "models.py",
-        "repository.py",
-        "service.py",
-    }
-    assert "def " not in (module_root / "__init__.py").read_text()
-    handlers = (APP_ROOT / "background" / "handlers.py").read_text()
-    assert '"suggestions"' not in handlers
-    assert "modules.suggestions" not in (APP_ROOT / "main.py").read_text()
-
-
 def test_search_runtime_code_has_one_owner() -> None:
     module_root = APP_ROOT / "modules" / "search"
     expected = {"api.py", "repository.py", "service.py"}
@@ -281,18 +265,10 @@ def test_mobile_search_has_one_feature_home() -> None:
 
 
 def test_mobile_suggestions_has_one_feature_home() -> None:
+    """The follow-up questions under a reply (``RelatedPromptLines``)."""
     feature_root = MOBILE_ROOT / "features" / "suggestions"
     for folder in ("components", "model"):
         assert (feature_root / folder).is_dir()
-    # Follow-ups arrive on the reply; the proactive chips and their API are gone.
-    assert not (feature_root / "api.ts").exists()
-    assert not (feature_root / "components" / "SuggestionChips.tsx").exists()
-
-    assert not (MOBILE_ROOT / "hooks" / "useChatSuggestions.ts").exists()
-    assert not (MOBILE_ROOT / "components" / "SuggestionChips.tsx").exists()
-    discover = (MOBILE_ROOT / "lib" / "api" / "discover.ts").read_text()
-    assert "listSuggestions" not in discover
-    assert "dismissSuggestion" not in discover
 
     feature_import_violations = [
         str(path.relative_to(MOBILE_ROOT))

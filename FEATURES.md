@@ -799,7 +799,7 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   user's profile photo or initials open Settings beside New chat.
 - ✅ **Sign out** — asks first.
 - ✅ **Data export** — exports profile and settings, chats and their messages, every memory row
-  and memory area, todos, attachments, suggestions, daily usage, push devices (no token) and
+  and memory area, todos, attachments, daily usage, push devices (no token) and
   product events as JSON via the native share sheet (`GET /auth/me/export`). Shows a progress
   screen while the archive builds.
 - ✅ **Account deletion** — permanently deletes the account and all its data (`DELETE /auth/me`),
@@ -1003,7 +1003,7 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   before due). With push on, the server owns due-at (`server_todo_push_enabled` defaults
   true) and local scheduling is skipped so both do not fire. Turning push off cancels
   leftover local alerts then re-schedules them on-device.
-- ✅ **Follow-up questions** — up to three short questions (one line each, about 3–9 words) under the latest reply, about what the user just asked: a why, a what-if and a next step for a maths, physics, chemistry or biology problem, and the next things a person would ask for any other real question with a full answer. Small talk, drafts, personal updates, reminders and settings get none. One `memory-model` call per eligible turn after `done` (`modules/chat/related_prompts.py`), cached per message for reopen; rows in `features/suggestions/components/RelatedPromptLines.tsx`. The old proactive chips built from other chats are gone from the app, and the `suggestions` job, its generator and the `/suggestions` routes are removed; stored rows stay in the data export until a later release drops the table.
+- ✅ **Follow-up questions** — up to three short questions (one line each, about 3–9 words) under the latest reply, about what the user just asked: a why, a what-if and a next step for a maths, physics, chemistry or biology problem, and the next things a person would ask for any other real question with a full answer. Small talk, drafts, personal updates, reminders and settings get none. One `memory-model` call per eligible turn after `done` (`modules/chat/related_prompts.py`), cached per message for reopen; rows in `features/suggestions/components/RelatedPromptLines.tsx`.
 - 🔜 1-hour-early **email/push** nudges beyond the local lead picker.
 
 ## 15. Code execution policy

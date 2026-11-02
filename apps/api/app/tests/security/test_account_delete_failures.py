@@ -116,7 +116,7 @@ async def _assert_gone(world: World) -> None:
 @pytest.mark.parametrize(
     "step",
     # Each table's DELETE in the order the delete runs them, then the commit.
-    ["memories", "todo_items", "suggestions", "attachments", "messages", "chats", "commit"],
+    ["memories", "todo_items", "attachments", "messages", "chats", "commit"],
 )
 async def test_delete_with_the_database_failing_at_a_step_deletes_nothing_and_retries(
     world: World, step: str

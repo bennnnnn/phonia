@@ -24,7 +24,6 @@ from app.modules.attachments import service as attachments_service
 from app.modules.billing import plan as plan_service
 from app.modules.chat import service as chats_service
 from app.modules.memory import crud as memory_crud
-from app.modules.suggestions import service as suggestions_service
 from app.modules.todos import service as todos_service
 from app.repositories import push_tokens as push_tokens_repo
 from app.repositories import users as users_repo
@@ -282,7 +281,6 @@ async def erase_user_rows(
     for delete_rows in (
         memory_crud.delete_user_rows,
         todos_service.delete_user_rows,
-        suggestions_service.delete_user_rows,
     ):
         await delete_rows(session, user_id)
     storage_keys = await attachments_service.delete_user_rows(session, user_id)

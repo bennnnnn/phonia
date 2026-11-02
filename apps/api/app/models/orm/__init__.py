@@ -10,7 +10,6 @@ from app.models.orm.usage import ProductEvent, ProductEventDaily, ProductEventRo
 from app.models.orm.user import User
 from app.modules.attachments.models import Attachment, AttachmentChunk
 from app.modules.memory.models import Memory, MemoryArea
-from app.modules.suggestions.models import Suggestion
 from app.modules.todos.models import TodoItem
 
 __all__ = [
@@ -25,7 +24,6 @@ __all__ = [
     "ProductEventDaily",
     "ProductEventRollupDay",
     "PushToken",
-    "Suggestion",
     "TodoItem",
     "UsageDaily",
     "User",

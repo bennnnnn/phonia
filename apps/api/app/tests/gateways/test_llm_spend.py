@@ -1,6 +1,6 @@
 """Every non-chat model call adds its cost to the global spend counter.
 
-Embeddings, OCR, memory, titles, suggestions, compression and follow-ups used
+Embeddings, OCR, memory, titles, compression and follow-ups used
 to spend without counting, so ``DAILY_GLOBAL_SPEND_USD`` saw a fraction of the
 day. The chat turn's own calls are charged at finalize and must not count twice.
 """
@@ -114,7 +114,7 @@ async def _vision() -> None:
     "call, alias",
     [
         (_complete_text, "title-model"),  # titles, compression
-        (_complete_structured, "memory-model"),  # memory, suggestions, follow-ups, classifiers
+        (_complete_structured, "memory-model"),  # memory, follow-ups, classifiers
         (_vision, "vision-chat"),  # scanned-PDF OCR, scan reads
     ],
 )

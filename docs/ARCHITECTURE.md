@@ -127,7 +127,7 @@ request client and are composed into the existing `lib/api.ts` public barrel.
 8. AI/model/tool infrastructure. Product chat tools live with their modules (`images/gen_tool.py`, `images/search_tool.py`, `math/tool.py`). Registration stays in `services/mcp/__init__.py`, called from process bootstrap. Tools take the turn's context as an argument, so the tool loop binds no module and lives with chat in `modules/chat/tool_loop/`. Model catalog data stays in `models/model_catalog.py`. Web search lives in `modules/web_search/`, including its chat tool.
 9. Home — migrated, then removed from the API: the phone builds the greeting and reads its own to-dos (`features/home/`).
 10. Search — migrated (`modules/search/`, drawer search in `features/search/`).
-11. Suggestions — retired. The proactive chips, the generator, its job and the `/suggestions` routes are removed; `modules/suggestions/` keeps the table and the export read until a later release drops it. Follow-up questions under a reply come from `modules/chat/related_prompts.py` (rules in `related_questions.py`) and render in `features/suggestions/`.
+11. Suggestions — removed: the proactive chips, their generator, job, routes and table are gone. Follow-up questions under a reply come from `modules/chat/related_prompts.py` (rules in `related_questions.py`) and render in `features/suggestions/`.
 12. Account — migrated (`modules/account/` for `/auth`; sign-in in `features/auth/`, settings screens in
     `features/account/`). Every request still verifies its token in `core/deps.py` through
     `core/access_tokens.py`, so infrastructure never imports the module. Push-token registration is

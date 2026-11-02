@@ -131,7 +131,7 @@ async def delete_user(session: AsyncSession, user_id: UUID, *, commit: bool = Tr
     """Hard-delete a user, their chats, messages, usage and push tokens, and commit
     (with ``commit=False`` the caller commits, then forgets the cached row).
 
-    The modules' rows (memory, to-dos, suggestions, attachments) are gone already:
+    The modules' rows (memory, to-dos, attachments) are gone already:
     ``account.lifecycle`` asks each module, under ``lock_for_delete``. Every row is
     deleted explicitly before the user row, so the delete succeeds even for a table
     whose FK to users.id has no ON DELETE CASCADE.
