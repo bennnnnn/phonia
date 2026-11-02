@@ -40,10 +40,10 @@ When the user says **remove**, leave it removed. Do **not** bring these back in 
 - Schedule empty states: **icon + title only** (e.g. “Nothing scheduled”).
 - Do **not** add body copy or an “Add …” `Button` that duplicates the bottom (+) FAB.
 
-## 6. No image-generation confirmation sheet
-- Image gen is **composer only**: user types the request and hits send; Pro generates immediately.
-- Do **not** reintroduce `ImageGenPromptSheet`, attach-menu “Generate image”, or any second prompt
-  modal that intercepts send. Intent detection may still call `/images/generate` — without a sheet.
+## 6. No AI image generation
+- Recall does not draw pictures for the user. Do **not** reintroduce `/images/generate`, a
+  composer picture intercept, a picture card, or an attach-menu “Generate image” row. Real
+  reference photos (photo lookup) and the STEM pictures stay.
 
 ## 7. No swipe-to-delete on drawer chat titles
 - Do **not** wrap conversation rows in `Swipeable` / reveal a red Delete action on swipe.

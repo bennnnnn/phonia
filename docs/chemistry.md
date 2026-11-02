@@ -308,11 +308,9 @@ appends one per molecule (`ChemistryResult.more_scenes`), and the phone draws
 each fence as its own picture. A line that only asks to see them right after a shape answer
 draws them again: every word of it from one closed set (a verb that shows: "show",
 "display", "let me see", "look like"; "both", "them", "the molecules/models/drawings";
-fillers), never a word for a real photo ("show me a photo of both" stays a photo). "draw" and
-"sketch" are image generation's: the composer reads "draw both" as a picture before any chat
-turn, and every line chemistry claims is a photo lookup or a plain send there. The chat's
-intercept asks this before a photo lookup or image generation, after a cheap look at the line
-and the last question, and a pool that gives up leaves the photo path without declining the
+fillers), never a word for a real photo ("show me a photo of both" stays a photo); "draw" and
+"sketch" are not in the set. The chat's intercept asks this before a photo lookup, after a
+cheap look at the line and the last question, and a pool that gives up leaves the photo path without declining the
 turn. The phone only draws that
 JSON: card titles, column headings, and labels come from the app's i18n strings, the
 atom tally and ICE table are drawn as tables, and the web shows a text summary. The

@@ -57,26 +57,23 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   (not started; do not assume we have them).
 - ✅ **Manage from the drawer** — long-press any chat for **Pin/Unpin · Share · Delete**.
 - ✅ **Library** — drawer **Library** → paginated grid of the user’s verified attachments
-  (generated images, uploaded images, and files — not web lookup / reference photos,
-  which stay on the chat). Tabs: All / Generated / Uploaded / Files.
+  (uploaded images and files — not web lookup / reference photos, which stay on the
+  chat). Tabs: All / Uploaded / Files.
   Search is a case-insensitive substring on filename, MIME type, and the **linked message
-  body**. For generated images that includes the **previous user message** (the draw
-  prompt) and the prompt stored on `original_filename`, not only the assistant
-  `[Image: …]` marker. Tap an image for a fullscreen viewer: black page, Close on the
+  body**. Tap an image for a fullscreen viewer: black page, Close on the
   left, More (⋮) / Download / white Share pill on the right, nothing at the bottom;
   swipe for the next photo (it loads the next page near the end), pinch or double-tap
   to zoom, and it follows the photo by id so a delete never acts on the wrong one.
   Toasts show inside the viewer. Long-press (or a screen reader's actions) for Use in
   chat / Open chat / Share / Delete. Share hands over the file through expo-sharing
-  (Android's RN Share would send only a path); generated images get a slugged file
-  name with a real extension. Tap a file to read it (PDF and text in-app; other types open on
+  (Android's RN Share would send only a path), named with a real extension. Tap a file to read it (PDF and text in-app; other types open on
   the device). The attach sheet also opens Library. Deleting a chat leaves
-  its uploads and generated files in Library (Open chat hides when the thread is gone). Lookup
+  its uploads in Library (Open chat hides when the thread is gone). Lookup
   photos stay on the chat only. Explicit Library
   delete removes the file. A failed thumbnail stays with Retry; the row is dropped
   only after the server confirms the file is gone. Opening Library warms the All page
   from the drawer tap (20s cache, same window as Memory); tab snapshots avoid a
-  wrong-grid flash. Logout, chat delete, upload, and image-gen invalidate it.
+  wrong-grid flash. Logout, chat delete and upload invalidate it.
 - ✅ **Attachment reliability** — picker and Library completions
   stay in their account and conversation; pagination failures retain rows with Retry.
   Downloads use distinct cache files, verify cached files still exist, and clear on logout.
@@ -99,7 +96,7 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
 - ✅ **Streaming** — token-by-token over WebSocket; the reply appears as it's generated.
   Ordinary turns show typing dots only (no “loading memory / working on it” staircase).
   Status labels are reserved for real extra work while it runs: web search, files, math,
-  a reference-photo lookup ("Finding a photo") and image gen; the server sends
+  and a reference-photo lookup ("Finding a photo"); the server sends
   `composing` once a tool is done, so its label never outlives it. Hard turns say what
   they are doing once it has run a second: "Thinking… 12s" while a model reasons
   (counted from when it was asked; its reasoning is never shown), "Planning the answer…"
@@ -248,30 +245,11 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   numbers, keywords); heuristic fallback for unknown langs.
 - ✅ **Tables** — styled (header shading, borders, cell padding).
 - ✅ **Inline images** — Markdown `![alt](url)` images render (contained, rounded).
-- ✅ **Image generation (every plan)** — Type an image request in the composer and send (e.g. "draw me a
-  cat" or "Dog" then "Image"); the user bubble keeps that wording (not rewritten to "Generate
-  image: …"). Daily caps: Free **3**, Plus **10**, Pro **15**, stored as chat attachments. No separate
-  prompt sheet, and the model must not send people to DALL-E / Midjourney. Stop
-  mid-generation keeps the user message and shows canceled/failed + Retry. While it works, the
-  card is a dot field with an accent wave (a Skia shader in builds with Skia; a band under a
-  dotted cover in Expo Go), a stage line ("Sketching it out" … "Almost there") and an estimated
-  percentage; tapping it starts a small dot game. Tap the result to
-  view full-screen and save via the system share sheet. Only the server reads the request:
-  the tap paints the bubble and typing dots first, and when a send might be a picture or a
-  photo the composer then asks `POST /images/intent` (a picture is drawn under that bubble), which
-  answers with the chat turn's own reading of the text and the chat's recent turns
-  (`docs/fixtures/image_intent_cases.json`), and draws what it answers, so "show the steps"
-  after a picture is chat. A maths, physics or chemistry turn is never a picture: "draw
-  ethanol" gets the structure and "A lens has focal length 15 cm. Where's the image?" gets the
-  optics; art ("a cartoon atom for our chemistry club poster") still draws. If the server
-  can't answer within 3 seconds the send goes to chat, and the chat turn still draws a typed
-  picture request.
-- 🔜 **Music generation** — same composer-send path as image gen (no prompt sheet): user asks
-  to generate a track, we generate a clip, store it as an audio attachment, and show a **compact
-  inline player** on the assistant message (play/pause + scrub + duration — not a full-screen
-  Now Playing UI). Pro + daily cap. Catalog alias + gateway (provider TBD); reuse
-  `expo-audio` / attachment URLs. Do not start until image-gen’s storage/cap path is the
-  template. Not TTS / not humming into the mic.
+- 🔜 **Music generation** — the user asks in the composer for a track (no prompt sheet), we
+  generate a clip, store it as an audio attachment, and show a **compact inline player** on the
+  assistant message (play/pause + scrub + duration — not a full-screen Now Playing UI). Pro +
+  daily cap. Catalog alias + gateway (provider TBD); reuse `expo-audio` / attachment URLs. Not
+  TTS / not humming into the mic.
 - ✅ **Math / LaTeX** — inline `$...$` renders in dedicated KaTeX Computer Modern faces (italic variables, upright digits/operators, superscripts, scalable continuous radicals, tight stacked fractions);
   display ` ```math` renders as **MathJax-SVG** (`MathSvgView` + `mathjax-full`, lazy-loaded
   and LRU-cached, themed via `currentColor`) on every build — no WebView — with a readable
@@ -864,8 +842,8 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   `user_message_saved: false`, or HTTP 403) until the account agrees, and the phone answers it
   with the consent screen (any feature hands it on with `notifyConsentRequired()`,
   `lib/api/consentRefusal.ts`). Settings → Data controls shows when the account agreed and
-  can withdraw it, which brings the consent screen back. Image generation, attachment uploads and
-  memory instructions are not gated yet.
+  can withdraw it, which brings the consent screen back. Attachment uploads and memory
+  instructions are not gated yet.
 - ✅ **Polish** — light haptic taps on key actions (Android via the built-in API) + chip fade-in
   animation.
 - ✅ **iOS haptics** — `expo-haptics` on real devices (graceful no-op on Android / Expo Go).
@@ -888,10 +866,9 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
 
 ## 12. Monetization
 - ✅ **Three plans** — `users.plan` is `free` | `plus` | `pro` (display names "Plus" / "Pro"
-  live in i18n only, `plans.*`). Free: every model in the free pool, 3 AI images a day, no
-  voice input, no natural read-aloud. Plus: every model, Pro-size daily limits,
-  voice input and read-aloud, 10 images a day. Pro: everything in Plus and 15
-  images a day. Prices live in the stores; the app shows
+  live in i18n only, `plans.*`). Free: every model in the free pool, no voice input, no
+  natural read-aloud. Plus: every model, Pro-size daily limits, voice input and
+  read-aloud. Pro: everything in Plus. Prices live in the stores; the app shows
   the offering's localized price. One place decides: `modules/billing/entitlements.py`.
 - ✅ **Subscriptions (RevenueCat)** — mobile purchase flow via lazy-loaded `react-native-purchases`
   (dev/production builds only; skipped in Expo Go). Two entitlements (`plus`, `pro`; `pro`
@@ -1033,12 +1010,12 @@ with them; it only ever carried the calendar hint. Sign-in with Google is unchan
 only `GOOGLE_CLIENT_ID`.
 
 - ✅ **MCP gateway** — `gateways/mcp/` with registry + module-owned adapters (`web_search`,
-  `sympy`, `generate_image`, `search_image`). Tools are owned by Recall; arbitrary user MCP
+  `sympy`, `search_image`). Tools are owned by Recall; arbitrary user MCP
   servers stay out of scope.
 - ✅ **Full tool-calling loop** — **on by default**, but **not on every turn.**
   Ordinary chat streams immediately. Pre-stream `complete_with_tools` runs only
   when the turn still looks like web search (the deterministic search gate),
-  unsolved math, or image gen. If that round
+  unsolved math, or a photo lookup. If that round
   finishes without tools, the text is shown — the stream does not call the model
   a second time. Pydantic-validated args, bounded by `mcp_tool_loop_max_rounds`.
   Heuristic SymPy still runs before the stream so homework does not wait on a tool
@@ -1076,10 +1053,9 @@ A consolidated list of what's intentionally **not** (or only partially) in this 
 - ✅ **Web search** — Tavily primary + DuckDuckGo fallback; sources on assistant messages
   (hidden on short A–D replies).
 - ✅ **Structured profile fields** — name / age / country / job (Settings + prompt injection).
-- ✅ **Vision + image gen** — image attachments route to vision models; a later
+- ✅ **Vision** — image attachments route to vision models; a later
   plain-text follow-up in the same chat rehydrates the last image(s). If the file
-  is gone, the model is told not to guess from a prior caption. Image generation
-  from the composer on send (daily cap per plan; no separate prompt sheet).
+  is gone, the model is told not to guess from a prior caption.
 - ✅ **Per-chat Redis prepare lock** — `chatprep:{chat_id}` around prepare + stream; concurrent
   turns get `ChatBusyError` / `code: "busy"` (#536).
 - ✅ **Math display rendering** — display math renders as MathJax-SVG (`MathSvgView`;
@@ -1302,10 +1278,9 @@ magic-byte validation, daily caps). Blobs never live in Postgres.
 |------------|--------|
 | Presigned upload + confirm + orphan reaper | ✅ Shipped (local default; R2 when `STORAGE_BACKEND=r2` + secrets). Unconfirmed original uploads reap after `attachment_pending_orphan_hours` (default **1h**) so a killed-app image slot can refund the same UTC day. Hidden clones stay until `attachment_orphan_grace_hours` (default **24h**) — that billed window is intentional, not a leak. |
 | Image upload → vision-chat routing (Qwen3.7 Flash, GLM 5.3 Flash backup, via OpenRouter) | ✅ Shipped |
-| Image generation (composer send, daily cap per plan: 3 / 10 / 15) | ✅ Shipped |
 | Reference-photo lookup (`show me an ear` / what-X-looks-like / "can you show me…" / "send me a photo of X"; "show me her image" reads who from the chat; Tavily + mirrored attachment; not listed in Library) | ✅ Shipped (free+Pro; daily cap; flag `image_search_enabled`) |
 | Answer photos (one real photo above an answer about something worth seeing, no "show me"; the model's hidden ```photo query, searched while the text streams) | ✅ Shipped (free+Pro; same daily cap and flag) |
-| Library (drawer grid of generated + uploaded images and files; lookup photos stay on the chat) | ✅ Shipped (local blobs under `~/.recall/attachments`, not `/tmp`) |
+| Library (drawer grid of uploaded images and files; lookup photos stay on the chat) | ✅ Shipped (local blobs under `~/.recall/attachments`, not `/tmp`) |
 | PDF / doc upload + server text extract into prompt | ✅ Text-layer PDFs / DOCX + scanned-PDF OCR (page render → vision) |
 | PDF inline preview (pdf.js WebView, dev build) | ✅ Shipped |
 | Audio in (Whisper STT → composer) | ✅ Shipped (dev build) |
@@ -1316,7 +1291,7 @@ magic-byte validation, daily caps). Blobs never live in Postgres.
 | Full chat-history corpus RAG | ✅ Shipped (`message_chunks`; flag on by default) |
 | Full duplex voice mode | 🔎 Physical-device implementation; release validation pending |
 
-Notes: multimodal routes through whichever catalog model supports the modality (vision/image-gen
+Notes: multimodal routes through whichever catalog model supports the modality (vision
 aliases on OpenRouter). Multimodal calls cost more than text — gated by plan + daily caps
 (images, speech).
 
@@ -1347,7 +1322,7 @@ A **web version that reuses this same API** — one backend, multiple clients. S
   CORS origin documented in `apps/api/.env.example` — cookie sessions need an explicit
   `CORS_ORIGINS` list (empty `*` disables cookies). Follows the mobile chat-ux-bans.
 - 🔜 **Later slices** — rich fences (math/charts/Mermaid/sandboxed HTML preview), Memory/
-  settings/attachments/image gen, `packages/api-types` extracted from
+  settings/attachments, `packages/api-types` extracted from
   `lib/api/types.ts`, Apple Sign-In on web, prod deploy.
 
 ---
@@ -1416,7 +1391,6 @@ drawer FTS search ✅.
 | Daily tokens | 100k | 500k | 500k |
 | Speech transcriptions/day | 0 (not included) | 200 | 200 |
 | Speech TTS (read aloud)/day | 0 (phone voice only) | 100 | 100 |
-| AI images/day | 3 | 10 | 15 |
 | Tavily searches/day | 20 (then DDG only) | 150 | 150 |
 | R1 / smart-chat quota weight | 3.5× token charge | Same | Same |
 
@@ -1454,8 +1428,7 @@ weakness. No video generation. Native share is enough unless we later decide we 
 ### Done (this product pass)
 
 1. ✅ **Owned tool loop on** — `mcp_tool_loop_enabled` defaults true. Adapters:
-   `web_search`, `sympy` (if math on), `image_gen` (if image gen on),
-   `search_image` (if image search on). Heuristic SymPy still runs. Web search is
+   `web_search`, `sympy` (if math on), `search_image` (if image search on). Heuristic SymPy still runs. Web search is
    the owned tool loop (source chips + wrap); a skipped `web_search` still runs
    one cached search. Add Docs/GitHub later as owned tools — not user MCP servers.
 2. ✅ **Scanned-PDF OCR** — text-layer extract on prepare (no vision); empty PDFs

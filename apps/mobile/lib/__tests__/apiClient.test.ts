@@ -163,10 +163,10 @@ describe("api client", () => {
     mockFetch.mockResolvedValueOnce({
       ok: false,
       status: 403,
-      text: async () => '{"detail":"Image generation requires Pro"}',
+      text: async () => '{"detail":"Not allowed"}',
     });
 
-    const err = await request("/images/generate", "token").catch((error) => error);
+    const err = await request("/memories/instruct", "token").catch((error) => error);
     expect(err).toBeInstanceOf(ApiRequestError);
     expect(err).toMatchObject({
       name: "ApiRequestError",

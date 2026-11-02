@@ -21,7 +21,6 @@ describe("AttachmentSourceSheet", () => {
       <AttachmentSourceSheet visible onClose={jest.fn()} onSelect={onSelect} />,
     );
 
-    expect(queryByText("chat.attach_generate_image")).toBeNull();
     expect(queryByText("chat.attach_library")).toBeNull();
     expect(getByText("chat.attach_solve_math_camera")).toBeTruthy();
 

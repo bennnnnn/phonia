@@ -298,7 +298,6 @@ copy change. The server only knows the ids `free`, `plus`, `pro`.
 | Tokens / day | 100k | 500k | 500k |
 | Voice input / day | — | 200 | 200 |
 | Natural read-aloud / day | — (phone voice only) | 100 | 100 |
-| AI images / day | 3 | 10 | 15 |
 
 Every number is a setting in `core/settings/plans.py` (`<NAME>`, `<NAME>_PLUS`,
 `<NAME>_PRO`; see `apps/api/.env.example`). A metered feature belongs to a plan
@@ -340,8 +339,7 @@ the app shows the store's localized price from the RevenueCat offering.
 
 ### QA (sandbox / test track)
 
-- [ ] Free: the mic opens the plans; read-aloud uses the phone voice;
-      3 AI images, then the limit message
+- [ ] Free: the mic opens the plans; read-aloud uses the phone voice
 - [ ] Buy Plus: voice input and read-aloud work,
       Settings shows Plus and "Upgrade to Pro"
 - [ ] Plus → Pro: one subscription in the store afterwards; Settings shows Pro
@@ -693,12 +691,11 @@ Once the day's total reaches the cap, until 00:00 UTC:
   today, so new messages are paused for everyone. Try again after midnight
   UTC."}`. It has no `quota_exceeded` code, so the phone shows that text and
   not its upgrade prompt (the user's own allowance is not used up);
-- image generation, photo lookup, voice and scan reads answer 429
+- photo lookup, voice and scan reads answer 429
   "… temporarily unavailable";
 - background model jobs, the tool loop and follow-up questions are skipped.
 
-A Redis error counts as over the cap (fail closed). Known gap: the tool rounds
-of a turn that ends in a generated image are not charged (the image is).
+A Redis error counts as over the cap (fail closed).
 
 **Daily tokens.** A turn reserves its estimate (the message plus
 `MAX_OUTPUT_TOKENS`, x the model's quota multiplier) before it runs, or

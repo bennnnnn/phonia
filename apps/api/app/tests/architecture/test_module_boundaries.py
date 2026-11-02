@@ -232,6 +232,7 @@ def test_mobile_has_no_image_generation() -> None:
         assert not gone.exists(), gone
     assert (MOBILE_ROOT / "lib" / "images" / "imageUriPolicy.ts").is_file()
 
+
 def test_speech_runtime_code_has_one_owner() -> None:
     module_root = APP_ROOT / "modules" / "speech"
     expected = {

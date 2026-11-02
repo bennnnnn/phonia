@@ -1,5 +1,9 @@
 # Recall — Structure tickets
 
+> AI image generation (`images/generation.py`, `/images/generate`, `/images/intent`, the
+> `generate_image` tool, the `reply_picture` pass and `features/images`) has since been removed;
+> entries that name it are kept as the record of the work.
+
 An outside review of the whole repository (2026-10-31) graded the runtime platform strong and the
 product-logic layer weak. Its first three fixes landed as their own PRs, and none of them changes
 behaviour:

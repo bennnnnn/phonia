@@ -36,7 +36,7 @@ New chat-loop code belongs in `apps/api/app/modules/chat/`. Quota + prepare lock
 
 ## In scope (current)
 
-Chat + memory, todos/reminders, search, suggestions, attachments/RAG, calendar/Gmail, speech, image gen, web search, i18n, Pro, and rich rendering (markdown, math, geometry/graph, charts, Mermaid, chemistry, sandboxed HTML/JS). Conversational tutoring (math, physics, chemistry, programming, “teach me…”) stays in chat. The dedicated language-learning product is gone. MCP tool loop is shipped and **on** (`mcp_tool_loop_enabled` defaults true). The legacy one-shot `mcp_tools_enabled` pre-stream round stays off.
+Chat + memory, todos/reminders, search, suggestions, attachments/RAG, calendar/Gmail, speech, web search, i18n, Pro, and rich rendering (markdown, math, geometry/graph, charts, Mermaid, chemistry, sandboxed HTML/JS). Conversational tutoring (math, physics, chemistry, programming, “teach me…”) stays in chat. The dedicated language-learning product is gone. MCP tool loop is shipped and **on** (`mcp_tool_loop_enabled` defaults true). The legacy one-shot `mcp_tools_enabled` pre-stream round stays off.
 
 ## v1 non-goals
 

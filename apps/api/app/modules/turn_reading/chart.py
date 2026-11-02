@@ -6,8 +6,8 @@ import re
 from collections.abc import Callable, Sequence
 from typing import Protocol
 
-from app.modules.turn_reading.routing import is_short_confirmation
 from app.modules.turn_reading.diagram_kinds import names_diagram_kind, names_idea_curve
+from app.modules.turn_reading.routing import is_short_confirmation
 from app.services.prompt_safety import text_before_attachment_markers
 
 _CHART_KINDS = ("bar", "line", "pie", "area", "scatter", "donut", "dot", "box")

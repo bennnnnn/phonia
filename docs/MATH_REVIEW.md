@@ -375,7 +375,7 @@ Issues:
 - One problem per photo; worksheets have many.
 - Handwritten work goes to Solve, not to Check (MT18).
 - Biology has no read-back.
-- There is no scanner eval set (`docs/fixtures/image_intent_cases.json` has 5 cases).
+- There is no scanner eval set.
 
 Plan:
 

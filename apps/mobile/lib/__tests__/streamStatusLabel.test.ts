@@ -65,7 +65,7 @@ describe("streamStatusLabels", () => {
     ]);
   });
 
-  // S7.9: a reference-photo lookup said "Sketching it out" with an image-gen progress card.
+  // S7.9: a reference-photo lookup said "Sketching it out".
   it("labels a photo lookup as finding a photo, with its query", () => {
     expect(streamStatusLabels(t, "finding_photo", "human ear")).toEqual([
       "Finding a photo — “human ear”",

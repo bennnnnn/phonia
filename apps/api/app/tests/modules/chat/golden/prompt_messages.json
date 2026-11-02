@@ -15,7 +15,6 @@
   "settings": {
    "web_search_enabled": true,
    "image_search_enabled": true,
-   "image_generation_enabled": true,
    "attachment_rag_enabled": false,
    "chat_history_rag_enabled": false,
    "recent_message_window": 20,
@@ -898,8 +897,7 @@
   {
    "id": "branch:walkthrough+summary+no-web+omit-unknown",
    "settings": {
-    "web_search_enabled": false,
-    "image_generation_enabled": false
+    "web_search_enabled": false
    },
    "chat": {
     "summary": "We talked about running plans.",
