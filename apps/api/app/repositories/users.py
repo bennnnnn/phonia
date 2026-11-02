@@ -142,7 +142,9 @@ async def delete_user(session: AsyncSession, user_id: UUID, *, commit: bool = Tr
     transaction still commits or rolls back the account whole.
     """
     await lock_for_delete(session, user_id)
-    await delete_in_batches(session, Message.id, select(Message.id).where(Message.user_id == user_id))
+    await delete_in_batches(
+        session, Message.id, select(Message.id).where(Message.user_id == user_id)
+    )
     await session.execute(delete(UsageDaily).where(UsageDaily.user_id == user_id))
     await session.execute(delete(PushToken).where(PushToken.user_id == user_id))
     await delete_in_batches(session, Chat.id, select(Chat.id).where(Chat.user_id == user_id))

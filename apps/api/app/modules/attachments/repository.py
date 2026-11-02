@@ -12,7 +12,6 @@ from sqlalchemy.orm import aliased
 from sqlalchemy.sql.elements import ColumnElement
 
 from app.models.orm import Attachment, Chat, Message, User
-from app.repositories.batch_delete import DELETE_BATCH
 from app.repositories.keyset import after, decode_cursor, encode_cursor, page_of
 
 # Library is the user's archive. Reference-photo lookup copies (`search`)
@@ -494,27 +493,3 @@ async def delete_unlinked_returning(
     result = await session.execute(statement.returning(Attachment.storage_key))
     await session.commit()
     return [row[0] for row in result.all()]
-
-
-async def delete_all_for_user(
-    session: AsyncSession, user_id: UUID, *, batch: int = DELETE_BATCH
-) -> list[str]:
-    """Every attachment row of the user, bytes or not, and the storage keys they named;
-    no commit.
-
-    In id batches (``repositories/batch_delete``), each returning only its keys: the
-    account delete read every full row first just to collect them.
-    """
-    storage_keys: list[str] = []
-    while True:
-        batch_ids = select(Attachment.id).where(Attachment.user_id == user_id).limit(batch)
-        result = await session.execute(
-            sa_delete(Attachment)
-            .where(Attachment.id.in_(batch_ids))
-            .returning(Attachment.storage_key)
-            .execution_options(synchronize_session=False)
-        )
-        keys = [row[0] for row in result.all()]
-        storage_keys.extend(key for key in keys if key)
-        if len(keys) < batch:
-            return storage_keys

@@ -41,7 +41,9 @@ def _small_batches():
 
 async def _count(session, model, user_id) -> int:
     return int(
-        await session.scalar(select(func.count()).select_from(model).where(model.user_id == user_id))
+        await session.scalar(
+            select(func.count()).select_from(model).where(model.user_id == user_id)
+        )
         or 0
     )
 

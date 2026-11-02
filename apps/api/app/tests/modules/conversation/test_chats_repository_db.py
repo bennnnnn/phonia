@@ -179,7 +179,9 @@ async def test_the_drawer_pages_every_dated_chat_by_cursor(db_session):
 
     assert read == sorted(times, key=lambda chat_id: (times[chat_id], chat_id), reverse=True)
     assert cursor is None
-    assert [chat.id for chat in await chats_repo.list_pinned(db_session, owner.id, limit=50)] == [pinned.id]
+    assert [chat.id for chat in await chats_repo.list_pinned(db_session, owner.id, limit=50)] == [
+        pinned.id
+    ]
 
 
 @pytest.mark.asyncio

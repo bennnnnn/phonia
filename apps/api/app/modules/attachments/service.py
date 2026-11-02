@@ -19,6 +19,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.attachment_limits import MAX_ATTACHMENT_SIZE as MAX_ATTACHMENT_SIZE
 from app.core.config import Settings
 from app.models.orm import Attachment
+from app.modules.attachments import account_repository as _account_rows
 from app.modules.attachments import jobs as _jobs
 from app.modules.attachments import lifecycle as _lifecycle
 from app.modules.attachments import rag as _rag
@@ -198,4 +199,4 @@ async def delete_user_rows(session: AsyncSession, user_id: UUID) -> list[str]:
     delete commits: the files go only with the rows, never before them. Under the user's
     row lock no attachment can be added between the read and the delete.
     """
-    return await _repo.delete_all_for_user(session, user_id)
+    return await _account_rows.delete_all_for_user(session, user_id)
