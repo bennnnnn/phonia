@@ -61,8 +61,6 @@ type Options = {
   editThread: EditThread;
   messages: Message[];
   streaming: boolean;
-  /** Latest image-gen in-flight flag — AppState/focus closures must not snapshot it. */
-  imageGeneratingRef?: React.MutableRefObject<boolean>;
   stopGeneration: () => void;
   listRef: React.RefObject<FlashListRef<Message> | null>;
   showActionBanner: (message: string, icon?: IconName) => void;
@@ -80,7 +78,6 @@ export function useChatRouteLoader({
   editThread,
   messages,
   streaming,
-  imageGeneratingRef,
   stopGeneration,
   listRef,
   showActionBanner,
@@ -158,10 +155,7 @@ export function useChatRouteLoader({
     }
   }, [knownAssistantChatId, messagesHadContent]);
 
-  const turnBusy = useCallback(
-    () => streamingRef.current || Boolean(imageGeneratingRef?.current),
-    [imageGeneratingRef, streamingRef],
-  );
+  const turnBusy = useCallback(() => streamingRef.current, [streamingRef]);
 
   const leaveOpenChat = useCallback(
     (opts?: { force?: boolean }) => {
@@ -257,7 +251,7 @@ export function useChatRouteLoader({
       if (state === "background" || state === "inactive") {
         // Another device may write to any chat while this one is away.
         if (state === "background") markCachedChatPagesStale();
-        if (streamingRef.current || Boolean(imageGeneratingRef?.current)) {
+        if (streamingRef.current) {
           wasStreamingWhenBackgroundedRef.current = true;
         }
         // An unused draft is dropped by useDraftChat, once, on background.
@@ -278,7 +272,6 @@ export function useChatRouteLoader({
           chatId: openChatId,
           streaming: streamingRef.current,
           chatLoading: chatLoadingRef.current,
-          imageGenerating: Boolean(imageGeneratingRef?.current),
         })
       ) {
         return;
@@ -304,8 +297,7 @@ export function useChatRouteLoader({
     draftChatIdRef,
     silentRefetchChat,
     session,
-    imageGeneratingRef,
-    chatLoadingRef,
+      chatLoadingRef,
     streamingRef,
   ]);
 

@@ -52,7 +52,6 @@ export const attachmentsApi = {
     token: string,
     params: {
       category?: "images" | "files";
-      source?: "upload" | "generated";
       q?: string;
       limit?: number;
       /** The `next_cursor` of the page before; omitted for the first page. */
@@ -61,7 +60,6 @@ export const attachmentsApi = {
   ) => {
     const search = new URLSearchParams();
     if (params.category) search.set("category", params.category);
-    if (params.source) search.set("source", params.source);
     if (params.q) search.set("q", params.q);
     if (params.limit !== undefined) search.set("limit", String(params.limit));
     if (params.cursor) search.set("cursor", params.cursor);

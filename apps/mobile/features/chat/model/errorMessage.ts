@@ -6,38 +6,19 @@ type ChatErrorKind =
   | "busy"
   | "send_rejected"
   | "attachment_rejected"
-  /** Said and dismissed: nothing to retry or buy (a refused picture, a paid plan's cap). */
-  | "notice"
   | "generic";
 
 /**
- * The code a refusal is worded by. A `daily_limit` or `spend_cap` names its feature: a
- * picture's own cap is not the day's chat allowance running out, nor every message paused.
- */
-export function refusalCode(code: string | undefined, feature: unknown): string | undefined {
-  if (feature !== "image_generation") return code;
-  if (code === "daily_limit") return "image_daily_limit";
-  return code === "spend_cap" ? "image_spend_cap" : code;
-}
-
-/**
- * Today's global spend cap (modules/chat/turn_resources.py; a picture's in
- * modules/images/generation.py): its English showed in every language.
- */
-const SPEND_CAP_KEYS: Readonly<Record<string, string>> = {
-  spend_cap: "chat.spend_cap",
-  image_spend_cap: "chat.image_spend_cap",
-};
-
-/**
- * A turn that failed for no reason the user can act on (the chat or its message gone, an
- * image service failure, anything unexpected), a deploy, a reply that did not save.
+ * A turn that failed for no reason the user can act on (the chat or its message gone,
+ * anything unexpected), a deploy, a reply that did not save; and today's global spend cap
+ * (modules/chat/turn_resources.py), whose English showed in every language.
  */
 const TURN_FAILURE_KEYS: Readonly<Record<string, string>> = {
   failed: "chat.error_generic",
   not_found: "chat.error_generic",
   server_restarting: "chat.server_restarting",
   reply_not_saved: "chat.reply_not_saved",
+  spend_cap: "chat.spend_cap",
 };
 
 export type ResolvedChatError = {
@@ -76,17 +57,8 @@ export function resolveChatError(options: {
     return { kind: "generic", message: options.t("chat.rate_limited") };
   }
   // The turn's own failures (modules/chat/stream_events.py): their English showed.
-  const ownKey = TURN_FAILURE_KEYS[options.code ?? ""] ?? SPEND_CAP_KEYS[options.code ?? ""];
+  const ownKey = TURN_FAILURE_KEYS[options.code ?? ""];
   if (ownKey) return { kind: "generic", message: options.t(ownKey) };
-  if (options.code === "image_daily_limit") {
-    // A free plan can buy more pictures; a paid one waits for tomorrow.
-    return options.isPaid
-      ? { kind: "notice", message: options.t("chat.image_daily_limit_paid") }
-      : { kind: "quota", message: options.t("chat.image_daily_limit_free") };
-  }
-  if (options.code === "content_blocked") {
-    return { kind: "notice", message: options.t("chat.image_content_blocked") };
-  }
   if (options.code === "quota_exceeded" || options.code === "daily_limit") {
     return {
       kind: "quota",

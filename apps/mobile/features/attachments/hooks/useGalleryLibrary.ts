@@ -110,7 +110,7 @@ export function useGalleryLibrary(
         await shareChatAttachment({
           uri,
           token,
-          fileName: galleryFileName(item.content_type, item.original_filename, item.source),
+          fileName: galleryFileName(item.content_type, item.original_filename),
           contentType: item.content_type,
         });
         if (isCurrent(version)) setActionItem((current) => current?.id === item.id ? null : current);

@@ -37,10 +37,6 @@
       "lines": 534,
       "why": "Exception: Law catalog; all data"
     },
-    "apps/api/app/modules/images/gen_intent_words.py": {
-      "lines": 517,
-      "why": "Exception: The image-intent word lists, one word per line (data); the matchers are gen_intent.py"
-    },
     "apps/api/app/modules/math/fence.py": {
       "lines": 610,
       "why": "Over 500 before the standards; tracked in ES-22"

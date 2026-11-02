@@ -289,16 +289,16 @@ async def test_reap_orphan_attachments_passes_pending_grace_to_list():
 
 
 @pytest.mark.asyncio
-async def test_reap_orphan_attachments_does_not_refund_generated_reuse_clones():
-    """Reaping a generated-image orphan must refund imggen, not imgup."""
+async def test_reap_orphan_attachments_does_not_refund_lookup_photo_orphans():
+    """Reaping a looked-up photo's orphan must not refund an upload slot (imgup)."""
     settings = Settings()
     user_id = uuid4()
     orphan = MagicMock()
     orphan.id = uuid4()
     orphan.user_id = user_id
     orphan.content_type = "image/png"
-    orphan.storage_key = "user/gen-img"
-    orphan.source = "generated"
+    orphan.storage_key = "user/lookup-img"
+    orphan.source = "search"
     gateway = MagicMock()
     gateway.delete_bytes = AsyncMock()
     fake_redis = redis_mock()

@@ -18,7 +18,6 @@ const TOOL_PHASES = new Set([
   "chemistry",
   "reading_files",
   "finding_photo",
-  "image_gen",
 ]);
 
 /**
@@ -36,8 +35,6 @@ const ERROR_CODES = new Set([
   "attachment_rejected",
   "rate_limited",
   "consent_required",
-  "daily_limit",
-  "content_blocked",
   "not_found",
   "failed",
   "reply_not_saved",

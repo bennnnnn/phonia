@@ -59,13 +59,6 @@ const PUBLIC: Record<string, readonly string[]> = {
     "model/emailDraftSanitize.ts",
   ],
   home: ["components/HomeStarters.tsx"],
-  images: [
-    "components/ImageGenPlaceholder.tsx",
-    "hooks/useImageGeneration.ts",
-    "model/imageGenMessages.ts",
-    "model/imageGenTurn.ts",
-    "model/imageIntentPrefilter.ts",
-  ],
   memory: ["model/memoryListCache.ts"],
   notifications: [
     "model/notificationChannels.ts",

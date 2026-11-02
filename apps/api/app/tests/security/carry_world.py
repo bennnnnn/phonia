@@ -136,7 +136,7 @@ async def counts(redis: Any, user_id: UUID) -> dict[str, int]:
     day = quota.utc_today()
     found = {
         prefix: int(await redis.get(counters.daily_key(prefix, user_id, day)) or 0)
-        for prefix in ("usage", "imggen", "tavily")
+        for prefix in ("usage", "imgsearch", "tavily")
     }
     return {prefix: used for prefix, used in found.items() if used}
 

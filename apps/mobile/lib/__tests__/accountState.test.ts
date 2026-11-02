@@ -131,7 +131,6 @@ const NO_ACCOUNT_DATA = [
   "features/chat/drawer/drawer.ts#_onTitlePendingChange",
   "features/chat/hooks/useMathKeyboardInsert.ts#lastSystemKeyboardHeight",
   "features/chat/model/messageCache.ts#swept",
-  "features/images/components/dotField.ts#compiled",
   "features/speech/model/pronunciation.ts#speechModule",
   "features/speech/model/speechRate.ts#cachedRate",
   "features/speech/model/ttsPreference.ts#cachedPreference",

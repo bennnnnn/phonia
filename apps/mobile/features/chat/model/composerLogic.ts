@@ -1,4 +1,3 @@
-import { IMAGE_GEN_PENDING_ASSISTANT_ID } from "@/features/images/model/imageGenMessages";
 import { Space } from "@/lib/space";
 import { Type } from "@/lib/type";
 
@@ -244,7 +243,7 @@ export function composerShowsStop(options: {
 
 /** True while the last row is the in-flight placeholder (no action icons yet). */
 export function shouldReserveComposerActionGap(lastMessageId?: string): boolean {
-  return lastMessageId === "streaming" || lastMessageId === IMAGE_GEN_PENDING_ASSISTANT_ID;
+  return lastMessageId === "streaming";
 }
 
 type ChatLayoutMetrics = {

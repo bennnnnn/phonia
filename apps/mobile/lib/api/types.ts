@@ -95,11 +95,6 @@ export type Message = {
   local_file_content_type?: string | null;
   /** Client-only FlashList key — stable while `id` changes streaming → persisted. */
   renderKey?: string;
-  /** Client-only: image generation stopped or failed (inline card + retry). */
-  image_gen_failure?: "canceled" | "failed";
-  image_gen_error?: string;
-  /** Client-only: refused for a reason a retry meets again (the day's cap, content rules): no Retry. */
-  image_gen_refused?: boolean;
   /** Client-only: stream was stopped or the provider died after tokens started. */
   generationStopped?: boolean;
   /** Saved with the reply: it did not finish (Stop, or cut off). Null when it did. */

@@ -1,7 +1,6 @@
 import type { Message } from "@/lib/api";
 import { isAbortError } from "@/lib/api/abort";
 import { ApiRequestError } from "@/lib/api/errorBody";
-import { refusalCode } from "@/features/chat/model/errorMessage";
 import { popLastAssistantMessage, restoreAssistantMessage } from "@/features/chat/model/regenerateLogic";
 import type { PendingSend } from "@/features/chat/model/sendLogic";
 import { mergeReconciledPage, SSE_DROPPED_TURN_POLLS } from "@/features/chat/model/turnReconcile";
@@ -237,7 +236,7 @@ function settleDroppedSocketTurn(s: ChatTurnState, out: Out, pending: PendingSen
  */
 function refusalReport(error: unknown): { message?: string; code?: string } {
   if (!(error instanceof ApiRequestError) || !error.code) return {};
-  return { message: error.detail || undefined, code: refusalCode(error.code, error.fields.feature) };
+  return { message: error.detail || undefined, code: error.code };
 }
 
 function settleFailedSend(

@@ -1,4 +1,4 @@
-import { refusalCode, resolveChatError } from "@/features/chat/model/errorMessage";
+import { resolveChatError } from "@/features/chat/model/errorMessage";
 import i18n, { ensureLocale } from "@/lib/i18n";
 import de from "@/lib/i18n/de.json";
 
@@ -38,27 +38,6 @@ describe("chatErrorMessage", () => {
     ).toBe("generic");
   });
 
-  it("says a picture's own limit, with an upgrade only where the plan can buy more", () => {
-    expect(refusalCode("daily_limit", "image_generation")).toBe("image_daily_limit");
-    expect(refusalCode("daily_limit", "speech_transcription")).toBe("daily_limit");
-    expect(refusalCode("busy", undefined)).toBe("busy");
-    expect(resolveChatError({ message: "x", code: "image_daily_limit", isPaid: false, t })).toEqual({
-      kind: "quota",
-      message: "chat.image_daily_limit_free",
-    });
-    expect(resolveChatError({ message: "x", code: "image_daily_limit", isPaid: true, t })).toEqual({
-      kind: "notice",
-      message: "chat.image_daily_limit_paid",
-    });
-  });
-
-  it("says a refused picture is the content rules, with nothing to retry", () => {
-    expect(resolveChatError({ message: "Blocked.", code: "content_blocked", isPaid: false, t })).toEqual({
-      kind: "notice",
-      message: "chat.image_content_blocked",
-    });
-  });
-
   // The socket's frames for a turn the spend gate refused: the server's English showed in
   // every language. Redis down at the spend read sent spend_cap too ("Recall is at capacity
   // for today… Try again after midnight UTC.").
@@ -67,14 +46,6 @@ describe("chatErrorMessage", () => {
     expect(resolveChatError({ message: capacity, code: "spend_cap", isPaid: false, t })).toEqual({
       kind: "generic",
       message: "chat.spend_cap",
-    });
-    // A picture turn's cap names its feature: the picture is paused, not every message.
-    expect(refusalCode("spend_cap", "image_generation")).toBe("image_spend_cap");
-    expect(refusalCode("spend_cap", undefined)).toBe("spend_cap");
-    const picture = "Image generation is temporarily unavailable. Try again later.";
-    expect(resolveChatError({ message: picture, code: "image_spend_cap", isPaid: true, t })).toEqual({
-      kind: "generic",
-      message: "chat.image_spend_cap",
     });
     expect(
       resolveChatError({ message: "Service temporarily unavailable.", code: "unavailable", isPaid: true, t }),
@@ -86,7 +57,6 @@ describe("chatErrorMessage", () => {
   // restarting. Send again in a moment.", "Failed to save the response. Please retry."
   it.each([
     ["failed", "Something went wrong. Try again.", "chat.error_generic"],
-    ["failed", "Could not generate image", "chat.error_generic"],
     ["not_found", "Chat not found.", "chat.error_generic"],
     ["server_restarting", "The server is restarting. Send again in a moment.", "chat.server_restarting"],
     ["reply_not_saved", "Failed to save the response. Please retry.", "chat.reply_not_saved"],
@@ -99,11 +69,10 @@ describe("chatErrorMessage", () => {
     afterAll(async () => { await ensureLocale("en"); });
 
     it.each([
-      ["spend_cap", undefined, "Recall is at capacity for today, so new messages are paused for everyone.", "chat.spend_cap"],
-      ["spend_cap", "image_generation", "Image generation is temporarily unavailable. Try again later.", "chat.image_spend_cap"],
-    ] as const)("says the %s frame (feature %s) in German", (code, feature, english, key) => {
+      ["spend_cap", "Recall is at capacity for today, so new messages are paused for everyone.", "chat.spend_cap"],
+    ] as const)("says the %s frame in German", (code, english, key) => {
       const german = i18n.getFixedT("de");
-      const resolved = resolveChatError({ message: english, code: refusalCode(code, feature), isPaid: false, t: german });
+      const resolved = resolveChatError({ message: english, code, isPaid: false, t: german });
       expect(resolved.message).toBe(de[key]);
       expect(resolved.message).not.toBe(english);
     });

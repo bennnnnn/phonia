@@ -24,7 +24,6 @@ import { hasPlanFeature } from "@/lib/plan";
 import type { UpgradeSource } from "@/features/billing/components/UpgradeSheet";
 import { useChat } from "@/features/chat/hooks/useChat";
 import { useChatActions } from "@/features/chat/hooks/useChatActions";
-import { useEnsureChatId } from "@/features/chat/hooks/useEnsureChatId";
 import { useChatComposerWiring } from "@/features/chat/hooks/useChatComposerWiring";
 import { useChatDraftWarmup } from "@/features/chat/hooks/useChatDraftWarmup";
 import { useChatLayoutMetrics } from "@/features/chat/hooks/useChatLayoutMetrics";
@@ -40,7 +39,6 @@ import { useQuotaNudge } from "@/features/chat/hooks/useQuotaNudge";
 import { useChatScreenBodyProps } from "@/features/chat/hooks/useChatScreenBodyProps";
 import { useTodosOptional } from "@/features/todos/context/TodosContext";
 import { isComposerMenuOverlayOpen, CHAT_COMPOSER_MIN_BOTTOM_PAD } from "@/features/chat/model/composerLogic";
-import { useChatImageGeneration } from "@/features/chat/hooks/useChatImageGeneration";
 import { useKeyboardInset } from "@/hooks/useKeyboardInset";
 
 function ChatScreen() {
@@ -98,7 +96,6 @@ function ChatScreen() {
   });
 
   const llmBusy = streaming || finalizing;
-  const imageGeneratingRef = useRef(false);
   const stopTurnRef = useRef<() => void>(() => {});
   const stopTurn = useCallback(() => {
     stopTurnRef.current();
@@ -129,7 +126,6 @@ function ChatScreen() {
     editThread,
     messages,
     streaming: llmBusy,
-    imageGeneratingRef,
     stopGeneration: stopTurn,
     listRef: scroll.listRef,
     showActionBanner: (message, icon) => showActionBannerRef.current(message, icon),
@@ -164,27 +160,11 @@ function ChatScreen() {
     showActionBannerRef.current(t("chat.offline_body"), "cloud-off");
   }, [t]);
 
-  const ensureChatId = useEnsureChatId({ chatId, draft, setChatId, setChatTitle, router });
-  const imageGen = useChatImageGeneration({
-    token,
-    ensureChatId,
-    editThread,
-    streaming: llmBusy,
-    isPaid,
-    isOffline,
-    onOpenUpgrade: () => openUpgradeRef.current?.(),
-    onOfflineBlocked: notifyOfflineBlocked,
-    onScrollToLatest: scroll.scrollToLatest,
-    newMessageCountRef: scroll.newMessageCountRef,
-    t,
-  });
-  const streamActive = llmBusy || imageGen.generating;
-
   useEffect(() => {
-    if (!streamActive) handleRejectedSendChange(rejectedSend?.reason ?? null);
-  }, [streamActive, rejectedSend, handleRejectedSendChange]);
+    if (!llmBusy) handleRejectedSendChange(rejectedSend?.reason ?? null);
+  }, [llmBusy, rejectedSend, handleRejectedSendChange]);
 
-  useChatStreamLifecycle({ streamActive, replySaving: finalizing, dismissChatError, dismissBusyNotice });
+  useChatStreamLifecycle({ streamActive: llmBusy, replySaving: finalizing, dismissChatError, dismissBusyNotice });
 
   const send = useChatSend({
     token,
@@ -197,19 +177,16 @@ function ChatScreen() {
     draft,
     scroll,
     // A reply that is only saving (after `stream_end`) does not hold the next send.
-    streaming: (streaming && !finalizing) || imageGen.generating,
+    streaming: streaming && !finalizing,
     sendMessage,
     sendStart,
     editThread,
-    messages,
     t,
     onStreamBusy: handleStreamBusy,
     onOfflineBlocked: notifyOfflineBlocked,
     isOffline,
     // A send shows the newest message, scrolled up or not; from an old search hit's window, the newest page first.
     beforeSend: newerPage ? () => jumpToLatest().then(scroll.scrollToLatest) : async () => scroll.scrollToLatest(),
-    imageGenerating: imageGen.generating,
-    onGenerateImage: (request) => void imageGen.submitPrompt(request),
   });
 
   const { pendingAttachment, sendPhase, attachSheetOpen, handleSend, sendTappedLine, restoreComposerDraft } = send;
@@ -242,7 +219,7 @@ function ChatScreen() {
 
   useChatDraftWarmup({
     chatId,
-    streaming: streamActive,
+    streaming: llmBusy,
     draftChatId,
     connect,
   });
@@ -254,7 +231,7 @@ function ChatScreen() {
   });
   const retryChatError = useChatErrorRecovery({
     error: chatError,
-    blocked: routeLoader.historyPending || streamActive || regenerating,
+    blocked: routeLoader.historyPending || llmBusy || regenerating,
     dismiss: dismissChatError,
     retryRejectedSend,
     restoreRejectedAttachmentDraft,
@@ -273,8 +250,6 @@ function ChatScreen() {
     regenerating,
     handleFeedback,
     onSelectSuggestion: user?.follow_up_suggestions_enabled === false ? undefined : sendTappedLine,
-    imageGenerating: imageGen.generating,
-    onRetryImageGen: imageGen.retry,
   });
 
   const layout = useChatLayoutMetrics({
@@ -287,7 +262,7 @@ function ChatScreen() {
     attachmentExtra: composerAttachmentExtra(pendingAttachment),
     mathBarExtra: mathChromeExtra,
     messagesLength: messages.length,
-    streaming: streamActive,
+    streaming: llmBusy,
     lastMessageId: messages[messages.length - 1]?.id,
   });
 
@@ -337,7 +312,7 @@ function ChatScreen() {
     dismissChatError,
     composerAnimatedStyle,
     keyboardLift,
-    streaming: streamActive,
+    streaming: llmBusy,
     replySaving: finalizing,
     sendBusy: routeLoader.historyPending || sendPhase !== "idle",
     stopGeneration: stopTurn,
@@ -348,8 +323,7 @@ function ChatScreen() {
   useLayoutEffect(() => {
     onFirstReplyRef.current = routeLoader.handleFirstReply;
     showActionBannerRef.current = chatActions.showActionBanner;
-    imageGeneratingRef.current = imageGen.generating;
-    stopTurnRef.current = () => { imageGen.cancel(); stopGeneration(); dismissChatError(); };
+    stopTurnRef.current = () => { stopGeneration(); dismissChatError(); };
     openUpgradeRef.current = chatScreenBody.openUpgradeSheet;
   });
   const chatScreenBodyProps = chatScreenBody.bodyProps;
@@ -357,7 +331,7 @@ function ChatScreen() {
   if (!token) return <Redirect href="/login" />;
 
   return (
-    <ChatReplyProviders saveEmailDraft={handleSaveEmailDraft} send={sendTappedLine} busy={streamActive || regenerating}>
+    <ChatReplyProviders saveEmailDraft={handleSaveEmailDraft} send={sendTappedLine} busy={llmBusy || regenerating}>
       <View style={{ flex: 1 }}>
         <ChatScreenBody {...chatScreenBodyProps} />
         <ChatScreenMenuSheets menuAnchorRef={menuAnchorRef} {...chatMenuSheetProps(chatActions, { chatTitle, pinned })} />

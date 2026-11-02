@@ -16,7 +16,6 @@ import {
   isComposerMenuOverlayOpen,
   shouldReserveComposerActionGap,
 } from "@/features/chat/model/composerLogic";
-import { IMAGE_GEN_PENDING_ASSISTANT_ID } from "@/features/images/model/imageGenMessages";
 import { keyboardLiftAbove } from "@/lib/keyboardInset";
 
 describe("composerInputFrameHeight", () => {
@@ -325,9 +324,8 @@ describe("chatComposerLogic", () => {
     expect(settled.restingListBottomPad + lift).toBe(settled.listBottomPad);
   });
 
-  it("shouldReserveComposerActionGap only for in-flight placeholders", () => {
+  it("shouldReserveComposerActionGap only for the in-flight placeholder", () => {
     expect(shouldReserveComposerActionGap("streaming")).toBe(true);
-    expect(shouldReserveComposerActionGap(IMAGE_GEN_PENDING_ASSISTANT_ID)).toBe(true);
     expect(shouldReserveComposerActionGap("msg-1")).toBe(false);
     expect(shouldReserveComposerActionGap(undefined)).toBe(false);
   });

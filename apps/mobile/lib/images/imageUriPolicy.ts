@@ -8,7 +8,7 @@
  * leak, not just IP/UA exposure. Only these load by themselves:
  *  - the Recall API's own origin, the one the app already talks to (every
  *    picture the server adds is an attachment there: photo lookups, answer
- *    photos, generated images, the user's uploads);
+ *    photos, the user's uploads);
  *  - inline raster `data:` images and local `blob:` URIs (no network).
  *
  * Any other `https:` image is "ask": a placeholder names its host and loads

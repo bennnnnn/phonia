@@ -16,7 +16,7 @@ export const GALLERY_COLUMN_SEPARATOR_INSET = Space.md + COLUMN_THUMB_SIZE + Spa
 
 type Props = {
   item: AttachmentListItem;
-  /** The prompt of a generated image, else the file name. */
+  /** The file name. */
   title: string;
   /** Shared or attached right now: a spinner, and taps wait. */
   busy?: boolean;
@@ -53,8 +53,8 @@ export function GalleryColumnRow({
       title={title}
       subtitle={chatTitle}
       numberOfLines={1}
-      // A file name keeps its extension; a prompt reads best cut at the end.
-      ellipsizeMode={item.source === "generated" ? "tail" : "middle"}
+      // A file name keeps its extension.
+      ellipsizeMode="middle"
       busy={busy}
       leading={
         isImage ? (

@@ -5,7 +5,6 @@ import type { Message } from "@/lib/api";
 
 let mockBubbleProps: {
   onRegenerate?: () => void;
-  onRetryImageGen?: () => void;
   liveContent?: string;
   isGenerating?: boolean;
 } = {};
@@ -58,16 +57,6 @@ afterEach(() => {
 });
 
 describe("ChatMessageRow", () => {
-  it.each([
-    ["a failed picture", { image_gen_failure: "failed" }, true],
-    ["a stopped picture", { image_gen_failure: "canceled" }, true],
-    ["a picture the day's cap refused", { image_gen_failure: "failed", image_gen_refused: true }, false],
-  ] as const)("offers Retry under %s only when a retry can go differently", async (_label, failure, retry) => {
-    const item = { ...message("image-gen-failed", ""), ...failure };
-    await render(<ChatMessageRow {...rowProps} item={item} onRetryImageGen={jest.fn()} />);
-    expect(Boolean(mockBubbleProps.onRetryImageGen)).toBe(retry);
-  });
-
   it("keeps the prebound regenerate callback stable across renders", async () => {
     const item = message("assistant-1", "Reply");
     const onRegenerate = jest.fn();

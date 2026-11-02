@@ -43,7 +43,7 @@ type Props = {
 };
 
 /** ~1/3 screen width, slightly portrait — matches Claude-style chat thumbnails. */
-export function useThumbnailSize() {
+function useThumbnailSize() {
   const { width: screenWidth } = useWindowDimensions();
   const width = Math.round(Math.min(screenWidth * 0.34, 148));
   const height = Math.round(width * 1.28);

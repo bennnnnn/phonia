@@ -79,13 +79,13 @@ it("ignores the old account's subscription response and detached listener", asyn
 });
 
 it("a store plan change brings the plan's features with it", async () => {
-  (api.syncSubscription as jest.Mock).mockResolvedValue({ ...userA, plan: "pro", features: ["image_generation"] });
+  (api.syncSubscription as jest.Mock).mockResolvedValue({ ...userA, plan: "pro", features: ["live_talk"] });
   await render(<Probe user={{ ...userA, timezone: userB.timezone }} token="a" />);
   const listener = (registerPlanChangeListener as jest.Mock).mock.calls[0][0];
   await act(async () => { listener(true); });
   const applyUpdate = setUser.mock.calls[0][0];
   expect(applyUpdate({ ...userA, name: "Kept", features: [] })).toEqual({
-    ...userA, name: "Kept", plan: "pro", features: ["image_generation"],
+    ...userA, name: "Kept", plan: "pro", features: ["live_talk"],
   });
 });
 

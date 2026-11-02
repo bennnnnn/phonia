@@ -66,16 +66,16 @@ jest.mock("@/features/billing/model/purchases", () => ({
 const CATALOG = {
   current: "free",
   plans: [
-    { id: "free", features: ["image_generation"], allowances: { daily_image_generations: 3 } },
+    { id: "free", features: [], allowances: {} },
     {
       id: "plus",
-      features: ["all_models", "image_generation", "speech_transcription", "speech_tts"],
-      allowances: { daily_image_generations: 10 },
+      features: ["all_models", "speech_transcription", "speech_tts"],
+      allowances: {},
     },
     {
       id: "pro",
-      features: ["all_models", "image_generation", "speech_transcription", "speech_tts"],
-      allowances: { daily_image_generations: 15 },
+      features: ["all_models", "speech_transcription", "speech_tts"],
+      allowances: {},
     },
   ],
 };
@@ -116,7 +116,6 @@ it("offers free users both plans with store prices and server numbers", async ()
   expect(screen.getByTestId("upgrade-plan-pro")).toBeOnTheScreen();
   expect(screen.getByText('upgrade.per_month {"price":"$7.99"}')).toBeOnTheScreen();
   expect(screen.getByText('upgrade.per_month {"price":"$13.99"}')).toBeOnTheScreen();
-  expect(screen.getByText('upgrade.feature_images {"count":10}')).toBeOnTheScreen();
   expect(mockTrack).toHaveBeenCalledWith("paywall_viewed", { source: "voice" });
 });
 

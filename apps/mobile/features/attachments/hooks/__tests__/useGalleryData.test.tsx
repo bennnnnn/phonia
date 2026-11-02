@@ -39,7 +39,6 @@ function item(id: string): AttachmentListItem {
     content_type: "image/png",
     size_bytes: 12,
     download_url: `/attachments/${id}/file`,
-    source: "upload",
     created_at: "2026-01-01T00:00:00.000Z",
   };
 }

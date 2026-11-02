@@ -8,7 +8,6 @@ import { useActionFeedbackOptional } from "@/contexts/ActionFeedbackContext";
 import type { useDraftChat } from "@/features/chat/hooks/useDraftChat";
 import type { useChatScroll } from "@/features/chat/hooks/useChatScroll";
 import { getSessionGeneration } from "@/lib/auth";
-import type { Message } from "@/lib/api";
 import { notifyWarning, tap } from "@/lib/haptics";
 import { notifyOfflineSendBlocked } from "@/lib/offlineSendFeedback";
 import {
@@ -27,7 +26,6 @@ import { useRestoreFailedSend, type SendTurn } from "@/features/chat/hooks/useRe
 import { useSendAttachment } from "@/features/chat/hooks/useSendAttachment";
 import type { SendTurnStart } from "@/features/chat/hooks/useTurnStart";
 import { composerThreadKey } from "@/features/chat/model/composerThreadDraft";
-import type { ImageGenSubmit } from "@/features/images/hooks/useImageGeneration";
 import { useViewOwner } from "@/features/chat/hooks/useViewOwner";
 import type { EditThread } from "@/features/chat/model/threadEdit";
 import { discardDraftAttachment, type PendingAttachment } from "@/features/attachments/model/attachments";
@@ -77,8 +75,6 @@ type Options = {
   /** Typing dots that go up with the bubble, before the turn is sent. */
   sendStart: SendTurnStart;
   editThread: EditThread;
-  /** Current transcript — a short follow-up after a picture is worth asking the server about. */
-  messages: Message[];
   t: (key: string, options?: Record<string, unknown>) => string;
   onStreamBusy?: () => void;
   /** Soft offline cue (toast) — prefer over a blocking Alert; draft stays in the composer. */
@@ -86,9 +82,6 @@ type Options = {
   isOffline: boolean;
   /** Runs before a send is painted (a window around a search hit goes to the newest page). */
   beforeSend?: () => Promise<void>;
-  /** Run image generation for detected image-intent text (no confirmation sheet). */
-  onGenerateImage?: (request: ImageGenSubmit) => void;
-  imageGenerating?: boolean;
 };
 
 export function useChatSend({
@@ -105,14 +98,11 @@ export function useChatSend({
   sendMessage,
   sendStart,
   editThread,
-  messages,
   t,
   onStreamBusy,
   onOfflineBlocked,
   isOffline,
   beforeSend,
-  onGenerateImage,
-  imageGenerating = false,
 }: Options) {
   const { creatingRef, discardEmptyChat } = draft;
   const { newMessageCountRef } = scroll;
@@ -317,9 +307,8 @@ export function useChatSend({
   );
 
   const routeSend = useChatSendRoute({
-    token, chatId, messages, imageGenerating, onGenerateImage, sendMessage, sendStart, t,
-    pendingAttachmentRef, setPendingAttachment, setPendingOutboundId, sendInFlightRef, setSendPhase,
-    restoreFailedSend, sendToNewChat,
+    token, chatId, sendMessage, sendStart, t,
+    setPendingOutboundId, sendInFlightRef, setSendPhase, restoreFailedSend, sendToNewChat,
   });
 
   /** False when the send was refused before its bubble painted (offline, another send preparing). */

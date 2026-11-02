@@ -50,10 +50,6 @@ jest.mock("@/components/rich/PlacesListBlock", () => ({
 jest.mock("@/features/attachments/components/ChatMessageImageStrip", () => ({
   ChatMessageImageStrip: () => null,
 }));
-jest.mock("@/features/images/components/ImageGenPlaceholder", () => {
-  const { View: MockView } = jest.requireActual("react-native") as typeof import("react-native");
-  return { ImageGenPlaceholder: () => <MockView testID="image-gen-placeholder" /> };
-});
 jest.mock("@/ui/feedback/ActionShimmer", () => ({
   ActionShimmer: () => null,
 }));
@@ -165,20 +161,13 @@ describe("MessageBubble tool status (S7.9)", () => {
     mockHasContent = true;
   });
 
-  it("draws the image-generation card only for image generation, not a photo lookup", async () => {
+  it("draws the typing indicator for a photo lookup", async () => {
     mockHasContent = false;
     const waiting = { ...assistantMessage, id: "streaming", content: "" } as Message;
     const photo = await render(
       <MessageBubble message={waiting} isGenerating streamStatus="finding_photo" />,
     );
-    expect(photo.queryByTestId("image-gen-placeholder")).toBeNull();
     expect(photo.getByTestId("typing-indicator-finding_photo")).toBeTruthy();
-    await photo.unmount();
-
-    const generating = await render(
-      <MessageBubble message={waiting} isGenerating streamStatus="image_gen" />,
-    );
-    expect(generating.getByTestId("image-gen-placeholder")).toBeTruthy();
   });
 
   it("counts thinking from its start under the typing indicator", async () => {
@@ -320,7 +309,7 @@ describe("MessageBubble copy feedback timers", () => {
     });
 
     it("reads with the phone's own voice when the plan has no read-aloud", async () => {
-      mockAuthUser = { plan: "free", features: ["image_generation"], locale: "en" };
+      mockAuthUser = { plan: "free", features: [], locale: "en" };
       const view = await render(<MessageBubble message={assistantMessage} />);
       await fireEvent.press(view.getByLabelText("chat.read_aloud_a11y"));
       const options = jest.mocked(speakPlainText).mock.calls.at(-1)?.[2];
@@ -330,7 +319,7 @@ describe("MessageBubble copy feedback timers", () => {
     it("uses the natural voice on a plan that includes read-aloud", async () => {
       mockAuthUser = {
         plan: "plus",
-        features: ["all_models", "image_generation", "speech_transcription", "speech_tts"],
+        features: ["all_models", "speech_transcription", "speech_tts"],
         locale: "en",
       };
       const view = await render(<MessageBubble message={assistantMessage} />);

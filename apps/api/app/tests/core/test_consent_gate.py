@@ -29,8 +29,6 @@ _ROUTES = [
     ("post", "/math/scan/read", None),
     ("post", "/physics/scan/read", None),
     ("post", "/chemistry/scan/read", None),
-    ("post", "/images/generate", {"chat_id": str(uuid4()), "prompt": "a lighthouse at dusk"}),
-    ("post", "/images/intent", {"text": "draw a lighthouse at dusk"}),
     ("post", "/memories/instruct", {"instruction": "remember that I prefer metric units"}),
 ]
 

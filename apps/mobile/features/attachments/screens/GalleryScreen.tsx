@@ -32,7 +32,7 @@ import { useGalleryLibrary } from "@/features/attachments/hooks/useGalleryLibrar
 import { type AttachmentListItem } from "@/lib/api";
 import {
   GALLERY_GRID_COLUMNS,
-  galleryDisplayName,
+  galleryFileName,
   galleryEmptyKey,
   galleryGridLayout,
   galleryItemActions,
@@ -108,7 +108,7 @@ export default function GalleryScreen() {
 
   const renderItem = useCallback(
     ({ item }: { item: AttachmentListItem }) => {
-      const name = galleryDisplayName(item);
+      const name = galleryFileName(item.content_type, item.original_filename);
       const isImage = galleryPressAction(item.content_type) === "view-image";
       const busy = busyItemId === item.id;
       const onPress = () => {

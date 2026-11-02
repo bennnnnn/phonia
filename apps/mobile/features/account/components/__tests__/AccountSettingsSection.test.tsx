@@ -25,14 +25,14 @@ jest.mock("@/features/billing/components/UpgradeSheet", () => ({
   },
 }));
 
-const PAID = ["all_models", "image_generation", "speech_transcription", "speech_tts"];
+const PAID = ["all_models", "speech_transcription", "speech_tts"];
 
 beforeEach(() => {
   mockUpgradeVisible = false;
 });
 
 it("free: names the plan and opens the plans sheet", async () => {
-  mockUser = { email: "a@b.c", plan: "free", features: ["image_generation"] };
+  mockUser = { email: "a@b.c", plan: "free", features: [] };
   const screen = await render(<AccountSettingsSection />);
   expect(screen.getByText("plans.free")).toBeOnTheScreen();
   expect(screen.queryByText(/settings\.plan_upgrade/)).toBeNull();

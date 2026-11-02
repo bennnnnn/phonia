@@ -11,7 +11,7 @@ import { signInRefusalKey } from "@/features/auth/model/signInRefusal";
 import { ApiRequestError } from "@/lib/api/client";
 import { CONSENT_REQUIRED_CODE } from "@/lib/api/consentRefusal";
 import { scanFailureMessage } from "@/features/scanner/model/scanReadError";
-import { refusalCode, resolveChatError } from "@/features/chat/model/errorMessage";
+import { resolveChatError } from "@/features/chat/model/errorMessage";
 import { memoryFailure, memoryFailureKey } from "@/features/memory/model/memoryFailure";
 import { voiceRefusalKey } from "@/features/speech/model/voiceRefusal";
 
@@ -98,18 +98,14 @@ it.each([
 });
 
 it.each([
-  ["image_daily_limit", false, "quota", "chat.image_daily_limit_free"],
-  ["image_daily_limit", true, "notice", "chat.image_daily_limit_paid"],
-  ["image_content_blocked", false, "notice", "chat.image_content_blocked"],
-  // The day's spend cap: the server's English showed in every language. Redis down at its
-  // read is the outage line; the outage answered the cap's 429, "temporarily unavailable".
-  ["image_spend_cap", false, "generic", "chat.image_spend_cap"],
+  // Redis down is the outage line, where the server's English showed.
   ["service_unavailable", false, "generic", "common.service_unavailable"],
-])("words a refused picture: %s (paid %s)", (name, isPaid, kind, words) => {
+])("words a refused chat request: %s (paid %s)", (name, isPaid, kind, words) => {
   const error = refused(name);
-  // Every refusal from the picture endpoint is the picture's own (useChatImageGeneration).
-  const code = refusalCode(error.code ?? undefined, "image_generation");
-  expect(resolveChatError({ message: error.message, code, isPaid, t })).toEqual({ kind, message: words });
+  expect(resolveChatError({ message: error.message, code: error.code ?? undefined, isPaid, t })).toEqual({
+    kind,
+    message: words,
+  });
 });
 
 it.each([

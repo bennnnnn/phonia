@@ -1,9 +1,7 @@
 import {
   COLUMN_THUMB_SIZE,
-  GENERATED_FILE_STEM_MAX,
   contentTypeForFileName,
   extensionForContentType,
-  galleryDisplayName,
   galleryEmptyKey,
   galleryFileName,
   galleryGridLayout,
@@ -59,22 +57,14 @@ describe("gallery helpers", () => {
   it("uses file empty copy on the files tab", () => {
     expect(galleryEmptyKey("files")).toBe("gallery.empty_files");
     expect(galleryEmptyKey("all")).toBe("gallery.empty");
-    expect(galleryEmptyKey("generated")).toBe("gallery.empty_generated");
     expect(galleryEmptyKey("uploaded")).toBe("gallery.empty_uploaded");
     expect(galleryEmptyKey("all", "cat")).toBe("gallery.empty_search");
     expect(galleryEmptyKey("files", "  ")).toBe("gallery.empty_files");
   });
 
-  it("maps tabs to category and source query params", () => {
+  it("maps tabs to category query params", () => {
     expect(galleryListParams("all")).toEqual({});
-    expect(galleryListParams("generated")).toEqual({
-      category: "images",
-      source: "generated",
-    });
-    expect(galleryListParams("uploaded")).toEqual({
-      category: "images",
-      source: "upload",
-    });
+    expect(galleryListParams("uploaded")).toEqual({ category: "images" });
     expect(galleryListParams("files")).toEqual({ category: "files" });
   });
 
@@ -93,34 +83,6 @@ describe("gallery helpers", () => {
   it("keeps the type's extension when an uploaded name has a dot that is not one", () => {
     expect(galleryFileName("image/png", "Screenshot 2026.10.14 at 3")).toBe("Screenshot 2026.10.14 at 3.png");
     expect(galleryFileName("image/png", "chart.v2.png")).toBe("chart.v2.png");
-  });
-
-  it.each([
-    ["A cat in a hat", "image/png", "a-cat-in-a-hat.png"],
-    // A slash used to cut the name to its last part, and a dot to drop the extension.
-    ["Draw a cat w/ a hat. Make it blue.", "image/png", "draw-a-cat-w-a-hat-make-it-blue.png"],
-    ["Ein Café am Fluss", "image/jpeg", "ein-cafe-am-fluss.jpg"],
-    ["Кот в шляпе", "image/webp", "image.webp"],
-    [null, "image/png", "image.png"],
-  ])("names generated image %p as a safe file", (prompt, type, expected) => {
-    expect(galleryFileName(type, prompt, "generated")).toBe(expected);
-  });
-
-  it("cuts a long prompt at a word, at most 40 characters before the extension", () => {
-    const name = galleryFileName(
-      "image/png",
-      "A car accelerates on a straight road from rest to 75 km/h in 5 s. What is its acceleration?",
-      "generated",
-    );
-    expect(name).toBe("a-car-accelerates-on-a-straight-road.png");
-    expect(name.length - ".png".length).toBeLessThanOrEqual(GENERATED_FILE_STEM_MAX);
-  });
-
-  it("shows a generated image by its prompt and a file by its name", () => {
-    expect(galleryDisplayName({ content_type: "image/png", original_filename: " A cat\nin a hat ", source: "generated" }))
-      .toBe("A cat in a hat");
-    expect(galleryDisplayName({ content_type: "application/pdf", original_filename: "notes", source: "upload" }))
-      .toBe("notes.pdf");
   });
 
   it("maps content types and file names both ways", () => {

@@ -42,14 +42,13 @@ jest.mock("@/components/ScreenErrorBoundary", () => ({ ScreenErrorBoundary: () =
 let mockLibrary: Record<string, unknown>;
 jest.mock("@/features/attachments/hooks/useGalleryLibrary", () => ({ useGalleryLibrary: () => mockLibrary }));
 
-const generated: AttachmentListItem = {
+const upload: AttachmentListItem = {
   id: "gen",
   content_type: "image/png",
   size_bytes: 1,
   download_url: "/attachments/gen/file",
-  source: "generated",
   created_at: "2026-01-01T00:00:00Z",
-  original_filename: "A cat in a hat",
+  original_filename: "cat-in-hat.png",
   chat_id: "c1",
 };
 const pdf: AttachmentListItem = {
@@ -57,7 +56,6 @@ const pdf: AttachmentListItem = {
   content_type: "application/pdf",
   size_bytes: 1,
   download_url: "/attachments/doc/file",
-  source: "upload",
   created_at: "2026-01-01T00:00:00Z",
   original_filename: "quarterly-report.pdf",
 };
@@ -87,7 +85,7 @@ function library(overrides: Record<string, unknown> = {}) {
 
 function data(overrides: Record<string, unknown> = {}) {
   return {
-    items: [generated, pdf],
+    items: [upload, pdf],
     loading: false,
     loadingMore: false,
     error: false,
@@ -112,7 +110,7 @@ beforeEach(() => {
 describe("GalleryScreen", () => {
   it("names each tile and offers its long-press actions to screen readers", async () => {
     const view = await render(<GalleryScreen />);
-    const photo = view.getByRole("button", { name: "A cat in a hat" });
+    const photo = view.getByRole("button", { name: "cat-in-hat.png" });
     expect(photo.props.accessibilityHint).toBe("chat.image_view_a11y");
     expect(photo.props.accessibilityActions.map((action: { name: string }) => action.name))
       .toEqual(["use", "open_chat", "share", "delete"]);
@@ -122,7 +120,7 @@ describe("GalleryScreen", () => {
       .toEqual(["use", "share", "delete"]);
 
     await fireEvent(photo, "accessibilityAction", { nativeEvent: { actionName: "share" } });
-    expect(mockLibrary.shareFile).toHaveBeenCalledWith(generated);
+    expect(mockLibrary.shareFile).toHaveBeenCalledWith(upload);
     await fireEvent(file, "accessibilityAction", { nativeEvent: { actionName: "delete" } });
     expect(mockLibrary.confirmDelete).toHaveBeenCalledWith(pdf);
   });
@@ -137,7 +135,7 @@ describe("GalleryScreen", () => {
   it("shows a spinner on the item being attached from its menu, and offers the menu to screen readers", async () => {
     mockLibrary = library({ busyItemId: "gen" });
     const view = await render(<GalleryScreen />);
-    const photo = view.getByRole("button", { name: "A cat in a hat" });
+    const photo = view.getByRole("button", { name: "cat-in-hat.png" });
     expect(photo.props.accessibilityHint).toBe("chat.image_view_a11y");
     expect(photo.props.accessibilityActions.map((a: { name: string }) => a.name)).toContain("use");
     expect(photo.props.accessibilityState).toMatchObject({ busy: true });
@@ -188,7 +186,7 @@ describe("GalleryScreen", () => {
   it("keeps the same renderItem when unrelated Library state changes", async () => {
     const view = await render(<GalleryScreen />);
     const first = mockListProps?.renderItem;
-    mockLibrary = { ...mockLibrary, viewerItem: generated, actionPoint: { x: 1, y: 2 } };
+    mockLibrary = { ...mockLibrary, viewerItem: upload, actionPoint: { x: 1, y: 2 } };
     await view.rerender(<GalleryScreen />);
     expect(mockListProps?.renderItem).toBe(first);
   });

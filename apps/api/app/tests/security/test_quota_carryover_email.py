@@ -41,10 +41,10 @@ from .carry_world import (
     use,
 )
 
-_DELETED = {"usage": 1234, "imggen": 2, "tavily": 4}
+_DELETED = {"usage": 1234, "imgsearch": 2, "tavily": 4}
 _MORE = {"usage": 5000, "tavily": 1}
 # The new account's own use goes on top of what it started from.
-_DELETED_THEN_MORE = {"usage": 6234, "imggen": 2, "tavily": 5}
+_DELETED_THEN_MORE = {"usage": 6234, "imgsearch": 2, "tavily": 5}
 _OTHER = {"apple": "google", "google": "apple"}
 # Where each provider owns the address, so its delete files the email key.
 _OWNED = {"apple": "icloud.com", "google": "gmail.com"}
@@ -272,6 +272,6 @@ async def test_quota_carryover_identity_and_email_snapshots_take_the_larger(
     email_key = _keys(linked, "apple", apple_sub, email)[1]
 
     fresh, _ = await signed_in(linked, "google", google_sub, email)
-    assert await counts(linked.redis, fresh) == {"usage": 5000, "imggen": 2, "tavily": 4}
+    assert await counts(linked.redis, fresh) == {"usage": 5000, "imgsearch": 2, "tavily": 4}
     assert await linked.redis.get(identity_key) is None
     assert await linked.redis.get(email_key) is None

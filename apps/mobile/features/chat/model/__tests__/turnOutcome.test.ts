@@ -93,20 +93,12 @@ describe("chat_turn_outcome (O10.1)", () => {
     expect(turnOutcomeProperties("complete", "busy").error_code).toBe("none");
   });
 
-  // The turn's own failures, consent and a picture's refusals were counted as "other".
+  // The turn's own failures and consent were counted as "other".
   it.each([
-    "consent_required", "daily_limit", "content_blocked", "not_found", "failed", "reply_not_saved", "server_restarting",
+    "consent_required", "not_found", "failed", "reply_not_saved", "server_restarting",
   ])("counts a turn that failed with %s by its code", (code) => {
     beginTurnOutcome();
     expect(turnOutcomeProperties("error", code).error_code).toBe(code);
-  });
-
-  it("counts a picture's refusal by the frame's code, not the phone's wording", () => {
-    const state: ChatTurnState = { ...initialChatTurnState("chat-1", 0), phase: "streaming" };
-    const payload: ChatSsePayload = { type: "error", code: "daily_limit", feature: "image_generation", message: "x" };
-    const { commands } = reduceChatTurn(state, { type: "frame", payload }, 0);
-    expect(commands).toContainEqual({ type: "outcome", outcome: "report", completion: "error", code: "daily_limit" });
-    expect(commands).toContainEqual(expect.objectContaining({ type: "report_error", code: "image_daily_limit" }));
   });
 
   it("reads the done frame's completion", () => {

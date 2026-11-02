@@ -199,11 +199,6 @@ describe("errors", () => {
     expect(run.of("report_error")[0]).toMatchObject({ message: payload.message, code: reason ?? payload.code });
   });
 
-  it("a picture's daily limit is reported as the picture's, not the chat quota", () => {
-    const run = play(streaming({ pending: pending() }), [frame({ type: "error", code: "daily_limit", feature: "image_generation", user_message_saved: true, message: "No more pictures" })], [bubble]);
-    expect(run.of("report_error")[0]).toMatchObject({ message: "No more pictures", code: "image_daily_limit" });
-  });
-
   it("consent_required opens the consent screen and keeps the message to resend", () => {
     const run = play(streaming({ pending: pending() }), [frame({ type: "error", code: "consent_required", user_message_saved: false, message: "Agree first" })], [bubble]);
     expect(run.of("consent_required")).toHaveLength(1);

@@ -68,7 +68,6 @@ function planFeatureLines(
   t: Translate,
 ): FeatureLine[] {
   const lines: FeatureLine[] = [];
-  const images = info?.allowances.daily_image_generations;
   if (plan === "pro") {
     lines.push({ icon: "check", text: t("upgrade.everything_in", { plan: t(planNameKey("plus")) }) });
   } else {
@@ -76,7 +75,6 @@ function planFeatureLines(
     lines.push({ icon: "infinity", text: t("upgrade.feature_limits") });
     lines.push({ icon: "mic", text: t("upgrade.feature_voice") });
   }
-  if (images) lines.push({ icon: "image", text: t("upgrade.feature_images", { count: images }) });
   return lines;
 }
 

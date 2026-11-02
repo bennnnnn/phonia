@@ -12,7 +12,6 @@ import {
   priorUserTextFor,
   streamVisualActiveForRow,
 } from "@/features/chat/model/messageLogic";
-import { IMAGE_GEN_PENDING_ASSISTANT_ID } from "@/features/images/model/imageGenMessages";
 import { useLatestRef } from "@/lib/latestRef";
 
 type Options = {
@@ -26,8 +25,6 @@ type Options = {
   regenerating?: boolean;
   handleFeedback: (messageId: string, next: "up" | "down" | null) => void;
   onSelectSuggestion?: (prompt: string) => void;
-  imageGenerating?: boolean;
-  onRetryImageGen?: () => void;
 };
 
 export function useChatMessageList({
@@ -41,8 +38,6 @@ export function useChatMessageList({
   regenerating = false,
   handleFeedback,
   onSelectSuggestion,
-  imageGenerating = false,
-  onRetryImageGen,
 }: Options) {
   useEffect(() => {
     if (messages.length === 0) setMenuVisible(false);
@@ -70,7 +65,6 @@ export function useChatMessageList({
       sendingMessageId,
       onRegenerate: regenerateResponse,
       onFeedback: handleFeedback,
-      onRetryImageGen,
     }),
     [
       emojiUse,
@@ -79,7 +73,6 @@ export function useChatMessageList({
       sendingMessageId,
       regenerateResponse,
       handleFeedback,
-      onRetryImageGen,
     ],
   );
 
@@ -89,11 +82,14 @@ export function useChatMessageList({
     ({ item, index }: { item: Message; index: number }) => {
       const priorUserText = priorUserTextFor(messagesRef.current, index);
       const nextUserText = nextUserTextFor(messagesRef.current, index);
-      const imageGenPending = item.id === IMAGE_GEN_PENDING_ASSISTANT_ID;
-      const live = item.id === "streaming" || imageGenPending;
-      const streamVisualActive =
-        imageGenPending ||
-        streamVisualActiveForRow(item.role, item.id, lastAssistantId, streaming, finalizing);
+      const live = item.id === "streaming";
+      const streamVisualActive = streamVisualActiveForRow(
+        item.role,
+        item.id,
+        lastAssistantId,
+        streaming,
+        finalizing,
+      );
       // The reply streaming in and the reply saved at `done` are one row: the
       // same elements, so the turn ending updates it instead of creating it again.
       const row = (
@@ -103,7 +99,6 @@ export function useChatMessageList({
           nextUserText={nextUserText}
           streamVisualActive={streamVisualActive}
           live={live}
-          imageGenPending={imageGenPending}
           regenerating={item.id === lastAssistantId ? regenerating : false}
           {...sharedRowProps}
         />
@@ -119,7 +114,6 @@ export function useChatMessageList({
       const showRelated =
         !streaming &&
         !finalizing &&
-        !imageGenerating &&
         relatedPrompts.length > 0 &&
         Boolean(onSelectSuggestion);
       return (
@@ -135,7 +129,6 @@ export function useChatMessageList({
       sharedRowProps,
       streaming,
       finalizing,
-      imageGenerating,
       lastAssistantId,
       regenerating,
       onSelectSuggestion,

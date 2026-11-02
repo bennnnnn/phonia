@@ -221,36 +221,16 @@ def test_images_runtime_code_has_one_owner() -> None:
     assert expected <= {path.name for path in module_root.glob("*.py")}
 
 
-def test_mobile_images_has_one_feature_home() -> None:
-    feature_root = MOBILE_ROOT / "features" / "images"
-    assert (feature_root / "api.ts").is_file()
-    for folder in ("components", "hooks", "model"):
-        assert (feature_root / folder).is_dir()
-
+def test_mobile_has_no_image_generation() -> None:
+    """AI image generation is gone; the phone keeps only its image URI policy."""
     for gone in (
+        MOBILE_ROOT / "features" / "images",
         MOBILE_ROOT / "lib" / "api" / "images.ts",
-        MOBILE_ROOT / "lib" / "images" / "imageGenIntent.ts",
-        MOBILE_ROOT / "lib" / "images" / "imageLookupIntent.ts",
-        MOBILE_ROOT / "lib" / "images" / "imageGenTurn.ts",
         MOBILE_ROOT / "hooks" / "useImageGeneration.ts",
         MOBILE_ROOT / "components" / "ImageGenPlaceholder.tsx",
-        MOBILE_ROOT / "components" / "ImageGenPromptSheet.tsx",
-        # Only the server reads image intent (POST /images/intent, ES-05).
-        feature_root / "model" / "imageGenIntent.ts",
-        feature_root / "model" / "imageGenIntentWords.ts",
-        feature_root / "model" / "imageLookupIntent.ts",
-        feature_root / "model" / "stemSubjectOwnsTurn.ts",
     ):
         assert not gone.exists(), gone
     assert (MOBILE_ROOT / "lib" / "images" / "imageUriPolicy.ts").is_file()
-
-    feature_import_violations = [
-        str(path.relative_to(MOBILE_ROOT))
-        for path in feature_root.rglob("*.ts*")
-        if "__tests__" not in path.parts and "@/app/" in path.read_text()
-    ]
-    assert not feature_import_violations
-
 
 def test_speech_runtime_code_has_one_owner() -> None:
     module_root = APP_ROOT / "modules" / "speech"

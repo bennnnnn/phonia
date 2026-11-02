@@ -26,7 +26,7 @@ from app.modules.account import quota_carryover
 
 from .carry_world import Linked, counts, delete, deleted_account, signed_in, use
 
-_DELETED = {"usage": 1234, "imggen": 2, "tavily": 4}
+_DELETED = {"usage": 1234, "imgsearch": 2, "tavily": 4}
 
 
 def _address(domain: str) -> str:

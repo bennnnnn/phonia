@@ -28,10 +28,10 @@ from .carry_world import sign_in as _sign_in
 
 # The deleted account's day, and the account it comes back to: each counter either side
 # used more of, plus counters only one side used.
-_DELETED = {"usage": 1234, "imggen": 2, "tavily": 4}
+_DELETED = {"usage": 1234, "imgsearch": 2, "tavily": 4}
 _SURVIVOR = {"usage": 5000, "tavily": 1}
 # Raise-only on each counter (``carryover.apply_carried_usage``): the larger of the two.
-_MERGED = {"usage": 5000, "imggen": 2, "tavily": 4}
+_MERGED = {"usage": 5000, "imgsearch": 2, "tavily": 4}
 _EMAILS = {"apple": "icloud.com", "google": "gmail.com"}  # where that provider owns the address
 
 

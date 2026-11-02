@@ -11,7 +11,6 @@ import {
   relatedPromptsFromEvent,
   shouldIgnoreStoppedStreamEvent,
 } from "@/features/chat/model/socketReduce";
-import { refusalCode } from "@/features/chat/model/errorMessage";
 import { completionFromDone } from "@/features/chat/model/turnOutcome";
 import { DUPLICATE_TURN_POLLS, duplicateTurnPollMs } from "@/features/chat/model/turnReconcile";
 import {
@@ -72,8 +71,6 @@ function onError(s: ChatTurnState, out: Out, payload: ChatSsePayload, ttftTurnId
   const saveFailed = s.phase === "finalizing";
   cue(out, "error");
   const frameCode = typeof payload.code === "string" ? payload.code : undefined;
-  const code = frameCode === undefined ? undefined : refusalCode(frameCode, payload.feature);
-  // The event counts the server's own code: a picture's `daily_limit`, not the phone's wording.
   out.push({ type: "outcome", outcome: "report", completion: "error", code: frameCode });
   // No consent to outside AI: the consent screen opens, the unsaved message waits as Retry.
   if (payload.code === CONSENT_REQUIRED_CODE) out.push({ type: "consent_required" });
@@ -107,7 +104,7 @@ function onError(s: ChatTurnState, out: Out, payload: ChatSsePayload, ttftTurnId
     clearStreamingBubble(s, out);
   }
   const queuedReason = pending && reason ? headRejectedSend(s)?.reason : undefined;
-  reportError(out, { message: payload.message, key: "chat.error_generic", code: queuedReason ?? code });
+  reportError(out, { message: payload.message, key: "chat.error_generic", code: queuedReason ?? frameCode });
 }
 
 /**

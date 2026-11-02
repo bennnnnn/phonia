@@ -150,7 +150,6 @@ const mockErrorHandlers = {
   handleRejectedSendChange: mockNoop,
 };
 const mockQuotaNudge = { show: false, usedPct: 0, dismiss: mockNoop, applyTurnUsage: mockNoop };
-const mockImageGen = { generating: false, cancel: mockNoop, submitPrompt: mockAsyncNoop, retry: mockNoop };
 const mockDictation = {
   voiceInputAvailable: false,
   voiceRecording: false,
@@ -213,7 +212,6 @@ jest.mock("@/features/chat/hooks/useChatScreenError", () => ({
 }));
 jest.mock("@/features/chat/hooks/useQuotaNudge", () => ({ useQuotaNudge: () => mockQuotaNudge }));
 jest.mock("@/features/todos/context/TodosContext", () => ({ useTodosOptional: () => null }));
-jest.mock("@/features/chat/hooks/useChatImageGeneration", () => ({ useChatImageGeneration: () => mockImageGen }));
 
 const { mockEmitKeyboard } = jest.requireMock("react-native-reanimated") as {
   mockEmitKeyboard: (frame: KeyboardFrame) => void;

@@ -15,7 +15,7 @@ describe("plan helpers", () => {
 
   it("falls back to each plan's defaults for an older cached user", () => {
     expect(hasPlanFeature({ plan: "free" }, "speech_transcription")).toBe(false);
-    expect(hasPlanFeature({ plan: "free" }, "image_generation")).toBe(true);
+    expect(hasPlanFeature({ plan: "free" }, "all_models")).toBe(false);
     expect(hasPlanFeature({ plan: "plus" }, "speech_transcription")).toBe(true);
     expect(hasPlanFeature({ plan: "pro" }, "speech_tts")).toBe(true);
   });

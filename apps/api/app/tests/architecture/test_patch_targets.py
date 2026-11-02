@@ -29,7 +29,7 @@ _SHARED_MODULE = re.compile(
     r"subprocess|shutil|tempfile|threading|concurrent)\.[A-Za-z_]+$"
 )
 # What is left; lower these when a change removes some.
-_CHAT_PATCHES = 408
+_CHAT_PATCHES = 382
 _PRIVATE_PATCHES = 97
 
 

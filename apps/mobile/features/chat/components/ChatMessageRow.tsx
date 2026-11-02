@@ -23,22 +23,18 @@ type Props = {
    */
   streamVisualActive: boolean;
   /**
-   * The reply streaming into this row (or the picture being made for it): it
-   * draws the live draft. The same row goes on drawing the saved reply when
+   * The reply streaming into this row: it draws the live draft. The same row goes on drawing the saved reply when
    * the turn ends, so nothing in it is created again.
    */
   live?: boolean;
   /** The user's emoji setting: the draft streams as the saved reply will read. */
   emojiUse?: string;
-  /** When true, show the image-generation status label instead of chat stream draft. */
-  imageGenPending?: boolean;
   lastAssistantId: string | null;
   highlightedMessageId: string | null;
   sendingMessageId: string | null;
   onRegenerate: () => void;
   regenerating?: boolean;
   onFeedback: (messageId: string, next: "up" | "down" | null) => void;
-  onRetryImageGen?: () => void;
 };
 
 export const ChatMessageRow = memo(function ChatMessageRow({
@@ -48,14 +44,12 @@ export const ChatMessageRow = memo(function ChatMessageRow({
   streamVisualActive,
   live = false,
   emojiUse,
-  imageGenPending = false,
   lastAssistantId,
   highlightedMessageId,
   sendingMessageId,
   onRegenerate,
   regenerating = false,
   onFeedback,
-  onRetryImageGen,
 }: Props) {
   // Already throttled once at the store→UI boundary (useStreamingDraft) —
   // read directly; a second throttle here would only add latency.
@@ -69,7 +63,7 @@ export const ChatMessageRow = memo(function ChatMessageRow({
   const generating = live && streamVisualActive;
   const isLastAssistant = item.role === "assistant" && item.id === lastAssistantId;
 
-  const stalled = useStreamSilence(liveContent?.length ?? 0, generating && !imageGenPending);
+  const stalled = useStreamSilence(liveContent?.length ?? 0, generating);
 
   return (
     <MessageRowErrorBoundary resetKey={messageListKey(item)}>
@@ -80,19 +74,12 @@ export const ChatMessageRow = memo(function ChatMessageRow({
         isGenerating={generating}
         liveContent={liveContent}
         liveSearchSources={streamingDraft?.search_sources}
-        streamStatus={imageGenPending ? "image_gen" : streamingDraft?.status}
-        streamStatusDetail={imageGenPending ? undefined : streamingDraft?.statusDetail}
-        streamStatusStartedAt={imageGenPending ? undefined : streamingDraft?.statusStartedAt}
+        streamStatus={streamingDraft?.status}
+        streamStatusDetail={streamingDraft?.statusDetail}
+        streamStatusStartedAt={streamingDraft?.statusStartedAt}
         isLastAssistant={isLastAssistant}
-        onRegenerate={
-          isLastAssistant && !streamVisualActive && !item.image_gen_failure
-            ? onRegenerate
-            : undefined
-        }
+        onRegenerate={isLastAssistant && !streamVisualActive ? onRegenerate : undefined}
         regenerating={isLastAssistant && regenerating}
-        onRetryImageGen={
-          item.image_gen_failure && !item.image_gen_refused ? onRetryImageGen : undefined
-        }
         onFeedback={onFeedback}
         highlighted={item.id === highlightedMessageId}
         isSending={item.id === sendingMessageId}

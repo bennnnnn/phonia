@@ -24,12 +24,11 @@ describe("domain API contracts", () => {
   it("encodes gallery filters and pagination", async () => {
     await attachmentsApi.listAttachments("token", {
       category: "images",
-      source: "generated",
       limit: 30,
       cursor: "after-60",
     });
     expect(mockRequest).toHaveBeenCalledWith(
-      "/attachments?category=images&source=generated&limit=30&cursor=after-60",
+      "/attachments?category=images&limit=30&cursor=after-60",
       "token",
     );
   });

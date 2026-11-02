@@ -5,11 +5,10 @@ export const GALLERY_PAGE_SIZE = 30;
 export const GALLERY_GRID_COLUMNS = 3;
 export const COLUMN_THUMB_SIZE = 64;
 
-export type GalleryFilter = "all" | "generated" | "uploaded" | "files";
+export type GalleryFilter = "all" | "uploaded" | "files";
 
 type GalleryListParams = {
   category?: "images" | "files";
-  source?: "upload" | "generated";
 };
 
 export function isGalleryImage(contentType: string): boolean {
@@ -66,21 +65,18 @@ export function galleryEmptyKey(
 ):
   | "gallery.empty"
   | "gallery.empty_files"
-  | "gallery.empty_generated"
   | "gallery.empty_search"
   | "gallery.empty_uploaded" {
   if (query.trim()) return "gallery.empty_search";
   if (filter === "files") return "gallery.empty_files";
-  if (filter === "generated") return "gallery.empty_generated";
   if (filter === "uploaded") return "gallery.empty_uploaded";
   return "gallery.empty";
 }
 
 export function galleryListParams(filter: GalleryFilter): GalleryListParams {
   if (filter === "files") return { category: "files" };
-  if (filter === "generated") return { category: "images", source: "generated" };
-  if (filter === "uploaded") return { category: "images", source: "upload" };
-  // All: API lists only upload + generated (lookup photos stay on the chat).
+  if (filter === "uploaded") return { category: "images" };
+  // All: the API lists only uploads (lookup photos stay on the chat).
   return {};
 }
 
@@ -130,60 +126,19 @@ export function contentTypeForFileName(fileName: string): string | null {
   return Object.entries(MIME_EXTENSIONS).find(([, value]) => value === ext)?.[0] ?? null;
 }
 
-/** A generated image's name is its prompt; files get at most this many characters of it. */
-export const GENERATED_FILE_STEM_MAX = 40;
-
 /**
- * `A café / wide.` → `a-cafe-wide`, cut at a word within `max` characters.
- * ASCII only, so the name survives every share target; a prompt with no
- * Latin letters or digits comes back empty and the caller names it `image`.
+ * The name a Library item gets when it is shared, saved or attached: its file
+ * name, ending with the extension of its type.
  */
-function slugStem(text: string, max: number): string {
-  const slug = text
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-  if (slug.length <= max) return slug;
-  const cut = slug.slice(0, max);
-  const lastBreak = cut.lastIndexOf("-");
-  return (lastBreak > max / 2 ? cut.slice(0, lastBreak) : cut).replace(/-+$/, "");
-}
-
-/**
- * The name a Library item gets when it is shared, saved or attached. A
- * generated image's stored name is its prompt, which can hold `/` and `.`, so
- * it becomes a short slug; every name ends with the extension of its type.
- */
-export function galleryFileName(
-  contentType: string,
-  originalFilename?: string | null,
-  source?: AttachmentListItem["source"],
-): string {
+export function galleryFileName(contentType: string, originalFilename?: string | null): string {
   const ext = extensionForContentType(contentType);
   const withExt = (stem: string) => (ext ? `${stem}.${ext}` : stem);
-  if (source === "generated") {
-    const stem = slugStem(originalFilename ?? "", GENERATED_FILE_STEM_MAX);
-    return withExt(stem || "image");
-  }
   const named = originalFilename?.trim().replace(/\\/g, "/").split("/").pop()?.trim();
   if (named) {
     if (!ext || /\.[A-Za-z0-9]{1,8}$/.test(named)) return named;
     return withExt(named);
   }
   return withExt("attachment");
-}
-
-/** What a Library item is called on screen: a generated image's prompt, or its file name. */
-export function galleryDisplayName(
-  item: Pick<AttachmentListItem, "content_type" | "original_filename" | "source">,
-): string {
-  if (item.source === "generated") {
-    const prompt = item.original_filename?.replace(/\s+/g, " ").trim();
-    if (prompt) return prompt;
-  }
-  return galleryFileName(item.content_type, item.original_filename, item.source);
 }
 
 export function galleryThumbSize(listWidth: number, columns: number, gap: number): number {
