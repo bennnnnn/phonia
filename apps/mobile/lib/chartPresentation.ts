@@ -221,11 +221,6 @@ function eachView(spec: JsonRecord, visit: ViewVisit, inLayer = false, fillsCard
   if (isRecord(spec.spec)) eachView(spec.spec, visit, false, false);
 }
 
-/** Layout + category order for a Vega-Lite spec on a card `width` px wide (mutates). */
-export function normalizeChartSpec(spec: JsonRecord, width = 320): void {
-  eachView(spec, (view, _inLayer, fillsCard) => normalizeUnit(view, fillsCard ? width : null));
-}
-
 /** Whether a channel holds categories: said so, or a plain field Vega-Lite reads as nominal. */
 function holdsCategories(ch: JsonRecord): boolean {
   const type = channelType(ch);

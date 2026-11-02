@@ -7,7 +7,7 @@ import type { AttachmentListItem } from "@/lib/api";
 import type { GalleryFilter } from "@/features/attachments/model/gallery";
 
 import { api } from "@/lib/api";
-import { invalidateGalleryCache, setGalleryPage } from "@/features/attachments/model/galleryListCache";
+import { invalidateGalleryCache, seedGalleryPageForTest } from "@/features/attachments/model/galleryListCache";
 jest.mock("@/lib/auth", () => ({
   getSessionGeneration: () => 0,
   requireTokenSession: jest.fn(),
@@ -139,7 +139,7 @@ describe("useGalleryData", () => {
 
   it("hydrates from cache without refetching while fresh", async () => {
     const list = api.listAttachments as jest.Mock;
-    setGalleryPage("all", "", { items: [item("cached")], hasMore: false });
+    seedGalleryPageForTest("all", "", { items: [item("cached")], hasMore: false });
 
     await act(async () => {
       render(<Probe />);
@@ -221,7 +221,7 @@ describe("useGalleryData", () => {
 
 it("ignores a slow tab request after switching to a fresh cached tab", async () => {
   invalidateGalleryCache();
-  setGalleryPage("files", "", { items: [item("cached-file")], hasMore: false });
+  seedGalleryPageForTest("files", "", { items: [item("cached-file")], hasMore: false });
   let finish!: (value: unknown) => void;
   (api.listAttachments as jest.Mock).mockReturnValueOnce(new Promise((resolve) => { finish = resolve; }));
   const view = await render(<Probe filter="all" />);

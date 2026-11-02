@@ -140,7 +140,8 @@ export function isChatListFresh(): boolean {
   return resource.isFresh(LIST);
 }
 
-export function setChatListCache(data: ChatList): void {
+/** Tests only: a completed read of `data`, already in the cache. The app fills it with `fetchChatList`. */
+export function seedChatListCacheForTest(data: ChatList): void {
   resource.set(LIST, data);
 }
 

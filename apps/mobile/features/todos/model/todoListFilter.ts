@@ -26,14 +26,3 @@ export function viewForNewTodo(view: TodoView, due: Date | null, now = new Date(
   const added = { checked: false, due_at: due ? due.toISOString() : null } as Todo;
   return todosForView([added], view, now).length > 0 ? view : "open";
 }
-
-/** Open first, then the soonest due (undated last), then the newest. */
-export function sortOpen(items: Todo[]): Todo[] {
-  return [...items].sort((a, b) => {
-    if (a.checked !== b.checked) return Number(a.checked) - Number(b.checked);
-    const aDue = a.due_at ? new Date(a.due_at).getTime() : Number.POSITIVE_INFINITY;
-    const bDue = b.due_at ? new Date(b.due_at).getTime() : Number.POSITIVE_INFINITY;
-    if (aDue !== bDue) return aDue - bDue;
-    return b.created_at.localeCompare(a.created_at);
-  });
-}
