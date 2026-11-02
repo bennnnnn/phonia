@@ -220,6 +220,29 @@ async def list_around(
     return older + newer[:room], has_older, len(newer) > room
 
 
+async def list_after_key(
+    session: AsyncSession,
+    chat_id: UUID,
+    *,
+    after: tuple[datetime, UUID] | None,
+    limit: int,
+) -> list[Message]:
+    """Up to ``limit`` messages after the ``(created_at, id)`` key, oldest first.
+
+    The export pages by the last row read: an offset skipped a message whenever an
+    earlier one went away mid-export (a regenerate replaces a reply).
+    """
+    if limit <= 0:
+        return []
+    statement = select(Message).where(Message.chat_id == chat_id)
+    if after is not None:
+        statement = statement.where(_after(_AnchorKey(created_at=after[0], id=after[1])))
+    result = await session.execute(
+        statement.order_by(Message.created_at.asc(), Message.id.asc()).limit(limit)
+    )
+    return list(result.scalars().all())
+
+
 async def list_range(
     session: AsyncSession,
     chat_id: UUID,

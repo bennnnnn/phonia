@@ -93,6 +93,14 @@ async def messages_page(
     return await _messages.list_range(session, chat_id, offset=offset, limit=limit)
 
 
+async def messages_for_export(
+    session: AsyncSession, chat_id: UUID, *, after: tuple[datetime, UUID] | None, limit: int
+) -> list[Message]:
+    """The chat's messages after the ``(created_at, id)`` key of the last one read, oldest
+    first (the export pages by key, so a message deleted meanwhile skips no other)."""
+    return await _messages.list_after_key(session, chat_id, after=after, limit=limit)
+
+
 def forget_user_chats(user_id: UUID) -> None:
     """Drop the user's chats this process remembers (the account is being deleted)."""
     _chats.forget_user_chats(user_id)

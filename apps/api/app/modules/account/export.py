@@ -2,7 +2,9 @@
 
 Profile and settings, chats and messages, every memory row and memory area,
 to-dos, attachments, suggestions, daily usage, push devices (no token) and
-product events. Every query is scoped to the caller's user id.
+product events (the newest, when capped). Every query is scoped to the caller's
+user id. Lists page by key, not offset. The file is streamed from the request; an
+export built by a background job into storage is a later change.
 """
 
 from __future__ import annotations
@@ -129,7 +131,9 @@ def _chat_header(chat: Chat) -> dict[str, Any]:
 
 
 def _message_payload(message: Message) -> dict[str, Any]:
+    # The id joins a message to the attachments whose message_id names it.
     return {
+        "id": str(message.id),
         "role": message.role,
         "content": message.content,
         "model": message.model,
@@ -264,23 +268,32 @@ async def _attachment_payload(
 SessionFactory = Callable[[], AbstractAsyncContextManager[AsyncSession]]
 
 
-# One page of a list: (session, offset, limit) -> rows.
-PageReader = Callable[[AsyncSession, int, int], Awaitable[Sequence[Any]]]
+# One page of a list: (session, the last row's key or None, limit) -> rows.
+PageReader = Callable[[AsyncSession, Any, int], Awaitable[Sequence[Any]]]
 
 
 def _messages_of(chat_id: UUID) -> PageReader:
-    """One chat's messages, a page at a time."""
+    """One chat's messages, a page at a time after the last one's (created_at, id)."""
 
-    async def read(session: AsyncSession, offset: int, limit: int) -> Sequence[Any]:
-        return await chat_history.messages_page(session, chat_id, offset=offset, limit=limit)
+    async def read(session: AsyncSession, after: Any, limit: int) -> Sequence[Any]:
+        return await chat_history.messages_for_export(session, chat_id, after=after, limit=limit)
 
     return read
+
+
+def _message_key(message: Message) -> tuple[datetime, UUID]:
+    return message.created_at, message.id
+
+
+def _row_id(row: Any) -> Any:
+    return row.id
 
 
 async def _paged_json(
     read: PageReader,
     payload: Callable[[Any], dict[str, Any]],
     *,
+    key: Callable[[Any], Any],
     cap: int,
     page_size: int,
     session_factory: SessionFactory,
@@ -288,25 +301,31 @@ async def _paged_json(
 ) -> AsyncIterator[str]:
     """A list read page by page up to ``cap``, as comma-joined JSON objects.
 
-    A session per page, closed before yielding. At the cap one more row is read, and
-    ``on_cut`` says whether the cap cut the list short.
+    Each page reads after the ``key`` of the last row read (keyset): an offset skipped
+    or repeated a row whenever one before it was deleted or moved mid-export. A session
+    per page, closed before yielding. At the cap one more row is read, and ``on_cut``
+    says whether the cap cut the list short.
     """
-    offset = 0
+    read_count = 0
+    after: Any = None
     first = True
-    while offset < cap:
-        size = min(page_size, cap - offset)
+    while read_count < cap:
+        size = min(page_size, cap - read_count)
         async with session_factory() as session:
-            chunks = [json.dumps(payload(row)) for row in await read(session, offset, size)]
+            rows = await read(session, after, size)
+            chunks = [json.dumps(payload(row)) for row in rows]
+            if rows:
+                after = key(rows[-1])
         for chunk in chunks:
             if not first:
                 yield ","
             first = False
             yield chunk
-        offset += len(chunks)
+        read_count += len(chunks)
         if len(chunks) < size:
             return
     async with session_factory() as session:
-        on_cut(bool(await read(session, offset, 1)))
+        on_cut(bool(await read(session, after, 1)))
 
 
 async def _iter_export_json(
@@ -342,6 +361,7 @@ async def _iter_export_json(
         async for chunk in _paged_json(
             _messages_of(chat_id),
             _message_payload,
+            key=_message_key,
             cap=EXPORT_MAX_MESSAGES_PER_CHAT,
             page_size=EXPORT_MESSAGE_PAGE_SIZE,
             session_factory=session_factory,
@@ -352,10 +372,11 @@ async def _iter_export_json(
 
     yield '],"memories":['
     async for chunk in _paged_json(
-        lambda session, offset, limit: memory_service.facts_for_export(
-            session, user.id, offset=offset, limit=limit
+        lambda session, after, limit: memory_service.facts_for_export(
+            session, user.id, after_id=after, limit=limit
         ),
         _memory_payload,
+        key=_row_id,
         cap=EXPORT_MAX_MEMORIES,
         page_size=EXPORT_MEMORY_PAGE_SIZE,
         session_factory=session_factory,
@@ -373,10 +394,11 @@ async def _iter_export_json(
 
     yield '],"todos":['
     async for chunk in _paged_json(
-        lambda session, offset, limit: todos_service.list_owned_todos(
-            session, user.id, limit=limit, offset=offset
+        lambda session, after, limit: todos_service.todos_for_export(
+            session, user.id, after_id=after, limit=limit
         ),
         _todo_payload,
+        key=_row_id,
         cap=EXPORT_MAX_TODOS,
         page_size=EXPORT_TODO_PAGE_SIZE,
         session_factory=session_factory,

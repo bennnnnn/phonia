@@ -320,15 +320,15 @@ async def test_build_export_structure(_empty_product_events_for_exports):
             AsyncMock(return_value=[chat]),
         ),
         patch(
-            "app.modules.account.export.chat_history.messages_page",
+            "app.modules.account.export.chat_history.messages_for_export",
             AsyncMock(return_value=[msg]),
         ),
         patch(
-            "app.modules.memory.repository.list_range",
+            "app.modules.memory.repository.list_after_id",
             AsyncMock(return_value=[mem]),
         ),
         patch(
-            "app.modules.account.export.todos_service.list_owned_todos",
+            "app.modules.account.export.todos_service.todos_for_export",
             AsyncMock(return_value=[todo]),
         ),
         patch(
@@ -390,15 +390,15 @@ async def test_build_export_includes_archived_chats():
             list_chats,
         ),
         patch(
-            "app.modules.account.export.chat_history.messages_page",
+            "app.modules.account.export.chat_history.messages_for_export",
             AsyncMock(return_value=[]),
         ),
         patch(
-            "app.modules.memory.repository.list_range",
+            "app.modules.memory.repository.list_after_id",
             AsyncMock(return_value=[]),
         ),
         patch(
-            "app.modules.account.export.todos_service.list_owned_todos",
+            "app.modules.account.export.todos_service.todos_for_export",
             AsyncMock(return_value=[]),
         ),
         patch(
@@ -443,10 +443,11 @@ async def test_build_export_pages_messages_per_chat():
         MagicMock(role="user", content="three", model=None, created_at=datetime(2024, 1, 3)),
     ]
 
-    async def list_range(_session, _chat_id, *, offset, limit):
-        if offset == 0:
+    async def list_range(_session, _chat_id, *, after, limit):
+        # Each page reads after the last message's (created_at, id): no offset.
+        if after is None:
             return page_one
-        if offset == len(page_one):
+        if after == (page_one[-1].created_at, page_one[-1].id):
             return page_two
         return []
 
@@ -457,15 +458,15 @@ async def test_build_export_pages_messages_per_chat():
             AsyncMock(return_value=[chat]),
         ),
         patch(
-            "app.modules.account.export.chat_history.messages_page",
+            "app.modules.account.export.chat_history.messages_for_export",
             AsyncMock(side_effect=list_range),
         ),
         patch(
-            "app.modules.memory.repository.list_range",
+            "app.modules.memory.repository.list_after_id",
             AsyncMock(return_value=[]),
         ),
         patch(
-            "app.modules.account.export.todos_service.list_owned_todos",
+            "app.modules.account.export.todos_service.todos_for_export",
             AsyncMock(return_value=[]),
         ),
         patch(
@@ -496,9 +497,13 @@ async def test_build_export_pages_memories():
         type="profile", text="c", confidence=None, created_at=datetime(2024, 1, 3)
     )
 
-    async def list_memories(_session, _user_id, *, offset, limit, include_superseded=False):
-        page = [mem_one, mem_two, mem_three]
-        return page[offset : offset + limit]
+    page = [mem_one, mem_two, mem_three]
+    for index, memory in enumerate(page):
+        memory.id = index
+
+    async def list_memories(_session, _user_id, *, after_id, limit):
+        start = 0 if after_id is None else after_id + 1
+        return page[start : start + limit]
 
     with (
         patch.object(export_service, "EXPORT_MEMORY_PAGE_SIZE", 2),
@@ -507,11 +512,11 @@ async def test_build_export_pages_memories():
             AsyncMock(return_value=[]),
         ),
         patch(
-            "app.modules.memory.repository.list_range",
+            "app.modules.memory.repository.list_after_id",
             AsyncMock(side_effect=list_memories),
         ),
         patch(
-            "app.modules.account.export.todos_service.list_owned_todos",
+            "app.modules.account.export.todos_service.todos_for_export",
             AsyncMock(return_value=[]),
         ),
         patch(
@@ -541,8 +546,12 @@ async def test_build_export_caps_memories():
         MagicMock(type="profile", text="c", confidence=None, created_at=datetime(2024, 1, 3)),
     ]
 
-    async def list_memories(_session, _user_id, *, offset, limit, include_superseded=False):
-        return mems[offset : offset + limit]
+    for index, memory in enumerate(mems):
+        memory.id = index
+
+    async def list_memories(_session, _user_id, *, after_id, limit):
+        start = 0 if after_id is None else after_id + 1
+        return mems[start : start + limit]
 
     with (
         patch.object(export_service, "EXPORT_MEMORY_PAGE_SIZE", 2),
@@ -552,11 +561,11 @@ async def test_build_export_caps_memories():
             AsyncMock(return_value=[]),
         ),
         patch(
-            "app.modules.memory.repository.list_range",
+            "app.modules.memory.repository.list_after_id",
             AsyncMock(side_effect=list_memories),
         ),
         patch(
-            "app.modules.account.export.todos_service.list_owned_todos",
+            "app.modules.account.export.todos_service.todos_for_export",
             AsyncMock(return_value=[]),
         ),
         patch(
@@ -603,11 +612,11 @@ async def test_build_export_includes_attachment_with_presigned_url():
             AsyncMock(return_value=[]),
         ),
         patch(
-            "app.modules.memory.repository.list_range",
+            "app.modules.memory.repository.list_after_id",
             AsyncMock(return_value=[]),
         ),
         patch(
-            "app.modules.account.export.todos_service.list_owned_todos",
+            "app.modules.account.export.todos_service.todos_for_export",
             AsyncMock(return_value=[]),
         ),
         patch(

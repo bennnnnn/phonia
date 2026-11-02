@@ -123,26 +123,20 @@ async def note_manual_edit(session: AsyncSession, user_id: UUID) -> None:
     )
 
 
-async def list_range(
-    session: AsyncSession,
-    user_id: UUID,
-    *,
-    offset: int,
-    limit: int,
-    include_superseded: bool = False,
+async def list_after_id(
+    session: AsyncSession, user_id: UUID, *, after_id: UUID | None, limit: int
 ) -> list[Memory]:
+    """Every fact of the user, superseded ones included, after ``after_id`` by id.
+
+    The export pages by the immutable id: an offset over a mutable order skipped or
+    repeated facts that consolidation superseded or re-confirmed mid-export.
+    """
     if limit <= 0:
         return []
-    filters = [Memory.user_id == user_id]
-    if not include_superseded:
-        filters.append(Memory.status.in_((ACTIVE_STATUS, MUTED_STATUS)))
-    result = await session.execute(
-        select(Memory)
-        .where(*filters)
-        .order_by(Memory.type.asc(), Memory.last_confirmed_at.desc(), Memory.id.asc())
-        .offset(offset)
-        .limit(limit)
-    )
+    statement = select(Memory).where(Memory.user_id == user_id)
+    if after_id is not None:
+        statement = statement.where(Memory.id > after_id)
+    result = await session.execute(statement.order_by(Memory.id.asc()).limit(limit))
     return list(result.scalars().all())
 
 
