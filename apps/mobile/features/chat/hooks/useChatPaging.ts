@@ -49,6 +49,36 @@ function isStaleAnchor(error: unknown): boolean {
   return error instanceof ApiRequestError && error.code === INVALID_CURSOR_CODE;
 }
 
+/** A failed older or newer page: true when its anchor is gone (the caller reads the newest
+ * page); otherwise reported as any failed read. */
+function anchorGone(error: unknown, current: boolean, banner: Pick<Options, "showActionBanner" | "t">): boolean {
+  if (isStaleAnchor(error) && current) return true;
+  pageReadFailed(error, current, banner);
+  return false;
+}
+
+type LatestRead = { token: string; chatId: string; isCurrent: () => boolean };
+type LatestDeps = Pick<Options, "editThread" | "setHasMoreOlder" | "showActionBanner" | "t"> & {
+  setHasMoreNewer: (value: boolean) => void;
+  requestRef: MutableRefObject<object | null>;
+};
+
+/** Read the newest page into the thread (a window going back to the end of it). */
+async function readLatestPage(read: LatestRead, deps: LatestDeps): Promise<void> {
+  try {
+    const page = await api.listMessages(read.token, read.chatId, { limit: MESSAGE_PAGE_SIZE });
+    if (!read.isCurrent()) return;
+    deps.editThread((prev) => mergeLocalAttachmentUris(prev, page.messages), "latest_page");
+    deps.setHasMoreOlder(page.has_more);
+    deps.setHasMoreNewer(false);
+    void writeCachedChatMessages(read.chatId, page.messages, page.has_more);
+  } catch (error) {
+    pageReadFailed(error, read.isCurrent(), deps);
+  } finally {
+    if (read.isCurrent()) deps.requestRef.current = null;
+  }
+}
+
 /**
  * Paging within the open chat: older pages above the thread and, after a jump to a
  * search hit deep in it, a window around the hit with newer pages below until the
@@ -80,19 +110,7 @@ export function useChatPaging({
   /** Back from a window to the newest page (a send goes to the end of the thread). */
   const jumpToLatest = useCallback(async (): Promise<void> => {
     const read = begin();
-    if (!read) return;
-    try {
-      const page = await api.listMessages(read.token, read.chatId, { limit: MESSAGE_PAGE_SIZE });
-      if (!read.isCurrent()) return;
-      editThread((prev) => mergeLocalAttachmentUris(prev, page.messages), "latest_page");
-      setHasMoreOlder(page.has_more);
-      setHasMoreNewer(false);
-      void writeCachedChatMessages(read.chatId, page.messages, page.has_more);
-    } catch (error) {
-      pageReadFailed(error, read.isCurrent(), { showActionBanner, t });
-    } finally {
-      if (read.isCurrent()) requestRef.current = null;
-    }
+    if (read) await readLatestPage(read, { editThread, setHasMoreOlder, setHasMoreNewer, showActionBanner, t, requestRef });
   }, [begin, editThread, setHasMoreOlder, showActionBanner, t]);
 
   const loadOlderMessages = useCallback(async () => {
@@ -112,8 +130,7 @@ export function useChatPaging({
       }, "older_page");
       setHasMoreOlder(page.has_more);
     } catch (error) {
-      stale = isStaleAnchor(error) && read.isCurrent();
-      if (!stale) pageReadFailed(error, read.isCurrent(), { showActionBanner, t });
+      stale = anchorGone(error, read.isCurrent(), { showActionBanner, t });
     } finally {
       if (read.isCurrent()) {
         requestRef.current = null;
@@ -140,8 +157,7 @@ export function useChatPaging({
       }, "newer_page");
       setHasMoreNewer(page.has_more_after === true);
     } catch (error) {
-      stale = isStaleAnchor(error) && read.isCurrent();
-      if (!stale) pageReadFailed(error, read.isCurrent(), { showActionBanner, t });
+      stale = anchorGone(error, read.isCurrent(), { showActionBanner, t });
     } finally {
       if (read.isCurrent()) {
         requestRef.current = null;
