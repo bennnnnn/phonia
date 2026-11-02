@@ -310,8 +310,9 @@ def _labelled_part(
         drafts[named].title = drafts[named].title or label.title
         return named, False
     draft = drafts[current]
-    if first and not draft.answers and letter == _asked_letter(label, asked, 0):
-        draft.letter, draft.title = letter, label.title
+    if first and not draft.answers:
+        # The first part's fallback letter is (a), whatever index the drafts reached.
+        draft.letter, draft.title = _asked_letter(label, asked, 0), label.title
         return current, False
     if not draft.letter and draft.has_content:
         # The part above, unlabelled: a label naming what it was asked for (or naming

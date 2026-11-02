@@ -195,6 +195,21 @@ def test_a_letter_named_again_is_that_part_and_an_empty_part_is_left_out() -> No
     assert re.findall(r"\*\*Answer \(([a-z])\)\*\*", text) == ["a", "b"]
 
 
+def test_a_first_label_with_no_letter_and_no_matching_ask_is_part_a() -> None:
+    # Review of #2238: "part: 1 | car" names no letter and no ask; it is the first part.
+    block = (
+        "required: v | speed of the car\nrequired: u | speed of the train\n"
+        "part: 1 | car\nformula: Speed | v = d/t\nanswer: v | 20 | m/s\n"
+        "part: 2 | train\nformula: Speed | u = d/t\nanswer: u | 30 | m/s"
+    )
+    records = [read_record(line) for line in block.split("\n")]
+    solution = assemble([r for r in records if r is not None])
+    assert [(part.letter, part.title) for part in solution.parts] == [
+        ("a", "car"),
+        ("b", "train"),
+    ]
+
+
 def test_an_unlabelled_block_in_parts_only_grows_while_it_streams() -> None:
     accum = StreamAccum()
     reply_filter = ReplyFilter(accum, PHYSICS)
