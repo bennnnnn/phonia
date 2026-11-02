@@ -21,10 +21,11 @@ from app.modules.chemistry.reply_policy import CHEMISTRY_FENCE_HINT
 # that multiplication is written \times, never a dot, then the formula headed by its name
 # ("Average speed formula", never the name after the formula) and the Solution heading, then
 # the ```worked contract asking for one `required` per part and each part's givens after its label,
-# then one Given for a question in parts: every given first, a part's own lettered `given (a):`.
+# then one Given for a question in parts: every given first, a part's own lettered `given (a):`,
+# then nothing after the block restating the answer its card shows.
 _RULES = 164
-_RULE_GRAMS = 14517
-_RULE_GRAMS_SHA = "84e4a7d764005296"
+_RULE_GRAMS = 14538
+_RULE_GRAMS_SHA = "08d16aeccb5ba3b1"
 
 
 def _rules() -> list[str]:
