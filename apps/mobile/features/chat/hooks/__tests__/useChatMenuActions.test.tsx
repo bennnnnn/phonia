@@ -19,7 +19,7 @@ jest.mock("@/lib/haptics", () => ({
   ...jest.requireActual("@/lib/haptics"),
   notifyDestructive: (...args: unknown[]) => mockDestructive(...args),
 }));
-const chat: Chat = { id: "one", title: "Original", model: "free-chat", pinned: true, created_at: "2026-01-01", updated_at: "2026-01-01" };
+const chat: Chat = { id: "one", title: "Original", pinned: true, created_at: "2026-01-01", updated_at: "2026-01-01" };
 const patch = jest.fn();
 const remove = jest.fn();
 const insert = jest.fn();

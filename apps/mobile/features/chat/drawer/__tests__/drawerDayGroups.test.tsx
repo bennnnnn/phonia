@@ -51,7 +51,7 @@ function holdClockAt(iso: string): void {
 }
 
 function chat(id: string, updatedAt: string): Chat {
-  return { id, title: id, model: "free-chat", pinned: false, created_at: updatedAt, updated_at: updatedAt };
+  return { id, title: id, pinned: false, created_at: updatedAt, updated_at: updatedAt };
 }
 
 let current: ReturnType<typeof useDrawerChatList>;

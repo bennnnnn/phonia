@@ -62,11 +62,6 @@ const menuAnchorRef = { current: null };
 const listBottomPadRef = { current: 0 };
 const keyboardLift = { value: 0 } as never;
 
-const router = {
-  setParams: jest.fn(),
-  push: jest.fn(),
-} as never;
-
 function useHarness(streaming: boolean, messages: Message[], replySaving = false) {
   return useChatScreenBodyProps({
     styles,
@@ -86,7 +81,6 @@ function useHarness(streaming: boolean, messages: Message[], replySaving = false
     dismissActionBanner,
     header: {
       insetsTop: 24,
-      router,
       headerTitleLabel: "Trip",
       titleGenerating: false,
       chatTitle: "Trip",

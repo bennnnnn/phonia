@@ -41,7 +41,7 @@ jest.mock("@/features/chat/model/exportMessagePdf", () => ({ exportConversationA
 jest.mock("@/contexts/actionFeedbackCore", () => ({ useActionFeedbackOptional: () => null }));
 
 // The drawer: only the row menu is real.
-const chat: Chat = { id: "chat-1", title: "Trip ideas", model: "free-chat", pinned: false } as Chat;
+const chat: Chat = { id: "chat-1", title: "Trip ideas", pinned: false } as Chat;
 const mockMenu = {
   menuChat: chat as Chat | null,
   closeMenu: jest.fn(),

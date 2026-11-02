@@ -28,7 +28,7 @@ jest.mock("@/lib/haptics", () => ({
 }));
 
 const chat: Chat = {
-  id: "chat-1", title: "Old title", model: "free-chat", pinned: false,
+  id: "chat-1", title: "Old title", pinned: false,
   created_at: "2026-01-01", updated_at: "2026-01-01",
 };
 const setChatTitle = jest.fn();
@@ -174,7 +174,7 @@ it("closes a rename editor when its conversation changes", async () => {
 });
 
 it("restores the original dated project chat after a failed delete", async () => {
-  const original = { id: "chat-1", title: "Old project", model: "free-chat", pinned: true,
+  const original = { id: "chat-1", title: "Old project", pinned: true,
     created_at: "2025-01-01", updated_at: "2025-02-01" } as Chat;
   jest.mocked(getCachedChat).mockReturnValue(original);
   (api.deleteChat as jest.Mock).mockRejectedValue(new Error("offline"));

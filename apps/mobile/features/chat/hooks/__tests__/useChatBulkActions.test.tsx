@@ -26,7 +26,7 @@ jest.mock("@/lib/haptics", () => ({
   notifyDestructive: (...args: unknown[]) => mockDestructive(...args),
 }));
 const first: Chat = {
-  id: "first", title: "First", pinned: true, model: "free-chat",
+  id: "first", title: "First", pinned: true,
   created_at: "2026-01-01", updated_at: "2026-01-01",
 };
 const second: Chat = { ...first, id: "second", title: "Second", pinned: false };
