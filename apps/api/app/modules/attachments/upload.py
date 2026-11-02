@@ -107,7 +107,6 @@ async def create_presigned_upload(
     return AttachmentPresignOut(
         attachment_id=attachment_id,
         upload_url=presigned.upload_url,
-        storage_key=presigned.storage_key,
         headers=presigned.headers,
         api_upload=presigned.api_upload,
     )
