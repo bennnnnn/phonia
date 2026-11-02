@@ -5,11 +5,10 @@ import {
   fetchMemories,
   getCachedMemories,
   invalidateMemoriesCache,
-  isMemoriesFresh,
+  memoriesReadAt,
   prefetchMemories,
   setMemoriesCache,
   subscribeMemoriesCache,
-  updateMemoriesCache,
 } from "@/features/memory/model/memoryListCache";
 
 jest.mock("@/lib/api", () => ({
@@ -58,12 +57,11 @@ describe("memoryListCache", () => {
   it("reads fresh when memory changes from a chat's settings card (ARCH-10)", () => {
     setMemoriesCache(sample);
     emitAppEvent("memoryChanged", {});
-    expect(isMemoriesFresh()).toBe(false);
+    expect(memoriesReadAt()).toBeUndefined();
   });
 
   it("returns cached memories without refetching when fresh", async () => {
     setMemoriesCache(sample);
-    expect(isMemoriesFresh()).toBe(true);
     expect(getCachedMemories()).toEqual(sample);
 
     const result = await fetchMemories("token");
@@ -111,7 +109,7 @@ describe("memoryListCache", () => {
     setMemoriesCache(sample);
     mockSession++;
     expect(getCachedMemories()).toBeUndefined();
-    expect(isMemoriesFresh()).toBe(false);
+    expect(memoriesReadAt()).toBeUndefined();
   });
 
   it("rejects an old account token before returning a fresh cache or prefetching", async () => {
@@ -144,53 +142,21 @@ describe("memoryListCache", () => {
     expect(listMemories).toHaveBeenCalledTimes(2);
   });
 
-  it("replays deletes and edits over a late list while preserving unseen server rows", async () => {
-    const second = { ...sample[0], id: "m2", text: "Original second fact" };
-    setMemoriesCache([...sample, second]);
-    const read = deferred();
-    listMemories.mockReturnValueOnce(read.promise);
-    const load = fetchMemories("token", { force: true });
-    updateMemoriesCache((rows) => rows.filter((row) => row.id !== "m1"));
-    updateMemoriesCache((rows) => rows.map((row) => row.id === "m2" ? { ...row, text: "Edited fact" } : row));
-    const unseen = { ...sample[0], id: "m3" };
-    read.resolve([...sample, second, unseen]);
-    expect(await load).toEqual(ok([{ ...second, text: "Edited fact" }, unseen]));
-    expect(getCachedMemories()).toEqual([{ ...second, text: "Edited fact" }, unseen]);
-  });
-
-  it("replays a confirmed deletion over a read started after its optimistic removal", async () => {
-    setMemoriesCache(sample);
-    const remove = (rows: typeof sample) => rows.filter((row) => row.id !== "m1");
-    updateMemoriesCache(remove);
-    const read = deferred();
-    listMemories.mockReturnValueOnce(read.promise);
-    const load = fetchMemories("token", { force: true });
-    updateMemoriesCache(remove);
-    read.resolve(sample);
-    expect(await load).toEqual(ok([]));
-  });
-
-  it("ignores mutations retained from an old account", () => {
+  it("ignores a list written for an old account", () => {
     const session = mockSession;
     mockSession++;
     const current = [{ ...sample[0], id: "current-account" }];
     setMemoriesCache(current);
-    const update = jest.fn(() => sample);
-    expect(updateMemoriesCache(update, session)).toEqual([]);
     setMemoriesCache(sample, session);
-    expect(update).not.toHaveBeenCalled();
     expect(getCachedMemories()).toEqual(current);
   });
 
-  it("does not mark optimistic partial data fresh and retries failed reads", async () => {
-    updateMemoriesCache(() => sample);
-    expect(isMemoriesFresh()).toBe(false);
+  it("retries a failed read and counts only a finished one as read", async () => {
     listMemories.mockRejectedValueOnce(new Error("offline")).mockResolvedValueOnce(sample);
-    expect(await fetchMemories("token")).toEqual(failed(sample));
-    expect(getCachedMemories()).toEqual(sample);
-    expect(isMemoriesFresh()).toBe(false);
+    expect(await fetchMemories("token")).toEqual(failed());
+    expect(memoriesReadAt()).toBeUndefined();
     expect(await fetchMemories("token")).toEqual(ok(sample));
-    expect(isMemoriesFresh()).toBe(true);
+    expect(memoriesReadAt()).toEqual(expect.any(Number));
     expect(listMemories).toHaveBeenCalledTimes(2);
   });
 
@@ -199,7 +165,8 @@ describe("memoryListCache", () => {
     const unsubscribe = subscribeMemoriesCache(() => { snapshots.push(getCachedMemories()); });
     try {
       setMemoriesCache(sample);
-      updateMemoriesCache(() => []);
+      // Clear all memory (useClearAllMemories).
+      setMemoriesCache([]);
       invalidateMemoriesCache();
       expect(snapshots).toEqual([sample, [], undefined]);
     } finally {
@@ -235,7 +202,7 @@ describe("memoryListCache", () => {
     try {
       const oldSession = mockSession++;
       expect(getCachedMemories()).toBeUndefined();
-      updateMemoriesCache(() => sample, oldSession);
+      setMemoriesCache(sample, oldSession);
       expect(changed).not.toHaveBeenCalled();
     } finally {
       unsubscribe();
@@ -251,15 +218,14 @@ describe("memory mutation recovery", () => {
     invalidateMemoriesCache();
   });
 
-  it("starts an authoritative read after a pending read carrying a failed rollback", async () => {
+  it("starts an authoritative read after a pending read", async () => {
     setMemoriesCache(sample);
     const read = deferred();
     listMemories.mockReturnValueOnce(read.promise).mockResolvedValueOnce([]);
     const oldLoad = fetchMemories("token", { force: true });
-    updateMemoriesCache(() => sample);
     const recovery = fetchMemories("token", { force: true, afterPending: true });
     expect(listMemories).toHaveBeenCalledTimes(1);
-    read.resolve([]);
+    read.resolve(sample);
     expect(await oldLoad).toEqual(ok(sample));
     expect(await recovery).toEqual(ok([]));
     expect(getCachedMemories()).toEqual([]);

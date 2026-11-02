@@ -11,6 +11,7 @@ export type AttachmentFailure =
   | "changed"
   | "upload_failed"
   | "daily_limit"
+  | "storage_full"
   | "camera_permission";
 
 export class AttachmentError extends Error {
@@ -29,6 +30,7 @@ const MESSAGE_KEYS: Record<AttachmentFailure, string> = {
   changed: "chat.attach_changed",
   upload_failed: "chat.attach_upload_failed",
   daily_limit: "chat.attach_daily_limit",
+  storage_full: "chat.attach_storage_full",
   camera_permission: "chat.camera_permission",
 };
 
@@ -82,6 +84,7 @@ function refusedFields(error: ApiRequestError): string[] {
 export function presignFailure(error: unknown): unknown {
   if (!(error instanceof ApiRequestError)) return error;
   if (error.code === "daily_limit") return new AttachmentError("daily_limit");
+  if (error.code === "storage_full") return new AttachmentError("storage_full");
   if (error.code === "unsupported_type") return new AttachmentError("unsupported_type");
   if (error.code === "invalid_size" || refusedFields(error).includes("size_bytes")) {
     return new AttachmentError("too_large");

@@ -160,3 +160,30 @@ async def test_shutdown_process_stops_worker_before_closing_resources():
     engine.dispose.assert_awaited_once()
     redis.aclose.assert_awaited_once()
     close_http.assert_awaited_once()
+
+
+@pytest.mark.asyncio
+async def test_shutdown_process_one_failed_step_still_closes_the_rest():
+    redis = redis_mock()
+    redis.aclose = AsyncMock(side_effect=ConnectionError("redis gone"))
+    engine = MagicMock()
+    engine.dispose = AsyncMock(side_effect=RuntimeError("engine broke"))
+    with (
+        patch("app.process_bootstrap.drain_background_tasks", AsyncMock()),
+        patch("app.process_bootstrap.stop_worker_runtime", AsyncMock(side_effect=ValueError)),
+        patch("app.process_bootstrap.engine", engine),
+        patch("app.process_bootstrap.get_redis_client", return_value=redis),
+        patch("app.process_bootstrap.aclose_pooled_clients", AsyncMock()) as close_http,
+        patch(
+            "app.process_bootstrap.shutdown_sympy_executor", side_effect=OSError("pool")
+        ) as stop_sympy,
+        patch("app.process_bootstrap.shutdown_document_executor") as stop_docs,
+        patch("app.process_bootstrap.shutdown.begin_stop"),
+    ):
+        await process_bootstrap.shutdown_process(stop_worker=True)
+
+    stop_sympy.assert_called_once_with()
+    stop_docs.assert_called_once_with()
+    engine.dispose.assert_awaited_once()
+    redis.aclose.assert_awaited_once()
+    close_http.assert_awaited_once()

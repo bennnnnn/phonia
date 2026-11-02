@@ -26,6 +26,7 @@ describe("presignFailure", () => {
     [refused(400, { code: "invalid_size", message: "Invalid file size" }), "too_large"],
     [refused(422, [{ loc: ["body", "size_bytes"], msg: "Input should be less than or equal to 10485760" }]), "too_large"],
     [refused(429, { code: "daily_limit", message: "Reworded limit." }), "daily_limit"],
+    [refused(409, { code: "storage_full", message: "Reworded full." }), "storage_full"],
     [refused(400, "Unsupported content type"), "upload_failed"],
     [refused(503, { code: "unavailable", message: "Attachment storage is not configured" }), "upload_failed"],
     [refused(422, [{ loc: ["body", "filename"], msg: "String should have at most 255 characters" }]), "upload_failed"],
@@ -55,7 +56,8 @@ describe("attachmentErrorMessage", () => {
 
   it("has an English message for every reason", () => {
     const reasons: AttachmentFailure[] = [
-      "too_large", "unsupported_type", "unreadable", "changed", "upload_failed", "daily_limit", "camera_permission",
+      "too_large", "unsupported_type", "unreadable", "changed", "upload_failed", "daily_limit", "storage_full",
+      "camera_permission",
     ];
     const keys = reasons.map((reason) => attachmentErrorMessage(new AttachmentError(reason), (key) => key));
     for (const key of keys) expect(en).toHaveProperty([key]);

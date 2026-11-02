@@ -28,7 +28,8 @@ ORIGINAL_FILENAME_MAX_CHARS = 255
 class Attachment(Base):
     __tablename__ = "attachments"
     __table_args__ = (
-        Index("ix_attachments_user", "user_id"),
+        # The gallery's pages by (created_at, id); leads the user_id FK cascade too.
+        Index("ix_attachments_user_created", "user_id", "created_at", "id"),
         # Message delete (FK SET NULL) and per-message reads.
         Index(
             "ix_attachments_message",

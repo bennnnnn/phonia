@@ -1,5 +1,9 @@
 """generate_for_chat: each gate, which failures give the day's slot back, and cleanup.
 
+A failure before the provider is asked gives the slot back; once it is asked the slot
+stays used whatever follows (a Cancel, a content refusal, a failed save), because the
+provider may bill the call. Written bytes are deleted either way.
+
 The daily counter and the spend meter are the real ones over fakeredis, so a
 refund shows as the slot coming back. Storage, sessions, repositories and the
 provider are recording fakes; ``events`` is the order the turn touched them.
@@ -142,6 +146,8 @@ class Turn:
             turn.step("add_refs", [copy.attachment_id for copy in copies], message_id)
 
         async def provider(_settings: Any, **kw: Any) -> Any:
+            # The real generate_image says so just before it asks the provider.
+            kw["on_call"]()
             turn.step("provider", kw["prompt"], kw["aspect_ratio"], kw["reference_images"])
             await turn.held("provider")
             if isinstance(turn.generated, BaseException):
@@ -318,20 +324,22 @@ _GENERATED_REFUSALS = [
 
 
 @pytest.mark.parametrize("case, generated, status, detail", _GENERATED_REFUSALS)
-async def test_generate_for_chat_a_refused_result_gives_the_slot_back(
+async def test_generate_for_chat_a_refused_result_keeps_the_slot(
     turn, case, generated, status, detail
 ):
+    """The provider was asked, and may bill a call that returned nothing usable."""
     turn.generated = generated
 
     error = await _refused(turn)
 
     assert (error.status_code, error.detail) == (status, detail)
-    assert await turn.slot() == "0"
+    assert await turn.slot() == "1"
     assert "presign" not in turn.names()
 
 
-async def test_generate_for_chat_a_content_refusal_is_said_and_gives_the_slot_back(turn):
-    """The provider refused the prompt: "content_blocked", not "Could not generate image"."""
+async def test_generate_for_chat_a_content_refusal_is_said_and_keeps_the_slot(turn):
+    """The provider refused the prompt: "content_blocked", not "Could not generate image".
+    It gave the slot back, so a prompt it refuses could be sent for ever."""
     from app.gateways.image_gateway import ImageContentBlockedError
 
     turn.generated = ImageContentBlockedError("model")
@@ -340,7 +348,7 @@ async def test_generate_for_chat_a_content_refusal_is_said_and_gives_the_slot_ba
 
     assert (error.status_code, error.code) == (422, "content_blocked")
     assert error.fields == {"feature": "image_generation"}
-    assert await turn.slot() == "0"
+    assert await turn.slot() == "1"
     assert "presign" not in turn.names()
 
 
@@ -367,7 +375,7 @@ async def test_generate_for_chat_a_blank_prompt_is_refused_after_the_reserve(tur
     ],
 )
 @pytest.mark.parametrize("error", [Boom("down"), asyncio.CancelledError()])
-async def test_generate_for_chat_a_failure_after_the_reserve_refunds_and_deletes_written_bytes(
+async def test_generate_for_chat_a_failure_after_the_call_keeps_the_slot_and_deletes_written_bytes(
     turn, fail_at, with_ref, deleted, error
 ):
     refs = [turn.owned_ref().id] if with_ref else None
@@ -376,7 +384,7 @@ async def test_generate_for_chat_a_failure_after_the_reserve_refunds_and_deletes
     with pytest.raises(type(error)):
         await turn.run(reference_attachment_ids=refs)
 
-    assert await turn.slot() == "0"
+    assert await turn.slot() == "1"
     written = {"output": turn.output_key}
     written["ref"] = next((e[1] for e in turn.events if e[0] == "write_ref"), None)
     assert turn.deleted() == [written[name] for name in deleted]
@@ -394,17 +402,17 @@ async def _cancel_when(turn: Turn, step: str, **kwargs: Any) -> asyncio.Task[Any
     return task
 
 
-async def test_generate_for_chat_a_cancel_during_the_call_keeps_nothing_and_gives_the_slot_back(
-    turn,
-):
+async def test_generate_for_chat_a_cancel_during_the_call_keeps_nothing_but_the_slot(turn):
+    """It gave the slot back: generate-then-disconnect never reached the daily cap while
+    the provider billed every call, and the spend paused pictures for everyone."""
     task = await _cancel_when(turn, "provider")
 
     with pytest.raises(asyncio.CancelledError):
         await task
 
-    assert await turn.slot() == "0"
+    assert await turn.slot() == "1"
     assert not {"presign", "write_output", "commit", "finish"} & set(turn.names())
-    # The provider may still bill the call: the global cap counts it, the user's day does not.
+    # The provider may still bill the call: the global cap counts it, and the user's day.
     assert "spend" in turn.names()
 
 
@@ -421,52 +429,54 @@ async def test_generate_for_chat_a_cancel_while_saving_lets_the_save_finish_and_
     assert await turn.slot() == "1"
 
 
-async def test_generate_for_chat_a_regenerate_without_a_user_turn_rolls_back_and_refunds(turn):
+async def test_generate_for_chat_a_regenerate_without_a_user_turn_rolls_back_keeping_the_slot(
+    turn,
+):
+    """Found only after the call: refunding it let an empty chat's regenerate loop for ever."""
     ref = turn.owned_ref()
 
     error = await _refused(turn, reference_attachment_ids=[ref.id], create_user_message=False)
 
     assert (error.status_code, error.detail) == (404, "No user message to attach image to")
-    assert await turn.slot() == "0"
+    assert await turn.slot() == "1"
     assert "commit" not in turn.names()
     assert turn.events[-2][0] == "session_exit"
     assert turn.deleted() == [turn.output_key]
 
 
-@pytest.mark.parametrize("status, refunded", [(403, False), (429, False), (409, True)])
+@pytest.mark.parametrize("status", [403, 429, 409])
 @pytest.mark.parametrize("fail_at", ["provider", "add_image"])
-async def test_generate_for_chat_a_403_or_429_inside_the_turn_keeps_the_slot(
-    turn, status, refunded, fail_at
-):
+async def test_generate_for_chat_a_refusal_inside_the_turn_keeps_the_slot(turn, status, fail_at):
     turn.fail[fail_at] = ImageGenerationError("refused", status_code=status)
 
     error = await _refused(turn)
 
     assert error.status_code == status
-    assert await turn.slot() == ("0" if refunded else "1")
+    assert await turn.slot() == "1"
     assert turn.deleted() == ([turn.output_key] if fail_at == "add_image" else [])
 
 
-async def test_generate_for_chat_deletes_the_bytes_before_giving_the_slot_back(turn):
+async def test_generate_for_chat_a_failed_save_deletes_the_bytes_and_keeps_the_slot(turn):
     turn.fail["commit"] = Boom("db")
 
     with pytest.raises(Boom):
         await turn.run(reference_attachment_ids=[turn.owned_ref().id])
 
     assert turn.slot_at_delete == ["1", "1"]
-    assert await turn.slot() == "0"
+    assert await turn.slot() == "1"
 
 
-async def test_generate_for_chat_a_failed_delete_is_logged_and_the_slot_still_refunded(
-    turn, caplog
-):
+async def test_generate_for_chat_a_failed_delete_is_logged_and_the_slot_kept(turn, caplog):
     turn.fail["commit"] = Boom("db")
     turn.fail["delete"] = Boom("storage")
 
-    with caplog.at_level(logging.ERROR, logger=MOD), pytest.raises(Boom, match="db"):
+    with (
+        caplog.at_level(logging.ERROR, logger="app.modules.images.written_bytes"),
+        pytest.raises(Boom, match="db"),
+    ):
         await turn.run()
 
-    assert await turn.slot() == "0"
+    assert await turn.slot() == "1"
     assert [r.getMessage() for r in caplog.records] == [
         f"Failed to delete orphaned generated image {turn.output_key}"
     ]
@@ -568,3 +578,34 @@ async def test_generate_for_chat_a_failed_spend_record_is_logged_not_raised(turn
     assert [r.getMessage() for r in caplog.records] == [
         "record_global_spend failed after image generation"
     ]
+
+
+@pytest.mark.parametrize(
+    "settings, prompt, asked",
+    [
+        ({"openrouter_api_key": "k", "mock_llm_enabled": False}, "a cat", True),
+        ({"mock_llm_enabled": True}, "a cat", True),
+        ({"openrouter_api_key": "", "mock_llm_enabled": False}, "a cat", False),
+        ({"image_generation_enabled": False}, "a cat", False),
+        ({"openrouter_api_key": "k", "mock_llm_enabled": False}, "x" * 2001, False),
+    ],
+)
+async def test_generate_image_says_it_asks_the_provider_only_when_it_does(
+    settings: dict[str, Any], prompt: str, asked: bool
+) -> None:
+    """``on_call`` marks the slot spent: a refusal before the provider stays refundable."""
+    from app.modules.images.generation import generate_image
+
+    order: list[str] = []
+
+    async def gateway(*_args: Any, **_kwargs: Any) -> tuple[bytes, str]:
+        order.append("provider")
+        return PNG, "image/png"
+
+    with patch(f"{MOD}.image_gateway.generate_via_openrouter", gateway):
+        await generate_image(
+            Settings(**settings), prompt=prompt, on_call=lambda: order.append("on_call")
+        )
+
+    called_gateway = asked and not settings.get("mock_llm_enabled")
+    assert order == (["on_call"] if asked else []) + (["provider"] if called_gateway else [])

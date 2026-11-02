@@ -1,6 +1,8 @@
 """Shared API/worker process initialization and worker runtime wiring."""
 
 import asyncio
+import inspect
+import logging
 from collections.abc import Awaitable, Callable
 
 from app.background import (
@@ -29,6 +31,8 @@ from app.modules.chat.finalize_registry import stop_inflight_streams
 from app.modules.chat.turn_prep.reading import warm_pool_worker
 from app.modules.chat.ws_limits import open_socket_count
 from app.services.mcp import setup_mcp_adapters
+
+logger = logging.getLogger(__name__)
 
 VALID_PROCESS_ROLES = frozenset({"all", "api", "worker"})
 
@@ -119,20 +123,35 @@ async def shutdown_process(
     stop_worker: bool,
     drain_before_stop: bool = True,
 ) -> None:
+    """Stop the process's work, then close every pool it holds.
+
+    Each step runs on its own: one that raises is logged and the rest still run,
+    so a failed Redis close never leaves the DB engine or HTTP pools open.
+    """
     # Already done at the signal when the hook is installed; a no-op then.
     shutdown.begin_stop()
-    await stop_saturation_monitor()
+    await _shutdown_step("saturation monitor", stop_saturation_monitor)
     if stop_worker and not drain_before_stop:
-        await stop_worker_runtime()
-    await drain_background_tasks(timeout_seconds=10.0)
+        await _shutdown_step("worker runtime", stop_worker_runtime)
+    await _shutdown_step("background tasks", lambda: drain_background_tasks(timeout_seconds=10.0))
     if stop_worker and drain_before_stop:
-        await stop_worker_runtime()
-    shutdown_sympy_executor()
-    shutdown_document_executor()
-    blocking.shutdown()
-    await engine.dispose()
-    await get_redis_client().aclose()
+        await _shutdown_step("worker runtime", stop_worker_runtime)
+    await _shutdown_step("sympy executor", shutdown_sympy_executor)
+    await _shutdown_step("document executor", shutdown_document_executor)
+    await _shutdown_step("blocking executor", blocking.shutdown)
+    await _shutdown_step("db engine", engine.dispose)
+    await _shutdown_step("redis", lambda: get_redis_client().aclose())
     # The worker's long-poll client (the API never makes one).
     if get_jobs_redis_client.cache_info().currsize:
-        await get_jobs_redis_client().aclose()
-    await aclose_pooled_clients()
+        await _shutdown_step("jobs redis", lambda: get_jobs_redis_client().aclose())
+    await _shutdown_step("http pools", aclose_pooled_clients)
+
+
+async def _shutdown_step(name: str, step: Callable[[], object]) -> None:
+    """Run one shutdown step (sync or async); log a failure instead of raising it."""
+    try:
+        result = step()
+        if inspect.isawaitable(result):
+            await result
+    except Exception:
+        logger.exception("Shutdown step %r failed; continuing", name)

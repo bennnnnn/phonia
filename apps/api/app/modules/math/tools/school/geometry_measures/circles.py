@@ -5,6 +5,7 @@ from __future__ import annotations
 import math
 from fractions import Fraction
 
+from app.modules.math.tex_numbers import fraction_tex
 from app.modules.math.tools.school.geometry_measures.working import _approx, _n, _Solved, _unit
 from app.services.workout import math_line
 
@@ -119,13 +120,6 @@ def _circle_from_circumference(numbers: list[float], words: list[str]) -> _Solve
     )
 
 
-def _fraction_tex(value: Fraction) -> str:
-    if value.denominator == 1:
-        return str(value.numerator)
-    sign = "-" if value < 0 else ""
-    return rf"{sign}\frac{{{abs(value.numerator)}}}{{{value.denominator}}}"
-
-
 def _circle_from_circumference_pi(numbers: list[float], words: list[str]) -> _Solved | None:
     """``C = 10π``: r = 5 exactly, and the area is 25π."""
     asked = words[0]
@@ -135,16 +129,16 @@ def _circle_from_circumference_pi(numbers: list[float], words: list[str]) -> _So
         return None
     r = k / 2
     rows = [
-        math_line(rf"r = \frac{{C}}{{2\pi}} = \frac{{{_pi_times(k)}}}{{2\pi}} = {_fraction_tex(r)}")
+        math_line(rf"r = \frac{{C}}{{2\pi}} = \frac{{{_pi_times(k)}}}{{2\pi}} = {fraction_tex(r)}")
     ]
     if asked == "radius":
-        answer = f"{_fraction_tex(r)}{_unit(unit)}"
+        answer = f"{fraction_tex(r)}{_unit(unit)}"
     elif asked == "diameter":
-        rows.append(math_line(rf"d = 2r = {_fraction_tex(k)}"))
-        answer = f"{_fraction_tex(k)}{_unit(unit)}"
+        rows.append(math_line(rf"d = 2r = {fraction_tex(k)}"))
+        answer = f"{fraction_tex(k)}{_unit(unit)}"
     else:
         rows.append(
-            math_line(rf"A = \pi r^2 = \pi\left({_fraction_tex(r)}\right)^2 = {_pi_times(r * r)}")
+            math_line(rf"A = \pi r^2 = \pi\left({fraction_tex(r)}\right)^2 = {_pi_times(r * r)}")
         )
         answer = _pi_answer(float(r * r), unit, 2)
     return _Solved(
@@ -171,17 +165,17 @@ def _circle_from_area_pi(numbers: list[float], words: list[str]) -> _Solved | No
     rows = [
         math_line(
             rf"r = \sqrt{{\frac{{A}}{{\pi}}}} = \sqrt{{\frac{{{_pi_times(k)}}}{{\pi}}}}"
-            rf" = {_fraction_tex(r)}"
+            rf" = {fraction_tex(r)}"
         )
     ]
     if asked == "radius":
-        answer = f"{_fraction_tex(r)}{_unit(unit)}"
+        answer = f"{fraction_tex(r)}{_unit(unit)}"
     elif asked == "diameter":
-        rows.append(math_line(rf"d = 2r = {_fraction_tex(2 * r)}"))
-        answer = f"{_fraction_tex(2 * r)}{_unit(unit)}"
+        rows.append(math_line(rf"d = 2r = {fraction_tex(2 * r)}"))
+        answer = f"{fraction_tex(2 * r)}{_unit(unit)}"
     else:
         rows.append(
-            math_line(rf"C = 2\pi r = 2\pi\left({_fraction_tex(r)}\right) = {_pi_times(2 * r)}")
+            math_line(rf"C = 2\pi r = 2\pi\left({fraction_tex(r)}\right) = {_pi_times(2 * r)}")
         )
         answer = _pi_answer(float(2 * r), unit, 1)
     return _Solved(

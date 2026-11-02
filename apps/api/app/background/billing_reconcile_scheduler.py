@@ -74,6 +74,7 @@ async def run_billing_reconcile_cycle(settings: Settings) -> None:
         name="billing reconcile",
         lock_key=LOCK_KEY,
         lock_ttl_seconds=lock_ttl_yield_next_tick(settings.billing_reconcile_interval_seconds),
+        interval_seconds=settings.billing_reconcile_interval_seconds,
         enabled=_scheduler_enabled(settings),
         fn=_billing_cycle,
         settings=settings,

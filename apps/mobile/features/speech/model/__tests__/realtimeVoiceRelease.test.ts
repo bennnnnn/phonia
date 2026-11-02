@@ -15,6 +15,7 @@ jest.mock("@/lib/speech/voiceAudio", () => ({ yieldMicToWebRtc: jest.fn(async ()
 jest.mock("@/features/speech/api", () => ({
   speechApi: {
     createRealtimeSession: jest.fn(),
+    connectRealtimeSession: jest.fn(),
     endRealtimeSession: jest.fn(async () => ({})),
     realtimeTool: jest.fn(),
   },
@@ -64,7 +65,7 @@ describe("a Live Talk call that never connects gives its minutes back", () => {
   });
 
   it("ends the call when the offer fails before the mint has answered", async () => {
-    const mint = deferred<{ client_secret: string; call_id: string }>();
+    const mint = deferred<{ call_id: string }>();
     createSession.mockReturnValueOnce(mint.promise);
     createOffer.mockRejectedValueOnce(new Error("offer failed"));
 
@@ -74,30 +75,23 @@ describe("a Live Talk call that never connects gives its minutes back", () => {
     // The call id was still unknown when the offer threw: nothing to end yet.
     expect(endSession).not.toHaveBeenCalled();
 
-    mint.resolve({ client_secret: "ek_late", call_id: "call-late" });
+    mint.resolve({ call_id: "call-late" });
     await flush();
     expect(endSession).toHaveBeenCalledWith("tok", "call-late");
   });
 
   it("ends the call when connecting fails after the mint", async () => {
-    createSession.mockResolvedValueOnce({ client_secret: "ek_mock", call_id: "call-1" });
-    const originalFetch = globalThis.fetch;
-    globalThis.fetch = jest.fn(async () => {
-      throw new Error("network down");
-    }) as unknown as typeof fetch;
-    try {
-      await expect(
-        createRealtimeVoiceSession({ token: "tok", chatId: "chat-1", onEvent: () => {} }),
-      ).rejects.toThrow();
-    } finally {
-      globalThis.fetch = originalFetch;
-    }
+    createSession.mockResolvedValueOnce({ call_id: "call-1" });
+    (speechApi.connectRealtimeSession as jest.Mock).mockRejectedValueOnce(new Error("network down"));
+    await expect(
+      createRealtimeVoiceSession({ token: "tok", chatId: "chat-1", onEvent: () => {} }),
+    ).rejects.toThrow("network down");
     await flush();
     expect(endSession).toHaveBeenCalledWith("tok", "call-1");
   });
 
   it("ends nothing when the mint itself failed", async () => {
-    const mint = deferred<{ client_secret: string; call_id: string }>();
+    const mint = deferred<{ call_id: string }>();
     createSession.mockReturnValueOnce(mint.promise);
     createOffer.mockRejectedValueOnce(new Error("offer failed"));
 
@@ -136,7 +130,7 @@ describe("a Live Talk call releases its native media stream (LEAK-06)", () => {
       close: jest.fn(),
       getReceivers: () => [],
     }));
-    createSession.mockResolvedValue({ client_secret: "ek_1", call_id: "call-1" });
+    createSession.mockResolvedValue({ call_id: "call-1" });
   });
 
   it("on a connect that fails", async () => {

@@ -230,8 +230,7 @@ async def test_gateway_real_path_posts_to_resend(monkeypatch):
     captured: dict = {}
 
     class FakeResp:
-        def raise_for_status(self):
-            return None
+        status_code = 200
 
     class FakeClient:
         def __init__(self, *a, **kw):
@@ -285,6 +284,84 @@ async def test_gateway_real_path_swallows_errors(monkeypatch):
     # Must not raise.
     ok = await email_gateway.send_email(settings, to="a@b.com", subject="Hi", html="<p/>", text="t")
     assert ok is False
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "status, headers, outcome, retry_after",
+    [
+        (200, {}, email_gateway.EmailOutcome.SENT, None),
+        (409, {}, email_gateway.EmailOutcome.SENT, None),  # already sent under its key
+        (429, {"Retry-After": "30"}, email_gateway.EmailOutcome.RETRY, 30.0),
+        (429, {"Retry-After": "soon"}, email_gateway.EmailOutcome.RETRY, None),
+        (500, {}, email_gateway.EmailOutcome.RETRY, None),
+        (503, {}, email_gateway.EmailOutcome.RETRY, None),
+        (422, {}, email_gateway.EmailOutcome.REJECTED, None),  # a bad address
+    ],
+)
+async def test_deliver_email_says_what_became_of_the_send(
+    monkeypatch, status, headers, outcome, retry_after
+):
+    import httpx
+
+    settings = Settings(resend_api_key="rk_test")
+    sent_headers: dict = {}
+
+    class FakeClient:
+        async def post(self, url, json, headers):
+            sent_headers.update(headers)
+            return httpx.Response(status, headers=response_headers)
+
+    response_headers = headers
+    monkeypatch.setattr(
+        "app.gateways.email_gateway.get_pooled_client", lambda *_a, **_kw: FakeClient()
+    )
+    result = await email_gateway.deliver_email(
+        settings,
+        to="a@b.com",
+        subject="Hi",
+        html="<p/>",
+        text="t",
+        idempotency_key="todo-reminder/abc:123",
+    )
+    assert (result.outcome, result.retry_after) == (outcome, retry_after)
+    assert sent_headers["Idempotency-Key"] == "todo-reminder/abc:123"
+
+
+@pytest.mark.asyncio
+async def test_deliver_email_without_a_key_sends_no_idempotency_header(monkeypatch):
+    import httpx
+
+    sent_headers: dict = {}
+
+    class FakeClient:
+        async def post(self, url, json, headers):
+            sent_headers.update(headers)
+            return httpx.Response(200)
+
+    monkeypatch.setattr(
+        "app.gateways.email_gateway.get_pooled_client", lambda *_a, **_kw: FakeClient()
+    )
+    result = await email_gateway.deliver_email(
+        Settings(resend_api_key="rk_test"), to="a@b.com", subject="Hi", html="<p/>", text="t"
+    )
+    assert result.sent
+    assert "Idempotency-Key" not in sent_headers
+
+
+@pytest.mark.asyncio
+async def test_deliver_email_network_failure_is_retry(monkeypatch):
+    class FakeClient:
+        async def post(self, *a, **kw):
+            raise TimeoutError("read timeout")
+
+    monkeypatch.setattr(
+        "app.gateways.email_gateway.get_pooled_client", lambda *_a, **_kw: FakeClient()
+    )
+    result = await email_gateway.deliver_email(
+        Settings(resend_api_key="rk_test"), to="a@b.com", subject="Hi", html="<p/>", text="t"
+    )
+    assert result.outcome is email_gateway.EmailOutcome.RETRY
 
 
 # ── job enqueue + handler ─────────────────────────────────────────────────────
@@ -656,3 +733,45 @@ async def test_login_dev_skips_enqueue_when_email_disabled():
             AsyncMock(), settings, email="dev@test.local", name="Dev", redis=redis
         )
     enq.assert_not_awaited()
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "status, body, outcome",
+    [
+        # Our account or sender: every message gets this until it is fixed, so it waits.
+        (401, {"name": "missing_api_key", "message": "Missing API key"}, "retry"),
+        (403, {"name": "invalid_api_key", "message": "API key is invalid"}, "retry"),
+        (403, {"name": "validation_error", "message": "The x.com domain is not verified"}, "retry"),
+        (404, {"name": "not_found", "message": "The requested endpoint does not exist"}, "retry"),
+        (422, {"name": "invalid_from_address", "message": "Invalid from"}, "retry"),
+        (422, {"name": "validation_error", "message": "Invalid `from` field."}, "retry"),
+        (403, None, "retry"),
+        # This message: sent again, it gets the same answer.
+        (422, {"name": "validation_error", "message": "Invalid `to` field."}, "rejected"),
+        (400, {"name": "validation_error", "message": "Invalid `to` field."}, "rejected"),
+        (422, None, "rejected"),
+    ],
+)
+async def test_an_account_or_sender_refusal_is_retried_not_given_up(
+    monkeypatch, caplog, status, body, outcome
+):
+    import logging
+
+    import httpx
+
+    class FakeClient:
+        async def post(self, url, json, headers):
+            if body is None:
+                return httpx.Response(status, text="<html>")
+            return httpx.Response(status, json={"statusCode": status, **body})
+
+    monkeypatch.setattr(
+        "app.gateways.email_gateway.get_pooled_client", lambda *_a, **_kw: FakeClient()
+    )
+    with caplog.at_level(logging.ERROR, logger="app.gateways.email_gateway"):
+        result = await email_gateway.deliver_email(
+            Settings(resend_api_key="rk_test"), to="a@b.com", subject="Hi", html="<p/>", text="t"
+        )
+    assert result.outcome == outcome
+    assert any(record.levelno == logging.ERROR for record in caplog.records)

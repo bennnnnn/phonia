@@ -7,6 +7,8 @@ Delivery semantics (do not conflate ticket accept with receipt polling):
 - **Receipt polling** — deferred (see ``RECEIPT_MIN_AGE_SECONDS``) and used only to
   prune invalid device tokens. A missing or slow receipt must never block delivery
   marking or cause a resend on the next scheduler cycle.
+- **Holds** — a send Expo may have accepted, throttled, refused or failed on its side
+  holds its reminders (``send_backoff``) instead of going again next minute.
 """
 
 from __future__ import annotations
@@ -23,7 +25,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import Settings
 from app.gateways import expo_push_gateway
+from app.gateways.expo_push_gateway import HoldReason, PushSendResult
 from app.models.orm import PushToken, TodoItem
+from app.modules.notifications.send_backoff import SendBackoff, occurrence_key
 from app.modules.todos import (
     PUSH_REMINDERS,
     aged_out_unsent,
@@ -40,14 +44,15 @@ logger = logging.getLogger(__name__)
 RECEIPT_PENDING_ZSET = "recall:push:receipts:pending"
 RECEIPT_MIN_AGE_SECONDS = 15 * 60
 RECEIPT_MAX_AGE_SECONDS = 24 * 60 * 60
-# Receipts polled per pass, and tickets kept at most (the oldest go past it). Polling
-# every ready ticket at once made one Expo outage delay every reminder behind it.
+# Receipts polled per batch, and tickets kept at most (the oldest go past it). A pass
+# polls batches until its time budget (``push_receipt_poll_budget_seconds``).
 RECEIPT_POLL_BATCH = 1_000
 RECEIPT_PENDING_MAX = 50_000
-# Due to-dos read per page, and pages per cycle: a cycle stops at its bound and the
-# rest come next minute.
+# Due to-dos read per page; a cycle reads pages until its time budget
+# (``reminder_cycle_budget_seconds``) and the rest come next minute.
 PUSH_PAGE_ROWS = 500
-MAX_PUSH_PAGES_PER_CYCLE = 20
+# Delivered at once, waking an Android phone in Doze; a reminder is the point of a push.
+PUSH_PRIORITY = "high"
 
 
 @dataclass
@@ -85,26 +90,49 @@ async def enqueue_push_receipts(redis: Redis, tickets: list[tuple[str, str]]) ->
 
 
 async def poll_deferred_push_receipts(
-    session: AsyncSession, redis: Redis, *, now: float | None = None
-) -> None:
-    """Poll a batch of Expo receipts old enough to be ready; prune dead tokens."""
+    session: AsyncSession,
+    redis: Redis,
+    *,
+    now: float | None = None,
+    budget_seconds: float = 0.0,
+) -> int:
+    """Poll receipts old enough to be ready, a batch at a time, for ``budget_seconds``
+    (at least one batch); prune dead tokens. How many receipts were decided.
+
+    One batch of 1,000 per pass (every five minutes) kept up with 12,000 pushes an hour;
+    past that, tickets aged out unread and dead tokens were never pruned.
+    """
     now = time.time() if now is None else now
     # Token keys carry the same 24 h TTL, so stale tickets only need leaving the set.
     await redis.zremrangebyscore(RECEIPT_PENDING_ZSET, 0, now - RECEIPT_MAX_AGE_SECONDS)
-    ticket_ids = _redis_str_members(
-        list(
-            await redis.zrangebyscore(
-                RECEIPT_PENDING_ZSET,
-                0,
-                now - RECEIPT_MIN_AGE_SECONDS,
-                start=0,
-                num=RECEIPT_POLL_BATCH,
+    stop_at = time.monotonic() + budget_seconds
+    # Undecided (still pending) tickets stay in the set: the next batch reads past them.
+    offset = 0
+    decided_total = 0
+    while True:
+        ticket_ids = _redis_str_members(
+            list(
+                await redis.zrangebyscore(
+                    RECEIPT_PENDING_ZSET,
+                    0,
+                    now - RECEIPT_MIN_AGE_SECONDS,
+                    start=offset,
+                    num=RECEIPT_POLL_BATCH,
+                )
             )
         )
-    )
-    if not ticket_ids:
-        return
+        if not ticket_ids:
+            break
+        decided = await _poll_receipt_batch(session, redis, ticket_ids)
+        decided_total += decided
+        offset += len(ticket_ids) - decided
+        if len(ticket_ids) < RECEIPT_POLL_BATCH or time.monotonic() >= stop_at:
+            break
+    return decided_total
 
+
+async def _poll_receipt_batch(session: AsyncSession, redis: Redis, ticket_ids: list[str]) -> int:
+    """One batch of receipts: forget the decided tickets, prune dead tokens; how many."""
     receipt_map = await expo_push_gateway.fetch_push_receipts(ticket_ids)
     decided = [
         (ticket_id, receipt)
@@ -113,7 +141,7 @@ async def poll_deferred_push_receipts(
         and receipt.get("status") not in (None, "pending")
     ]
     if not decided:
-        return
+        return 0
     async with redis.pipeline(transaction=False) as pipe:
         for ticket_id, _receipt in decided:
             pipe.get(_receipt_token_key(ticket_id))
@@ -134,6 +162,7 @@ async def poll_deferred_push_receipts(
 
     if pruned:
         await session.commit()
+    return len(decided)
 
 
 # "split" installs created recall-reminders. "tone" installs created the v2
@@ -168,6 +197,7 @@ def _append_outbound(
     body: str,
     data: dict[str, Any],
     todos: list[TodoItem] | None = None,
+    ttl_seconds: int | None = None,
 ) -> None:
     seen_tokens: set[str] = set()
     for token in tokens:
@@ -180,7 +210,11 @@ def _append_outbound(
             "body": body[:240],
             "data": data,
             "sound": PUSH_SOUND,
+            "priority": PUSH_PRIORITY,
         }
+        if ttl_seconds is not None:
+            # Not delivered by then (the phone was off): dropped, not shown hours late.
+            message["ttl"] = ttl_seconds
         channel_id = channel_id_for_token(token, data)
         if channel_id is not None:
             message["channelId"] = channel_id
@@ -235,6 +269,7 @@ async def collect_push_page(
     now: datetime,
     after: tuple[datetime, UUID] | None = None,
     limit: int = PUSH_PAGE_ROWS,
+    ttl_seconds: int | None = None,
 ) -> PushPage:
     """Push messages for one page of due to-dos (``todos.due_reminder_page``)."""
     rows = await due_reminder_page(session, PUSH_REMINDERS, now=now, after=after, limit=limit)
@@ -270,6 +305,7 @@ async def collect_push_page(
                     "focus": "reminders",
                 },
                 todos=[todo],
+                ttl_seconds=ttl_seconds,
             )
         except Exception:
             logger.exception("Todo reminder failed user_id=%s todo_id=%s", todo.user_id, todo.id)
@@ -300,22 +336,71 @@ async def _finalize_push_deliveries(
         await session.commit()
 
 
-async def dispatch_expo(
-    outbound: list[OutboundPush],
-    settings: Settings,
-) -> tuple[list[bool], list[str], list[tuple[str, str]]]:
-    """Send via Expo (or mock). Returns (delivered, invalid_tokens, receipt_tickets)."""
+async def dispatch_expo(outbound: list[OutboundPush], settings: Settings) -> PushSendResult:
+    """Send via Expo (or mock): per message, delivered and held, and the tokens and
+    tickets to act on."""
     if not outbound:
-        return [], [], []
+        return PushSendResult(invalid_tokens=[], delivered=[])
     if settings.mock_llm_enabled and settings.environment == "development":
         logger.debug("Skipping expo push in dev mock mode count=%s", len(outbound))
-        return [True] * len(outbound), [], []
+        return PushSendResult(invalid_tokens=[], delivered=[True] * len(outbound))
 
     result = await expo_push_gateway.send_push_messages([item.message for item in outbound])
-    delivered = result.delivered
-    if len(delivered) != len(outbound):
-        delivered = [False] * len(outbound)
-    return delivered, list(result.invalid_tokens or []), list(result.receipt_tickets or [])
+    if len(result.delivered) != len(outbound):
+        result.delivered = [False] * len(outbound)
+    return result
+
+
+def push_backoff(redis: Redis, settings: Settings) -> SendBackoff:
+    return SendBackoff.for_channel(redis, settings, "push")
+
+
+def _todo_key(todo: TodoItem) -> str:
+    return occurrence_key(todo.id, todo.due_at)
+
+
+async def without_held(backoff: SendBackoff, outbound: list[OutboundPush]) -> list[OutboundPush]:
+    """The messages whose reminder is not waiting out a hold."""
+    held = await backoff.held(sorted({_todo_key(todo) for item in outbound for todo in item.todos}))
+    if not held:
+        return outbound
+    return [item for item in outbound if not all(_todo_key(t) in held for t in item.todos)]
+
+
+async def hold_failed(
+    backoff: SendBackoff, outbound: list[OutboundPush], result: PushSendResult, settings: Settings
+) -> int:
+    """Hold each reminder whose push must not go again next minute (``HoldReason``),
+    unless another of its messages (another device) was delivered. How many held."""
+    delivered_keys = {
+        _todo_key(todo)
+        for item, ok in zip(outbound, result.delivered, strict=False)
+        if ok
+        for todo in item.todos
+    }
+    waits: dict[str, float] = {}
+    for item, hold in zip(outbound, result.holds, strict=False):
+        if hold is None:
+            continue
+        at_least = _hold_floor(hold.reason, hold.retry_after, backoff, settings)
+        for todo in item.todos:
+            key = _todo_key(todo)
+            if key not in delivered_keys:
+                waits[key] = max(waits.get(key, 0.0), at_least)
+    for key, at_least in waits.items():
+        await backoff.hold(key, at_least=at_least)
+    return len(waits)
+
+
+def _hold_floor(
+    reason: HoldReason, retry_after: float | None, backoff: SendBackoff, settings: Settings
+) -> float:
+    """The shortest wait a hold of ``reason`` gets (the back-off may be longer)."""
+    if reason is HoldReason.AMBIGUOUS:
+        return float(settings.push_ambiguous_hold_seconds)
+    if reason is HoldReason.REJECTED:
+        return float(backoff.max_seconds)
+    return retry_after or 0.0
 
 
 async def finalize_push_deliveries(

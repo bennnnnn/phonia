@@ -3,6 +3,7 @@ import { act, renderHook } from "@testing-library/react-native";
 
 import { useChatPaging } from "@/features/chat/hooks/useChatPaging";
 import { api, type Message } from "@/lib/api";
+import { ApiRequestError } from "@/lib/api/errorBody";
 import { writeCachedChatMessages } from "@/features/chat/model/messageCache";
 
 jest.mock("@/lib/auth", () => ({ getSessionGeneration: () => 0 }));
@@ -96,4 +97,40 @@ it("says so when the window cannot be read", async () => {
   await act(async () => { shown = await hook.result.current.paging.openAround(id(100)); });
   expect(shown).toBe(false);
   expect(banner).toHaveBeenCalledWith("common.error", "alert-circle");
+});
+
+const staleAnchor = () =>
+  new ApiRequestError(422, JSON.stringify({ detail: { code: "invalid_cursor", message: "This page link is no longer valid." } }));
+
+it("reads the newest page again when an older page's anchor is gone (a regenerate)", async () => {
+  const { hook, banner } = await setup(range(960, 999));
+  list.mockRejectedValueOnce(staleAnchor());
+  list.mockResolvedValueOnce({ messages: range(961, 1000), has_more: true });
+  await act(async () => { await hook.result.current.paging.loadOlderMessages(); });
+  expect(list).toHaveBeenLastCalledWith("token", "chat-1", { limit: 40 });
+  expect(contents(hook.result.current.messages)).toEqual(contents(range(961, 1000)));
+  expect(hook.result.current.hasMoreOlder).toBe(true);
+  expect(banner).not.toHaveBeenCalled();
+});
+
+it("reads the newest page again when a newer page's anchor is gone", async () => {
+  const { hook, banner } = await setup();
+  list.mockResolvedValueOnce({ messages: range(80, 119), has_more: true, has_more_after: true });
+  await act(async () => { await hook.result.current.paging.openAround(id(100)); });
+  list.mockRejectedValueOnce(staleAnchor());
+  list.mockResolvedValueOnce({ messages: range(960, 999), has_more: true });
+  await act(async () => { await hook.result.current.paging.newerPage?.load(); });
+  expect(list).toHaveBeenLastCalledWith("token", "chat-1", { limit: 40 });
+  expect(contents(hook.result.current.messages)).toEqual(contents(range(960, 999)));
+  expect(hook.result.current.paging.newerPage).toBeNull();
+  expect(banner).not.toHaveBeenCalled();
+});
+
+it("opens no window, quietly, around a hit whose message is gone", async () => {
+  const { hook, banner } = await setup();
+  list.mockRejectedValueOnce(staleAnchor());
+  let shown = true;
+  await act(async () => { shown = await hook.result.current.paging.openAround(id(100)); });
+  expect(shown).toBe(false);
+  expect(banner).not.toHaveBeenCalled();
 });

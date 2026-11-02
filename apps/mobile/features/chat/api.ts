@@ -1,4 +1,5 @@
 import { request, requestRevalidated } from "@/lib/api/client";
+import { ApiRequestError } from "@/lib/api/errorBody";
 import { shareEmptyChatCheck } from "@/features/chat/model/draftLogic";
 import { getDeviceTimezone } from "@/lib/deviceTimezone";
 import type {
@@ -49,6 +50,40 @@ function chatListPath(cursor?: string): string {
   return `/chats?${params.toString()}`;
 }
 
+const ALL_MESSAGES_BATCH = 100;
+// A walk restarted this often by regenerates keeps the newest messages it has read.
+const ALL_MESSAGES_RESTARTS = 2;
+
+function isInvalidCursor(error: unknown): boolean {
+  return error instanceof ApiRequestError && error.code === "invalid_cursor";
+}
+
+/** Every message, oldest first, read a page at a time back from the newest (copy and
+ * share). A regenerate during the walk removes the message the next page is anchored on
+ * (422 `invalid_cursor`): the walk starts again from the newest page, and after
+ * `ALL_MESSAGES_RESTARTS` such restarts returns the messages it has. */
+async function listAllMessages(token: string, chatId: string): Promise<Message[]> {
+  let all: Message[] = [];
+  let before: string | undefined;
+  let restarts = 0;
+  for (;;) {
+    let page: MessagePage;
+    try {
+      page = await listMessages(token, chatId, { limit: ALL_MESSAGES_BATCH, before });
+    } catch (error) {
+      if (!before || !isInvalidCursor(error)) throw error;
+      if (restarts >= ALL_MESSAGES_RESTARTS) return all;
+      restarts += 1;
+      all = [];
+      before = undefined;
+      continue;
+    }
+    all = before ? [...page.messages, ...all] : page.messages;
+    if (!page.has_more || page.messages.length === 0) return all;
+    before = page.messages[0].id;
+  }
+}
+
 export const chatsApi = {
   createChat: (token: string, model = "auto") =>
     request<Chat>("/chats", token, {
@@ -97,30 +132,7 @@ export const chatsApi = {
   listArchivedChats: (token: string, cursor: string) =>
     request<Page<Chat>>(`/chats/archived?cursor=${encodeURIComponent(cursor)}`, token),
   listMessages,
-  listAllMessages: async (token: string, chatId: string): Promise<Message[]> => {
-    const batch = 100;
-    let before: string | undefined;
-    let hasMore = true;
-    let all: Message[] = [];
-    while (hasMore) {
-      const page = await listMessages(token, chatId, {
-        limit: batch,
-        before,
-      });
-      if (!before) {
-        all = page.messages;
-      } else {
-        all = [...page.messages, ...all];
-      }
-      hasMore = page.has_more;
-      if (hasMore && page.messages.length > 0) {
-        before = page.messages[0].id;
-      } else {
-        break;
-      }
-    }
-    return all;
-  },
+  listAllMessages,
   setMessageFeedback: (
     token: string,
     chatId: string,

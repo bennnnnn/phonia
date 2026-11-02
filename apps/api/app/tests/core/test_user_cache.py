@@ -145,3 +145,17 @@ async def test_a_lost_generation_key_never_brings_an_old_copy_back(fake_redis) -
 
     assert now not in (loaded_under, "0")
     assert user_cache.cached_user(user.id, now) is None
+
+
+def test_an_active_user_outlives_a_burst_of_one_off_users(monkeypatch):
+    """The cache was FIFO: a user read on every request was evicted by 5,000 newer
+    sign-ins. A read now keeps the copy at the back of the eviction order."""
+    monkeypatch.setattr(user_cache._user_cache, "_max", 3)
+    active = _user()
+    user_cache.remember_user(active, "g0")
+    for _ in range(5):
+        assert user_cache.cached_user(active.id, "g0") is not None
+        user_cache.remember_user(_user(), "g0")
+
+    assert user_cache.cached_user(active.id, "g0") is not None
+    assert user_cache.size() == 3

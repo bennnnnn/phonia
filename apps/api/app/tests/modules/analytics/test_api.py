@@ -68,7 +68,7 @@ def test_record_product_events_maps_property_error_to_422() -> None:
         )
 
     assert response.status_code == 422
-    assert response.json()["detail"] == "Invalid properties"
+    assert response.json()["detail"] == {"code": "invalid", "message": "Invalid properties"}
 
 
 def _post_turn_outcome(app, properties: dict[str, str]):
@@ -112,6 +112,50 @@ def test_chat_turn_outcome_needs_a_known_sample_rate(sample_rate: str | None) ->
 
     assert response.status_code == 422
     create_batch.assert_not_awaited()
+
+
+def _post_paywall(client: TestClient):
+    return client.post(
+        "/analytics/events",
+        headers={"Authorization": "Bearer token"},
+        json={"events": [{"name": "paywall_viewed", "properties": {"source": "quota"}}]},
+    )
+
+
+@pytest.mark.parametrize(
+    "window, limit, retry_after",
+    [("minute", "BATCHES_PER_MINUTE", "60"), ("day", "BATCHES_PER_DAY", "86400")],
+)
+async def test_record_product_events_limits_each_users_batches(
+    fake_redis, window: str, limit: str, retry_after: str
+) -> None:
+    """Only the global REST limit stood in front of this: ~6.9M rows a day per account."""
+    from app.modules.analytics import api as analytics_api
+
+    app, user, _ = _app_with_analytics_dependencies()
+    cap = getattr(analytics_api, limit)
+    key = f"rate:analytics:{'min' if window == 'minute' else 'day'}:{user.id}"
+    sibling = f"rate:analytics:{'day' if window == 'minute' else 'min'}:{user.id}"
+    # The window already holds all but one of its batches.
+    await fake_redis.set(key, cap - 1, ex=60)
+    client = TestClient(app)
+    with patch(
+        "app.modules.analytics.service.product_events_repo.create_batch", AsyncMock()
+    ) as create_batch:
+        last = _post_paywall(client)
+        over = _post_paywall(client)
+
+    assert last.status_code == 204
+    assert over.status_code == 429
+    assert over.json()["detail"]["code"] == "rate_limited"
+    assert over.headers["retry-after"] == retry_after
+    assert create_batch.await_count == 1
+    # Another account has its own budget.
+    other, _, _ = _app_with_analytics_dependencies()
+    with patch("app.modules.analytics.service.product_events_repo.create_batch", AsyncMock()):
+        assert _post_paywall(TestClient(other)).status_code == 204
+    # The batch that went through counted in the other window too.
+    assert await fake_redis.get(sibling) is not None
 
 
 def test_chat_turn_outcome_rejects_free_text_properties() -> None:

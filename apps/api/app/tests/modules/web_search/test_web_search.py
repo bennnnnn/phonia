@@ -4,15 +4,15 @@ import pytest
 
 from app.gateways.web_search_gateway import WebSearchHit, mock_search_results
 from app.modules.web_search import (
-    build_search_queries,
     format_location_not_set_answer,
     format_search_block,
     format_search_empty_block,
-    format_sources_fence,
     needs_web_search,
-    resolve_search_subject,
     web_search_skip,
 )
+from app.modules.web_search.formatting import format_sources_fence
+from app.modules.web_search.query_builders import build_search_queries
+from app.modules.web_search.subject import resolve_search_subject
 
 
 @pytest.mark.parametrize(
@@ -513,7 +513,7 @@ def test_mock_search_results_respects_limit():
 
 
 def test_format_places_fence():
-    from app.modules.web_search import format_places_fence
+    from app.modules.web_search.formatting import format_places_fence
 
     fence = format_places_fence(
         [
@@ -569,7 +569,7 @@ def test_post_stream_fences_from_search_hits():
         WebSearchHit(title="Venue", url="https://venue.example", snippet="123 Main St"),
     ]
     sources = format_sources_fence(hits)
-    from app.modules.web_search import format_places_fence
+    from app.modules.web_search.formatting import format_places_fence
 
     places = format_places_fence(hits)
     assert "```sources" in sources

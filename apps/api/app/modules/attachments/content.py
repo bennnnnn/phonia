@@ -177,6 +177,19 @@ async def verify_uploaded_bytes(
     return data, None
 
 
+def _stored_size_error(
+    size: int | None, declared_size: int | None, max_size: int = MAX_ATTACHMENT_SIZE
+) -> str | None:
+    """The refusal for a stored object's size, as ``verify_uploaded_bytes`` words it."""
+    if not size:
+        return "Upload not found"
+    if size > max_size:
+        return "Invalid upload size"
+    if declared_size is not None and size != declared_size:
+        return "Uploaded size does not match the declared size"
+    return None
+
+
 async def purge_invalid_upload(
     gateway: StorageGateway,
     session: AsyncSession,
@@ -220,12 +233,16 @@ async def ensure_verified_or_purge(
 
     if isinstance(gateway, LocalStorageGateway):
         return None, False
-    _, error = await verify_uploaded_bytes(
-        gateway,
-        content_type=content_type,
-        storage_key=storage_key,
-        declared_size=declared_size,
-    )
+    # A HEAD first: an object over the cap, or not the declared size, is refused
+    # without downloading it into memory.
+    error = _stored_size_error(await gateway.object_size(storage_key), declared_size)
+    if error is None:
+        _, error = await verify_uploaded_bytes(
+            gateway,
+            content_type=content_type,
+            storage_key=storage_key,
+            declared_size=declared_size,
+        )
     if error:
         removed = await purge_invalid_upload(
             gateway,

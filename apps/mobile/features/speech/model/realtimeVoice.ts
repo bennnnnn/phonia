@@ -137,9 +137,9 @@ export async function createRealtimeVoiceSession(options: {
     peer.close();
   };
 
-  // Mint the short-lived credential while local ICE gathering proceeds. The
-  // permanent OpenAI API key stays on Recall's server; only this ek_ token is
-  // ever exposed to the app. Every failure from here releases the mint.
+  // Mint the session while local ICE gathering proceeds. No OpenAI key or
+  // secret reaches the app: the offer goes through Recall's API, which opens
+  // the call and can hang it up. Every failure from here releases the mint.
   const credentialPromise = speechApi.createRealtimeSession(options.token, {
     chatId: options.chatId,
     bargeIn: mic.echoCancellation,
@@ -150,11 +150,11 @@ export async function createRealtimeVoiceSession(options: {
     const credential = await credentialPromise;
     callId = credential.call_id;
     maxDurationSeconds = credential.max_duration_seconds ?? null;
-    debugRealtime("client-secret-ready", {
+    debugRealtime("session-ready", {
       model: credential.model,
       expiresAt: credential.expires_at,
     });
-    await peer.connect(credential.client_secret, offerSdp);
+    await peer.connect(options.token, credential.call_id, offerSdp);
   } catch (error) {
     dispatch({ type: "close" });
     tearDown();

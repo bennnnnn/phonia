@@ -19,6 +19,7 @@ from app.core.config import Settings
 from app.modules.chat import stream_events
 from app.modules.chat.stream_status import announced_if_slow, thinking_status
 from app.modules.chat.turn_outcome import TurnOutcome
+from app.tests.fakes import redis_mock
 from app.tests.modules.chat.chat_test_support import offline_deps
 
 pytest_plugins = ("app.tests.modules.chat.chat_test_support",)
@@ -250,7 +251,7 @@ async def _turn(fake_stream: Any, statuses: Statuses, **ctx_fields: Any) -> list
         stack.enter_context(patch("app.repositories.users.get_by_id", AsyncMock(return_value=None)))
         async for token in stream_and_finalize(
             offline_deps(),
-            AsyncMock(),
+            redis_mock(),
             Settings(max_output_tokens=100, mcp_tool_loop_enabled=False),
             _ctx(**ctx_fields),
             should_cancel=None,

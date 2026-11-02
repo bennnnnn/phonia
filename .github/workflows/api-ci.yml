@@ -118,6 +118,11 @@ jobs:
       - name: Mypy
         run: uv run mypy
 
+      # Code nothing in app/ uses outside its tests ([tool.vulture] in pyproject.toml;
+      # what a framework reads by name is in vulture_whitelist.py).
+      - name: Dead code
+        run: uv run vulture
+
       # The reply packages' strict errors only fall (docs/STRUCTURE_TICKETS.md ST-02).
       - name: Mypy strict ratchet
         run: uv run python ../../scripts/check_mypy_strict.py

@@ -16,6 +16,7 @@ import random
 
 from redis.asyncio import Redis
 
+from app.core.background_tasks import create_background_task
 from app.core.config import Settings
 from app.exceptions import RedisUnavailableError
 from app.modules.chat.turn_trace import current_turn_trace
@@ -40,6 +41,8 @@ def start_model_read_shadow(
         return
 
     async def read() -> None:
+        # Caught here: nothing awaits this task, so no error may go unretrieved, and a read
+        # that ends without a result shows as ``skipped`` in the turn's line.
         try:
             if await quota_service.global_spend_exceeded(redis, settings):
                 logger.info("model read skipped: global spend cap")
@@ -47,8 +50,15 @@ def start_model_read_shadow(
         except RedisUnavailableError:
             logger.info("model read skipped: global spend unreadable (Redis down)")
             return
-        # Bounded on its own: its calls and the maths read, never longer.
-        async with asyncio.timeout(3 * settings.model_reader_timeout_seconds + 2):
-            trace.model_read = await read_with_model(text, settings)
+        except Exception as exc:
+            logger.info("model read skipped: spend check failed (%s)", type(exc).__name__)
+            return
+        try:
+            # Bounded on its own: its calls and the maths read, never longer.
+            async with asyncio.timeout(3 * settings.model_reader_timeout_seconds + 2):
+                trace.model_read = await read_with_model(text, settings)
+        except Exception as exc:
+            logger.info("model read failed (%s)", type(exc).__name__)
 
-    trace.model_read_task = asyncio.create_task(read())
+    # Tracked, so shutdown drains it; the turn never awaits it.
+    trace.model_read_task = create_background_task(read(), name="model_read_shadow")

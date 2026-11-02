@@ -22,7 +22,8 @@ type PlanAllowance =
   | "daily_image_generations"
   | "daily_speech_transcriptions"
   | "daily_speech_tts"
-  | "monthly_live_talk_minutes";
+  | "monthly_live_talk_minutes"
+  | "library_storage_bytes";
 
 export type PlanInfo = {
   id: PlanId;

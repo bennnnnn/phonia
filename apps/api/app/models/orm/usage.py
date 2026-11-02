@@ -21,6 +21,8 @@ from app.core.db import Base
 
 class UsageDaily(Base):
     __tablename__ = "usage_daily"
+    # The hourly delete of old days (data retention) reads by date alone (0123).
+    __table_args__ = (Index("ix_usage_daily_date", "date"),)
 
     user_id: Mapped[uuid.UUID] = mapped_column(
         ForeignKey("users.id", ondelete="CASCADE"), primary_key=True

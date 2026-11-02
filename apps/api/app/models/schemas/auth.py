@@ -12,7 +12,7 @@ from app.core.validation import (
     normalize_locale_code,
 )
 from app.models.model_catalog import validate_user_alias
-from app.models.schemas.common import EmojiUse, ResponseTone, UserVoice
+from app.models.schemas.common import EmojiUse, ModelChoice, ResponseTone, UserVoice
 from app.models.schemas.text import UserText
 
 # The longest custom instructions a user may save; the prompt builders read this too.
@@ -123,7 +123,7 @@ class UserOut(BaseModel):
 class UserUpdate(BaseModel):
     name: UserText | None = Field(default=None, min_length=1, max_length=80)
     avatar_url: UserText | None = Field(default=None, max_length=64)
-    default_model: str | None = None
+    default_model: ModelChoice | None = None
     enabled_models: list[str] | None = None
     response_tone: ResponseTone | None = None
     emoji_use: EmojiUse | None = None
@@ -170,14 +170,6 @@ class UserUpdate(BaseModel):
         if value is None:
             return None
         return normalize_avatar_url(value)
-
-    @field_validator("default_model")
-    @classmethod
-    def validate_default_model(cls, value: str | None) -> str | None:
-        if value is None:
-            return None
-        validate_user_alias(value, allow_auto=True)
-        return value
 
     @field_validator("enabled_models")
     @classmethod
@@ -295,8 +287,10 @@ class AuthSessionOut(BaseModel):
     id: str
     device_label: str | None = None
     platform: str | None = None
-    created_at: str | None = None
-    last_seen_at: str | None = None
+    # Datetimes, so they serialize as every other response's do (UTC as ``Z``); the
+    # session record keeps ISO text in Redis, and they went out as that text (``+00:00``).
+    created_at: datetime | None = None
+    last_seen_at: datetime | None = None
     current: bool = False
 
 

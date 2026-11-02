@@ -57,6 +57,7 @@ dev = [
     "pytest-timeout>=2.3,<3",
     "pytest-xdist>=3.6,<4",
     "ruff>=0.8.0,<0.18",
+    "vulture>=2.14,<3",
 ]
 
 [tool.uv]
@@ -67,6 +68,27 @@ override-dependencies = [
     "aiohttp>=3.14.3",
     "h2>=4.4.1",
 ]
+
+# The dead-code gate (CI's "Dead code" step): a function, class or field nothing in app/
+# outside its tests uses. A test-only helper fails it; move it into the tests. Routes and
+# Pydantic hooks count as used by decorator; the rest a framework or data reads by name is
+# in vulture_whitelist.py.
+[tool.vulture]
+paths = ["app", "vulture_whitelist.py"]
+exclude = ["app/tests/"]
+min_confidence = 60
+ignore_decorators = [
+    "@*router.*",
+    "@app.*",
+    "@field_validator",
+    "@model_validator",
+    "@model_serializer",
+    "@field_serializer",
+    "@computed_field",
+    "@event.listens_for",
+]
+# Pydantic's model settings, and a package's lazy surface (PEP 562).
+ignore_names = ["model_config", "__getattr__"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

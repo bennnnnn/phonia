@@ -17,6 +17,7 @@ from app.services.quota.counters import utc_today
 from app.services.quota.live_talk import (
     LIVE_TALK_SAVES_PER_MINUTE,
     live_talk_allowance_seconds,
+    live_talk_seconds_left,
     live_talk_used_seconds,
     next_month_start,
     record_live_talk_reservation,
@@ -100,6 +101,7 @@ __all__ = [
     "has_daily_usage_key",
     "heal_usage_drift",
     "live_talk_allowance_seconds",
+    "live_talk_seconds_left",
     "live_talk_used_seconds",
     "mark_usage_needs_heal",
     "next_month_start",

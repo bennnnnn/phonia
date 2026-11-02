@@ -29,7 +29,16 @@ from app.services.quota import carryover, counters
 from .conftest import World, delete_accounts
 
 # Every per-user daily counter, named independently of the code under test.
-DAILY_PREFIXES = ("usage", "imgup", "docup", "speech", "tts", "tavily", "imggen", "imgsearch")
+DAILY_PREFIXES = (
+    "usage",
+    "imgup",
+    "docup",
+    "speech",
+    "tts",
+    "tavily",
+    "imggen",
+    "imgsearch",
+)
 
 
 def _pro_caps(cap: int) -> Settings:

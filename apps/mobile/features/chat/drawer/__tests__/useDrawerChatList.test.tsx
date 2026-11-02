@@ -3,7 +3,7 @@ import { Text } from "react-native";
 import { act, render } from "@testing-library/react-native";
 import { useDrawerChatList } from "@/features/chat/drawer/useDrawerChatList";
 import { api, type ChatList } from "@/lib/api";
-import { getCachedChatList, invalidateChatListCache, setChatListCache } from "@/features/chat/model/chatListCache";
+import { getCachedChatList, invalidateChatListCache, seedChatListCacheForTest } from "@/features/chat/model/chatListCache";
 import { readStoredChatList } from "@/features/chat/model/chatListFile";
 import { emptyChatList } from "@/features/chat/model/listSections";
 import { patchChatGlobal, subscribeChatChanges } from "@/features/chat/drawer/drawer";
@@ -63,7 +63,7 @@ it("hides account A immediately and rejects its late read after account B signs 
 });
 
 it("retains loaded rows through access-token refresh without another list request", async () => {
-  setChatListCache(initial);
+  seedChatListCacheForTest(initial);
   const view = await render(<Probe />);
   mockToken = "rotated-token";
   await view.rerender(<Probe />);
@@ -72,7 +72,7 @@ it("retains loaded rows through access-token refresh without another list reques
 });
 
 it("reconciles pin/rename edits over a stale refresh and broadcasts the same metadata", async () => {
-  setChatListCache(initial);
+  seedChatListCacheForTest(initial);
   await render(<Probe />);
   let finish!: (value: ChatList) => void;
   (api.listChats as jest.Mock).mockReturnValueOnce(new Promise((resolve) => { finish = resolve; }));
@@ -90,7 +90,7 @@ it("reconciles pin/rename edits over a stale refresh and broadcasts the same met
 });
 
 it("preserves visible history and allows retry after a failed refresh", async () => {
-  setChatListCache(initial);
+  seedChatListCacheForTest(initial);
   await render(<Probe />);
   (api.listChats as jest.Mock).mockRejectedValueOnce(new Error("offline"));
   await act(async () => { await current.handleRefresh(); });
@@ -106,7 +106,7 @@ it.each([
   ["a server error", Object.assign(new Error("Request failed: 500"), { status: 500 }), ["common.error"]],
   ["being offline", new TypeError("Network request failed"), []],
 ])("warns about %s only while older chats stay listed", async (_name, failure, warnings) => {
-  setChatListCache(initial);
+  seedChatListCacheForTest(initial);
   await render(<Probe />);
   (api.listChats as jest.Mock).mockRejectedValueOnce(failure);
   await act(async () => { await current.handleRefresh(); });
@@ -123,7 +123,7 @@ it("leaves a first failed load to the error state without a warning", async () =
 });
 
 it("does not paint a resolved response over an edit queued before the hook resumes", async () => {
-  setChatListCache(initial);
+  seedChatListCacheForTest(initial);
   await render(<Probe />);
   let finish!: (value: ChatList) => void;
   (api.listChats as jest.Mock).mockReturnValueOnce(new Promise((resolve) => { finish = resolve; }));

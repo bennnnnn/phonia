@@ -1,64 +1,51 @@
+import { speechApi } from "@/features/speech/api";
 import { liveTalkErrorGate } from "@/features/speech/model/liveTalkLogic";
 import { exchangeRealtimeSdp } from "@/features/speech/model/realtimeSdp";
+
+jest.mock("@/features/speech/api", () => ({ speechApi: { connectRealtimeSession: jest.fn() } }));
+
+const connect = speechApi.connectRealtimeSession as jest.Mock;
 
 describe("exchangeRealtimeSdp", () => {
   const originalFetch = globalThis.fetch;
 
   afterEach(() => {
     globalThis.fetch = originalFetch;
-    jest.restoreAllMocks();
+    jest.clearAllMocks();
   });
 
-  it("posts raw local SDP with the ephemeral client secret and returns response text", async () => {
-    const text = jest.fn(async () => "v=0\r\nm=audio 9 UDP/TLS/RTP/SAVPF 111");
-    const fetchMock = jest.fn(async () => ({ ok: true, status: 200, text }));
+  it("sends the offer to Recall for the minted session and returns OpenAI's answer", async () => {
+    // The phone holds no OpenAI secret: it never calls OpenAI over HTTP itself.
+    const fetchMock = jest.fn();
     globalThis.fetch = fetchMock as unknown as typeof fetch;
+    connect.mockResolvedValueOnce({ sdp: "v=0\r\nm=audio 9 UDP/TLS/RTP/SAVPF 111" });
 
     const localSdp = "v=0\r\nm=audio 9 UDP/TLS/RTP/SAVPF 111\r\na=sendrecv";
-    await expect(exchangeRealtimeSdp("ek_test_short_lived", localSdp)).resolves.toBe(
+    await expect(exchangeRealtimeSdp("tok", "session-1", localSdp)).resolves.toBe(
       "v=0\r\nm=audio 9 UDP/TLS/RTP/SAVPF 111",
     );
 
-    expect(fetchMock).toHaveBeenCalledTimes(1);
-    const [url, init] = (fetchMock.mock.calls[0] ?? []) as unknown as [
-      string,
-      RequestInit,
-    ];
-    expect(url).toBe("https://api.openai.com/v1/realtime/calls");
-    expect(init?.method).toBe("POST");
-    expect(init?.headers).toEqual({
-      Authorization: "Bearer ek_test_short_lived",
-      "Content-Type": "application/sdp",
-    });
-    expect(init?.body).toBe(localSdp);
-    expect(init?.signal).toBeInstanceOf(AbortSignal);
-    expect(text).toHaveBeenCalledTimes(1);
+    expect(connect).toHaveBeenCalledWith("tok", { callId: "session-1", sdp: localSdp }, 15_000);
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  it("includes the provider response text and status on non-ok failure", async () => {
-    const text = jest.fn(async () => "ephemeral credential expired");
-    const fetchMock = jest.fn(async () => ({ ok: false, status: 401, text }));
-    globalThis.fetch = fetchMock as unknown as typeof fetch;
+  it("refuses an answer that is not SDP", async () => {
+    connect.mockResolvedValueOnce({ sdp: "<html>" });
 
-    const error = await exchangeRealtimeSdp("ek_expired", "v=0").catch(
-      (caught: unknown) => caught,
+    await expect(exchangeRealtimeSdp("tok", "session-1", "v=0")).rejects.toThrow(
+      "OpenAI Realtime returned an invalid SDP answer",
     );
-
-    expect(error).toBeInstanceOf(Error);
-    expect((error as Error).message).toBe(
-      "OpenAI Realtime SDP exchange failed (401): ephemeral credential expired",
-    );
-    expect((error as Error & { status?: number }).status).toBe(401);
-    expect(text).toHaveBeenCalledTimes(1);
   });
 
-  // The provider's status is not Recall's: its 429 said this month's minutes were used,
-  // its 403 opened the paywall, its 503 said Recall was down and the rest "update the app".
-  it.each([400, 401, 403, 429, 500, 503])("says the provider's %i is a failed connection", async (status) => {
-    globalThis.fetch = jest.fn(async () => ({ ok: false, status, text: async () => "no" })) as unknown as typeof fetch;
+  // The server's codes: OpenAI opened no call (502 upstream_failed), the session is over.
+  it.each([
+    [{ status: 502, code: "upstream_failed" }, "connect_failed"],
+    [{ status: 403, code: "live_talk_session_ended" }, "session_ended"],
+  ])("keeps the server's refusal %j for the live talk gate", async (refusal, gate) => {
+    connect.mockRejectedValueOnce(Object.assign(new Error("refused"), refusal));
 
-    const error = await exchangeRealtimeSdp("ek_test", "v=0").catch((caught: unknown) => caught);
+    const error = await exchangeRealtimeSdp("tok", "session-1", "v=0").catch((caught: unknown) => caught);
 
-    expect(liveTalkErrorGate(error)).toBe("connect_failed");
+    expect(liveTalkErrorGate(error)).toBe(gate);
   });
 });

@@ -4,7 +4,13 @@ from __future__ import annotations
 
 import pytest
 
-from app.modules import chemistry as chemistry_service
+from app.modules.chemistry.equations import balance_equation
+from app.modules.chemistry.smiles import (
+    compute_descriptors,
+    generate_3d_coordinates,
+    validate_smiles,
+)
+from app.modules.chemistry.stoichiometry import limiting_reagent, molar_mass, stoichiometry
 
 # ---------------------------------------------------------------------------
 # validate_smiles
@@ -24,7 +30,7 @@ from app.modules import chemistry as chemistry_service
     ],
 )
 def test_validate_valid_smiles(smiles: str, expected_formula: str, min_weight: float) -> None:
-    props = chemistry_service.validate_smiles(smiles)
+    props = validate_smiles(smiles)
     assert props.valid, f"expected valid for {smiles}, got error: {props.error}"
     assert props.formula == expected_formula
     assert props.molecular_weight >= min_weight
@@ -40,22 +46,22 @@ def test_validate_valid_smiles(smiles: str, expected_formula: str, min_weight: f
     ],
 )
 def test_validate_invalid_smiles(smiles: str) -> None:
-    props = chemistry_service.validate_smiles(smiles)
+    props = validate_smiles(smiles)
     assert not props.valid
     assert props.error is not None
 
 
 def test_validate_canonicalizes_smiles() -> None:
     # Different notations of ethanol should canonicalize to the same SMILES.
-    props1 = chemistry_service.validate_smiles("CCO")
-    props2 = chemistry_service.validate_smiles("OCC")
+    props1 = validate_smiles("CCO")
+    props2 = validate_smiles("OCC")
     assert props1.valid and props2.valid
     assert props1.smiles == props2.smiles
 
 
 def test_validate_too_long_smiles() -> None:
     long_smiles = "C" * 600
-    props = chemistry_service.validate_smiles(long_smiles)
+    props = validate_smiles(long_smiles)
     assert not props.valid
 
 
@@ -65,7 +71,7 @@ def test_validate_too_long_smiles() -> None:
 
 
 def test_generate_3d_coordinates_valid() -> None:
-    coords = chemistry_service.generate_3d_coordinates("CCO")
+    coords = generate_3d_coordinates("CCO")
     assert coords.error is None
     assert len(coords.sdf) > 0
     # SDF should contain atom coordinates
@@ -73,21 +79,21 @@ def test_generate_3d_coordinates_valid() -> None:
 
 
 def test_generate_3d_coordinates_diatomic_formula() -> None:
-    coords = chemistry_service.generate_3d_coordinates("H2")
+    coords = generate_3d_coordinates("H2")
     assert coords.error is None
     assert "M  END" in coords.sdf
     assert coords.sdf.count(" H ") == 2
 
 
 def test_generate_3d_coordinates_water_keeps_hydrogens() -> None:
-    coords = chemistry_service.generate_3d_coordinates("O")
+    coords = generate_3d_coordinates("O")
     assert coords.error is None
     assert coords.sdf.count(" O ") == 1
     assert coords.sdf.count(" H ") == 2
 
 
 def test_generate_3d_coordinates_invalid() -> None:
-    coords = chemistry_service.generate_3d_coordinates("not_a_smiles")
+    coords = generate_3d_coordinates("not_a_smiles")
     assert coords.error is not None
     assert coords.sdf == ""
 
@@ -99,7 +105,7 @@ def test_generate_3d_coordinates_invalid() -> None:
 
 def test_balance_equation_water() -> None:
     """H2 + O2 -> H2O should balance to 2 H2 + 1 O2 -> 2 H2O."""
-    result = chemistry_service.balance_equation("H2 + O2 -> H2O")
+    result = balance_equation("H2 + O2 -> H2O")
     assert result.balanced is True
     assert result.reactants["H2"] == 2
     assert result.reactants["O2"] == 1
@@ -108,7 +114,7 @@ def test_balance_equation_water() -> None:
 
 def test_balance_equation_methane() -> None:
     """CH4 + O2 -> CO2 + H2O should balance to 1 CH4 + 2 O2 -> 1 CO2 + 2 H2O."""
-    result = chemistry_service.balance_equation("CH4 + O2 -> CO2 + H2O")
+    result = balance_equation("CH4 + O2 -> CO2 + H2O")
     assert result.balanced is True
     assert result.reactants["CH4"] == 1
     assert result.reactants["O2"] == 2
@@ -117,14 +123,14 @@ def test_balance_equation_methane() -> None:
 
 
 def test_balance_equation_no_arrow() -> None:
-    result = chemistry_service.balance_equation("H2 O2")
+    result = balance_equation("H2 O2")
     assert result.balanced is False
     assert result.error is not None
 
 
 def test_balance_equation_iron_oxide() -> None:
     """Fe + O2 -> Fe2O3 should balance to 4 Fe + 3 O2 -> 2 Fe2O3."""
-    result = chemistry_service.balance_equation("Fe + O2 -> Fe2O3")
+    result = balance_equation("Fe + O2 -> Fe2O3")
     assert result.balanced is True
     assert result.reactants["Fe"] == 4
     assert result.reactants["O2"] == 3
@@ -159,7 +165,7 @@ def test_balance_equation_iron_oxide() -> None:
 def test_balance_equation_standard(
     equation: str, reactants: dict[str, int], products: dict[str, int]
 ) -> None:
-    result = chemistry_service.balance_equation(equation)
+    result = balance_equation(equation)
     assert result.balanced is True, result.error
     assert result.reactants == reactants
     assert result.products == products
@@ -174,7 +180,7 @@ def test_balance_equation_standard(
     ],
 )
 def test_balance_equation_impossible_or_underdetermined(equation: str) -> None:
-    result = chemistry_service.balance_equation(equation)
+    result = balance_equation(equation)
     assert result.balanced is False
     assert result.error is not None
 
@@ -186,13 +192,13 @@ def test_balance_equation_impossible_or_underdetermined(equation: str) -> None:
 
 def test_stoichiometry_basic() -> None:
     """2 H2 + O2 -> 2 H2O: 4 mol H2 should produce 4 mol H2O."""
-    result = chemistry_service.stoichiometry("H2 + O2 -> H2O", "H2", 4.0, "H2O")
+    result = stoichiometry("H2 + O2 -> H2O", "H2", 4.0, "H2O")
     assert result.error is None
     assert result.product_amount == pytest.approx(4.0, rel=0.01)
 
 
 def test_stoichiometry_unknown_reactant() -> None:
-    result = chemistry_service.stoichiometry("H2 + O2 -> H2O", "XYZ", 1.0)
+    result = stoichiometry("H2 + O2 -> H2O", "XYZ", 1.0)
     assert result.error is not None
     assert "not found" in result.error
 
@@ -204,25 +210,25 @@ def test_stoichiometry_unknown_reactant() -> None:
 
 def test_molar_mass_smiles() -> None:
     """CCO (ethanol) should give ~46.07 g/mol."""
-    mass = chemistry_service.molar_mass("CCO")
+    mass = molar_mass("CCO")
     assert mass == pytest.approx(46.07, abs=0.5)
 
 
 def test_molar_mass_formula() -> None:
     """H2O formula should give ~18.015 g/mol."""
-    mass = chemistry_service.molar_mass("H2O")
+    mass = molar_mass("H2O")
     assert mass == pytest.approx(18.015, abs=0.5)
 
 
 def test_molar_mass_glucose() -> None:
     """C6H12O6 (glucose) should give ~180.16 g/mol."""
-    mass = chemistry_service.molar_mass("C6H12O6")
+    mass = molar_mass("C6H12O6")
     assert mass == pytest.approx(180.16, abs=1.0)
 
 
 def test_molar_mass_invalid() -> None:
     with pytest.raises(ValueError):
-        chemistry_service.molar_mass("not_a_formula")
+        molar_mass("not_a_formula")
 
 
 @pytest.mark.parametrize(
@@ -243,11 +249,11 @@ def test_molar_mass_invalid() -> None:
     ],
 )
 def test_molar_mass_formulas_are_not_hydrides(formula: str, expected: float) -> None:
-    assert chemistry_service.molar_mass(formula) == pytest.approx(expected, abs=0.05)
+    assert molar_mass(formula) == pytest.approx(expected, abs=0.05)
 
 
 def test_molar_mass_hydrate() -> None:
-    mass = chemistry_service.molar_mass("CuSO4.5H2O")
+    mass = molar_mass("CuSO4.5H2O")
     assert mass == pytest.approx(249.68, abs=0.2)
 
 
@@ -270,7 +276,7 @@ def test_parse_formula_hydrate_atoms() -> None:
 
 
 def test_compute_descriptors_ethanol() -> None:
-    desc = chemistry_service.compute_descriptors("CCO")
+    desc = compute_descriptors("CCO")
     assert desc.error is None
     assert desc.molecular_weight == pytest.approx(46.07, abs=0.5)
     assert desc.h_bond_donors == 1  # OH
@@ -279,14 +285,14 @@ def test_compute_descriptors_ethanol() -> None:
 
 
 def test_compute_descriptors_benzene() -> None:
-    desc = chemistry_service.compute_descriptors("c1ccccc1")
+    desc = compute_descriptors("c1ccccc1")
     assert desc.error is None
     assert desc.ring_count == 1
     assert desc.rotatable_bonds == 0
 
 
 def test_compute_descriptors_invalid() -> None:
-    desc = chemistry_service.compute_descriptors("not_a_smiles")
+    desc = compute_descriptors("not_a_smiles")
     assert desc.error is not None
     assert desc.molecular_weight == 0
 
@@ -302,7 +308,7 @@ def test_limiting_reagent_basic() -> None:
     # H2 can make 1*(2/2) = 1 mol H2O
     # O2 can make 1*(2/1) = 2 mol H2O
     # H2 is limiting
-    result = chemistry_service.limiting_reagent(
+    result = limiting_reagent(
         "H2 + O2 -> H2O",
         {"H2": 1.0, "O2": 1.0},
         target_product="H2O",
@@ -317,7 +323,7 @@ def test_limiting_reagent_o2_limiting() -> None:
     # H2 can make 3*(2/2) = 3 mol H2O
     # O2 can make 1*(2/1) = 2 mol H2O
     # O2 is limiting
-    result = chemistry_service.limiting_reagent(
+    result = limiting_reagent(
         "H2 + O2 -> H2O",
         {"H2": 3.0, "O2": 1.0},
         target_product="H2O",
@@ -328,7 +334,7 @@ def test_limiting_reagent_o2_limiting() -> None:
 
 
 def test_limiting_reagent_unknown_reactant() -> None:
-    result = chemistry_service.limiting_reagent(
+    result = limiting_reagent(
         "H2 + O2 -> H2O",
         {"N2": 1.0},
         target_product="H2O",
@@ -345,13 +351,13 @@ def test_an_invalid_smiles_does_not_write_rdkit_errors_to_stderr(
     capfd: pytest.CaptureFixture[str],
 ) -> None:
     for text in ("H2O!", "not_a_smiles", "C1CC", "Q"):
-        assert not chemistry_service.validate_smiles(text).valid
+        assert not validate_smiles(text).valid
     assert capfd.readouterr().err == ""
 
 
 def test_three_d_coordinates_are_reproducible() -> None:
-    first = chemistry_service.generate_3d_coordinates("CC(=O)Oc1ccccc1C(=O)O")
-    second = chemistry_service.generate_3d_coordinates("CC(=O)Oc1ccccc1C(=O)O")
+    first = generate_3d_coordinates("CC(=O)Oc1ccccc1C(=O)O")
+    second = generate_3d_coordinates("CC(=O)Oc1ccccc1C(=O)O")
     assert first.sdf
     assert first.sdf == second.sdf
 
@@ -359,7 +365,7 @@ def test_three_d_coordinates_are_reproducible() -> None:
 def test_a_molecule_too_large_for_the_phone_is_skipped_with_a_reason() -> None:
     from app.modules.chemistry.smiles import MAX_3D_HEAVY_ATOMS
 
-    huge = chemistry_service.generate_3d_coordinates("C" * (MAX_3D_HEAVY_ATOMS + 1))
+    huge = generate_3d_coordinates("C" * (MAX_3D_HEAVY_ATOMS + 1))
     assert huge.sdf == ""
     assert huge.error == "too large for a 3D view"
 
@@ -368,13 +374,13 @@ def test_an_oversized_sdf_is_never_returned(monkeypatch: pytest.MonkeyPatch) -> 
     from app.modules.chemistry import smiles as smiles_module
 
     monkeypatch.setattr(smiles_module, "MAX_SDF_CHARS", 100)
-    coords = chemistry_service.generate_3d_coordinates("CCCCCC")
+    coords = generate_3d_coordinates("CCCCCC")
     assert coords.sdf == ""
     assert coords.error == "3D structure is too large to send"
 
 
 def test_a_metal_without_mmff_parameters_still_gets_a_structure() -> None:
-    coords = chemistry_service.generate_3d_coordinates("[Fe](Cl)(Cl)Cl")
+    coords = generate_3d_coordinates("[Fe](Cl)(Cl)Cl")
     assert coords.error is None or coords.sdf == ""
     if coords.sdf:
         assert "M  END" in coords.sdf

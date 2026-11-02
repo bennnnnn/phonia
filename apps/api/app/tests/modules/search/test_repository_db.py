@@ -167,3 +167,26 @@ async def test_search_cursor_does_not_skip_when_an_earlier_hit_is_deleted(db_ses
     read = [row["message_id"] for row in first + second]
     assert read == [messages[3].id, messages[2].id, messages[1].id, messages[0].id]
     assert last is None
+
+
+@pytest.mark.asyncio
+async def test_search_pages_over_keys_then_reads_the_page_bodies(db_session):
+    """The union sorts keys only; each message hit's snippet and each title hit's title
+    come back as before."""
+    owner = await _user(db_session)
+    long_body = "a" * 300 + " needle " + "b" * 300
+    titled = Chat(user_id=owner.id, title="needle plans")
+    with_message = Chat(user_id=owner.id, title="Notes")
+    db_session.add_all([titled, with_message])
+    await db_session.flush()
+    db_session.add(
+        Message(chat_id=with_message.id, user_id=owner.id, role="user", content=long_body)
+    )
+    await db_session.commit()
+
+    rows, _ = await search_repo.search_conversations(db_session, owner.id, "needle")
+
+    by_type = {row["match_type"]: row for row in rows}
+    assert by_type["title"]["content"] == "needle plans"
+    assert by_type["message"]["content"] == search_repo._snippet(long_body, "needle", 120)
+    assert by_type["message"]["role"] == "user"

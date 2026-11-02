@@ -15,6 +15,7 @@ from app.modules.speech.live_talk import (
     persist_live_talk_turn,
 )
 from app.tests.fakes import fake_session, redis_mock
+from app.tests.job_fakes import patch_job_enqueue
 
 
 @pytest.fixture(autouse=True)
@@ -48,7 +49,7 @@ async def test_persist_live_talk_turn_writes_both_roles_and_enqueues_topic():
             "create",
             AsyncMock(side_effect=[user_row, asst_row]),
         ) as create,
-        patch("app.core.jobs.enqueue", AsyncMock()) as enqueue,
+        patch_job_enqueue() as enqueue,
     ):
         result = await persist_live_talk_turn(
             user=user,
@@ -87,7 +88,7 @@ async def test_persist_live_talk_turn_saves_the_presented_reply():
             "create",
             AsyncMock(side_effect=[MagicMock(id=uuid4()), MagicMock(id=uuid4())]),
         ) as create,
-        patch("app.core.jobs.enqueue", AsyncMock()),
+        patch_job_enqueue(),
     ):
         await persist_live_talk_turn(
             user=user,
@@ -125,7 +126,7 @@ async def test_persist_live_talk_turn_titles_when_assistant_transcript_missing()
             "create",
             AsyncMock(return_value=user_row),
         ),
-        patch("app.core.jobs.enqueue", AsyncMock()) as enqueue,
+        patch_job_enqueue() as enqueue,
     ):
         await persist_live_talk_turn(
             user=user,
@@ -164,7 +165,7 @@ async def test_persist_live_talk_turn_skips_user_row_on_follow_up():
             "create",
             AsyncMock(return_value=asst_row),
         ) as create,
-        patch("app.core.jobs.enqueue", AsyncMock()) as enqueue,
+        patch_job_enqueue() as enqueue,
     ):
         result = await persist_live_talk_turn(
             user=user,
@@ -437,7 +438,7 @@ async def test_persist_live_talk_turn_materializes_clocked_reminder():
             "app.modules.speech.live_talk.todos_service.materialize_reminder_fences",
             AsyncMock(return_value=(updated, 1)),
         ) as materialize,
-        patch("app.core.jobs.enqueue", AsyncMock()) as enqueue,
+        patch_job_enqueue() as enqueue,
     ):
         await persist_live_talk_turn(
             user=user,
@@ -492,7 +493,7 @@ async def test_live_talk_in_another_language_only_reads_to_dos(
             "app.modules.speech.live_talk.todos_service.materialize_reminder_fences",
             AsyncMock(return_value=("Ok.", 0)),
         ) as materialize,
-        patch("app.core.jobs.enqueue", AsyncMock()),
+        patch_job_enqueue(),
     ):
         await persist_live_talk_turn(
             user=user,
@@ -533,7 +534,7 @@ async def _persist_voice_turn(
             "app.modules.speech.live_talk.todos_service.materialize_reminder_fences",
             AsyncMock(return_value=(assistant_text, 0)),
         ),
-        patch("app.core.jobs.enqueue", AsyncMock()) as enqueue,
+        patch_job_enqueue() as enqueue,
         patch.object(
             messages_repository,
             "count_for_chat",

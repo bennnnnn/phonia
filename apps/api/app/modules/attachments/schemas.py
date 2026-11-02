@@ -17,7 +17,6 @@ class AttachmentPresignIn(BaseModel):
 class AttachmentPresignOut(BaseModel):
     attachment_id: UUID
     upload_url: str
-    storage_key: str
     headers: dict[str, str] = Field(default_factory=dict)
     api_upload: bool = False
 

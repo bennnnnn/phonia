@@ -10,8 +10,10 @@ RATE_LIMITED_CODE = "rate_limited"
 # The code a refusal falls back to when its raise site names none: what kind it is.
 _STATUS_CODES = {
     400: "invalid",
+    401: "unauthorized",
     403: "forbidden",
     404: "not_found",
+    405: "method_not_allowed",
     409: "conflict",
     410: "expired",
     413: "too_large",
@@ -23,6 +25,11 @@ _STATUS_CODES = {
     502: "upstream_failed",
     503: "unavailable",
 }
+
+
+def status_code_name(status_code: int) -> str:
+    """The code a refusal with this status and no code of its own names."""
+    return _STATUS_CODES.get(status_code, "refused")
 
 
 class DomainError(Exception):
@@ -51,7 +58,7 @@ class DomainError(Exception):
         self.message = message
         if status_code is not None:
             self.status_code = status_code
-        self.code = code or self.default_code or _STATUS_CODES.get(self.status_code, "refused")
+        self.code = code or self.default_code or status_code_name(self.status_code)
         self.headers = dict(headers or {})
         self.fields = fields
 

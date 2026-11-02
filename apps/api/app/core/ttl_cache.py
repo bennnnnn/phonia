@@ -6,6 +6,13 @@ that same key is read again after it expired. Keys that are never read again
 process, so the dict grew with every new chat and every new user. This cache
 keeps entries in insertion order and prunes expired ones from the front on
 every write, so its size follows recent traffic, not process lifetime.
+
+With ``lru=True`` a read moves its key to the end too, so the size cap evicts
+the least recently used entry instead of the oldest stored one: an active user
+read on every request outlives a burst of one-off ones. A read never extends an
+entry's TTL. The front of the order is then not always the oldest entry, so an
+expired one may sit behind a fresher one until it is read or evicted; it still
+counts toward the cap and is never returned.
 """
 
 from __future__ import annotations
@@ -20,13 +27,15 @@ class TtlCache[K, V]:
         *,
         ttl_seconds: float,
         max_entries: int,
+        lru: bool = False,
         clock: Callable[[], float] = time.monotonic,
     ) -> None:
         self._ttl = ttl_seconds
         self._max = max(1, max_entries)
+        self._lru = lru
         # A test sets its own clock here, never ``time.monotonic`` for the whole process.
         self.clock = clock
-        # Oldest first: a write moves its key to the end.
+        # Oldest first: a write (and with ``lru``, a read) moves its key to the end.
         self._entries: dict[K, tuple[float, V]] = {}
 
     def __len__(self) -> int:
@@ -40,6 +49,10 @@ class TtlCache[K, V]:
         if self.clock() - stored_at > self._ttl:
             self._entries.pop(key, None)
             return None
+        if self._lru:
+            # Re-insert at the end with its original time: recency moves, the TTL does not.
+            del self._entries[key]
+            self._entries[key] = hit
         return value
 
     def put(self, key: K, value: V) -> None:

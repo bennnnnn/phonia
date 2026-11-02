@@ -17,7 +17,7 @@ beside a compound that can be nothing else (h₂o, co₂, c₆h₁₂o₆).
 from __future__ import annotations
 
 import re
-from functools import cache
+from functools import lru_cache
 
 from app.services.md_fence_scan import iter_fences
 
@@ -54,7 +54,9 @@ _KEPT = re.compile(
 )
 
 
-@cache
+# Bounded: every lowercase word in every reply reaches here, so an unbounded cache grew
+# with the vocabulary of every reply the process ever finalized.
+@lru_cache(maxsize=4096)
 def _elements(letters: str) -> tuple[str, ...] | None:
     """``letters`` as element symbols, single letters first ("co" is C O); None if not."""
     if not letters:

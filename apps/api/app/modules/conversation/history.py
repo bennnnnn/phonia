@@ -17,6 +17,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.orm import Chat, Message
 from app.modules.conversation import chats_repository as _chats
 from app.modules.conversation import messages_repository as _messages
+from app.modules.conversation.pins import MAX_PINNED_CHATS
 
 
 async def get_chat(session: AsyncSession, chat_id: UUID, user_id: UUID) -> Chat | None:
@@ -93,6 +94,14 @@ async def messages_page(
     return await _messages.list_range(session, chat_id, offset=offset, limit=limit)
 
 
+async def messages_for_export(
+    session: AsyncSession, chat_id: UUID, *, after: tuple[datetime, UUID] | None, limit: int
+) -> list[Message]:
+    """The chat's messages after the ``(created_at, id)`` key of the last one read, oldest
+    first (the export pages by key, so a message deleted meanwhile skips no other)."""
+    return await _messages.list_after_key(session, chat_id, after=after, limit=limit)
+
+
 def forget_user_chats(user_id: UUID) -> None:
     """Drop the user's chats this process remembers (the account is being deleted)."""
     _chats.forget_user_chats(user_id)
@@ -105,7 +114,7 @@ def peek_recent_chat(chat_id: UUID, user_id: UUID) -> Chat | None:
 
 async def pinned_chats(session: AsyncSession, user_id: UUID) -> list[Chat]:
     """The user's pinned chats (the drawer's top)."""
-    return await _chats.list_pinned(session, user_id)
+    return await _chats.list_pinned(session, user_id, limit=MAX_PINNED_CHATS)
 
 
 async def recent_chats_page(
@@ -127,6 +136,11 @@ def chats_by_recency(
 ) -> dict[str, list[Chat]]:
     """The chats in the drawer's day groups (today, yesterday, …) in the user's zone."""
     return _chats.group_by_recency(chats, user_timezone=user_timezone, now=now)
+
+
+async def has_messages(session: AsyncSession, chat_id: UUID) -> bool:
+    """Whether the chat holds any message."""
+    return await _messages.chat_has_messages(session, chat_id)
 
 
 async def message_count(session: AsyncSession, chat_id: UUID) -> int:

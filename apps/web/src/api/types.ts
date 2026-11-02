@@ -8,8 +8,7 @@ export type User = {
   name: string | null;
   avatar_url: string | null;
   default_model: string;
-  plan: "free" | "pro";
-  response_style: string;
+  plan: "free" | "plus" | "pro";
   response_tone: string;
   memory_enabled: boolean;
   locale: string;

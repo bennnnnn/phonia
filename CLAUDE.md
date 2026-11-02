@@ -13,7 +13,7 @@ Do not review or extend the app from the historical MVP screen list. Use **Domai
 
 ## Golden Rules (read first)
 
-1. **Never put provider API keys in the mobile app.** Keys live only in the backend `.env`. The app talks only to our API, with one exception: live talk sends its WebRTC offer to OpenAI's realtime endpoint with a short-lived client secret the backend mints (`apps/mobile/features/speech/model/realtimeSdp.ts`); the permanent key never leaves the server.
+1. **Never put provider API keys in the mobile app.** Keys live only in the backend `.env`. The app talks only to our API, with one exception: live talk's WebRTC audio flows between the phone and OpenAI. Its offer goes through our API (`POST /speech/live/connect`, `apps/mobile/features/speech/model/realtimeSdp.ts`): the server opens the call with a short-lived client secret it mints and keeps, so no OpenAI key or secret reaches the phone, and the server can hang the call up itself (`modules/speech/live_call.py`).
 2. **Use product model aliases, never provider names**, in app/business code: `free-chat`, `smart-chat`, `title-model`, `memory-model`. Alias → provider mapping lives in `models/model_catalog.py` (runtime availability: `services/model_health.is_available`) (LiteLLM calls go through `gateways/litellm_gateway.py`).
 3. **Never send full chat history to the model.** Build context from injected memory + the recent window (default hard cap 20 messages; token budget also trims) only.
 4. **Topic generation, memory extraction, and other post-turn work are best-effort background jobs.** They must never raise into the chat request path or block streaming. Enqueue from `modules/chat/post_turn.py` via `core/jobs/`.
@@ -188,7 +188,7 @@ New chat-loop code → `modules/chat/`. Both transports call `stream_entry.py` w
 
 Steps 6–8 are the only ones on the user's critical path. Everything in step 9 is a durable Redis-Stream job. A turn chat does not stream (a picture or photo intercept, `/images/generate`, live talk) saves its rows through conversation's `turn_record.add_turn_message`, which moves the chat up the drawer, and chat's `finish_turn` (`post_turn.py`) enqueues the same step-9 jobs.
 
-**Jobs registered in** `background/handlers.py`: `topic`, `memory`, `memory_consolidate`, `memory_history_scan`, `lesson_progress`, `compress`, `transactional_email`, `attachment_index`, `message_index`, `storage_sweep`, `account_sweep_backstop` (a deleted account's sweep, scheduled inside the delete's transaction; it skips while the account exists).
+**Jobs registered in** `background/handlers.py`: `topic`, `memory`, `memory_consolidate`, `memory_history_scan`, `lesson_progress`, `compress`, `transactional_email`, `attachment_index`, `message_index`, `storage_sweep`, `account_sweep_backstop` (a deleted account's sweep, scheduled inside the delete's transaction; it skips while the account exists), `live_talk_hangup` (ends a live talk call when its reserved minutes run out, or after `/live/end` could not confirm the hang-up).
 
 **Worker** (`worker_main.py`): consumes that stream and runs the schedulers `process_bootstrap.py` lists (push, email reminders, attachment orphan reaper, billing reconcile, analytics retention, data retention: drafts never sent to and old daily usage rows).
 

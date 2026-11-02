@@ -19,7 +19,6 @@ from app.modules.chat.related_prompts import (
     generate_related_questions,
     load_related_prompts,
     schedule_related_prompts,
-    store_related_prompts,
 )
 from app.modules.chat.related_questions import _digit_skeleton
 from app.modules.chat.service import list_messages_page
@@ -334,7 +333,20 @@ def _page_rows(assistant_id):
 
 async def test_reopen_reads_the_cache_and_does_not_call_the_model(fake_redis) -> None:
     assistant_id = uuid4()
-    await store_related_prompts(fake_redis, str(assistant_id), PHYSICS_FOLLOWUPS)
+    # Cached by the write the turn makes after done.
+    with patch.object(
+        related_prompts,
+        "complete_structured",
+        AsyncMock(return_value=RelatedQuestions(questions=PHYSICS_FOLLOWUPS)),
+    ):
+        task = schedule_related_prompts(
+            fake_redis,
+            Settings(),
+            message_id=str(assistant_id),
+            question=PHYSICS,
+            answer="The force is 30 newtons.",
+        )
+        assert await take_related_prompts_event(task) is not None
     with (
         patch(
             "app.modules.chat.service.get_chat",
