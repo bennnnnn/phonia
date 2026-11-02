@@ -3,8 +3,7 @@
 Split from ``patterns.py``. "How far is the airport" is a trip from the user;
 "how far did it go in that time", a walk across a named bridge, a trip between
 two stated times, and a converted amount are not.
-Keep in sync with apps/mobile/lib/places/localPlacesQuery.ts (shared cases:
-docs/fixtures/geo_intent_cases.json).
+Its cases are in docs/fixtures/geo_intent_cases.json.
 """
 
 from __future__ import annotations
@@ -14,7 +13,6 @@ import re
 from app.modules.web_search.patterns import _GEO_PHRASE_GAP, _find_word
 
 # Distance / travel from the user's location — venue-agnostic.
-# Keep in sync with apps/mobile/lib/places/localPlacesQuery.ts DISTANCE_INTENT.
 # ``does it take`` must require a commute verb (get/drive/walk/reach/arrive).
 # Bare ``how long does it take the car to travel`` is kinematics, not maps.
 # A walk or drive across, around or along something ("walk across the Brooklyn
@@ -46,7 +44,6 @@ _DISTANCE_INTENT = re.compile(
 # "A bus leaves at 7:15am and arrives at 9:40am. How long is the trip?" is a sum
 # over the two times it states. "I leave at 5pm and need to arrive by 7pm" sets
 # a deadline, not an arrival time, and stays a trip from the user.
-# Keep in sync with apps/mobile/lib/places/localPlacesQuery.ts TIMETABLE.
 _CLOCK_TIME = r"(?:\d{1,2}(?::[0-5]\d)?\s*[ap]\.?m\b\.?|\d{1,2}:[0-5]\d\b|noon\b|midnight\b)"
 _TIMETABLE = re.compile(
     r"\b(?:leaves?|left|leaving|departs?|departed|departing|sets?\s+off)\b"
@@ -59,7 +56,6 @@ _TIMETABLE = re.compile(
 
 # "How many miles is a 5k?" and "how many minutes in an hour?" convert a stated
 # amount. "How many miles is it to Hawassa?" is still a trip from the user.
-# Keep in sync with apps/mobile/lib/places/localPlacesQuery.ts UNIT_CONVERSION.
 _UNIT_CONVERSION = re.compile(
     r"\bhow\s+many\s+(?:miles|kilometers|kilometres|km|minutes|mins)\s+"
     r"(?:(?:is|are)(?:\s+there)?(?:\s+in)?|in|makes?|equals?)\s+"
@@ -72,7 +68,6 @@ _UNIT_CONVERSION = re.compile(
 )
 
 # Homework motion — not maps, even if the prompt also says "how far" / "how long".
-# Keep in sync with apps/mobile/lib/places/localPlacesQuery.ts MOTION_HOMEWORK.
 _MOTION_HOMEWORK = re.compile(
     r"\b(?:"
     r"accelerat(?:e|es|ed|ing|ion)"
@@ -110,7 +105,6 @@ _FROM_USER = re.compile(
 
 # A fixed A-to-B distance names its own origin: "distance from the sun to Mars",
 # "how far is the moon from the earth". From "me", "here" or "my house" it is a trip.
-# Keep in sync with apps/mobile/lib/places/localPlacesQuery.ts FIXED_DISTANCE_FROM.
 _FIXED_DISTANCE_FROM = re.compile(
     r"\bdistance\s+from\b"
     r"|\bhow\s+far\s+(?:away\s+)?is\s+[\w' -]{1,40}?\s+from\s+(?!(?:me|here|my|our)\b)",
@@ -122,7 +116,6 @@ _FIXED_DISTANCE_FROM = re.compile(
 # asks about a duration or a length. Minutes, miles and km are a trip only
 # beside where it goes or starts ("to the airport", "from here", "to Bole") or
 # "away".
-# Keep in sync with apps/mobile/lib/places/localPlacesQuery.ts HOW_MANY_ASKED / TRIP_PLACE.
 _HOW_MANY_ASKED = re.compile(
     r"\bhow\s+many\s+(?:minutes|mins|miles|kilometers|kilometres|km)\b", re.IGNORECASE
 )
