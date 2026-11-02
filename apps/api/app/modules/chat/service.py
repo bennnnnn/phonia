@@ -43,6 +43,17 @@ class ChatsError(DomainError):
     """A chat history refusal."""
 
 
+class PinLimitError(ChatsError):
+    """Pinning past ``MAX_PINNED_CHATS``; 409 ``pin_limit`` with the ``limit``."""
+
+    status_code = 409
+    default_code = "pin_limit"
+
+    def __init__(self) -> None:
+        limit = conversation_service.MAX_PINNED_CHATS
+        super().__init__(f"You can pin up to {limit} chats. Unpin one first.", limit=limit)
+
+
 async def create_chat(
     session: AsyncSession,
     user: User,
@@ -130,6 +141,11 @@ async def pin_chat(session: AsyncSession, user: User, chat_id: UUID, *, pinned: 
     chat = await get_chat(session, user, chat_id)
     if pinned and chat.archived:
         raise ChatsError("Unarchive the chat before pinning", status_code=409)
+    if pinned:
+        others = await conversation_service.count_other_pins_locked(session, user.id, chat_id)
+        if others >= conversation_service.MAX_PINNED_CHATS:
+            await session.rollback()
+            raise PinLimitError()
     chat = await conversation_service.set_pinned(session, chat, pinned)
     if pinned and chat.archived:
         raise ChatsError("Unarchive the chat before pinning", status_code=409)

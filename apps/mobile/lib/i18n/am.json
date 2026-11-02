@@ -191,6 +191,7 @@
   "chat.picker_busy": "የፎቶ መምረጫውን መክፈት አልተቻለም። እንደገና ይሞክሩ።",
   "chat.pin": "ሰካ",
   "chat.pin_failed": "ማስተካከል አልተቻለም።",
+  "chat.pin_limit": "ሊሰኩ የሚችሉትን ያህል ውይይቶች ሰክተዋል። መጀመሪያ አንዱን ይንቀሉ።",
   "chat.pinned_toast": "ውይይት ተሰክቷል",
   "chat.placeholder": "ለሪኮል ምላሽ ይስጡ",
   "chat.quota_exceeded_free": "የዛሬን ነጻ ገደብ ተጠቅመዋል።",

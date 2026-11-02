@@ -191,6 +191,7 @@
   "chat.picker_busy": "Impossibile aprire il selettore foto. Riprova.",
   "chat.pin": "Fissa",
   "chat.pin_failed": "Impossibile aggiornare il fissaggio.",
+  "chat.pin_limit": "Hai fissato il numero massimo di chat. Sblocca prima una chat.",
   "chat.pinned_toast": "Chat fissata",
   "chat.placeholder": "Rispondi a Recall",
   "chat.quota_exceeded_free": "Hai esaurito il limite gratuito di oggi.",

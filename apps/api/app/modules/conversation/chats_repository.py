@@ -2,16 +2,20 @@ from datetime import UTC, datetime, timedelta
 from typing import Any, cast
 from uuid import UUID
 
-from sqlalchemy import delete, exists, or_, select, update
+from sqlalchemy import delete, exists, func, or_, select, update
 from sqlalchemy.engine import CursorResult
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import load_only
 
 from app.core.timezone import resolve_timezone
 from app.core.ttl_cache import TtlCache
-from app.models.orm import Chat, Message
+from app.models.orm import Chat, Message, User
 from app.repositories.batch_delete import delete_in_batches
 from app.repositories.keyset import after, decode_cursor, encode_cursor, page_of
+
+# The most chats one account keeps pinned. The drawer reads every pin on each open, so
+# the pins are a bounded list: pinning past this is refused (chat's ``PinLimitError``).
+MAX_PINNED_CHATS = 50
 
 # Same process just created this chat. The send that follows should not pay
 # another Neon round trip to prove the caller owns it.
@@ -125,8 +129,30 @@ async def list_pinned(session: AsyncSession, user_id: UUID) -> list[Chat]:
         .where(Chat.user_id == user_id, Chat.pinned.is_(True), Chat.archived.is_(False))
         .where(has_messages)
         .order_by(Chat.updated_at.desc(), Chat.id.desc())
+        .limit(MAX_PINNED_CHATS)
     )
     return list(result.scalars().all())
+
+
+async def count_other_pins_locked(session: AsyncSession, user_id: UUID, chat_id: UUID) -> int:
+    """How many unarchived chats besides ``chat_id`` the user has pinned.
+
+    Takes the user's row lock first (held until the caller commits; memory writers and
+    the account delete lock the user row first too), so two pins at once cannot both
+    pass the cap.
+    """
+    await session.execute(select(User.id).where(User.id == user_id).with_for_update())
+    count = await session.scalar(
+        select(func.count())
+        .select_from(Chat)
+        .where(
+            Chat.user_id == user_id,
+            Chat.pinned.is_(True),
+            Chat.archived.is_(False),
+            Chat.id != chat_id,
+        )
+    )
+    return int(count or 0)
 
 
 async def list_recent_page(

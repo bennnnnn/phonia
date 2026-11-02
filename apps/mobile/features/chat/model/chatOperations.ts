@@ -11,6 +11,7 @@ import { clearCachedChatMessages } from "@/features/chat/model/messageCache";
 import { beginChatMutation } from "@/features/chat/model/mutationLock";
 import { sanitizeManualChatTitle } from "@/features/chat/model/title";
 import { api, type Chat } from "@/lib/api";
+import { ApiRequestError } from "@/lib/api/errorBody";
 import { emitAppEvent } from "@/lib/appEvents";
 import { notifyDestructive } from "@/lib/haptics";
 import type { IconName } from "@/ui/icons/names";
@@ -77,6 +78,9 @@ async function saveTitle(ctx: ChatOperationContext, chat: ChatRef, title: string
   }
 }
 
+/** The API's 409 for a pin past the account's most pinned chats (`modules/chat/service.py`). */
+const PIN_LIMIT_CODE = "pin_limit";
+
 /** Pin or unpin. An archived chat has no pin. */
 export async function setChatPinned(
   ctx: ChatOperationContext,
@@ -97,10 +101,11 @@ export async function setChatPinned(
         saved.pinned ? "pin" : "pin-off",
       );
     }
-  } catch {
+  } catch (error) {
     if (!ctx.signedIn()) return;
     apply(ctx, chat.id, { pinned: chat.pinned });
-    if (ctx.shown()) ctx.failure(ctx.t("chat.pin_failed"));
+    const full = error instanceof ApiRequestError && error.code === PIN_LIMIT_CODE;
+    if (ctx.shown()) ctx.failure(ctx.t(full ? "chat.pin_limit" : "chat.pin_failed"));
   } finally {
     release();
   }

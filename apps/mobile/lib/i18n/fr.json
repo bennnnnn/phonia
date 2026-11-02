@@ -191,6 +191,7 @@
   "chat.picker_busy": "Impossible d’ouvrir le sélecteur de photos. Réessayez.",
   "chat.pin": "Épingler",
   "chat.pin_failed": "Impossible de mettre à jour l'épinglage.",
+  "chat.pin_limit": "Vous avez épinglé le maximum de discussions. Désépinglez-en une d'abord.",
   "chat.pinned_toast": "Chat épinglé",
   "chat.placeholder": "Répondre à Recall",
   "chat.quota_exceeded_free": "Vous avez épuisé la limite gratuite du jour.",

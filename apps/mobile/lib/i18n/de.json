@@ -191,6 +191,7 @@
   "chat.picker_busy": "Fotopicker konnte nicht geöffnet werden. Bitte erneut versuchen.",
   "chat.pin": "Anheften",
   "chat.pin_failed": "Anheften konnte nicht aktualisiert werden.",
+  "chat.pin_limit": "Du hast so viele Chats angeheftet wie möglich. Löse zuerst einen.",
   "chat.pinned_toast": "Chat angeheftet",
   "chat.placeholder": "Antwort an Recall",
   "chat.quota_exceeded_free": "Du hast das kostenlose Tageslimit aufgebraucht.",

@@ -191,6 +191,7 @@
   "chat.picker_busy": "Fotoğraf seçici açılamadı. Tekrar deneyin.",
   "chat.pin": "Sabitle",
   "chat.pin_failed": "Sabitleme güncellenemedi.",
+  "chat.pin_limit": "Sabitleyebileceğiniz en fazla sohbeti sabitlediniz. Önce birinin sabitlemesini kaldırın.",
   "chat.pinned_toast": "Sohbet sabitlendi",
   "chat.placeholder": "Recall'a yanıt ver",
   "chat.quota_exceeded_free": "Bugünkü ücretsiz limitinizi kullandınız.",

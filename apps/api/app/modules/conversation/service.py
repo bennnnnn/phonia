@@ -38,6 +38,14 @@ async def set_title_if_empty(
     return await _chats.set_title_if_empty(session, chat_id, title, user_id=user_id, commit=commit)
 
 
+MAX_PINNED_CHATS = _chats.MAX_PINNED_CHATS
+
+
+async def count_other_pins_locked(session: AsyncSession, user_id: UUID, chat_id: UUID) -> int:
+    """The user's other pinned chats, under the user's row lock until the caller commits."""
+    return await _chats.count_other_pins_locked(session, user_id, chat_id)
+
+
 async def set_pinned(session: AsyncSession, chat: Chat, pinned: bool) -> Chat:
     return await _chats.set_pinned(session, chat, pinned)
 

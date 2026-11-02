@@ -191,6 +191,7 @@
   "chat.picker_busy": "Couldn’t open the photo picker. Try again.",
   "chat.pin": "Pin",
   "chat.pin_failed": "Could not update pin.",
+  "chat.pin_limit": "You've pinned as many chats as you can. Unpin one first.",
   "chat.pinned_toast": "Chat pinned",
   "chat.placeholder": "Reply to Recall",
   "chat.quota_exceeded_free": "You've used up today's free limit.",
