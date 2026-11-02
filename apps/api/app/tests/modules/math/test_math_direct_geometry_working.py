@@ -159,12 +159,12 @@ def test_natural_named_rectangle_uses_compact_verified_working(query: str) -> No
     [
         (
             "A rectangle has area 12 square units and width 3 units. Find the length.",
-            "$l$ — length",
+            "$l$ (length)",
             "l",
         ),
         (
             "Find the width of a rectangle with area 12 and length 4.",
-            "$w$ — width",
+            "$w$ (width)",
             "w",
         ),
     ],
