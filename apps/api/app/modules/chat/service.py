@@ -276,25 +276,34 @@ async def list_messages_page(
 ) -> MessagePageOut:
     """The newest page, the page ``before`` or ``after`` a message, or the window ``around`` one."""
     chat = await get_chat(session, user, chat_id)
-    # End the ownership read before waiting: up to 20 s for a stream and its save, with
+    # End the ownership read before any wait: up to 20 s for a stream and its save, with
     # this connection idle in transaction while the save needed one from the same pool.
     await session.commit()
-    await finalize_registry.wait_for_inflight_stream(chat_id)
-    await finalize_registry.wait_for_pending_finalize(chat_id, redis)
-    has_more_after = False
-    if around is not None:
-        msgs, has_more, has_more_after = await conversation_history.messages_around(
-            session, chat_id, limit=limit, around_id=around
-        )
-    elif after is not None:
-        msgs, has_more_after = await conversation_history.messages_after(
-            session, chat_id, limit=limit, after_id=after
-        )
-        has_more = True
-    else:
+    if before is not None:
+        # Older than a row the phone already holds: a turn in flight only adds rows after
+        # it, so scrolling back during a reply never waits for that reply.
         msgs, has_more = await conversation_history.messages_page_before(
             session, chat_id, limit=limit, before_id=before
         )
+        has_more_after = False
+    elif after is None and around is None:
+        await _wait_for_turn_in_flight(chat_id, redis)
+        msgs, has_more = await conversation_history.messages_page_before(
+            session, chat_id, limit=limit
+        )
+        has_more_after = False
+    else:
+        msgs, has_more, has_more_after = await _read_forward(
+            session, chat_id, limit=limit, after=after, around=around
+        )
+        if not has_more_after:
+            # The page reaches the newest row, so it can hold the turn in flight: wait
+            # for it and read again. A page with rows after it is settled as read.
+            await session.commit()
+            await _wait_for_turn_in_flight(chat_id, redis)
+            msgs, has_more, has_more_after = await _read_forward(
+                session, chat_id, limit=limit, after=after, around=around
+            )
     newest = before is None and after is None and around is None
 
     if not chat.title and newest and msgs:
@@ -325,6 +334,34 @@ async def list_messages_page(
     if newest or (around is not None and not has_more_after):
         await _attach_cached_related_prompts(redis, outs)
     return MessagePageOut(messages=outs, has_more=has_more, has_more_after=has_more_after)
+
+
+async def _wait_for_turn_in_flight(chat_id: UUID, redis: Redis) -> None:
+    """Bounded: the chat's stream on this machine, then its save on any machine."""
+    await finalize_registry.wait_for_inflight_stream(chat_id)
+    await finalize_registry.wait_for_pending_finalize(chat_id, redis)
+
+
+async def _read_forward(
+    session: AsyncSession,
+    chat_id: UUID,
+    *,
+    limit: int,
+    after: UUID | None,
+    around: UUID | None,
+) -> tuple[list[Message], bool, bool]:
+    """The page ``after`` a message or the window ``around`` one, and whether older
+    and newer messages remain."""
+    if around is not None:
+        return await conversation_history.messages_around(
+            session, chat_id, limit=limit, around_id=around
+        )
+    if after is None:
+        raise ValueError("A forward page reads after or around a message")
+    msgs, has_more_after = await conversation_history.messages_after(
+        session, chat_id, limit=limit, after_id=after
+    )
+    return msgs, True, has_more_after
 
 
 async def follow_up_reply_ids(session: AsyncSession, user_id: UUID) -> list[str]:

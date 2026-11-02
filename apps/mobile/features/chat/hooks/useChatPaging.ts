@@ -10,6 +10,7 @@ import {
 
 import type { IconName } from "@/ui/icons/names";
 import { api, type Message } from "@/lib/api";
+import { ApiRequestError } from "@/lib/api/errorBody";
 import { getSessionGeneration } from "@/lib/auth";
 import { reportFailure } from "@/lib/sentry";
 import { MESSAGE_PAGE_SIZE } from "@/features/chat/model/constants";
@@ -40,6 +41,14 @@ function pageReadFailed(error: unknown, shown: boolean, { showActionBanner, t }:
   if (shown) showActionBanner(t("common.error"), "alert-circle");
 }
 
+/** The API's 422 for a page anchored on a message the chat no longer holds (a regenerate
+ * replaced that reply): the thread on screen is stale, so the newest page is read again. */
+const INVALID_CURSOR_CODE = "invalid_cursor";
+
+function isStaleAnchor(error: unknown): boolean {
+  return error instanceof ApiRequestError && error.code === INVALID_CURSOR_CODE;
+}
+
 /**
  * Paging within the open chat: older pages above the thread and, after a jump to a
  * search hit deep in it, a window around the hit with newer pages below until the
@@ -68,75 +77,6 @@ export function useChatPaging({
     return { token, chatId, inView, isCurrent: () => inView() && requestRef.current === request };
   }, [token, chatId, session, activeChatRef, viewRef]);
 
-  const loadOlderMessages = useCallback(async () => {
-    const oldest = messages[0];
-    if (chatLoading || !hasMoreOlder || !oldest || !SERVER_ID.test(oldest.id)) return;
-    const read = begin();
-    if (!read) return;
-    setLoadingOlder(true);
-    try {
-      const page = await api.listMessages(read.token, read.chatId, { limit: MESSAGE_PAGE_SIZE, before: oldest.id });
-      if (!read.isCurrent()) return;
-      editThread((prev) => {
-        if (!read.inView()) return prev;
-        const knownIds = new Set(prev.map((message) => message.id));
-        return [...page.messages.filter((message) => !knownIds.has(message.id)), ...prev];
-      }, "older_page");
-      setHasMoreOlder(page.has_more);
-    } catch (error) {
-      pageReadFailed(error, read.isCurrent(), { showActionBanner, t });
-    } finally {
-      if (read.isCurrent()) {
-        requestRef.current = null;
-        setLoadingOlder(false);
-      }
-    }
-  }, [begin, chatLoading, hasMoreOlder, messages, editThread, setHasMoreOlder, showActionBanner, t]);
-
-  const loadNewerMessages = useCallback(async () => {
-    const newest = messages.at(-1);
-    if (chatLoading || !hasMoreNewer || !newest || !SERVER_ID.test(newest.id)) return;
-    const read = begin();
-    if (!read) return;
-    setLoadingNewer(true);
-    try {
-      const page = await api.listMessages(read.token, read.chatId, { limit: MESSAGE_PAGE_SIZE, after: newest.id });
-      if (!read.isCurrent()) return;
-      editThread((prev) => {
-        if (!read.inView()) return prev;
-        const knownIds = new Set(prev.map((message) => message.id));
-        return [...prev, ...page.messages.filter((message) => !knownIds.has(message.id))];
-      }, "newer_page");
-      setHasMoreNewer(page.has_more_after === true);
-    } catch (error) {
-      pageReadFailed(error, read.isCurrent(), { showActionBanner, t });
-    } finally {
-      if (read.isCurrent()) {
-        requestRef.current = null;
-        setLoadingNewer(false);
-      }
-    }
-  }, [begin, chatLoading, hasMoreNewer, messages, editThread, showActionBanner, t]);
-
-  /** Show the window around `messageId`; false when it could not be read. */
-  const openAround = useCallback(async (messageId: string): Promise<boolean> => {
-    const read = begin();
-    if (!read) return false;
-    try {
-      const page = await api.listMessages(read.token, read.chatId, { limit: MESSAGE_PAGE_SIZE, around: messageId });
-      if (!read.isCurrent() || page.messages.length === 0) return false;
-      editThread(page.messages, "window_around");
-      setHasMoreOlder(page.has_more);
-      setHasMoreNewer(page.has_more_after === true);
-      return true;
-    } catch (error) {
-      pageReadFailed(error, read.isCurrent(), { showActionBanner, t });
-      return false;
-    } finally {
-      if (read.isCurrent()) requestRef.current = null;
-    }
-  }, [begin, editThread, setHasMoreOlder, showActionBanner, t]);
-
   /** Back from a window to the newest page (a send goes to the end of the thread). */
   const jumpToLatest = useCallback(async (): Promise<void> => {
     const read = begin();
@@ -150,6 +90,82 @@ export function useChatPaging({
       void writeCachedChatMessages(read.chatId, page.messages, page.has_more);
     } catch (error) {
       pageReadFailed(error, read.isCurrent(), { showActionBanner, t });
+    } finally {
+      if (read.isCurrent()) requestRef.current = null;
+    }
+  }, [begin, editThread, setHasMoreOlder, showActionBanner, t]);
+
+  const loadOlderMessages = useCallback(async () => {
+    const oldest = messages[0];
+    if (chatLoading || !hasMoreOlder || !oldest || !SERVER_ID.test(oldest.id)) return;
+    const read = begin();
+    if (!read) return;
+    setLoadingOlder(true);
+    let stale = false;
+    try {
+      const page = await api.listMessages(read.token, read.chatId, { limit: MESSAGE_PAGE_SIZE, before: oldest.id });
+      if (!read.isCurrent()) return;
+      editThread((prev) => {
+        if (!read.inView()) return prev;
+        const knownIds = new Set(prev.map((message) => message.id));
+        return [...page.messages.filter((message) => !knownIds.has(message.id)), ...prev];
+      }, "older_page");
+      setHasMoreOlder(page.has_more);
+    } catch (error) {
+      stale = isStaleAnchor(error) && read.isCurrent();
+      if (!stale) pageReadFailed(error, read.isCurrent(), { showActionBanner, t });
+    } finally {
+      if (read.isCurrent()) {
+        requestRef.current = null;
+        setLoadingOlder(false);
+      }
+    }
+    if (stale) await jumpToLatest();
+  }, [begin, chatLoading, hasMoreOlder, messages, editThread, setHasMoreOlder, showActionBanner, t, jumpToLatest]);
+
+  const loadNewerMessages = useCallback(async () => {
+    const newest = messages.at(-1);
+    if (chatLoading || !hasMoreNewer || !newest || !SERVER_ID.test(newest.id)) return;
+    const read = begin();
+    if (!read) return;
+    setLoadingNewer(true);
+    let stale = false;
+    try {
+      const page = await api.listMessages(read.token, read.chatId, { limit: MESSAGE_PAGE_SIZE, after: newest.id });
+      if (!read.isCurrent()) return;
+      editThread((prev) => {
+        if (!read.inView()) return prev;
+        const knownIds = new Set(prev.map((message) => message.id));
+        return [...prev, ...page.messages.filter((message) => !knownIds.has(message.id))];
+      }, "newer_page");
+      setHasMoreNewer(page.has_more_after === true);
+    } catch (error) {
+      stale = isStaleAnchor(error) && read.isCurrent();
+      if (!stale) pageReadFailed(error, read.isCurrent(), { showActionBanner, t });
+    } finally {
+      if (read.isCurrent()) {
+        requestRef.current = null;
+        setLoadingNewer(false);
+      }
+    }
+    if (stale) await jumpToLatest();
+  }, [begin, chatLoading, hasMoreNewer, messages, editThread, showActionBanner, t, jumpToLatest]);
+
+  /** Show the window around `messageId`; false when it could not be read. */
+  const openAround = useCallback(async (messageId: string): Promise<boolean> => {
+    const read = begin();
+    if (!read) return false;
+    try {
+      const page = await api.listMessages(read.token, read.chatId, { limit: MESSAGE_PAGE_SIZE, around: messageId });
+      if (!read.isCurrent() || page.messages.length === 0) return false;
+      editThread(page.messages, "window_around");
+      setHasMoreOlder(page.has_more);
+      setHasMoreNewer(page.has_more_after === true);
+      return true;
+    } catch (error) {
+      // A hit whose message is gone: the caller opens the chat as it would without one.
+      if (!isStaleAnchor(error)) pageReadFailed(error, read.isCurrent(), { showActionBanner, t });
+      return false;
     } finally {
       if (read.isCurrent()) requestRef.current = null;
     }
