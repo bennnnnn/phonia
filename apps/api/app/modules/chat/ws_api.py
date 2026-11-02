@@ -38,7 +38,6 @@ from app.modules.chat.stream_events import (
     build_reasoning_event,
     build_status_event,
     error_payload_for_exception,
-    rate_limited_connect_payload,
     rate_limited_payload,
     restarting_payload,
     turn_error_payload,
@@ -53,6 +52,7 @@ from app.modules.chat.ws_limits import (
     close_quietly,
     receive_frame,
     safe_send_json,
+    socket_error_payload,
     user_socket_slot,
 )
 from app.modules.chat.ws_turn import TURN_FRAME_TYPES, TurnLeft, run_chat_stream
@@ -156,7 +156,7 @@ async def _handle_regenerate(
     try:
         request = ChatMessageRequest.model_validate(payload)
     except ValidationError:
-        await websocket.send_json({"type": "error", "message": "Invalid regenerate request"})
+        await websocket.send_json(socket_error_payload("invalid_regenerate"))
         return None
 
     def _regen_stream(outcome: TurnOutcome) -> AsyncIterator[str]:
@@ -294,12 +294,12 @@ async def _authenticate(
             timeout=settings.ws_auth_timeout_seconds,
         )
         if not isinstance(auth_message, dict):
-            await websocket.send_json({"type": "error", "message": "Unauthorized"})
+            await websocket.send_json(socket_error_payload("unauthorized"))
             await websocket.close()
             return None
         token = auth_message.get("token")
         if not isinstance(token, str) or not token.strip():
-            await websocket.send_json({"type": "error", "message": "Missing token"})
+            await websocket.send_json(socket_error_payload("missing_token"))
             await websocket.close()
             return None
 
@@ -311,14 +311,14 @@ async def _authenticate(
         logger.info("WebSocket disconnected before authentication chat_id=%s", chat_id)
         return None
     except TimeoutError:
-        await safe_send_json(websocket, {"type": "error", "message": "Auth timeout"})
+        await safe_send_json(websocket, socket_error_payload("auth_timeout"))
         await websocket.close()
         return None
     except RedisUnavailableError as exc:
         await _close_while_down(websocket, error_payload_for_exception(exc))
         return None
     except (AuthenticationError, json.JSONDecodeError, KeyError, TypeError, AttributeError):
-        await safe_send_json(websocket, {"type": "error", "message": "Unauthorized"})
+        await safe_send_json(websocket, socket_error_payload("unauthorized"))
         await websocket.close()
         return None
     return user_id, token, client_timezone
@@ -356,7 +356,7 @@ async def chat_websocket(
         await _close_while_down(websocket, error_payload_for_exception(exc))
         return
     if not allowed:
-        await websocket.send_json(rate_limited_connect_payload())
+        await websocket.send_json(socket_error_payload("rate_limited"))
         await websocket.close()
         return
 
@@ -422,7 +422,7 @@ async def _serve_frames(conn: _ChatSocket) -> None:
                 if not conn.frame_budget.allow():
                     await close_flooding_socket(websocket)
                     return
-                await safe_send_json(websocket, {"type": "error", "message": "Invalid JSON"})
+                await safe_send_json(websocket, socket_error_payload("invalid_json"))
                 continue
 
             if not conn.frame_budget.allow():
@@ -431,7 +431,7 @@ async def _serve_frames(conn: _ChatSocket) -> None:
                 return
 
             if not isinstance(payload, dict):
-                await safe_send_json(websocket, {"type": "error", "message": "Invalid message"})
+                await safe_send_json(websocket, socket_error_payload("invalid_message"))
                 continue
             if not await _dispatch(conn, payload):
                 return
@@ -472,7 +472,7 @@ async def _dispatch(conn: _ChatSocket, payload: dict[str, Any]) -> bool:
         await _close_while_down(websocket, turn_error_payload(exc, user_message_saved=False))
         return False
     except AuthenticationError:
-        await safe_send_json(websocket, {"type": "error", "message": "Unauthorized"})
+        await safe_send_json(websocket, socket_error_payload("unauthorized"))
         await websocket.close(code=1008)
         return False
     if not allowed:

@@ -31,6 +31,8 @@ const WS_TURN_EVENT_TYPES = new Set([
 ]);
 
 const WS_OPEN_STATE = 1;
+/** The socket's sign-in was refused (`stream_events.socket_error_payload`): use SSE. */
+const WS_UNAUTHORIZED_CODE = "unauthorized";
 
 /** The server closed a socket idle between turns (`ws_limits.WS_IDLE_CLOSE_CODE`). */
 const WS_IDLE_CLOSE_CODE = 4408;
@@ -288,7 +290,7 @@ export class ChatWsTransport {
       }
       if (payload.type === "keepalive") return;
 
-      if (payload.type === "error" && payload.message === "Unauthorized") {
+      if (payload.type === "error" && payload.code === WS_UNAUTHORIZED_CODE) {
         const duringTurn = this.turnActive;
         this.socket = null;
         this.turnActive = false;

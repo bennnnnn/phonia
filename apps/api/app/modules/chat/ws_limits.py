@@ -12,12 +12,13 @@ import asyncio
 import time
 from collections.abc import Iterator
 from contextlib import contextmanager, suppress
-from typing import Any
+from typing import Any, Literal
 from uuid import UUID
 
 from fastapi import WebSocket, WebSocketDisconnect
 
 from app.exceptions import RATE_LIMITED_CODE
+from app.modules.chat.stream_events import RATE_LIMITED_MESSAGE
 
 # Every frame after auth counts, chargeable or not. Only message/regenerate
 # were limited (30/min, account-wide); pings, cancels, unknown types and bad
@@ -31,6 +32,37 @@ WS_FRAME_FLOOD_PAYLOAD = {
     "code": RATE_LIMITED_CODE,
     "message": "Too many messages. Reconnect in a minute.",
 }
+# A socket's refusal of a frame or a connection, outside a turn's own frames: its sign-in,
+# a frame it cannot read, its connect limit. Each names a code; the phone matched the
+# English "Unauthorized" (features/chat/model/wsTransport.ts reads the code).
+SocketRefusal = Literal[
+    "unauthorized",
+    "missing_token",
+    "auth_timeout",
+    "invalid_json",
+    "invalid_message",
+    "invalid_regenerate",
+    "rate_limited",
+]
+_INVALID_FRAME = "invalid"
+_SOCKET_REFUSALS: dict[SocketRefusal, tuple[str, str]] = {
+    "unauthorized": ("unauthorized", "Unauthorized"),
+    "missing_token": ("missing_token", "Missing token"),
+    "auth_timeout": ("auth_timeout", "Auth timeout"),
+    "invalid_json": (_INVALID_FRAME, "Invalid JSON"),
+    "invalid_message": (_INVALID_FRAME, "Invalid message"),
+    "invalid_regenerate": (_INVALID_FRAME, "Invalid regenerate request"),
+    # Over the connect limit: no turn to name.
+    "rate_limited": (RATE_LIMITED_CODE, RATE_LIMITED_MESSAGE),
+}
+
+
+def socket_error_payload(refusal: SocketRefusal) -> dict[str, Any]:
+    """The error frame for a socket's refusal: its code and the English."""
+    code, message = _SOCKET_REFUSALS[refusal]
+    return {"type": "error", "code": code, "message": message}
+
+
 # Close codes the phone reads (features/chat/model/wsTransport.ts). No error
 # frame goes first: with no turn open, the phone would show it as a chat error.
 # Idle between turns: the phone opens a new socket on its next send.

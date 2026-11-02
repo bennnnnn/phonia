@@ -130,7 +130,8 @@ def test_ws_caps_sockets_per_user_and_frees_the_slot_on_close() -> None:
         with client.websocket_connect(f"/ws/chats/{uuid4()}") as first:
             _auth(first, user_id, settings)
             first.send_json(["held"])  # answered from inside the socket loop
-            assert first.receive_json()["message"] == "Invalid message"
+            refused = first.receive_json()
+            assert (refused["code"], refused["message"]) == ("invalid", "Invalid message")
             with client.websocket_connect(f"/ws/chats/{uuid4()}") as second:
                 _auth(second, user_id, settings)
                 with pytest.raises(WebSocketDisconnect) as refused:

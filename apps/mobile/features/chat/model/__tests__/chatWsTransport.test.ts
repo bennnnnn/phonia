@@ -428,7 +428,7 @@ describe("ChatWsTransport", () => {
     const { socket, transport, onPayload, onFallback } = await openTransport();
 
     transport.sendRegenerate(REGENERATE);
-    socket.emit({ type: "error", message: "Unauthorized" });
+    socket.emit({ type: "error", code: "unauthorized", message: "Unauthorized" });
     socket.onclose();
 
     expect(onPayload).not.toHaveBeenCalled();
@@ -436,7 +436,7 @@ describe("ChatWsTransport", () => {
     expect(onFallback).toHaveBeenCalledWith({
       reason: "unauthorized",
       duringTurn: true,
-      payload: { type: "error", message: "Unauthorized" },
+      payload: { type: "error", code: "unauthorized", message: "Unauthorized" },
     });
     // Waiting does not help a refused token: a refreshed one builds a new transport.
     jest.advanceTimersByTime(WS_RETRY_MAX_MS);
@@ -729,7 +729,7 @@ describe("ChatWsTransport outages and the connection check", () => {
     closeWith(stopped.socket, 1006);
 
     const refused = await openTransport(true);
-    refused.socket.emit({ type: "error", message: "Unauthorized" });
+    refused.socket.emit({ type: "error", code: "unauthorized", message: "Unauthorized" });
     closeWith(refused.socket, 1008);
     expect(reported).toBe(0);
   });

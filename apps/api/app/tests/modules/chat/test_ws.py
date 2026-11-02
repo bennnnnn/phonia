@@ -73,6 +73,7 @@ def test_ws_missing_token_closes():
         msg = ws.receive_json()
     assert msg["type"] == "error"
     assert "Missing token" in msg["message"]
+    assert msg["code"] == "missing_token"
 
 
 @pytest.mark.asyncio
@@ -178,7 +179,10 @@ async def test_ws_invalid_frame_during_stream_keeps_producer_owned(invalid_frame
         " second",
     ]
     assert sum(frame["type"] == "done" for frame in frames) == 1
-    assert any(frame.get("message") == "Invalid JSON" for frame in frames)
+    assert any(
+        frame.get("message") == "Invalid JSON" and frame.get("code") == "invalid"
+        for frame in frames
+    )
 
 
 @pytest.mark.asyncio
@@ -999,7 +1003,8 @@ def test_ws_rechecks_token_on_chargeable_message():
             ws.send_json({"type": "message", "content": "still here?"})
             err = ws.receive_json()
             assert err["type"] == "error"
-            assert err["message"] == "Unauthorized"
+            # The phone switches on the code; it matched this English.
+            assert (err["code"], err["message"]) == ("unauthorized", "Unauthorized")
             assert verify.await_count == 2
 
 
