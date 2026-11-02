@@ -15,7 +15,8 @@ WORKED_BLOCK_CONTRACT = (
     "(Given, Required, Solution, the formula under its name, Substitution, Answer). Start your reply with one ```worked "
     "block holding the whole solution, and write no working outside it: no heading, no "
     "sentence before it, no Given, Formula, Step or Answer lines of your own, also when the "
-    "sum is short. Only a message that asks for no value at all (an explanation, a "
+    "sum is short. Nothing after the block restates the answer either: its card already "
+    "shows each value, so add no closing sentence repeating them. Only a message that asks for no value at all (an explanation, a "
     "definition, a choice between options, a reminder) is answered as usual, with no "
     "block. A graph, chart or diagram it asks for comes after the block. "
     'Inside the block, one record per line, its fields split by " | ", maths in LaTeX '

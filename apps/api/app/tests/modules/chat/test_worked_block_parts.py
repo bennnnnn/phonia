@@ -12,9 +12,13 @@ from __future__ import annotations
 
 import itertools
 import re
+from types import SimpleNamespace
+from typing import cast
 
 import pytest
 
+from app.modules.chat.finalize_passes import FinalizeState
+from app.modules.chat.finalize_subjects import check_working
 from app.modules.chat.stream_accum import StreamAccum
 from app.modules.chat.worked_render import WorkedLayout, render_worked
 from app.modules.chat.worked_solution import Given, assemble, read_record
@@ -282,3 +286,64 @@ def test_a_single_part_names_what_it_finds_inline_and_keeps_its_where_line() -> 
     assert "**Required**  \n$v$ (speed of the car)\n" in text
     assert "where $d$ = distance, $t$ = time" in text
     assert " — " not in text
+
+
+_LETTERED = "**Required**  \n(a) $v$ (speed of the car)  \n(b) $v$ (speed of the train)\n"
+
+
+@pytest.mark.parametrize(
+    "asked",
+    [
+        "",  # none
+        "required: v | average speed\n",  # one for both parts (live, 2026-11-02)
+        f"{_ASKED}\n",  # one per part
+    ],
+)
+def test_what_is_asked_has_one_lettered_line_per_part(asked: str) -> None:
+    opening, _parts = _opening_and_parts(_laid_out(CONTRACT.replace(f"{_ASKED}\n", asked)))
+    assert _LETTERED in opening
+
+
+def test_untitled_parts_mean_what_their_one_record_asks() -> None:
+    block = (
+        f"{_CAR_GIVEN}\nrequired: v | average speed\npart: a\n{_CAR}\npart: b\n"
+        "formula: Average speed | v = \\frac{d}{t}\nanswer: v | 30 | m/s\n"
+        "part: c\nformula: Time | t = \\frac{d}{v}\nanswer: t | 5 | s"
+    )
+    opening, _parts = _opening_and_parts(_laid_out(block))
+    assert (
+        "**Required**  \n(a) $v$ (average speed)  \n(b) $v$ (average speed)  \n(c) $t$\n"
+    ) in opening
+
+
+def test_one_part_keeps_its_one_unlettered_line_however_it_was_asked() -> None:
+    for asked in ("", "required: v | speed of the car\n"):
+        text = _laid_out(f"{_CAR_GIVEN}\n{asked}part: a | speed of the car\n{_CAR}")
+        assert "**Required**  \n$v$ (speed of the car)\n" in text
+        assert "(a) $v$" not in text
+
+
+def test_the_finished_reply_letters_what_is_asked_and_states_each_answer_once() -> None:
+    # Live 2026-11-02: one `required` for both parts, and a closing sentence repeating
+    # both answers under their cards.
+    block = CONTRACT.replace(f"{_ASKED}\n", "required: v | average speed\n")
+    reply = (
+        f"{_laid_out(block)}\n\nThe car's speed is **20 m/s**, and the train's speed is **30 m/s**."
+    )
+    state = SimpleNamespace(
+        text=reply,
+        server_text=False,
+        was_cancelled=False,
+        ctx=SimpleNamespace(
+            verified_subject=None,
+            solver_unverified=True,
+            user_message_content=(
+                "A car goes 100 m in 5 s; find its speed. A train goes 300 m in 10 s; "
+                "find its speed."
+            ),
+        ),
+    )
+    text = check_working(cast(FinalizeState, state))
+    assert _LETTERED in text
+    assert text.count("```answer") == 2
+    assert text.rstrip().endswith("```") and "The car's speed" not in text

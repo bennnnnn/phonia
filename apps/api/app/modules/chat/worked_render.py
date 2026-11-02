@@ -340,21 +340,46 @@ def _find_rows(solution: WorkedSolution) -> tuple[str, ...]:
     )
 
 
-def _asked_by_parts(parts: Sequence[Part]) -> tuple[str, ...]:
-    """What each part finds, when the model wrote no ``required`` record: the symbol its
-    answer names, with the part's title as its meaning (``$v$ (speed of the car)``), so a
-    question in parts always lists one Required line per part, as the server's do."""
+def _answered_symbols(part: Part) -> str:
+    """The symbols the part's answers name, in order, once each (``v``, ``v, t``)."""
+    named = (
+        tidy_symbol(answer.symbol)
+        for answer in part.answers
+        if answer.symbol and answer.symbol != answer.unit and not names_nothing(answer.symbol)
+    )
+    return ", ".join(dict.fromkeys(named))
+
+
+def _asked_by_parts(
+    solution: WorkedSolution, parts: Sequence[Part], written: tuple[str, ...]
+) -> tuple[str, ...]:
+    """What is asked, one line per part: a question in N parts lists N lines, lettered by
+    the caller as the server's own parts are. The ``required`` records are the lines as
+    written when there is one per part (or the question has one part and some record).
+    Otherwise (one record for every part, or none, live 2026-11-02: one ``v | average
+    speed`` above a car and a train) each part's line names the symbol its answer gives,
+    else the record's, and means the part's title, else what that record asks
+    (``$v$ (speed of the car)``). ``written``: the records' own lines."""
+    asked = solution.required
+    if asked and (len(parts) < 2 or len(asked) == len(parts)):
+        return written
     rows: list[str] = []
-    for part in parts:
-        symbol = next(
-            (a.symbol for a in part.answers if a.symbol and not names_nothing(a.symbol)), ""
-        )
+    for index, part in enumerate(parts):
+        record = asked[index] if index < len(asked) else asked[0] if len(asked) == 1 else None
+        # A record's "symbol" in words names every part at once, never this one.
+        own = record.symbol if record and not names_nothing(record.symbol) else ""
+        answered = _answered_symbols(part)
+        symbol = answered or own
+        # The record's meaning is its own symbol's: a part finding another ("t" under
+        # "v | average speed") is named by its title or by its symbol alone.
+        shared = record is not None and (not answered or tidy_symbol(answered) == tidy_symbol(own))
+        meaning = part.title or (record.meaning if record and shared else "")
         if symbol:
-            rows.append(math_line(tidy_symbol(symbol), part.title or None))
-        elif part.title:
-            rows.append(text_line(part.title))
+            rows.append(math_line(tidy_symbol(symbol), meaning or None))
+        elif meaning:
+            rows.append(text_line(meaning))
         else:
-            return ()  # a part that names nothing: no line can be lettered for it
+            return written  # a part that names nothing: no line can be lettered for it
     return tuple(rows)
 
 
@@ -398,9 +423,10 @@ def _render_in_parts(
     given the model wrote after a part's label waits at that part while the block streams
     and moves up to the one Given once it is whole (done carries that text)."""
     shown = list(solution.parts)
-    if not streaming and not solution.required:
-        # Drawn above the parts, so only once the block is whole (done carries the text).
-        required = _asked_by_parts(shown)
+    if not streaming:
+        # One line per part, drawn above the parts, so only once the block is whole (done
+        # carries the text): while it streams the records are shown as written.
+        required = _asked_by_parts(solution, shown, required)
     complete = not streaming or bool(required or solution.parts)
     if streaming:
         # A part waits for the answer above it: one written later, with the others at the
