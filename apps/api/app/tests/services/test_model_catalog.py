@@ -45,7 +45,7 @@ def test_selectable_models_count():
     assert qwen.model == "openrouter/qwen/qwen3.7-flash"
     assert qwen.thinking_off == "off"
     assert model_catalog.auto_fast_alias() == "qwen-3.7-flash"
-    # Recall is not a coding assistant: the coding and frontier models are gone.
+    # Phonia is not a coding assistant: the coding and frontier models are gone.
     for removed in ("gpt-6-sol", "kimi-k3", "qwen-3.8-max", "minimax-m3", "glm-5.3", "llama-70b"):
         assert removed not in ids
     assert "max-chat" not in ids

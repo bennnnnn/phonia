@@ -83,7 +83,7 @@ DURABLE_MEMORY_STATEMENTS = [
     "I prefer examples before theory",
     "I learn best by building small projects",
     "I use Python and TypeScript at work",
-    "My main project is called Recall",
+    "My main project is called Phonia",
     "I am preparing for system design interviews",
     "I usually study in the evening",
     "I want direct feedback without filler",
@@ -363,7 +363,7 @@ async def test_instruct_prompt_names_the_open_document_and_asks_for_a_reply(
         Settings(),
         "Keep lists under five things",
         existing_facts=[],
-        existing_areas=[{"topic": "area:recall", "title": "Recall", "summary": ""}],
+        existing_areas=[{"topic": "area:phonia", "title": "Phonia", "summary": ""}],
         focus_topic="preferences",
     )
 
@@ -374,7 +374,7 @@ async def test_instruct_prompt_names_the_open_document_and_asks_for_a_reply(
     assert "looking at the preferences document" in system_prompt
     assert '"reply": "one short sentence to the user"' in system_prompt
     assert "is a preferences fact" in system_prompt
-    assert "area:recall" in user_prompt
+    assert "area:phonia" in user_prompt
     assert "Keep lists under five things" in user_prompt
 
 

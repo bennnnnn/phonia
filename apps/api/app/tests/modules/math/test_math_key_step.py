@@ -478,7 +478,7 @@ def test_parametric_factor_sorts_without_a_dict_root(monkeypatch, degree, factor
 
     from app.modules.math.solve.key_steps import _factor_order, equation_key_steps
 
-    monkeypatch.setenv("RECALL_STRICT_DECLINES", "1")
+    monkeypatch.setenv("PHONIA_STRICT_DECLINES", "1")
     x, a = Symbol("x"), Symbol("a")
     lhs = (x**2 - (a + 1) * x + a) * (x if degree == 3 else 1)
     steps = equation_key_steps(lhs.expand(), 0, "x")
@@ -499,7 +499,7 @@ def test_factor_order_reads_no_root_from_a_dict(monkeypatch) -> None:
 
     from app.modules.math.solve.key_steps import _factor_order, equation_key_steps
 
-    monkeypatch.setenv("RECALL_STRICT_DECLINES", "1")
+    monkeypatch.setenv("PHONIA_STRICT_DECLINES", "1")
     p, v = Symbol("P", real=True), Symbol("V", real=True)
     assert _factor_order(p - I * v, p) == (True, 0.0)
     assert equation_key_steps(p, I * v, "P") == []

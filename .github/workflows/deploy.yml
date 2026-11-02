@@ -73,7 +73,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     env:
-      FLY_APP: recall-api
+      FLY_APP: phonia-api
     steps:
       - uses: actions/checkout@v7
         with:

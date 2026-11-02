@@ -6,7 +6,7 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 API_URL="${API_URL:-http://localhost:8000}"
 cd "$ROOT"
 
-echo "== Recall production checklist =="
+echo "== Phonia production checklist =="
 echo
 
 fail=0

@@ -69,7 +69,7 @@ const UNREACHABLE = "ServerUnreachableError";
 /** What a caller is told when the server could not be reached in time. Its English is
  * for logs: a screen words it in the phone's language (`isServerUnreachable`). */
 export function serverUnreachableError(): Error {
-  const error = new Error("Could not reach the Recall server. Check your connection and try again.");
+  const error = new Error("Could not reach the Phonia server. Check your connection and try again.");
   error.name = UNREACHABLE;
   return error;
 }
@@ -78,7 +78,7 @@ export function serverUnreachableError(): Error {
 const NO_ANSWER = /network request failed|failed to fetch|network error/i;
 
 /**
- * Recall gave no answer: offline or a dropped connection (fetch's own failure), or past a
+ * Phonia gave no answer: offline or a dropped connection (fetch's own failure), or past a
  * deadline (`serverUnreachableError`, a timeout's AbortError). A caller that cancels its
  * own request checks for that first. A refusal the API answered (it has a `status`) is
  * never this. The English of each showed as it came in a Library toast and on a picture card.

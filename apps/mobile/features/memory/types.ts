@@ -17,7 +17,7 @@ export type MemoryDocument = {
 
 export type MemoryDocuments = {
   documents: MemoryDocument[];
-  /** True while Recall reads the user's recent chats for the first time. */
+  /** True while Phonia reads the user's recent chats for the first time. */
   scanning: boolean;
 };
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Highlight 4xx/5xx from Recall API logs while the app is running.
+"""Highlight 4xx/5xx from Phonia API logs while the app is running.
 
 The API already logs every request (uvicorn access + ``app.http``). This
 script watches that stream and prints client/server errors so a 500 in
@@ -325,7 +325,7 @@ def self_test() -> int:
 
 
 def main(argv: Iterable[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Print 4xx/5xx from Recall API logs.")
+    parser = argparse.ArgumentParser(description="Print 4xx/5xx from Phonia API logs.")
     parser.add_argument(
         "--passthrough",
         action="store_true",

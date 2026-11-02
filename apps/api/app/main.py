@@ -64,7 +64,7 @@ def create_app() -> FastAPI:
     # keep /docs for local exploration.
     docs_enabled = settings.environment != "production"
     app = FastAPI(
-        title="Recall API",
+        title="Phonia API",
         version="0.1.0",
         lifespan=lifespan,
         docs_url="/docs" if docs_enabled else None,

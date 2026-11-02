@@ -41,7 +41,7 @@ _FIRST_PARTY_PREAMBLE = (
 )
 
 # The chat's saved-memory block. It says what the facts are (what the user told
-# Recall, dated), that this conversation and the real code or config beat them, and
+# Phonia, dated), that this conversation and the real code or config beat them, and
 # that a missing detail is not to be guessed.
 _SAVED_MEMORY_PREAMBLE = (
     "The block below is the user's saved memory: facts they told you in earlier chats, "

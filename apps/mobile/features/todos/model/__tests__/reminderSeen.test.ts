@@ -48,7 +48,7 @@ describe("reminderSeen", () => {
   it("saveSeenReminderIds writes the filesystem, not Keychain", async () => {
     await saveSeenReminderIds("user-1", new Set(["x"]));
     expect(writeAsStringAsync).toHaveBeenCalledWith(
-      "file:///docs/recall.reminder-seen.user-1.json",
+      "file:///docs/phonia.reminder-seen.user-1.json",
       JSON.stringify(["x"]),
     );
     expect(SecureStore.setItemAsync).not.toHaveBeenCalled();
@@ -56,7 +56,7 @@ describe("reminderSeen", () => {
 
   it("clearSeenReminderIds deletes the file", async () => {
     await clearSeenReminderIds("user-1");
-    expect(deleteAsync).toHaveBeenCalledWith("file:///docs/recall.reminder-seen.user-1.json", {
+    expect(deleteAsync).toHaveBeenCalledWith("file:///docs/phonia.reminder-seen.user-1.json", {
       idempotent: true,
     });
   });

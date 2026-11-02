@@ -6,7 +6,7 @@ import { SCANNER_CAMERA_PROMPTS } from "@/lib/scanner/subjects";
 const REMOTE_REF = /^(?:https?:)?\/\//i;
 
 /**
- * True when drawing this marker would fetch from a host other than Recall's
+ * True when drawing this marker would fetch from a host other than Phonia's
  * API. The server writes only attachment refs (`/attachments/<id>/file`),
  * which `resolveAttachmentUri` always fetches from the API by id, and the app
  * writes local ones. A marker naming another host was written by someone else

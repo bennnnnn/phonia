@@ -15,7 +15,7 @@ import pytest
 from app.background import periodic
 from app.core.config import Settings
 
-_LOCK = "recall:test:lock"
+_LOCK = "phonia:test:lock"
 _INTERVAL = 60
 
 

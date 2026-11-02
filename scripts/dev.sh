@@ -100,7 +100,7 @@ up() {
     *) echo "Usage: scripts/dev.sh up [sim|phone]"; exit 1 ;;
   esac
   kill_all_dev
-  RECALL_DEV_UP=starting "$ROOT/scripts/follow-main.sh" --once
+  PHONIA_DEV_UP=starting "$ROOT/scripts/follow-main.sh" --once
   mkdir -p "$ROOT/tmp"
   : >"$ROOT/tmp/api.log"
   (cd "$ROOT/apps/api" && exec uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000) \
@@ -109,7 +109,7 @@ up() {
   cap_api_log &
   local cap_pid=$!
   report_api_start &
-  RECALL_DEV_UP=running "$ROOT/scripts/follow-main.sh" &
+  PHONIA_DEV_UP=running "$ROOT/scripts/follow-main.sh" &
   local follow_pid=$!
   trap 'kill '"$follow_pid"' '"$cap_pid"' '"$api_pid"' 2>/dev/null; lsof -tiTCP:8000 -sTCP:LISTEN 2>/dev/null | xargs kill 2>/dev/null || true' EXIT
   echo "API on :8000 (log: tmp/api.log). Pulling merged changes from main every minute."

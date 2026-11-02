@@ -7,11 +7,11 @@ import { cacheDirectory, deleteAsync, getInfoAsync, readDirectoryAsync } from "e
  */
 const ACCOUNT_FILE_PREFIX = {
   /** Settings → Data controls: the whole account export (chats, memories). */
-  export: "recall-export-",
+  export: "phonia-export-",
   /** A chat's HTML opened in the system browser. */
-  htmlPreview: "recall-preview-",
+  htmlPreview: "phonia-preview-",
   /** A reply read aloud; deleted after it plays, unless the app stopped first. */
-  speech: "recall-tts-",
+  speech: "phonia-tts-",
 } as const;
 
 /**

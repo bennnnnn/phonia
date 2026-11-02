@@ -32,7 +32,7 @@ def bivariate_stats_signal(
     """Recognize correlation, covariance, or simple linear regression.
 
     The two data series must be explicit bracketed lists. Bare ``covariance``
-    follows Recall's existing variance convention and means population
+    follows Phonia's existing variance convention and means population
     covariance; ``sample covariance`` selects the n-1 denominator explicitly.
     """
     lower = text.lower()

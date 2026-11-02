@@ -58,7 +58,7 @@ EMAIL_DRAFT_HINT = (
     "asks them something (an invitation, a favour, a meeting, a yes/no question) and they did "
     "not say their answer, do not ask them and do not answer for them: give two short drafts, "
     "**Yes:** and **No:**, each a bold label on its own line followed by its own fence.\n"
-    "5. Recall cannot send email or SMS. Never say you sent it, emailed them, or texted "
+    "5. Phonia cannot send email or SMS. Never say you sent it, emailed them, or texted "
     "them — only that you drafted it for them to send."
 )
 

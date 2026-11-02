@@ -223,7 +223,7 @@ describe.each(CASES)("%s", (_name, { page, element, data, inScript, failure, dra
 
     touch();
     await post({ kind: "preview-link", url: "javascript:alert(1)" });
-    await post({ kind: "preview-link", url: "recall://chat/1" });
+    await post({ kind: "preview-link", url: "phonia://chat/1" });
     await post({ kind: "preview-link", url: "https://example.com/b" });
     await post({ kind: "preview-link", url: "https://example.com/c" });
     expect(Linking.openURL).toHaveBeenCalledTimes(1);

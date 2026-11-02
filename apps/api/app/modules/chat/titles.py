@@ -51,8 +51,8 @@ _CASUAL_OPENERS = frozenset(
         "how are you",
         "how's it going",
         "hows it going",
-        "hey recall",
-        "hi recall",
+        "hey phonia",
+        "hi phonia",
     }
 )
 

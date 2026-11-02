@@ -23,7 +23,7 @@
  *
  * `owner` classifies who may emit the fence on new turns:
  * - model: the active prompt may produce this
- * - server: Recall attaches or rewrites this after the stream
+ * - server: Phonia attaches or rewrites this after the stream
  * - legacy: still rendered for history; the prompt must not choose it for layout
  *
  * Do not add FenceId values casually. Prefer Markdown, `>` callouts/quotes, and

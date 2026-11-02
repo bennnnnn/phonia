@@ -10,7 +10,7 @@ request on it with it (code-health audit SCALE-01). Readers run in the SymPy poo
 - a SymPy entry point (parse, sympify, solve, simplify, …) called there.
 
 "Production async code" is the innermost ``async def`` on the stack: a test that calls a
-reader from its own async body is not a finding. ``RECALL_STRICT_LOOP=0`` turns it off.
+reader from its own async body is not a finding. ``PHONIA_STRICT_LOOP=0`` turns it off.
 Installed when conftest imports this module, before the app imports SymPy's names.
 """
 
@@ -27,7 +27,7 @@ from typing import Any
 
 from app.core import readings
 
-STRICT = os.environ.get("RECALL_STRICT_LOOP", "1") != "0"
+STRICT = os.environ.get("PHONIA_STRICT_LOOP", "1") != "0"
 _COROUTINE_FLAGS = inspect.CO_COROUTINE | inspect.CO_ASYNC_GENERATOR
 # What this test ran on the loop: "<what> from <async function>".
 found: list[str] = []

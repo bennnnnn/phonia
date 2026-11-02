@@ -48,7 +48,7 @@ VOICE_SPEND_CAP_MESSAGE = "Voice is temporarily unavailable. Try again later."
 # the phone's quota phrases ("daily limit", "today's limit"), which it reads as
 # the user's own limit.
 CHAT_SPEND_CAP_MESSAGE = (
-    "Recall is at capacity for today, so new messages are paused for everyone. "
+    "Phonia is at capacity for today, so new messages are paused for everyone. "
     "Try again after midnight UTC."
 )
 

@@ -181,7 +181,7 @@ it("a failed delete says so", async () => {
   expect(mockReplace).not.toHaveBeenCalled();
 });
 
-it("a delete refused while Recall is unavailable says so, to try again in a moment", async () => {
+it("a delete refused while Phonia is unavailable says so, to try again in a moment", async () => {
   mockDeleteAccount.mockResolvedValue("unavailable");
   const view = await render(<DataControlsScreen />);
   await fireEvent.press(view.getByText("settings.delete"));

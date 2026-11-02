@@ -1,10 +1,10 @@
 ---
-description: Recall FastAPI backend conventions
+description: Phonia FastAPI backend conventions
 globs: apps/api/**/*.py
 alwaysApply: false
 ---
 
-# Recall API (Python)
+# Phonia API (Python)
 
 ~168k lines in `app/` excluding tests. Product domains are migrating from horizontal
 routers/services folders into `modules/<domain>/`; infrastructure stays in core/gateways/repositories.

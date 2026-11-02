@@ -17,21 +17,21 @@ _PRIVACY_POLICY_MD = """# Privacy Policy
 
 **Effective date: {effective_date}**
 
-This policy explains what Recall collects, who receives it, how long it is kept, and how you control it. Recall is an AI chat app: to answer you, parts of your data must be sent to the outside AI and search services named below. Nothing is sent to them until you agree. In the phone app, the sign-in page says this next to its sign-in buttons, and signing in is your agreement; the web app asks after you sign in.
+This policy explains what Phonia collects, who receives it, how long it is kept, and how you control it. Phonia is an AI chat app: to answer you, parts of your data must be sent to the outside AI and search services named below. Nothing is sent to them until you agree. In the phone app, the sign-in page says this next to its sign-in buttons, and signing in is your agreement; the web app asks after you sign in.
 
 ## What We Collect
 
 - **Account information**: Your name, email address and profile picture from Google or Apple Sign-In, and which of the two you use.
 - **Profile and settings**: What you add in Settings, such as a display name or photo, age, country, job, custom instructions, language, time zone and preferences.
 - **Conversations**: Messages you send, responses from the AI, chat titles, summaries of long chats, and your thumbs-up/thumbs-down feedback.
-- **Learned facts**: Information Recall saves to personalize your experience (preferences, projects, facts you share). You can see, edit, mute or delete each one on the Memory screen, or turn memory off.
+- **Learned facts**: Information Phonia saves to personalize your experience (preferences, projects, facts you share). You can see, edit, mute or delete each one on the Memory screen, or turn memory off.
 - **Reminders**: To-dos and reminders you create or confirm.
-- **Files and photos**: Images and documents you attach, AI images you create, the text read from them, and numeric search indexes (embeddings) of your messages, memory and files that let Recall find relevant context.
-- **Scanned problems**: A photo you take or pick in the scanner (math, physics and chemistry) is sent to Recall's server to read the problem, and the text read from it comes back to you to check. Recall does not keep that photo; the problem you then send is saved like any other message. If you choose Send photo instead, or scan a biology problem, the photo is attached to the chat and kept like any other photo.
-- **Location**: Recall does not use your device's location. It keeps only your time zone (below) and the country you choose to add to your profile.
+- **Files and photos**: Images and documents you attach, AI images you create, the text read from them, and numeric search indexes (embeddings) of your messages, memory and files that let Phonia find relevant context.
+- **Scanned problems**: A photo you take or pick in the scanner (math, physics and chemistry) is sent to Phonia's server to read the problem, and the text read from it comes back to you to check. Phonia does not keep that photo; the problem you then send is saved like any other message. If you choose Send photo instead, or scan a biology problem, the photo is attached to the chat and kept like any other photo.
+- **Location**: Phonia does not use your device's location. It keeps only your time zone (below) and the country you choose to add to your profile.
 - **Device and session data**: The device name or model and platform of each signed-in session (listed in Settings → Security), your time zone, and, if you allow notifications, a push notification token with an id for this app install.
 - **Usage data**: Token and feature counts for daily quota tracking and a limited set of product events such as paywall views, purchase outcomes, notification permission results and how quickly replies start. Product events do not include prompts, message text, search queries, or attachment names.
-- **Purchases**: Your plan and subscription status, from RevenueCat. Apple or Google handle payment; Recall never sees your card details.
+- **Purchases**: Your plan and subscription status, from RevenueCat. Apple or Google handle payment; Phonia never sees your card details.
 
 ## How We Use Your Data
 
@@ -48,8 +48,8 @@ We do not sell your personal data and do not use it for advertising.
 
 - **AI model providers, through OpenRouter**: Your messages, recent chat history, relevant saved memory and reminders, profile details that help the answer (your name and, when relevant, email address, age, country, job, custom instructions and time zone), photos and files you attach with the text read from them, photos you scan in the scanner (math, physics and chemistry), and web search results. OpenRouter forwards each request to a company that runs the chosen model: the model's maker (currently Anthropic, OpenAI, DeepSeek, Alibaba's Qwen, Z.ai, and Black Forest Labs for AI images) or another hosting provider OpenRouter works with. Background work uses the same route: chat titles, memory, follow-up questions, reading photos and scanned PDFs, and the search indexes described above.
 - **OpenAI, for voice**: When you use voice input or read aloud, your recorded audio and the text to be read go to OpenAI.
-- **Mathpix, for math photos**: Photos of math problems you scan, or send asking for a solution, go to Mathpix to read the math. Recall asks Mathpix not to keep them to improve its service.
-- **Tavily, for web search and photo lookups**: Search words Recall writes from your message, which can include your city or, for nearby questions, your coordinates. If Tavily has no answer or your daily search allowance is used up, our server sends the same search words to public search engines (such as DuckDuckGo, Bing or Google) instead. You can turn web search and photo lookups off in Settings → Data controls.
+- **Mathpix, for math photos**: Photos of math problems you scan, or send asking for a solution, go to Mathpix to read the math. Phonia asks Mathpix not to keep them to improve its service.
+- **Tavily, for web search and photo lookups**: Search words Phonia writes from your message, which can include your city or, for nearby questions, your coordinates. If Tavily has no answer or your daily search allowance is used up, our server sends the same search words to public search engines (such as DuckDuckGo, Bing or Google) instead. You can turn web search and photo lookups off in Settings → Data controls.
 - **PubChem, for chemistry**: The names or structures of chemicals in a chemistry question, to look up their properties. No account details are sent.
 
 Each of these services handles the data under its own terms and privacy policy. Avoid sharing anything you would not want them to process.
@@ -68,7 +68,7 @@ Each of these services handles the data under its own terms and privacy policy. 
 - **Cloudflare R2** stores your files and photos.
 - **Neon** hosts the database.
 - **Upstash** hosts the cache, usage counters and background job queue.
-- **Fly.io** hosts Recall's servers.
+- **Fly.io** hosts Phonia's servers.
 - **Resend** delivers email.
 - **Expo** delivers push notifications (through Apple's and Google's push services) and app updates.
 
@@ -76,9 +76,9 @@ Your phone talks to some of these directly: Google or Apple when you sign in, Re
 
 ## Data Storage
 
-Your account data, conversations, memories, and limited product-event metadata are stored in a secure PostgreSQL database run by Neon; files are stored in Cloudflare R2. Connections to Recall and between its services are encrypted. Sign-in tokens on your phone are kept in the device's secure storage, and the phone keeps a copy of recent chats so they open quickly; signing out clears that copy. Our providers may process data in the United States and other countries.
+Your account data, conversations, memories, and limited product-event metadata are stored in a secure PostgreSQL database run by Neon; files are stored in Cloudflare R2. Connections to Phonia and between its services are encrypted. Sign-in tokens on your phone are kept in the device's secure storage, and the phone keeps a copy of recent chats so they open quickly; signing out clears that copy. Our providers may process data in the United States and other countries.
 
-Crash and error reports hold technical details (device type, operating system, app version and where the error happened). Recall sends them without request bodies or program variables, so message text and sign-in tokens stay out of them.
+Crash and error reports hold technical details (device type, operating system, app version and where the error happened). Phonia sends them without request bodies or program variables, so message text and sign-in tokens stay out of them.
 
 ## How Long We Keep Data
 
@@ -96,13 +96,13 @@ Crash and error reports hold technical details (device type, operating system, a
 - **Delete memories**: Remove individual learned facts from the Memory screen, or turn memory off.
 - **Delete chats**: Delete one chat or clear all of them.
 - **Turn things off**: Web search, notifications and email reminders each have a switch in Settings.
-- **AI processing**: Recall cannot answer without the AI services above. You can withdraw your agreement in the phone app (Settings → Data controls); Recall then cannot chat, use your voice or read photos until you agree again. To stop for good, delete your account.
+- **AI processing**: Phonia cannot answer without the AI services above. You can withdraw your agreement in the phone app (Settings → Data controls); Phonia then cannot chat, use your voice or read photos until you agree again. To stop for good, delete your account.
 
 Depending on where you live, you may also have the right to access, correct or delete your data, or to object to how it is used. Contact us to make a request.
 
 ## Children's Privacy
 
-Recall is not intended for users under 13. We do not knowingly collect data from children.
+Phonia is not intended for users under 13. We do not knowingly collect data from children.
 
 ## Changes
 

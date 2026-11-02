@@ -55,7 +55,7 @@ describe("homeReminderNudges", () => {
       dismissed: new Set(["a"]),
     });
     expect(writeAsStringAsync).toHaveBeenCalledWith(
-      "file:///docs/recall.home-nudges.user-1.json",
+      "file:///docs/phonia.home-nudges.user-1.json",
       JSON.stringify({ dismissed: ["a"] }),
     );
   });

@@ -2,13 +2,13 @@ import * as SecureStore from "expo-secure-store";
 
 export { clearOnboarded, getOnboarded, setOnboarded } from "@/lib/onboarding";
 
-const SESSION_KEY = "recall_session_v1";
+const SESSION_KEY = "phonia_session_v1";
 
 type TokenPair = { accessToken: string; refreshToken: string | null };
 
 class AuthStorageError extends Error {
   constructor() {
-    super("Recall could not access secure sign-in storage on this device. Please restart the app and try again.");
+    super("Phonia could not access secure sign-in storage on this device. Please restart the app and try again.");
     this.name = "AuthStorageError";
   }
 }

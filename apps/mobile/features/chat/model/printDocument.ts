@@ -75,7 +75,7 @@ function isPrintMathFenceLang(lang: string): boolean {
 }
 
 function wrapPrintDocument(title: string, bodyHtml: string, katexCss: string, meta?: string): string {
-  const safeTitle = escapeHtml(title.trim() || "Recall report");
+  const safeTitle = escapeHtml(title.trim() || "Phonia report");
   const metaBlock = meta?.trim()
     ? `<p class="meta">${escapeHtml(meta.trim())}</p>`
     : "";

@@ -79,11 +79,11 @@ it("forgets the quiz answers, link previews, maths and the reply still streaming
 
 it("deletes the account's export, previews, read-aloud audio and PDFs, and nothing else", async () => {
   mockFiles["file:///cache/"] = [
-    "recall-export-1.json",
-    "recall-preview-2.html",
-    "recall-tts-3.mp3",
+    "phonia-export-1.json",
+    "phonia-preview-2.html",
+    "phonia-tts-3.mp3",
     "cached-user.json",
-    "recall-scanner-switch-left.wav",
+    "phonia-scanner-switch-left.wav",
     "Print",
   ];
   mockFiles["file:///cache/Print/"] = ["0A1B.pdf", "notes.txt"];
@@ -97,9 +97,9 @@ it("deletes the account's export, previews, read-aloud audio and PDFs, and nothi
     "file:///cache/Audio/recording-2.m4a",
     "file:///cache/ExpoAudio/recording-1.m4a",
     "file:///cache/Print/0A1B.pdf",
-    "file:///cache/recall-export-1.json",
-    "file:///cache/recall-preview-2.html",
-    "file:///cache/recall-tts-3.mp3",
+    "file:///cache/phonia-export-1.json",
+    "file:///cache/phonia-preview-2.html",
+    "file:///cache/phonia-tts-3.mp3",
   ]);
 });
 

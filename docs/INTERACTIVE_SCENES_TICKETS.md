@@ -1,12 +1,12 @@
 # Interactive scenes: real objects and live sliders
 
-The roadmap for making Recall's STEM pictures look like the thing in the question and respond
+The roadmap for making Phonia's STEM pictures look like the thing in the question and respond
 when a student changes a value. It is written to be picked up later, ticket by ticket. Status:
 **planned, not started** (decided 2026-10-20).
 
 ## Why
 
-The goal is to be the biggest STEM learning app. About a week after launch, Recall is to be
+The goal is to be the biggest STEM learning app. About a week after launch, Phonia is to be
 refocused on STEM, with more STEM content, more capacity, and a UI built around it. Pictures are
 how a student remembers an answer. Two things would make them teach:
 

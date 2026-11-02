@@ -1,7 +1,7 @@
 """Where a provider may cache a chat prompt, for the models that cache only a marked prefix.
 
 A chat prompt opens with two system messages (``modules/chat/prompt_builder``): the
-stable one, the same text on every turn for this user (who Recall is, the tone and
+stable one, the same text on every turn for this user (who Phonia is, the tone and
 unclear-message rules, their own instructions and language), then the rules this kind
 of turn needs; the history and what changes on every turn follow. Most providers reuse
 the longest prefix they have seen by themselves. A model flagged ``cache_breakpoints``

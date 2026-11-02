@@ -1,5 +1,5 @@
 {
-  "$comment": "Recall icon name -> Lucide icon id (https://lucide.dev, ISC License). Run `pnpm icons` after editing to regenerate ui/icons/glyphs.generated.ts. App-only drawings live in ui/icons/custom.tsx; logos live in ui/icons/brand.tsx.",
+  "$comment": "Phonia icon name -> Lucide icon id (https://lucide.dev, ISC License). Run `pnpm icons` after editing to regenerate ui/icons/glyphs.generated.ts. App-only drawings live in ui/icons/custom.tsx; logos live in ui/icons/brand.tsx.",
   "icons": {
     "activity": "activity",
     "alert-circle": "circle-alert",

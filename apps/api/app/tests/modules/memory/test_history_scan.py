@@ -162,7 +162,7 @@ async def test_a_scan_asked_for_a_stamped_user_publishes_again(
 @pytest.mark.asyncio
 async def test_scan_reads_recent_chats_with_user_lines_once(db_session, scan_env):
     user = await _make_user(db_session)
-    talk = Chat(user_id=user.id, title="Recall app")
+    talk = Chat(user_id=user.id, title="Phonia app")
     other = Chat(user_id=user.id, title="Spanish notes")
     empty = Chat(user_id=user.id, title="Nothing yet")
     db_session.add_all([talk, other, empty])
@@ -173,7 +173,7 @@ async def test_scan_reads_recent_chats_with_user_lines_once(db_session, scan_env
                 chat_id=talk.id,
                 user_id=user.id,
                 role="user",
-                content="I'm building Recall with Expo",
+                content="I'm building Phonia with Expo",
             ),
             Message(chat_id=talk.id, user_id=user.id, role="assistant", content="Nice!"),
             Message(chat_id=other.id, user_id=user.id, role="user", content="hola"),
@@ -243,7 +243,7 @@ async def test_scan_counts_as_done_after_three_passes_that_miss_chats(db_session
 @pytest.mark.asyncio
 async def test_history_pass_cannot_bring_back_a_fact_the_user_deleted(db_session, fake_redis):
     user = await _make_user(db_session)
-    chat = Chat(user_id=user.id, title="Recall app")
+    chat = Chat(user_id=user.id, title="Phonia app")
     db_session.add(chat)
     await db_session.flush()
     db_session.add(
@@ -251,11 +251,11 @@ async def test_history_pass_cannot_bring_back_a_fact_the_user_deleted(db_session
             chat_id=chat.id,
             user_id=user.id,
             role="user",
-            content="I'm building Recall with Expo",
+            content="I'm building Phonia with Expo",
             created_at=datetime(2026, 9, 1, tzinfo=UTC),
         )
     )
-    fact = Memory(user_id=user.id, type="project", text="User is building Recall with Expo")
+    fact = Memory(user_id=user.id, type="project", text="User is building Phonia with Expo")
     db_session.add(fact)
     await db_session.flush()
 

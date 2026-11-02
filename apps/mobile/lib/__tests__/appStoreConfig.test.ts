@@ -93,7 +93,7 @@ describe("app store config", () => {
 
 /**
  * The iOS privacy manifest: `ios.privacyManifests` in app.json, which `expo prebuild` writes to
- * ios/Recall/PrivacyInfo.xcprivacy. One row per Apple data type the app collects, each checked
+ * ios/Phonia/PrivacyInfo.xcprivacy. One row per Apple data type the app collects, each checked
  * against the code; docs/PRODUCTION.md (Store submission) gives the same rows as the App Store
  * Connect answers. A change to what the app sends changes this table, app.json and that list.
  */
@@ -284,19 +284,19 @@ describe("simulator build", () => {
   };
 
   it("leaves ML Kit out of a simulator build only", () => {
-    expect(pluginNames({ RECALL_IOS_SIMULATOR: "1" })).not.toContain(
+    expect(pluginNames({ PHONIA_IOS_SIMULATOR: "1" })).not.toContain(
       "react-native-vision-camera-mlkit",
     );
-    expect(pluginNames({ RECALL_IOS_SIMULATOR: undefined })).toContain(
+    expect(pluginNames({ PHONIA_IOS_SIMULATOR: undefined })).toContain(
       "react-native-vision-camera-mlkit",
     );
   });
 
   it("unlinks ML Kit's iOS code in a simulator build only", () => {
     const load = (simulator: boolean) => {
-      const saved = process.env.RECALL_IOS_SIMULATOR;
-      if (simulator) process.env.RECALL_IOS_SIMULATOR = "1";
-      else delete process.env.RECALL_IOS_SIMULATOR;
+      const saved = process.env.PHONIA_IOS_SIMULATOR;
+      if (simulator) process.env.PHONIA_IOS_SIMULATOR = "1";
+      else delete process.env.PHONIA_IOS_SIMULATOR;
       try {
         let config: { dependencies?: Record<string, unknown> } = {};
         jest.isolateModules(() => {
@@ -305,8 +305,8 @@ describe("simulator build", () => {
         });
         return config;
       } finally {
-        if (saved === undefined) delete process.env.RECALL_IOS_SIMULATOR;
-        else process.env.RECALL_IOS_SIMULATOR = saved;
+        if (saved === undefined) delete process.env.PHONIA_IOS_SIMULATOR;
+        else process.env.PHONIA_IOS_SIMULATOR = saved;
       }
     };
     expect(load(true).dependencies).toEqual({

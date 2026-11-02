@@ -1,7 +1,7 @@
 import { getApiUrl } from "@/lib/config";
 
-/** Only the configured API origin and base path may receive Recall credentials. */
-export function recallAttachmentPath(uri: string): string | null {
+/** Only the configured API origin and base path may receive Phonia credentials. */
+export function phoniaAttachmentPath(uri: string): string | null {
   try {
     const base = new URL(`${getApiUrl().replace(/\/+$/, "")}/`);
     const url = new URL(uri);
@@ -15,7 +15,7 @@ export function recallAttachmentPath(uri: string): string | null {
 }
 
 export function attachmentRequestHeaders(uri: string, token: string | null): Record<string, string> {
-  return token && recallAttachmentPath(uri) ? { Authorization: `Bearer ${token}` } : {};
+  return token && phoniaAttachmentPath(uri) ? { Authorization: `Bearer ${token}` } : {};
 }
 
 /** The API serves thumbnails up to this width (`?w=`); a larger value is rejected with 422. */
@@ -40,7 +40,7 @@ export function resolveAttachmentUri(options: {
     const path = options.path?.trim();
     if (!path) return null;
     // Plain http only for the API itself (a dev server); never a third party.
-    if (path.startsWith("https://") || (path.startsWith("http://") && recallAttachmentPath(path))) {
+    if (path.startsWith("https://") || (path.startsWith("http://") && phoniaAttachmentPath(path))) {
       uri = path;
     } else if (path.startsWith("/attachments/")) {
       uri = `${getApiUrl().replace(/\/+$/, "")}${path}`;
@@ -48,7 +48,7 @@ export function resolveAttachmentUri(options: {
   }
   if (!uri) return null;
   const width = options.width;
-  if (width && Number.isFinite(width) && width > 0 && recallAttachmentPath(uri)) {
+  if (width && Number.isFinite(width) && width > 0 && phoniaAttachmentPath(uri)) {
     const url = new URL(uri);
     url.searchParams.set("w", String(attachmentThumbWidth(width)));
     return url.toString();

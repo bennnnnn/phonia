@@ -1,4 +1,4 @@
-# Recall — Production Provisioning Checklist
+# Phonia — Production Provisioning Checklist
 
 Step-by-step guide to provision production infrastructure. Pair with [`README.md`](../README.md) §Production deployment and run [`scripts/verify-production.sh`](../scripts/verify-production.sh) after each stage.
 
@@ -17,7 +17,7 @@ or alert on every usage-billed account.
 |---------|--------------|-----------------|--------|-------|
 | Neon | Postgres + pgvector | Paid, usage-based, for the whole org | AWS `us-east-1` | No production database. Development uses a throwaway free database in `us-east-1`; its data does not matter. The paid one is created fresh on deploy day, and it is the first data we keep. |
 | Upstash | Redis (jobs, quota, rate limits, sign-out) | Pay as you go | `us-east-1` | No production database yet; local dev uses Homebrew Redis. |
-| Fly.io | API and worker machines | Pay as you go (card on file) | `iad` | Not deployed. `recall-api.fly.dev` answers as an unrelated app, so the name `recall-api` may be taken: pick a free name and update `fly.toml` and the app's `EXPO_PUBLIC_API_URL`. |
+| Fly.io | API and worker machines | Pay as you go (card on file) | `iad` | Not deployed. `phonia-api.fly.dev` answers as an unrelated app, so the name `phonia-api` may be taken: pick a free name and update `fly.toml` and the app's `EXPO_PUBLIC_API_URL`. |
 | Cloudflare R2 | Attachments | Pay as you go | Location hint: Eastern North America | Not created. |
 | OpenRouter | Chat models | Prepaid credits with auto top-up | — | Dev key in `apps/api/.env`. |
 | OpenAI | Speech to text, read aloud | Pay as you go with a monthly limit | — | |
@@ -144,7 +144,7 @@ their next request.
 
 Required for production attachments (`STORAGE_BACKEND=r2`).
 
-- [ ] Create R2 bucket (e.g. `recall-attachments`)
+- [ ] Create R2 bucket (e.g. `phonia-attachments`)
 - [ ] Create API token with R2 read/write on bucket
 - [ ] Set secrets:
   - `STORAGE_BACKEND=r2`
@@ -231,7 +231,7 @@ an up-to-date `main` unless `--force`.
       `main` only, and move `FLY_API_TOKEN` and `EXPO_TOKEN` there as
       environment secrets (delete the repository-level copies) so no other
       job can read them. `FLY_API_TOKEN` should be a deploy token for this app
-      (`fly tokens create deploy --app recall-api`), not a personal token.
+      (`fly tokens create deploy --app phonia-api`), not a personal token.
       GitHub offers environments in private repositories on Pro, Team and
       Enterprise plans, and required reviewers there only on Enterprise; on a
       plan without them the gate job and the main-only checks still apply,
@@ -257,7 +257,7 @@ What one deploy does (`fly.toml`):
    background work for up to 10s. The worker leaves unfinished jobs pending for
    the new worker. Keep these numbers in step in `fly.toml` and
    `apps/api/Dockerfile` (`app/tests/test_deploy_config.py` checks them).
-4. The workflow smoke-checks `https://recall-api.fly.dev` (readiness must
+4. The workflow smoke-checks `https://phonia-api.fly.dev` (readiness must
    report `"redis": "ok"`). The image is labelled `git-<sha>`
    (`fly releases --image` maps a release back to its commit).
 
@@ -310,12 +310,12 @@ the app shows the store's localized price from the RevenueCat offering.
 
 ### What to create (owner)
 
-1. **App Store Connect** — one subscription group (e.g. "Recall") holding two
+1. **App Store Connect** — one subscription group (e.g. "Phonia") holding two
    auto-renewable monthly subscriptions, e.g. `recall_plus_monthly` ($7.99) and
    `recall_pro_monthly` ($13.99). Rank Pro **above** Plus in the group (level 1),
    so Plus → Pro is an immediate upgrade and Pro → Plus takes effect at renewal.
    If a Pro product already exists, keep it as the Pro product in that group.
-2. **Play Console** — two subscriptions (e.g. `recall_plus`, `recall_pro`), each
+2. **Play Console** — two subscriptions (e.g. `phonia_plus`, `phonia_pro`), each
    with a monthly base plan. The app replaces the Plus subscription when someone
    buys Pro (prorated, immediate), so nobody pays for both.
 3. **RevenueCat → Entitlements** — keep `pro` (the single-plan id; existing
@@ -403,7 +403,7 @@ permission. Changing any of it is a native change (bump `version`, new build).
 - **Export compliance:** `ios.config.usesNonExemptEncryption: false` (HTTPS
   only), so App Store Connect does not ask on every build.
 - **Privacy manifest:** `ios.privacyManifests` in `app.json`, which `expo prebuild`
-  writes to `ios/Recall/PrivacyInfo.xcprivacy`. It lists the data the app
+  writes to `ios/Phonia/PrivacyInfo.xcprivacy`. It lists the data the app
   collects (the [App Privacy answers](#app-privacy-answers-draft) below) with
   `NSPrivacyTracking: false`, and the one required-reason API the app's own code
   reaches: file timestamps, `C617.1`, for the modification times and sizes of its
@@ -460,7 +460,7 @@ every row, and the manifest says `NSPrivacyTracking: false`.
 | Contact Info → Email Address | Yes | No | App Functionality | Google or Apple sign-in; reminder, welcome and receipt emails |
 | Contact Info → Name | Yes | No | App Functionality, Product Personalization | Sign-in and profile name; the greeting and the model's answers use it |
 | User Content → Photos or Videos | Yes | No | App Functionality | Attached photos, maths scans, the profile photo |
-| User Content → Audio Data | Yes | No | App Functionality | Voice input (sent to OpenAI; Recall keeps the text, not the audio) |
+| User Content → Audio Data | Yes | No | App Functionality | Voice input (sent to OpenAI; Phonia keeps the text, not the audio) |
 | User Content → Other User Content | Yes | No | App Functionality, Product Personalization | Messages, chats, memory, to-dos, attached files, custom instructions, thumbs-up/down feedback |
 | Identifiers → User ID | Yes | No | App Functionality, Analytics | The account id, also RevenueCat's app user id; product events are stored under it |
 | Identifiers → Device ID | Yes | No | App Functionality, Analytics | This install's id (`lib/installationId.ts`), sent with the push token and product events; the push token |
@@ -494,7 +494,7 @@ background, and runs the new code from the next launch.
 - [ ] Publish: GitHub **Actions → Publish app update** (channel + message), or
   ```bash
   cd apps/mobile
-  RECALL_UPDATE_PROFILE=production eas update --channel production \
+  PHONIA_UPDATE_PROFILE=production eas update --channel production \
     --environment production --message "what changed"
   ```
 - [ ] A build takes only updates for its own runtime version, which is the
@@ -523,7 +523,7 @@ background, and runs the new code from the next launch.
 - [ ] OAuth consent screen published (sign-in scopes only: openid, email, profile)
 - [ ] Client IDs match the mobile bundle IDs and `GOOGLE_CLIENT_ID`
 - [ ] **Android: one Android OAuth client per signing certificate**, all with
-      package `com.recall.app` (the app signs in with the web client ID; these
+      package `com.phonia.app` (the app signs in with the web client ID; these
       clients only vouch for the certificate). Google is the only sign-in on
       Android, so a missing one fails every sign-in with `DEVELOPER_ERROR`:
   - **Play app signing key**: Play Console → Test and release → App integrity
@@ -543,10 +543,10 @@ background, and runs the new code from the next launch.
 
 - [ ] Landing page live
 - [ ] Support URL for store listings
-- [ ] `SUPPORT_EMAIL` (Fly secret) set to `support@recall.com`, a mailbox you read. The privacy
+- [ ] `SUPPORT_EMAIL` (Fly secret) set to `support@phonia.com`, a mailbox you read. The privacy
       policy, terms and account-deletion pages show it as the contact; production boot logs a
       warning while it is empty
-- [ ] `EXPO_PUBLIC_SUPPORT_EMAIL` (EAS environment variable) set to `support@recall.com` too.
+- [ ] `EXPO_PUBLIC_SUPPORT_EMAIL` (EAS environment variable) set to `support@phonia.com` too.
       Settings → Help's Contact support, Report a problem and Send feedback email it; a build
       without it hides those rows and says support is not set up
 - [ ] Privacy policy + terms URLs for both stores: `https://<api-host>/legal/privacy` and
@@ -634,7 +634,7 @@ index jobs at once than it has of them.
 | `MAX_SCAN_REQUEST_BODY_BYTES` | `6291456` (6 MiB) | `/{math,physics,chemistry}/scan/read`: one cropped photo, at most 4 MB decoded (`SCAN_MAX_IMAGE_BYTES`; the phone sends a JPEG of at most 2048 px). The route checks the user's open reads (`SCAN_READ_MAX_IN_FLIGHT`, `2`), hourly rate and daily reads before it reads the body, and refuses bytes that are not a JPEG, PNG or WebP before a reader is called. |
 | `ATTACHMENT_OCR_MAX_PAGE_PIXELS` | `4000000` | Pixel budget per rendered PDF page (scanned-PDF OCR, chat path and index job). The page size comes from the file: a 435-byte PDF with one 14400x14400 pt page peaked at 5.1 GB RSS before; now 259 MB. A letter page at the default 1.5x scale (~1.1 MP) is unaffected. |
 | `ATTACHMENT_IMAGE_MAX_DECODE_PIXELS` | `16000000` | Largest decode for a gallery thumbnail (`GET /attachments/{id}/file?w=`), which now runs off the event loop. JPEG decodes at a reduced scale first, so phone photos work; a lossless image past the budget gets 422. A 505 KiB 13000x13000 PNG used to add ~650 MB RSS and block the loop 1.4s. `0` disables. |
-| `JOBS_STREAM_MAX_LEN` | `50000` | Hard ceiling on the `recall:jobs` Redis Stream, applied on every `XADD`. The worker trims only entries that were delivered and acked, so the ceiling bites only when no worker has read for a long time; past it the oldest jobs are dropped, and the queue metrics warn at 90%. `0` disables. |
+| `JOBS_STREAM_MAX_LEN` | `50000` | Hard ceiling on the `phonia:jobs` Redis Stream, applied on every `XADD`. The worker trims only entries that were delivered and acked, so the ceiling bites only when no worker has read for a long time; past it the oldest jobs are dropped, and the queue metrics warn at 90%. `0` disables. |
 | uvicorn `--ws-max-size` (in `fly.toml` and `apps/api/Dockerfile`) | `1048576` (1 MiB) | Largest WebSocket frame (uvicorn default 16 MiB). A chat frame is at most ~130 KB. Change both files together. |
 | WebSocket frame budget (`modules/chat/ws_limits.py`) | 120 frames/min per socket | Every frame after auth counts, including pings, cancels and invalid JSON (only message/regenerate were limited). A ping is answered with a pong; the phone pings once per socket and when a send goes unanswered. Over budget the server sends `{"code": "rate_limited"}` and closes with 1008; a reply in progress is still saved. |
 | `WS_MAX_SOCKETS_PER_USER` | `5` | Open chat WebSockets per user across every `app` machine (the phone holds one per open chat screen, and closes it in the background). Past it a new socket is closed with code 4429 and the phone sends over SSE instead. Counted in Redis (`wssock:{user}`, one 90 s lease per socket, renewed every 30 s), so a machine that dies frees its sockets within 90 s; with Redis unreachable a new socket is refused (the phone uses SSE). `0` disables. |
@@ -690,7 +690,7 @@ UTC day (Redis `spend_musd:<date>`, `core/spend_counter.py`). What adds to it:
 Once the day's total reaches the cap, until 00:00 UTC:
 
 - a new chat message or regenerate is refused before any model call. Both
-  transports send `{"type": "error", "message": "Recall is at capacity for
+  transports send `{"type": "error", "message": "Phonia is at capacity for
   today, so new messages are paused for everyone. Try again after midnight
   UTC."}`. It has no `quota_exceeded` code, so the phone shows that text and
   not its upgrade prompt (the user's own allowance is not used up);

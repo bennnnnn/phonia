@@ -29,7 +29,7 @@ from app.modules.math.tools.school.geometry_measures.coordinates import _circle_
 
 @pytest.fixture(autouse=True)
 def _strict(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setenv("RECALL_STRICT_DECLINES", "1")
+    monkeypatch.setenv("PHONIA_STRICT_DECLINES", "1")
 
 
 @pytest.mark.parametrize("text", ["(1, 2)", "1, 2", "True", "x == 1", "limit", "N"])

@@ -1,7 +1,7 @@
 """P6: circular motion — centripetal force, acceleration and orbital period.
 
 The whole risk in this ticket is the vocabulary. "circle", "radius" and
-"period" all belong to subjects Recall already verifies — circle geometry and
+"period" all belong to subjects Phonia already verifies — circle geometry and
 trigonometry — and the geometry extractors run *after* physics, so any of them
 used as a cue would have taken those questions rather than competed for them.
 Only words that mean *motion* qualify, and "period" counts solely beside a

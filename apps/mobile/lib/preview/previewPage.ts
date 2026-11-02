@@ -19,8 +19,8 @@ export type PreviewPage<L extends string = string> = {
 export type PreviewPageConfig = Record<string, unknown>;
 
 /** Where the page finds its block's data, and the function that starts it. */
-const CONFIG_GLOBAL = "RECALL_PREVIEW";
-const START_GLOBAL = "RECALL_PREVIEW_START";
+const CONFIG_GLOBAL = "PHONIA_PREVIEW";
+const START_GLOBAL = "PHONIA_PREVIEW_START";
 
 /**
  * What a page posts for a link the user tapped: `{ kind, url }`. Any script in the page can post

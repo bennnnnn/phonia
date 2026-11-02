@@ -32,13 +32,13 @@ _METRICS_INTERVAL_S = 300
 # Dead letters added since the last report that warrant a warning. The depth itself
 # alerted every 5 minutes, from every worker, forever after one provider blip.
 _DLQ_GROWTH_ALERT = 20
-_DLQ_DEPTH_KEY = "recall:jobs:dlq:reported_depth"
+_DLQ_DEPTH_KEY = "phonia:jobs:dlq:reported_depth"
 _PENDING_ALERT_THRESHOLD = 50
 # Jobs not yet delivered to any worker, and how long the oldest has waited.
 _BACKLOG_ALERT_THRESHOLD = 1_000
 _BACKLOG_AGE_ALERT_S = 600
 # One worker reports per interval; the rest skip.
-_METRICS_LOCK_KEY = "recall:jobs:metrics:lock"
+_METRICS_LOCK_KEY = "phonia:jobs:metrics:lock"
 # Types safe to run again by themselves once their dependency is back: replaying one
 # twice does no harm. At most this many per pass, each at most _MAX_AUTO_REPLAYS times.
 _AUTO_REPLAY_TYPES = frozenset(
@@ -47,7 +47,7 @@ _AUTO_REPLAY_TYPES = frozenset(
 _AUTO_REPLAY_BATCH = 50
 _MAX_AUTO_REPLAYS = 3
 _AUTO_REPLAY_MIN_AGE_S = 3_600
-_AUTO_REPLAY_LOCK_KEY = "recall:jobs:dlq:replay_lock"
+_AUTO_REPLAY_LOCK_KEY = "phonia:jobs:dlq:replay_lock"
 _AUTO_REPLAY_INTERVAL_S = 3_600
 
 

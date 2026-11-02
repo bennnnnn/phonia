@@ -7,15 +7,15 @@ you've told me, so I'm setting it aside and answering from what you've shared, D
 memory preamble); this pass removes the ones a model writes anyway.
 
 It is deliberately narrow. A sentence goes only when it names an internal part from a
-closed list: a label only Recall's prompt uses ("[Chemistry note]", "saved memory
+closed list: a label only Phonia's prompt uses ("[Chemistry note]", "saved memory
 block", "BEGIN UNTRUSTED CONTENT"), or a word that also has an everyday meaning
 ("memory block" in C, "system prompt" in prompt writing) together with words about
-this user's chat with Recall ("this conversation", "what you've told me", "your … on
+this user's chat with Phonia ("this conversation", "what you've told me", "your … on
 file"; not a bare "your name" or "about you", which an answer about a CMS or an LLM
 uses). The sentence after it goes too when it points back ("It names a different
 person…"). Never inside a code fence, an inline code span, a table, a heading or a
 quote, never the whole reply, and never on a turn whose recent messages name these
-parts or prompt writing, or whose message asks about language models or Recall's memory.
+parts or prompt writing, or whose message asks about language models or Phonia's memory.
 """
 
 from __future__ import annotations
@@ -35,7 +35,7 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
-# Labels and wrappers only Recall's prompt writes.
+# Labels and wrappers only Phonia's prompt writes.
 _PROMPT_LABEL = re.compile(
     r"\[(?:chemistry|physics|math) (?:note|context)\]|\bsaved[- ]memory block\b"
     r"|\bknown[- ]facts block\b|\b(?:begin|end) (?:untrusted content|verified (?:math|physics))\b"
@@ -72,7 +72,7 @@ _ASKED_ABOUT_PARTS = re.compile(
     r"|\bverified block",
     re.IGNORECASE,
 )
-# This message asks about language models or about what Recall remembers. Only this
+# This message asks about language models or about what Phonia remembers. Only this
 # one: "I asked ChatGPT earlier" two messages back says nothing about this reply.
 _ASKED_ABOUT_MODELS = re.compile(
     r"\bllms?\b|\bgpts?\b|\bchatgpt\b|\bchat ?bots?\b|\blanguage models?\b"

@@ -3,7 +3,7 @@
 Each ``PromptSection`` says when it applies to a ``PromptTurn`` and what text it adds.
 The prompt is ordered most stable first, so a provider can reuse an earlier turn's
 prefix (prompt caching), the chat's history included. ``STABLE_SECTIONS`` is the first
-system message, the same text on every turn for this user: who Recall is, the tone and
+system message, the same text on every turn for this user: who Phonia is, the tone and
 unclear-message rules, their own instructions and language. ``TURN_SECTIONS`` is the
 second: the rules this kind of turn needs (length, style, lookups), the profile and
 the chat's summary; consecutive turns of one kind send it unchanged. The history comes
@@ -55,6 +55,7 @@ from app.modules.chat.prompt_constants import (
 )
 from app.modules.chat.prompt_constants.multi_part import multi_part_contract
 from app.modules.chat.prompt_constants.reactions import clock_is_relevant
+from app.modules.chat.prompt_constants.tutor import TUTOR_IDENTITY, TUTOR_SAFETY, TUTOR_TEACHING
 from app.modules.chat.prompt_context_hints import integration_hints, lookup_hints, slim_geo_hints
 from app.modules.chat.prompt_format import (
     PromptRule,
@@ -260,7 +261,7 @@ def _advice(turn: PromptTurn) -> list[str]:
 # the turn (its kind, its words, the clock or what was loaded for it).
 STABLE_SECTIONS: tuple[PromptSection, ...] = (
     PromptSection(
-        _always, lambda _t: ["You are Recall, a helpful personal AI assistant."], name="identity"
+        _always, lambda _t: [TUTOR_IDENTITY, TUTOR_TEACHING, TUTOR_SAFETY], name="identity"
     ),
     PromptSection(
         _always,

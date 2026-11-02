@@ -14,7 +14,7 @@ import {
   writeAsStringAsync,
 } from "expo-file-system/legacy";
 
-const FILE_NAME = "recall.installation-id.txt";
+const FILE_NAME = "phonia.installation-id.txt";
 
 function filePath(): string | null {
   if (!documentDirectory) return null;

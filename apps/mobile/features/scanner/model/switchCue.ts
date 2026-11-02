@@ -46,7 +46,7 @@ async function cueFileUri(direction: SwitchDirection): Promise<string | null> {
   const write = (async () => {
     if (!cacheDirectory) return null;
     const directionName = direction > 0 ? "forward" : "back";
-    const path = `${cacheDirectory}recall-scanner-switch-${directionName}.wav`;
+    const path = `${cacheDirectory}phonia-scanner-switch-${directionName}.wav`;
     await writeAsStringAsync(path, buildScannerSwitchCueBase64(direction), {
       encoding: EncodingType.Base64,
     });

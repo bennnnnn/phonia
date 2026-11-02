@@ -10,7 +10,7 @@ jest.mock("@sentry/react-native", () => ({
   addBreadcrumb: jest.fn(),
 }));
 
-jest.mock("@/lib/config", () => ({ getApiUrl: () => "https://api.recall.test" }));
+jest.mock("@/lib/config", () => ({ getApiUrl: () => "https://api.phonia.test" }));
 
 type SdkMock = { captureException: jest.Mock; captureMessage: jest.Mock };
 

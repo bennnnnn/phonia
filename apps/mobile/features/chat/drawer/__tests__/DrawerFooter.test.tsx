@@ -8,7 +8,7 @@ let mockUser: { name: string; avatar_url: string | null };
 let mockToken: string;
 
 jest.mock("@/contexts/AuthContext", () => ({ useAuth: () => ({ user: mockUser, token: mockToken }) }));
-jest.mock("@/lib/config", () => ({ getApiUrl: () => "https://api.recall.test" }));
+jest.mock("@/lib/config", () => ({ getApiUrl: () => "https://api.phonia.test" }));
 jest.mock("@/lib/haptics", () => ({ tap: jest.fn() }));
 
 const styles = makeConversationListStyles(lightTheme);
@@ -47,7 +47,7 @@ it("updates the sidebar photo and its credentials when the account changes", asy
 
   expect(view.queryByText("BR")).toBeNull();
   expect(view.getByTestId("avatar-image").props.source).toEqual({
-    uri: "https://api.recall.test/attachments/11111111-1111-4111-8111-111111111111/file",
+    uri: "https://api.phonia.test/attachments/11111111-1111-4111-8111-111111111111/file",
     headers: { Authorization: "Bearer refreshed-token" },
   });
 });

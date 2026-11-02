@@ -46,7 +46,7 @@ export function resolveChatError(options: {
   if (options.code === "model_unavailable") {
     return { kind: "model_unavailable", message: options.t("chat.model_unavailable") };
   }
-  // Recall's database or Redis is down (the socket's frame, a 503's body): its own words,
+  // Phonia's database or Redis is down (the socket's frame, a 503's body): its own words,
   // translated, where the server's English showed.
   if (options.code === UNAVAILABLE_CODE) {
     return { kind: "generic", message: options.t("common.service_unavailable") };

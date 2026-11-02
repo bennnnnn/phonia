@@ -1,4 +1,4 @@
-# Recall — Math tutoring tickets: verify the learning, not only the answer
+# Phonia — Math tutoring tickets: verify the learning, not only the answer
 
 The September 2026 math review found the answer path strong: SymPy verifies ~34 kinds and the
 app renders the result. What it did not verify was the *learning* — the steps a lesson shows,

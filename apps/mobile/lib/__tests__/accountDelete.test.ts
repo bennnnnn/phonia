@@ -13,7 +13,7 @@ describe("isAccountDeleteComplete", () => {
 });
 
 describe("accountDeleteFailureKey", () => {
-  it("says Recall is unavailable, to try again, when the API could not serve the delete", () => {
+  it("says Phonia is unavailable, to try again, when the API could not serve the delete", () => {
     expect(accountDeleteFailureKey("unavailable")).toBe("common.service_unavailable");
   });
 

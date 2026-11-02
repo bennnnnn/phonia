@@ -295,7 +295,7 @@ describe("failure reports", () => {
   it.each([
     ["offline", new TypeError("Network request failed"), true],
     ["timeout", Object.assign(new Error("Aborted"), { name: "AbortError" }), true],
-    ["refresh timeout", new Error("Could not reach the Recall server. Check your connection and try again."), true],
+    ["refresh timeout", new Error("Could not reach the Phonia server. Check your connection and try again."), true],
     ["sign-out", Object.assign(new Error("Your sign-in changed."), { name: "SessionChangedError" }), true],
     ["expired sign-in", httpError(401), true],
     ["server error", httpError(500), false],

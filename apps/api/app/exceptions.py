@@ -153,7 +153,7 @@ class ConsentRequiredError(ChatServiceError):
 
     def __init__(
         self,
-        message: str = "Agree to how Recall uses outside AI services to continue.",
+        message: str = "Agree to how Phonia uses outside AI services to continue.",
     ) -> None:
         super().__init__(message)
 

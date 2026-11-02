@@ -1,6 +1,6 @@
 """Reference-photo lookup MCP adapter — model-callable when the tool loop is on.
 
-This returns a *real* photo (Tavily image search, mirrored into Recall's
+This returns a *real* photo (Tavily image search, mirrored into Phonia's
 storage). Persists
 the attachment + assistant ``[Image: …]`` marker and signals a terminal turn
 via ``ToolResult.data`` — same terminal-image contract the chat tool loop
@@ -61,7 +61,7 @@ class ImageSearchAdapter:
             return ToolResult(
                 name=self.name,
                 content=(
-                    "No photo search for molecules, written formulas, equations or graphs: Recall "
+                    "No photo search for molecules, written formulas, equations or graphs: Phonia "
                     "draws those. Answer in your reply instead."
                 ),
             )

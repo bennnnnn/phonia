@@ -42,7 +42,7 @@ class AccountExistsError(DomainError):
 
     def __init__(self, sign_in_with: SignInProvider) -> None:
         super().__init__(
-            "This email already has a Recall account. Sign in with "
+            "This email already has a Phonia account. Sign in with "
             f"{_PROVIDER_LABELS[sign_in_with]}, the way you signed in before.",
             sign_in_with=sign_in_with,
         )

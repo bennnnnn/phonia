@@ -5,7 +5,7 @@
 
 import { prefFilePath, readPrefFile, writePrefFile } from "@/lib/filePrefs";
 
-const FILE_NAME = "recall.haptics.txt";
+const FILE_NAME = "phonia.haptics.txt";
 
 export async function getHapticsPreference(): Promise<boolean> {
   return (await readPrefFile(prefFilePath(FILE_NAME)))?.trim() !== "off";

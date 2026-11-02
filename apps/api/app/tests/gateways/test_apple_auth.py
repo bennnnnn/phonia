@@ -36,7 +36,7 @@ def _make_apple_token(
     now = int(time.time())
     claims: dict[str, Any] = {
         "iss": "https://appleid.apple.com",
-        "aud": "com.recall.app",
+        "aud": "com.phonia.app",
         "sub": sub,
         "email": email,
         "email_verified": True,
@@ -61,7 +61,7 @@ def _jwks(kid: str, jwk: dict[str, Any]) -> dict[str, Any]:
 @pytest.mark.asyncio
 async def test_verify_apple_id_token_accepts_valid_token():
     token, kid, jwk = _make_apple_token()
-    settings = Settings(apple_client_id="com.recall.app")
+    settings = Settings(apple_client_id="com.phonia.app")
 
     with patch(
         "app.gateways.apple_auth._fetch_apple_jwks", AsyncMock(return_value=_jwks(kid, jwk))
@@ -102,7 +102,7 @@ async def test_verify_apple_id_token_rejects_a_token_not_bound_to_this_sign_in(
     token_nonce, sent_nonce
 ):
     token, kid, jwk = _make_apple_token(nonce=token_nonce)
-    settings = Settings(apple_client_id="com.recall.app")
+    settings = Settings(apple_client_id="com.phonia.app")
 
     with (
         patch("app.gateways.apple_auth._fetch_apple_jwks", AsyncMock(return_value=_jwks(kid, jwk))),
@@ -115,7 +115,7 @@ async def test_verify_apple_id_token_rejects_a_token_not_bound_to_this_sign_in(
 @pytest.mark.asyncio
 async def test_verify_apple_id_token_rejects_missing_or_past_expiry(exp):
     token, kid, jwk = _make_apple_token(exp=exp)
-    settings = Settings(apple_client_id="com.recall.app")
+    settings = Settings(apple_client_id="com.phonia.app")
 
     with (
         patch("app.gateways.apple_auth._fetch_apple_jwks", AsyncMock(return_value=_jwks(kid, jwk))),
@@ -233,7 +233,7 @@ async def test_unreachable_apple_keys_are_unavailable_not_an_invalid_token(
         patch("app.gateways.apple_auth.get_pooled_client", return_value=client),
         pytest.raises(apple_auth.AppleAuthUnavailableError) as caught,
     ):
-        await verify_apple_id_token(token, Settings(apple_client_id="com.recall.app"), nonce="n")
+        await verify_apple_id_token(token, Settings(apple_client_id="com.phonia.app"), nonce="n")
     assert caught.value.code == "apple_unavailable"
 
 
@@ -250,7 +250,7 @@ async def test_100_junk_tokens_naming_unknown_key_ids_fetch_apples_keys_once():
     """Each forced a refetch: 100 junk tokens made 101 fetches of Apple's keys."""
     _token, kid, jwk = _make_apple_token()
     client = _apple_keys(_jwks(kid, jwk)["keys"][0])
-    settings = Settings(apple_client_id="com.recall.app")
+    settings = Settings(apple_client_id="com.phonia.app")
     junk = [
         jwt.encode(
             {"sub": "x"},
@@ -279,7 +279,7 @@ async def test_a_key_apple_rotated_in_is_fetched_once_the_interval_has_passed(
     monkeypatch.setattr(apple_auth, "_jwks_cache", {"keys": [{"kid": "older-key"}]})
     monkeypatch.setattr(apple_auth, "_jwks_fetched_at", time.time() - fetched_seconds_ago)
     client = _apple_keys(_jwks(kid, jwk)["keys"][0])
-    settings = Settings(apple_client_id="com.recall.app")
+    settings = Settings(apple_client_id="com.phonia.app")
     with patch("app.gateways.apple_auth.get_pooled_client", return_value=client):
         if fetches:
             payload = await verify_apple_id_token(token, settings, nonce=RAW_NONCE)

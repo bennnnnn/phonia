@@ -11,7 +11,7 @@ import {
 } from "@/lib/appearance";
 import { prefFilePath, readPrefFile, readPrefFileSync, writePrefFile } from "@/lib/filePrefs";
 
-const FILE_NAME = "recall.appearance-preference.txt";
+const FILE_NAME = "phonia.appearance-preference.txt";
 
 let cachedPreference: AppearancePreference | null = null;
 

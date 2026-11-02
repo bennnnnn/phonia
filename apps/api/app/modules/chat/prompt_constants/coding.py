@@ -48,7 +48,7 @@ CODE_DEBUG_HINT = (
     + _CODE_INK
 )
 
-# "Run this python code: print(1+1)" got a bare "2", as if Recall ran it. Recall
+# "Run this python code: print(1+1)" got a bare "2", as if Phonia ran it. Phonia
 # never executes code (CLAUDE.md golden rule 5); it says so, then reads the code.
 CODE_RUN_HINT = (
     "The user asked you to run code. You cannot run or execute code, and nothing ran. Start "

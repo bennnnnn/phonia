@@ -39,10 +39,10 @@ describe("chatErrorMessage", () => {
   });
 
   // The socket's frames for a turn the spend gate refused: the server's English showed in
-  // every language. Redis down at the spend read sent spend_cap too ("Recall is at capacity
+  // every language. Redis down at the spend read sent spend_cap too ("Phonia is at capacity
   // for today… Try again after midnight UTC.").
-  it("says the day's spend cap in the phone's language, and an outage as Recall unavailable", () => {
-    const capacity = "Recall is at capacity for today, so new messages are paused for everyone.";
+  it("says the day's spend cap in the phone's language, and an outage as Phonia unavailable", () => {
+    const capacity = "Phonia is at capacity for today, so new messages are paused for everyone.";
     expect(resolveChatError({ message: capacity, code: "spend_cap", isPaid: false, t })).toEqual({
       kind: "generic",
       message: "chat.spend_cap",
@@ -69,7 +69,7 @@ describe("chatErrorMessage", () => {
     afterAll(async () => { await ensureLocale("en"); });
 
     it.each([
-      ["spend_cap", "Recall is at capacity for today, so new messages are paused for everyone.", "chat.spend_cap"],
+      ["spend_cap", "Phonia is at capacity for today, so new messages are paused for everyone.", "chat.spend_cap"],
     ] as const)("says the %s frame in German", (code, english, key) => {
       const german = i18n.getFixedT("de");
       const resolved = resolveChatError({ message: english, code, isPaid: false, t: german });

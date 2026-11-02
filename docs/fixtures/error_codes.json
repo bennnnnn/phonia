@@ -45,14 +45,14 @@
   "status": 403,
   "detail": {
    "code": "consent_required",
-   "message": "Agree to how Recall uses outside AI services to continue."
+   "message": "Agree to how Phonia uses outside AI services to continue."
   }
  },
  "account_exists": {
   "status": 409,
   "detail": {
    "code": "account_exists",
-   "message": "This email already has a Recall account. Sign in with Apple, the way you signed in before.",
+   "message": "This email already has a Phonia account. Sign in with Apple, the way you signed in before.",
    "sign_in_with": "apple"
   }
  },
@@ -285,7 +285,7 @@
   "status": 401,
   "detail": {
    "code": "apple_email_missing",
-   "message": "Apple did not share an email. Revoke Recall in Apple ID settings and sign in again, or use Google Sign-In."
+   "message": "Apple did not share an email. Revoke Phonia in Apple ID settings and sign in again, or use Google Sign-In."
   }
  },
  "dev_auth_disabled": {

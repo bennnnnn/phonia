@@ -40,7 +40,7 @@ beforeEach(() => {
 });
 afterAll(() => { globalThis.fetch = originalFetch; });
 
-it("uses the shared authenticated request boundary for Recall attachments", async () => {
+it("uses the shared authenticated request boundary for Phonia attachments", async () => {
   rawMock.mockResolvedValueOnce({ ok: true, arrayBuffer: async () => bytes } as Response);
   await expect(fetchAttachmentBytes("https://api.test/v1/attachments/abc/file?download=1", "access"))
     .resolves.toBe(bytes);
@@ -89,7 +89,7 @@ it("passes a closed viewer's signal to the request", async () => {
 });
 
 describe("downloadAttachmentFile", () => {
-  it("downloads a Recall attachment natively with the Bearer header", async () => {
+  it("downloads a Phonia attachment natively with the Bearer header", async () => {
     const controller = new AbortController();
     await downloadAttachmentFile("https://api.test/v1/attachments/abc/file", "file:///cache/att-a.part", "access", controller.signal);
     expect(mockDownloadFile).toHaveBeenCalledWith(
@@ -154,7 +154,7 @@ describe("a native download that got no answer", () => {
     ["Android refused", android("ERR_UNEXPECTED", "java.net.ConnectException: Failed to connect to api.test/10.0.2.2:443")],
     ["Android timeout", android("ERR_UNEXPECTED", "java.net.SocketTimeoutException: timeout")],
     ["Android reset", android("ERR_UNEXPECTED", "java.net.SocketException: Connection reset")],
-  ])("is Recall unreachable: %s", async (_label, native) => {
+  ])("is Phonia unreachable: %s", async (_label, native) => {
     mockDownloadFile.mockRejectedValueOnce(native);
     const error = await downloadAttachmentFile("https://api.test/v1/attachments/abc/file", "file:///cache/x", "access")
       .then(() => null, (failure: unknown) => failure);

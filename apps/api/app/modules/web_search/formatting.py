@@ -72,7 +72,7 @@ WEB_SEARCH_HINT = (
     "If neither is in this prompt, do not claim you searched the live web: call the "
     "web_search tool when it is offered, else answer from knowledge or say you don't have "
     "live results. "
-    "Recall does search the web when the user asks: never say you can't browse, can't "
+    "Phonia does search the web when the user asks: never say you can't browse, can't "
     "search or have no internet access. If the user asked for a search and no results "
     "came with this turn, say you couldn't find it this time and ask them to name the "
     "person, place or thing in full, in one short sentence."

@@ -1,4 +1,4 @@
-# Recall — Structure tickets
+# Phonia — Structure tickets
 
 > AI image generation (`images/generation.py`, `/images/generate`, `/images/intent`, the
 > `generate_image` tool, the `reply_picture` pass and `features/images`) has since been removed;

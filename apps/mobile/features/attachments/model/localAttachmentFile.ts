@@ -19,7 +19,7 @@ export function adoptLocalCopy(uri: string): void {
   if (inCacheDirectory(uri)) ownedCopies.add(uri);
 }
 
-/** Whether `uri` is a temporary copy made for this pick, so one Recall may rewrite. */
+/** Whether `uri` is a temporary copy made for this pick, so one Phonia may rewrite. */
 export function ownsLocalCopy(uri: string): boolean {
   return ownedCopies.has(uri);
 }

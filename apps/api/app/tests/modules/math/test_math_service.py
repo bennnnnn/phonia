@@ -1113,7 +1113,7 @@ def test_parse_expression_refuses_a_bare_sympy_name(monkeypatch, text: str) -> N
     from app.modules.math.solve.integral_steps import integral_trace
     from app.modules.math.solve.work_lines import parse_line
 
-    monkeypatch.setenv("RECALL_STRICT_DECLINES", "1")
+    monkeypatch.setenv("PHONIA_STRICT_DECLINES", "1")
     with pytest.raises(SolveServiceError):
         math_solve.parse_expression(text, ["x"])
     with pytest.raises(SolveServiceError):

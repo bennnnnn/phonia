@@ -236,7 +236,7 @@ async def test_login_api_answers_409_naming_the_earlier_sign_in(provider, body, 
         "code": "account_exists",
         "sign_in_with": "apple",
         "message": (
-            "This email already has a Recall account. "
+            "This email already has a Phonia account. "
             "Sign in with Apple, the way you signed in before."
         ),
     }

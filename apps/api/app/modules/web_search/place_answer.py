@@ -1,5 +1,5 @@
 # ruff: noqa: RUF001 - the typographic apostrophe iOS types (U+2019) is matched
-"""A place the user names right after Recall said it doesn't know where they are.
+"""A place the user names right after Phonia said it doesn't know where they are.
 
 "Is it gonna rain tonight?" got the location reply, and "I'm in Indianapolis" answers
 it. The turn is the earlier question asked in that place: it searches "is it gonna rain
@@ -58,7 +58,7 @@ def given_place(text: str) -> str | None:
 def question_in_given_place(
     text: str, prior_user: str | None, prior_assistant: str | None
 ) -> str | None:
-    """The earlier question asked in the place ``text`` names, when Recall had just said
+    """The earlier question asked in the place ``text`` names, when Phonia had just said
     it didn't know where the user is; None otherwise."""
     if not prior_user or not (prior_assistant or "").lstrip().startswith(LOCATION_ASK_OPENING):
         return None

@@ -27,7 +27,7 @@ describe("sync records", () => {
   it("lives in the cache directory, which no backup or device restore carries", async () => {
     await recordSync("push", "user-1", "on:a1b2c3d4", 1_000);
     expect(writeAsStringAsync).toHaveBeenCalledWith(
-      "file:///cache/recall-synced-push.json",
+      "file:///cache/phonia-synced-push.json",
       JSON.stringify({ account: "user-1", variant: "on:a1b2c3d4", at: 1_000 }),
     );
     expect([...mockFiles.keys()].some((path) => path.startsWith("file:///docs/"))).toBe(false);
@@ -46,7 +46,7 @@ describe("sync records", () => {
   it("does not trust a time from a clock that was set back, or a broken file", async () => {
     await recordSync("push", "user-1", "", 10 * HOUR);
     expect(await recentSyncAt("push", "user-1", 24 * HOUR, "", 9 * HOUR)).toBeNull();
-    mockFiles.set("file:///cache/recall-synced-push.json", "{not json");
+    mockFiles.set("file:///cache/phonia-synced-push.json", "{not json");
     expect(await recentSyncAt("push", "user-1", 24 * HOUR, "", 10 * HOUR)).toBeNull();
   });
 

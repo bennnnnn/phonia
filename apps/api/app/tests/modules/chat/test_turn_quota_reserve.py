@@ -146,7 +146,7 @@ async def test_reserve_turn_quota_stops_at_the_global_spend_cap(
 
 async def test_reserve_turn_quota_with_the_spend_unreadable_is_unavailable(fake_redis) -> None:
     """Redis down at the spend read: the socket's and SSE's ``unavailable`` frame, nothing
-    charged. It read as the cap, so an outage said "Recall is at capacity for today"."""
+    charged. It read as the cap, so an outage said "Phonia is at capacity for today"."""
     user = _user()
     settings = Settings(max_output_tokens=1_000, daily_global_spend_usd=1.0)
     down = AsyncMock(side_effect=RedisConnectionError("Error 111 connecting to redis"))

@@ -18,8 +18,8 @@ jest.mock("@/lib/config", () => ({
   },
 }));
 jest.mock("@/lib/legalUrls", () => ({
-  getLegalPrivacyUrl: () => "https://recall.test/privacy",
-  getLegalTermsUrl: () => "https://recall.test/terms",
+  getLegalPrivacyUrl: () => "https://phonia.test/privacy",
+  getLegalTermsUrl: () => "https://phonia.test/terms",
 }));
 jest.mock("@/lib/reportRecoverableError", () => ({
   reportRecoverableError: (...args: unknown[]) => mockReportError(...args),
@@ -49,7 +49,7 @@ it("opens the privacy policy", async () => {
   await act(async () => {
     fireEvent.press(view.getByText("privacy.title"));
   });
-  expect(mockOpenUrl).toHaveBeenCalledWith("https://recall.test/privacy");
+  expect(mockOpenUrl).toHaveBeenCalledWith("https://phonia.test/privacy");
   expect(mockReportError).not.toHaveBeenCalled();
 });
 

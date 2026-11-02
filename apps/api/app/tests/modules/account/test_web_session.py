@@ -16,7 +16,7 @@ def _fake_auth() -> AuthResponse:
         refresh_token="refresh-1",
         user=UserOut(
             id=uuid4(),
-            email="dev@recall.local",
+            email="dev@phonia.local",
             name="Dev",
             avatar_url=None,
             plan="free",
@@ -68,7 +68,7 @@ def test_web_login_sets_httponly_refresh_and_omits_token_from_json():
         client = TestClient(app)
         r = client.post(
             "/auth/dev",
-            json={"email": "dev@recall.local", "name": "Dev"},
+            json={"email": "dev@phonia.local", "name": "Dev"},
             headers={"Origin": "http://localhost:5173"},
         )
     assert r.status_code == 200
@@ -92,7 +92,7 @@ def test_mobile_login_keeps_refresh_token_in_json():
         ),
     ):
         client = TestClient(app)
-        r = client.post("/auth/dev", json={"email": "dev@recall.local", "name": "Dev"})
+        r = client.post("/auth/dev", json={"email": "dev@phonia.local", "name": "Dev"})
     assert r.status_code == 200
     assert r.json()["refresh_token"] == "refresh-1"
     assert r.json().get("csrf_token") is None
@@ -111,7 +111,7 @@ def test_a_new_account_s_sign_in_says_it_has_not_agreed_to_ai_data_use():
             AsyncMock(return_value=True),
         ),
     ):
-        r = TestClient(app).post("/auth/dev", json={"email": "dev@recall.local", "name": "Dev"})
+        r = TestClient(app).post("/auth/dev", json={"email": "dev@phonia.local", "name": "Dev"})
     user = r.json()["user"]
     assert "ai_data_consent_at" in user
     assert user["ai_data_consent_at"] is None
@@ -136,7 +136,7 @@ def test_web_refresh_requires_csrf_when_using_cookie():
         client = TestClient(app)
         login = client.post(
             "/auth/dev",
-            json={"email": "dev@recall.local", "name": "Dev"},
+            json={"email": "dev@phonia.local", "name": "Dev"},
             headers={"Origin": "http://localhost:5173"},
         )
         csrf = login.json()["csrf_token"]

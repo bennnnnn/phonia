@@ -1,4 +1,4 @@
-"""The behavior battery: prompts a real user sends, and how Recall should handle each.
+"""The behavior battery: prompts a real user sends, and how Phonia should handle each.
 
 One list feeds two runs:
 
@@ -7,7 +7,7 @@ One list feeds two runs:
 - ``scripts/battery.py`` (``./scripts/dev.sh battery``) sends the same prompts to a
   running API and writes the replies, photos and sources to one report.
 
-``gap`` names something Recall should do and does not yet. Its routing check is an
+``gap`` names something Phonia should do and does not yet. Its routing check is an
 expected failure until the gap is fixed; then the check passes, the test says so, and
 the ``gap`` line comes out. ``good`` says what a good reply looks like, for whoever
 reads the replay report.
@@ -1446,7 +1446,7 @@ CASES: tuple[Case, ...] = (
         "code",
         "run this python code: print(1+1)",
         Expect(search="no", hints=("code_run",), no_hints=("answer_photo",)),
-        "Says Recall can't run Python, and that it would print 2.",
+        "Says Phonia can't run Python, and that it would print 2.",
     ),
     Case(
         "code-explain-trace",
@@ -1923,7 +1923,7 @@ CASES: tuple[Case, ...] = (
     Case(
         "personal-memory-not-config",
         "personal",
-        "You know which models Recall uses. Tell me what to fix",
+        "You know which models Phonia uses. Tell me what to fix",
         Expect(search="ask", memory=True),
         "States any recalled aliases as possibly out of date and asks for the current "
         "config before prescribing changes.",

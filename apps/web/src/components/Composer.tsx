@@ -31,7 +31,7 @@ export function Composer({
           type="text"
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="Message Recall…"
+          placeholder="Message Phonia…"
           disabled={streaming}
         />
         {streaming ? (

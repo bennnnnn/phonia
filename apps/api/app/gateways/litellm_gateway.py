@@ -94,8 +94,8 @@ def _litellm_kwargs(
         kwargs.setdefault(
             "extra_headers",
             {
-                "HTTP-Referer": "https://github.com/bennnnnn/recall",
-                "X-Title": "Recall",
+                "HTTP-Referer": "https://github.com/bennnnnn/phonia",
+                "X-Title": "Phonia",
             },
         )
         # OpenRouter's default route is price-weighted. The user-visible token

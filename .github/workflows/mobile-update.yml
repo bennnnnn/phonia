@@ -109,10 +109,10 @@ jobs:
         # --environment loads the EAS environment variables for that channel, so the
         # bundle gets the same EXPO_PUBLIC_* values (API URL, client IDs) as the build.
         # They must be "Plain text" or "Sensitive" in EAS, not "Secret", or the
-        # bundler cannot read them. RECALL_UPDATE_PROFILE makes app.config.ts check
+        # bundler cannot read them. PHONIA_UPDATE_PROFILE makes app.config.ts check
         # them like a release build and fail here rather than ship a broken bundle.
         env:
-          RECALL_UPDATE_PROFILE: ${{ inputs.channel }}
+          PHONIA_UPDATE_PROFILE: ${{ inputs.channel }}
           UPDATE_CHANNEL: ${{ inputs.channel }}
           UPDATE_MESSAGE: ${{ inputs.message }}
         run: >-

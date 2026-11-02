@@ -67,7 +67,7 @@ from app.services.text_normalize import fold_token
 # Questions about the user's own stored profile must be answered from memory,
 # not by searching the public web. Keep this deliberately narrower than every
 # first-person question: "find jobs for me" or "restaurants near me" may still
-# need live results, while these clauses ask Recall to repeat a personal fact.
+# need live results, while these clauses ask Phonia to repeat a personal fact.
 _PERSONAL_MEMORY_QUESTION = re.compile(
     r"(?:"
     r"\bwhere\s+(?:do|did)\s+i\s+(?:currently\s+)?work"
@@ -114,7 +114,7 @@ def asks_only_whether_it_searches(
     prior_user_messages: list[str] | None = None,
     prior_assistant: str | None = None,
 ) -> bool:
-    """ "Can you search the web?" with nothing in the chat to search: a question about Recall.
+    """ "Can you search the web?" with nothing in the chat to search: a question about Phonia.
 
     Read against the line a search would use (``resolve_search_subject``), not any earlier
     one: after "who won the bears game yesterday" the same words ask for that search, but
@@ -143,7 +143,7 @@ def web_search_skip(
     cleaned = collapse_ws(text)
     if not cleaned:
         return True
-    # "Can you search the web?" asks about Recall: the reply says yes, nothing is searched.
+    # "Can you search the web?" asks about Phonia: the reply says yes, nothing is searched.
     if asks_only_whether_it_searches(
         cleaned, prior_user_messages=prior_user_messages, prior_assistant=prior_assistant
     ):

@@ -11,7 +11,7 @@ type TtsModelAlias =
   | typeof TTS_QUALITY_MODEL
   | typeof TTS_FAST_MODEL;
 
-const FILE_NAME = "recall.tts-model.txt";
+const FILE_NAME = "phonia.tts-model.txt";
 
 let cachedPreference: TtsModelAlias | null = null;
 

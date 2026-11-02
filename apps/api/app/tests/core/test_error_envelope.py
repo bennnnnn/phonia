@@ -52,7 +52,7 @@ def _app() -> TestClient:
         (413, "Audio payload too large", "too_large", "Audio payload too large"),
         (429, "Slow down", "rate_limited", "Slow down"),
         (404, None, "not_found", "Not Found"),
-        # A codeless gateway failure read as Recall unavailable on the phone; it still does.
+        # A codeless gateway failure read as Phonia unavailable on the phone; it still does.
         (502, "Could not transcribe audio", "unavailable", "Could not transcribe audio"),
         (503, "Not configured", "unavailable", "Not configured"),
         (418, "Teapot", "refused", "Teapot"),

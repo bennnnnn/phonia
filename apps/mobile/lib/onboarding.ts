@@ -1,7 +1,7 @@
 /** Onboarding is a non-secret device preference; auth credentials stay in SecureStore. */
 import { prefFilePath, readPrefFile, writePrefFile } from "@/lib/filePrefs";
 
-const FILE_NAME = "recall.onboarded.txt";
+const FILE_NAME = "phonia.onboarded.txt";
 
 let cached: boolean | null = null;
 let generation = 0;

@@ -24,10 +24,11 @@ from app.modules.chemistry.reply_policy import CHEMISTRY_FENCE_HINT
 # then one Given for a question in parts: every given first, a part's own lettered `given (a):`,
 # then nothing after the block restating the answer its card shows; then the settings line with
 # no model or tone setting, then without AI image generation's copy (its honesty notes and
-# multi-part picture note).
-_RULES = 161
-_RULE_GRAMS = 14235
-_RULE_GRAMS_SHA = "74afe0ca547c61a4"
+# multi-part picture note), with the product named Phonia, then the tutor's identity,
+# teaching habits and safety for students.
+_RULES = 164
+_RULE_GRAMS = 14561
+_RULE_GRAMS_SHA = "5e4bd55f5a22ee08"
 
 
 def _rules() -> list[str]:

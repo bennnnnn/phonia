@@ -222,7 +222,7 @@ describe("MarkdownContent math rendering", () => {
   });
 
   it("BUG FIX regression: bare-ASCII quadratic-formula steps stack a real fraction (not literal '/'), given the assistant mathFormat", async () => {
-    // Live bug: Recall answered "3x^2 - 11x + 6 = 0" with steps written as
+    // Live bug: Phonia answered "3x^2 - 11x + 6 = 0" with steps written as
     // plain ASCII division ("(11 ± 7) / 6", "√(49)") because the model
     // never wrapped them in \frac{}/\sqrt{} — MessageBubble now passes
     // `formatAssistantMathExpr` as `mathFormat` so normalizeImplicitMath's

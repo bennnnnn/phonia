@@ -53,7 +53,7 @@ describe("ttsPreference", () => {
   it("writes the selected alias", async () => {
     await setTtsModel(TTS_FAST_MODEL);
     expect(writeAsStringAsync).toHaveBeenCalledWith(
-      "file:///docs/recall.tts-model.txt",
+      "file:///docs/phonia.tts-model.txt",
       TTS_FAST_MODEL,
     );
   });

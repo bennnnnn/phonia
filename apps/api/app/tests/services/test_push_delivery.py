@@ -299,7 +299,7 @@ async def test_enqueue_push_receipts_stores_ticket_and_token(fake_redis):
     before = time.time()
     await push_service.enqueue_push_receipts(fake_redis, [("ticket-1", "ExponentPushToken[abc]")])
     assert await fake_redis.zscore(push_service.RECEIPT_PENDING_ZSET, "ticket-1") >= before
-    assert await fake_redis.get("recall:push:receipt:token:ticket-1") == "ExponentPushToken[abc]"
+    assert await fake_redis.get("phonia:push:receipt:token:ticket-1") == "ExponentPushToken[abc]"
 
 
 @pytest.mark.asyncio
@@ -313,7 +313,7 @@ async def test_pending_receipts_are_bounded(fake_redis):
 
 async def _ready_ticket(redis, ticket_id: str, token: str, *, at: float) -> None:
     await redis.zadd(push_service.RECEIPT_PENDING_ZSET, {ticket_id: at})
-    await redis.set(f"recall:push:receipt:token:{ticket_id}", token)
+    await redis.set(f"phonia:push:receipt:token:{ticket_id}", token)
 
 
 @pytest.mark.asyncio
@@ -333,7 +333,7 @@ async def test_poll_deferred_push_receipts_prunes_invalid_token(fake_redis):
     delete_mock.assert_awaited_once_with(session, "ExponentPushToken[dead]")
     session.commit.assert_awaited_once()
     assert await fake_redis.zcard(push_service.RECEIPT_PENDING_ZSET) == 0
-    assert await fake_redis.get("recall:push:receipt:token:ticket-1") is None
+    assert await fake_redis.get("phonia:push:receipt:token:ticket-1") is None
 
 
 @pytest.mark.asyncio

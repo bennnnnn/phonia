@@ -224,7 +224,7 @@ describe("api client", () => {
 
     await expect(
       fetchWithTimeout("http://test.local/auth/login", { method: "POST" }),
-    ).rejects.toThrow("Could not reach the Recall server");
+    ).rejects.toThrow("Could not reach the Phonia server");
   });
 
   it("requestRaw returns the raw Response on success and adds Authorization", async () => {

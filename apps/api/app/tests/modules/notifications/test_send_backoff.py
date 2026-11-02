@@ -43,9 +43,9 @@ async def test_a_held_occurrence_is_reported_until_its_hold_runs_out(fake_redis:
     assert await backoff.hold(held) == 60
     assert await backoff.hold(held) == 120  # the second failure doubles it
     assert await backoff.held([held, free]) == {held}
-    assert 60 < await fake_redis.ttl(f"recall:push:hold:{held}") <= 120
+    assert 60 < await fake_redis.ttl(f"phonia:push:hold:{held}") <= 120
 
-    await fake_redis.delete(f"recall:push:hold:{held}")
+    await fake_redis.delete(f"phonia:push:hold:{held}")
     assert await backoff.held([held, free]) == set()
 
 

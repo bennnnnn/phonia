@@ -1,4 +1,4 @@
-"""A yes/no question about whether Recall searches asks about the app, not for a search.
+"""A yes/no question about whether Phonia searches asks about the app, not for a search.
 
 Live (2026-10-25): "Show me how u work", then "Can you search the web?". The question
 read as a search request that names nothing, so the turn searched the line before it,
@@ -28,7 +28,7 @@ from app.tests.fakes import isolated_settings
 _SETTINGS = isolated_settings(web_search_enabled=True, mcp_tool_loop_enabled=True)
 _PRIOR = ["Show me how u work"]
 # The reply to it may end on a question: that is no offer to search.
-_PRIOR_REPLY = "I'm Recall. Ask me questions or keep reminders. What would you like to try first?"
+_PRIOR_REPLY = "I'm Phonia. Ask me questions or keep reminders. What would you like to try first?"
 _SEARCH_FIRST = ["did the bears win today"]
 _BEARS = ["who won the bears game yesterday"]
 _DENIED = "I don't have yesterday's result in front of me."

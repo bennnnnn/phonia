@@ -140,7 +140,7 @@ async function askForRefresh(refreshToken: string, signal: AbortSignal, generati
   const data = (await response.json()) as AuthResult;
   if (!data || typeof data.access_token !== "string" || !data.access_token ||
     typeof data.refresh_token !== "string" || !data.refresh_token) {
-    throw new Error("Recall returned an invalid sign-in response. Please try again.");
+    throw new Error("Phonia returned an invalid sign-in response. Please try again.");
   }
   return data;
 }

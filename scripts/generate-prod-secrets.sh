@@ -3,7 +3,7 @@
 # Paste into apps/api/.env.production — never commit that file.
 set -euo pipefail
 
-echo "=== Recall production secret generators ==="
+echo "=== Phonia production secret generators ==="
 echo
 echo "JWT_SECRET=$(openssl rand -base64 32 | tr -d '\n')"
 echo "REVENUECAT_WEBHOOK_AUTH=$(openssl rand -hex 32)"

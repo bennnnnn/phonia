@@ -25,7 +25,7 @@ from app.tests.fakes import redis_mock
 def _fake_user() -> User:
     u = MagicMock(spec=User)
     u.id = uuid4()
-    u.email = "test@recall.local"
+    u.email = "test@phonia.local"
     return u
 
 

@@ -54,8 +54,8 @@ jest.mock("@/features/billing/model/purchases", () => ({
   isPurchaseCancelled: (error: { userCancelled?: boolean }) => error?.userCancelled === true,
   getPlanPackages: jest.fn(async () => ({
     packages: {
-      plus: { plan: "plus", priceString: "$7.99", productId: "recall_plus", native: {} },
-      pro: { plan: "pro", priceString: "$13.99", productId: "recall_pro", native: {} },
+      plus: { plan: "plus", priceString: "$7.99", productId: "phonia_plus", native: {} },
+      pro: { plan: "pro", priceString: "$13.99", productId: "phonia_pro", native: {} },
     },
     unavailable: false,
   })),

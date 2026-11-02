@@ -18,7 +18,7 @@ jest.mock("expo-file-system/legacy", () => ({
   },
 }));
 
-const FILE = "file:///cache/recall-attachment-status.json";
+const FILE = "file:///cache/phonia-attachment-status.json";
 
 function tokenFor(account: string): string {
   return `h.${btoa(JSON.stringify({ sub: account }))}.s`;

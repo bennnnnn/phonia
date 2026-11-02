@@ -8,7 +8,7 @@ import { appleConsentForAccountDelete } from "@/lib/apple-auth";
 
 /**
  * "cancelled": the user closed the Sign in with Apple sheet, so nothing was deleted.
- * "unavailable": Recall could not serve the delete for now; nothing was deleted.
+ * "unavailable": Phonia could not serve the delete for now; nothing was deleted.
  */
 export type AccountDeleteOutcome = "deleted" | "cancelled" | AccountDeleteFailure;
 

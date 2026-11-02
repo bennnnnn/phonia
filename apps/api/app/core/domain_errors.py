@@ -25,7 +25,7 @@ from app.exceptions import DomainError, status_code_name
 
 _INVALID_REQUEST = "The request is not valid."
 # A plain HTTPException's gateway failure names no code of its own: the phone read a
-# codeless 502, 503 or 504 as Recall being unavailable (``isServiceUnavailable``), and
+# codeless 502, 503 or 504 as Phonia being unavailable (``isServiceUnavailable``), and
 # naming it ``unavailable`` keeps that reading. A DomainError names its own (an image
 # provider's 502 is ``upstream_failed``, no outage).
 _GATEWAY_STATUSES = frozenset({502, 503, 504})

@@ -1403,6 +1403,105 @@ wheels = [
 ]
 
 [[package]]
+name = "phonia-api"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "alembic" },
+    { name = "asyncpg" },
+    { name = "boto3" },
+    { name = "cryptography" },
+    { name = "ddgs" },
+    { name = "defusedxml" },
+    { name = "fastapi" },
+    { name = "google-auth" },
+    { name = "httpx" },
+    { name = "litellm" },
+    { name = "numpy" },
+    { name = "openpyxl" },
+    { name = "pgvector" },
+    { name = "pillow" },
+    { name = "pint" },
+    { name = "pydantic-settings" },
+    { name = "pyjwt" },
+    { name = "pypdf" },
+    { name = "pypdfium2" },
+    { name = "python-docx" },
+    { name = "python-multipart" },
+    { name = "python-pptx" },
+    { name = "rdkit" },
+    { name = "redis" },
+    { name = "sentry-sdk", extra = ["fastapi"] },
+    { name = "sqlalchemy", extra = ["asyncio"] },
+    { name = "sympy" },
+    { name = "uvicorn", extra = ["standard"] },
+    { name = "websockets" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "fakeredis" },
+    { name = "httpx" },
+    { name = "hypothesis" },
+    { name = "mypy" },
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
+    { name = "pytest-cov" },
+    { name = "pytest-timeout" },
+    { name = "pytest-xdist" },
+    { name = "ruff" },
+    { name = "vulture" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "alembic", specifier = ">=1.19.1,<1.21" },
+    { name = "asyncpg", specifier = ">=0.30.0,<0.33" },
+    { name = "boto3", specifier = ">=1.35.0,<1.44" },
+    { name = "cryptography", specifier = ">=50.0.0,<51" },
+    { name = "ddgs", specifier = ">=9.14.4,<10" },
+    { name = "defusedxml", specifier = ">=0.7.1,<0.8" },
+    { name = "fastapi", specifier = ">=0.141.1,<0.143" },
+    { name = "google-auth", specifier = ">=2.56.3,<2.63" },
+    { name = "httpx", specifier = ">=0.28.0,<0.29" },
+    { name = "litellm", specifier = ">=1.55.0,<1.106" },
+    { name = "numpy", specifier = ">=2.5.2,<2.6" },
+    { name = "openpyxl", specifier = ">=3.1.5,<3.2" },
+    { name = "pgvector", specifier = ">=0.5.0,<0.6" },
+    { name = "pillow", specifier = ">=12.3.0,<14" },
+    { name = "pint", specifier = ">=0.24,<0.27" },
+    { name = "pydantic-settings", specifier = ">=2.6.0,<2.17" },
+    { name = "pyjwt", specifier = ">=2.14.0,<2.16" },
+    { name = "pypdf", specifier = ">=5.1.0,<6.22" },
+    { name = "pypdfium2", specifier = ">=4.30.0,<6" },
+    { name = "python-docx", specifier = ">=1.1.0,<1.3" },
+    { name = "python-multipart", specifier = ">=0.0.20,<0.0.33" },
+    { name = "python-pptx", specifier = ">=1.0.2,<1.1" },
+    { name = "rdkit", specifier = ">=2024.3.6,<2025" },
+    { name = "redis", specifier = ">=5.2.0,<8.2" },
+    { name = "sentry-sdk", extras = ["fastapi"], specifier = ">=2.66.0,<2.74" },
+    { name = "sqlalchemy", extras = ["asyncio"], specifier = ">=2.0.52,<2.2" },
+    { name = "sympy", specifier = ">=1.13.0,<1.15" },
+    { name = "uvicorn", extras = ["standard"], specifier = ">=0.51.0,<0.55" },
+    { name = "websockets", specifier = ">=17.1,<18" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "fakeredis", specifier = ">=2.37.0,<2.41" },
+    { name = "httpx", specifier = ">=0.28.0,<0.29" },
+    { name = "hypothesis", specifier = ">=6.0,<7" },
+    { name = "mypy", specifier = ">=2.3.0,<2.5" },
+    { name = "pytest", specifier = ">=9.1.1,<10" },
+    { name = "pytest-asyncio", specifier = ">=0.24.0,<1.5" },
+    { name = "pytest-cov", specifier = ">=6.0.0,<8" },
+    { name = "pytest-timeout", specifier = ">=2.3,<3" },
+    { name = "pytest-xdist", specifier = ">=3.6,<4" },
+    { name = "ruff", specifier = ">=0.8.0,<0.18" },
+    { name = "vulture", specifier = ">=2.14,<3" },
+]
+
+[[package]]
 name = "pillow"
 version = "13.0.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1887,105 +1986,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/41/ee/9758cbcde26bacb820579ecbfbd3069ab8bd10b55e08f6731c208ce2eb3f/rdkit-2024.9.6-cp313-cp313-manylinux_2_28_aarch64.whl", hash = "sha256:4fbf4d680a1070a15f6d9c7cf93218bed87c7110e4e7a467d1b449e430e20ff5", size = 33413200, upload-time = "2025-03-12T10:35:56.306Z" },
     { url = "https://files.pythonhosted.org/packages/d9/f9/6e5b8f6445450a3b01e28915f749f9d644a8b855f6e7b26c09f193b1978d/rdkit-2024.9.6-cp313-cp313-manylinux_2_28_x86_64.whl", hash = "sha256:4b0efe61d9eee664dc19203478e3312e596be0d200c3bbd4ef1b584aef7146d3", size = 34275798, upload-time = "2025-03-12T10:36:00.826Z" },
     { url = "https://files.pythonhosted.org/packages/3f/9b/3c32fd6dbb1210a8e9dc83feee82778c8bf2ad483c9e8394138c25789110/rdkit-2024.9.6-cp313-cp313-win_amd64.whl", hash = "sha256:6c740c543b55f99d8d3bdea92c68617ef5669bcf2cc1652752a65f156f26dbc0", size = 22486705, upload-time = "2025-03-12T10:36:05.44Z" },
-]
-
-[[package]]
-name = "recall-api"
-version = "0.1.0"
-source = { editable = "." }
-dependencies = [
-    { name = "alembic" },
-    { name = "asyncpg" },
-    { name = "boto3" },
-    { name = "cryptography" },
-    { name = "ddgs" },
-    { name = "defusedxml" },
-    { name = "fastapi" },
-    { name = "google-auth" },
-    { name = "httpx" },
-    { name = "litellm" },
-    { name = "numpy" },
-    { name = "openpyxl" },
-    { name = "pgvector" },
-    { name = "pillow" },
-    { name = "pint" },
-    { name = "pydantic-settings" },
-    { name = "pyjwt" },
-    { name = "pypdf" },
-    { name = "pypdfium2" },
-    { name = "python-docx" },
-    { name = "python-multipart" },
-    { name = "python-pptx" },
-    { name = "rdkit" },
-    { name = "redis" },
-    { name = "sentry-sdk", extra = ["fastapi"] },
-    { name = "sqlalchemy", extra = ["asyncio"] },
-    { name = "sympy" },
-    { name = "uvicorn", extra = ["standard"] },
-    { name = "websockets" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "fakeredis" },
-    { name = "httpx" },
-    { name = "hypothesis" },
-    { name = "mypy" },
-    { name = "pytest" },
-    { name = "pytest-asyncio" },
-    { name = "pytest-cov" },
-    { name = "pytest-timeout" },
-    { name = "pytest-xdist" },
-    { name = "ruff" },
-    { name = "vulture" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "alembic", specifier = ">=1.19.1,<1.21" },
-    { name = "asyncpg", specifier = ">=0.30.0,<0.33" },
-    { name = "boto3", specifier = ">=1.35.0,<1.44" },
-    { name = "cryptography", specifier = ">=50.0.0,<51" },
-    { name = "ddgs", specifier = ">=9.14.4,<10" },
-    { name = "defusedxml", specifier = ">=0.7.1,<0.8" },
-    { name = "fastapi", specifier = ">=0.141.1,<0.143" },
-    { name = "google-auth", specifier = ">=2.56.3,<2.63" },
-    { name = "httpx", specifier = ">=0.28.0,<0.29" },
-    { name = "litellm", specifier = ">=1.55.0,<1.106" },
-    { name = "numpy", specifier = ">=2.5.2,<2.6" },
-    { name = "openpyxl", specifier = ">=3.1.5,<3.2" },
-    { name = "pgvector", specifier = ">=0.5.0,<0.6" },
-    { name = "pillow", specifier = ">=12.3.0,<14" },
-    { name = "pint", specifier = ">=0.24,<0.27" },
-    { name = "pydantic-settings", specifier = ">=2.6.0,<2.17" },
-    { name = "pyjwt", specifier = ">=2.14.0,<2.16" },
-    { name = "pypdf", specifier = ">=5.1.0,<6.22" },
-    { name = "pypdfium2", specifier = ">=4.30.0,<6" },
-    { name = "python-docx", specifier = ">=1.1.0,<1.3" },
-    { name = "python-multipart", specifier = ">=0.0.20,<0.0.33" },
-    { name = "python-pptx", specifier = ">=1.0.2,<1.1" },
-    { name = "rdkit", specifier = ">=2024.3.6,<2025" },
-    { name = "redis", specifier = ">=5.2.0,<8.2" },
-    { name = "sentry-sdk", extras = ["fastapi"], specifier = ">=2.66.0,<2.74" },
-    { name = "sqlalchemy", extras = ["asyncio"], specifier = ">=2.0.52,<2.2" },
-    { name = "sympy", specifier = ">=1.13.0,<1.15" },
-    { name = "uvicorn", extras = ["standard"], specifier = ">=0.51.0,<0.55" },
-    { name = "websockets", specifier = ">=17.1,<18" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "fakeredis", specifier = ">=2.37.0,<2.41" },
-    { name = "httpx", specifier = ">=0.28.0,<0.29" },
-    { name = "hypothesis", specifier = ">=6.0,<7" },
-    { name = "mypy", specifier = ">=2.3.0,<2.5" },
-    { name = "pytest", specifier = ">=9.1.1,<10" },
-    { name = "pytest-asyncio", specifier = ">=0.24.0,<1.5" },
-    { name = "pytest-cov", specifier = ">=6.0.0,<8" },
-    { name = "pytest-timeout", specifier = ">=2.3,<3" },
-    { name = "pytest-xdist", specifier = ">=3.6,<4" },
-    { name = "ruff", specifier = ">=0.8.0,<0.18" },
-    { name = "vulture", specifier = ">=2.14,<3" },
 ]
 
 [[package]]

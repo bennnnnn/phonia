@@ -30,7 +30,7 @@ jest.mock("@/components/rich/PlacesListBlock", () => ({ PlacesListBlock: () => n
 jest.mock("@/features/attachments/components/ChatMessageImageStrip", () => ({ ChatMessageImageStrip: () => null }));
 jest.mock("@/ui/feedback/ActionShimmer", () => ({ ActionShimmer: () => null }));
 jest.mock("@/features/chat/components/SearchSourcesStack", () => ({ SearchSourcesStack: () => null }));
-jest.mock("@/features/chat/components/RecallTypingIndicator", () => ({ RecallTypingIndicator: () => null }));
+jest.mock("@/features/chat/components/PhoniaTypingIndicator", () => ({ PhoniaTypingIndicator: () => null }));
 jest.mock("@/features/chat/components/UserMessageContent", () => ({ UserMessageContent: () => null }));
 jest.mock("@/lib/haptics", () => ({
   tap: jest.fn(),

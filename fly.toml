@@ -1,10 +1,10 @@
-# Fly.io config for the Recall API.
+# Fly.io config for the Phonia API.
 # See the README "Production deployment (Fly.io)" section for the full setup.
 #
 # Two processes: `app` serves HTTP/WebSocket (PROCESS_ROLE=api); `worker` runs
 # Redis-stream jobs + schedulers (PROCESS_ROLE=worker). Scale each independently.
 
-app = "recall-api"
+app = "phonia-api"
 primary_region = "iad" # beside Neon (AWS us-east-1); production Redis (Upstash) belongs in us-east-1 too
 # A deploy or restart stops a Machine with kill_signal (Fly's default, SIGINT;
 # uvicorn and the worker shut down gracefully on SIGINT and SIGTERM) and kills

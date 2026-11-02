@@ -53,7 +53,7 @@ export async function checkPublicReachability(timeoutMs = 3_000): Promise<boolea
   }
 }
 
-/** API health wins: if Recall is up, we are online even when generate_204 is blocked. */
+/** API health wins: if Phonia is up, we are online even when generate_204 is blocked. */
 export function classifyConnectivity(apiOk: boolean, publicOk: boolean): ConnectivityStatus {
   if (apiOk) return "online";
   if (publicOk) return "api_unreachable";

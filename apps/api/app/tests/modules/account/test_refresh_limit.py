@@ -31,7 +31,7 @@ _SETTINGS = Settings(jwt_secret="test-secret-32-chars-long-enough!!")
 def _user_out(user_id: UUID) -> UserOut:
     return UserOut(
         id=user_id,
-        email="phone@recall.local",
+        email="phone@phonia.local",
         name="Phone",
         avatar_url=None,
         plan="free",

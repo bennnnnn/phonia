@@ -39,9 +39,9 @@ MEMORY_OFF_HINT = (
 )
 # "Remember that I want to try cacio e pepe again" was saved to memory, and the reply said
 # "I've added that to your to-do list"; two turns on it said "I can't save it to memory"
-# (live chat, 2026-10-25). Nothing told the model what Recall does with the line.
+# (live chat, 2026-10-25). Nothing told the model what Phonia does with the line.
 MEMORY_SAVING_HINT = (
-    "The user asked you to remember something. Recall saves it to their memory after your "
+    "The user asked you to remember something. Phonia saves it to their memory after your "
     "reply, and they can see and edit it in Settings → Memory. Say in a few words that you'll "
     "remember it. Memory is not their to-do list: don't say it was added to their to-dos or "
     "reminders."
@@ -85,7 +85,7 @@ _ASKS_WHAT_WAS_SAID = re.compile(
     r"you (?:gave me|suggested|recommended|said|told me|listed|mentioned))\b",
     re.IGNORECASE,
 )
-# "What did we decide", "I told you", "did I pick": a conversation with Recall, not
+# "What did we decide", "I told you", "did I pick": a conversation with Phonia, not
 # "what happened in the news last week".
 _NAMES_OUR_CONVERSATION = re.compile(
     r"\b(?:we|us|our|you said|you told|i told|i said|i mentioned|did i|last time)\b",
@@ -128,7 +128,7 @@ def recalls_shared_past(text: str | None) -> bool:
 
 
 def asks_about_saved(text: str) -> bool:
-    """The user asks what Recall knows: a profile detail, "what do you know", "last time"."""
+    """The user asks what Phonia knows: a profile detail, "what do you know", "last time"."""
     return bool(
         is_profile_fact_question(text)
         or is_profile_recall_pushback(text)

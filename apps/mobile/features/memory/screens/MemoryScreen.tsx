@@ -27,7 +27,7 @@ import { StateView } from "@/ui/feedback/StateView";
 import { ListGroup } from "@/ui/list/ListGroup";
 import { ListRow } from "@/ui/list/ListRow";
 
-// While Recall reads recent chats for the first time, check back for a while.
+// While Phonia reads recent chats for the first time, check back for a while.
 const SCAN_POLL_MS = 5000;
 const SCAN_POLLS = 36;
 

@@ -6,7 +6,7 @@ from app.core.config import Settings
 from app.core.deps import get_settings_dep
 from app.main import create_app
 
-_SUPPORT = "help@recall.example"
+_SUPPORT = "help@phonia.example"
 
 
 def _client(support_email: str = _SUPPORT) -> TestClient:
@@ -63,8 +63,8 @@ def test_privacy_policy_says_where_a_scanned_photo_goes() -> None:
     OpenRouter; the read keeps nothing. The policy said so only for math photos."""
     page = _client().get("/legal/privacy").text
     assert "Scanned problems" in page
-    assert "is sent to Recall" in page and "to read the problem" in page
-    assert "Recall does not keep that photo" in page
+    assert "is sent to Phonia" in page and "to read the problem" in page
+    assert "Phonia does not keep that photo" in page
     assert "photos you scan in the scanner (math, physics and chemistry)" in page
 
 
@@ -98,7 +98,7 @@ def test_delete_account_page_is_public_and_explains_both_ways() -> None:
     assert "text/html" in response.headers["content-type"]
     assert response.headers.get("cache-control") == "public, max-age=3600"
     text = response.text
-    assert "<h1>Delete Your Recall Account</h1>" in text
+    assert "<h1>Delete Your Phonia Account</h1>" in text
     assert "<ol>" in text and "Tap Data controls." in text
     assert "Delete your account" in text
     assert "What is deleted" in text and "What is kept, and for how long" in text
@@ -107,8 +107,8 @@ def test_delete_account_page_is_public_and_explains_both_ways() -> None:
 
 
 def test_contact_markdown_links_only_a_plain_address() -> None:
-    assert contact_markdown(" help@recall.example ") == (
-        "email [help@recall.example](mailto:help@recall.example)"
+    assert contact_markdown(" help@phonia.example ") == (
+        "email [help@phonia.example](mailto:help@phonia.example)"
     )
     for unusable in ["", "   ", "not-an-email", "a@b.c) [x](https://evil.example"]:
         assert "mailto:" not in contact_markdown(unusable)

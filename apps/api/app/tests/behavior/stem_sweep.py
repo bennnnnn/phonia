@@ -35,7 +35,7 @@ the first kind; the second is held entry by entry in ``stem_snapshot.json``.
 
     uv run python -m app.tests.behavior.stem_sweep physics --show
 
-The sweep models production, so a maths decline stays silent; ``RECALL_STRICT_DECLINES=1``
+The sweep models production, so a maths decline stays silent; ``PHONIA_STRICT_DECLINES=1``
 in front raises the programming errors a decline would hide (``math/solve/declines.py``).
 """
 

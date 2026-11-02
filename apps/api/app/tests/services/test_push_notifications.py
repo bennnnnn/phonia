@@ -11,8 +11,8 @@ from app.tests.services import push_cycle_support as push_cycle
 
 
 def test_android_channel_follows_push_type():
-    assert push_service.android_channel_id({"type": "todo_reminder"}) == "recall-reminders"
-    assert push_service.android_channel_id({"type": "digest"}) == "recall-reminders"
+    assert push_service.android_channel_id({"type": "todo_reminder"}) == "phonia-reminders"
+    assert push_service.android_channel_id({"type": "digest"}) == "phonia-reminders"
 
 
 def test_channel_id_stays_off_until_the_install_opts_in():
@@ -20,11 +20,11 @@ def test_channel_id_stays_off_until_the_install_opts_in():
     assert push_service.channel_id_for_token(legacy, {"type": "todo_reminder"}) is None
     opted_in = MagicMock(platform="android", android_channels="split")
     assert (
-        push_service.channel_id_for_token(opted_in, {"type": "todo_reminder"}) == "recall-reminders"
+        push_service.channel_id_for_token(opted_in, {"type": "todo_reminder"}) == "phonia-reminders"
     )
     tone = MagicMock(platform="android", android_channels="tone")
     assert (
-        push_service.channel_id_for_token(tone, {"type": "todo_reminder"}) == "recall-reminders-v2"
+        push_service.channel_id_for_token(tone, {"type": "todo_reminder"}) == "phonia-reminders-v2"
     )
     ios = MagicMock(platform="ios", android_channels="split")
     assert push_service.channel_id_for_token(ios, {"type": "todo_reminder"}) is None
@@ -68,8 +68,8 @@ async def test_process_todo_reminders_due_soon():
     assert messages[0].message["title"] == "Reminder"
     assert messages[0].message["body"] == "Call dentist"
     assert messages[0].message["data"]["todo_id"] == str(todo.id)
-    assert messages[0].message["channelId"] == "recall-reminders"
-    assert messages[0].message["sound"] == "recall_notify.wav"
+    assert messages[0].message["channelId"] == "phonia-reminders"
+    assert messages[0].message["sound"] == "phonia_notify.wav"
     session.commit.assert_not_awaited()
     assert todo.notification_sent_at is None
 

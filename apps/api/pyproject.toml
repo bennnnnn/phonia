@@ -1,7 +1,7 @@
 [project]
-name = "recall-api"
+name = "phonia-api"
 version = "0.1.0"
-description = "Recall personal AI chat backend"
+description = "Phonia personal AI chat backend"
 readme = "README.md"
 # Lower bound is 3.12.4, not 3.12: CPython 3.12.3 segfaults in the compiler
 # while byte-compiling app/tests/modules/chat/test_chat.py, so the whole backend

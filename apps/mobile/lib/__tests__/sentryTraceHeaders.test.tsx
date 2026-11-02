@@ -4,7 +4,7 @@
  * initMobileSentry, instruments fetch; the requests below are the phone's own kinds.
  */
 jest.mock("expo/src/winter", () => ({}));
-jest.mock("@/lib/config", () => ({ getApiUrl: () => "https://api.recall.test" }));
+jest.mock("@/lib/config", () => ({ getApiUrl: () => "https://api.phonia.test" }));
 
 class MockExpoEmitter {
   addListener() { return { remove: () => {} }; }
@@ -45,17 +45,17 @@ it("puts trace headers on our API's requests and on no one else's", async () => 
   Object.defineProperty(globalThis, "fetch", { value: phoneFetch, writable: true, configurable: true });
   await initMobileSentry();
   for (const url of [
-    "https://api.recall.test/chats",
-    "https://api.recall.test/chats/1/messages?limit=40",
+    "https://api.phonia.test/chats",
+    "https://api.phonia.test/chats/1/messages?limit=40",
     "https://third-party.example/v1/calls",
     "https://clients3.google.com/generate_204",
     "https://bucket.r2.cloudflarestorage.com/upload?X-Amz-Signature=x",
-    "https://api.recall.test.evil.example/x",
+    "https://api.phonia.test.evil.example/x",
   ]) {
     await globalThis.fetch(url);
   }
   expect(sent.filter((request) => request.traced).map((request) => request.url)).toEqual([
-    "https://api.recall.test/chats",
-    "https://api.recall.test/chats/1/messages?limit=40",
+    "https://api.phonia.test/chats",
+    "https://api.phonia.test/chats/1/messages?limit=40",
   ]);
 }, 60_000);

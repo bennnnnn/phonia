@@ -52,7 +52,7 @@ describe("preview page handshake", () => {
   ])("hands %s to the page unchanged", (_name, value) => {
     const page = previewPageSandbox();
     page.hand({ value, nested: { list: [value] } });
-    expect(page.window.RECALL_PREVIEW).toEqual({ value, nested: { list: [value] } });
+    expect(page.window.PHONIA_PREVIEW).toEqual({ value, nested: { list: [value] } });
   });
 
   it("keeps the separators escaped in the script text", () => {

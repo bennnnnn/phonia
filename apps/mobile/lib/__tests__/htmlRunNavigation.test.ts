@@ -49,7 +49,7 @@ describe("HTML Run navigation", () => {
     ["tel:", { url: "tel:+19005550100" }],
     ["sms:", { url: "sms:+15550100?body=hi" }],
     ["mailto:", { url: "mailto:someone@example.com" }],
-    ["an app deep link", { url: "recall://settings/data-controls" }],
+    ["an app deep link", { url: "phonia://settings/data-controls" }],
     ["an empty URL", { url: "" }],
     ["no request", {}],
   ])("refuses %s without opening it anywhere", (_label, request) => {

@@ -3,7 +3,7 @@ import { isServiceUnavailable } from "@/lib/api/errorBody";
 /**
  * A transcription the server refused, in the words for that refusal: the day's voice
  * input used up, too many recordings in a row, too many requests, voice paused while
- * spend is capped, or Recall down for now. Anything else keeps the dictation's own message.
+ * spend is capped, or Phonia down for now. Anything else keeps the dictation's own message.
  */
 
 const VOICE_REFUSALS: Readonly<Record<string, string>> = {

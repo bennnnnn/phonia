@@ -9,7 +9,7 @@ import { Share } from "react-native";
 import { newAccountFile } from "@/lib/accountFiles";
 import { shareLocalFile } from "@/lib/shareFile";
 
-const EXPORT_TITLE = "recall-export.json";
+const EXPORT_TITLE = "phonia-export.json";
 
 /** Pretty-print compact export JSON for sharing when the payload is small enough. */
 export function formatExportJsonForShare(raw: string): string {

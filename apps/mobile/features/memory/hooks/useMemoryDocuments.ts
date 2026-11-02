@@ -168,7 +168,7 @@ export function useMemoryDocuments(token: string | null) {
     }
   }, [token]);
 
-  /** Mute keeps a fact but stops Recall using it in chats; unmute brings it back. */
+  /** Mute keeps a fact but stops Phonia using it in chats; unmute brings it back. */
   const setFactMuted = useCallback(async (factId: string, muted: boolean): Promise<MemoryChange> => {
     if (!token) return NOT_SIGNED_IN;
     const session = getSessionGeneration();

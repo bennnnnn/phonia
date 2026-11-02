@@ -1,4 +1,4 @@
-"""GET /auth/me/export holds everything the user gave Recall, and nothing else."""
+"""GET /auth/me/export holds everything the user gave Phonia, and nothing else."""
 
 from __future__ import annotations
 

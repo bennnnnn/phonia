@@ -21,7 +21,7 @@ type Props = {
 };
 
 /** Accent disc whose pulse speed/strength tracks the live chat status phase. */
-export function RecallTypingIndicator({ phase }: Props) {
+export function PhoniaTypingIndicator({ phase }: Props) {
   const theme = useTheme();
   const { t } = useTranslation();
   const reduceMotion = useReduceMotion();

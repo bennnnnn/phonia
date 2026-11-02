@@ -10,6 +10,6 @@ it.each<[string, unknown, boolean]>([
   ["a refusal the API answered", new ApiRequestError(503, JSON.stringify({ detail: "Network error" })), false],
   ["a failure on the phone", new Error("Could not open this attachment."), false],
   ["not an error", "Network request failed", false],
-])("tells whether Recall gave no answer: %s", (_label, error, unreachable) => {
+])("tells whether Phonia gave no answer: %s", (_label, error, unreachable) => {
   expect(isServerUnreachable(error)).toBe(unreachable);
 });

@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 LEGAL_EFFECTIVE_DATE = "October 29, 2026"
 
 # Without SUPPORT_EMAIL (local dev) the pages still render; production boot warns.
-_NO_EMAIL_CONTACT = "use the support link on Recall's app-store listing"
+_NO_EMAIL_CONTACT = "use the support link on Phonia's app-store listing"
 _PLAIN_EMAIL = re.compile(r"[^@\s()<>\[\]]+@[^@\s()<>\[\]]+\.[^@\s()<>\[\]]+")
 
 _BOLD = re.compile(r"\*\*(.+?)\*\*")

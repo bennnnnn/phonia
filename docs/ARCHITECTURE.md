@@ -1,6 +1,6 @@
-# Recall modular monolith
+# Phonia modular monolith
 
-Recall is migrating toward one obvious home per product feature without changing deployment
+Phonia is migrating toward one obvious home per product feature without changing deployment
 topology. The API remains one FastAPI application and worker; the mobile app remains one Expo
 application.
 

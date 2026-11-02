@@ -27,7 +27,7 @@ _PUBLIC = _KEY.public_key()
 
 def _settings(**overrides: str) -> Settings:
     configured = Settings(
-        apple_client_id="com.recall.app",
+        apple_client_id="com.phonia.app",
         apple_team_id="TEAM123456",
         apple_key_id="KEY1234567",
         apple_private_key=_PEM,
@@ -37,7 +37,7 @@ def _settings(**overrides: str) -> Settings:
 
 def _id_token(sub: str) -> str:
     return jwt.encode(
-        {"sub": sub, "aud": "com.recall.app"},
+        {"sub": sub, "aud": "com.phonia.app"},
         "the-gateway-does-not-check-this-signature",
         algorithm="HS256",
     )
@@ -99,7 +99,7 @@ def test_client_secret_is_an_es256_jwt_apple_accepts() -> None:
         "iat": 1_700_000_000,
         "exp": 1_700_000_300,
         "aud": "https://appleid.apple.com",
-        "sub": "com.recall.app",
+        "sub": "com.phonia.app",
     }
 
 
@@ -129,7 +129,7 @@ async def test_revoke_exchanges_the_code_then_revokes_the_refresh_token(monkeypa
     exchange, revoke = (_form(request) for request in seen)
     assert exchange["grant_type"] == "authorization_code"
     assert exchange["code"] == "code-1"
-    assert exchange["client_id"] == "com.recall.app"
+    assert exchange["client_id"] == "com.phonia.app"
     jwt.decode(
         exchange["client_secret"],
         _PUBLIC,
@@ -138,7 +138,7 @@ async def test_revoke_exchanges_the_code_then_revokes_the_refresh_token(monkeypa
     )
     assert revoke["token"] == "refresh-1"
     assert revoke["token_type_hint"] == "refresh_token"
-    assert revoke["client_id"] == "com.recall.app"
+    assert revoke["client_id"] == "com.phonia.app"
 
 
 @pytest.mark.asyncio

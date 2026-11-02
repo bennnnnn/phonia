@@ -259,7 +259,7 @@ async def test_a_failed_for_now_send_waits_out_its_hold(email_sql, fake_redis):
                 session, Settings(), now=NOW, backoff=backoff
             )
     assert send.await_count == 1
-    key = f"recall:email:hold:{rows[0].id}:{_due(rows[0])}"
+    key = f"phonia:email:hold:{rows[0].id}:{_due(rows[0])}"
     assert 60 < await fake_redis.ttl(key) <= 120  # Retry-After outlasts the first back-off
     sync_session.refresh(rows[0])
     assert rows[0].email_sent_at is None
@@ -313,7 +313,7 @@ async def test_an_account_refusal_holds_the_reminder_instead_of_losing_it(
     assert sent == 0
     sync_session.refresh(rows[0])
     assert rows[0].email_sent_at is None
-    key = f"recall:email:hold:{rows[0].id}:{_due(rows[0])}"
+    key = f"phonia:email:hold:{rows[0].id}:{_due(rows[0])}"
     assert 0 < await fake_redis.ttl(key) <= settings.reminder_retry_max_seconds
 
 

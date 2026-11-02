@@ -1,4 +1,4 @@
-"""Recall's own prompt rules as one text: what a reply must never say back to the user.
+"""Phonia's own prompt rules as one text: what a reply must never say back to the user.
 
 Only the fixed rules (chat's prompt constants and each subject's hints), never a turn's
 context: a saved memory, a to-do, a document or a search result is the user's own, and a

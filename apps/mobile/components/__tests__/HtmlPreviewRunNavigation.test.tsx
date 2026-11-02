@@ -54,7 +54,7 @@ describe("HtmlPreviewModal Run tab navigation", () => {
       false,
     );
     expect(decide({ url: "tel:+19005550100", isTopFrame: true })).toBe(false);
-    expect(decide({ url: "recall://settings", isTopFrame: true })).toBe(false);
+    expect(decide({ url: "phonia://settings", isTopFrame: true })).toBe(false);
   });
 
   it("runs the page in a sandboxed frame and opens no second window", async () => {

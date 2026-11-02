@@ -1,4 +1,4 @@
-# Recall UI kit (`apps/mobile/ui`)
+# Phonia UI kit (`apps/mobile/ui`)
 
 One set of controls for the whole app, so a feature never builds its own
 button, menu, picker or row. Features import each piece by its path

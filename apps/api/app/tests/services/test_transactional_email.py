@@ -21,7 +21,7 @@ def _user(*, email="user@test.local", name="Ada", locale=None):
 def test_build_welcome_uses_name_and_en_default():
     user = _user(name="Ada", locale="en")
     subject, html, text = tx_email.build_welcome(user)
-    assert subject == "Welcome to Recall"
+    assert subject == "Welcome to Phonia"
     assert "Ada" in text
     assert "Ada" in html
 
@@ -44,7 +44,7 @@ def test_build_welcome_falls_back_to_en_for_amharic():
     """Amharic has no template yet — falls back to English (honest gap)."""
     user = _user(name="Ada", locale="am")
     subject, _, _ = tx_email.build_welcome(user)
-    assert subject == "Welcome to Recall"
+    assert subject == "Welcome to Phonia"
 
 
 def test_build_receipt_uses_locale_template():
@@ -100,13 +100,13 @@ def test_build_receipt_includes_event_and_optional_fields():
         user,
         event_type="INITIAL_PURCHASE",
         store="app_store",
-        product_id="recall.pro.monthly",
+        product_id="phonia.pro.monthly",
         expiration="2026-08-01T00:00:00+00:00",
     )
-    assert subject == "Your Recall receipt"
+    assert subject == "Your Phonia receipt"
     assert "INITIAL_PURCHASE" in text
     assert "app_store" in text
-    assert "recall.pro.monthly" in text
+    assert "phonia.pro.monthly" in text
     assert "2026-08-01T00:00:00+00:00" in text
     assert "INITIAL_PURCHASE" in html
 
@@ -128,7 +128,7 @@ def test_build_receipt_escapes_html_fields():
         user,
         event_type="<script>alert(1)</script>",
         store="app_store",
-        product_id="recall.pro.monthly",
+        product_id="phonia.pro.monthly",
     )
     assert "<script>" not in html
     assert "&lt;script&gt;" in html
@@ -146,7 +146,7 @@ async def test_send_welcome_dispatches_via_gateway():
     assert mocked.await_count == 1
     kwargs = mocked.await_args.kwargs
     assert kwargs["to"] == "user@test.local"
-    assert kwargs["subject"] == "Welcome to Recall"
+    assert kwargs["subject"] == "Welcome to Phonia"
     assert "Ada" in kwargs["text"]
 
 
@@ -160,7 +160,7 @@ async def test_send_purchase_receipt_dispatches_via_gateway():
         )
     assert ok is True
     kwargs = mocked.await_args.kwargs
-    assert kwargs["subject"] == "Your Recall receipt"
+    assert kwargs["subject"] == "Your Phonia receipt"
     assert "RENEWAL" in kwargs["text"]
 
 
@@ -224,7 +224,7 @@ async def test_gateway_skips_empty_recipient():
 
 @pytest.mark.asyncio
 async def test_gateway_real_path_posts_to_resend(monkeypatch):
-    settings = Settings(resend_api_key="rk_test", email_from="Recall <noreply@recall.app>")
+    settings = Settings(resend_api_key="rk_test", email_from="Phonia <noreply@phonia.app>")
     assert email_gateway.is_configured(settings) is True
 
     captured: dict = {}
@@ -258,7 +258,7 @@ async def test_gateway_real_path_posts_to_resend(monkeypatch):
     assert captured["url"] == settings.resend_api_url
     assert captured["headers"]["Authorization"] == "Bearer rk_test"
     assert captured["json"]["to"] == "a@b.com"
-    assert captured["json"]["from"] == "Recall <noreply@recall.app>"
+    assert captured["json"]["from"] == "Phonia <noreply@phonia.app>"
 
 
 @pytest.mark.asyncio
@@ -404,7 +404,7 @@ async def test_enqueue_purchase_receipt_payload_shape():
         uid,
         event_type="RENEWAL",
         store="app_store",
-        product_id="recall.pro.monthly",
+        product_id="phonia.pro.monthly",
         expiration="2026-08-01T00:00:00+00:00",
     )
     entries = await redis.xrange(jobs.JOBS_STREAM)
@@ -414,7 +414,7 @@ async def test_enqueue_purchase_receipt_payload_shape():
     assert payload["event_type"] == "RENEWAL"
     assert payload["store"] == "app_store"
     assert payload["user_id"] == str(uid)
-    assert fields["dedupe_key"] == f"receipt:{uid}:RENEWAL:recall.pro.monthly"
+    assert fields["dedupe_key"] == f"receipt:{uid}:RENEWAL:phonia.pro.monthly"
 
 
 @pytest.mark.asyncio

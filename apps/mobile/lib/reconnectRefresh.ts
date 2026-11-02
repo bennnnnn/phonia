@@ -3,7 +3,7 @@ import { createListenerSet } from "@/lib/listenerSet";
 
 /**
  * What the phone reads again once the API answers after an outage. A read that failed while
- * "No internet" or "Can't reach Recall" showed was read again only on the next return from the
+ * "No internet" or "Can't reach Phonia" showed was read again only on the next return from the
  * background: the banner cleared over a stale or empty list. The connection check
  * (hooks/useNetworkStatus.ts) now says when the API is back, and the list on screen, only that
  * one, is read again the way its screen reads it (its stale window still holds).

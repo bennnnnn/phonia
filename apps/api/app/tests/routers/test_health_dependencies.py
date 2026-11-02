@@ -2,7 +2,7 @@
 
 /health is liveness only. With the database or Redis down it answered 200 while every
 read failed, so the phone's connection check found the API "online": no "Can't reach
-Recall" banner, and the list on screen was never read again when the outage ended.
+Phonia" banner, and the list on screen was never read again when the outage ended.
 """
 
 from __future__ import annotations

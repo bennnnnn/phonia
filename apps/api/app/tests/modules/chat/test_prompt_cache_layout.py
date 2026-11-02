@@ -28,6 +28,7 @@ from app.modules.chat.prompt_constants import (
     UNCLEAR_MESSAGE_HINT,
     learning_plan_daily_contract,
 )
+from app.modules.chat.prompt_constants.tutor import TUTOR_IDENTITY, TUTOR_SAFETY, TUTOR_TEACHING
 from app.modules.chat.prompt_inject import append_after_history, conversation_turns
 from app.modules.chat.prompt_repeats import REPLY_POLICIES, last_policy_parts, policies_once
 from app.modules.chat.response_tone import EMOJI_HINTS, VOICE_HINT
@@ -45,7 +46,8 @@ from app.tests.behavior.sweep import frozen_clock
 from app.tests.modules.chat.chat_test_support import system_prompt
 from app.tests.modules.chat.test_prompt_golden import _DEFAULTS, render, resolve
 
-_IDENTITY = "You are Recall, a helpful personal AI assistant."
+# Who Phonia is: the identity section, its parts a blank line apart.
+_IDENTITY = "\n\n".join((TUTOR_IDENTITY, TUTOR_TEACHING, TUTOR_SAFETY))
 _NINE = datetime(2026, 10, 14, 6, 0, tzinfo=UTC)
 _SEVEN_PAST = datetime(2026, 10, 14, 6, 7, tzinfo=UTC)
 _QUERY = "what should I cook tonight?"

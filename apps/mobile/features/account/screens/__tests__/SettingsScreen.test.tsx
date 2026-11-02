@@ -28,7 +28,7 @@ jest.mock("@/contexts/AuthContext", () => ({
     user: {
       id: "22222222-2222-4222-8222-222222222222",
       name: "bini",
-      email: "dev@recall.local",
+      email: "dev@phonia.local",
       age: 54,
       country: "Ethiopia",
       job: "Ethiopia",
@@ -61,7 +61,7 @@ jest.mock("@/contexts/actionFeedbackCore", () => ({
 jest.mock("@/features/billing/components/UpgradeSheet", () => ({
   UpgradeSheet: () => null,
 }));
-jest.mock("@/lib/config", () => ({ getApiUrl: () => "https://api.recall.test" }));
+jest.mock("@/lib/config", () => ({ getApiUrl: () => "https://api.phonia.test" }));
 jest.mock("@/lib/auth", () => ({ getSessionGeneration: () => 0 }));
 jest.mock("@/ui/overlay/Sheet", () => {
   const { View: RNView } = jest.requireActual("react-native") as typeof import("react-native");
@@ -90,7 +90,7 @@ describe("settings home", () => {
   it("shows the account in one group without the profile fields or restore", async () => {
     const { queryByText, getByText } = await render(<SettingsScreen />);
     expect(getByText("bini")).toBeTruthy();
-    expect(getByText("dev@recall.local")).toBeTruthy();
+    expect(getByText("dev@phonia.local")).toBeTruthy();
     expect(getByText("settings.signed_in_with")).toBeTruthy();
     expect(getByText("settings.manage_subscription")).toBeTruthy();
     expect(getByText("settings.usage_group")).toBeTruthy();

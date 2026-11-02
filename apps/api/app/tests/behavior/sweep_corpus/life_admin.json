@@ -824,7 +824,7 @@
     "area": "lookalike",
     "prompt": "the light mode on my phone hurts my eyes",
     "history": [],
-    "reply": "Bright white screens can definitely be rough, especially at night. A few fixes:\n\n- **Turn on dark mode for the whole phone:**\n  - *iPhone:* Settings → Display & Brightness → **Dark**\n  - *Android:* Settings → Display → **Dark theme**\n- **Use Night Shift / Eye comfort** to warm the colors in the evening.\n- **Turn on auto-brightness**, or lower brightness indoors.\n- **Bump up text size** so you're not squinting.\n- **Take breaks** with the 20-20-20 rule: every 20 minutes, look at something 20 feet away for 20 seconds.\n\nIf your eyes hurt even with all that, it's worth a quick check with an eye doctor. And if you want Recall itself in dark mode, just tell me.",
+    "reply": "Bright white screens can definitely be rough, especially at night. A few fixes:\n\n- **Turn on dark mode for the whole phone:**\n  - *iPhone:* Settings → Display & Brightness → **Dark**\n  - *Android:* Settings → Display → **Dark theme**\n- **Use Night Shift / Eye comfort** to warm the colors in the evening.\n- **Turn on auto-brightness**, or lower brightness indoors.\n- **Bump up text size** so you're not squinting.\n- **Take breaks** with the 20-20-20 rule: every 20 minutes, look at something 20 feet away for 20 seconds.\n\nIf your eyes hurt even with all that, it's worth a quick check with an eye doctor. And if you want Phonia itself in dark mode, just tell me.",
     "expect": "answer"
   },
   {

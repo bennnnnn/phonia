@@ -80,7 +80,7 @@ export const UNAVAILABLE_STATUSES: ReadonlySet<number> = new Set([502, 503, 504]
 export const UNAVAILABLE_CODE = "unavailable";
 
 /**
- * Recall cannot serve right now: the API's outage code, or a 502, 503 or 504 that names no
+ * Phonia cannot serve right now: the API's outage code, or a 502, 503 or 504 that names no
  * code (a gateway in front of it). A refusal that names another code is that refusal, even
  * a 503. Any error with `status` and `code` will do.
  */

@@ -38,7 +38,7 @@ os.environ["WEB_SEARCH_FALLBACK_ENABLED"] = "false"
 # and locks, and one hung at 94% with sessions "idle in transaction" (2026-10-31). A ``-n``
 # run without them is refused (``pytest_configure``): it would point every worker at one
 # shared development database.
-_PER_WORKER = os.environ.get("RECALL_TEST_DB_PER_WORKER") == "1"
+_PER_WORKER = os.environ.get("PHONIA_TEST_DB_PER_WORKER") == "1"
 _XDIST_WORKER = os.environ.get("PYTEST_XDIST_WORKER", "")
 if _XDIST_WORKER.startswith("gw") and _PER_WORKER:
     if "DATABASE_URL" in os.environ:  # the sweeps job fakes the database and sets none
@@ -52,9 +52,9 @@ if _XDIST_WORKER.startswith("gw") and _PER_WORKER:
 
 # A maths decline that would hide a programming error (an AttributeError, NameError or our
 # own TypeError; see app/modules/math/solve/declines.py) raises under pytest. A value already in
-# the environment wins: RECALL_STRICT_DECLINES=0 runs the suite with production's declines.
-_STRICT_DECLINES_ASKED = "RECALL_STRICT_DECLINES" in os.environ
-os.environ.setdefault("RECALL_STRICT_DECLINES", "1")
+# the environment wins: PHONIA_STRICT_DECLINES=0 runs the suite with production's declines.
+_STRICT_DECLINES_ASKED = "PHONIA_STRICT_DECLINES" in os.environ
+os.environ.setdefault("PHONIA_STRICT_DECLINES", "1")
 
 # Hypothesis explores new examples on every local run. CI sets HYPOTHESIS_PROFILE=ci:
 # the same examples every run, so an unrelated change never turns a property red
@@ -100,7 +100,7 @@ def pytest_configure(config: pytest.Config) -> None:
     if _distributed(config) and not _PER_WORKER:
         pytest.exit(
             "A distributed run (-n, --tx, --dist) needs a database per worker: CI copies "
-            "one for each and sets RECALL_TEST_DB_PER_WORKER=1. Locally, run without "
+            "one for each and sets PHONIA_TEST_DB_PER_WORKER=1. Locally, run without "
             "xdist (the development database is shared).",
             returncode=4,
         )
@@ -229,9 +229,9 @@ async def fake_redis(_hermetic_redis):
 
 @pytest.fixture
 def production_declines(monkeypatch):
-    """Maths declines as production has them (silent), unless the run set RECALL_STRICT_DECLINES."""
+    """Maths declines as production has them (silent), unless the run set PHONIA_STRICT_DECLINES."""
     if not _STRICT_DECLINES_ASKED:
-        monkeypatch.setenv("RECALL_STRICT_DECLINES", "0")
+        monkeypatch.setenv("PHONIA_STRICT_DECLINES", "0")
 
 
 @pytest.fixture(autouse=True)

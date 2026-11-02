@@ -1,6 +1,6 @@
 """The battery and the sweeps model production, so their maths declines stay silent.
 
-``RECALL_STRICT_DECLINES=1 uv run pytest app/tests/behavior`` (or the same variable on
+``PHONIA_STRICT_DECLINES=1 uv run pytest app/tests/behavior`` (or the same variable on
 ``python -m app.tests.behavior.stem_sweep math``) runs them strict instead.
 """
 

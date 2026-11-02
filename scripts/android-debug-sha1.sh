@@ -11,7 +11,7 @@ if [[ ! -f "$KEYSTORE" ]]; then
 fi
 
 echo "Add an Android OAuth client in Google Cloud (APIs & Services → Credentials):"
-echo "  Package name: com.recall.app"
+echo "  Package name: com.phonia.app"
 echo ""
 echo "SHA-1 fingerprint (debug build):"
 keytool -list -v -keystore "$KEYSTORE" -alias androiddebugkey -storepass android -keypass android 2>/dev/null | grep "SHA1:"

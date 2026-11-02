@@ -13,7 +13,7 @@
 
 type Flights = Map<string, Promise<unknown>>;
 
-const FLIGHTS = Symbol.for("recall.refreshFlights");
+const FLIGHTS = Symbol.for("phonia.refreshFlights");
 
 function flights(): Flights {
   const holder = globalThis as typeof globalThis & { [FLIGHTS]?: Flights };

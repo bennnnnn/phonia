@@ -75,11 +75,11 @@ Fly rollback means redeploying a known-good image; it does not revert secrets,
 configuration, or database data.
 
 ```bash
-fly releases --app recall-api --image
+fly releases --app phonia-api --image
 # --skip-release-command: the database is already at the newer release's head,
 # which the older image's alembic does not know ("Can't locate revision"), so
 # its `alembic upgrade head` would fail the rollback.
-fly deploy --app recall-api --image <known-good-image-reference> --skip-release-command
+fly deploy --app phonia-api --image <known-good-image-reference> --skip-release-command
 ```
 
 Before redeploying an image, check that it runs on the current schema: it must
@@ -95,8 +95,8 @@ After redeploy:
 
 ```bash
 API_URL=https://<api-host> ./scripts/verify-production.sh --live
-fly status --app recall-api
-fly logs --app recall-api
+fly status --app phonia-api
+fly logs --app phonia-api
 ```
 
 `verify-production.sh --live` fails unless API readiness reports Redis `ok`,
@@ -146,8 +146,8 @@ database restore ([PRODUCTION.md §3](PRODUCTION.md#3-object-storage-cloudflare-
 Confirm the worker is present and healthy:
 
 ```bash
-fly scale count app=1 worker=1 --app recall-api
-fly ssh console --app recall-api --process-group worker -C 'curl -sf http://127.0.0.1:8001/health/ready'
+fly scale count app=1 worker=1 --app phonia-api
+fly ssh console --app phonia-api --process-group worker -C 'curl -sf http://127.0.0.1:8001/health/ready'
 ```
 
 The worker restarts itself: it exits with status 1 when its jobs consumer or a

@@ -36,7 +36,7 @@ async function open(props: Partial<Parameters<typeof ShareSheet>[0]> = {}) {
       onClose={onClose}
       heading="Share chat"
       note="Shares a copy of this chat as it is now."
-      preview={{ title: "Trip", meta: "Recall · Sep 26, 2026" }}
+      preview={{ title: "Trip", meta: "Phonia · Sep 26, 2026" }}
       load={load}
       shareTitle="Trip"
       onExportPdf={onExportPdf}
@@ -56,7 +56,7 @@ beforeEach(() => {
 it("shows the preview and opens the OS share menu once the sheet is up", async () => {
   const { view, load } = await open();
   expect(view.getByText("Share chat", hidden)).toBeTruthy();
-  expect(view.getByText("Recall · Sep 26, 2026", hidden)).toBeTruthy();
+  expect(view.getByText("Phonia · Sep 26, 2026", hidden)).toBeTruthy();
   expect(mockPresent).not.toHaveBeenCalled();
   await act(async () => {
     fireEvent(view.getByTestId("app-sheet-modal", hidden), "show");

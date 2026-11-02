@@ -20,7 +20,7 @@ def test_me_includes_sign_in_provider():
 
 
 def test_me_dev_sign_in_provider():
-    user = api_user(google_sub="dev:dev@recall.local")
+    user = api_user(google_sub="dev:dev@phonia.local")
     client = TestClient(app_with_user(user))
     r = client.get("/auth/me", headers={"Authorization": "Bearer tok"})
     assert r.json()["sign_in_provider"] == "dev"

@@ -1,6 +1,6 @@
 /**
  * A reply as a shared document (Share and PDF): its prose and code as written, maths as
- * maths, and each card the reader cannot open outside Recall (a chart, a graph, a
+ * maths, and each card the reader cannot open outside Phonia (a chart, a graph, a
  * molecule, a calculator) as a one-line label. Control blocks (reminder and settings
  * cards, sources) are left out. Walks the same fences as Copy (`plain.ts`).
  */

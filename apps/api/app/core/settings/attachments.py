@@ -77,7 +77,7 @@ class AttachmentSettings(BaseModel):
     # r2_* settings below; when missing in dev we fall back to local.
     storage_backend: str = "local"
     # Home dir, not /tmp: macOS purges /tmp (and Neon rows then 404 on /file).
-    storage_local_path: str = "~/.recall/attachments"
+    storage_local_path: str = "~/.phonia/attachments"
     r2_account_id: str = ""
     r2_access_key_id: str = ""
     r2_secret_access_key: str = ""

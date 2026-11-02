@@ -25,7 +25,7 @@ export type ServerLogout = {
 
 type PendingLogout = ServerLogout & { queuedAt: number };
 
-const PENDING_LOGOUTS_KEY = "recall_pending_logouts_v1";
+const PENDING_LOGOUTS_KEY = "phonia_pending_logouts_v1";
 /** A phone signs out of a handful of accounts at most between connections. */
 const MAX_PENDING = 5;
 /** The refresh token's lifetime: after it the server has ended the session itself. */

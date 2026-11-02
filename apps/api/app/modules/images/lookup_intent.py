@@ -151,7 +151,7 @@ def is_reference_subject(subject: str) -> bool:
     return fold_token(words[0]) in _REFERENCE_HEADS or is_count_only(subject)
 
 
-# What Recall draws rather than photographs. "can u show me both" after water and carbon
+# What Phonia draws rather than photographs. "can u show me both" after water and carbon
 # dioxide was read as "water and carbon dioxide molecules"; the chemistry card draws those,
 # and a stock photo of a ball-and-stick model is no answer. Only these words count, so a
 # resolved name like "Times Square at night" or "Queen Elizabeth I" is still searched. A
@@ -249,7 +249,7 @@ def _clean_subject(raw: str) -> str | None:
     folded = [fold_token(w) for w in words]
     if not folded[0] or folded[0] in _POSSESSIVES:
         return None
-    # "a picture of me", "of you", "of the receipt I uploaded": the user, Recall or the
+    # "a picture of me", "of you", "of the receipt I uploaded": the user, Phonia or the
     # user's own files, never a web search.
     if any(w in _SELF_WORDS for w in folded):
         return None

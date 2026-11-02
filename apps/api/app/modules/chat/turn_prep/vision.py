@@ -3,7 +3,7 @@
 A photo sent now is injected from the bytes attachment processing already read. A
 follow-up about an earlier photo reads that photo again, so the model looks at it
 rather than at its marker, and is told plainly when it is gone. Only the user's own
-photos go back in: a photo Recall looked up is the app's own, and sending it again
+photos go back in: a photo Phonia looked up is the app's own, and sending it again
 would move every later turn onto a photo model for nothing.
 
 An earlier photo is read again only while the conversation is still about it: it

@@ -84,7 +84,7 @@ beforeEach(() => {
   mockLoading = false;
   mockError = false;
   mockDocuments = [
-    doc("area:recall", "areas", "Recall", "2026-08-30T12:00:00Z"),
+    doc("area:recall", "areas", "Phonia", "2026-08-30T12:00:00Z"),
     doc("profile", "you", "Profile"),
     doc("subjects", "topics", "Subjects"),
     doc("preferences", "you", "Preferences"),
@@ -113,9 +113,9 @@ describe("MemoryScreen", () => {
     expect(youTitles).toEqual(["memory.doc.preferences.title", "memory.doc.profile.title"]);
     expect(within(ui.getByTestId("memory-group-topics")).getByText("memory.doc.subjects.title")).toBeTruthy();
     const areas = within(ui.getByTestId("memory-group-areas"));
-    expect(areas.getByText("Recall")).toBeTruthy();
-    expect(areas.getByText("Recall summary")).toBeTruthy();
-    expect(ui.getByLabelText(/^Recall, memory\.updated:/)).toBeTruthy();
+    expect(areas.getByText("Phonia")).toBeTruthy();
+    expect(areas.getByText("Phonia summary")).toBeTruthy();
+    expect(ui.getByLabelText(/^Phonia, memory\.updated:/)).toBeTruthy();
   });
 
   it("opens a page", async () => {

@@ -1,6 +1,6 @@
 # Grade 1–12 mathematics coverage
 
-This is a capability audit of the running Recall pipeline, not a list of topics a chat model can
+This is a capability audit of the running Phonia pipeline, not a list of topics a chat model can
 discuss. The code and tests are the source of truth. A topic changes status only when its
 extractor, solver, trace, presentation, and regression tests justify the change.
 
@@ -10,7 +10,7 @@ extractor, solver, trace, presentation, and regression tests justify the change.
 |---|---|
 | **VERIFIED** | The server deterministically extracts and checks the complete requested result. Presentation must preserve that result. |
 | **VERIFIED + PROCEDURE** | The server also owns the ordered school method or derivation. The model may explain the trace but may not recreate it. |
-| **TEACH** | Recall can explain the topic using verified facts or examples, but the free-form explanation itself is not certified as a solver trace. |
+| **TEACH** | Phonia can explain the topic using verified facts or examples, but the free-form explanation itself is not certified as a solver trace. |
 | **LLM-ONLY** | Conceptual, construction, or proof work is handled as ordinary tutoring prose and must not receive a verification claim. |
 | **MISSING** | The current student-facing behavior is not yet reliable or complete enough to claim coverage. |
 
@@ -113,7 +113,7 @@ These are not hidden behind a “complete K–12” percentage:
 - **P2 advanced mathematics:** broader integration techniques, convergence proofs, ODE families,
   and detailed parametric/polar/multivariable procedures.
 
-Unsupported multipart prompts are intentionally unverified. For example, if Recall cannot
+Unsupported multipart prompts are intentionally unverified. For example, if Phonia cannot
 represent both area and perimeter as one canonical result, it does not certify only one half.
 
 ## Maintenance rule

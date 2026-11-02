@@ -50,7 +50,7 @@ _MARKER = f"[Image: /attachments/{_PHOTO}/file]"
         # HTML <img> (the web client renders it) becomes a link too.
         ('<img src="https://evil.test/p.png?d=1" alt="pic">', "[pic](https://evil.test/p.png?d=1)"),
         ("<IMG SRC=https://evil.test/p.png>", "[evil.test](https://evil.test/p.png)"),
-        # [Image: …] lines other than Recall's own attachment marker go.
+        # [Image: …] lines other than Phonia's own attachment marker go.
         ("[Image: https://evil.test/p.png?d=x]\nhello", "hello"),
         ("[Image: http://evil.test/p.png]\nhello", "hello"),
         ("Intro\n  [Image: evil.test/x]  \nOutro", "Intro\nOutro"),
@@ -257,7 +257,7 @@ async def test_a_searched_turn_keeps_only_the_servers_source_chips(monkeypatch) 
 async def test_an_instant_reply_is_the_servers_text_and_is_not_touched(monkeypatch) -> None:
     monkeypatch.setattr("app.core.sympy_executor.run_sympy", _run_sympy_inline)
     ctx = _ctx()
-    reply = "It's 3:00 PM.\n\n![clock](https://cdn.recall.test/clock.png)"
+    reply = "It's 3:00 PM.\n\n![clock](https://cdn.phonia.test/clock.png)"
     ctx.instant_reply = reply
     persisted = await _finalize(reply, ctx, TurnOutcome())
-    assert "![clock](https://cdn.recall.test/clock.png)" in persisted
+    assert "![clock](https://cdn.phonia.test/clock.png)" in persisted

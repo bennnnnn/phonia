@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# Import apps/api/.env.production into Fly secrets for app recall-api.
+# Import apps/api/.env.production into Fly secrets for app phonia-api.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 ENV_FILE="${1:-$ROOT/apps/api/.env.production}"
-FLY_APP="${FLY_APP:-recall-api}"
+FLY_APP="${FLY_APP:-phonia-api}"
 
 if [[ ! -f "$ENV_FILE" ]]; then
   echo "Missing $ENV_FILE — copy from apps/api/.env.production.example" >&2

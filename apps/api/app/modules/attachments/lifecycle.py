@@ -24,10 +24,10 @@ logger = logging.getLogger(__name__)
 
 # Failed R2 deletes, retried by the orphan reaper: member = storage key, score = when the
 # next attempt is due. A plain set had no bound and was read whole every cycle.
-PENDING_STORAGE_DELETE_KEY = "recall:storage:pending_delete:due"
-_PENDING_ATTEMPTS_KEY = "recall:storage:pending_delete:attempts"
+PENDING_STORAGE_DELETE_KEY = "phonia:storage:pending_delete:due"
+_PENDING_ATTEMPTS_KEY = "phonia:storage:pending_delete:attempts"
 # The set before it kept order and attempts; its members move over on the next retry pass.
-_LEGACY_PENDING_KEY = "recall:storage:pending_delete"
+_LEGACY_PENDING_KEY = "phonia:storage:pending_delete"
 _PENDING_MAX = 50_000
 _PENDING_PAGE = 500
 _PENDING_MAX_ATTEMPTS = 10

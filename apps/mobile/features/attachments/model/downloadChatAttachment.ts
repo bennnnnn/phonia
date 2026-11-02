@@ -4,12 +4,12 @@ import * as MediaLibrary from "expo-media-library";
 
 import { downloadAttachmentFile } from "@/features/attachments/model/fetchAttachmentBytes";
 import { getSessionGeneration, SessionChangedError } from "@/lib/auth";
-import { recallAttachmentPath } from "@/features/attachments/model/attachmentUri";
+import { phoniaAttachmentPath } from "@/features/attachments/model/attachmentUri";
 import { attachmentSessionGuard } from "@/features/attachments/model/attachmentSession";
 import {
   attachmentFilePath,
   listAttachmentFiles,
-  listRecallAttachmentFiles,
+  listPhoniaAttachmentFiles,
   partialFilePath,
   safeFileName,
   sweepAttachmentFiles,
@@ -76,12 +76,12 @@ export function invalidateCachedAttachmentFile(uri: string): void {
 export async function removeCachedAttachmentFiles(attachmentId: string): Promise<void> {
   scopeCacheToSession();
   const isThisFile = (uri: string) =>
-    recallAttachmentPath(uri)?.split("?")[0] === `/attachments/${attachmentId}/file`;
+    phoniaAttachmentPath(uri)?.split("?")[0] === `/attachments/${attachmentId}/file`;
   const remembered = [...cachedFiles].filter(([, uri]) => isThisFile(uri)).map(([path]) => path);
   for (const uri of new Set([...localFileCache.keys(), ...downloadsInFlight.keys(), ...cachedFiles.values()])) {
     if (isThisFile(uri)) invalidateCachedAttachmentFile(uri);
   }
-  const onDisk = await listRecallAttachmentFiles(attachmentId).catch(() => [] as string[]);
+  const onDisk = await listPhoniaAttachmentFiles(attachmentId).catch(() => [] as string[]);
   await Promise.allSettled([...new Set([...remembered, ...onDisk])].map(async (path) => {
     await deleteAsync(path, { idempotent: true });
     cachedFiles.delete(path);

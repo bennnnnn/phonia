@@ -1,5 +1,5 @@
 #!/usr/bin/env -S uv run python
-"""Send the behavior battery to a running API and write what Recall answered.
+"""Send the behavior battery to a running API and write what Phonia answered.
 
 The prompts and what a good reply looks like come from
 apps/api/app/tests/behavior/cases.py, the same list CI routes offline. This run
@@ -50,7 +50,7 @@ TIMEZONE = "Africa/Nairobi"
 # The API allows 30 chat messages a minute per user; stay under it.
 PACE_SECONDS = 2.2
 TURN_TIMEOUT = 180.0
-MOCK_REPLY_START = "I'm Recall (mock mode)"
+MOCK_REPLY_START = "I'm Phonia (mock mode)"
 MOCK_SEARCH_URL = "https://example.com/mock-search"
 LOCATION_OFF_START = "I don't have your location yet"
 IMAGE_RE = re.compile(r"\[Image: (/attachments/[^\]]+)\]")
@@ -133,7 +133,7 @@ class Battery:
             )
 
     def login(self, pro: bool) -> None:
-        email = "battery-pro@recall.local" if pro else "battery@recall.local"
+        email = "battery-pro@phonia.local" if pro else "battery@phonia.local"
         response = self.client.post("/auth/dev", json={"email": email, "name": "Bini"})
         if response.status_code in {403, 404}:
             sys.exit("Dev login is off. Set DEV_AUTH_ENABLED=true in apps/api/.env.")

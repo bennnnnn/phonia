@@ -29,9 +29,9 @@ from app.models.model_catalog import ChatModel
 
 logger = logging.getLogger(__name__)
 
-_SAMPLES_KEY = "recall:model_health:samples:{model}"
+_SAMPLES_KEY = "phonia:model_health:samples:{model}"
 # Held by the one turn trying a half-open model; its sample lets the next one go.
-_PROBE_KEY = "recall:model_health:probe:{model}"
+_PROBE_KEY = "phonia:model_health:probe:{model}"
 _MAX_SAMPLES = 40
 _SAMPLE_TTL_SECONDS = 86_400
 # A provider this slow to start answering counts against its model.

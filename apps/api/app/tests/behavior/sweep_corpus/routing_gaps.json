@@ -206,7 +206,7 @@
   "id": "rg-034",
   "area": "lookalike",
   "prompt": "my reminder at 7pm didn't go off",
-  "reply": "Sorry about that — check that notifications are on for Recall in your phone's settings.",
+  "reply": "Sorry about that — check that notifications are on for Phonia in your phone's settings.",
   "expect": "answer"
  },
  {

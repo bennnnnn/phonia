@@ -218,7 +218,7 @@ _EMAIL_SHAPE = re.compile(r"[^@\s]+@[^@\s.]+(?:\.[^@\s.]+)+")
 
 
 class DevAuthRequest(SignInRequest):
-    email: UserText = Field(default="dev@recall.local", max_length=254)
+    email: UserText = Field(default="dev@phonia.local", max_length=254)
     name: UserText = "bini"
 
     @field_validator("email")

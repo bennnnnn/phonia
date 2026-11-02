@@ -7,7 +7,7 @@ export function Login() {
   const { user, loading, signInWithGoogle, signInWithDev, error } = useAuth();
   const navigate = useNavigate();
   const googleButtonRef = useRef<HTMLDivElement>(null);
-  const [devEmail, setDevEmail] = useState("dev@recall.local");
+  const [devEmail, setDevEmail] = useState("dev@phonia.local");
   const [devName, setDevName] = useState("bini");
   const [localError, setLocalError] = useState<string | null>(null);
 
@@ -44,7 +44,7 @@ export function Login() {
   return (
     <div className="login">
       <div className="login-card">
-        <h1>Recall</h1>
+        <h1>Phonia</h1>
         <p className="subtitle">Your personal AI that remembers.</p>
         <div ref={googleButtonRef} className="google-button" />
         <p className="or">or</p>

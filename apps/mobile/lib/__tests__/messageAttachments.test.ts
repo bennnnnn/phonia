@@ -51,16 +51,16 @@ describe("messageAttachments", () => {
   });
 });
 
-describe("[Image: …] markers load only Recall attachments", () => {
+describe("[Image: …] markers load only Phonia attachments", () => {
   const ID = "550e8400-e29b-41d4-a716-446655440000";
 
   it("keeps the server's attachment markers as pictures", () => {
     const parsed = parseMessageImages(
-      `[Image: /attachments/${ID}/file]\n[Image: https://api.recall.test/attachments/${ID}/file]\nA car.`,
+      `[Image: /attachments/${ID}/file]\n[Image: https://api.phonia.test/attachments/${ID}/file]\nA car.`,
     );
     expect(parsed.images).toEqual([
       { attachmentId: ID, path: `/attachments/${ID}/file` },
-      { attachmentId: ID, path: `https://api.recall.test/attachments/${ID}/file` },
+      { attachmentId: ID, path: `https://api.phonia.test/attachments/${ID}/file` },
     ]);
     expect(parsed.textWithoutImages).toBe("A car.");
   });
@@ -91,7 +91,7 @@ describe("[Image: …] markers load only Recall attachments", () => {
     ]);
   });
 
-  it("loads a marker with a Recall attachment id from the API, whatever host it names", () => {
+  it("loads a marker with a Phonia attachment id from the API, whatever host it names", () => {
     const parsed = parseMessageImages(`[Image: https://evil.test/attachments/${ID}/file?d=1]`);
     expect(parsed.images).toEqual([
       { attachmentId: ID, path: `https://evil.test/attachments/${ID}/file?d=1` },

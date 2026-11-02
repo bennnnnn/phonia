@@ -59,7 +59,7 @@ describe("PDF print document", () => {
       '"values":["Low","High"]}]}';
     const md = `Pick:\n\n\`\`\`clarify\n${card}\n\`\`\``;
     const text = markdownToDocumentText(md, (block) => block, "print");
-    expect(await body(`**Recall:**\n${text}`)).toContain(
+    expect(await body(`**Phonia:**\n${text}`)).toContain(
       "<p>Pick:</p>\n<p>Which region? (Asia / Europe)<br>Budget? (Low / High)</p>",
     );
   });

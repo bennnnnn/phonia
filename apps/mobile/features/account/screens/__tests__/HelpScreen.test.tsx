@@ -20,8 +20,8 @@ jest.mock("@/lib/config", () => ({
   },
 }));
 jest.mock("@/lib/legalUrls", () => ({
-  getLegalPrivacyUrl: () => "https://recall.test/privacy",
-  getLegalTermsUrl: () => "https://recall.test/terms",
+  getLegalPrivacyUrl: () => "https://phonia.test/privacy",
+  getLegalTermsUrl: () => "https://phonia.test/terms",
 }));
 jest.mock("@/lib/reportRecoverableError", () => ({
   reportRecoverableError: (...args: unknown[]) => mockReportError(...args),
@@ -39,7 +39,7 @@ beforeEach(() => {
 });
 
 it("writes every help row to the support address, and no legal pages", async () => {
-  mockConfig.supportEmail = "help@recall.test";
+  mockConfig.supportEmail = "help@phonia.test";
   mockOpenUrl.mockResolvedValue(true);
   const view = await render(<HelpScreen />);
   expect(view.queryByText("privacy.title")).toBeNull();
@@ -49,7 +49,7 @@ it("writes every help row to the support address, and no legal pages", async () 
       fireEvent.press(view.getByText(row));
     });
     const url = mockOpenUrl.mock.calls[0][0] as string;
-    expect(url.startsWith("mailto:help@recall.test?subject=")).toBe(true);
+    expect(url.startsWith("mailto:help@phonia.test?subject=")).toBe(true);
     expect(decodeURIComponent(url)).toContain(`settings.contact_support_subject: ${row}`);
     expect(decodeURIComponent(url)).toContain("settings.about_version: 2.3.4");
   }
@@ -64,13 +64,13 @@ it("says support is not set up, instead of a share sheet that reaches nobody", a
 });
 
 it("copies the address for any email app when no mail app opens", async () => {
-  mockConfig.supportEmail = "help@recall.test";
+  mockConfig.supportEmail = "help@phonia.test";
   mockOpenUrl.mockResolvedValue(false);
   const view = await render(<HelpScreen />);
   await act(async () => {
     fireEvent.press(view.getByText("settings.contact_support"));
   });
-  expect(mockSetString).toHaveBeenCalledWith("help@recall.test");
+  expect(mockSetString).toHaveBeenCalledWith("help@phonia.test");
   expect(mockReportWarning).toHaveBeenCalledWith(null, "settings.mail_copied");
   expect(mockReportError).not.toHaveBeenCalled();
 });
@@ -78,14 +78,14 @@ it("copies the address for any email app when no mail app opens", async () => {
 it.each(["settings.report_problem", "settings.send_feedback"])(
   "%s copies the address with the subject and the version, when no mail app opens",
   async (row) => {
-    mockConfig.supportEmail = "help@recall.test";
+    mockConfig.supportEmail = "help@phonia.test";
     mockOpenUrl.mockResolvedValue(false);
     const view = await render(<HelpScreen />);
     await act(async () => {
       fireEvent.press(view.getByText(row));
     });
     const copied = mockSetString.mock.calls[0]![0];
-    expect(copied.startsWith("help@recall.test\n\n")).toBe(true);
+    expect(copied.startsWith("help@phonia.test\n\n")).toBe(true);
     expect(copied).toContain(`settings.contact_support_subject: ${row}`);
     expect(copied).toContain("settings.about_version: 2.3.4");
     expect(mockReportWarning).toHaveBeenCalledWith(null, "settings.mail_copied_report");
@@ -93,7 +93,7 @@ it.each(["settings.report_problem", "settings.send_feedback"])(
 );
 
 it("says it could not open mail when the copy fails too", async () => {
-  mockConfig.supportEmail = "help@recall.test";
+  mockConfig.supportEmail = "help@phonia.test";
   mockOpenUrl.mockResolvedValue(false);
   mockSetString.mockRejectedValueOnce(new Error("denied"));
   const view = await render(<HelpScreen />);

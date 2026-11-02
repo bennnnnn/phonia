@@ -129,7 +129,7 @@ it("keeps the PDF's page in place: a navigation it starts loads nothing and open
     "tel:5551234",
     "sms:5551234",
     "mailto:a@example.com",
-    "recall://chat/1",
+    "phonia://chat/1",
     "intent://x#Intent;end",
     "file:///etc/hosts",
     "data:text/html,hi",

@@ -49,9 +49,9 @@ describe("preview page navigation", () => {
     ["another cached file", `${CACHES}/att-1-2-doc.pdf`],
     ["another preview page", PAGE.replace("mermaid-3b2f6a9c41d0e1f2", "chart-0123456789abcdef")],
     ["a page of that name elsewhere", PAGE.replace("/A1/", "/B2/")],
-    ["app data", "file:///data/user/0/com.recall.app/files/session.json"],
+    ["app data", "file:///data/user/0/com.phonia.app/files/session.json"],
     ["a data document", "data:text/html,<script>alert(1)</script>"],
-    ["an app link", "recall://chat/1"],
+    ["an app link", "phonia://chat/1"],
     ["a script URL", "javascript:alert(1)"],
     ["nothing", ""],
   ])("refuses %s", (_name, url) => {
@@ -188,8 +188,8 @@ describe("previewPageLinkToOpen", () => {
   it.each([
     ["an Android intent", "intent://scan/#Intent;scheme=zxing;end"],
     ["a cached file", `${CACHES}/att-1-2-doc.pdf`],
-    ["app data", "file:///data/user/0/com.recall.app/files/session.json"],
-    ["an app link", "recall://chat/1"],
+    ["app data", "file:///data/user/0/com.phonia.app/files/session.json"],
+    ["an app link", "phonia://chat/1"],
     ["a data document", "data:text/html,hi"],
     ["a script URL", "javascript:alert(1)"],
     ["a relative path", "secrets.json"],

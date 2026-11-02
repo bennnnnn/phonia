@@ -1,18 +1,18 @@
 {
   "expo": {
-    "name": "Recall",
-    "slug": "recall",
+    "name": "Phonia",
+    "slug": "phonia",
     "version": "1.0.0",
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "recall",
+    "scheme": "phonia",
     "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.recall.app",
+      "bundleIdentifier": "com.phonia.app",
       "usesAppleSignIn": true,
       "config": {
         "usesNonExemptEncryption": false
@@ -143,11 +143,11 @@
         ]
       },
       "infoPlist": {
-        "NSUserNotificationsUsageDescription": "Recall sends reminders for your to-dos.",
-        "NSPhotoLibraryUsageDescription": "Recall needs access to your photos so you can attach images in chat.",
-        "NSPhotoLibraryAddUsageDescription": "Recall saves generated and chat images to your photo library when you tap Download.",
-        "NSCameraUsageDescription": "Recall uses the camera so you can take photos to attach in chat and scan math problems from your notes or worksheets.",
-        "NSMicrophoneUsageDescription": "Recall uses the microphone so you can dictate messages.",
+        "NSUserNotificationsUsageDescription": "Phonia sends reminders for your to-dos.",
+        "NSPhotoLibraryUsageDescription": "Phonia needs access to your photos so you can attach images in chat.",
+        "NSPhotoLibraryAddUsageDescription": "Phonia saves generated and chat images to your photo library when you tap Download.",
+        "NSCameraUsageDescription": "Phonia uses the camera so you can take photos to attach in chat and scan math problems from your notes or worksheets.",
+        "NSMicrophoneUsageDescription": "Phonia uses the microphone so you can dictate messages.",
         "LSApplicationQueriesSchemes": [
           "googlegmail",
           "gmail",
@@ -157,7 +157,7 @@
       }
     },
     "android": {
-      "package": "com.recall.app",
+      "package": "com.phonia.app",
       "softwareKeyboardLayoutMode": "resize",
       "adaptiveIcon": {
         "backgroundColor": "#4F56E5",
@@ -204,23 +204,23 @@
           "icon": "./assets/images/notification-icon.png",
           "color": "#4F56E5",
           "sounds": [
-            "./assets/audio/recall_notify.wav"
+            "./assets/audio/phonia_notify.wav"
           ]
         }
       ],
       [
         "expo-image-picker",
         {
-          "photosPermission": "Recall needs access to your photos so you can attach images in chat.",
-          "cameraPermission": "Recall uses the camera so you can take photos to attach in chat and scan math problems from your notes or worksheets.",
-          "microphonePermission": "Recall uses the microphone so you can dictate messages."
+          "photosPermission": "Phonia needs access to your photos so you can attach images in chat.",
+          "cameraPermission": "Phonia uses the camera so you can take photos to attach in chat and scan math problems from your notes or worksheets.",
+          "microphonePermission": "Phonia uses the microphone so you can dictate messages."
         }
       ],
       [
         "expo-media-library",
         {
-          "photosPermission": "Recall needs access to your photos so you can attach images in chat.",
-          "savePhotosPermission": "Recall saves generated and chat images to your photo library when you tap Download.",
+          "photosPermission": "Phonia needs access to your photos so you can attach images in chat.",
+          "savePhotosPermission": "Phonia saves generated and chat images to your photo library when you tap Download.",
           "isAccessMediaLocationEnabled": false,
           "granularPermissions": []
         }
@@ -320,7 +320,7 @@
       [
         "expo-audio",
         {
-          "microphonePermission": "Recall uses the microphone so you can dictate messages.",
+          "microphonePermission": "Phonia uses the microphone so you can dictate messages.",
           "enableBackgroundPlayback": false
         }
       ]

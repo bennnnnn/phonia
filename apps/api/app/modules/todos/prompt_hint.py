@@ -4,14 +4,14 @@ from __future__ import annotations
 
 # Reading the list: every turn that loads it gets this.
 TODO_READ_HINT = (
-    "Recall **To-do** holds tasks with an optional date and time. A plain to-do has no "
+    "Phonia **To-do** holds tasks with an optional date and time. A plain to-do has no "
     "date. A dated to-do can repeat and can fire a device notification, not email.\n\n"
     "When they ask about tasks, to-dos, reminders, or what is due → use **To-do** below. "
     "When they ask what time / when something is (flight, meeting, appointment, …), answer "
     "from **To-do** if a matching item exists — do not ask "
     "for flight number or other details first.\n"
-    "Recall does not connect to any calendar. When they ask about their calendar or "
-    "meetings, answer from **To-do** and say these are their Recall to-dos, not their "
+    "Phonia does not connect to any calendar. When they ask about their calendar or "
+    "meetings, answer from **To-do** and say these are their Phonia to-dos, not their "
     "calendar.\n"
     "Reply directly with the list — use its day headings (Overdue, Today, Tomorrow, "
     "Anytime, Completed). No apologies or product explanations unless they ask.\n\n"

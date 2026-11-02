@@ -13,7 +13,7 @@ from app.core.config import Settings
 from app.modules.analytics.retention import run_retention_pass
 
 _NAME = "analytics_retention"
-LOCK_KEY = "recall:analytics_retention:lock"
+LOCK_KEY = "phonia:analytics_retention:lock"
 
 
 async def _retention_cycle(settings: Settings, lock: CycleLock) -> None:

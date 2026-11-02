@@ -3,7 +3,7 @@
  * `pnpm ios:sim`: build the app and open it in the iOS Simulator, with no signing certificate.
  *
  * Sign in with Apple's entitlement makes Expo demand a development certificate even for a
- * simulator. RECALL_IOS_SIMULATOR=1 leaves it out (app.config.ts); dev login and Google
+ * simulator. PHONIA_IOS_SIMULATOR=1 leaves it out (app.config.ts); dev login and Google
  * still work. It also leaves out ML Kit, whose simulator slice is Intel only
  * (react-native.config.js); the live scanner is unavailable there. An ios/ folder that still
  * carries the entitlement or ML Kit is regenerated once.
@@ -16,7 +16,7 @@ import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 // ios/ is generated and ignored by git, so regenerating it needs no git check.
-const env = { ...process.env, RECALL_IOS_SIMULATOR: "1", EXPO_NO_GIT_STATUS: "1" };
+const env = { ...process.env, PHONIA_IOS_SIMULATOR: "1", EXPO_NO_GIT_STATUS: "1" };
 
 function iosHasAppleSignIn() {
   const ios = join(root, "ios");

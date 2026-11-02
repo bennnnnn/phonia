@@ -22,7 +22,7 @@ def _snapshot(*, enabled: bool = True) -> MemorySnapshot:
         prompt_facts=[
             {"id": str(fact_id), "type": "fact", "topic": "notes", "text": "User likes tea"}
         ],
-        prompt_areas=[{"topic": "area:recall", "title": "Recall", "summary": ""}],
+        prompt_areas=[{"topic": "area:phonia", "title": "Phonia", "summary": ""}],
     )
 
 
@@ -101,7 +101,7 @@ async def test_an_instruction_is_saved_like_remember_this():
     # A hand edit: if it changes saved facts, the history scan skips older lines.
     assert apply.await_args.kwargs["manual_edit"] is True
     assert instruct.await_args.kwargs["focus_topic"] == "preferences"
-    assert instruct.await_args.kwargs["existing_areas"][0]["topic"] == "area:recall"
+    assert instruct.await_args.kwargs["existing_areas"][0]["topic"] == "area:phonia"
     release.assert_awaited_once()
 
 

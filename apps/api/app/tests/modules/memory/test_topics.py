@@ -20,7 +20,7 @@ from app.modules.memory.topics import (
         ("side-projects", None),
         ("recent-work", None),
         ("  Preferences ", "preferences"),
-        ("area:recall", "area:recall"),
+        ("area:phonia", "area:phonia"),
         ("area:My Big App!", "area:my-big-app"),
         ("area:", None),
         ("area:!!!", None),
@@ -85,5 +85,5 @@ def test_a_focus_fact_with_no_topic_is_learning_progress():
 
 
 def test_fact_topic_uses_the_stored_topic_or_the_type_default():
-    assert fact_topic(SimpleNamespace(topic="area:recall", type="project")) == "area:recall"
+    assert fact_topic(SimpleNamespace(topic="area:phonia", type="project")) == "area:phonia"
     assert fact_topic(SimpleNamespace(topic=None, type="preference")) == "preferences"

@@ -102,7 +102,7 @@ def test_forget_requests_name_the_fact_not_the_command():
         ("I'm a nurse", "Works as a nurse in Boston", True),
         ("I use React", "User uses React", True),
         # One shared word is not the fact: React Native is another name.
-        ("I use React", "User builds Recall with React Native and FastAPI", False),
+        ("I use React", "User builds Phonia with React Native and FastAPI", False),
         ("I use React", "User uses React Native for mobile", False),
         ("I live in Nairobi", "User lives in Nairobi", True),
         # About the user's sister, not the user.
@@ -259,11 +259,11 @@ def test_filter_surface_memories_keeps_allergy_on_food_query():
 
 
 def test_extract_consolidation_anchors_names_and_orgs():
-    prior = "User's name is Bini. User works at Hooh on Recall. Contact: dev@example.com"
+    prior = "User's name is Bini. User works at Hooh on Phonia. Contact: dev@example.com"
     anchors = extract_consolidation_anchors(prior)
     assert "bini" in anchors
     assert "hooh" in anchors
-    assert "recall" in anchors
+    assert "phonia" in anchors
     assert "dev@example.com" in anchors
 
 
@@ -312,7 +312,7 @@ def test_accept_memory_section_rewrite_rejects_dropped_anchors():
 
 def test_accept_memory_section_rewrite_keeps_expanding_rewrite():
     prior = "User's name is Bini. User works at Hooh. User is a developer."
-    good = "Bini is a developer at Hooh building Recall."
+    good = "Bini is a developer at Hooh building Phonia."
     assert (
         accept_memory_section_rewrite(
             section_type="profile",
@@ -321,7 +321,7 @@ def test_accept_memory_section_rewrite_keeps_expanding_rewrite():
             confidence=0.9,
             min_confidence=0.4,
         )
-        == "Bini is a developer at Hooh building Recall"
+        == "Bini is a developer at Hooh building Phonia"
     )
 
 
@@ -396,7 +396,7 @@ def test_select_memories_for_prompt_includes_project_fact_focus():
     memories = [
         _memory("focus", "Ship the quiz this week", 0.8),
         _memory("fact", "Works at Hooh", 0.9),
-        _memory("project", "Building Recall", 0.9),
+        _memory("project", "Building Phonia", 0.9),
         _memory("profile", "Name is Sam", 0.7),
         _memory("preference", "Short answers", 0.6),
     ]
@@ -1215,7 +1215,7 @@ def _fact(type_: str, text: str, *, topic: str | None = None, vec: str | None = 
 
 
 def _store() -> list:
-    """A user who builds Recall, and a lot about them that has nothing to do with auth."""
+    """A user who builds Phonia, and a lot about them that has nothing to do with auth."""
     return [
         _fact("profile", "User's name is Bini", topic="profile"),
         _fact("profile", "Bini works as a nurse at a clinic", topic="profile"),
@@ -1224,7 +1224,7 @@ def _store() -> list:
         _fact("fact", "Bini has a cat named Mimi", topic="interests"),
         _fact("fact", "Bini is training for a marathon", topic="goals"),
         _fact("fact", "Bini uses React Native and FastAPI", topic="notes"),
-        _fact("project", "Bini builds Recall with React Native and FastAPI", topic="area:recall"),
+        _fact("project", "Bini builds Phonia with React Native and FastAPI", topic="area:phonia"),
         _fact("project", "Bini's wedding is planned for June", topic="area:wedding"),
         _fact("fact", "Bini wants auth tokens kept off the device logs", topic="notes"),
     ]

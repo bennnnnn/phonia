@@ -53,7 +53,7 @@ async def test_invoke_disabled():
 @pytest.mark.asyncio
 @pytest.mark.parametrize("query", ["water and carbon dioxide molecules", "graph of y = x^2"])
 async def test_invoke_declines_what_the_app_draws(query: str):
-    """A molecule or a graph is drawn by Recall; a stock photo of one is no answer."""
+    """A molecule or a graph is drawn by Phonia; a stock photo of one is no answer."""
     adapter = ImageSearchAdapter(_settings(image_search_enabled=True))
     search = AsyncMock()
     with patch.object(adapter_module.image_search_service, "search_and_attach_for_chat", search):

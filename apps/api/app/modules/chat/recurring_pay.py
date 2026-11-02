@@ -1,7 +1,7 @@
 """Deterministic estimates for recurring-pay questions with a calendar end date.
 
 These requests combine arithmetic with the user's local date. Sending them to
-general chat previously let the model ask for today's date even though Recall
+general chat previously let the model ask for today's date even though Phonia
 already knows it, or count paychecks without stating whether today is a payday.
 This module owns the narrow, fully specified case and makes every assumption
 visible in the reply.

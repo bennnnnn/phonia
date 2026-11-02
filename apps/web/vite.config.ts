@@ -14,7 +14,7 @@ function requireProductionHttpsApiUrl(): Plugin {
   };
 }
 
-// Web client for Recall. Talks to the existing FastAPI over HTTP + SSE.
+// Web client for Phonia. Talks to the existing FastAPI over HTTP + SSE.
 // The API URL is configured per-environment via VITE_API_URL (see .env.example).
 export default defineConfig({
   plugins: [react(), requireProductionHttpsApiUrl()],

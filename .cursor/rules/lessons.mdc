@@ -28,7 +28,7 @@ Skip obvious UI polish (colors, icon choice, spacing, copy). Format each as
 
 - **Keypad labels wrapped and changed font on Android.** Key height was the pad divided by each page's row count (the 123 page's keys were twice Calc's), labels had no `numberOfLines`, and they drew in Roboto, which lacks `⁻ ₙ ∠ ∬ □ 𝑥`. Every page is now 6 × 6, and `MathKey` draws words in Source Sans 3, symbols in the KaTeX face that has them (Size1 for ∬ ∭ ∮), and scripts as raised text. Check a new label against a 52pt key at 115% text.
 
-- **`expo run:ios` said “No code signing certificates” for a Simulator.** Sign in with Apple's entitlement makes Expo require development signing even for a simulator, and Expo applies the Apple plugin on its own once the package is installed, so dropping it from `plugins` changes nothing. `pnpm ios:sim` sets `RECALL_IOS_SIMULATOR=1`; `plugins/withoutAppleSignIn.js`, registered first so its mod runs last, deletes the entitlement, and an `ios/` that still has it is regenerated.
+- **`expo run:ios` said “No code signing certificates” for a Simulator.** Sign in with Apple's entitlement makes Expo require development signing even for a simulator, and Expo applies the Apple plugin on its own once the package is installed, so dropping it from `plugins` changes nothing. `pnpm ios:sim` sets `PHONIA_IOS_SIMULATOR=1`; `plugins/withoutAppleSignIn.js`, registered first so its mod runs last, deletes the entitlement, and an `ios/` that still has it is regenerated.
 
 - **Numbered maths steps disappeared, twice.** The one-layout refactor told every subject “no numbered steps”, so both the verified lesson and the model's own maths replies lost their numbers. Maths numbers each move (`**1. Subtract 4 from both sides**`, the both-sides line, then the simplified line): the lesson in `math/tools/lesson.py`, the model through `MATH_WORKOUT_PROMPT_RULE`. Physics and chemistry keep the note after the line. Do not remove the numbering.
 
@@ -287,7 +287,7 @@ Skip obvious UI polish (colors, icon choice, spacing, copy). Format each as
 
 - **The line under the composer stayed sharp.** The scrim used `bottom: 0`, which sits on the pill, above the bottom padding where the thread actually shows. Hang it at `bottom: -bottomPad`, and start the veil already mostly opaque so that line is not clear.
 
-- **Chat titles vanish under the drawer header.** `topOverlay` was an opaque page color painted over the fade, so rows hit a hard edge under Recall and search. Keep that overlay transparent and dissolve the fade across the title row.
+- **Chat titles vanish under the drawer header.** `topOverlay` was an opaque page color painted over the fade, so rows hit a hard edge under Phonia and search. Keep that overlay transparent and dissolve the fade across the title row.
 
 - **Message text stays sharp in the gap under the composer.** The composer block is transparent through the home-indicator pad, so the thread paints there in full. The bottom scrim stays clear for about one line, then solid to the screen edge.
 
@@ -373,7 +373,7 @@ Skip obvious UI polish (colors, icon choice, spacing, copy). Format each as
   saw calculus but `y = x^3-3x` was differentiated as an equation (fails) and
   `dy/dx` was not a `d/dx` cue. Peel `y=` / `f(x)=`; treat `dy/dx` as Leibniz.
 
-- **Assistant said “Recall will attach the verified diagram.”** That sentence
+- **Assistant said “Phonia will attach the verified diagram.”** That sentence
   was a system instruction (`DIAGRAM_OWNED_NOTE`) in declarative voice; the
   model copied it into the chat. Phrase as “do not mention attaching / fences”;
   never tell the user the app will attach anything.
@@ -406,7 +406,7 @@ Skip obvious UI polish (colors, icon choice, spacing, copy). Format each as
   Stop *is* abort (close the fetch). New chat / leave must not `abort()`; latch
   `chatId` so leftover events cannot paint the next thread. Register the SSE
   producer with `register_inflight_stream` so `GET /messages` can wait like WS.
-- **Gallery `GET /attachments/{id}/file` 404 after a reboot.** List 200s from Neon, then each thumb 404s. Cause: local backend defaulted to `/tmp/recall-attachments`; macOS wipes `/tmp`, rows stay. Fix: store under `~/.recall/attachments` (`expanduser`); omit local rows whose blob is gone from the gallery list; log `attachment blob missing on disk` on `/file`.
+- **Gallery `GET /attachments/{id}/file` 404 after a reboot.** List 200s from Neon, then each thumb 404s. Cause: local backend defaulted to `/tmp/phonia-attachments`; macOS wipes `/tmp`, rows stay. Fix: store under `~/.phonia/attachments` (`expanduser`); omit local rows whose blob is gone from the gallery list; log `attachment blob missing on disk` on `/file`.
 - **Repeat on New reminder did nothing.** Nested `AppSheet` is a second RN
   `Modal`; iOS will not present it over the add-reminder sheet. Put the
   pick-one list in the same sheet (expand in place).
@@ -750,7 +750,7 @@ Skip obvious UI polish (colors, icon choice, spacing, copy). Format each as
   Fix (#450): convert `\(...\)` → `$...$` in `protectMathEscapes`; strip `\\[a-zA-Z]+`
   before the prose-word count; wrap bare cmds outside existing `$` spans.
 - **Chat “falls then snaps back” when stream ends.** ChatGPT drops copy/thumbs
-  into the empty space above the composer; the prose does not move. Recall
+  into the empty space above the composer; the prose does not move. Phonia
   reserved that height both as list pad and as an in-bubble slot, and native
   autoscroll + JS `scrollToEnd` + a leftover streaming catch-up all wrote at
   the 280ms settle — spring, and the scroll-to-bottom chevron appeared. Fix:

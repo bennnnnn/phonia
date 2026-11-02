@@ -11,7 +11,7 @@ from app.services.text_normalize import collapse_ws, straighten_apostrophes
 _GREETING = (
     r"(?:hi|hello|hey|heya|hiya|howdy|yo|greetings|hola"
     r"|good (?:morning|afternoon|evening|night|day)|g?morning|evening|gm)"
-    r"(?:,? (?:there|again|friend|buddy|pal|mate|everyone|all|y'all|you|recall))?"
+    r"(?:,? (?:there|again|friend|buddy|pal|mate|everyone|all|y'all|you|phonia))?"
 )
 
 

@@ -41,12 +41,12 @@ class _CountingRedis:
 
 
 def _probe_key(alias: str) -> str:
-    return f"recall:model_health:probe:{model_health._model_of(alias)}"
+    return f"phonia:model_health:probe:{model_health._model_of(alias)}"
 
 
 async def _store(redis: Any, alias: str, *samples: tuple[bool, int, float]) -> None:
     """Samples with their own timestamps: (ok, latency ms, recorded at)."""
-    key = f"recall:model_health:samples:{model_health._model_of(alias)}"
+    key = f"phonia:model_health:samples:{model_health._model_of(alias)}"
     for ok, ms, at in samples:
         await redis.zadd(key, {f"{int(ok)}|{ms}|{int(at * 1e9)}": at})
 
@@ -308,7 +308,7 @@ async def test_a_long_healthy_reply_is_not_slow() -> None:
 async def test_samples_written_in_one_second_keep_their_order() -> None:
     """Redis orders equal scores by member, failures first: the newest is the last written."""
     redis = _redis()
-    key = f"recall:model_health:samples:{model_health._model_of('smart-chat')}"
+    key = f"phonia:model_health:samples:{model_health._model_of('smart-chat')}"
     now = time.time()
     for written_ns, ok in enumerate((True, False, False, False), start=1):
         await redis.zadd(key, {f"{int(ok)}|50|{written_ns}": now})

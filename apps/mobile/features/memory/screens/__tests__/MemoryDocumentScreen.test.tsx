@@ -162,12 +162,12 @@ beforeEach(() => {
     {
       key: "area:recall",
       group: "areas",
-      title: "Recall",
+      title: "Phonia",
       summary: "Personal AI chat app",
       updated_at: "2026-08-21T00:00:00Z",
       facts: [
-        fact("f1", "As of 2026-08-01: User is building Recall with Expo"),
-        fact("f2", "Recall uses FastAPI"),
+        fact("f1", "As of 2026-08-01: User is building Phonia with Expo"),
+        fact("f2", "Phonia uses FastAPI"),
       ],
     },
   ];
@@ -185,12 +185,12 @@ describe("MemoryDocumentScreen", () => {
 
   it("shows the page: title, last updated, summary and details", async () => {
     const ui = await render(<MemoryDocumentScreen />);
-    expect(ui.getByText("Recall")).toBeTruthy();
+    expect(ui.getByText("Phonia")).toBeTruthy();
     expect(ui.getByText("memory.last_updated")).toBeTruthy();
     expect(ui.getByText("Personal AI chat app")).toBeTruthy();
     // The freshness stamp is the server's, not part of the fact.
-    expect(ui.getByText("User is building Recall with Expo")).toBeTruthy();
-    expect(ui.getByText("Recall uses FastAPI")).toBeTruthy();
+    expect(ui.getByText("User is building Phonia with Expo")).toBeTruthy();
+    expect(ui.getByText("Phonia uses FastAPI")).toBeTruthy();
   });
 
   it("deletes the whole page after confirming", async () => {
@@ -221,11 +221,11 @@ describe("MemoryDocumentScreen", () => {
     const ui = await render(<MemoryDocumentScreen />);
     await fireEvent.press(ui.getByTestId("memory-fact-f2"), { nativeEvent: { pageX: 10, pageY: 20 } });
     await fireEvent.press(ui.getByTestId("menu-edit"));
-    await fireEvent.changeText(ui.getByTestId("edit-field"), "Recall uses FastAPI and Neon");
+    await fireEvent.changeText(ui.getByTestId("edit-field"), "Phonia uses FastAPI and Neon");
     await fireEvent.press(ui.getByTestId("edit-save"));
     await flush();
 
-    expect(mockEditFact).toHaveBeenCalledWith("f2", "Recall uses FastAPI and Neon");
+    expect(mockEditFact).toHaveBeenCalledWith("f2", "Phonia uses FastAPI and Neon");
     expect(ui.queryByTestId("edit-field")).toBeNull();
   });
 
@@ -318,10 +318,10 @@ describe("MemoryDocumentScreen", () => {
   it("shows the chat a fact was learned in", async () => {
     mockDocuments[0].facts[0] = {
       ...mockDocuments[0].facts[0],
-      source_chat_title: "Building Recall",
+      source_chat_title: "Building Phonia",
     };
     const ui = await render(<MemoryDocumentScreen />);
-    expect(ui.getByText("memory.source_chat:Building Recall")).toBeTruthy();
+    expect(ui.getByText("memory.source_chat:Building Phonia")).toBeTruthy();
   });
 
   it("sends edits scoped to this page", async () => {
