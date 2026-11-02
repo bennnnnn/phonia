@@ -6,6 +6,14 @@ from pydantic import BaseModel
 class InfrastructureSettings(BaseModel):
     database_url: str = "postgresql+asyncpg://postgres:dev@localhost:5432/recall"
     redis_url: str = "redis://localhost:6379"
+    # Connections per process (core/redis.py), a blocking pool each: the request
+    # client, and the worker's jobs client (one blocked XREADGROUP, plus the leases,
+    # claims and acks of up to JOBS_WORKER_CONCURRENCY jobs). (N app + M worker)
+    # machines × these must stay under the Upstash plan's connection limit. A command
+    # waits this long for a free connection, then fails as Redis-down does.
+    redis_max_connections: int = 64
+    redis_jobs_max_connections: int = 48
+    redis_pool_timeout_seconds: float = 2.0
 
     # Process role for production split: all (dev), api (HTTP only), worker (jobs only).
     process_role: str = "all"
