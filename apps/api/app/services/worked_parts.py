@@ -4,7 +4,7 @@ A question in parts reads as a single worked answer does, once:
 
 - **Given**: the givens every part shares, closed by one ``where`` line; a given only one
   part uses (or a symbol with another value in another part) is listed at that part
-- **Required**: one line per part, ``(a) $v$ — speed after 1 s``
+- **Required**: one line per part, ``(a) $v$ (speed after 1 s)``
 - **Solution**, then each part: its label (``**(a) Speed after 1 s**``), its formula
   under its name's heading, its substitution or steps, and **Answer (a)** with that part's
   card; a hairline between parts
@@ -24,7 +24,14 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 
 from app.services.md_fence_scan import iter_fences
-from app.services.workout import ANSWER, GIVEN, REQUIRED, REQUIRED_HEADINGS, SOLUTION
+from app.services.workout import (
+    ANSWER,
+    GIVEN,
+    REQUIRED,
+    REQUIRED_HEADINGS,
+    SOLUTION,
+    asked_line,
+)
 
 _HARD_BREAK = "  \n"
 # "$v_0$ = initial speed" or "$m_1$, $m_2$ = masses": one name in a where-line.
@@ -133,24 +140,36 @@ def split_given(parts: Sequence[WorkedPart]) -> tuple[list[str], list[list[str]]
 
 
 def _required_line(letter: str, line: str) -> str:
-    """``(a) $v$ — speed``: the part's letter before what it finds, as its solver named it."""
+    """``(a) $v$ (speed)``: the part's letter before what it finds, as its solver named it."""
     return f"({letter}) {line}"
 
 
 def render_parts(
-    parts: Sequence[WorkedPart], given: Sequence[str] = (), *, required: Sequence[str] = ()
+    parts: Sequence[WorkedPart],
+    given: Sequence[str] = (),
+    *,
+    required: Sequence[str] = (),
+    hoist: bool = True,
 ) -> str:
     """The question in parts in the one layout: Given and Required once, then Solution and
-    each part closed by its own Answer and card. ``required``: lines no part owns."""
-    shared, own = split_given(parts)
+    each part closed by its own Answer and card. ``required``: lines no part owns.
+    ``hoist`` False keeps each part's givens at the part, for a reply still streaming: a
+    given moved up to the shared Given would rewrite what the phone has drawn."""
+    if hoist:
+        shared, own = split_given(parts)
+    else:
+        shared, own = [], [merged_given(part.given) for part in parts]
     givens = merged_given([*given, *shared])
     asked = [
-        *required,
-        *(
-            _required_line(part_letter(index), line)
-            for index, part in enumerate(parts)
-            for line in part.required
-        ),
+        asked_line(line)
+        for line in (
+            *required,
+            *(
+                _required_line(part_letter(index), line)
+                for index, part in enumerate(parts)
+                for line in part.required
+            ),
+        )
     ]
     opening = [
         _section(heading, lines) for heading, lines in ((GIVEN, givens), (REQUIRED, asked)) if lines

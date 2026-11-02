@@ -15,6 +15,7 @@ checked it.
 from __future__ import annotations
 
 import re
+from collections.abc import Sequence
 from dataclasses import dataclass
 
 from app.modules.chat.worked_solution import Answer, Given, Part, Step, WorkedSolution
@@ -121,21 +122,55 @@ def _given_row(given: Given) -> str:
     return math_line(f"{tidy_symbol(given.symbol)} = {shown}")
 
 
+def _given_rows(givens: Sequence[Given], *, naming: bool = True) -> tuple[str, ...]:
+    """Each given on its line, then (with ``naming``) the ``where`` line naming them."""
+    rows = [_given_row(given) for given in givens]
+    named = where_line(
+        [(tidy_symbol(given.symbol), given.meaning) for given in givens if given.meaning]
+    )
+    if rows and naming and named:
+        rows.append(named)
+    return tuple(rows)
+
+
 def _given_section(solution: WorkedSolution, *, streaming: bool) -> tuple[str, ...]:
-    rows = [_given_row(given) for given in solution.given]
     # While the block streams, the line naming the givens waits until they are all in:
     # one more given would change it, and the phone has drawn what went out.
-    if rows and (not streaming or solution.required or solution.parts):
-        naming = where_line(
-            [
-                (tidy_symbol(given.symbol), given.meaning)
-                for given in solution.given
-                if given.meaning
-            ]
-        )
-        if naming:
-            rows.append(naming)
-    return tuple(rows)
+    complete = not streaming or bool(solution.required or solution.parts)
+    return _given_rows(solution.given, naming=complete)
+
+
+def _started(part: Part) -> bool:
+    return bool(part.formula or part.working or part.answers)
+
+
+def _symbol(given: Given) -> str:
+    return tidy_symbol(given.symbol)
+
+
+def _place_givens(
+    shared: Sequence[Given], parts: Sequence[Part]
+) -> tuple[list[Given], list[list[Given]]]:
+    """(the givens left for the whole question, each part's own). A symbol has one value
+    in a part, so a given written for the whole question whose symbol a part gives on its
+    own is the other parts' (``d = 100`` first, ``d = 300`` after "part: b": the first is
+    part (a)'s), and a symbol given once per part, all first, is one value per part in
+    order. Anything else stays the whole question's."""
+    placed: dict[int, list[int]] = {}  # a shared given's index → the parts it is placed in
+    for symbol in dict.fromkeys(_symbol(given) for given in shared):
+        values = [at for at, given in enumerate(shared) if _symbol(given) == symbol]
+        lacking = [
+            at for at, part in enumerate(parts) if all(_symbol(g) != symbol for g in part.given)
+        ]
+        if len(values) == 1 and 0 < len(lacking) < len(parts):
+            placed[values[0]] = lacking
+        elif len(values) > 1 and len(values) == len(lacking):
+            placed.update((value, [at]) for value, at in zip(values, lacking, strict=True))
+    own = [
+        [given for at, given in enumerate(shared) if index in placed.get(at, ())] + list(part.given)
+        for index, part in enumerate(parts)
+    ]
+    return [given for at, given in enumerate(shared) if at not in placed], own
 
 
 def _working(part: Part) -> tuple[list[str], list[str], list[str]]:
@@ -215,6 +250,24 @@ def _find_rows(solution: WorkedSolution) -> tuple[str, ...]:
     )
 
 
+def _asked_by_parts(parts: Sequence[Part]) -> tuple[str, ...]:
+    """What each part finds, when the model wrote no ``required`` record: the symbol its
+    answer names, with the part's title as its meaning (``$v$ (speed of the car)``), so a
+    question in parts always lists one Required line per part, as the server's do."""
+    rows: list[str] = []
+    for part in parts:
+        symbol = next(
+            (a.symbol for a in part.answers if a.symbol and not names_nothing(a.symbol)), ""
+        )
+        if symbol:
+            rows.append(math_line(tidy_symbol(symbol), part.title or None))
+        elif part.title:
+            rows.append(text_line(part.title))
+        else:
+            return ()  # a part that names nothing: no line can be lettered for it
+    return tuple(rows)
+
+
 def render_worked(
     solution: WorkedSolution, layout: WorkedLayout, *, streaming: bool = False
 ) -> str:
@@ -227,27 +280,60 @@ def render_worked(
         or solution.labelled
         or any(part.formula or part.working or part.answers for part in solution.parts)
     )
-    opening = (
-        _given_section(solution, streaming=streaming),
-        _find_rows(solution) if settled else (),
-    )
-    if not solution.labelled:
+    required = _find_rows(solution) if settled else ()
+    # A question asking for several things may come apart at its next law
+    # (``worked_solution.assemble``), so while it streams it is drawn in parts: a part
+    # added later extends what was drawn, never moves it.
+    in_parts = solution.labelled or (streaming and settled and len(solution.required) > 1)
+    if not in_parts:
         part = solution.parts[0] if solution.parts else Part()
+        opening = (_given_section(solution, streaming=streaming), required)
         return _part_body(part, layout, opening, ANSWER)
-    # The one layout every question in parts has (``services/worked_parts``): one Given,
-    # one Required naming what each part finds, then each part closed by its answer. What
-    # is asked comes before the parts, so it is lettered by its own order: a part that
-    # streams in later never rewrites it.
-    required = opening[1]
-    lettered = len(required) > 1
+    return _render_in_parts(solution, layout, required, streaming=streaming)
+
+
+def _render_in_parts(
+    solution: WorkedSolution,
+    layout: WorkedLayout,
+    required: tuple[str, ...],
+    *,
+    streaming: bool,
+) -> str:
+    """The one layout every question in parts has (``services/worked_parts``), as the
+    server's own parts: one Given holding what every part shares (``split_given``), one
+    Required naming what each part finds, then each part with its own givens, closed by its
+    answer. What is asked comes before the parts, so it is lettered by its own order: a
+    part that streams in later never rewrites it. While the block streams, each given
+    stays where it was written; the shared ones are drawn together once it is whole."""
+    shown = list(solution.parts)
+    if not streaming and not solution.required:
+        # Drawn above the parts, so only once the block is whole (done carries the text).
+        required = _asked_by_parts(shown)
+    if streaming:
+        # A part waits for the answer above it: one written later, with the others at the
+        # end, would land above what was drawn after it.
+        unanswered = next((at for at, part in enumerate(shown) if not part.answers), None)
+        shown = shown if unanswered is None else shown[: unanswered + 1]
+        shared, own = list(solution.given), [list(part.given) for part in shown]
+    else:
+        shared, own = _place_givens(solution.given, shown)
+    last = len(shown) - 1
     parts = [
         WorkedPart(
             title=part.title
             or (solution.required[index].meaning if index < len(solution.required) else ""),
             working=_part_body(part, layout, ((), ()), None),
             after=_HARD_BREAK.join(_answer_line(answer, layout) for answer in part.answers),
+            # The last part's where-line waits, while it streams, until its givens are in.
+            given=_given_rows(own[index], naming=not streaming or index < last or _started(part)),
         )
-        for index, part in enumerate(solution.parts)
+        for index, part in enumerate(shown)
     ]
     asked = [f"({part_letter(index)}) {row}" for index, row in enumerate(required)]
-    return render_parts(parts, opening[0], required=asked if lettered else required)
+    complete = not streaming or bool(required or solution.parts)
+    return render_parts(
+        parts,
+        _given_rows(shared, naming=complete),
+        required=asked if len(required) > 1 else required,
+        hoist=not streaming,
+    )

@@ -38,7 +38,7 @@ answer: s | 2400 | m | east
 DISPLACEMENT_LAID_OUT = (
     "**Given**  \n$v = 20\\,\\mathrm{m/s}$  \n$t = 120\\,\\mathrm{s}$  \n"
     "where $v$ = speed, $t$ = time\n\n"
-    "**Required**  \n$s$ — displacement\n\n"
+    "**Required**  \n$s$ (displacement)\n\n"
     "**Solution**\n\n"
     "**Constant velocity formula**  \n$s = v t$\n\n"
     "**Substitution**  \n$s = 20 \\times 120$  \n$s = 2400\\,\\mathrm{m}$\n\n"
@@ -151,8 +151,8 @@ def test_render_lays_a_question_in_parts_out_part_by_part() -> None:
     assert laid_out.startswith("**Given**  \n$d = 100\\,\\mathrm{m}$")
     # One Required naming what each part finds, then Solution, then the parts.
     assert (
-        "**Required**  \n(a) $d_{cm}$ — distance in centimetres  \n"
-        "(b) $d_{km}$ — distance in kilometres\n\n**Solution**\n\n**(a) Distance" in laid_out
+        "**Required**  \n(a) $d_{cm}$ (distance in centimetres)  \n"
+        "(b) $d_{km}$ (distance in kilometres)\n\n**Solution**\n\n**(a) Distance" in laid_out
     )
     assert "**(a) Distance in centimetres**\n\n**Conversion formula**" in laid_out
     assert "**Answer (a)**\n\n$d_{cm} = 10000\\,\\mathrm{cm}$\n\n---\n\n**(b) Distance" in laid_out

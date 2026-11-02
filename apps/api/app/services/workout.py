@@ -5,7 +5,8 @@ it has lines:
 
 - **Given**: the problem as the student wrote it, or the stated values, closed by a
   ``where`` line naming their symbols (``where_line``)
-- **Required**: what is asked (**Find** before November 2026; a reader takes both)
+- **Required**: what is asked (**Find** before November 2026; a reader takes both), each
+  unknown with its meaning in brackets on its line, ``$v$ (speed)`` (``asked_line``)
 - **Solution**: a heading alone, over the working below (none before November 2026)
 - **Formula**: the law or rule that governs it, headed by its name and "formula"
   (**Average speed formula**, **Kinetic energy formula**; ``formula_heading``); a name
@@ -17,8 +18,10 @@ it has lines:
 - **Steps**: an equation changed one move at a time
 - **Answer**: the verified result (the caller's answer fence follows)
 
-Each line is one state. A move is a short note after the state
-(``$2x = 8$ — subtract 3 from both sides``), never a heading of its own.
+Each line is one state. A move is written as a short note after the state
+(``$2x = 8$ — subtract 3 from both sides``), never a heading of its own; the phone draws
+it as a line of its own just above that state (``rules/workout.tsx``), nothing at the
+right edge.
 Maths numbers each move instead (``modules/math/tools/lesson.py``): a bold
 ``**1. Subtract 4 from both sides**`` over the move written on both sides,
 then the simplified line.
@@ -133,15 +136,12 @@ def names_a_formula(title: str) -> bool:
 def _named(line: str) -> tuple[str, str] | None:
     """``$a^2 + b^2 = c^2$ — Pythagorean theorem`` → (the formula, its name). A name is
     capitalised; a lower-case note says something else (``on the x-axis``)."""
-    in_math = False
-    for at, char in enumerate(line):
-        if char == "$":
-            in_math = not in_math
-        elif not in_math and line.startswith(_NOTE_SEPARATOR, at):
-            note = line[at + len(_NOTE_SEPARATOR) :].strip()
-            if note[:1].isupper() and formula_heading(note) != FORMULA:
-                return line[:at].strip(), note
-            return None
+    at = _note_at(line)
+    if at < 0:
+        return None
+    note = line[at + len(_NOTE_SEPARATOR) :].strip()
+    if note[:1].isupper() and formula_heading(note) != FORMULA:
+        return line[:at].strip(), note
     return None
 
 
@@ -169,6 +169,30 @@ def formula_sections(
         else:
             sections.append((title, [named[0]]))
     return sections
+
+
+def _note_at(line: str) -> int:
+    """Where the move's note separator starts outside maths, or -1."""
+    in_math = False
+    for at, char in enumerate(line):
+        if char == "$":
+            in_math = not in_math
+        elif not in_math and line.startswith(_NOTE_SEPARATOR, at):
+            return at
+    return -1
+
+
+def asked_line(line: str) -> str:
+    """``$v$ — speed`` → ``$v$ (speed)``: what is asked reads as one line, the unknown with
+    its meaning beside it, symbol first as in Given. A note after " — " is a move's (the
+    phone draws it as a line of its own above its maths); the meaning of an unknown is no
+    move (November 2026)."""
+    at = _note_at(line)
+    if at < 0:
+        return line
+    note = line[at + len(_NOTE_SEPARATOR) :].strip()
+    head = line[:at].rstrip()
+    return f"{head} ({note})" if note else head
 
 
 def _clean(lines: tuple[str, ...]) -> list[str]:
@@ -203,7 +227,10 @@ def render_workout(
     """
     opening = [
         _section(heading, kept)
-        for heading, lines in ((GIVEN, workout.given), (REQUIRED, workout.find))
+        for heading, lines in (
+            (GIVEN, workout.given),
+            (REQUIRED, tuple(asked_line(line) for line in workout.find)),
+        )
         if (kept := _clean(lines))
     ]
     working = [
