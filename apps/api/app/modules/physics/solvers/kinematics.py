@@ -144,12 +144,9 @@ def _velocity_or_speed(fall: _Fall) -> PhysicsResult:
         v_val, formula, substitution, answer_latex = _impact(fall)
     elif op == "speed":
         v_val = abs(v_val)
-        formula = r"v = \lvert v_0 - g \cdot t\rvert"
-        substitution = rf"v = \lvert {latex_num(v0)} - {g:g} \cdot {t_val:g}\rvert"
+        formula, substitution = _speed_working(v0, g, t_val)
         answer_latex = (
-            rf"v = \lvert v_0 - g \cdot t\rvert = "
-            rf"\lvert {latex_num(v0)} - {g:g} \cdot {t_val:g}\rvert "
-            rf"\approx {v_val:.2f} \text{{ m/s}}"
+            rf"{formula} = {substitution.split(' = ', 1)[1]} \approx {v_val:.2f} \text{{ m/s}}"
         )
     else:
         formula = r"v = v_0 - g t"
@@ -169,6 +166,20 @@ def _velocity_or_speed(fall: _Fall) -> PhysicsResult:
         graph_specs=graphs,
         simulation_specs=scenes,
     )
+
+
+def _speed_working(v0: float, g: float, t: float) -> tuple[str, str]:
+    """The speed after ``t`` as a textbook writes it, never between absolute-value bars:
+    the velocity in the direction the body moves, so it comes out positive. A drop takes
+    down as positive (``v = v_0 + g t``: ``v = 0 + 9.81 \\cdot 1``). A body thrown down,
+    its v_0 negative as given (up positive), falls at ``g t - v_0``. One thrown up rises
+    at ``v_0 - g t`` until its top and falls at ``g t - v_0`` after it. Each is the same
+    magnitude the solver computes."""
+    if v0 == 0:
+        return r"v = v_0 + g \cdot t", rf"v = {latex_num(v0)} + {g:g} \cdot {t:g}"
+    if v0 > 0 and v0 - g * t >= 0:
+        return r"v = v_0 - g \cdot t", rf"v = {latex_num(v0)} - {g:g} \cdot {t:g}"
+    return r"v = g \cdot t - v_0", rf"v = {g:g} \cdot {t:g} - {latex_num(v0)}"
 
 
 def _impact(fall: _Fall) -> tuple[float, str, str, str]:

@@ -13,10 +13,7 @@ import {
   openingStrong,
   unwrapSingle,
 } from "@/components/markdown/markdownAstHelpers";
-import {
-  PARAGRAPH_GAP,
-  type StyleMap,
-} from "@/components/markdown/markdownContentStyles";
+import type { StyleMap } from "@/components/markdown/markdownContentStyles";
 import { withGreenTicks } from "@/components/markdown/rules/textWithMath";
 import { Radius } from "@/lib/radius";
 import { Space } from "@/lib/space";
@@ -151,10 +148,9 @@ function lastMathLine(lines: string[]): number {
 const RULE_WIDTH = 2;
 
 /**
- * The thin rule Given and Required sit behind, and the working inside Solution: every
- * section between Solution and Answer (a formula under its name, Substitution, Steps, a
- * numbered move) is ruled, its gap below padded instead of left as a margin, so the
- * sections run together as one ruled block under **Solution**.
+ * The thin rule Given and Required sit behind, and only they: the working inside Solution
+ * (a formula under its name, Substitution, Steps, a numbered move) has none, its smaller
+ * headings and centred maths set it apart (November 2026).
  */
 function workoutRule(t: Theme) {
   return {
@@ -163,11 +159,6 @@ function workoutRule(t: Theme) {
     borderLeftWidth: RULE_WIDTH,
     borderLeftColor: t.separator,
   } as const;
-}
-
-/** A section inside Solution: ruled, its gap kept inside the rule so the next one meets it. */
-export function workingBlockStyle(t: Theme) {
-  return { ...workoutRule(t), marginBottom: 0, paddingBottom: PARAGRAPH_GAP } as const;
 }
 
 /** A heading inside Solution, a level under the section headings: smaller, in secondary ink. */
@@ -282,9 +273,9 @@ function renderWorkoutLine(
  * A worked-solution section, at one of two levels. Given, Required, Solution and Answer
  * are sections: a heading at the margin, Given's and Required's lines behind a thin rule.
  * Every other section (a formula under its name, Substitution, Steps) is working inside
- * Solution: a smaller heading in secondary ink and its lines, all behind the same rule,
- * whoever wrote the reply and whether or not it has a **Solution** heading; its lines of
- * maths are centred, the words above them at the left. Each given is
+ * Solution: a smaller heading in secondary ink and its lines, with no rule, whoever wrote
+ * the reply and whether or not it has a **Solution** heading; its lines of maths are
+ * centred, the words above them at the left. Each given is
  * its own line, and a closing "where v₀ = initial speed, …" line names them in secondary
  * ink. The last line of maths in a written-out answer sits in a white, bordered box,
  * outside the rule (the lines before it are working, a sentence after it stays below). A
@@ -318,7 +309,7 @@ export function renderWorkoutSection(
   );
   if (working) {
     return (
-      <View key={key} testID="workout-section" style={workingBlockStyle(t)}>
+      <View key={key} testID="workout-section" style={styles.paragraphRun}>
         <Text testID="workout-subheading" style={subheadingStyle(styles, t)}>
           {section.heading}
         </Text>

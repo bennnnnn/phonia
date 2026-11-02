@@ -202,18 +202,20 @@ def _sections_of(text: str) -> tuple[str, list[str]]:
     return opening, parts.split("\n\n---\n\n")
 
 
-async def test_a_given_only_one_part_uses_is_listed_at_that_part() -> None:
+async def test_a_given_only_one_part_uses_is_lettered_in_the_one_given() -> None:
     found = await build_subject_augmentation(_WHOLE, _SETTINGS, parts=_PARTS, parts_answer_all=True)
 
-    opening, (first, second) = _sections_of(found.direct_text or "")
-    # t = 1 s is (a)'s alone: never in the shared Given beside Required (b) $t$.
-    assert "$t = 1" not in opening and "$h_0 = 20" in opening
-    assert first.index("**Given**  \n$t = 1") < first.index("**Constant acceleration formula**")
-    assert "where $t$ = time" in first
-    assert "**Given**" not in second
+    text = found.direct_text or ""
+    opening, (first, second) = _sections_of(text)
+    # t = 1 s is (a)'s alone: in the one Given with its letter, never under the part.
+    assert text.count("**Given**") == 1
+    assert "(a) $t = 1\\,\\mathrm{s}$" in opening and "$h_0 = 20" in opening
+    assert opening.count("where ") == 1 and "$t$ = time" in opening
+    assert "**Given**" not in first + second
+    assert first.strip().startswith("**(a) What's its speed after 1 s?**\n\n**Constant")
 
 
-async def test_separate_problems_keep_their_own_givens() -> None:
+async def test_separate_problems_letter_their_givens_in_one_given() -> None:
     parts = (
         "A car goes 100 m in 5 s; find its speed.",
         "A train goes 300 m in 10 s; find its speed.",
@@ -222,14 +224,16 @@ async def test_separate_problems_keep_their_own_givens() -> None:
         " ".join(parts), _SETTINGS, parts=parts, parts_answer_all=True
     )
 
-    opening, (car, train) = _sections_of(found.direct_text or "")
-    assert "**Given**" not in opening  # nothing is shared
-    assert "$d = 100" in car and "$t = 5" in car and "$d = 300" not in car
-    assert "$d = 300" in train and "$t = 10" in train and "$d = 100" not in train
-    assert re.findall(r"\*\*Answer \(([ab])\)\*\*\n\n```answer\n", found.direct_text or "") == [
-        "a",
-        "b",
-    ]
+    text = found.direct_text or ""
+    opening, (car, train) = _sections_of(text)
+    assert text.count("**Given**") == 1
+    assert (
+        "**Given**  \n(a) $d = 100\\,\\mathrm{m}$  \n(a) $t = 5\\,\\mathrm{s}$  \n"
+        "(b) $d = 300\\,\\mathrm{m}$  \n(b) $t = 10\\,\\mathrm{s}$  \n"
+        "where $d$ = distance, $t$ = time"
+    ) in opening
+    assert "**Given**" not in car + train
+    assert re.findall(r"\*\*Answer \(([ab])\)\*\*\n\n```answer\n", text) == ["a", "b"]
 
 
 async def test_three_parts_share_their_setup() -> None:
@@ -246,8 +250,24 @@ async def test_three_parts_share_their_setup() -> None:
 
     text = found.direct_text or ""
     opening, sections = _sections_of(text)
-    assert "$h_0 = 45" in opening and "$t = " not in opening
+    assert "$h_0 = 45" in opening
+    assert "(b) $t = 1\\,\\mathrm{s}$  \n(c) $t = 2\\,\\mathrm{s}$" in opening
     assert "(a) $t$ (time)  \n(b) $v$ (speed)  \n(c) $v$ (speed)" in opening
-    assert "**Given**" not in sections[0]
-    assert "$t = 1" in sections[1] and "$t = 2" in sections[2]
+    assert text.count("**Given**") == 1
+    assert not any("**Given**" in section for section in sections)
     assert len(re.findall(r"^```answer\n", text, re.M)) == 3
+
+
+def test_a_value_several_parts_give_alike_is_one_lettered_line() -> None:
+    def part(*given: str) -> WorkedPart:
+        return WorkedPart("Part", "$x = 1$", "1", required=("$x$",), given=given)
+
+    text = render_parts(
+        [
+            part("$g = 9.81$", "$t = 1$", "where $t$ = time, $g$ = gravity"),
+            part("$g = 9.81$", "where $g$ = gravity"),
+            part("$g = 9.81$", "$t = 1$", "where $t$ = time taken"),
+        ]
+    )
+    assert text.count("**Given**") == 1
+    assert "**Given**  \n$g = 9.81$  \n(a, c) $t = 1$  \nwhere $t$ = time, $g$ = gravity\n" in text

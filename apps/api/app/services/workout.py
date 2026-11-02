@@ -387,8 +387,15 @@ _WORKOUT_REARRANGED = (
     "Rearranging a formula for the unknown is a line of its own, never a note: "
     "`Solve for $t$`, then `$t = \\frac{d}{v}$`."
 )
+# One Given for every question in parts: a value one part uses is lettered there, never a
+# Given under a part (2026-11-02).
+_GIVEN_ONCE = (
+    "one **Given** for the whole question holding every given, a value only one part uses "
+    "lettered by its part as Required's lines are (`(a) $t = 1\\ \\text{s}$`), never a "
+    "**Given** under a part"
+)
 _WORKOUT_PARTS = (
-    "A question in parts: one **Given** for the whole question, then **Solution**, then for "
+    f"A question in parts: {_GIVEN_ONCE}, then **Solution**, then for "
     "each part a bold label alone on its line naming its letter and what it finds "
     "(`**(a) Acceleration**`), "
     "followed by that part's formula heading, **Substitution** and **Answer**, with no "
@@ -396,7 +403,7 @@ _WORKOUT_PARTS = (
 )
 # Physics answers each part in its own card ("Answer (a)"), a hairline between parts.
 _PHYSICS_PARTS = (
-    "A question in parts: one **Given** and one **Required** naming every quantity asked, "
+    f"A question in parts: {_GIVEN_ONCE}; one **Required** naming every quantity asked, "
     "**Solution**, then for each part a bold label alone on its line naming its letter and "
     "what it finds (`**(a) Acceleration**`), followed by that part's own formula heading, "
     "**Substitution** "

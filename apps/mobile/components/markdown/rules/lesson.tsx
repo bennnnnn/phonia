@@ -11,7 +11,7 @@ import {
   unwrapSingle,
 } from "@/components/markdown/markdownAstHelpers";
 import type { StyleMap } from "@/components/markdown/markdownContentStyles";
-import { subheadingStyle, workingBlockStyle } from "@/components/markdown/rules/workout";
+import { subheadingStyle } from "@/components/markdown/rules/workout";
 import { Radius } from "@/lib/radius";
 import { Space } from "@/lib/space";
 import { DYNAMIC_TYPE_MAX, Type, Weight } from "@/lib/type";
@@ -187,12 +187,12 @@ export function renderLessonStep(
   t: Theme,
 ): React.ReactElement {
   return (
-    // A numbered move is working inside Solution: behind its rule, a little extra space
-    // above it (inside the rule, so the rule runs on) so its lines read as one block.
+    // A numbered move is working inside Solution, with no rule (only Given and Required
+    // have one); a little extra space above it so its lines read as one block.
     <View
       key={key}
       testID="lesson-step"
-      style={[workingBlockStyle(t), { paddingTop: Space.xs }]}
+      style={[styles.paragraphRun, { marginTop: Space.xs }]}
     >
       <View
         style={{

@@ -6,6 +6,7 @@ out differently each time: bold inline "**Given:** …", no Answer heading, no c
 its fields split by ``|`` (``prompt_constants.worked``):
 
     given: t | 40 | min | time | 2400\\,\\mathrm{s}
+    given (b): t | 1 | s | time
     required: s | displacement
     formula: Constant velocity | s = v t
     solve_for: t | t = \\frac{s}{v}
@@ -51,7 +52,13 @@ _FIELDS: dict[str, tuple[str, ...]] = {
 _SYMBOL_AND_VALUE = frozenset({"given", "answer"})
 # Fields that hold maths: a model's $ … $ or \( … \) around them is dropped.
 _TEX_FIELDS = frozenset({"symbol", "value", "tex", "converted"})
-_RECORD = re.compile(r"^\s*(?:[-*]\s+)?(?P<key>[A-Za-z][A-Za-z_ ]{2,13}?)\s*:\s*(?P<rest>.*)$")
+_RECORD = re.compile(
+    r"^\s*(?:[-*]\s+)?(?P<key>[A-Za-z][A-Za-z_ ]{2,13}?)\s*"
+    r"(?:\(\s*(?P<part>[A-Ha-h])\s*\)\s*)?:\s*(?P<rest>.*)$"
+)
+# A given only some parts use carries its part's letter: "given (a): t | 1 | s", or the
+# letter before the symbol, "given: (a) t | 1 | s".
+_LETTERED_SYMBOL = re.compile(r"^\(\s*(?P<part>[A-Ha-h])\s*\)\s+(?P<symbol>\S.*)$")
 _DELIMITERS = (("$$", "$$"), ("$", "$"), ("\\(", "\\)"), ("\\[", "\\]"))
 MAX_PARTS = 8
 
@@ -67,6 +74,8 @@ class Given(_Record):
     meaning: Words = ""
     # The value in the unit the formula uses, when that differs (``2400\,\mathrm{s}``).
     converted: OptionalTex = ""
+    # The letter of the one part that uses it; empty for a given the whole question uses.
+    part: Annotated[str, StringConstraints(pattern=r"^[a-h]?$")] = ""
 
 
 class Required(_Record):
@@ -184,9 +193,33 @@ def read_record(line: str) -> RecordModel | None:
     if key not in _FIELDS or not rest or "```" in rest:
         return None
     try:
-        return _validated(key, _fields(key, rest))
+        fields = _fields(key, rest)
+        if key == "given":
+            fields = _lettered(fields, match.group("part"))
+        elif key == "part":
+            fields = _untitled(fields)
+        return _validated(key, fields)
     except ValidationError:
         return None
+
+
+# The contract's own placeholders, copied as a part's title (live, 2026-11-02): no title,
+# so the part is named by what is asked.
+_PLACEHOLDER_TITLES = frozenset({"what it finds", "what is asked"})
+
+
+def _untitled(fields: dict[str, str]) -> dict[str, str]:
+    title = fields.get("title", "")
+    return {**fields, "title": ""} if title.lower().strip(" .") in _PLACEHOLDER_TITLES else fields
+
+
+def _lettered(fields: dict[str, str], part: str | None) -> dict[str, str]:
+    """A given's part letter, from its key (``given (a):``) or before its symbol."""
+    lettered = _LETTERED_SYMBOL.match(fields.get("symbol", ""))
+    if lettered is not None:
+        fields = {**fields, "symbol": lettered.group("symbol")}
+        part = part or lettered.group("part")
+    return {**fields, "part": part.lower()} if part else fields
 
 
 def _letter(label: str, index: int) -> str:
@@ -248,22 +281,53 @@ class _PartDraft:
         )
 
 
-def _labelled_part(drafts: list[_PartDraft], current: int, label: PartLabel, *, first: bool) -> int:
-    """The draft a ``part`` record opens, by its index. The first label names a part begun
-    and not yet answered ("formula: …" then "part: a"); a letter named before is that part
-    again, whatever came between; any other label opens a part of its own."""
-    letter = _letter(label.letter, len(drafts))
+def _asked_letter(label: PartLabel, asked: list[Required], index: int) -> str:
+    """The label's letter; a title that names exactly one thing asked is that one's part,
+    whatever letter the model wrote ("part: a | speed of the train" after the car's
+    answer, live 2026-11-02, is the second thing asked: part (b))."""
+    title = label.title.strip().lower()
+    matches = [at for at, item in enumerate(asked) if title and item.meaning.lower() == title]
+    return _letter("", matches[0]) if len(matches) == 1 else _letter(label.letter, index)
+
+
+def _labelled_part(
+    drafts: list[_PartDraft],
+    current: int,
+    label: PartLabel,
+    *,
+    first: bool,
+    asked: list[Required],
+) -> tuple[int, bool]:
+    """The draft a ``part`` record opens, by its index, and whether the label closed it
+    (it came after that part's answer). The first label names a part begun and not yet
+    answered ("formula: …" then "part: a"); a label after an unlabelled part's working
+    with that part's own letter names it ("…, answer: …, part: a", live 2026-11-02, so
+    what follows is the next part); a letter named before is that part again, whatever
+    came between; any other label opens a part of its own."""
+    letter = _asked_letter(label, asked, len(drafts))
     named = next((at for at, draft in enumerate(drafts) if draft.letter == letter), None)
     if named is not None:
         drafts[named].title = drafts[named].title or label.title
-        return named
-    if first and not drafts[current].answers:
-        drafts[current].letter, drafts[current].title = _letter(label.letter, 0), label.title
-        return current
+        return named, False
+    draft = drafts[current]
+    if first and not draft.answers and letter == _asked_letter(label, asked, 0):
+        draft.letter, draft.title = letter, label.title
+        return current, False
+    if not draft.letter and draft.has_content:
+        # The part above, unlabelled: a label naming what it was asked for (or naming
+        # nothing else) with its letter is its own; one naming another ask is the next.
+        own = asked[current].meaning.lower() if current < len(asked) else ""
+        title = label.title.strip().lower()
+        if letter == _letter("", current) and (not own or not title or title == own):
+            draft.letter, draft.title = letter, label.title
+            return current, bool(draft.answers)
     if len(drafts) >= MAX_PARTS:
-        return current
+        return current, False
+    if "abcdefgh".find(letter) < len(drafts):
+        # A letter already behind the parts shown ("part: a" after part (a)) is the next.
+        letter = _letter("", len(drafts))
     drafts.append(_PartDraft(letter=letter, title=label.title))
-    return len(drafts) - 1
+    return len(drafts) - 1, False
 
 
 def _bare(tex: str) -> str:
@@ -299,9 +363,10 @@ def _unlabelled_part(
 def assemble(records: list[RecordModel]) -> WorkedSolution:
     """The records in the order written, as one solution. Before the first ``part``, the
     givens and what is asked are the whole question's, and a formula or working is the
-    first part's. After a ``part`` record every record is that part's, its givens too, so
-    a given one part uses is never mixed with another part's. A part that holds nothing
-    (a label alone) is left out, so the parts shown are lettered in order. With no label,
+    first part's, and a given lettered with its part (``given (a):``) keeps its letter in
+    the one Given. After a ``part`` record every record is that part's, its givens too, so a given one part uses is never mixed with another
+    part's; a label written after its part's answer closes that part. A part that holds
+    nothing (a label alone) is left out, so the parts shown are lettered in order. With no label,
     a question asking for several things still comes apart at each new law
     (``_unlabelled_part``)."""
     given: list[Given] = []
@@ -309,16 +374,26 @@ def assemble(records: list[RecordModel]) -> WorkedSolution:
     drafts = [_PartDraft()]
     current = 0
     labelled = False
+    # The current part's label came after its answer: the next line starts the next part.
+    closed = False
     for record in records:
         if isinstance(record, Required):
             required.append(record)
         elif isinstance(record, Given) and not labelled:
             given.append(record)
         elif isinstance(record, PartLabel):
-            current = _labelled_part(drafts, current, record, first=not labelled)
+            current, closed = _labelled_part(
+                drafts, current, record, first=not labelled, asked=required
+            )
             labelled = True
         elif labelled or isinstance(record, Given):
-            drafts[current].add(record)
+            if closed and len(drafts) < MAX_PARTS:
+                drafts.append(_PartDraft())
+                current, closed = len(drafts) - 1, False
+            # A given after a part's label is that part's, whatever letter it carries.
+            drafts[current].add(
+                record.model_copy(update={"part": ""}) if isinstance(record, Given) else record
+            )
         else:
             current = _unlabelled_part(drafts, current, record, len(required))
     parts = tuple(draft.part() for draft in drafts if draft.has_content)

@@ -5,11 +5,11 @@ every verified maths, physics and chemistry reply: **Given** (each value on its 
 the ``where`` line naming them), **Required**, **Solution**, the formula under its name's
 heading (``formula_heading``: **Average speed formula**; **Formula** with no name),
 ``Solve for`` lines, **Substitution** or **Steps**, then **Answer** with the value. A
-question in parts is laid out as a verified one in parts: the givens and what is asked
-once, then **Solution** and each part under its letter, closed by its own **Answer (a)**, a hairline
-between parts. The value under **Answer** becomes the card in finalize
-(``chat.finalize_subjects.check_working``), marked ``verified: false``: no solver
-checked it.
+question in parts is laid out as a verified one in parts: one Given (a value only some
+parts use lettered by them) and what is asked once, then **Solution** and each part under
+its letter, closed by its own **Answer (a)**, a hairline between parts. The value under
+**Answer** becomes the card in finalize (``chat.finalize_subjects.check_working``), marked
+``verified: false``: no solver checked it.
 """
 
 from __future__ import annotations
@@ -20,7 +20,7 @@ from dataclasses import dataclass
 
 from app.modules.chat.worked_solution import Answer, Given, Part, Step, WorkedSolution
 from app.services.times_sign import with_times
-from app.services.worked_parts import WorkedPart, part_letter, render_parts
+from app.services.worked_parts import WorkedPart, lettered_line, part_letter, render_parts
 from app.services.workout import (
     ANSWER,
     Workout,
@@ -114,17 +114,30 @@ def _plain(tex: str) -> str:
     return _NOT_ALNUM.sub("", _UPRIGHT.sub("", tex)).lower()
 
 
-def _given_row(given: Given) -> str:
+def _given_row(given: Given, letters: Sequence[str] | None = None) -> str:
+    """The given on its line; one only some parts use carries their letters, as Required's
+    lines do: ``(a) $t = 1\\,\\mathrm{s}$``."""
     shown = f"{tidy_tex(given.value)}{unit_tex(given.unit)}"
     # "500 g = 500 g" says nothing: a conversion to the same value is left out.
     if given.converted and _plain(given.converted) != _plain(shown):
         shown = f"{shown} = {tidy_tex(given.converted)}"
-    return math_line(f"{tidy_symbol(given.symbol)} = {shown}")
+    row = math_line(f"{tidy_symbol(given.symbol)} = {shown}")
+    marks = (given.part,) if letters is None and given.part else letters or ()
+    return lettered_line(marks, row) if marks else row
 
 
-def _given_rows(givens: Sequence[Given], *, naming: bool = True) -> tuple[str, ...]:
-    """Each given on its line, then (with ``naming``) the ``where`` line naming them."""
-    rows = [_given_row(given) for given in givens]
+def _given_rows(
+    givens: Sequence[Given],
+    *,
+    naming: bool = True,
+    letters: Sequence[Sequence[str]] | None = None,
+) -> tuple[str, ...]:
+    """Each given on its line (with ``letters``, each one's parts), then (with ``naming``)
+    the ``where`` line naming them."""
+    rows = [
+        _given_row(given, None if letters is None else letters[at])
+        for at, given in enumerate(givens)
+    ]
     named = where_line(
         [(tidy_symbol(given.symbol), given.meaning) for given in givens if given.meaning]
     )
@@ -148,29 +161,106 @@ def _symbol(given: Given) -> str:
     return tidy_symbol(given.symbol)
 
 
-def _place_givens(
-    shared: Sequence[Given], parts: Sequence[Part]
-) -> tuple[list[Given], list[list[Given]]]:
-    """(the givens left for the whole question, each part's own). A symbol has one value
-    in a part, so a given written for the whole question whose symbol a part gives on its
-    own is the other parts' (``d = 100`` first, ``d = 300`` after "part: b": the first is
-    part (a)'s), and a symbol given once per part, all first, is one value per part in
-    order. Anything else stays the whole question's."""
-    placed: dict[int, list[int]] = {}  # a shared given's index → the parts it is placed in
+def _part_of(letter: str, parts: Sequence[Part]) -> int | None:
+    """The part a lettered given names: the part the model gave that letter, else the
+    part shown under it."""
+    named = next((at for at, part in enumerate(parts) if part.letter == letter), None)
+    if named is not None:
+        return named
+    shown = next((at for at in range(len(parts)) if part_letter(at) == letter), None)
+    return shown
+
+
+_FUNCTION_WORDS = frozenset({"for", "of", "the", "by", "in", "on", "at", "to", "a", "an"})
+
+
+def _one_meaning(givens: Sequence[Given]) -> list[Given]:
+    """A symbol the parts name apart ("distance for car", "distance for train") is named
+    by the words they share ("distance"): the one where-line names it once, for every
+    part. Meanings that share nothing keep the first."""
+    meanings: dict[str, list[str]] = {}
+    for given in givens:
+        if given.meaning:
+            meanings.setdefault(_symbol(given), []).append(given.meaning)
+    shared: dict[str, str] = {}
+    for symbol, said in meanings.items():
+        words = [meaning.split() for meaning in dict.fromkeys(said)]
+        common: list[str] = []
+        for column in zip(*words, strict=False):
+            if len({word.lower() for word in column}) > 1:
+                break
+            common.append(column[0])
+        while common and common[-1].lower() in _FUNCTION_WORDS:
+            common.pop()
+        shared[symbol] = " ".join(common) if common else said[0]
+    return [
+        given.model_copy(update={"meaning": shared[_symbol(given)]}) if given.meaning else given
+        for given in givens
+    ]
+
+
+def _placed(shared: Sequence[Given], own: Sequence[Sequence[Given]]) -> dict[int, list[int]]:
+    """Which parts an unlettered given of the whole question is, by its index. A symbol
+    has one value in a part, so a given written for the whole question whose symbol a part
+    gives on its own is the other parts' (``d = 100`` first, ``d = 300`` after "part: b":
+    the first is part (a)'s), and a symbol given once per part, all first, is one value
+    per part in order. Anything else is every part's."""
+    placed: dict[int, list[int]] = {}
     for symbol in dict.fromkeys(_symbol(given) for given in shared):
         values = [at for at, given in enumerate(shared) if _symbol(given) == symbol]
-        lacking = [
-            at for at, part in enumerate(parts) if all(_symbol(g) != symbol for g in part.given)
-        ]
-        if len(values) == 1 and 0 < len(lacking) < len(parts):
+        lacking = [at for at, mine in enumerate(own) if all(_symbol(g) != symbol for g in mine)]
+        if len(values) == 1 and 0 < len(lacking) < len(own):
             placed[values[0]] = lacking
         elif len(values) > 1 and len(values) == len(lacking):
             placed.update((value, [at]) for value, at in zip(values, lacking, strict=True))
+    return placed
+
+
+def _one_given(
+    solution: WorkedSolution, parts: Sequence[Part]
+) -> tuple[list[Given], list[tuple[str, ...]]]:
+    """Every given of the question in parts, for its one Given, each with the letters of
+    the parts that use it (none: every part). The whole question's come first, as
+    written, so nothing drawn while the block streamed moves; a given written after a
+    part's label follows, lettered by its part. A given several parts give alike is one
+    line with their letters, and one every part gives has none."""
+    # Parts are shown lettered in order, whatever letters the model wrote.
+    letters = [part_letter(index) for index in range(len(parts))]
+    of = {given.part: _part_of(given.part, parts) for given in solution.given if given.part}
     own = [
-        [given for at, given in enumerate(shared) if index in placed.get(at, ())] + list(part.given)
+        [*part.given, *(g for g in solution.given if g.part and of[g.part] == index)]
         for index, part in enumerate(parts)
     ]
-    return [given for at, given in enumerate(shared) if at not in placed], own
+    shared = [given for given in solution.given if not given.part]
+    placed = _placed(shared, own)
+    rows: dict[str, tuple[Given, list[str]]] = {}
+
+    def add(given: Given, marks: Sequence[str]) -> None:
+        key = _given_row(given, ())
+        kept = rows.setdefault(key, (given, []))
+        kept[1].extend(mark for mark in marks if mark not in kept[1])
+
+    unlettered = iter(range(len(shared)))
+    for given in solution.given:
+        if given.part:
+            at_part = of[given.part]
+            add(given, (given.part if at_part is None else letters[at_part],))
+        else:
+            at = next(unlettered)
+            add(given, [letters[index] for index in placed.get(at, range(len(parts)))])
+    for part, letter in zip(parts, letters, strict=True):
+        for given in part.given:
+            add(given, (letter,))
+    kept = _one_meaning([given for given, _marks in rows.values()])
+
+    def order(mark: str) -> int:
+        return letters.index(mark) if mark in letters else len(letters)
+
+    every = set(letters)
+    return kept, [
+        () if set(marks) >= every else tuple(sorted(marks, key=order))
+        for _given, marks in rows.values()
+    ]
 
 
 def _working(part: Part) -> tuple[list[str], list[str], list[str]]:
@@ -300,23 +390,32 @@ def _render_in_parts(
     streaming: bool,
 ) -> str:
     """The one layout every question in parts has (``services/worked_parts``), as the
-    server's own parts: one Given holding what every part shares (``split_given``), one
-    Required naming what each part finds, then each part with its own givens, closed by its
-    answer. What is asked comes before the parts, so it is lettered by its own order: a
-    part that streams in later never rewrites it. While the block streams, each given
-    stays where it was written; the shared ones are drawn together once it is whole."""
+    server's own parts: one Given holding every given, a value only some parts use
+    lettered by them (``_one_given``), one Required naming what each part finds, then each
+    part, closed by its answer, with no Given of its own. What is asked comes before the
+    parts, so it is lettered by its own order: a part that streams in later never rewrites
+    it. The contract asks for every given first, so the one Given streams in place; a
+    given the model wrote after a part's label waits at that part while the block streams
+    and moves up to the one Given once it is whole (done carries that text)."""
     shown = list(solution.parts)
     if not streaming and not solution.required:
         # Drawn above the parts, so only once the block is whole (done carries the text).
         required = _asked_by_parts(shown)
+    complete = not streaming or bool(required or solution.parts)
     if streaming:
         # A part waits for the answer above it: one written later, with the others at the
         # end, would land above what was drawn after it.
         unanswered = next((at for at, part in enumerate(shown) if not part.answers), None)
         shown = shown if unanswered is None else shown[: unanswered + 1]
-        shared, own = list(solution.given), [list(part.given) for part in shown]
+        # Each given stays where it was written: the whole question's (lettered or not)
+        # in the one Given, one written after a part's label at that part for now.
+        given = _given_rows(solution.given, naming=complete)
+        own = [list(part.given) for part in shown]
     else:
-        shared, own = _place_givens(solution.given, shown)
+        # The whole block: every given in the one Given, none under a part.
+        everything, letters = _one_given(solution, shown)
+        given = _given_rows(everything, letters=letters)
+        own = [[] for _part in shown]
     last = len(shown) - 1
     parts = [
         WorkedPart(
@@ -330,10 +429,9 @@ def _render_in_parts(
         for index, part in enumerate(shown)
     ]
     asked = [f"({part_letter(index)}) {row}" for index, row in enumerate(required)]
-    complete = not streaming or bool(required or solution.parts)
     return render_parts(
         parts,
-        _given_rows(shared, naming=complete),
+        given,
         required=asked if len(required) > 1 else required,
         hoist=not streaming,
     )
