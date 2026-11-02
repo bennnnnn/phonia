@@ -295,8 +295,10 @@ class AuthSessionOut(BaseModel):
     id: str
     device_label: str | None = None
     platform: str | None = None
-    created_at: str | None = None
-    last_seen_at: str | None = None
+    # Datetimes, so they serialize as every other response's do (UTC as ``Z``); the
+    # session record keeps ISO text in Redis, and they went out as that text (``+00:00``).
+    created_at: datetime | None = None
+    last_seen_at: datetime | None = None
     current: bool = False
 
 

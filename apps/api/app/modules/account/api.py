@@ -247,6 +247,17 @@ def _optional_str(value: object) -> str | None:
     return value if isinstance(value, str) else None
 
 
+def _optional_instant(value: object) -> datetime | None:
+    """A session record's ISO time; None for none, or for text that is not one."""
+    if not isinstance(value, str):
+        return None
+    try:
+        instant = datetime.fromisoformat(value)
+    except ValueError:
+        return None
+    return instant if instant.tzinfo is not None else instant.replace(tzinfo=UTC)
+
+
 @router.get("/sessions", response_model=AuthSessionListOut)
 async def list_sessions(
     request: Request,
@@ -266,8 +277,8 @@ async def list_sessions(
             id=str(row["id"]),
             device_label=_optional_str(row.get("device_label")),
             platform=_optional_str(row.get("platform")),
-            created_at=_optional_str(row.get("created_at")),
-            last_seen_at=_optional_str(row.get("last_seen_at")),
+            created_at=_optional_instant(row.get("created_at")),
+            last_seen_at=_optional_instant(row.get("last_seen_at")),
             current=bool(row.get("current")),
         )
         for row in rows
