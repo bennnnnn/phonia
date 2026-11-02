@@ -85,7 +85,13 @@ def test_render_parts_is_one_layout() -> None:
                 required=("$v$ — speed",),
                 given=("$g = 9.81$",),
             ),
-            WorkedPart("How long to reach the ground?", working, "2.02", required=("$t$ — time",)),
+            WorkedPart(
+                "How long to reach the ground?",
+                working,
+                "2.02",
+                required=("$t$ — time",),
+                given=("$g = 9.81$",),
+            ),
         ]
     )
     assert _headings(text) == [
@@ -122,9 +128,10 @@ async def test_the_ball_dropped_from_20_m_is_one_layout() -> None:
         "Solution",
         "(a) What's its speed after 1 s?",
     ]
-    assert text.count("**Given**") == 1 and text.count("**Required**") == 1
+    assert text.split("**Solution**")[0].count("**Given**") == 1
+    assert text.count("**Required**") == 1
     assert "(a) $v$ — speed  \n(b) $t$ — time" in text
-    assert text.count("where ") == 1
+    assert text.split("**Solution**")[0].count("where ") == 1
     # Every part ends with its own card, in the reply the phone streams.
     assert re.findall(r"\*\*Answer \(([ab])\)\*\*\n\n```answer\n", text) == ["a", "b"]
 
@@ -187,3 +194,60 @@ def test_a_part_is_labelled_by_its_question_as_written(question: str) -> None:
     text = parts_in_one_layout([question, "What is x?"], [reply, reply]) or ""
     assert f"**(a) {question}**" in text
     assert "(a) $y$  \n(b) $y$" in text
+
+
+def _sections_of(text: str) -> tuple[str, list[str]]:
+    """The opening (up to Solution) and each part's text."""
+    opening, _, parts = text.partition("**Solution**")
+    return opening, parts.split("\n\n---\n\n")
+
+
+async def test_a_given_only_one_part_uses_is_listed_at_that_part() -> None:
+    found = await build_subject_augmentation(_WHOLE, _SETTINGS, parts=_PARTS, parts_answer_all=True)
+
+    opening, (first, second) = _sections_of(found.direct_text or "")
+    # t = 1 s is (a)'s alone: never in the shared Given beside Required (b) $t$.
+    assert "$t = 1" not in opening and "$h_0 = 20" in opening
+    assert first.index("**Given**  \n$t = 1") < first.index("**Constant acceleration formula**")
+    assert "where $t$ = time" in first
+    assert "**Given**" not in second
+
+
+async def test_separate_problems_keep_their_own_givens() -> None:
+    parts = (
+        "A car goes 100 m in 5 s; find its speed.",
+        "A train goes 300 m in 10 s; find its speed.",
+    )
+    found = await build_subject_augmentation(
+        " ".join(parts), _SETTINGS, parts=parts, parts_answer_all=True
+    )
+
+    opening, (car, train) = _sections_of(found.direct_text or "")
+    assert "**Given**" not in opening  # nothing is shared
+    assert "$d = 100" in car and "$t = 5" in car and "$d = 300" not in car
+    assert "$d = 300" in train and "$t = 10" in train and "$d = 100" not in train
+    assert re.findall(r"\*\*Answer \(([ab])\)\*\*\n\n```answer\n", found.direct_text or "") == [
+        "a",
+        "b",
+    ]
+
+
+async def test_three_parts_share_their_setup() -> None:
+    setup = "A ball is dropped from 45 m."
+    questions = (
+        "How long to reach the ground?",
+        "What's its speed after 1 s?",
+        "What's its speed after 2 s?",
+    )
+    parts = tuple(f"{setup} {question}" for question in questions)
+    found = await build_subject_augmentation(
+        " ".join([setup, *questions]), _SETTINGS, parts=parts, parts_answer_all=True
+    )
+
+    text = found.direct_text or ""
+    opening, sections = _sections_of(text)
+    assert "$h_0 = 45" in opening and "$t = " not in opening
+    assert "(a) $t$ — time  \n(b) $v$ — speed  \n(c) $v$ — speed" in opening
+    assert "**Given**" not in sections[0]
+    assert "$t = 1" in sections[1] and "$t = 2" in sections[2]
+    assert len(re.findall(r"^```answer\n", text, re.M)) == 3

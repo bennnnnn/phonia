@@ -2,7 +2,8 @@
 
 A question in parts reads as a single worked answer does, once:
 
-- **Given**: every part's givens, each value once, closed by one ``where`` line
+- **Given**: the givens every part shares, closed by one ``where`` line; a given only one
+  part uses (or a symbol with another value in another part) is listed at that part
 - **Required**: one line per part, ``(a) $v$ — speed after 1 s``
 - **Solution**, then each part: its label (``**(a) Speed after 1 s**``), its formula
   under its name's heading, its substitution or steps, and **Answer (a)** with that part's
@@ -84,6 +85,53 @@ def merged_given(lines: Sequence[str]) -> list[str]:
     return values
 
 
+_VALUE_SYMBOL = re.compile(r"^\$\s*(?P<symbol>[^=$]+?)\s*=")
+_PIECE_SYMBOLS = re.compile(r"\$([^$]+)\$")
+
+
+def _value_key(line: str) -> str:
+    """What a given line gives: its symbol, or the whole line when it names none."""
+    match = _VALUE_SYMBOL.match(line)
+    return match.group("symbol").strip() if match else line
+
+
+def _piece_symbols(piece: str) -> set[str]:
+    return {symbol.strip() for symbol in _PIECE_SYMBOLS.findall(piece.split(" = ", 1)[0])}
+
+
+def _values_and_names(lines: Sequence[str]) -> tuple[list[str], list[str]]:
+    values = [line.strip() for line in lines if line.strip() and not line.startswith("where ")]
+    names = [piece for line in lines if line.startswith("where ") for piece in _where_pieces(line)]
+    return values, names
+
+
+def _given_section(values: Sequence[str], names: Sequence[str]) -> list[str]:
+    """``values`` with a where-line naming only their symbols."""
+    keys = {_value_key(value) for value in values}
+    named = [piece for piece in names if _piece_symbols(piece) & keys]
+    return merged_given([*values, *(f"where {piece}" for piece in named)])
+
+
+def split_given(parts: Sequence[WorkedPart]) -> tuple[list[str], list[list[str]]]:
+    """(the givens every part shares, each part's own). A given is shared when every part
+    gives it with the same value; one only some parts use, or a symbol with another value
+    in another part (t = 1 s for (a) while (b) asks for t), stays with its part."""
+    read = [_values_and_names(part.given) for part in parts]
+    names = [piece for _values, part_names in read for piece in part_names]
+    if len(parts) < 2:
+        values = [value for part_values, _names in read for value in part_values]
+        return _given_section(values, names), [[] for _part in parts]
+    shared = [value for value in read[0][0] if all(value in values for values, _n in read[1:])]
+    own = [[value for value in values if value not in shared] for values, _n in read]
+    # A symbol a part gives on its own is named at that part, never in the shared line.
+    own_keys = {_value_key(value) for values in own for value in values}
+    shared_names = [piece for piece in names if not _piece_symbols(piece) & own_keys]
+    return _given_section(shared, shared_names), [
+        _given_section(values, part_names) if values else []
+        for values, (_v, part_names) in zip(own, read, strict=True)
+    ]
+
+
 def _required_line(letter: str, line: str) -> str:
     """``(a) $v$ — speed``: the part's letter before what it finds, as its solver named it."""
     return f"({letter}) {line}"
@@ -94,7 +142,8 @@ def render_parts(
 ) -> str:
     """The question in parts in the one layout: Given and Required once, then Solution and
     each part closed by its own Answer and card. ``required``: lines no part owns."""
-    givens = merged_given([*given, *(line for part in parts for line in part.given)])
+    shared, own = split_given(parts)
+    givens = merged_given([*given, *shared])
     asked = [
         *required,
         *(
@@ -110,7 +159,9 @@ def render_parts(
     for index, part in enumerate(parts):
         letter = part_letter(index)
         label = f"**({letter}) {part.title.strip()}**" if part.title.strip() else ""
-        pieces = [label, part.working.strip()]
+        # A given only this part uses is listed at the part, before its formula.
+        mine = _section(GIVEN, own[index]) if own[index] else ""
+        pieces = [label, mine, part.working.strip()]
         # A part still streaming has no answer yet: its heading waits with it.
         if part.answer is not None or part.after.strip():
             pieces.append(f"**{ANSWER} ({letter})**")
