@@ -11,6 +11,7 @@ from unittest.mock import patch
 
 import pytest
 
+from app.gateways.mcp import registry as mcp_registry
 from app.gateways.mcp.base import ToolResult
 from app.modules.chat.tool_loop.calls import CallRound, execute_calls
 from app.modules.chat.tool_loop.results import ToolResults
@@ -73,7 +74,7 @@ class _Invoke:
 async def _execute(turn: CallRound, tool_calls: list[dict[str, Any]], invoke: _Invoke) -> Any:
     working: list[dict[str, Any]] = []
     collected = ToolResults()
-    with patch("app.modules.chat.tool_loop.calls.mcp_registry.invoke_validated", invoke):
+    with patch.object(mcp_registry, "invoke_validated", invoke):
         await execute_calls(turn, tool_calls, working, collected)
     return working, collected
 
@@ -133,7 +134,7 @@ async def test_a_cancel_stops_calls_not_yet_started() -> None:
         return result
 
     working: list[dict[str, Any]] = []
-    with patch("app.modules.chat.tool_loop.calls.mcp_registry.invoke_validated", invoke_then_stop):
+    with patch.object(mcp_registry, "invoke_validated", invoke_then_stop):
         await execute_calls(
             _round(on_status=on_status, should_cancel=should_cancel),
             [_call("c1", "web_search", "a"), _call("c2", "web_search", "b")],

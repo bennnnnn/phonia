@@ -156,15 +156,13 @@ async def stream_chat_completion(
     for index, alias in enumerate(aliases):
         has_next = index < len(aliases) - 1
         if has_next and may_try is not None and not await may_try(alias):
-            # A recovering model that another turn is trying (model health's probe).
-            logger.info("Chat stream %s passed over: another turn is trying it", alias)
+            logger.info("Chat stream %s passed over: another turn is probing it", alias)
             continue
         # Buffer until the first non-whitespace token: a whitespace-only "success" stream
         # (a flaky provider's quirk) falls through instead of locking in an empty reply.
         pending: list[str] = []
         started = False
-        # Only the attempt that produced content merges into the caller's quota (tool-loop
-        # usage is already on `usage`); a discarded one still counts toward global spend.
+        # Only a kept attempt merges into `usage`; a discarded one counts as global spend.
         attempt_usage: dict[str, int] = {}
         attempt_calls: list[dict[str, Any]] = []
         cap = first_reply_cap(settings, alias, thinking, has_next=has_next, prompt=shape)
@@ -212,8 +210,7 @@ async def stream_chat_completion(
         except ModelUnavailableError as exc:
             last_error = exc
             attempt.end(failed=True, cause=exc.cause)
-            # Mid-stream failure: client already has partial tokens — falling
-            # back would concatenate partial + full into one persisted reply.
+            # Text already shown: a fallback would join two replies into one saved reply.
             if started:
                 merge_attempt_usage(usage, attempt_usage)
                 raise

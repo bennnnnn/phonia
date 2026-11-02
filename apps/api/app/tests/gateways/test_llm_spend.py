@@ -289,6 +289,7 @@ async def test_stream_calls_disable_litellm_and_sdk_retries() -> None:
             )
         ]
     assert tokens == ["Hi."]
+    assert fake.await_args is not None
     kwargs = fake.await_args.kwargs
     assert (kwargs["num_retries"], kwargs["max_retries"]) == (0, 0)
 
@@ -298,5 +299,6 @@ async def test_completion_calls_disable_litellm_and_sdk_retries(model_spend_redi
     fake = AsyncMock(return_value=_completion('{"needs_search": false}'))
     with patch.object(litellm_gateway, "acompletion", fake):
         await call()
+    assert fake.await_args is not None
     kwargs = fake.await_args.kwargs
     assert (kwargs["num_retries"], kwargs["max_retries"]) == (0, 0)
