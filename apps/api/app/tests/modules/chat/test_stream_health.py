@@ -20,6 +20,7 @@ from app.modules.chat.stream_health import StreamEnd, health_samples
 from app.modules.chat.turn_outcome import TurnOutcome
 from app.services import model_health
 from app.services.model_health import Breakers
+from app.tests.fakes import redis_mock
 from app.tests.modules.chat.chat_test_support import offline_deps
 
 pytest_plugins = ("app.tests.modules.chat.chat_test_support",)
@@ -133,7 +134,7 @@ async def _run(fake_stream: Any, outcome: TurnOutcome | None = None) -> AsyncMoc
         stack.enter_context(patch("app.repositories.users.get_by_id", AsyncMock(return_value=None)))
         async for _ in stream_and_finalize(
             offline_deps(),
-            AsyncMock(),
+            redis_mock(),
             Settings(max_output_tokens=100, mcp_tool_loop_enabled=False),
             _ctx(),
             should_cancel=None,

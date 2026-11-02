@@ -360,27 +360,26 @@ async def chat_websocket(
         await websocket.close()
         return
 
-    with (
-        bound_log_ids(user_id=user_id),
-        user_socket_slot(user_id, settings.ws_max_sockets_per_user) as admitted,
-    ):
-        if not admitted:
-            logger.warning("Chat socket cap reached user_id=%s chat_id=%s", user_id, chat_id)
-            await close_quietly(websocket, WS_TOO_MANY_SOCKETS_CLOSE_CODE)
-            return
-        await _serve_frames(
-            _ChatSocket(
-                websocket=websocket,
-                redis=redis,
-                settings=settings,
-                chat_id=chat_id,
-                user_id=user_id,
-                token=token,
-                client_timezone=client_timezone,
-                cancel_event=asyncio.Event(),
-                frame_budget=FrameBudget(),
+    slot = user_socket_slot(redis, user_id, settings.ws_max_sockets_per_user)
+    with bound_log_ids(user_id=user_id):
+        async with slot as admitted:
+            if not admitted:
+                logger.warning("Chat socket cap reached user_id=%s chat_id=%s", user_id, chat_id)
+                await close_quietly(websocket, WS_TOO_MANY_SOCKETS_CLOSE_CODE)
+                return
+            await _serve_frames(
+                _ChatSocket(
+                    websocket=websocket,
+                    redis=redis,
+                    settings=settings,
+                    chat_id=chat_id,
+                    user_id=user_id,
+                    token=token,
+                    client_timezone=client_timezone,
+                    cancel_event=asyncio.Event(),
+                    frame_budget=FrameBudget(),
+                )
             )
-        )
 
 
 async def _serve_frames(conn: _ChatSocket) -> None:

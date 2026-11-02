@@ -19,8 +19,9 @@ class EdgeSettings(BaseModel):
     # address fronts hundreds of phones, each refreshing about once an hour.
     signin_per_ip_per_minute: int = 300
     refresh_per_ip_per_minute: int = 300
-    # Chat WebSockets per machine (modules/chat/ws_limits.py): open sockets per
-    # user, and seconds idle between turns before a close. 0 disables either.
+    # Chat WebSockets (modules/chat/ws_limits.py): open sockets per user across all
+    # machines (counted in Redis), and seconds idle between turns before a close.
+    # 0 disables either.
     ws_max_sockets_per_user: int = 5
     ws_idle_timeout_seconds: float = 300.0
     # Seconds a new chat socket has to send its auth frame before it is dropped.

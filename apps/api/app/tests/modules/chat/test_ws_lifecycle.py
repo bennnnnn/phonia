@@ -22,6 +22,7 @@ from app.main import create_app
 from app.modules.chat import finalize_registry, ws_limits
 from app.modules.chat.stream_events import SERVER_RESTARTING_MESSAGE
 from app.modules.chat.turn_outcome import TurnOutcome
+from app.tests.fakes import redis_mock
 from app.tests.modules.chat.chat_test_support import offline_deps, signed_in, ws_streams
 
 pytest_plugins = ("app.tests.modules.chat.chat_test_support",)
@@ -144,17 +145,65 @@ def test_ws_caps_sockets_per_user_and_frees_the_slot_on_close() -> None:
     assert user_id not in ws_limits._open_sockets
 
 
-def test_user_socket_slot_counts_and_releases() -> None:
+async def test_user_socket_slot_counts_and_releases(fake_redis) -> None:
     user_id = uuid4()
-    with ws_limits.user_socket_slot(user_id, 2) as one:
-        with ws_limits.user_socket_slot(user_id, 2) as two:
-            with ws_limits.user_socket_slot(user_id, 2) as three:
+    key = ws_limits.sockets_key(user_id)
+    async with ws_limits.user_socket_slot(fake_redis, user_id, 2) as one:
+        async with ws_limits.user_socket_slot(fake_redis, user_id, 2) as two:
+            async with ws_limits.user_socket_slot(fake_redis, user_id, 2) as three:
                 assert (one, two, three) == (True, True, False)
                 assert ws_limits._open_sockets[user_id] == 2
+                assert await fake_redis.zcard(key) == 2
         assert ws_limits._open_sockets[user_id] == 1
+        assert await fake_redis.zcard(key) == 1
     assert user_id not in ws_limits._open_sockets
-    with ws_limits.user_socket_slot(user_id, 0) as uncapped:
+    assert await fake_redis.zcard(key) == 0
+    async with ws_limits.user_socket_slot(fake_redis, user_id, 0) as uncapped:
         assert uncapped is True
+
+
+async def test_user_socket_cap_counts_every_machines_sockets(fake_redis) -> None:
+    """Counted per machine, a user held five sockets on each app machine."""
+    user_id = uuid4()
+    async with ws_limits.user_socket_slot(fake_redis, user_id, 2) as here:
+        # Another machine: its own in-process counts, the same Redis.
+        with patch.dict(ws_limits._open_sockets, {}, clear=True):
+            async with ws_limits.user_socket_slot(fake_redis, user_id, 2) as there:
+                async with ws_limits.user_socket_slot(fake_redis, user_id, 2) as third:
+                    assert (here, there, third) == (True, True, False)
+
+
+async def test_a_dead_machines_sockets_stop_counting_after_their_lease(fake_redis) -> None:
+    user_id = uuid4()
+    key = ws_limits.sockets_key(user_id)
+    # A machine died holding two sockets; their leases ran out a second ago.
+    expired = {"dead-1": 1.0, "dead-2": 2.0}
+    await fake_redis.zadd(key, expired)
+    async with ws_limits.user_socket_slot(fake_redis, user_id, 2) as admitted:
+        assert admitted is True
+        assert await fake_redis.zcard(key) == 1
+        assert 0 < await fake_redis.ttl(key) <= ws_limits.SOCKET_LEASE_SECONDS
+    assert await fake_redis.exists(key) == 0
+
+
+async def test_user_socket_slot_fails_closed_without_redis() -> None:
+    broken = MagicMock()
+    broken.pipeline.side_effect = ConnectionError("redis down")
+    user_id = uuid4()
+    async with ws_limits.user_socket_slot(broken, user_id, 5) as admitted:
+        assert admitted is False
+    assert user_id not in ws_limits._open_sockets
+
+
+async def test_an_open_socket_renews_its_lease(fake_redis, monkeypatch) -> None:
+    monkeypatch.setattr(ws_limits, "SOCKET_RENEW_SECONDS", 0.01)
+    user_id = uuid4()
+    key = ws_limits.sockets_key(user_id)
+    async with ws_limits.user_socket_slot(fake_redis, user_id, 5):
+        [(_member, first)] = await fake_redis.zrange(key, 0, -1, withscores=True)
+        await asyncio.sleep(0.05)
+        [(_member, renewed)] = await fake_redis.zrange(key, 0, -1, withscores=True)
+    assert renewed > first
 
 
 def test_ws_refuses_a_new_turn_once_the_server_is_stopping(monkeypatch) -> None:
@@ -203,7 +252,7 @@ def _real_turn(outcome: TurnOutcome, should_cancel):
     )
     return stream_and_finalize(
         offline_deps(),
-        AsyncMock(),
+        redis_mock(),
         Settings(max_output_tokens=100, mcp_tool_loop_enabled=False),
         ctx,
         should_cancel=should_cancel,

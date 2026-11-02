@@ -9,7 +9,7 @@ class InfrastructureSettings(BaseModel):
     # Connections per process (core/redis.py), a blocking pool each: the request
     # client, and the worker's jobs client (one blocked XREADGROUP, plus the leases,
     # claims and acks of up to JOBS_WORKER_CONCURRENCY jobs). (N app + M worker)
-    # machines × these must stay under the Upstash plan's connection limit. A command
+    # machines x these must stay under the Upstash plan's connection limit. A command
     # waits this long for a free connection, then fails as Redis-down does.
     redis_max_connections: int = 64
     redis_jobs_max_connections: int = 48

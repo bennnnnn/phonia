@@ -17,6 +17,7 @@ from app.modules.chat import ws_api
 from app.modules.chat.stream_events import REPLY_SAVE_FAILED_MESSAGE
 from app.modules.chat.turn_outcome import TurnOutcome
 from app.services.quota.messages import QUOTA_EXCEEDED_MESSAGE_FREE
+from app.tests.fakes import redis_mock
 from app.tests.modules.chat.chat_test_support import access_for, signed_in, ws_streams
 
 
@@ -86,7 +87,7 @@ async def test_ws_disconnect_before_auth_is_a_normal_close():
     socket.receive_json.side_effect = WebSocketDisconnect(code=1000)
     with (
         patch("app.modules.chat.ws_api._ws_handshake_rate_limit", AsyncMock(return_value=True)),
-        patch("app.modules.chat.ws_api.get_redis_client", return_value=AsyncMock()),
+        patch("app.modules.chat.ws_api.get_redis_client", return_value=redis_mock()),
     ):
         await chat_websocket(socket, uuid4())
     socket.send_json.assert_not_awaited()
@@ -126,7 +127,7 @@ async def test_ws_receive_after_client_dropped_mid_stream(error, socket_closed, 
     with (
         patch("app.modules.chat.ws_api._ws_handshake_rate_limit", AsyncMock(return_value=True)),
         patch("app.modules.chat.ws_api._ws_connect_rate_limit", AsyncMock(return_value=True)),
-        patch("app.modules.chat.ws_api.get_redis_client", return_value=AsyncMock()),
+        patch("app.modules.chat.ws_api.get_redis_client", return_value=redis_mock()),
         signed_in(uuid4()),
     ):
         if ends_quietly:

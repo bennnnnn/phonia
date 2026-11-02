@@ -134,13 +134,16 @@ async def enqueue_many(redis: Redis, requests: Sequence[JobRequest]) -> list[boo
     try:
         async with redis.pipeline(transaction=False) as pipe:
             for request in requests:
-                fields = job_fields(request.job_type, request.payload, dedupe_key=request.dedupe_key)
+                fields = job_fields(
+                    request.job_type, request.payload, dedupe_key=request.dedupe_key
+                )
                 if hard_cap is None:
                     pipe.xadd(JOBS_STREAM, cast(Any, fields))
                 else:
                     pipe.xadd(JOBS_STREAM, cast(Any, fields), maxlen=hard_cap, approximate=True)
             results: list[Any] = await pipe.execute(raise_on_error=False)
     except Exception as exc:
+        logger.warning("Jobs pipeline failed; %d jobs not queued: %r", len(requests), exc)
         results = [exc] * len(requests)
     queued: list[bool] = []
     for request, result in zip(requests, results, strict=True):

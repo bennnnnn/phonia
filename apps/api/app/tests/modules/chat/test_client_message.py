@@ -36,6 +36,7 @@ from app.modules.chat.client_message import (
     claim_key,
 )
 from app.modules.chat.turn_outcome import TurnOutcome
+from app.tests.fakes import redis_mock
 from app.tests.modules.chat.chat_test_support import signed_in, ws_streams
 
 _SECRET = "super-secret-key-that-is-at-least-32-chars!!"
@@ -333,7 +334,7 @@ def test_ws_refused_message_frees_its_name_for_the_resend() -> None:
 
 def test_ws_named_message_is_refused_when_its_claim_cannot_be_made() -> None:
     user_id, chat_id = uuid4(), uuid4()
-    redis = MagicMock()
+    redis = redis_mock()
     redis.set = AsyncMock(side_effect=ConnectionError("redis down"))
     client, stack = _socket_client(user_id, redis)
     with stack, client.websocket_connect(f"/ws/chats/{chat_id}") as socket:
