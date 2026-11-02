@@ -161,7 +161,8 @@ LIST_CEILINGS: dict[str, Counts] = {
     "/memories/documents": Counts(sql=3, checkouts=1, transactions=1, redis=4),
     "/todos/page": Counts(sql=1, checkouts=1, transactions=1, redis=2),
     "/attachments": Counts(sql=2, checkouts=1, transactions=1, redis=2),
-    "/search?q=Paris": Counts(sql=1, checkouts=1, transactions=1, redis=2),
+    # The page is chosen over sort keys, then its bodies are read by id: two statements.
+    "/search?q=Paris": Counts(sql=2, checkouts=1, transactions=1, redis=2),
 }
 
 # A reply long enough to get follow-up questions (``related_questions``).
