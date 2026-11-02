@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import time
 from datetime import UTC, datetime
 
 from redis.asyncio import Redis
@@ -46,19 +47,29 @@ async def _push_cycle(settings: Settings, lock: CycleLock) -> None:
         await advance_recurring_without_device(session, now=now)
     if not settings.server_todo_push_enabled:
         return
+    backoff = push_notifications.push_backoff(redis, settings)
+    # Pages follow while due reminders remain, for the cycle's budget (it was 20 pages:
+    # 10,000 a minute however long the backlog); the lock is refreshed before each send.
+    stop_at = time.monotonic() + settings.reminder_cycle_budget_seconds
     sent = 0
     after = None
-    for _ in range(push_notifications.MAX_PUSH_PAGES_PER_CYCLE):
+    while True:
         # A short-lived session per page; none is held across Expo HTTP.
         async with SessionLocal() as session:
-            page = await push_notifications.collect_push_page(session, now=now, after=after)
-        for start in range(0, len(page.messages), MAX_MESSAGES_PER_REQUEST):
+            page = await push_notifications.collect_push_page(
+                session, now=now, after=after, ttl_seconds=settings.push_reminder_ttl_seconds
+            )
+        messages = await push_notifications.without_held(backoff, page.messages)
+        for start in range(0, len(messages), MAX_MESSAGES_PER_REQUEST):
             if not await lock.refresh():
                 logger.warning("Push cycle lost its lock; stopping before the next send")
                 return
-            chunk = page.messages[start : start + MAX_MESSAGES_PER_REQUEST]
+            chunk = messages[start : start + MAX_MESSAGES_PER_REQUEST]
             sent += await _send_and_mark(settings, redis, chunk)
         if page.next_after is None:
+            break
+        if time.monotonic() >= stop_at:
+            logger.info("Push cycle used its time budget; the rest go next cycle")
             break
         after = page.next_after
     if sent:
@@ -71,22 +82,23 @@ async def _send_and_mark(
     """Send one Expo request and mark its to-dos at once, before the next request.
 
     Marking only after the whole batch let a stopped worker (every deploy) or a lost
-    lock leave accepted reminders unmarked, to go out again next cycle.
+    lock leave accepted reminders unmarked, to go out again next cycle. A push that may
+    have been accepted, or was throttled or refused, holds its reminder instead.
     """
-    delivered, invalid_tokens, receipt_tickets = await push_notifications.dispatch_expo(
-        chunk, settings
-    )
+    result = await push_notifications.dispatch_expo(chunk, settings)
     async with SessionLocal() as session:
-        for expo_token in invalid_tokens:
+        for expo_token in result.invalid_tokens:
             try:
                 await push_repo.delete_by_token(session, expo_token)
                 logger.info("Pruned invalid push token=%s", expo_token[:20])
             except Exception:
                 logger.debug("Failed to prune push token", exc_info=True)
-        if receipt_tickets:
-            await push_notifications.enqueue_push_receipts(redis, receipt_tickets)
-        await push_notifications.finalize_push_deliveries(session, chunk, delivered)
-    return sum(1 for ok in delivered if ok)
+        if result.receipt_tickets:
+            await push_notifications.enqueue_push_receipts(redis, result.receipt_tickets)
+        await push_notifications.finalize_push_deliveries(session, chunk, result.delivered)
+    backoff = push_notifications.push_backoff(redis, settings)
+    await push_notifications.hold_failed(backoff, chunk, result, settings)
+    return sum(1 for ok in result.delivered if ok)
 
 
 async def run_push_cycle(settings: Settings) -> None:
@@ -102,7 +114,9 @@ async def run_push_cycle(settings: Settings) -> None:
 
 async def _receipts_cycle(settings: Settings, _lock: CycleLock) -> None:
     async with SessionLocal() as session:
-        await push_notifications.poll_deferred_push_receipts(session, get_redis_client())
+        await push_notifications.poll_deferred_push_receipts(
+            session, get_redis_client(), budget_seconds=settings.push_receipt_poll_budget_seconds
+        )
 
 
 async def run_push_receipts_cycle(settings: Settings) -> None:

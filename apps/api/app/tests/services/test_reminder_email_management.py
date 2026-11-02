@@ -12,10 +12,13 @@ from sqlalchemy.orm import Session
 from sqlalchemy.types import TypeDecorator
 
 from app.core.config import Settings
+from app.gateways.email_gateway import EmailOutcome, EmailResult
 from app.models.orm import TodoItem, User
 from app.modules.notifications import reminder_email
+from app.modules.notifications.send_backoff import SendBackoff
 
 NOW = datetime(2026, 9, 5, 12, tzinfo=UTC)
+SENT = EmailResult(EmailOutcome.SENT)
 
 
 class _UTCDateTime(TypeDecorator):
@@ -88,7 +91,7 @@ async def test_only_one_shot_reminders_are_selected_for_email(email_sql):
     sync_session.commit()
     expected_content = rows[0].content
     with patch.object(
-        reminder_email.tx_email, "send_todo_reminder", AsyncMock(return_value=True)
+        reminder_email.tx_email, "send_todo_reminder", AsyncMock(return_value=SENT)
     ) as send:
         count = await reminder_email.process_todo_reminder_emails(session, Settings(), now=NOW)
     assert count == 1
@@ -124,7 +127,7 @@ async def test_late_email_cannot_stamp_a_changed_occurrence(email_sql, change):
         else:
             sync_session.delete(current)
         sync_session.commit()
-        return True
+        return SENT
 
     with patch.object(
         reminder_email.tx_email, "send_todo_reminder", AsyncMock(side_effect=send)
@@ -150,7 +153,7 @@ async def test_one_shot_push_marker_does_not_block_email_finalization(email_sql)
             update(TodoItem).where(TodoItem.id == row_id).values(notification_sent_at=NOW)
         )
         sync_session.commit()
-        return True
+        return SENT
 
     with patch.object(reminder_email.tx_email, "send_todo_reminder", AsyncMock(side_effect=send)):
         assert await reminder_email.process_todo_reminder_emails(session, Settings(), now=NOW) == 1
@@ -167,7 +170,7 @@ async def test_email_provider_runs_without_a_read_transaction(email_sql):
 
     async def send(*args, **kwargs):
         transactions.append(sync_session.in_transaction())
-        return True
+        return SENT
 
     with patch.object(reminder_email.tx_email, "send_todo_reminder", AsyncMock(side_effect=send)):
         await reminder_email.process_todo_reminder_emails(session, Settings(), now=NOW)
@@ -194,7 +197,7 @@ async def test_failed_email_commit_recovers_session_and_continues_batch(email_sq
     async def send(*args, **kwargs):
         attempts.append(kwargs["content"])
         session.commit.side_effect = commit
-        return True
+        return SENT
 
     with (
         patch.object(reminder_email.tx_email, "send_todo_reminder", AsyncMock(side_effect=send)),
@@ -213,3 +216,91 @@ async def test_failed_email_commit_recovers_session_and_continues_batch(email_sq
     for row in rows:
         sync_session.refresh(row)
     assert sum(row.email_sent_at is not None for row in rows) == 1
+
+
+# ── retries: a stable idempotency key, holds, refusals, the cycle's budget ────
+
+
+def _backoff(redis) -> SendBackoff:
+    return SendBackoff.for_channel(redis, Settings(), "email")
+
+
+def _due(row: TodoItem) -> int:
+    assert row.due_at is not None
+    return int(row.due_at.replace(tzinfo=UTC).timestamp())
+
+
+@pytest.mark.asyncio
+async def test_every_send_of_one_occurrence_carries_the_same_idempotency_key(email_sql):
+    sync_session, session = email_sql
+    _, rows = _rows(sync_session)
+    keys = []
+
+    async def send(*args, **kwargs):
+        keys.append(kwargs["idempotency_key"])
+        return EmailResult(EmailOutcome.RETRY)
+
+    with patch.object(reminder_email.tx_email, "send_todo_reminder", AsyncMock(side_effect=send)):
+        await reminder_email.process_todo_reminder_emails(session, Settings(), now=NOW)
+        await reminder_email.process_todo_reminder_emails(session, Settings(), now=NOW)
+    assert keys == [f"todo-reminder/{rows[0].id}:{_due(rows[0])}"] * 2
+
+
+@pytest.mark.asyncio
+async def test_a_failed_for_now_send_waits_out_its_hold(email_sql, fake_redis):
+    sync_session, session = email_sql
+    _, rows = _rows(sync_session)
+    backoff = _backoff(fake_redis)
+    send = AsyncMock(return_value=EmailResult(EmailOutcome.RETRY, retry_after=120))
+
+    with patch.object(reminder_email.tx_email, "send_todo_reminder", send):
+        for _ in range(3):  # the next two cycles pass it by
+            await reminder_email.process_todo_reminder_emails(
+                session, Settings(), now=NOW, backoff=backoff
+            )
+    assert send.await_count == 1
+    key = f"recall:email:hold:{rows[0].id}:{_due(rows[0])}"
+    assert 60 < await fake_redis.ttl(key) <= 120  # Retry-After outlasts the first back-off
+    sync_session.refresh(rows[0])
+    assert rows[0].email_sent_at is None
+
+    await fake_redis.delete(key)  # the hold ran out
+    send.return_value = SENT
+    with patch.object(reminder_email.tx_email, "send_todo_reminder", send):
+        count = await reminder_email.process_todo_reminder_emails(
+            session, Settings(), now=NOW, backoff=backoff
+        )
+    assert count == 1 and send.await_count == 2
+
+
+@pytest.mark.asyncio
+async def test_a_refused_email_is_stamped_and_never_retried(email_sql):
+    sync_session, session = email_sql
+    _, rows = _rows(sync_session)
+    send = AsyncMock(return_value=EmailResult(EmailOutcome.REJECTED))
+
+    with patch.object(reminder_email.tx_email, "send_todo_reminder", send):
+        first = await reminder_email.process_todo_reminder_emails(session, Settings(), now=NOW)
+        await reminder_email.process_todo_reminder_emails(session, Settings(), now=NOW)
+    assert first == 0  # not counted as sent
+    assert send.await_count == 1
+    sync_session.refresh(rows[0])
+    assert rows[0].email_sent_at == NOW
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(("budget", "sent"), [(60, 12), (0, 1)])
+async def test_the_cycle_reads_pages_while_its_budget_lasts(email_sql, budget, sent):
+    """It used to stop at 10 pages, whatever the backlog; now at its time budget."""
+    sync_session, session = email_sql
+    _rows(sync_session, count=12)
+    send = AsyncMock(return_value=SENT)
+
+    with (
+        patch.object(reminder_email, "EMAIL_PAGE_ROWS", 1),
+        patch.object(reminder_email.tx_email, "send_todo_reminder", send),
+    ):
+        count = await reminder_email.process_todo_reminder_emails(
+            session, Settings(reminder_cycle_budget_seconds=budget), now=NOW
+        )
+    assert count == sent

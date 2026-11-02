@@ -12,7 +12,6 @@
   "core/sympy_executor.py": 1,
   "core/sympy_worker_process.py": 3,
   "gateways/embedding_gateway.py": 3,
-  "gateways/expo_push_gateway.py": 1,
   "gateways/litellm_gateway.py": 2,
   "gateways/pubchem_gateway.py": 3,
   "gateways/safe_fetch.py": 1,

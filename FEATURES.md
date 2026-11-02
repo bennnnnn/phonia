@@ -843,7 +843,19 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   return to the foreground). The badge, Home and the editor's Remind at show `notify_at`; for a
   due time the editor has not saved, it asks `GET /todos/reminder-preview`. The phone works out none.
 - ✅ **Email reminders** — opt-in todo-due emails (Resend); Settings
-  toggle; worker scheduler only (welcome + Pro receipt unchanged).
+  toggle; worker scheduler only (welcome + Pro receipt unchanged). Each send of one reminder
+  carries the same `Idempotency-Key`, so a resend after a timeout is not mailed twice; an
+  address Resend refuses (a 4xx but 429) is not tried again, and a timeout, 429 or 5xx waits
+  out a doubling hold (`notifications/send_backoff.py`, Redis) instead of retrying every minute.
+- ✅ **Reminder delivery limits** — reminder pushes go `priority: high` with a `ttl`
+  (`push_reminder_ttl_seconds`, 4 h: a phone off longer never shows it late). A push Expo may
+  have accepted (a read timeout, an unreadable answer) is held 15 min, not resent next minute;
+  a 429 waits its Retry-After and a 5xx backs off; a request Expo refuses as a whole (a 400) is
+  split in halves so one bad token holds back only itself. Push and email cycles send while due
+  reminders remain for `reminder_cycle_budget_seconds` (no fixed page cap); receipts are polled
+  in batches for `push_receipt_poll_budget_seconds`. An account keeps at most
+  `push_tokens_max_per_user` (10) device tokens, newest first; registration is one
+  `INSERT … ON CONFLICT`, so two registrations at once no longer fail one.
 
 ## 11. Navigation & UX
 - ✅ **Drawer** — custom slide-in: search, New chat, chat history, profile + settings.
