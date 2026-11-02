@@ -150,8 +150,8 @@ def _turn_may_ask(state: FinalizeState) -> bool:
     # A maths, physics or chemistry problem, solved or declined, is answered, not asked.
     if state.server_text or ctx.verified_subject is not None or ctx.solver_unverified:
         return False
-    # A multi-part reply's settings card or picture, or a photo above the answer.
-    if ctx.settings_card or ctx.reply_picture is not None or ctx.answer_photo_ids:
+    # A multi-part reply's settings card, or a photo above the answer.
+    if ctx.settings_card or ctx.answer_photo_ids:
         return False
     return not any(fence.lang in NEVER_WITH_CARD for fence in iter_fences(state.text))
 

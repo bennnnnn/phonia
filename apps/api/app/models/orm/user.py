@@ -14,7 +14,7 @@ from sqlalchemy import (
     Text,
     func,
 )
-from sqlalchemy.dialects.postgresql import JSONB, UUID
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.db import Base
@@ -28,10 +28,6 @@ class User(Base):
     __tablename__ = "users"
     __table_args__ = (
         CheckConstraint("plan IN ('free', 'plus', 'pro')", name="ck_users_plan"),
-        CheckConstraint(
-            "response_tone IN ('funny', 'professional', 'casual', 'soft')",
-            name="ck_users_response_tone",
-        ),
         CheckConstraint("emoji_use IN ('off', 'some', 'more')", name="ck_users_emoji_use"),
         CheckConstraint(
             "age IS NULL OR (age >= 13 AND age <= 120)",
@@ -45,15 +41,9 @@ class User(Base):
     email: Mapped[str] = mapped_column(String, unique=True, nullable=False)
     name: Mapped[str | None] = mapped_column(String)
     avatar_url: Mapped[str | None] = mapped_column(String)
-    # A stored copy of the chosen model: enabled_models is the source, and
-    # repositories/users.update rewrites this from it (schemas/auth.chosen_model_id).
-    default_model: Mapped[str] = mapped_column(String, default="auto")
     plan: Mapped[str] = mapped_column(String, default="free", server_default="free")
     # Last processed RevenueCat webhook event_timestamp_ms — ignore older events.
     rc_last_event_at_ms: Mapped[int | None] = mapped_column(BigInteger, nullable=True)
-    enabled_models: Mapped[list[str] | None] = mapped_column(JSONB, nullable=True)
-    response_style: Mapped[str] = mapped_column(String, default="balanced")
-    response_tone: Mapped[str] = mapped_column(String, default="casual", server_default="casual")
     # How many emoji replies use (Settings → Personalization): off, some or more.
     emoji_use: Mapped[str] = mapped_column(String, default="some", server_default="some")
     memory_enabled: Mapped[bool] = mapped_column(Boolean, default=True)
@@ -88,7 +78,7 @@ class User(Base):
     push_reminders_enabled: Mapped[bool] = mapped_column(
         Boolean, default=True, server_default="true"
     )
-    # Read-aloud and live talk voice; None keeps the server default.
+    # Read-aloud voice; None keeps the server default.
     tts_voice: Mapped[str | None] = mapped_column(String(16), nullable=True)
     email_reminders_enabled: Mapped[bool] = mapped_column(
         Boolean, default=False, server_default="false"
@@ -104,8 +94,6 @@ class User(Base):
     custom_instructions: Mapped[str | None] = mapped_column(Text, nullable=True)
     locale: Mapped[str] = mapped_column(String(10), default="en", server_default="en")
     timezone: Mapped[str] = mapped_column(String(64), default="UTC", server_default="UTC")
-    location: Mapped[str | None] = mapped_column(String(128), nullable=True)
-    location_enabled: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false")
     age: Mapped[int | None] = mapped_column(Integer, nullable=True)
     country: Mapped[str | None] = mapped_column(String(64), nullable=True)
     job: Mapped[str | None] = mapped_column(String(128), nullable=True)

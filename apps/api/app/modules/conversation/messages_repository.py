@@ -1,10 +1,19 @@
 from datetime import datetime
+from typing import NamedTuple
 from uuid import UUID
 
-from sqlalchemy import ColumnElement, and_, func, or_, select
+from sqlalchemy import ColumnElement, and_, exists, func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.orm import Message
+from app.repositories.keyset import InvalidCursorError
+
+
+class _AnchorKey(NamedTuple):
+    """A page anchor's sort key: what a page needs of it, not its body."""
+
+    created_at: datetime
+    id: UUID
 
 
 async def create(
@@ -113,39 +122,34 @@ async def list_page(
     limit: int,
     before_id: UUID | None = None,
 ) -> tuple[list[Message], bool]:
-    """Return a chronological slice of messages (newest page or older-than cursor)."""
+    """Return a chronological slice of messages (newest page or older-than cursor).
+
+    A ``before_id`` that is not in the chat (a regenerate replaced that reply) raises
+    ``InvalidCursorError``: an empty last page would tell the phone it reached the start.
+    """
+    anchor = await _anchor(session, chat_id, before_id) if before_id is not None else None
+    return await _page_before(session, chat_id, limit=limit, anchor=anchor)
+
+
+async def _page_before(
+    session: AsyncSession, chat_id: UUID, *, limit: int, anchor: _AnchorKey | None
+) -> tuple[list[Message], bool]:
     capped = max(1, min(limit, 200))
-    if before_id is not None:
-        ref = await session.execute(
-            select(Message).where(Message.id == before_id, Message.chat_id == chat_id)
-        )
-        anchor = ref.scalar_one_or_none()
-        if anchor is None:
-            return [], False
+    statement = select(Message).where(Message.chat_id == chat_id)
+    if anchor is not None:
         # Tuple cursor (created_at, id): same-timestamp rows stay stable across pages.
-        result = await session.execute(
-            select(Message)
-            .where(
-                Message.chat_id == chat_id,
-                or_(
-                    Message.created_at < anchor.created_at,
-                    and_(
-                        Message.created_at == anchor.created_at,
-                        Message.id < anchor.id,
-                    ),
+        statement = statement.where(
+            or_(
+                Message.created_at < anchor.created_at,
+                and_(
+                    Message.created_at == anchor.created_at,
+                    Message.id < anchor.id,
                 ),
             )
-            .order_by(Message.created_at.desc(), Message.id.desc())
-            .limit(capped + 1)
         )
-    else:
-        result = await session.execute(
-            select(Message)
-            .where(Message.chat_id == chat_id)
-            .order_by(Message.created_at.desc(), Message.id.desc())
-            .limit(capped + 1)
-        )
-
+    result = await session.execute(
+        statement.order_by(Message.created_at.desc(), Message.id.desc()).limit(capped + 1)
+    )
     rows = list(result.scalars().all())
     has_more = len(rows) > capped
     if has_more:
@@ -154,14 +158,20 @@ async def list_page(
     return rows, has_more
 
 
-async def _anchor(session: AsyncSession, chat_id: UUID, message_id: UUID) -> Message | None:
+async def _anchor(session: AsyncSession, chat_id: UUID, message_id: UUID) -> _AnchorKey:
+    """The anchor's sort key; ``InvalidCursorError`` when the chat no longer holds it."""
     result = await session.execute(
-        select(Message).where(Message.id == message_id, Message.chat_id == chat_id)
+        select(Message.created_at, Message.id).where(
+            Message.id == message_id, Message.chat_id == chat_id
+        )
     )
-    return result.scalar_one_or_none()
+    row = result.one_or_none()
+    if row is None:
+        raise InvalidCursorError()
+    return _AnchorKey(created_at=row.created_at, id=row.id)
 
 
-def _after(anchor: Message, *, inclusive: bool = False) -> ColumnElement[bool]:
+def _after(anchor: _AnchorKey, *, inclusive: bool = False) -> ColumnElement[bool]:
     """Rows after ``anchor`` in (created_at, id) order."""
     same_time = Message.id >= anchor.id if inclusive else Message.id > anchor.id
     return or_(
@@ -176,8 +186,6 @@ async def list_after(
     """The ``limit`` messages after ``after_id``, oldest first, and whether more follow."""
     capped = max(1, min(limit, 200))
     anchor = await _anchor(session, chat_id, after_id)
-    if anchor is None:
-        return [], False
     result = await session.execute(
         select(Message)
         .where(Message.chat_id == chat_id, _after(anchor))
@@ -196,12 +204,10 @@ async def list_around(
     NET-18: a search hit deep in a chat was reached 40 messages at a time)."""
     capped = max(1, min(limit, 200))
     anchor = await _anchor(session, chat_id, around_id)
-    if anchor is None:
-        return [], False, False
     older: list[Message] = []
     has_older = False
     if before := (capped - 1) // 2:
-        older, has_older = await list_page(session, chat_id, limit=before, before_id=around_id)
+        older, has_older = await _page_before(session, chat_id, limit=before, anchor=anchor)
     # The anchor and what follows it fill the rest of the window.
     room = capped - len(older)
     result = await session.execute(
@@ -212,6 +218,29 @@ async def list_around(
     )
     newer = list(result.scalars().all())
     return older + newer[:room], has_older, len(newer) > room
+
+
+async def list_after_key(
+    session: AsyncSession,
+    chat_id: UUID,
+    *,
+    after: tuple[datetime, UUID] | None,
+    limit: int,
+) -> list[Message]:
+    """Up to ``limit`` messages after the ``(created_at, id)`` key, oldest first.
+
+    The export pages by the last row read: an offset skipped a message whenever an
+    earlier one went away mid-export (a regenerate replaces a reply).
+    """
+    if limit <= 0:
+        return []
+    statement = select(Message).where(Message.chat_id == chat_id)
+    if after is not None:
+        statement = statement.where(_after(_AnchorKey(created_at=after[0], id=after[1])))
+    result = await session.execute(
+        statement.order_by(Message.created_at.asc(), Message.id.asc()).limit(limit)
+    )
+    return list(result.scalars().all())
 
 
 async def list_range(
@@ -330,6 +359,12 @@ async def get_for_user(session: AsyncSession, message_id: UUID, user_id: UUID) -
 async def delete_message(session: AsyncSession, message: Message) -> None:
     await session.delete(message)
     await session.commit()
+
+
+async def chat_has_messages(session: AsyncSession, chat_id: UUID) -> bool:
+    """Whether the chat holds any message: stops at the first row, where a count reads all."""
+    result = await session.execute(select(exists().where(Message.chat_id == chat_id)))
+    return bool(result.scalar_one())
 
 
 async def count_for_chat(session: AsyncSession, chat_id: UUID) -> int:

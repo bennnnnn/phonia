@@ -12,7 +12,7 @@ import { Text } from "react-native";
 import { act, render } from "@testing-library/react-native";
 import { useDrawerChatList } from "@/features/chat/drawer/useDrawerChatList";
 import { api, type Chat, type ChatList } from "@/lib/api";
-import { invalidateChatListCache, setChatListCache } from "@/features/chat/model/chatListCache";
+import { invalidateChatListCache, seedChatListCacheForTest } from "@/features/chat/model/chatListCache";
 import { readStoredChatList } from "@/features/chat/model/chatListFile";
 import { CHAT_DATE_SECTIONS, emptyChatList } from "@/features/chat/model/listSections";
 import { insertChatGlobal } from "@/features/chat/drawer/drawer";
@@ -51,7 +51,7 @@ function holdClockAt(iso: string): void {
 }
 
 function chat(id: string, updatedAt: string): Chat {
-  return { id, title: id, model: "free-chat", pinned: false, created_at: updatedAt, updated_at: updatedAt };
+  return { id, title: id, pinned: false, created_at: updatedAt, updated_at: updatedAt };
 }
 
 let current: ReturnType<typeof useDrawerChatList>;
@@ -96,7 +96,7 @@ it("paints a list kept from before a flight under the headings it has where the 
 it("moves a list held across midnight to the new day's headings when the drawer opens again", async () => {
   // 23:55 in Kathmandu, a list just read.
   holdClockAt("2026-10-24T18:10:00Z");
-  setChatListCache({ ...emptyChatList(), today: [chat("late", "2026-10-24T18:05:00Z")] });
+  seedChatListCacheForTest({ ...emptyChatList(), today: [chat("late", "2026-10-24T18:05:00Z")] });
   const view = await render(<Probe open />);
   expect(headings()).toEqual({ today: ["late"] });
   await view.rerender(<Probe open={false} />);

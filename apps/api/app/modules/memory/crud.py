@@ -172,12 +172,11 @@ async def active_fact_texts(session: AsyncSession, user_id: UUID) -> list[str]:
 
 
 async def facts_for_export(
-    session: AsyncSession, user_id: UUID, *, offset: int, limit: int
+    session: AsyncSession, user_id: UUID, *, after_id: UUID | None, limit: int
 ) -> list[Memory]:
-    """One page of every fact the user has, superseded ones included (the data export)."""
-    return await memories_repo.list_range(
-        session, user_id, offset=offset, limit=limit, include_superseded=True
-    )
+    """One page of every fact the user has, superseded ones included, after the last id
+    read (the data export)."""
+    return await memories_repo.list_after_id(session, user_id, after_id=after_id, limit=limit)
 
 
 async def areas_for_export(session: AsyncSession, user_id: UUID) -> list[MemoryArea]:

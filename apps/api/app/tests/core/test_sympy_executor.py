@@ -166,6 +166,28 @@ async def test_warmup_starts_every_worker_slot_concurrently():
     assert executor.peak_active == 3
 
 
+def _short_warmup() -> None:
+    time.sleep(0.6)
+
+
+@pytest.mark.asyncio
+async def test_warmup_warms_the_slots_kept_for_readings_too(caplog):
+    """On the solve lane the third warmup could not take the reading slot and timed out
+    waiting, so one worker stayed cold on every boot."""
+    executor = ProcessPoolSympyExecutor(
+        max_workers=3, reserved_for_readings=1, queue_wait_seconds=0.3
+    )
+    set_sympy_executor(executor)
+    try:
+        await warm_sympy_pool(_short_warmup)
+
+        assert "sympy pool warmup failed" not in caplog.text
+        assert executor._cold == [False, False, False]
+        assert all(pool is not None for pool in executor._slots)
+    finally:
+        executor.shutdown()
+
+
 @pytest.mark.asyncio
 async def test_pool_size_bounded_to_one_worker():
     """A slot is always max_workers=1 — a runaway occupies that subprocess

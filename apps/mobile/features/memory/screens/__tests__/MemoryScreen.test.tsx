@@ -86,7 +86,7 @@ beforeEach(() => {
   mockDocuments = [
     doc("area:recall", "areas", "Recall", "2026-08-30T12:00:00Z"),
     doc("profile", "you", "Profile"),
-    doc("tech-stack", "topics", "Tech stack"),
+    doc("subjects", "topics", "Subjects"),
     doc("preferences", "you", "Preferences"),
   ];
 });
@@ -111,7 +111,7 @@ describe("MemoryScreen", () => {
     // Standard pages use the app's words; sorted by the shown title.
     const youTitles = you.getAllByText(/memory\.doc\..*\.title/).map((node) => node.props.children);
     expect(youTitles).toEqual(["memory.doc.preferences.title", "memory.doc.profile.title"]);
-    expect(within(ui.getByTestId("memory-group-topics")).getByText("memory.doc.tech-stack.title")).toBeTruthy();
+    expect(within(ui.getByTestId("memory-group-topics")).getByText("memory.doc.subjects.title")).toBeTruthy();
     const areas = within(ui.getByTestId("memory-group-areas"));
     expect(areas.getByText("Recall")).toBeTruthy();
     expect(areas.getByText("Recall summary")).toBeTruthy();

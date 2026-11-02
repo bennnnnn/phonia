@@ -10,6 +10,10 @@ separately and are not repeated here.
 
 Paths: API paths are relative to `apps/api/app/`; phone paths are relative to `apps/mobile/`.
 
+AI image generation (`images/generation.py`, `/images/generate`, `/images/intent`, the
+`generate_image` tool, reply pictures and `features/images`) has since been removed; entries
+that name it are kept as the record of the work.
+
 The rule for every ticket: **pin the behavior first** (the test named under *Tests*), then move
 code. A split ticket changes no behavior unless it says so. A ticket that fixes a bug lands its
 regression test in the same change.

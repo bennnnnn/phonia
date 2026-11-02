@@ -24,7 +24,6 @@ def _turn(attachment_ids: list[UUID] | None = None, **known: Any) -> UserTurn:
         stored_content="summarize this\n\n[File: notes.txt]",
         attachment_ids=attachment_ids or [uuid4()],
         has_image_attachment=False,
-        model_alias=None,
         recent_messages=None,
         lesson_active=False,
         **known,
@@ -110,7 +109,7 @@ async def test_persist_user_turn_reads_what_the_caller_left_out_and_queues_its_d
             "app.modules.conversation.messages_repository.list_recent", AsyncMock(return_value=[])
         ),
         patch(f"{_MODULE}.classify_turn_mode", return_value=mode),
-        patch(f"{_MODULE}.model_choice.resolve_user_model_override", return_value="smart-chat"),
+        patch(f"{_MODULE}.model_choice.resolve_user_model", return_value="smart-chat"),
         patch(
             "app.modules.conversation.messages_repository.create",
             AsyncMock(return_value=SimpleNamespace(id=turn.message_id)),

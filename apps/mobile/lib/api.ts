@@ -1,10 +1,8 @@
 import { accountApi } from "@/features/account/api";
 import { attachmentsApi } from "@/features/attachments/api";
 import { chatsApi } from "@/features/chat/api";
-import { imagesApi } from "@/features/images/api";
 import { memoriesApi } from "@/features/memory/api";
 import { searchApi } from "@/features/search/api";
-import { speechApi } from "@/features/speech/api";
 import { todosApi } from "@/features/todos/api";
 import { analyticsApi } from "@/lib/api/analytics";
 import { discoverApi } from "@/lib/api/discover";
@@ -42,7 +40,5 @@ export const api = {
   ...todosApi,
   ...pushApi,
   ...attachmentsApi,
-  ...imagesApi,
-  ...speechApi,
   ...scanApi,
 };

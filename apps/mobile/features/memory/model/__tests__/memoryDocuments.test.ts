@@ -12,7 +12,7 @@ const WORDS: Record<string, string> = {
   "memory.doc.profile.title": "Profil",
   "memory.doc.profile.summary": "Wer du bist",
   "memory.doc.preferences.title": "Vorlieben",
-  "memory.doc.tech-stack.title": "Tech-Stack",
+  "memory.doc.subjects.title": "Schulfächer",
   "memory.doc.interests.title": "Interessen",
 };
 const t = ((key: string) => WORDS[key] ?? key) as unknown as TFunction;
@@ -35,7 +35,7 @@ describe("memory documents", () => {
     const sections = groupDocuments(
       [
         doc("area:zeta", "areas", "Zeta"),
-        doc("tech-stack", "topics"),
+        doc("subjects", "topics"),
         doc("profile", "you"),
         doc("area:africana", "areas", "Africana"),
         doc("interests", "topics"),
@@ -46,7 +46,7 @@ describe("memory documents", () => {
     );
     expect(sections.map((section) => [section.group, section.documents.map((d) => d.key)])).toEqual([
       ["you", ["profile", "preferences"]],
-      ["topics", ["interests", "tech-stack"]],
+      ["topics", ["interests", "subjects"]],
       ["areas", ["area:africana", "area:zeta"]],
     ]);
   });

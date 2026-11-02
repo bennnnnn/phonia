@@ -147,15 +147,12 @@ async def complete_structured[T: BaseModel](
     usage: dict[str, int] | None = None,
     allow_fallback: bool = True,
     fallback_on_invalid: bool = False,
-    quiet_timeout: bool = False,
 ) -> T | None:
     """One structured reply, validated against ``schema``; None when there is none.
 
     ``allow_fallback``: a provider failure asks the background fallback model once.
     ``fallback_on_invalid``: so does output that does not parse or validate, even
     with ``allow_fallback`` off (a foreground caller keeps its own deadline).
-    ``quiet_timeout``: a call nothing waits on (a shadow read) logs running out of time at
-    info, without a traceback, so a slow provider is no error report per call.
     """
     if mock_llm.should_mock_llm(settings):
         return None
@@ -181,10 +178,7 @@ async def complete_structured[T: BaseModel](
 
     try:
         result = await ask(model_alias)
-    except Exception as exc:
-        if quiet_timeout and isinstance(exc, TimeoutError):
-            logger.info("Background LLM %s ran out of time", model_alias)
-            return None
+    except Exception:
         if fallback is None or not allow_fallback:
             logger.exception("Background LLM %s failed and no fallback configured", model_alias)
             return None

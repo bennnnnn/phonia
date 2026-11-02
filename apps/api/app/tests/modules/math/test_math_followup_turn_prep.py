@@ -102,7 +102,6 @@ async def test_actual_c12_how_through_prepare_context_and_prompt_builder(overlap
                 user_id=user.id,
                 chat_id=chat.id,
                 content="how",
-                model_alias=None,
                 settings=settings,
                 redis=redis_mock(),
                 reserved_tokens=100,
@@ -196,9 +195,6 @@ async def test_how_replays_code_owned_steps_instead_of_calling_the_llm(
                 content="how",
                 model="free-chat",
                 client_timezone=None,
-                client_location=None,
-                client_latitude=None,
-                client_longitude=None,
                 user=user,
                 chat=chat,
                 turn_mode=_TurnMode(

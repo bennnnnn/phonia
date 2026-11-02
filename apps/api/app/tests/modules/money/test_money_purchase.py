@@ -251,7 +251,7 @@ async def test_the_live_car_loan_is_worked_by_the_server(monkeypatch) -> None:
 
     monkeypatch.setattr(service, "current_average", current_average)
     turn = await service.prepare_money_turn(
-        "20k at 6% for 36 months", Settings(), None, user=None, location=None, earlier=[(CAR,)]
+        "20k at 6% for 36 months", Settings(), None, user=None, earlier=[(CAR,)]
     )
     assert turn is not None and turn.worked is not None
     assert round(turn.worked.outputs["interest"] or 0) == 1904
@@ -269,7 +269,7 @@ async def test_the_live_house_line_is_worked_with_its_reading(monkeypatch) -> No
 
     monkeypatch.setattr(service, "current_average", current_average)
     turn = await service.prepare_money_turn(
-        "60k at 6 percent", Settings(), None, user=None, location=None, earlier=[(HOUSE,)]
+        "60k at 6 percent", Settings(), None, user=None, earlier=[(HOUSE,)]
     )
     assert turn is not None and turn.worked is not None
     assert round(turn.worked.outputs["payment"] or 0, 2) == 2038.47
@@ -285,6 +285,6 @@ async def test_the_ambiguous_house_line_is_no_money_turn(monkeypatch) -> None:
 
     monkeypatch.setattr(service, "current_average", current_average)
     turn = await service.prepare_money_turn(
-        "150k at 6 percent", Settings(), None, user=None, location=None, earlier=[(HOUSE,)]
+        "150k at 6 percent", Settings(), None, user=None, earlier=[(HOUSE,)]
     )
     assert turn is None

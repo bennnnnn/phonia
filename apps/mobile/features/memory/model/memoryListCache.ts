@@ -5,7 +5,6 @@ import {
   SessionResourceCache,
   type FailureReporter,
   type ResourceResult,
-  type ResourceUpdate,
 } from "@/lib/cache/sessionResource";
 
 const LIST = "memories";
@@ -23,10 +22,6 @@ export function getCachedMemories(): Memory[] | undefined {
   return resource.get(LIST);
 }
 
-export function isMemoriesFresh(): boolean {
-  return resource.isFresh(LIST);
-}
-
 /** When the list last came from the server this sign-in. */
 export function memoriesReadAt(): number | undefined {
   return resource.fetchedAt(LIST);
@@ -34,11 +29,6 @@ export function memoriesReadAt(): number | undefined {
 
 export function setMemoriesCache(data: Memory[], expectedSession?: number): void {
   resource.set(LIST, data, expectedSession);
-}
-
-/** Apply a pure row update now and replay it over any already-running list read. */
-export function updateMemoriesCache(update: ResourceUpdate<Memory[]>, expectedSession?: number): Memory[] {
-  return resource.update(LIST, update, expectedSession) ?? [];
 }
 
 export function invalidateMemoriesCache(): void {

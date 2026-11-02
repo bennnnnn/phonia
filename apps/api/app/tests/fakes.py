@@ -76,12 +76,21 @@ class _QueuedPipeline:
 
         return queue
 
-    async def execute(self) -> list[Any]:
-        """Each queued command answered by the mock's own method, so scripted replies apply."""
+    async def execute(self, raise_on_error: bool = True) -> list[Any]:
+        """Each queued command answered by the mock's own method, so scripted replies apply.
+
+        ``raise_on_error=False`` returns a failed command's exception in its place.
+        """
         queued, self._queued = self._queued, []
-        return [
-            await getattr(self._redis, command)(*args, **kwargs) for command, args, kwargs in queued
-        ]
+        results: list[Any] = []
+        for command, args, kwargs in queued:
+            try:
+                results.append(await getattr(self._redis, command)(*args, **kwargs))
+            except Exception as exc:
+                if raise_on_error:
+                    raise
+                results.append(exc)
+        return results
 
     async def __aenter__(self) -> _QueuedPipeline:
         return self
@@ -128,9 +137,6 @@ def make_user(**columns: Any) -> MagicMock:
         "memory_edited_at": None,
         "follow_up_suggestions_enabled": True,
         "web_search_enabled": True,
-        "location_enabled": False,
-        "location": None,
-        "response_tone": "casual",
         "emoji_use": "some",
         "push_notifications_enabled": False,
         "push_reminders_enabled": True,

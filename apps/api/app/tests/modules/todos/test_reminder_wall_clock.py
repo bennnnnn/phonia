@@ -26,7 +26,7 @@ async def _card_due(session: Any, redis: Any, due_at: str, user_timezone: str) -
     user = await users_repo.create(
         session, email=f"{uuid4()}@example.com", name="T", avatar_url=None, google_sub=str(uuid4())
     )
-    chat = await chats_repo.create(session, user_id=user.id, model="free-chat")
+    chat = await chats_repo.create(session, user_id=user.id)
     fence = "```reminder\n" + json.dumps({"title": "Call the dentist", "due_at": due_at}) + "\n```"
     text, _ = await materialize_reminder_fences(
         session,

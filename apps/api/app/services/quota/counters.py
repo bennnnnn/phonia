@@ -17,8 +17,6 @@ from app.modules.billing.entitlements import Allowance, allowance
 from app.services.quota.messages import (
     DOCUMENT_LIMIT_EXCEEDED_MESSAGE_FREE,
     DOCUMENT_LIMIT_EXCEEDED_MESSAGE_PAID,
-    IMAGE_GENERATION_LIMIT_EXCEEDED_MESSAGE_FREE,
-    IMAGE_GENERATION_LIMIT_EXCEEDED_MESSAGE_PAID,
     IMAGE_LIMIT_EXCEEDED_MESSAGE_FREE,
     IMAGE_LIMIT_EXCEEDED_MESSAGE_PAID,
     IMAGE_SEARCH_LIMIT_EXCEEDED_MESSAGE_FREE,
@@ -162,7 +160,6 @@ CounterName = Literal[
     "speech_transcription",
     "speech_tts",
     "tavily_search",
-    "image_generation",
     "image_search",
 ]
 
@@ -220,15 +217,6 @@ COUNTERS: dict[CounterName, CounterSpec] = {
         allowance="daily_web_searches",
         message=None,
         refund=False,
-    ),
-    "image_generation": CounterSpec(
-        prefix="imggen",
-        allowance="daily_image_generations",
-        message=(
-            IMAGE_GENERATION_LIMIT_EXCEEDED_MESSAGE_FREE,
-            IMAGE_GENERATION_LIMIT_EXCEEDED_MESSAGE_PAID,
-        ),
-        refund=True,
     ),
     # Reference-photo lookup: every plan, per-plan cap.
     "image_search": CounterSpec(

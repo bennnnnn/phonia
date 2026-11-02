@@ -58,19 +58,6 @@ def test_patch_quiet_hours():
     assert r.json()["quiet_hours_enabled"] is True
 
 
-def test_archive_all_chats():
-    user = api_user()
-    app = app_with_user(user)
-    with patch(
-        "app.modules.chat.api.chats_service.archive_all_chats",
-        AsyncMock(return_value=3),
-    ) as archive:
-        client = TestClient(app)
-        r = client.post("/chats/archive-all", headers={"Authorization": "Bearer tok"})
-    assert r.status_code == 204
-    archive.assert_awaited_once()
-
-
 def test_delete_all_chats():
     user = api_user()
     app = app_with_user(user)
@@ -120,6 +107,24 @@ def test_list_sessions():
     assert r.status_code == 200
     assert r.json()["sessions"][0]["device_label"] == "iPhone"
     assert r.json()["sessions"][0]["current"] is True
+    # Serialized as every response's datetimes are; a naive record time is UTC.
+    assert r.json()["sessions"][0]["created_at"] == "2026-01-01T00:00:00Z"
+    assert r.json()["sessions"][0]["last_seen_at"] == "2026-01-02T00:00:00Z"
+
+
+def test_list_sessions_leaves_out_a_time_that_is_not_one():
+    user = api_user()
+    app = app_with_user(user)
+    app.dependency_overrides[get_redis] = lambda: AsyncMock()
+    rows = [{"id": str(uuid4()), "created_at": "yesterday", "last_seen_at": None}]
+    with patch(
+        "app.modules.account.api.tokens_service.list_sessions",
+        AsyncMock(return_value=rows),
+    ):
+        r = TestClient(app).get("/auth/sessions", headers={"Authorization": "Bearer tok"})
+    assert r.status_code == 200
+    assert r.json()["sessions"][0]["created_at"] is None
+    assert r.json()["sessions"][0]["last_seen_at"] is None
 
 
 def test_list_sessions_answers_an_unchanged_list_with_304():
@@ -194,21 +199,3 @@ def test_logout_all():
         r = client.post("/auth/logout-all", headers={"Authorization": "Bearer tok"})
     assert r.status_code == 204
     purge.assert_awaited_once()
-
-
-def test_patch_tone_keeps_stored_ids():
-    user = api_user()
-    updated = api_user(response_tone="funny")
-    app = app_with_user(user)
-    with patch(
-        "app.modules.account.lifecycle.users_repo.update",
-        AsyncMock(return_value=updated),
-    ):
-        client = TestClient(app)
-        r = client.patch(
-            "/auth/me",
-            headers={"Authorization": "Bearer tok"},
-            json={"response_tone": "funny"},
-        )
-    assert r.status_code == 200
-    assert r.json()["response_tone"] == "funny"

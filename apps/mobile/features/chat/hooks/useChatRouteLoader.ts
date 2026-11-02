@@ -61,8 +61,6 @@ type Options = {
   editThread: EditThread;
   messages: Message[];
   streaming: boolean;
-  /** Latest image-gen in-flight flag — AppState/focus closures must not snapshot it. */
-  imageGeneratingRef?: React.MutableRefObject<boolean>;
   stopGeneration: () => void;
   listRef: React.RefObject<FlashListRef<Message> | null>;
   showActionBanner: (message: string, icon?: IconName) => void;
@@ -80,7 +78,6 @@ export function useChatRouteLoader({
   editThread,
   messages,
   streaming,
-  imageGeneratingRef,
   stopGeneration,
   listRef,
   showActionBanner,
@@ -113,7 +110,6 @@ export function useChatRouteLoader({
     getFirstUserText,
   });
   const [pinned, setPinned] = useState(false);
-  const [archived, setArchived] = useState(false);
   const [chatLoading, setChatLoading] = useState(false);
   const [hasMoreOlder, setHasMoreOlder] = useState(false);
   const [pageSync, setPageSync] = useState<ChatPageSync | null>(null);
@@ -131,14 +127,12 @@ export function useChatRouteLoader({
     if (session !== getSessionGeneration() || id !== activeChatRef.current || !patch) return;
     if (patch.title !== undefined) setChatTitle(patch.title);
     if (patch.pinned !== undefined) setPinned(patch.pinned);
-    if (patch.archived !== undefined) setArchived(Boolean(patch.archived));
   }), [session, activeChatRef]);
 
   const applyMetadata = useCallback((chat: Chat | undefined) => {
     if (!chat) return;
     setChatTitle(chat.title);
     setPinned(chat.pinned);
-    setArchived(Boolean(chat.archived));
   }, []);
   const paging = useChatPaging({ token, chatId, chatLoading, messages, editThread, hasMoreOlder, setHasMoreOlder,
     viewRef, activeChatRef, showActionBanner, t });
@@ -161,10 +155,7 @@ export function useChatRouteLoader({
     }
   }, [knownAssistantChatId, messagesHadContent]);
 
-  const turnBusy = useCallback(
-    () => streamingRef.current || Boolean(imageGeneratingRef?.current),
-    [imageGeneratingRef, streamingRef],
-  );
+  const turnBusy = useCallback(() => streamingRef.current, [streamingRef]);
 
   const leaveOpenChat = useCallback(
     (opts?: { force?: boolean }) => {
@@ -203,7 +194,6 @@ export function useChatRouteLoader({
       setChatId(null);
       setChatTitle(null);
       setPinned(false);
-      setArchived(false);
       editThread([], "view_cleared");
       setHasMoreOlder(false);
       setChatLoading(false);
@@ -261,7 +251,7 @@ export function useChatRouteLoader({
       if (state === "background" || state === "inactive") {
         // Another device may write to any chat while this one is away.
         if (state === "background") markCachedChatPagesStale();
-        if (streamingRef.current || Boolean(imageGeneratingRef?.current)) {
+        if (streamingRef.current) {
           wasStreamingWhenBackgroundedRef.current = true;
         }
         // An unused draft is dropped by useDraftChat, once, on background.
@@ -282,7 +272,6 @@ export function useChatRouteLoader({
           chatId: openChatId,
           streaming: streamingRef.current,
           chatLoading: chatLoadingRef.current,
-          imageGenerating: Boolean(imageGeneratingRef?.current),
         })
       ) {
         return;
@@ -308,8 +297,7 @@ export function useChatRouteLoader({
     draftChatIdRef,
     silentRefetchChat,
     session,
-    imageGeneratingRef,
-    chatLoadingRef,
+      chatLoadingRef,
     streamingRef,
   ]);
 
@@ -348,7 +336,6 @@ export function useChatRouteLoader({
           setChatId(null);
           setChatTitle(null);
           setPinned(false);
-          setArchived(false);
           editThread([], "view_cleared");
           setHasMoreOlder(false);
         }
@@ -368,7 +355,6 @@ export function useChatRouteLoader({
         editThread((prev) => paintCachedThread(prev, cached?.messages ?? []), "cached_paint");
         setChatTitle(null);
         setPinned(false);
-        setArchived(false);
         if (cached) {
           setHasMoreOlder(cached.has_more);
           if (listed) applyMetadata(listed);
@@ -461,8 +447,6 @@ export function useChatRouteLoader({
     titleGenerating,
     pinned,
     setPinned,
-    archived,
-    setArchived,
     chatLoading,
     // Send waits only while nothing of the routed chat is on screen.
     historyPending: chatLoading && (messages.length === 0 || chatId !== (routeChatId ?? null)),

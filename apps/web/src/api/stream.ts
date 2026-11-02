@@ -40,7 +40,7 @@ async function* parseSse(
 export async function streamMessage(
   token: string,
   chatId: string,
-  body: { content: string; model?: string; client_timezone?: string },
+  body: { content: string; client_timezone?: string },
   handlers: StreamHandlers,
   signal?: AbortSignal,
 ): Promise<void> {
@@ -57,7 +57,7 @@ export async function streamMessage(
 export async function streamRegenerate(
   token: string,
   chatId: string,
-  body: { model?: string; client_timezone?: string },
+  body: { client_timezone?: string },
   handlers: StreamHandlers,
   signal?: AbortSignal,
 ): Promise<void> {

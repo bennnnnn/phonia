@@ -24,7 +24,6 @@ def _user(search_on: bool = True) -> User:
     user.name = "Bini"
     user.email = "bini@example.com"
     user.location = None
-    user.response_tone = None
     user.memory_enabled = True
     user.locale = "en"
     user.timezone = None

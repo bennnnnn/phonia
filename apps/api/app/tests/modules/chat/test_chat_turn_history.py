@@ -47,14 +47,10 @@ async def test_next_turn_history_includes_pending_assistant_after_finalize():
         chats={"get_by_id": AsyncMock(return_value=chat)},
         messages={"list_recent": read_recent},
         quota={"daily_limit_for_user": MagicMock(return_value=100_000)},
-        model_choice={"resolve_user_model_override": MagicMock(return_value="free-chat")},
+        model_choice={"resolve_user_model": MagicMock(return_value="free-chat")},
     )
     with (
         patch("app.modules.chat.turn_load.wait_for_pending_finalize", finish_previous_turn),
-        patch(
-            "app.modules.chat.turn_intercepts.try_image_gen_for_turn",
-            AsyncMock(return_value=False),
-        ),
         patch("app.modules.chat.turn_resources.reserve_turn_quota", AsyncMock(return_value=100)),
         patch("app.modules.chat.stream_entry.top_up_reserve_for_prompt", AsyncMock()),
         patch("app.modules.chat.stream_entry.prepare_chat_turn", prepare),

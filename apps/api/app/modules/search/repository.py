@@ -4,7 +4,6 @@ from uuid import UUID
 
 from sqlalchemy import (
     ColumnElement,
-    Text,
     exists,
     func,
     literal,
@@ -14,6 +13,7 @@ from sqlalchemy import (
     union_all,
 )
 from sqlalchemy import cast as sql_cast
+from sqlalchemy.engine import Row
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.orm import Chat, Message
@@ -40,6 +40,10 @@ async def search_conversations(
     (``ix_messages_user_content_trgm``); trigram similarity (``%``) almost never matches
     a long body and kept other users' rows in the candidates. Title-only rows omit
     chats that already have a matching message.
+
+    The union carries the sort keys and the small columns only: a common word sorted
+    every matching body through ORDER BY/LIMIT. The page's bodies are read afterwards,
+    by id, for its snippets.
     """
     q = query.strip()
     if not q:
@@ -59,10 +63,8 @@ async def search_conversations(
         sql_cast(null(), Message.id.type).label("message_id"),
         Chat.id.label("chat_id"),
         Chat.title.label("chat_title"),
-        sql_cast(Chat.title, Text).label("content"),
         literal("chat").label("role"),
         func.coalesce(Chat.updated_at, Chat.created_at).label("created_at"),
-        Chat.archived.label("archived"),
     ).where(
         Chat.user_id == user_id,
         Chat.title.isnot(None),
@@ -76,10 +78,8 @@ async def search_conversations(
             Message.id.label("message_id"),
             Chat.id.label("chat_id"),
             Chat.title.label("chat_title"),
-            Message.content.label("content"),
             Message.role.label("role"),
             Message.created_at.label("created_at"),
-            Chat.archived.label("archived"),
         )
         .join(Chat, Message.chat_id == Chat.id)
         .where(Chat.user_id == user_id, *msg_where)
@@ -100,10 +100,13 @@ async def search_conversations(
         lambda row: encode_cursor(row.created_at, row.chat_id, row.message_id or _NO_MESSAGE),
     )
 
+    bodies = await _message_bodies(session, user_id, page)
     results: list[dict[str, Any]] = []
     for row in page:
-        raw = row.content or ""
-        content = _snippet(raw, q, 120) if row.match_type == "message" else raw
+        if row.match_type == "message":
+            content = _snippet(bodies.get(row.message_id, ""), q, 120)
+        else:
+            content = row.chat_title or ""
         created = row.created_at or datetime.now(UTC)
         results.append(
             {
@@ -114,10 +117,22 @@ async def search_conversations(
                 "content": content,
                 "role": row.role,
                 "created_at": created,
-                "archived": bool(row.archived),
             }
         )
     return results, next_cursor
+
+
+async def _message_bodies(
+    session: AsyncSession, user_id: UUID, page: list[Row[Any]]
+) -> dict[UUID, str]:
+    """The bodies of a page's message hits, by id (a row deleted since reads as empty)."""
+    ids = [row.message_id for row in page if row.match_type == "message"]
+    if not ids:
+        return {}
+    result = await session.execute(
+        select(Message.id, Message.content).where(Message.user_id == user_id, Message.id.in_(ids))
+    )
+    return {row.id: row.content or "" for row in result.all()}
 
 
 def _snippet(content: str, query: str, max_len: int = 120) -> str:

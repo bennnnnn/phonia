@@ -52,9 +52,12 @@ RETIRED_LEGACY_MODULES: tuple[str, ...] = (
     "app.modules.math.sympy_executor",
     # Split by job: ``request_text``, ``expr_rewrite``, ``function_def``, ``direct_newton`` (ES-34).
     "app.modules.math.tools.helpers",
+    # The model-reader experiment, removed with its shadow hook.
+    "app.modules.model_reader.service",
     "app.modules.notifications.legacy_alias",
     "app.modules.physics.legacy_alias",
-    "app.modules.suggestions.api",
+    # The retired proactive suggestions; follow-ups are ``chat.related_prompts``.
+    "app.modules.suggestions.service",
     "app.modules.web_search.legacy_alias",
     "app.repositories.attachment_chunks",
     "app.repositories.attachments",
@@ -114,7 +117,6 @@ RETIRED_LEGACY_MODULES: tuple[str, ...] = (
     "app.services.live_talk_tools",
     "app.services.math",
     "app.services.mcp.calendar_adapter",
-    "app.services.mcp.image_gen_adapter",
     "app.services.mcp.image_search_adapter",
     "app.services.mcp.sympy_adapter",
     "app.services.mcp.web_search_adapter",

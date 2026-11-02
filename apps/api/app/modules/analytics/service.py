@@ -12,7 +12,7 @@ _SAMPLE_RATES = frozenset({"1", "0.5", "0.2", "0.1"})
 
 _ALLOWED_PROPERTIES: dict[str, dict[str, frozenset[str]]] = {
     "paywall_viewed": {
-        "source": frozenset({"quota", "model_gate", "settings", "voice", "live_talk", "other"}),
+        "source": frozenset({"quota", "model_gate", "settings", "voice", "other"}),
     },
     # Which paid plan the purchase was for (plan ids, never display names).
     "purchase_started": {"plan": frozenset({"plus", "pro"})},
@@ -52,11 +52,8 @@ _ALLOWED_PROPERTIES: dict[str, dict[str, frozenset[str]]] = {
                 "unavailable",
                 "busy",
                 "attachment_rejected",
-                "unknown_model",
                 "rate_limited",
                 "consent_required",
-                "daily_limit",
-                "content_blocked",
                 "not_found",
                 "failed",
                 "reply_not_saved",
@@ -74,7 +71,6 @@ _ALLOWED_PROPERTIES: dict[str, dict[str, frozenset[str]]] = {
                 "chemistry",
                 "reading_files",
                 "finding_photo",
-                "image_gen",
             }
         ),
         "sample_rate": _SAMPLE_RATES,

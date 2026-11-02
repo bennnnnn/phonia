@@ -61,7 +61,7 @@ async def test_insert_verified_clone_hides_from_library(fake_session):
     src.user_id = uuid4()
     src.content_type = "image/png"
     src.size_bytes = 12
-    src.source = "generated"
+    src.source = "upload"
     src.original_filename = "cat.png"
     src.verified_at = datetime(2026, 8, 1, tzinfo=UTC)
     new_id = uuid4()
@@ -133,9 +133,7 @@ async def test_list_for_gallery_images_returns_rows_and_a_cursor(fake_session):
         scalars=MagicMock(return_value=MagicMock(all=MagicMock(return_value=rows)))
     )
 
-    result, next_cursor = await list_for_gallery(
-        fake_session, uuid4(), category="images", source="generated", limit=3
-    )
+    result, next_cursor = await list_for_gallery(fake_session, uuid4(), category="images", limit=3)
 
     assert result == rows[:3]
     # The cursor names the page's last row; the fourth only says a next page exists.
@@ -179,7 +177,7 @@ async def test_list_for_gallery_files_category(fake_session):
 
 @pytest.mark.asyncio
 async def test_list_for_gallery_all_no_filters(fake_session):
-    """All still lists only the Library archive (upload + generated)."""
+    """All still lists only the Library archive (uploads)."""
     from app.modules.attachments.repository import list_for_gallery
 
     rows = [MagicMock()]
@@ -187,7 +185,7 @@ async def test_list_for_gallery_all_no_filters(fake_session):
         scalars=MagicMock(return_value=MagicMock(all=MagicMock(return_value=rows)))
     )
 
-    result, next_cursor = await list_for_gallery(fake_session, uuid4(), source=None, limit=30)
+    result, next_cursor = await list_for_gallery(fake_session, uuid4(), limit=30)
 
     assert result == rows
     assert next_cursor is None
@@ -247,7 +245,6 @@ async def test_list_for_gallery_excludes_search_source(fake_session):
     )
     sql = str(compiled).lower()
     assert "upload" in sql
-    assert "generated" in sql
     assert "search" not in sql
 
 
@@ -324,10 +321,8 @@ async def test_list_for_gallery_q_matches_filename_and_prompt(fake_session):
     assert "original_filename" in combined
     assert "100" in combined
     assert "\\\\%" in combined or "\\%" in combined
-    # Generated images are linked to the assistant [Image:] row; search the
-    # previous user message in that chat so the draw prompt matches.
+    # The linked message's text is searched too.
     assert "messages" in combined
-    assert "role" in combined
 
 
 @pytest.mark.asyncio

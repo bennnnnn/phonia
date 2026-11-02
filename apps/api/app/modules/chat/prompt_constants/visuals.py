@@ -3,25 +3,7 @@
 # Only injected when turn_prep actually has chemistry context (PubChem / SMILES).
 # Teaching ```smiles on every rich turn made "create music" emit a molecule card.
 VISUALIZATION_HINTS = (
-    "In-app visuals (only when appropriate — not for image-generation requests):\n\n"
-    "**Image generation** — Check User profile Plan (pro|free). "
-    'Pro users can ask in chat (e.g. "create a cat", "draw me a cat", "create a sunset pic"); '
-    "the app fulfills those requests outside the chat model — you cannot create PNG/JPG "
-    "inside chat text. Never invent ```image fences, tool-call JSON, or "
-    '{"prompt":"..."} blocks for generation — that is not an in-app visual format. '
-    "If Plan is pro and they ask for an image, the mobile app normally intercepts "
-    "that request before chat. If you still see it, answer in chat — do not tell "
-    "them to send the same image request again. Never claim an image is attached "
-    "and never invent ```image / prompt JSON. "
-    "Never say Recall cannot generate images. Never send the user to DALL-E, "
-    "Midjourney, Craiyon, Stable Diffusion, ChatGPT, or any other generator. "
-    "Never write a copy-paste prompt for an external app. "
-    "Do NOT say generation is Pro-only or ask them to upgrade. "
-    "If Plan is free and they ask for image generation, mention that Pro unlocks it. "
-    "If they want a photo/illustration and are NOT asking "
-    "about an uploaded attachment or a math diagram, do NOT substitute ```html, "
-    "SVG, or CSS art. Do not emit ```geometry or ```graph JSON. "
-    "For uploaded images, describe what you see — do not redraw them in HTML.\n\n"
+    "In-app visuals (only when appropriate):\n\n"
     "**HTML UI** (```html) — Use ONLY when the user wants a web UI, page, form, card, layout, "
     "login screen, dashboard, landing page, or interactive mockup — NOT for 'draw me X' or "
     "'create an image of X'. Prefer one self-contained ```html with a <style> block. "
@@ -49,26 +31,6 @@ VISUALIZATION_HINTS = (
     "near them — nearest/closest/nearby — regardless of category.\n\n"
     "For uploaded images, describe or answer about what you see — do not redraw them in HTML."
 )
-
-# Compact/slim turns never get VISUALIZATION_HINTS (viz_intent is chart/mermaid/HTML
-# only). A "Dog" / "Image" thread then invented "Recall can't generate" + DALL-E.
-IMAGE_GEN_HONESTY_HINT = (
-    "Recall creates pictures in this chat on every plan, a few a day (the app draws a "
-    "clear ask itself). Never say Recall cannot create or generate images. Never send the "
-    "user to DALL-E, Midjourney, Craiyon, Stable Diffusion, ChatGPT, or any other "
-    "generator. Never write a copy-paste prompt for an external app. If this turn still "
-    "reached you, answer in chat — do not tell them to send the same image request again, "
-    "and do not claim an image is attached."
-)
-
-# Intercept 404s when generation is off, then chat still runs. Do not tell them
-# to resubmit a generate ask (that loops through the same disabled intercept).
-IMAGE_GEN_UNAVAILABLE_HINT = (
-    "In-chat image generation is not available. Do not tell the user to resubmit "
-    'or to send "generate an image of …". Never send them to DALL-E, Midjourney, '
-    "Craiyon, Stable Diffusion, ChatGPT, or any other generator. Answer in chat."
-)
-
 
 # A real photo above the answer (app/modules/images/answer_photo.py swaps the
 # fence for the photo while the reply streams).

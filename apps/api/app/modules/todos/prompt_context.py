@@ -17,8 +17,6 @@ from app.modules.todos.repository import DEFAULT_TOPIC
 from app.services import day_planning as day_planning_service
 from app.services import time_context as time_context_service
 
-# Voice inject stays shorter than typed-chat prompt_limit (48).
-_VOICE_TODO_LIMIT = 12
 _QUERY_STOP_TERMS = {
     "from",
     "list",
@@ -195,39 +193,6 @@ def format_todos_block(items: list[TodoItem], *, user_timezone: str | None = Non
                     f"- {mark} {todo.content} at {clock}{rel}{repeat} ({status}, topic: {topic})"
                 )
 
-    return "\n".join(lines)
-
-
-def format_todos_voice_block(items: list[TodoItem], *, user_timezone: str | None = None) -> str:
-    """Compact To-do snapshot for spoken Live Talk instructions (no markdown)."""
-    if not items:
-        return ""
-
-    ranked = sorted(
-        items,
-        key=lambda item: _todo_priority(item, query_text=None, user_timezone=user_timezone),
-    )[:_VOICE_TODO_LIMIT]
-
-    grouped: dict[tuple[str, str], list[TodoItem]] = {}
-    for todo in ranked:
-        key = _todo_group(todo, user_timezone)
-        grouped.setdefault(key, []).append(todo)
-
-    lines = ["User To-do list:"]
-    for key in sorted(grouped.keys(), key=lambda item: item[0]):
-        heading = key[1]
-        day_items = sorted(
-            grouped[key],
-            key=lambda item: _todo_priority(item, query_text=None, user_timezone=user_timezone),
-        )
-        for todo in day_items:
-            status = "done" if todo.checked else "open"
-            if todo.due_at is None:
-                lines.append(f"{heading}: {todo.content} ({status}, no date)")
-            else:
-                due_local = _due_local(todo.due_at, user_timezone)
-                clock = due_local.strftime("%H:%M")
-                lines.append(f"{heading}: {todo.content} at {clock} ({status})")
     return "\n".join(lines)
 
 

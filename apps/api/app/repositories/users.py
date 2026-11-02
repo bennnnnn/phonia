@@ -7,7 +7,7 @@ from sqlalchemy.orm import object_session
 
 from app.core.user_cache import forget_user, publish_change, remember_user
 from app.models.orm import Chat, Message, PushToken, UsageDaily, User
-from app.models.schemas.auth import chosen_model_id
+from app.repositories.batch_delete import delete_in_batches
 
 
 async def get_by_id(session: AsyncSession, user_id: UUID) -> User | None:
@@ -83,7 +83,7 @@ async def update(session: AsyncSession, user: User, *, commit: bool = True, **fi
     """Apply *fields* onto *user*.
 
     Keys present in *fields* are written as-is, including explicit ``None``
-    (so nullable columns like ``custom_instructions`` / ``location`` can be
+    (so nullable columns like ``custom_instructions`` / ``job`` can be
     cleared). Omit a key to leave that column unchanged.
 
     Committed here, the change is published to every machine's user cache
@@ -91,9 +91,6 @@ async def update(session: AsyncSession, user: User, *, commit: bool = True, **fi
     after the commit. With ``commit=False`` the caller commits, then awaits
     ``user_cache.publish_change(user.id)``.
     """
-    if "enabled_models" in fields:
-        # default_model is a stored copy of the chosen model, never set on its own.
-        fields["default_model"] = chosen_model_id(fields["enabled_models"])
     bound = user
     # object_session returns the sync Session, not the AsyncSession wrapper.
     # Spec mocks in unit tests have no sync_session; mutate those users as-is.
@@ -131,16 +128,22 @@ async def delete_user(session: AsyncSession, user_id: UUID, *, commit: bool = Tr
     """Hard-delete a user, their chats, messages, usage and push tokens, and commit
     (with ``commit=False`` the caller commits, then forgets the cached row).
 
-    The modules' rows (memory, to-dos, suggestions, attachments) are gone already:
+    The modules' rows (memory, to-dos, attachments) are gone already:
     ``account.lifecycle`` asks each module, under ``lock_for_delete``. Every row is
     deleted explicitly before the user row, so the delete succeeds even for a table
     whose FK to users.id has no ON DELETE CASCADE.
+
+    Messages and chats, the tables that grow with the account, go in id batches
+    (``batch_delete``): no statement outgrows the command timeout, and the caller's one
+    transaction still commits or rolls back the account whole.
     """
     await lock_for_delete(session, user_id)
-    await session.execute(delete(Message).where(Message.user_id == user_id))
+    await delete_in_batches(
+        session, Message.id, select(Message.id).where(Message.user_id == user_id)
+    )
     await session.execute(delete(UsageDaily).where(UsageDaily.user_id == user_id))
     await session.execute(delete(PushToken).where(PushToken.user_id == user_id))
-    await session.execute(delete(Chat).where(Chat.user_id == user_id))
+    await delete_in_batches(session, Chat.id, select(Chat.id).where(Chat.user_id == user_id))
     user = await session.get(User, user_id)
     if user is not None:
         await session.delete(user)

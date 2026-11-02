@@ -15,7 +15,10 @@ from app.modules.memory.topics import (
 @pytest.mark.parametrize(
     "raw,expected",
     [
-        ("tech-stack", "tech-stack"),
+        ("subjects", "subjects"),
+        ("tech-stack", None),
+        ("side-projects", None),
+        ("recent-work", None),
         ("  Preferences ", "preferences"),
         ("area:recall", "area:recall"),
         ("area:My Big App!", "area:my-big-app"),
@@ -42,10 +45,12 @@ def test_area_key_slugs_and_caps_the_name():
     [
         ("profile", "profile"),
         ("preferences", "preference"),
+        ("subjects", "fact"),
+        ("goals", "focus"),
+        ("progress", "focus"),
+        ("struggles", "fact"),
+        ("area:science-fair", "project"),
         ("tech-stack", "fact"),
-        ("recent-work", "focus"),
-        ("side-projects", "project"),
-        ("area:recall", "project"),
     ],
 )
 def test_topic_decides_type(topic, memory_type):
@@ -53,10 +58,30 @@ def test_topic_decides_type(topic, memory_type):
 
 
 def test_every_type_default_is_a_standard_topic_of_that_type():
+    """Only areas store projects, so a project fact with no area files under Other."""
     keys = {spec.key for spec in STANDARD_TOPICS}
     for memory_type, topic in TYPE_DEFAULT_TOPIC.items():
         assert topic in keys
-        assert topic_memory_type(topic) == memory_type
+        expected = "fact" if memory_type == "project" else memory_type
+        assert topic_memory_type(topic) == expected
+
+
+def test_standard_topics_are_what_a_tutor_needs():
+    assert [spec.key for spec in STANDARD_TOPICS] == [
+        "profile",
+        "preferences",
+        "subjects",
+        "goals",
+        "progress",
+        "struggles",
+        "interests",
+        "schedule",
+        "notes",
+    ]
+
+
+def test_a_focus_fact_with_no_topic_is_learning_progress():
+    assert fact_topic(SimpleNamespace(topic=None, type="focus")) == "progress"
 
 
 def test_fact_topic_uses_the_stored_topic_or_the_type_default():

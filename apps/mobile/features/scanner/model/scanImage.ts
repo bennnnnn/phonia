@@ -4,7 +4,7 @@ import { ImageManipulator, type ImageRef, SaveFormat } from "expo-image-manipula
 /**
  * Longest edge of a scan crop sent to the reader. Mathpix and the vision
  * models read handwriting well at this size; a full-resolution crop only adds
- * upload time and the API's 8 MB cap.
+ * upload time and the API's 4 MB cap (`SCAN_MAX_IMAGE_BYTES`).
  */
 export const SCAN_MAX_EDGE = 2048;
 export const SCAN_JPEG_QUALITY = 0.8;

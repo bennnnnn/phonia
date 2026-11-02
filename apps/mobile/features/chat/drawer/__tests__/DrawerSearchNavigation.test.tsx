@@ -24,7 +24,7 @@ jest.mock("@/lib/api", () => ({ api: { search: jest.fn() } }));
 jest.mock("@/features/attachments/model/galleryListCache", () => ({ prefetchGallery: jest.fn() }));
 jest.mock("@/features/chat/drawer/drawer", () => ({ clearChatHighlightGlobal: () => mockClearHighlight(), closeDrawer: () => mockCloseDrawer(), getActiveChatIdGlobal: () => null, startNewChatGlobal: jest.fn() }));
 jest.mock("@/features/chat/drawer/useDrawerChatList", () => ({ useDrawerChatList: () => ({
-  groups: { pinned: [], today: [], yesterday: [], last_7_days: [], this_month: [], older: [], archived: [] },
+  groups: { pinned: [], today: [], yesterday: [], last_7_days: [], this_month: [], older: [] },
   allChats: [], load: jest.fn(), isSectionCollapsed: () => false,
 }) }));
 jest.mock("@/features/chat/hooks/useChatBulkActions", () => ({ useChatBulkActions: () => ({}) }));

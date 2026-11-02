@@ -16,10 +16,8 @@ from app.models.schemas.auth import (
     UserUpdate,
 )
 from app.models.schemas.chats import (
-    ArchiveUpdate,
     ChatBulkAction,
     ChatBulkOut,
-    ChatCreate,
     ChatListOut,
     ChatMessageRequest,
     ChatOut,
@@ -42,13 +40,11 @@ from app.models.schemas.push import PushTokenDeleteIn, PushTokenIn
 __all__ = [
     "AccountDeleteRequest",
     "AppleAuthRequest",
-    "ArchiveUpdate",
     "AuthResponse",
     "AuthSessionListOut",
     "AuthSessionOut",
     "ChatBulkAction",
     "ChatBulkOut",
-    "ChatCreate",
     "ChatListOut",
     "ChatMessageRequest",
     "ChatOut",

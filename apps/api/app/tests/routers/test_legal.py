@@ -47,7 +47,7 @@ def test_privacy_policy_html() -> None:
         "Fly.io",
         "Resend",
         "Expo",
-        "precise coordinates",
+        "does not use your device",
         "push notification token",
         "How Long We Keep Data",
         "30 days",
@@ -102,7 +102,7 @@ def test_delete_account_page_is_public_and_explains_both_ways() -> None:
     assert "<ol>" in text and "Tap Data controls." in text
     assert "Delete your account" in text
     assert "What is deleted" in text and "What is kept, and for how long" in text
-    assert "35 days" in text
+    assert "expires when the day ends (UTC)" in text
     assert "does not cancel a subscription" in text
 
 

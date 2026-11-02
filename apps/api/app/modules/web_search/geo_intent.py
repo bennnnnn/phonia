@@ -167,6 +167,5 @@ def format_location_not_set_answer() -> str:
     """
     return (
         f"{LOCATION_ASK_OPENING}, so I can't answer that for where you are.\n\n"
-        "Tell me the city, or turn on **Location** in **Settings** (or allow location "
-        "when prompted)."
+        "Tell me the city or area and I'll answer for there."
     )

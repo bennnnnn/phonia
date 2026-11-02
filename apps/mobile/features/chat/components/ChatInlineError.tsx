@@ -19,7 +19,6 @@ type Props = {
   onUpgrade?: () => void;
   onStop?: () => void;
   onRetry?: () => void;
-  onChangeModel?: () => void;
   onDismiss: () => void;
   bottom: number;
   /** Rides the keyboard with the composer, frame by frame. */
@@ -32,7 +31,6 @@ export function ChatInlineError({
   onUpgrade,
   onStop,
   onRetry,
-  onChangeModel,
   onDismiss,
   bottom,
   lift,
@@ -111,17 +109,6 @@ export function ChatInlineError({
           testID="chat-error-restore"
         >
           <Text style={s.ctaText}>{t("chat.restore_draft")}</Text>
-        </Pressable>
-      ) : null}
-      {error.kind === "model_unavailable" && onChangeModel ? (
-        <Pressable
-          style={s.cta}
-          onPress={onChangeModel}
-          accessibilityRole="button"
-          accessibilityLabel={t("settings.model")}
-          testID="chat-error-change-model"
-        >
-          <Text style={s.ctaText}>{t("settings.model")}</Text>
         </Pressable>
       ) : null}
       <Pressable

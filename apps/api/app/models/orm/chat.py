@@ -14,6 +14,7 @@ from sqlalchemy import (
     String,
     Text,
     func,
+    text,
 )
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -29,7 +30,17 @@ class Chat(Base):
     __tablename__ = "chats"
     __table_args__ = (
         Index("ix_chats_user_updated", "user_id", "updated_at"),
-        Index("ix_chats_user_archived", "user_id", "archived"),
+        # The drawer's dated chats, newest first by (updated_at, id), in their own
+        # predicate (migration 0125).
+        Index(
+            "ix_chats_user_recent",
+            "user_id",
+            "updated_at",
+            "id",
+            postgresql_where=text("pinned IS false"),
+        ),
+        # The hourly delete of abandoned drafts by age (data retention).
+        Index("ix_chats_created", "created_at"),
         # DB index (migration 0021) is actually:
         #   CREATE INDEX ix_chats_title_trgm ON chats USING gin (title gin_trgm_ops)
         #   WHERE title IS NOT NULL AND title <> ''
@@ -44,15 +55,13 @@ class Chat(Base):
         ForeignKey("users.id", ondelete="CASCADE"), nullable=False
     )
     title: Mapped[str | None] = mapped_column(String)
-    model: Mapped[str] = mapped_column(String, default="free-chat")
     pinned: Mapped[bool] = mapped_column(Boolean, default=False)
-    archived: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false")
     # Rolling summary of messages older than the recent window (history compression)
     summary: Mapped[str | None] = mapped_column(Text)
     summary_message_count: Mapped[int] = mapped_column(Integer, default=0)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
-    # Last activity: a reply or a picture turn (chats_repository.touch_by_id). Pinning,
-    # renaming, archiving, a generated title or a compacted history is not activity,
+    # Last activity: a reply or a photo turn (chats_repository.touch_by_id). Pinning,
+    # renaming, a generated title or a compacted history is not activity,
     # so none of them moves the chat to Today in the drawer.
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 

@@ -27,11 +27,9 @@ from app.models.orm import Chat, Message, User
 from app.modules import todos, web_search
 from app.modules.attachments import lifecycle as attachment_lifecycle
 from app.modules.attachments import service as attachments_service
-from app.modules.billing import plan
 from app.modules.chat.model_routing import choice as model_choice
 from app.modules.conversation import history as conversation_history
 from app.modules.conversation import service as conversation_service
-from app.modules.images import generation as image_generation
 from app.modules.images import search as image_search
 from app.repositories import usage, users
 from app.services import conversation_reference, quota
@@ -40,7 +38,6 @@ from app.services.subjects.registry import subject_adapter
 if TYPE_CHECKING:
     from app.gateways.stream_signals import StreamAttempt
     from app.gateways.web_search_gateway import WebSearchHit
-    from app.modules.billing.entitlements import Feature
     from app.services.conversation_reference import ReferenceKind, Turn
     from app.services.subjects.registry import SubjectFence
 
@@ -147,17 +144,12 @@ class UsageRepo(Protocol):
     ) -> object: ...
 
 
-class Plan(Protocol):
-    def can_use(self, subject: User, feature: Feature, settings: Settings) -> bool: ...
-
-
 class ModelChoice(Protocol):
-    """The model a turn runs on (``model_routing.choice``): the user's pool, routed."""
+    """The model a turn runs on (``model_routing.choice``): the plan's pool, routed."""
 
-    def resolve_user_model_override(
+    def resolve_user_model(
         self,
         user: User,
-        model_alias: str | None,
         content: str,
         settings: Settings,
         *,
@@ -170,7 +162,6 @@ class ModelChoice(Protocol):
     def resolve_regenerate_model(
         self,
         user: User,
-        model_alias: str | None,
         content: str,
         prior_assistant_model: str | None,
         settings: Settings,
@@ -206,22 +197,6 @@ class ChatModel(Protocol):
         tools: list[dict[str, Any]] | None = ...,
         tool_calls: list[dict[str, Any]] | None = ...,
     ) -> AsyncIterator[str]: ...
-
-
-class ImageGeneration(Protocol):
-    async def generate_for_chat(
-        self,
-        settings: Settings,
-        *,
-        user: User,
-        chat_id: UUID,
-        prompt: str,
-        user_message_content: str | None = ...,
-        create_user_message: bool = ...,
-        reference_attachment_ids: list[UUID] | None = ...,
-    ) -> tuple[Message, Message]: ...
-
-    def image_reference_ids(self, content: str) -> list[UUID]: ...
 
 
 class ImageSearch(Protocol):
@@ -355,11 +330,9 @@ class ChatTurnDeps:
     messages: MessagesRepo
     usage: UsageRepo
     quota: Quota
-    plan: Plan
     model_choice: ModelChoice
     locks: TurnLocks
     llm: ChatModel
-    image_generation: ImageGeneration
     image_search: ImageSearch
     attachments: AttachmentCleanup
     attachment_links: AttachmentLinks
@@ -379,11 +352,9 @@ def default_deps() -> ChatTurnDeps:
         messages=CONVERSATION_MESSAGES,
         usage=usage,
         quota=quota,
-        plan=plan,
         model_choice=model_choice,
         locks=redis_lock,
         llm=litellm_gateway,
-        image_generation=image_generation,
         image_search=image_search,
         attachments=attachment_lifecycle,
         attachment_links=attachments_service,

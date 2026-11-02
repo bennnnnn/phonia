@@ -103,7 +103,8 @@ describe("streamChatMessageSse routes through lib/api requestSse", () => {
     const [path, token, body] = requestSseMock.mock.calls[0];
     expect(path).toBe("/chats/chat-1/messages/stream");
     expect(token).toBe("tok");
-    expect(body).toMatchObject({ content: "hi", model: null });
+    expect(body).toMatchObject({ content: "hi" });
+    expect(body).not.toHaveProperty("model");
     expect(body).not.toHaveProperty("client_message_id");
     expect(events).toEqual([{ type: "done" }]);
   });

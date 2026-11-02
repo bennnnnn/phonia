@@ -47,12 +47,12 @@ describe("DialogHost", () => {
     const view = await render(<DialogHost />);
     let first!: Promise<boolean>;
     await act(async () => {
-      first = confirmDialog({ title: "Archive all?", confirmLabel: "Archive", cancelLabel: "Cancel" });
+      first = confirmDialog({ title: "Delete all?", confirmLabel: "Delete", cancelLabel: "Cancel" });
     });
     await fireEvent.press(view.getByRole("button", { name: "Cancel" }));
     await expect(first).resolves.toBe(false);
 
-    await waitFor(() => expect(view.queryByText("Archive all?")).toBeNull());
+    await waitFor(() => expect(view.queryByText("Delete all?")).toBeNull());
     let second!: Promise<boolean>;
     await act(async () => {
       second = confirmDialog({ title: "Revoke?", confirmLabel: "Revoke", cancelLabel: "Cancel" });

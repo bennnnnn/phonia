@@ -57,8 +57,8 @@ describe("mobile Sentry scrubbing (O10.1)", () => {
     ]);
   });
 
-  it("redacts tokens and Live Talk secrets, and bounds a long error text", () => {
-    expect(redactSecrets("key ek_abcdefghijkl and sk_live_123456789")).toBe(
+  it("redacts tokens and provider keys, and bounds a long error text", () => {
+    expect(redactSecrets("key rk_abcdefghijkl and sk_live_123456789")).toBe(
       "key [REDACTED] and [REDACTED]",
     );
     expect(redactSecrets("x".repeat(400))).toHaveLength(301);
@@ -154,7 +154,7 @@ describe("error-boundary capture", () => {
     const targets: RegExp[] = sdk().init.mock.calls[0][0].tracePropagationTargets;
     const traced = (url: string) => targets.some((target) => target.test(url));
     expect(["https://api.recall.test", "https://api.recall.test/chats?limit=40"].every(traced)).toBe(true);
-    expect(["https://api.openai.com/v1/realtime/calls", "https://api.recall.test.evil.example/"].some(traced)).toBe(false);
+    expect(["https://third-party.example/v1/calls", "https://api.recall.test.evil.example/"].some(traced)).toBe(false);
     const error = new Error("render failed");
     mod.reportBoundaryError("message_row", error, "\n    in MessageBubble");
     expect(sdk().captureException).toHaveBeenCalledWith(error, {

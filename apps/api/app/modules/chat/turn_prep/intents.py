@@ -3,9 +3,9 @@
 "I need a new laptop, and I also want to find remote backend engineering jobs" is
 two requests: advice, and a live search. ``plan_turn`` cuts the message with the
 text rules in ``clauses`` and labels each part with the classifier that already
-owns that kind of request (settings, picture, photo, reminder, a STEM solve, a
-live lookup), so the search gates, the tool loop and the settings and picture
-paths each take their own part instead of reading the whole line as one.
+owns that kind of request (settings, photo, reminder, a STEM solve, a live
+lookup), so the search gates, the tool loop and the settings and photo paths
+each take their own part instead of reading the whole line as one.
 
 No model is asked. The plan is regex over the user's words: a one-part message
 (nearly every turn) stops after the splitter, and a multi-part one runs each
@@ -16,7 +16,7 @@ is not this module's job: the prompt renders the plan (``prompt_constants.multi_
 from __future__ import annotations
 
 import re
-from collections.abc import Callable, Sequence
+from collections.abc import Sequence
 from dataclasses import dataclass
 from functools import lru_cache
 
@@ -31,7 +31,6 @@ from app.modules.chat.turn_prep.clauses import (
     request_clauses,
     without_connector,
 )
-from app.modules.images.gen_intent import extract_image_gen_prompt, stem_subject_claims
 from app.modules.images.lookup_intent import extract_image_lookup_query
 from app.modules.turn_reading.plan import (
     HANDLED_KINDS,
@@ -47,7 +46,7 @@ from app.services.subjects.dispatch import detect_subject
 # After a sentence or comma, two open questions need this many words of their own.
 _MIN_OWN_TOPICS = 2
 # Requests whose path decides them alone: what follows one is not a follow-up to it.
-_OWNED_KINDS: frozenset[PartKind] = frozenset({"settings", "image", "photo", "reminder", "solve"})
+_OWNED_KINDS: frozenset[PartKind] = frozenset({"settings", "photo", "reminder", "solve"})
 _PLAN_CACHE = 256
 _REMINDER = re.compile(
     r"^(?:remind me|set (?:a |an )?(?:reminder|alarm)|add (?:a )?(?:reminder|todo|to-do))\b",
@@ -69,12 +68,9 @@ def part_kind(text: str, *, chemistry_enabled: bool = True) -> PartKind:
         return "settings"
     if extract_image_lookup_query(body):
         return "photo"
-    stem = stem_subject_claims(body, chemistry_enabled=chemistry_enabled)
-    if not stem and extract_image_gen_prompt(body):
-        return "image"
     if _REMINDER.match(body):
         return "reminder"
-    if stem or detect_subject(body, chemistry_enabled=chemistry_enabled) is not None:
+    if detect_subject(body, chemistry_enabled=chemistry_enabled) is not None:
         return "solve"
     if needs_web_search(body):
         return "live"
@@ -185,7 +181,7 @@ class _Problem:
     def carries(self, clause: Clause) -> bool:
         """Whether a question is about the problem: the subject claims it with the setup
         before it, and nothing of its own words sends it elsewhere. They do when it follows
-        a strong cut ("Also, …"), another path owns it (a setting, a picture, a photo, a
+        a strong cut ("Also, …"), another path owns it (a setting, a photo, a
         reminder), it asks about a place or the weather, it is live by a cue of its own
         (news, prices, scores; "how long does it take to reach the ground" is no trip
         without the setup), or another subject claims it."""
@@ -237,36 +233,6 @@ class _Problem:
 
 def _asks(clause: Clause) -> bool:
     return clause.text.rstrip().endswith("?")
-
-
-def cuts_after_picture(text: str, is_picture: Callable[[str], bool]) -> bool:
-    """Whether ``plan_turn`` cuts ``text`` after a first part that is a picture: "draw me a
-    cat and also explain black holes", "draw me a cat. Also, what is the capital of
-    France?", "draw me a cat and suggest names". The picture reader asks this before it
-    draws the whole line, so the line is drawn whole exactly where the plan keeps it whole.
-
-    The same clause and cut rules as ``plan_turn``, with ``is_picture`` (the picture
-    reader's own, on a request's body) for ``part_kind``: after a picture, every other
-    kind of request cuts alike, and the reader must not ask the SymPy-backed readings
-    on the event loop.
-    """
-
-    def kind(clause: Clause) -> PartKind:
-        return "image" if is_picture(request_body(clause.text)) else "ask"
-
-    clauses = request_clauses(text).clauses
-    if len(clauses) < 2 or kind(clauses[0]) != "image":
-        return False
-    last = clauses[0]
-    for index, clause in enumerate(clauses[1:], start=1):
-        if _keeps_cut(clause, kind(clause), last, "image", chemistry_enabled=True):
-            return True
-        if index == len(clauses) - 1:
-            return False
-        last = Clause(f"{last.text} {clause.text}", last.cut, last.topics | clause.topics)
-        if kind(last) != "image":
-            return False
-    return False
 
 
 def _quoted(text: str) -> str:

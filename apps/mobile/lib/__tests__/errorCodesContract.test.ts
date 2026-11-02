@@ -11,13 +11,8 @@ import { signInRefusalKey } from "@/features/auth/model/signInRefusal";
 import { ApiRequestError } from "@/lib/api/client";
 import { CONSENT_REQUIRED_CODE } from "@/lib/api/consentRefusal";
 import { scanFailureMessage } from "@/features/scanner/model/scanReadError";
-import { refusalCode, resolveChatError } from "@/features/chat/model/errorMessage";
+import { resolveChatError } from "@/features/chat/model/errorMessage";
 import { memoryFailure, memoryFailureKey } from "@/features/memory/model/memoryFailure";
-import {
-  liveTalkErrorGate,
-  liveTalkGateMessageKey,
-  liveTalkSaveEndsCall,
-} from "@/features/speech/model/liveTalkLogic";
 import { voiceRefusalKey } from "@/features/speech/model/voiceRefusal";
 
 jest.mock("@/lib/config", () => ({ getApiUrl: () => "http://test.local" }));
@@ -82,7 +77,11 @@ it.each([
   ["scan_too_large", "chat.scan_too_large"],
   ["scan_rate_limited", "chat.scan_rate_limit"],
   ["scan_spend_cap", "chat.scan_spend_cap"],
+  ["scan_quota_exceeded", "chat.quota_exceeded_pro"],
+  ["scan_busy", "chat.scan_busy"],
   ["scan_invalid_image", null],
+  // Not a photo (the API sniffs the bytes): the generic could-not-read, as a bad payload.
+  ["scan_not_a_photo", null],
   // The request limiter's 429 and a refused refresh: their English showed.
   ["rate_limited", "chat.rate_limited"],
   ["refresh_rate_limited", "chat.rate_limited"],
@@ -96,6 +95,7 @@ it.each([
   ["presign_unsupported_type", "unsupported_type"],
   ["presign_too_large", "too_large"],
   ["presign_daily_limit", "daily_limit"],
+  ["presign_storage_full", "storage_full"],
 ])("names a refused upload: %s", (name, reason) => {
   const failure = presignFailure(refused(name));
   expect(failure).toBeInstanceOf(AttachmentError);
@@ -103,18 +103,14 @@ it.each([
 });
 
 it.each([
-  ["image_daily_limit", false, "quota", "chat.image_daily_limit_free"],
-  ["image_daily_limit", true, "notice", "chat.image_daily_limit_paid"],
-  ["image_content_blocked", false, "notice", "chat.image_content_blocked"],
-  // The day's spend cap: the server's English showed in every language. Redis down at its
-  // read is the outage line; the outage answered the cap's 429, "temporarily unavailable".
-  ["image_spend_cap", false, "generic", "chat.image_spend_cap"],
+  // Redis down is the outage line, where the server's English showed.
   ["service_unavailable", false, "generic", "common.service_unavailable"],
-])("words a refused picture: %s (paid %s)", (name, isPaid, kind, words) => {
+])("words a refused chat request: %s (paid %s)", (name, isPaid, kind, words) => {
   const error = refused(name);
-  // Every refusal from the picture endpoint is the picture's own (useChatImageGeneration).
-  const code = refusalCode(error.code ?? undefined, "image_generation");
-  expect(resolveChatError({ message: error.message, code, isPaid, t })).toEqual({ kind, message: words });
+  expect(resolveChatError({ message: error.message, code: error.code ?? undefined, isPaid, t })).toEqual({
+    kind,
+    message: words,
+  });
 });
 
 it.each([
@@ -129,58 +125,6 @@ it.each([
   ["refresh_rate_limited", "chat.rate_limited"],
 ])("words a refused dictation: %s", (name, words) => {
   expect(voiceRefusalKey(refused(name))).toBe(words);
-});
-
-// Every 503 said "Live talk isn't set up on this server yet", a Redis outage included.
-it.each([
-  ["service_unavailable", "outage", "common.service_unavailable"],
-  ["live_talk_not_configured", "unconfigured", "chat.live_talk_not_configured"],
-])("gates live talk on a refusal: %s", (name, gate, words) => {
-  expect(liveTalkErrorGate(refused(name))).toBe(gate);
-  expect(liveTalkGateMessageKey(liveTalkErrorGate(refused(name)))).toBe(words);
-});
-
-// Both said "Live talk isn't available in this version of the app. Update the app".
-it.each([
-  ["live_talk_upstream_failed", "connect_failed", "chat.live_talk_connect_failed"],
-  ["live_talk_not_available", "off", "chat.live_talk_off"],
-])("words a live talk start the app's age has nothing to do with: %s", (name, gate, words) => {
-  expect(liveTalkErrorGate(refused(name))).toBe(gate);
-  expect(liveTalkGateMessageKey(liveTalkErrorGate(refused(name)))).toBe(words);
-});
-
-// Every 403 opened the paywall, consent_required too, on top of the consent step.
-it.each([
-  ["live_talk_not_in_plan", "upgrade"],
-  ["live_talk_consent_required", "consent"],
-])("sends a refused live talk 403 by its code: %s", (name, gate) => {
-  expect(liveTalkErrorGate(refused(name))).toBe(gate);
-});
-
-// Every 429 said "You've used this month's live talk minutes": a rate limit, the spend
-// cap and a call's last save too.
-it.each([
-  ["live_talk_minutes_used", "limit", "chat.live_talk_limit_body"],
-  ["live_talk_rate_limited", "rate_limited", "chat.live_talk_rate_limited"],
-  ["live_talk_spend_cap", "paused", "chat.live_talk_paused"],
-  ["live_talk_save_rate_limited", "rate_limited", "chat.live_talk_rate_limited"],
-  ["live_talk_save_spend_cap", "paused", "chat.live_talk_paused"],
-  ["live_talk_saves_used", "saves_used", "chat.live_talk_saves_used"],
-  // The request limiter's 429: too many requests, as when it named no code.
-  ["rate_limited", "rate_limited", "chat.live_talk_rate_limited"],
-])("words a refused live talk 429 by its code: %s", (name, gate, words) => {
-  expect(liveTalkErrorGate(refused(name))).toBe(gate);
-  expect(liveTalkGateMessageKey(liveTalkErrorGate(refused(name)))).toBe(words);
-});
-
-// A save the plan or the session no longer allowed showed the server's English and kept
-// the call open.
-it.each([
-  ["live_talk_save_not_in_plan", "upgrade"],
-  ["live_talk_session_ended", "session_ended"],
-])("ends the call on a save refused by its code: %s", (name, gate) => {
-  expect(liveTalkErrorGate(refused(name))).toBe(gate);
-  expect(liveTalkSaveEndsCall(liveTalkErrorGate(refused(name)))).toBe(true);
 });
 
 it.each([

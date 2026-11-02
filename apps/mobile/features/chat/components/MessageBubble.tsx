@@ -7,7 +7,6 @@ import { TodoLinkButton } from "@/features/todos/components/TodoLinkButton";
 import { PlacesListBlock } from "@/components/rich/PlacesListBlock";
 import { UserMessageContent } from "@/features/chat/components/UserMessageContent";
 import { ChatMessageImageStrip } from "@/features/attachments/components/ChatMessageImageStrip";
-import { ImageGenPlaceholder } from "@/features/images/components/ImageGenPlaceholder";
 import { ActionShimmer } from "@/ui/feedback/ActionShimmer";
 import { SearchSourcesStack } from "@/features/chat/components/SearchSourcesStack";
 import { LazyCircularClockBlock } from "@/components/rich/LazyHeavyRich";
@@ -58,7 +57,6 @@ type Props = {
   onFeedback?: (messageId: string, feedback: "up" | "down" | null) => void;
   highlighted?: boolean;
   isSending?: boolean;
-  onRetryImageGen?: () => void;
 };
 
 function userMessageCopyText(content: string): string {
@@ -82,7 +80,6 @@ export const MessageBubble = React.memo(function MessageBubble({
   onFeedback,
   highlighted = false,
   isSending = false,
-  onRetryImageGen,
 }: Props) {
   const theme = useTheme();
   const { t } = useTranslation();
@@ -145,7 +142,6 @@ export const MessageBubble = React.memo(function MessageBubble({
     markdownPresented,
   } = assistant;
 
-  const imageGenFailure = message.image_gen_failure;
   const showWaitingIndicator = shouldShowWaitingIndicator({ isStreaming, hasContent });
   const statusLabel = useRotatingStreamStatus(
     streamStatus,
@@ -153,7 +149,7 @@ export const MessageBubble = React.memo(function MessageBubble({
     t,
     streamStatusDetail,
   );
-  // Generated image with no prose — copy, read aloud and regenerate are noise.
+  // A photo with no prose — copy, read aloud and regenerate are noise.
   const imageOnlyActions =
     showImages && !hasMarkdown && !showLiveClock && !showSettingsProposals && !showPlaces;
 
@@ -198,38 +194,19 @@ export const MessageBubble = React.memo(function MessageBubble({
         </View>
       ) : (
         <View style={b.assistantBubble}>
-          {imageGenFailure ? (
-              <View style={b.imageGenWaitingWrap}>
-                <ImageGenPlaceholder
-                  outcome={imageGenFailure}
-                  statusText={
-                    imageGenFailure === "canceled"
-                      ? t("chat.image_gen_canceled")
-                      : message.image_gen_error?.trim() || t("chat.image_gen_failed")
-                  }
-                  onRetry={onRetryImageGen}
-                />
+            {showWaitingIndicator ? (
+              <View style={b.waitingWrap}>
+                <RecallTypingIndicator phase={streamStatus} />
+                {streamStatus && isProgressStreamPhase(streamStatus) ? (
+                  <StreamProgressLabel
+                    phase={streamStatus}
+                    startedAt={streamStatusStartedAt}
+                    style={b.statusLabel}
+                  />
+                ) : statusLabel ? (
+                  <Text style={b.statusLabel}>{statusLabel}</Text>
+                ) : null}
               </View>
-            ) : showWaitingIndicator ? (
-              streamStatus === "image_gen" ? (
-                // The card owns its stage line, timed to its progress estimate.
-                <View style={b.imageGenWaitingWrap}>
-                  <ImageGenPlaceholder />
-                </View>
-              ) : (
-                <View style={b.waitingWrap}>
-                  <RecallTypingIndicator phase={streamStatus} />
-                  {streamStatus && isProgressStreamPhase(streamStatus) ? (
-                    <StreamProgressLabel
-                      phase={streamStatus}
-                      startedAt={streamStatusStartedAt}
-                      style={b.statusLabel}
-                    />
-                  ) : statusLabel ? (
-                    <Text style={b.statusLabel}>{statusLabel}</Text>
-                  ) : null}
-                </View>
-              )
             ) : null}
             {showImages ? <ChatMessageImageStrip images={images} /> : null}
             {showLiveClock ? (
@@ -289,7 +266,7 @@ export const MessageBubble = React.memo(function MessageBubble({
         </View>
       )}
 
-      {showActionSlot && actionsReady && !imageGenFailure ? (
+      {showActionSlot && actionsReady ? (
         <View style={b.actionRowSlot}>
           <AssistantActions
             messageId={message.id}
@@ -336,10 +313,6 @@ function makeStyles(t: Theme) {
       flexDirection: "row",
       alignItems: "center",
       gap: Space.xs,
-      paddingVertical: Space.xxs,
-    },
-    imageGenWaitingWrap: {
-      alignItems: "flex-start",
       paddingVertical: Space.xxs,
     },
     statusLabel: {

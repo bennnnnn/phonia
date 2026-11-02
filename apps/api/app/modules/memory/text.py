@@ -54,8 +54,17 @@ _HEALTH_NEEDLES = (
     "pregnant",
     "hiv",
     "diabetes",
+    # Students may be minors: a learning difference or an eating disorder is health too.
+    "adhd",
+    "dyslexia",
+    "dyslexic",
+    "autism",
+    "autistic",
+    "eating disorder",
+    "anorexia",
+    "bulimia",
 )
-_LEGAL_NEEDLES = ("lawsuit", "attorney", "lawyer", "divorce", "divorcing")
+_LEGAL_NEEDLES = ("lawsuit", "attorney", "lawyer", "divorce", "divorcing", "custody")
 _FINANCE_NEEDLES = (
     "salary",
     "mortgage",
@@ -78,6 +87,9 @@ _RELATIONSHIP_NEEDLES = (
     "started dating",
     "dating someone",
     "went on a date",
+    # Trouble with family or friends, for a student.
+    "bullied",
+    "bullying",
 )
 _HIGHLY_SENSITIVE_NEEDLES = (
     "ethnicity",
@@ -98,6 +110,10 @@ _HIGHLY_SENSITIVE_NEEDLES = (
     "bisexual",
     "transgender",
     "sex life",
+    "self-harm",
+    "self harm",
+    "suicidal",
+    "abused",
 )
 _NON_MEMORY_SMALL_TALK = frozenset(
     {

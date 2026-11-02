@@ -291,12 +291,11 @@ async def test_stream_chat_response_at_spend_cap_never_prepares_the_turn(
     fake_redis, spend: str, refusal: type[Exception], code: str
 ) -> None:
     user = _user()
-    user.default_model = "free-chat"
     prepare = AsyncMock()
     release = AsyncMock()
     deps = turn_deps(
         session_factory=FakeSessionCM,
-        model_choice={"resolve_user_model_override": MagicMock(return_value="free-chat")},
+        model_choice={"resolve_user_model": MagicMock(return_value="free-chat")},
         locks={"acquire_lock": AsyncMock(return_value="tok"), "release_lock": release},
     )
     if spend == "capped":
@@ -310,10 +309,6 @@ async def test_stream_chat_response_at_spend_cap_never_prepares_the_turn(
         patch.object(messages_repository, "list_recent", AsyncMock(return_value=[])),
         patch.object(messages_repository, "count_for_chat", AsyncMock(return_value=0)),
         patch("app.modules.chat.turn_load.wait_for_pending_finalize", AsyncMock()),
-        patch(
-            "app.modules.chat.turn_intercepts.try_image_gen_for_turn",
-            AsyncMock(return_value=False),
-        ),
         patch("app.modules.chat.stream_entry.prepare_chat_turn", prepare),
         pytest.raises(refusal) as caught,
     ):
@@ -368,7 +363,7 @@ async def test_regenerate_reads_back_a_lost_usage_counter_in_its_load_session(fa
         ),
     ):
         await turn_load.load_regenerate_turn(
-            deps, fake_redis, _SETTINGS, user_id=user.id, chat_id=uuid4(), model_alias=None
+            deps, fake_redis, _SETTINGS, user_id=user.id, chat_id=uuid4()
         )
         reserved = await _reserve(fake_redis, user)
 

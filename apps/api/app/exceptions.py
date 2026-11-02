@@ -10,8 +10,10 @@ RATE_LIMITED_CODE = "rate_limited"
 # The code a refusal falls back to when its raise site names none: what kind it is.
 _STATUS_CODES = {
     400: "invalid",
+    401: "unauthorized",
     403: "forbidden",
     404: "not_found",
+    405: "method_not_allowed",
     409: "conflict",
     410: "expired",
     413: "too_large",
@@ -23,6 +25,11 @@ _STATUS_CODES = {
     502: "upstream_failed",
     503: "unavailable",
 }
+
+
+def status_code_name(status_code: int) -> str:
+    """The code a refusal with this status and no code of its own names."""
+    return _STATUS_CODES.get(status_code, "refused")
 
 
 class DomainError(Exception):
@@ -51,7 +58,7 @@ class DomainError(Exception):
         self.message = message
         if status_code is not None:
             self.status_code = status_code
-        self.code = code or self.default_code or _STATUS_CODES.get(self.status_code, "refused")
+        self.code = code or self.default_code or status_code_name(self.status_code)
         self.headers = dict(headers or {})
         self.fields = fields
 
@@ -110,30 +117,12 @@ class SpendCapReachedError(ChatServiceError):
 
     Not a ``QuotaExceededError``: the user's own allowance is not used up, so
     the transports send the plain error event (this message), not the quota
-    code that opens the upgrade prompt. ``fields`` (``feature``) go on the event:
-    a picture's cap is worded as the picture's, not as every message paused.
+    code that opens the upgrade prompt.
     """
-
-    def __init__(self, message: str, **fields: str) -> None:
-        super().__init__(message)
-        self.fields = fields
 
 
 class ChatNotFoundError(ChatServiceError):
     pass
-
-
-class TurnRefusedError(ChatServiceError):
-    """A turn a feature refused with its own code ("daily_limit", "content_blocked").
-
-    The chat transports send that code and any ``fields`` (``feature``) on the error
-    event, so the phone says which limit it was instead of "out of messages".
-    """
-
-    def __init__(self, message: str, *, code: str, **fields: str) -> None:
-        super().__init__(message)
-        self.code = code
-        self.fields = fields
 
 
 class ChatBusyError(ChatServiceError):
@@ -167,14 +156,6 @@ class ConsentRequiredError(ChatServiceError):
         message: str = "Agree to how Recall uses outside AI services to continue.",
     ) -> None:
         super().__init__(message)
-
-
-class UnknownModelOverrideError(ChatServiceError):
-    """Per-message picker asked for an alias the user's pool does not include."""
-
-    def __init__(self, alias: str) -> None:
-        self.alias = alias
-        super().__init__(f"Unknown or unavailable model: {alias}")
 
 
 class RedisUnavailableError(Exception):

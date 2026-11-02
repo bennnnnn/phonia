@@ -16,14 +16,15 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.orm import Chat, Message
 from app.modules.conversation import chats_repository as _chats
 from app.modules.conversation import messages_repository as _messages
+from app.modules.conversation.pins import MAX_PINNED_CHATS as MAX_PINNED_CHATS
 
 
-async def create_chat(session: AsyncSession, *, user_id: UUID, model: str) -> Chat:
-    return await _chats.create(session, user_id=user_id, model=model)
+async def create_chat(session: AsyncSession, *, user_id: UUID) -> Chat:
+    return await _chats.create(session, user_id=user_id)
 
 
 async def touch_chat(session: AsyncSession, chat_id: UUID, *, commit: bool = True) -> None:
-    """The chat moves up the drawer: a reply or a picture turn is its last activity."""
+    """The chat moves up the drawer: a reply or a photo turn is its last activity."""
     await _chats.touch_by_id(session, chat_id, commit=commit)
 
 
@@ -38,23 +39,13 @@ async def set_title_if_empty(
     return await _chats.set_title_if_empty(session, chat_id, title, user_id=user_id, commit=commit)
 
 
+async def count_other_pins_locked(session: AsyncSession, user_id: UUID, chat_id: UUID) -> int:
+    """The user's other pinned chats, under the user's row lock until the caller commits."""
+    return await _chats.count_other_pins_locked(session, user_id, chat_id)
+
+
 async def set_pinned(session: AsyncSession, chat: Chat, pinned: bool) -> Chat:
     return await _chats.set_pinned(session, chat, pinned)
-
-
-async def set_archived(session: AsyncSession, chat: Chat, archived: bool) -> Chat:
-    return await _chats.set_archived(session, chat, archived)
-
-
-async def archive_all_chats(session: AsyncSession, user_id: UUID, *, commit: bool = True) -> int:
-    return await _chats.archive_all_for_user(session, user_id, commit=commit)
-
-
-async def set_archived_many(
-    session: AsyncSession, user_id: UUID, chat_ids: list[UUID], *, archived: bool
-) -> list[UUID]:
-    """The ids of the user's chats among ``chat_ids`` that changed."""
-    return await _chats.set_archived_many(session, user_id, chat_ids, archived=archived)
 
 
 async def delete_chats(session: AsyncSession, user_id: UUID, chat_ids: list[UUID]) -> list[UUID]:

@@ -1,5 +1,5 @@
 /**
- * Rename, pin, archive and delete one chat: the one implementation the drawer's row menu
+ * Rename, pin and delete one chat: the one implementation the drawer's row menu
  * and the chat header's menu share, so a failure reads and recovers the same in both.
  * Each change shows at once, is saved, then takes the server's answer; a failed save
  * puts the chat back as it was and says what failed.
@@ -11,13 +11,14 @@ import { clearCachedChatMessages } from "@/features/chat/model/messageCache";
 import { beginChatMutation } from "@/features/chat/model/mutationLock";
 import { sanitizeManualChatTitle } from "@/features/chat/model/title";
 import { api, type Chat } from "@/lib/api";
+import { ApiRequestError } from "@/lib/api/errorBody";
 import { emitAppEvent } from "@/lib/appEvents";
 import { notifyDestructive } from "@/lib/haptics";
 import type { IconName } from "@/ui/icons/names";
 import { confirmDialog } from "@/ui/overlay/dialogs";
 
 /** What an operation needs to know about the chat as the person sees it now. */
-type ChatRef = Pick<Chat, "id" | "title" | "pinned" | "archived">;
+type ChatRef = Pick<Chat, "id" | "title" | "pinned">;
 
 export type ChatOperationContext = {
   token: string;
@@ -33,11 +34,11 @@ export type ChatOperationContext = {
   signedIn: () => boolean;
   /** The menu's screen is still up: it may still show a message or mirror the change. */
   shown: () => boolean;
-  /** The asking screen's own copy of the chat (the header's title, pin and archive). */
+  /** The asking screen's own copy of the chat (the header's title and pin). */
   mirror?: (patch: Partial<Chat>) => void;
   banner: (message: string, icon: IconName) => void;
   failure: (message: string) => void;
-  t: (key: string) => string;
+  t: (key: string, options?: Record<string, unknown>) => string;
 };
 
 function apply(ctx: ChatOperationContext, chatId: string, patch: Partial<Chat>): void {
@@ -77,58 +78,35 @@ async function saveTitle(ctx: ChatOperationContext, chat: ChatRef, title: string
   }
 }
 
-/** Pin or unpin. An archived chat has no pin. */
+/** The API's 409 for a pin past the account's most pinned chats (`modules/chat/service.py`). */
+const PIN_LIMIT_CODE = "pin_limit";
+
+/** Pin or unpin. */
 export async function setChatPinned(
   ctx: ChatOperationContext,
   chat: ChatRef,
   pinned: boolean,
 ): Promise<void> {
-  if (chat.archived) return;
   const release = beginChatMutation(ctx.session, [chat.id]);
   if (!release) return;
   apply(ctx, chat.id, { pinned });
   try {
     const saved = await api.setPin(ctx.token, chat.id, pinned);
     if (!ctx.signedIn()) return;
-    apply(ctx, chat.id, { pinned: saved.pinned, archived: Boolean(saved.archived) });
+    apply(ctx, chat.id, { pinned: saved.pinned });
     if (ctx.shown()) {
       ctx.banner(
         ctx.t(saved.pinned ? "chat.pinned_toast" : "chat.unpinned_toast"),
         saved.pinned ? "pin" : "pin-off",
       );
     }
-  } catch {
+  } catch (error) {
     if (!ctx.signedIn()) return;
     apply(ctx, chat.id, { pinned: chat.pinned });
-    if (ctx.shown()) ctx.failure(ctx.t("chat.pin_failed"));
-  } finally {
-    release();
-  }
-}
-
-/** Archive (which unpins) or bring back. */
-export async function setChatArchived(
-  ctx: ChatOperationContext,
-  chat: ChatRef,
-  archived: boolean,
-): Promise<void> {
-  const release = beginChatMutation(ctx.session, [chat.id]);
-  if (!release) return;
-  apply(ctx, chat.id, archived ? { archived, pinned: false } : { archived });
-  try {
-    const saved = await api.setArchive(ctx.token, chat.id, archived);
-    if (!ctx.signedIn()) return;
-    apply(ctx, chat.id, { archived: Boolean(saved.archived), pinned: saved.pinned });
-    if (ctx.shown()) {
-      ctx.banner(
-        ctx.t(saved.archived ? "chat.archived_toast" : "chat.unarchived_toast"),
-        saved.archived ? "archive" : "unarchive",
-      );
-    }
-  } catch {
-    if (!ctx.signedIn()) return;
-    apply(ctx, chat.id, { archived: Boolean(chat.archived), pinned: chat.pinned });
-    if (ctx.shown()) ctx.failure(ctx.t("chat.archive_failed"));
+    const full = error instanceof ApiRequestError && error.code === PIN_LIMIT_CODE;
+    // The cap is the server's (its `limit`), so the words never name a stale number.
+    const message = full ? ctx.t("chat.pin_limit", { limit: error.fields.limit }) : ctx.t("chat.pin_failed");
+    if (ctx.shown()) ctx.failure(message);
   } finally {
     release();
   }

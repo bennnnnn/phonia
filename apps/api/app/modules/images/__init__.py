@@ -1,17 +1,9 @@
-"""Image generation and reference-photo lookup.
+"""Reference-photo lookup: a real photo for "show me an ear", and above an answer."""
 
-Importing a submodule must not pull the other product's service graph.
-"""
-
-# The chat turn checks both intents and runs generation or lookup in place of a reply;
-# answer_photo puts a real photo above an ordinary reply, and reply_picture a drawn one
-# above the reply to a message that asked for a picture among other things.
+# The chat turn checks the lookup intent and runs the lookup in place of a reply;
+# answer_photo puts a real photo above an ordinary reply.
 _MODULE_EXPORTS = (
     "answer_photo",
-    "gen_intent",
-    "generation",
-    "intent",
     "lookup_intent",
-    "reply_picture",
     "search",
 )

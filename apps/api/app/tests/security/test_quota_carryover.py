@@ -1,7 +1,7 @@
 """Deleting an account and signing up again with the same login keeps today's limits.
 
 Quota counters are keyed by user id, so a new account would start every daily
-cap (and this month's live talk minutes) from zero. Account delete keeps one
+cap from zero. Account delete keeps one
 snapshot keyed by an HMAC of the Google/Apple identity and, on an address a provider
 owns (Gmail, iCloud), one keyed by an HMAC of the account's email; the new account for the
 same identity or address picks them up at sign-up (the address alone:
@@ -11,7 +11,7 @@ same identity or address picks them up at sign-up (the address alone:
 from __future__ import annotations
 
 import json
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, datetime, time, timedelta
 from typing import Any
 from unittest.mock import AsyncMock, patch
 from uuid import UUID, uuid4
@@ -29,7 +29,7 @@ from app.services.quota import carryover, counters
 from .conftest import World, delete_accounts
 
 # Every per-user daily counter, named independently of the code under test.
-DAILY_PREFIXES = ("usage", "imgup", "docup", "speech", "tts", "tavily", "imggen", "imgsearch")
+DAILY_PREFIXES = ("usage", "imgup", "docup", "speech", "tts", "tavily", "imgsearch")
 
 
 def _pro_caps(cap: int) -> Settings:
@@ -68,7 +68,7 @@ async def _sign_in_google(world: World, *, sub: str, email: str) -> UUID:
 
 
 async def _use_quota(redis: Any, user_id: UUID) -> None:
-    """What a busy day leaves: tokens, uploads, voice, searches, images, live talk."""
+    """What a busy day leaves: tokens, uploads, voice, searches, images."""
     assert await quota.reserve_usage_up_to(redis, str(user_id), 1234, daily_limit=10**9) == 1234
     user, caps = User(id=user_id, plan="pro"), _pro_caps(10)
     for _ in range(2):
@@ -80,17 +80,8 @@ async def _use_quota(redis: Any, user_id: UUID) -> None:
     assert await counters.reserve("speech_tts", redis, user, caps)
     for _ in range(4):
         assert await counters.reserve("tavily_search", redis, user, caps)
-    assert await counters.reserve("image_generation", redis, user, caps)
     for _ in range(2):
         assert await counters.reserve("image_search", redis, user, caps)
-    granted = await quota.reserve_live_talk_seconds(
-        redis,
-        user_id,
-        allowance_seconds=3600,
-        max_session_seconds=300,
-        min_session_seconds=1,
-    )
-    assert granted == 300
 
 
 _USED = {
@@ -100,7 +91,6 @@ _USED = {
     "speech": 3,
     "tts": 1,
     "tavily": 4,
-    "imggen": 1,
     "imgsearch": 2,
 }
 
@@ -147,10 +137,9 @@ async def test_quota_carryover_same_google_sub_keeps_todays_counts(world: World)
     try:
         assert new_id != a.id
         assert await _daily_counts(redis, new_id) == _USED
-        assert await quota.live_talk_used_seconds(redis, new_id) == 300
-        # The carried counts are enforced: one image generation was today's cap.
+        # The carried counts are enforced: one read-aloud was today's cap.
         new_user = User(id=new_id, plan="pro")
-        assert not await counters.reserve("image_generation", redis, new_user, _pro_caps(1))
+        assert not await counters.reserve("speech_tts", redis, new_user, _pro_caps(1))
         # The raise-only DB heal (the new account has no usage rows) keeps them.
         await quota.heal_usage_drift(redis, str(new_id), 10)
         assert await quota.get_daily_usage(redis, str(new_id)) == 1234
@@ -182,7 +171,6 @@ async def test_quota_carryover_same_apple_sub_keeps_todays_counts(world: World) 
     new_id = UUID(response.json()["user"]["id"])
     try:
         assert await _daily_counts(redis, new_id) == _USED
-        assert await quota.live_talk_used_seconds(redis, new_id) == 300
     finally:
         await delete_accounts(new_id)
 
@@ -198,7 +186,6 @@ async def test_quota_carryover_different_sub_starts_fresh(world: World) -> None:
     )
     try:
         assert await _daily_counts(redis, new_id) == dict.fromkeys(DAILY_PREFIXES, 0)
-        assert await quota.live_talk_used_seconds(redis, new_id) == 0
     finally:
         await delete_accounts(new_id)
 
@@ -208,40 +195,13 @@ async def test_quota_carryover_next_day_starts_fresh(world: World) -> None:
     redis, a = world.redis, world.a
     sub = await _google_sub(a.id)
     await _use_quota(redis, a.id)
-    month = quota.utc_month()
     await _delete_and_sweep(world, a.id, a.headers)
 
     tomorrow = quota.utc_today() + timedelta(days=1)
-    with (
-        patch("app.services.quota.carryover.utc_today", return_value=tomorrow),
-        patch("app.services.quota.carryover.utc_month", return_value=month),
-    ):
+    with patch("app.services.quota.carryover.utc_today", return_value=tomorrow):
         new_id = await _sign_in_google(world, sub=sub, email=f"again-{uuid4()}@example.com")
     try:
         assert await _daily_counts(redis, new_id, tomorrow) == dict.fromkeys(DAILY_PREFIXES, 0)
-        # Still the same month: live talk minutes are monthly, so they carry.
-        assert await quota.live_talk_used_seconds(redis, new_id, month=month) == 300
-    finally:
-        await delete_accounts(new_id)
-
-
-@pytest.mark.asyncio
-async def test_quota_carryover_next_month_starts_live_talk_fresh(world: World) -> None:
-    redis, a = world.redis, world.a
-    sub = await _google_sub(a.id)
-    await _use_quota(redis, a.id)
-    await _delete_and_sweep(world, a.id, a.headers)
-
-    with (
-        patch(
-            "app.services.quota.carryover.utc_today",
-            return_value=quota.utc_today() + timedelta(days=40),
-        ),
-        patch("app.services.quota.carryover.utc_month", return_value="2999-01"),
-    ):
-        new_id = await _sign_in_google(world, sub=sub, email=f"again-{uuid4()}@example.com")
-    try:
-        assert await quota.live_talk_used_seconds(redis, new_id, month="2999-01") == 0
     finally:
         await delete_accounts(new_id)
 
@@ -264,17 +224,15 @@ async def test_quota_carryover_snapshot_holds_no_raw_sub(world: World) -> None:
     assert sub not in everything
     # The address is only ever a one-way code, in any case.
     assert email.lower() not in everything.lower()
-    month_left = (quota.next_month_start() - datetime.now(UTC)).total_seconds()
+    now = datetime.now(UTC)
+    day_left = (
+        datetime.combine(now.date() + timedelta(days=1), time.min, UTC) - now
+    ).total_seconds()
     for key in keys:
         # Counts only: the same snapshot under each key.
-        assert set(json.loads(await redis.get(key))) == {
-            "day",
-            "month",
-            "daily",
-            "live_talk_seconds",
-        }
+        assert set(json.loads(await redis.get(key))) == {"day", "daily"}
         assert str(a.id) not in await redis.get(key)
-        assert month_left - 60 <= await redis.ttl(key) <= 35 * 24 * 60 * 60
+        assert day_left - 60 <= await redis.ttl(key) <= 24 * 60 * 60
 
 
 def _carry_down(redis: Any, step: str) -> Any:
@@ -431,7 +389,6 @@ async def test_quota_carryover_unrestored_refuses_sign_in_and_creates_no_account
     again = await _sign_in_google(world, sub=sub, email=str(payload["email"]))
     try:
         assert await _daily_counts(redis, again) == _USED
-        assert await quota.live_talk_used_seconds(redis, again) == 300
         assert [key async for key in redis.scan_iter(match="quota_carry:*")] == []
     finally:
         await delete_accounts(again)

@@ -71,7 +71,7 @@ async def test_adds_one_line_then_rewrites_it_in_place(env):
     user, chat = await _user_and_chat(env)
     await _record(user, chat, LINE)
     await _record(user, chat, NEXT)
-    assert await _lines(env, user.id) == [(NEXT, "goals", "active")]
+    assert await _lines(env, user.id) == [(NEXT, "progress", "active")]
 
 
 @pytest.mark.asyncio
@@ -97,7 +97,7 @@ async def test_a_muted_line_stays_as_the_user_left_it(env):
     row.status = "muted"
     await env.flush()
     await _record(user, chat, NEXT)
-    assert await _lines(env, user.id) == [(LINE, "goals", "muted")]
+    assert await _lines(env, user.id) == [(LINE, "progress", "muted")]
 
 
 @pytest.mark.asyncio

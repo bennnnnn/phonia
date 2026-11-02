@@ -24,7 +24,7 @@ def open_parts(
 
     One part is the whole message, or nothing once its solve is verified. On a
     multi-part plan the verified solve answers only its maths part, and the
-    settings, picture and photo parts belong to their own paths, never the loop's.
+    settings and photo parts belong to their own paths, never the loop's.
     """
     from app.modules.chat.turn_prep.reading import plan_of
 

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from app.services.diagram_kinds import names_diagram_kind, names_idea_curve
+from app.modules.turn_reading.diagram_kinds import names_diagram_kind, names_idea_curve
 
 
 @pytest.mark.parametrize(

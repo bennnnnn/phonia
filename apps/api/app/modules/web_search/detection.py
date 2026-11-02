@@ -317,7 +317,10 @@ def needs_web_search(
     prior_user_messages: list[str] | None = None,
     prior_assistant: str | None = None,
 ) -> bool:
-    """Sync gate: skip + fast-path + heuristic (tests and legacy callers)."""
+    """Whether a turn needs a live search, decided here without a model call: an answer to
+    "where are you?", then the skip rules, the fast yes, and the heuristic. The tool loop's
+    search gate (``chat/tool_loop/parts``), the turn's search context (``chat/turn_prep``)
+    and ``should_web_search`` all ask it."""
     # "I'm in Indianapolis" after "I don't have your location yet": the earlier question there.
     prior = prior_user_messages[-1] if prior_user_messages else None
     if question_in_given_place(text, prior, prior_assistant) is not None:

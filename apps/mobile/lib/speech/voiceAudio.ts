@@ -22,7 +22,7 @@ const MIME_BY_EXT: Record<string, string> = {
 };
 
 /** Sync require keeps expo-audio in the main bundle (async import() breaks Metro module IDs).
- * Dictation works in Expo Go too; Live Talk's WebRTC is gated separately. */
+ * Dictation works in Expo Go too. */
 export function loadExpoAudio(): ExpoAudioModule | null {
   if (audioModule === null) return null;
   if (audioModule) return audioModule;
@@ -120,7 +120,7 @@ export async function preparePlaybackAudioMode(): Promise<void> {
   }
 }
 
-/** Composer and live talk both stop the mic before the 5MB upload cap. */
+/** The composer stops the mic before the 5MB upload cap. */
 export const VOICE_MAX_RECORDING_MS = 45_000;
 
 type RecordingPreset = {
@@ -137,22 +137,6 @@ type RecordingPreset = {
 /** Expo's high-quality preset with metering on, so the mic level drives the waveform. */
 export function meteredRecordingOptions(highQuality: RecordingPreset): RecordingPreset {
   return { ...highQuality, isMeteringEnabled: true };
-}
-
-let exclusiveMicStop: (() => Promise<void>) | null = null;
-
-/** Stop dictation so WebRTC can take the mic. Do not call expo-audio
- *  setAudioModeAsync here — after read-aloud that leaves the session in
- *  playback and WebRTC capture stays silent. */
-export async function yieldMicToWebRtc(): Promise<void> {
-  const stop = exclusiveMicStop;
-  exclusiveMicStop = null;
-  if (!stop) return;
-  try {
-    await stop();
-  } catch {
-    /* WebRTC still needs the session */
-  }
 }
 
 function releaseRecorder(recorder: { release?: () => void }): void {
@@ -180,10 +164,18 @@ export async function startVoiceRecording(): Promise<VoiceRecorder | null> {
 
   const recorder = new mod.AudioModule.AudioRecorder({});
   const preset = meteredRecordingOptions(mod.RecordingPresets.HIGH_QUALITY);
-  await recorder.prepareToRecordAsync(
-    preset as Parameters<typeof recorder.prepareToRecordAsync>[0],
-  );
-  recorder.record();
+  try {
+    await recorder.prepareToRecordAsync(
+      preset as Parameters<typeof recorder.prepareToRecordAsync>[0],
+    );
+    recorder.record();
+  } catch (error) {
+    // A busy mic (a call, another app) fails here: free the native recorder and
+    // leave record mode, or read-aloud afterwards plays through the earpiece.
+    releaseRecorder(recorder);
+    await preparePlaybackAudioMode();
+    throw error;
+  }
 
   const listeners = new Set<MeterListener>();
   const tick = setInterval(() => {
@@ -196,17 +188,9 @@ export async function startVoiceRecording(): Promise<VoiceRecorder | null> {
     }
   }, 60);
 
-  exclusiveMicStop = async () => {
-    clearInterval(tick);
-    if (recorder.isRecording) {
-      await recorder.stop();
-    }
-  };
-
   return {
     stop: async () => {
       clearInterval(tick);
-      if (exclusiveMicStop) exclusiveMicStop = null;
       try {
         if (recorder.isRecording) {
           await recorder.stop();

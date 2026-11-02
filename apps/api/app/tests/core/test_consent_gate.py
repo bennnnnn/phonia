@@ -26,13 +26,9 @@ _AGREED = datetime(2026, 10, 19, 9, 0, tzinfo=UTC)
 _ROUTES = [
     ("post", "/speech/transcribe", {"audio_base64": "AAAA", "filename": "a.m4a"}),
     ("post", "/speech/tts", {"text": "hello"}),
-    ("post", "/speech/live/session", {}),
-    ("post", "/speech/live/tool", {"call_id": "call-123456", "name": "web_search"}),
     ("post", "/math/scan/read", None),
     ("post", "/physics/scan/read", None),
     ("post", "/chemistry/scan/read", None),
-    ("post", "/images/generate", {"chat_id": str(uuid4()), "prompt": "a lighthouse at dusk"}),
-    ("post", "/images/intent", {"text": "draw a lighthouse at dusk"}),
     ("post", "/memories/instruct", {"instruction": "remember that I prefer metric units"}),
 ]
 

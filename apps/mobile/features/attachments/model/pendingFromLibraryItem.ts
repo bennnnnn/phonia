@@ -7,12 +7,11 @@ import { galleryFileName } from "@/features/attachments/model/gallery";
 
 /** Retain local bytes so a restored Library attachment can be uploaded again. */
 export async function pendingFromLibraryItem(
-  item: Pick<AttachmentListItem, "id" | "content_type" | "original_filename" | "download_url"> &
-    Partial<Pick<AttachmentListItem, "source">>,
+  item: Pick<AttachmentListItem, "id" | "content_type" | "original_filename" | "download_url">,
   token: string | null,
 ): Promise<PendingAttachment> {
   const requireCurrent = attachmentSessionGuard(token);
-  const fileName = galleryFileName(item.content_type, item.original_filename, item.source);
+  const fileName = galleryFileName(item.content_type, item.original_filename);
   const kind: AttachmentKind = item.content_type.startsWith("image/") ? "image" : "file";
   const remoteUri = resolveAttachmentUri({
     attachmentId: item.id,

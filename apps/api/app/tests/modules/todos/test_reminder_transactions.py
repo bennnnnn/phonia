@@ -1,10 +1,8 @@
 """The reminder pass writes in its caller's transaction and never ends it (audit ARCH-07).
 
-Live talk saves a voice turn's two messages and its reminders in one session. The
-to-do writes used to commit that session midway, and a reminder that hit the open
-duplicate index rolled the whole turn back: the messages were gone, the refresh after
-the final commit raised, and the spoken turn never reached the chat. Now each write
-has its own savepoint and the caller commits.
+The to-do writes used to commit their caller's session midway, and a reminder that hit
+the open duplicate index rolled the caller's whole transaction back. Now each write has
+its own savepoint and the caller commits.
 """
 
 from __future__ import annotations
@@ -16,15 +14,12 @@ from unittest.mock import AsyncMock, patch
 from uuid import uuid4
 
 import pytest
-from sqlalchemy import func, select, text
+from sqlalchemy import func, select
 
-from app.core.config import Settings
-from app.models.orm import Message, TodoItem
+from app.models.orm import TodoItem
 from app.modules import todos as todos_service
 from app.modules.conversation import chats_repository as chats_repo
-from app.modules.speech.live_talk import persist_live_talk_turn
 from app.repositories import users as users_repo
-from app.tests.fakes import FakeSessionCM, redis_mock
 
 
 async def _user_with_a_saved_reminder(session, *, due: datetime, errands: int = 500):
@@ -56,44 +51,6 @@ def _reminder_reply(due: datetime) -> str:
     )
 
 
-@pytest.mark.asyncio
-async def test_a_voice_reminder_that_hits_a_saved_duplicate_keeps_the_voice_turn(db_session):
-    due = (datetime.now(UTC) + timedelta(days=30)).replace(hour=17, minute=0, second=0)
-    due = due.replace(microsecond=0)
-    user = await _user_with_a_saved_reminder(db_session, due=due)
-    chat = await chats_repo.create(db_session, user_id=user.id, model="free-chat")
-
-    with (
-        patch("app.modules.speech.live_talk.SessionLocal", FakeSessionCM(db_session)),
-        patch("app.core.jobs.enqueue", AsyncMock()),
-    ):
-        user_message, assistant_message = await persist_live_talk_turn(
-            user=user,
-            chat_id=chat.id,
-            user_text="remind me to call mom at 5pm",
-            assistant_text=_reminder_reply(due),
-            untitled=False,
-            settings=Settings(_env_file=None),
-            redis=redis_mock(),
-            enqueue_jobs=False,
-        )
-
-    assert user_message is not None and assistant_message is not None
-    roles = (
-        await db_session.scalars(
-            select(Message.role).where(Message.chat_id == chat.id).order_by(Message.created_at)
-        )
-    ).all()
-    assert sorted(roles) == ["assistant", "user"]
-    assert "Call mom" in assistant_message.content
-    calls = await db_session.scalar(
-        select(func.count())
-        .select_from(TodoItem)
-        .where(TodoItem.user_id == user.id, TodoItem.content == "Call mom")
-    )
-    assert calls == 1
-
-
 async def _call_mom(session, user_id) -> list[TodoItem]:
     return list(
         (
@@ -123,7 +80,7 @@ async def test_the_reminder_pass_never_commits_or_rolls_back_its_callers_session
     due = (datetime.now(UTC) + timedelta(days=30)).replace(hour=17, minute=0, second=0)
     due = due.replace(microsecond=0)
     user = await _user_with_a_saved_reminder(db_session, due=due, errands=errands)
-    chat = await chats_repo.create(db_session, user_id=user.id, model="free-chat")
+    chat = await chats_repo.create(db_session, user_id=user.id)
     kind = reply
     if reply == "new":
         reply = _reminder_reply(due + timedelta(hours=1)).replace("Call mom", "Water the plants")
@@ -161,38 +118,6 @@ async def test_the_reminder_pass_never_commits_or_rolls_back_its_callers_session
         assert saved == []
     else:
         assert [row.due_at.hour for row in saved if row.due_at] == [18]
-
-
-@pytest.mark.asyncio
-async def test_a_reminder_pass_that_fails_in_the_database_keeps_the_voice_turn(db_session):
-    user = await _user_with_a_saved_reminder(db_session, due=datetime.now(UTC), errands=0)
-    chat = await chats_repo.create(db_session, user_id=user.id, model="free-chat")
-
-    async def broken_pass(session, **_kwargs):
-        await session.execute(text("SELECT 1 / 0"))  # aborts the transaction it runs in
-
-    with (
-        patch("app.modules.speech.live_talk.SessionLocal", FakeSessionCM(db_session)),
-        patch(
-            "app.modules.speech.live_talk.todos_service.materialize_reminder_fences", broken_pass
-        ),
-    ):
-        user_message, assistant_message = await persist_live_talk_turn(
-            user=user,
-            chat_id=chat.id,
-            user_text="remind me to call mom at 5pm",
-            assistant_text="Sure.",
-            untitled=False,
-            settings=Settings(_env_file=None),
-            redis=redis_mock(),
-            enqueue_jobs=False,
-        )
-
-    assert user_message is not None and assistant_message is not None
-    count = await db_session.scalar(
-        select(func.count()).select_from(Message).where(Message.chat_id == chat.id)
-    )
-    assert count == 2
 
 
 # The files the reminder pass runs (``materialize_reminder_fences`` and what it calls).

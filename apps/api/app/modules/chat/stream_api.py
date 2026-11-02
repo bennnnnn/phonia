@@ -328,15 +328,6 @@ def _sse_response(body: AsyncIterator[str]) -> StreamingResponse:
     )
 
 
-def _client_geo(body: ChatMessageRequest) -> dict[str, Any]:
-    return {
-        "client_timezone": body.client_timezone,
-        "client_location": body.client_location,
-        "client_latitude": body.client_latitude,
-        "client_longitude": body.client_longitude,
-    }
-
-
 @router.post("/{chat_id}/messages/stream")
 async def stream_message_sse(
     chat_id: UUID,
@@ -361,14 +352,13 @@ async def stream_message_sse(
             user_id=user.id,
             chat_id=chat_id,
             content=body.content,
-            model_alias=body.model,
             attachment_ids=body.attachment_ids or None,
             should_cancel=should_cancel,
             outcome=outcome,
             on_status=on_status,
             on_reasoning=on_reasoning,
             user=user,
-            **_client_geo(body),
+            client_timezone=body.client_timezone,
         )
 
     return _sse_response(
@@ -405,12 +395,11 @@ async def stream_regenerate_sse(
                     settings,
                     user_id=user.id,
                     chat_id=chat_id,
-                    model_alias=body.model,
                     should_cancel=should_cancel,
                     outcome=outcome,
                     on_status=on_status,
                     on_reasoning=on_reasoning,
-                    **_client_geo(body),
+                    client_timezone=body.client_timezone,
                 )
             ),
         )

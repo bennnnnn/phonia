@@ -26,7 +26,6 @@ pytest_plugins = ("app.tests.modules.chat.chat_test_support",)
 def _user() -> MagicMock:
     user = MagicMock()
     user.id = uuid4()
-    user.default_model = "free-chat"
     user.plan = "free"
     return user
 
@@ -58,7 +57,7 @@ def _held_lock_deps(*, acquire, release, refresh=None, **fields):
 
 def _plan_and_quota():
     return {
-        "model_choice": {"resolve_user_model_override": MagicMock(return_value="free-chat")},
+        "model_choice": {"resolve_user_model": MagicMock(return_value="free-chat")},
         "quota": {"daily_limit_for_user": MagicMock(return_value=100_000)},
     }
 
@@ -121,10 +120,6 @@ async def test_stream_chat_releases_lock_on_success():
         patch("app.modules.chat.turn_load.wait_for_pending_finalize", AsyncMock()),
         _turn_load(),
         patch(
-            "app.modules.chat.turn_intercepts.try_image_gen_for_turn",
-            AsyncMock(return_value=False),
-        ),
-        patch(
             "app.modules.chat.stream_entry.prepare_chat_turn",
             AsyncMock(return_value=MagicMock()),
         ),
@@ -171,10 +166,6 @@ async def test_stream_chat_releases_lock_when_prepare_fails():
     with (
         patch("app.modules.chat.turn_load.wait_for_pending_finalize", AsyncMock()),
         _turn_load(),
-        patch(
-            "app.modules.chat.turn_intercepts.try_image_gen_for_turn",
-            AsyncMock(return_value=False),
-        ),
         patch(
             "app.modules.chat.stream_entry.prepare_chat_turn",
             AsyncMock(side_effect=RuntimeError("prepare boom")),
@@ -232,12 +223,8 @@ async def test_regenerate_acquires_chatprep_lock():
         patch.object(messages_repository, "count_for_chat", AsyncMock(return_value=2)),
         patch.object(
             model_choice,
-            "resolve_user_model_override",
+            "resolve_user_model",
             return_value="free-chat",
-        ),
-        patch(
-            "app.modules.chat.turn_intercepts.try_image_gen_for_turn",
-            AsyncMock(return_value=False),
         ),
         patch(
             "app.modules.chat.stream_entry.build_stream_prompt_context",
@@ -443,7 +430,7 @@ async def test_a_turn_handed_to_finalize_is_not_refunded_on_a_later_escape(strea
                 res.reserved_tokens = 500
                 async for _ in stream_entry.stream_and_finalize(
                     deps,
-                    AsyncMock(),
+                    redis_mock(),
                     Settings(max_output_tokens=100, mcp_tool_loop_enabled=False),
                     ctx,
                     should_cancel=None,

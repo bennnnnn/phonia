@@ -9,7 +9,7 @@
  * reply that will be saved.
  */
 import { fencedLines } from "@/lib/mdFenceScan";
-import { normalizeEmojiUse } from "@/lib/responseTone";
+import { normalizeEmojiUse } from "@/lib/emojiUse";
 
 // The server's `prompt_constants.routing.EMOJI` (emoji, flags and their joiners), as
 // surrogate pairs: Metro's Babel rewrites a `u`-flag class of astral ranges, and the

@@ -15,6 +15,7 @@ from typing import TYPE_CHECKING, TypeGuard
 
 from app.core import sympy_executor
 from app.modules.chat.verification_claims import strip_verification_claims
+from app.modules.chat.worked_lead import drop_restated_tail
 from app.modules.chat.working_check import is_worked_solution, working_note
 from app.services.answer_fence import (
     demote_answer_fences,
@@ -236,7 +237,8 @@ def append_unverified_notes(state: FinalizeState) -> str:
 def check_working(state: FinalizeState) -> str:
     """Working the model wrote with no verified result behind it: a slip in one
     multiplication carries into the answer, so name the first one. Its final
-    answer goes in the same card a verified one does, without the check.
+    answer goes in the same card a verified one does, without the check, and is not
+    said again below the cards (``worked_lead.drop_restated_tail``).
     """
     ctx = state.ctx
     text = state.text
@@ -246,6 +248,7 @@ def check_working(state: FinalizeState) -> str:
         note = working_note(text)
         # A reply in parts gets a card under each part's Answer heading.
         text = land_part_answer_cards(text) or land_answer_card(text, None)
+        text = drop_restated_tail(text, ctx.user_message_content or "")
         if note:
             text = f"{text.rstrip()}\n\n{note}"
     return text

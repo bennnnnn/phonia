@@ -1,6 +1,6 @@
 """The one setting a chat line changes: the theme ("switch to dark mode").
 
-Every other setting (model, tone, language, memory) is changed by hand in Settings;
+Every other setting (language, memory, emoji) is changed by hand in Settings;
 no chat line proposes it. Linear token / phrase scans only — no ``\\s+`` / ``.+``
 regex on user text (CodeQL ``py/polynomial-redos``).
 """

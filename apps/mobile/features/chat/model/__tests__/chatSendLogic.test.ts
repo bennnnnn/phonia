@@ -137,13 +137,11 @@ describe("chatSendLogic", () => {
       },
       attachmentIds: ["att-1"],
       optimisticId: "local-1",
-      model: "smart-chat",
     });
     expect(pending.skipUserBubble).toBe(true);
     expect(pending.trackSendingMessageId).toBe("local-1");
     expect(pending.attachmentIds).toEqual(["att-1"]);
     expect(pending.localImageUri).toBe("file:///photo.jpg");
     expect(pending.text).toContain("Look");
-    expect(pending.model).toBe("smart-chat");
   });
 });

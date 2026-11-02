@@ -10,7 +10,6 @@ import { getCachedChat } from "@/features/chat/model/chatListCache";
 import {
   confirmAndDeleteChat,
   renameChat,
-  setChatArchived,
   setChatPinned,
   type ChatOperationContext,
 } from "@/features/chat/model/chatOperations";
@@ -112,16 +111,8 @@ export function useChatMenuActions({
   const togglePinChat = useCallback(async () => {
     if (!operations || !menuChat || !currentView()) return;
     const chat = getCachedChat(menuChat.id) ?? menuChat;
-    if (chat.archived) return;
     closeMenu();
     await setChatPinned(operations, chat, !chat.pinned);
-  }, [operations, menuChat, currentView, closeMenu]);
-
-  const toggleArchiveChat = useCallback(async () => {
-    if (!operations || !menuChat || !currentView()) return;
-    const chat = getCachedChat(menuChat.id) ?? menuChat;
-    closeMenu();
-    await setChatArchived(operations, chat, !chat.archived);
   }, [operations, menuChat, currentView, closeMenu]);
 
   const confirmDeleteChat = useCallback(() => {
@@ -137,6 +128,6 @@ export function useChatMenuActions({
     renameText, setRenameText, actionBanner, dismissActionBanner, showActionBanner,
     closeMenu, showRowMenu, openRenameFromMenu, confirmRename,
     shareChat, openShareChat, closeShare, loadShareMessages,
-    togglePinChat, toggleArchiveChat, confirmDeleteChat, closeRename,
+    togglePinChat, confirmDeleteChat, closeRename,
   };
 }

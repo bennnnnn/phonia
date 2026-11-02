@@ -59,7 +59,6 @@ async def test_a_regenerated_yes_still_accepts_the_offer() -> None:
             get_settings(),
             user_id=user_id,
             chat_id=chat_id,
-            model_alias=None,
         )
         assert turn.content == "yes"
         assert turn.turn_mode.accepted_offer

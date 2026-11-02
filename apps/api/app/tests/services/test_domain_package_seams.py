@@ -42,13 +42,15 @@ def test_language_learning_module_is_gone() -> None:
 
 
 def test_chemistry_package_exposes_its_public_api() -> None:
-    chemistry = importlib.import_module("app.modules.chemistry")
+    # The package re-exports nothing (importing it loads no submodule): each seam is its file.
+    def seam(module: str, name: str) -> object:
+        return getattr(importlib.import_module(f"app.modules.chemistry.{module}"), name)
 
-    assert callable(chemistry.validate_smiles)
-    assert callable(chemistry.balance_equation)
-    assert callable(chemistry.stoichiometry)
-    assert callable(chemistry.molar_mass)
-    assert callable(chemistry.solve_chemistry)
+    assert callable(seam("smiles", "validate_smiles"))
+    assert callable(seam("equations", "balance_equation"))
+    assert callable(seam("stoichiometry", "stoichiometry"))
+    assert callable(seam("stoichiometry", "molar_mass"))
+    assert callable(seam("solvers", "solve_chemistry"))
     assert callable(
         importlib.import_module("app.modules.chemistry.context").build_chemistry_augmentation
     )

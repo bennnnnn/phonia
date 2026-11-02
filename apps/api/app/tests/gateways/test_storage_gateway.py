@@ -260,3 +260,60 @@ async def test_r2_clone_write_failure_uses_storage_outage_error():
         gateway = R2StorageGateway(_r2_settings())
     with pytest.raises(StorageUnavailableError):
         await gateway.write_bytes("u/clone", b"data")
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "head, expected",
+    [
+        ({"ContentLength": 1234}, 1234),
+        ("NoSuchKey", None),
+        ("NotFound", None),
+        ("404", None),
+    ],
+)
+async def test_r2_object_size_reads_a_head_not_the_object(head, expected):
+    from botocore.exceptions import ClientError
+
+    s3 = MagicMock()
+    if isinstance(head, dict):
+        s3.head_object.return_value = head
+    else:
+        s3.head_object.side_effect = ClientError({"Error": {"Code": head}}, "HeadObject")
+    with patch("boto3.client", return_value=s3):
+        gateway = R2StorageGateway(_r2_settings())
+    assert await gateway.object_size("user-1/abc") == expected
+    s3.get_object.assert_not_called()
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("failure", ["AccessDenied", "no-length", "boom"])
+async def test_r2_object_size_outage_is_not_a_missing_object(failure):
+    from botocore.exceptions import ClientError
+
+    s3 = MagicMock()
+    if failure == "AccessDenied":
+        s3.head_object.side_effect = ClientError({"Error": {"Code": failure}}, "HeadObject")
+    elif failure == "no-length":
+        s3.head_object.return_value = {}
+    else:
+        s3.head_object.side_effect = RuntimeError(failure)
+    with patch("boto3.client", return_value=s3):
+        gateway = R2StorageGateway(_r2_settings())
+    with pytest.raises(StorageUnavailableError):
+        await gateway.object_size("user-1/abc")
+
+
+@pytest.mark.asyncio
+async def test_local_object_size_stats_the_file(tmp_path: Path):
+    gateway = LocalStorageGateway(tmp_path)
+    await gateway.write_bytes("u/a", b"hello")
+    assert await gateway.object_size("u/a") == 5
+    assert await gateway.object_size("u/missing") is None
+    assert await gateway.object_size("../escape") is None
+
+
+@pytest.mark.asyncio
+async def test_unconfigured_object_size_reports_unavailable():
+    with pytest.raises(StorageUnavailableError):
+        await UnconfiguredStorageGateway().object_size("u/a")

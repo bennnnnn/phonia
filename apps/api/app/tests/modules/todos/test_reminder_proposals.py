@@ -31,7 +31,7 @@ async def _user_and_chat(session: Any) -> tuple[Any, Any]:
         avatar_url=None,
         google_sub=str(uuid4()),
     )
-    chat = await chats_repo.create(session, user_id=user.id, model="free-chat")
+    chat = await chats_repo.create(session, user_id=user.id)
     return user, chat
 
 

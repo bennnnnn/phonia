@@ -20,8 +20,6 @@ from .tool_loop_support import settings
 def test_status_for_tool_omits_generic_thinking():
     assert calls._status_for_tool("web_search") == "searching"
     assert calls._status_for_tool("sympy") == "calculating"
-    assert calls._status_for_tool("generate_image") == "image_gen"
-    # A reference-photo lookup is not image generation (S7.9).
     assert calls._status_for_tool("search_image") == "finding_photo"
     assert calls._status_for_tool("calendar") is None
     assert calls._status_for_tool("") is None
@@ -29,7 +27,6 @@ def test_status_for_tool_omits_generic_thinking():
 
 def test_status_detail_for_tool_uses_query_for_search_image():
     assert calls._status_detail_for_tool("search_image", '{"query": "human ear"}') == "human ear"
-    assert calls._status_detail_for_tool("generate_image", '{"prompt": "a fox"}') == "a fox"
 
 
 @pytest.mark.asyncio
@@ -175,7 +172,6 @@ async def test_tool_loop_gives_every_call_and_the_forced_search_one_turn_context
         patch("app.modules.chat.tool_loop.rounds.litellm_gateway.complete_with_tools", complete),
         patch("app.modules.chat.tool_loop.calls.mcp_registry.invoke_validated", invoke),
         patch("app.modules.chat.tool_loop.forced_search.run_cached_search", forced),
-        patch("app.modules.chat.tool_loop.selection.plan_service.can_use", return_value=False),
     ):
         await tool_loop.run_tool_rounds(
             settings=settings(mcp_tool_loop_enabled=True, web_search_enabled=True),
@@ -444,81 +440,6 @@ async def test_invoke_validated_rejects_empty_query(web_search_registered):
 
 
 @pytest.mark.asyncio
-async def test_tool_loop_generate_image_is_terminal():
-    """Successful generate_image stops further completion rounds."""
-    from app.gateways.mcp.base import ToolResult
-    from app.modules.images.gen_tool import ImageGenAdapter
-
-    mcp_registry.clear()
-    mcp_registry.register(ImageGenAdapter(settings(image_generation_enabled=True)))
-    try:
-        messages = [{"role": "user", "content": "draw a watercolor fox"}]
-        marker = "[Image: /attachments/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/file]"
-        complete = AsyncMock(
-            return_value={
-                "content": None,
-                "tool_calls": [
-                    {
-                        "id": "img1",
-                        "type": "function",
-                        "function": {
-                            "name": "generate_image",
-                            "arguments": '{"prompt": "watercolor fox"}',
-                        },
-                    }
-                ],
-            }
-        )
-        invoke = AsyncMock(
-            return_value=ToolResult(
-                name="generate_image",
-                content="ok",
-                data={
-                    "terminal": True,
-                    "image_marker": marker,
-                    "assistant_message_id": "01900000-0000-7000-8000-000000000001",
-                    "resolved_model": "image-gen-model",
-                },
-            )
-        )
-        statuses: list[tuple[str, str | None]] = []
-
-        async def on_status(phase: str, detail: str | None = None) -> None:
-            statuses.append((phase, detail))
-
-        pro_user = MagicMock()
-        with (
-            patch(
-                "app.modules.chat.tool_loop.rounds.litellm_gateway.complete_with_tools", complete
-            ),
-            patch("app.modules.chat.tool_loop.calls.mcp_registry.invoke_validated", invoke),
-            patch("app.modules.chat.tool_loop.selection.plan_service.can_use", return_value=True),
-        ):
-            _out, verified, terminal, _hits = await tool_loop.run_tool_rounds(
-                settings=settings(
-                    mcp_tool_loop_enabled=True,
-                    mcp_tool_loop_max_rounds=3,
-                    image_generation_enabled=True,
-                ),
-                messages=messages,
-                usage={},
-                on_status=on_status,
-                user=pro_user,
-            )
-
-        # One completion that requested the tool — no second "final answer" round.
-        assert complete.await_count == 1
-        invoke.assert_awaited_once()
-        assert statuses == [("image_gen", "watercolor fox")]
-        assert verified is None
-        assert terminal is not None
-        assert terminal.final_content == marker
-        assert terminal.message_id == "01900000-0000-7000-8000-000000000001"
-    finally:
-        mcp_registry.clear()
-
-
-@pytest.mark.asyncio
 async def test_tool_loop_search_image_is_terminal():
     """Successful search_image (reference-photo lookup) stops further rounds."""
     from app.gateways.mcp.base import ToolResult
@@ -567,7 +488,6 @@ async def test_tool_loop_search_image_is_terminal():
                 "app.modules.chat.tool_loop.rounds.litellm_gateway.complete_with_tools", complete
             ),
             patch("app.modules.chat.tool_loop.calls.mcp_registry.invoke_validated", invoke),
-            patch("app.modules.chat.tool_loop.selection.plan_service.can_use", return_value=False),
         ):
             _out, verified, terminal, _hits = await tool_loop.run_tool_rounds(
                 settings=settings(
@@ -581,7 +501,7 @@ async def test_tool_loop_search_image_is_terminal():
                 user=free_user,
             )
 
-        # Free users get the lookup tool even though generate_image is Pro-only.
+        # Free users get the lookup tool.
         assert complete.await_count == 1
         invoke.assert_awaited_once()
         # A found photo ends the turn: no composing label after it.
@@ -595,30 +515,14 @@ async def test_tool_loop_search_image_is_terminal():
 
 
 @pytest.mark.asyncio
-async def test_tools_for_user_omits_image_gen_for_free():
-    from app.modules.images.gen_tool import ImageGenAdapter
-
-    mcp_registry.clear()
-    mcp_registry.register(ImageGenAdapter(settings(image_generation_enabled=True)))
-    try:
-        with patch("app.modules.chat.tool_loop.selection.plan_service.can_use", return_value=False):
-            tools = selection._tools_for_user(settings(image_generation_enabled=True), MagicMock())
-        names = [(t.get("function") or {}).get("name") for t in tools]
-        assert "generate_image" not in names
-    finally:
-        mcp_registry.clear()
-
-
-@pytest.mark.asyncio
 async def test_tools_for_user_keeps_search_image_for_free():
-    """Unlike generate_image, search_image is not Pro-gated."""
+    """search_image is offered on every plan."""
     from app.modules.images.search_tool import ImageSearchAdapter
 
     mcp_registry.clear()
     mcp_registry.register(ImageSearchAdapter(settings(image_search_enabled=True)))
     try:
-        with patch("app.modules.chat.tool_loop.selection.plan_service.can_use", return_value=False):
-            tools = selection._tools_for_user(settings(image_search_enabled=True), MagicMock())
+        tools = selection._tools_for_user(settings(image_search_enabled=True))
         names = [(t.get("function") or {}).get("name") for t in tools]
         assert "search_image" in names
     finally:
@@ -632,7 +536,7 @@ async def test_tools_for_user_omits_search_image_when_disabled():
     mcp_registry.clear()
     mcp_registry.register(ImageSearchAdapter(settings(image_search_enabled=True)))
     try:
-        tools = selection._tools_for_user(settings(image_search_enabled=False), MagicMock())
+        tools = selection._tools_for_user(settings(image_search_enabled=False))
         names = [(t.get("function") or {}).get("name") for t in tools]
         assert "search_image" not in names
     finally:

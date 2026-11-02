@@ -18,13 +18,12 @@ from app.core.db import SessionLocal
 from app.modules import memory as memory_service
 from app.modules import todos as todos_service
 from app.modules import web_search as web_search_service
-from app.modules.account import profile as profile_service
 from app.modules.account import settings_proposal as settings_proposal_service
 from app.modules.account.settings_intent import extract_settings_changes
 from app.modules.chat import recurring_pay as recurring_pay_service
 from app.modules.chat.turn_prep.clauses import request_body
 from app.modules.chat.turn_prep.followups import SubjectFollowup
-from app.modules.chat.turn_prep.request import ClientGeoContext, TurnIdentity, TurnRequest
+from app.modules.chat.turn_prep.request import GeoAsk, TurnIdentity, TurnRequest
 from app.modules.memory.profile_reply import reply_for_profile_question
 from app.modules.memory.switch import memory_switch_on
 from app.modules.turn_reading.plan import TurnPlan
@@ -94,9 +93,7 @@ async def resolve_instant_reply(
         if now_reply is not None:
             return now_reply
     if time_context_service.is_location_question(content):
-        return time_context_service.format_location_answer(
-            identity.geo.user_location, identity.local_tz
-        )
+        return time_context_service.format_location_answer(identity.local_tz)
     asked = profile_question_to_answer(
         content, _earlier_user_texts(request.recent_messages, content)
     )
@@ -153,27 +150,16 @@ async def _profile_reply(asked: str, identity: TurnIdentity) -> str | None:
     except Exception:
         logger.warning("Profile reply memory read failed user_id=%s", user.id, exc_info=True)
         return None
-    return reply_for_profile_question(
-        asked,
-        facts,
-        location=profile_service.user_location_label(user),
-    )
+    return reply_for_profile_question(asked, facts)
 
 
-def location_not_set_reply(
-    content: str, geo: ClientGeoContext, followup: SubjectFollowup
-) -> str | None:
-    """A nearby question with no location to search from, answered without the model.
+def location_not_set_reply(content: str, geo: GeoAsk, followup: SubjectFollowup) -> str | None:
+    """A nearby question, which has no location to search from, answered without the model.
 
     A question that names its own place ("best restaurant in DC") needs no location,
     and "how far does it go?" after a physics problem asks about the car, not the user.
     """
-    if (
-        geo.geo_query
-        and not geo.has_geo_fix
-        and not followup.found
-        and not web_search_service.names_its_place(content)
-    ):
+    if geo.geo_query and not followup.found and not web_search_service.names_its_place(content):
         return web_search_service.format_location_not_set_answer()
     return None
 

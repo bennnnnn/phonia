@@ -1,8 +1,23 @@
-"""Redis keys for a user's memory blocks, and dropping them when memory changes."""
+"""Redis keys for a user's memory blocks, and dropping them when memory changes.
+
+Every block is tied to the memory generation read before its facts were: the
+query blocks fold it into their key, and the question-free blocks
+(``memblock2:{user}``, ``:w``, ``:x``) store it in front of the text. A memory
+write that commits after a turn read its facts bumps the generation, so the
+block that turn stores afterwards is never served, even though its SET came
+after the write's invalidation.
+
+The tagged blocks have their own key prefix: during a rolling deploy a process of
+the previous release reads ``memblock:{user}`` as plain text, and would have put
+the generation line into the prompt. Each release reads only the entries it wrote;
+invalidation drops both until no deployed release writes the old keys.
+"""
 
 import hashlib
 import logging
 from uuid import UUID
+
+from redis.asyncio import Redis
 
 from app.core.cache_generation import bump_generation
 from app.core.config import Settings
@@ -36,7 +51,15 @@ def memory_query_scoped_key(
 
 
 def memory_block_key(user_id: UUID) -> str:
+    return f"memblock2:{user_id}"
+
+
+def _legacy_memory_block_key(user_id: UUID) -> str:
+    """The previous release's untagged blocks; dropped on invalidation while it may run."""
     return f"memblock:{user_id}"
+
+
+_BLOCK_SUFFIXES = ("", ":x")
 
 
 def memory_generation_key(user_id: UUID) -> str:
@@ -54,17 +77,61 @@ async def write_query_block_cache(cache_key: str, block: str, settings: Settings
         logger.debug("Memory query cache write failed", exc_info=True)
 
 
+def _generation_tag(generation: bytes | str | None) -> str:
+    if generation is None:
+        return "0"
+    return generation.decode() if isinstance(generation, bytes) else generation
+
+
+async def read_block_cache(redis: Redis, user_id: UUID, cache_key: str) -> tuple[str | None, str]:
+    """The cached block if it was stored under the current generation, and that generation.
+
+    One MGET reads both. The caller stores what it builds under the generation
+    returned here, read before its facts, never one read after.
+    """
+    generation, stored = await redis.mget(memory_generation_key(user_id), cache_key)
+    tag = _generation_tag(generation)
+    if stored is None:
+        return None, tag
+    raw = stored.decode() if isinstance(stored, bytes) else str(stored)
+    stored_tag, sep, block = raw.partition("\n")
+    # An entry written before blocks carried their generation has none: a miss.
+    if not sep or stored_tag != tag:
+        return None, tag
+    return block, tag
+
+
+async def write_block_cache(
+    redis: Redis, cache_key: str, generation_tag: str, block: str, ttl_seconds: int
+) -> None:
+    await redis.set(cache_key, f"{generation_tag}\n{block}", ex=ttl_seconds)
+
+
+_INVALIDATE_ATTEMPTS = 2
+
+
 async def invalidate_memory_block(user_id: UUID) -> None:
-    """Bump the query generation and drop every scoped block-cache key."""
-    try:
-        redis = get_redis_client()
-        await bump_generation(redis, memory_generation_key(user_id))
-        block_key = memory_block_key(user_id)
-        await redis.delete(
-            block_key,
-            f"{block_key}:x",
-            f"{block_key}:w",
-            f"{block_key}:wx",
-        )
-    except Exception:
-        logger.debug("Memory block cache invalidation failed", exc_info=True)
+    """Bump the query generation and drop every scoped block-cache key.
+
+    Tried twice: a failure leaves a "forget X" injectable until the blocks
+    expire (``memory_cache_ttl``), so it is logged at warning, not hidden.
+    """
+    block_keys = [
+        f"{base}{suffix}"
+        for base in (memory_block_key(user_id), _legacy_memory_block_key(user_id))
+        for suffix in _BLOCK_SUFFIXES
+    ]
+    for attempt in range(1, _INVALIDATE_ATTEMPTS + 1):
+        try:
+            redis = get_redis_client()
+            await bump_generation(redis, memory_generation_key(user_id))
+            await redis.delete(*block_keys)
+            return
+        except Exception as exc:
+            if attempt == _INVALIDATE_ATTEMPTS:
+                logger.warning(
+                    "Memory cache invalidation failed for user_id=%s; cached blocks "
+                    "may be served until they expire: %r",
+                    user_id,
+                    exc,
+                )

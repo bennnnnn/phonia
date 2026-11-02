@@ -23,7 +23,7 @@ def _deps(*, load_user, load_chat, list_recent):
         users={"get_by_id": load_user},
         chats={"get_by_id": load_chat},
         messages={"list_recent": list_recent, "count_for_chat": AsyncMock(return_value=0)},
-        model_choice={"resolve_user_model_override": lambda *_args, **_kwargs: "free-chat"},
+        model_choice={"resolve_user_model": lambda *_args, **_kwargs: "free-chat"},
     )
 
 
@@ -52,10 +52,6 @@ def _photo_turn(resources: SimpleNamespace) -> Iterator[None]:
             "app.modules.chat.turn_intercepts.try_image_lookup_for_turn",
             AsyncMock(return_value=True),
         ),
-        patch(
-            "app.modules.chat.turn_intercepts.try_image_gen_for_turn",
-            AsyncMock(return_value=False),
-        ),
     ):
         yield
 
@@ -75,7 +71,6 @@ async def test_history_load_overlaps_account_and_chat_load() -> None:
         user.id = uuid4()
         user.plan = "pro"
         user.timezone = "UTC"
-        user.default_model = "free-chat"
         user.memory_enabled = True
         return user
 
@@ -122,7 +117,6 @@ async def test_user_and_chat_ownership_loads_overlap() -> None:
     user.id = user_id
     user.plan = "pro"
     user.timezone = "UTC"
-    user.default_model = "free-chat"
     user.memory_enabled = True
 
     chat = MagicMock()
@@ -170,7 +164,6 @@ async def test_every_turn_loads_the_recent_window(
     user.id = uuid4()
     user.plan = "pro"
     user.timezone = "UTC"
-    user.default_model = "free-chat"
     user.memory_enabled = True
 
     chat = MagicMock()

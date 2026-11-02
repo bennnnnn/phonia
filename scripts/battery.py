@@ -88,12 +88,8 @@ class Turn:
     def answer_photo(self) -> bool:
         """A photo above an ordinary answer: the reply opens with its image marker."""
         opens_with_image = self.reply.lstrip().startswith("[Image: /attachments/")
-        # A lookup or a generated picture is the whole reply, not a photo above one.
-        return opens_with_image and not self.photo and not self.generated
-
-    @property
-    def generated(self) -> bool:
-        return self.model == "image-gen-model"
+        # A lookup is the whole reply, not a photo above one.
+        return opens_with_image and not self.photo
 
     def route(self) -> str:
         parts: list[str] = []
@@ -107,12 +103,10 @@ class Turn:
             parts.append("photo")
         elif self.answer_photo:
             parts.append("photo above the answer")
-        elif self.generated:
-            parts.append("generated image")
         phases = [p for p in dict.fromkeys(self.phases) if p not in {"thinking", "writing"}]
         if phases:
             parts.append("status: " + ", ".join(phases))
-        if self.model and self.model not in {"image-search-model", "image-gen-model"}:
+        if self.model and self.model != "image-search-model":
             parts.append(f"model {self.model}")
         return "; ".join(parts) or "plain reply"
 
@@ -286,12 +280,8 @@ def check(case: Case, turn: Turn) -> list[str]:
     # An answer photo streams with the model's reply, so the reply's model is the chat model.
     if expect.answer_photo and not (turn.photo or turn.answer_photo):
         misses.append("no photo above the answer")
-    if expect.image_gen is True and not turn.generated:
-        misses.append("no generated image")
-    if expect.image_gen is False and turn.generated:
-        misses.append("generated an image")
-    # A lookup or generated image is the whole reply; an answer photo sits above text.
-    if (turn.photo and not expect.answer_photo) or turn.generated:
+    # A lookup is the whole reply; an answer photo sits above text.
+    if turn.photo and not expect.answer_photo:
         return misses
     if expect.search == "yes" and not turn.sources:
         misses.append("did not search")

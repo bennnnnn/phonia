@@ -11,10 +11,8 @@ from app.core.dev_guards import require_dev_privilege_access
 from app.core.etag import conditional_json
 from app.models.orm import User
 from app.models.schemas import (
-    ArchiveUpdate,
     ChatBulkAction,
     ChatBulkOut,
-    ChatCreate,
     ChatListOut,
     ChatOut,
     ChatRename,
@@ -25,7 +23,6 @@ from app.models.schemas import (
     PinUpdate,
     UsageOut,
 )
-from app.models.schemas.page import Page
 from app.modules.chat import service as chats_service
 
 router = APIRouter(prefix="/chats", tags=["chats"])
@@ -33,15 +30,10 @@ router = APIRouter(prefix="/chats", tags=["chats"])
 
 @router.post("", response_model=ChatOut, status_code=status.HTTP_201_CREATED)
 async def create_chat(
-    body: ChatCreate,
     user: User = Depends(get_current_user),
     session: AsyncSession = Depends(get_db),
 ) -> ChatOut:
-    chat = await chats_service.create_chat(
-        session,
-        user,
-        model=body.model,
-    )
+    chat = await chats_service.create_chat(session, user)
     return ChatOut.model_validate(chat)
 
 
@@ -66,35 +58,14 @@ async def list_chats(
     return conditional_json(request, chats)
 
 
-@router.get("/archived", response_model=Page[ChatOut])
-async def list_archived_chats(
-    user: User = Depends(get_current_user),
-    session: AsyncSession = Depends(get_db),
-    limit: int = Query(default=chats_service.ARCHIVED_CHAT_LIST_LIMIT, ge=1, le=100),
-    cursor: str | None = Query(default=None, max_length=200),
-) -> Page[ChatOut]:
-    """Archived chats past the drawer's first page (``archived_next_cursor``)."""
-    return await chats_service.list_archived_chats(session, user, limit=limit, cursor=cursor)
-
-
-@router.post("/archive-all", status_code=status.HTTP_204_NO_CONTENT)
-async def archive_all_chats(
-    user: User = Depends(get_current_user),
-    session: AsyncSession = Depends(get_db),
-) -> None:
-    await chats_service.archive_all_chats(session, user)
-
-
 @router.post("/bulk", response_model=ChatBulkOut)
 async def bulk_chats(
     body: ChatBulkAction,
     user: User = Depends(get_current_user),
     session: AsyncSession = Depends(get_db),
 ) -> ChatBulkOut:
-    """Archive, unarchive or delete the drawer's selection in one request."""
-    changed = await chats_service.bulk_chats(
-        session, user, action=body.action, chat_ids=body.chat_ids
-    )
+    """Delete the drawer's selection in one request."""
+    changed = await chats_service.bulk_chats(session, user, chat_ids=body.chat_ids)
     return ChatBulkOut(changed=changed)
 
 
@@ -126,17 +97,6 @@ async def pin_chat(
     session: AsyncSession = Depends(get_db),
 ) -> ChatOut:
     chat = await chats_service.pin_chat(session, user, chat_id, pinned=body.pinned)
-    return ChatOut.model_validate(chat)
-
-
-@router.patch("/{chat_id}/archive", response_model=ChatOut)
-async def archive_chat(
-    chat_id: UUID,
-    body: ArchiveUpdate,
-    user: User = Depends(get_current_user),
-    session: AsyncSession = Depends(get_db),
-) -> ChatOut:
-    chat = await chats_service.archive_chat(session, user, chat_id, archived=body.archived)
     return ChatOut.model_validate(chat)
 
 

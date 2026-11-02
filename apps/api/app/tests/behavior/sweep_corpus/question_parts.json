@@ -26,8 +26,7 @@
   "area": "physics",
   "prompt": "A ball is dropped from 20 m. What is its speed after 1 s? How long does it take to reach the ground?",
   "reply": "**Speed after 1 s:** $v = gt = 9.81$ m/s\n\n**Time to the ground:** $t = \\sqrt{2h/g} = \\sqrt{2(20)/9.81} \\approx 2.02$ s",
-  "expect": "answer",
-  "location": "Addis Ababa, Ethiopia"
+  "expect": "answer"
  },
  {
   "id": "qp-005",
@@ -52,7 +51,7 @@
    "search",
    "answer"
   ],
-  "location": "Addis Ababa, Ethiopia"
+  "gap": "the where-are-you reply (no device location) takes the whole message, so the other part goes unanswered"
  },
  {
   "id": "qp-008",
@@ -73,7 +72,7 @@
    "search",
    "answer"
   ],
-  "location": "Addis Ababa, Ethiopia"
+  "gap": "the where-are-you reply (no device location) takes the whole message, so the other part goes unanswered"
  },
  {
   "id": "qp-010",
@@ -94,7 +93,7 @@
    "search",
    "answer"
   ],
-  "location": "Addis Ababa, Ethiopia"
+  "gap": "the where-are-you reply (no device location) takes the whole message, so the other part goes unanswered"
  },
  {
   "id": "qp-012",

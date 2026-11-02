@@ -51,12 +51,8 @@ jest.mock("@/features/attachments/model/attachments", () => ({
     }
   },
 }));
-jest.mock("@/lib/api", () => ({ api: { readScan: jest.fn(), imageIntent: jest.fn() } }));
+jest.mock("@/lib/api", () => ({ api: { readScan: jest.fn() } }));
 jest.mock("@/lib/haptics", () => ({ tap: jest.fn(), notifyWarning: jest.fn() }));
-jest.mock("@/features/chat/model/resolveClientGeoForQuery", () => ({
-  queryNeedsClientGeo: jest.fn(() => false),
-  resolveClientGeoForQuery: jest.fn(async () => ({ ok: true, clientGeo: null })),
-}));
 jest.mock("@/features/attachments/model/pendingComposerAttachment", () => ({
   subscribeComposerAttachmentQueue: () => () => undefined,
   takeQueuedComposerAttachment: () => null,
@@ -86,9 +82,6 @@ function Probe({ streaming = false, token = "token" }: { streaming?: boolean; to
     sendMessage: jest.fn(async () => true),
     sendStart: { beginDots: () => null, whenReplySettled: async () => undefined },
     editThread: jest.fn(),
-    messages: [],
-    selectedModel: "free-chat",
-    updateUser: jest.fn(),
     t: (key) => key,
     isOffline: false,
   });

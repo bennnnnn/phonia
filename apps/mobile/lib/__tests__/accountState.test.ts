@@ -52,7 +52,6 @@ const CLEARED_AT_SIGN_OUT: Record<string, string> = {
   "lib/auth.ts#storageQueue": "clearToken",
   "features/chat/model/chatListFile.ts#chatListFile": "invalidateChatListCache",
   "lib/cache/usageCache.ts#resource": "invalidateUsageCache",
-  "lib/cachedModels.ts#cachedModelsFile": "clearCachedModels",
   "lib/cachedUser.ts#cachedUserFile": "clearCachedUser",
   "lib/lesson/quizAttempts.ts#attempts": "clearQuizAttempts",
   "lib/linkPreview.ts#cache": "clearLinkPreviewCache",
@@ -67,7 +66,6 @@ const CLEARED_AT_SIGN_OUT: Record<string, string> = {
   // clearPushSyncRecord sets it back to false.
   "features/notifications/model/pushRegistration.ts#registered": "clearPushSyncRecord",
   "features/chat/model/streamingDraftStore.ts#draft": "publishStreamingDraft",
-  "lib/syncRecords.ts#locationRecord": "forgetSyncRecords",
   "lib/syncRecords.ts#pushRecord": "forgetSyncRecords",
 };
 
@@ -115,6 +113,11 @@ const IN_FLIGHT = [
   "features/speech/model/pronunciation.ts#ttsAbort",
   "features/speech/model/pronunciation.ts#ttsStartLoggedFor",
   "features/speech/model/pronunciation.ts#ttsTapAt",
+  // An ended session's logout still owed to the server, keyed by its own tokens; the next
+  // account never reads it, and it must outlive the sign-out that wrote it.
+  "lib/pendingLogout.ts#hasPending",
+  "lib/pendingLogout.ts#retrying",
+  "lib/pendingLogout.ts#storage",
 ];
 
 /** No account data: phone settings, native modules, players, listeners, counters, lookup tables. */
@@ -133,9 +136,6 @@ const NO_ACCOUNT_DATA = [
   "features/chat/drawer/drawer.ts#_onTitlePendingChange",
   "features/chat/hooks/useMathKeyboardInsert.ts#lastSystemKeyboardHeight",
   "features/chat/model/messageCache.ts#swept",
-  "features/images/components/dotField.ts#compiled",
-  "features/speech/model/liveTalkSfx.ts#cueEpoch",
-  "features/speech/model/liveTalkSfx.ts#cuePlayer",
   "features/speech/model/pronunciation.ts#speechModule",
   "features/speech/model/speechRate.ts#cachedRate",
   "features/speech/model/ttsPreference.ts#cachedPreference",
@@ -187,7 +187,6 @@ const NO_ACCOUNT_DATA = [
   "lib/sentry.ts#starting",
   "lib/skiaAvailability.ts#cached",
   "lib/speech/voiceAudio.ts#audioModule",
-  "lib/speech/voiceAudio.ts#exclusiveMicStop",
   "lib/theme.ts#accented",
   "lib/webView.ts#cachedPreviewWebView",
   "lib/webViewMountQueue.ts#grantedTickets",

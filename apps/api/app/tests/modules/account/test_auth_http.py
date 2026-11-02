@@ -35,7 +35,7 @@ def test_me_patch_updates_user():
         r = client.patch(
             "/auth/me",
             headers={"Authorization": "Bearer tok"},
-            json={"response_tone": "professional"},
+            json={"emoji_use": "more"},
         )
     assert r.status_code == 200
 
@@ -299,9 +299,7 @@ def test_dev_login():
         email="dev@recall.local",
         name="Dev",
         avatar_url=None,
-        default_model="auto",
         plan="free",
-        enabled_models=None,
         memory_enabled=True,
         created_at=datetime(2024, 1, 1),
     )

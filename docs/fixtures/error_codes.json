@@ -91,6 +91,27 @@
    "message": "Reading photos is paused for now. Type the problem, or try again later."
   }
  },
+ "scan_quota_exceeded": {
+  "status": 429,
+  "detail": {
+   "code": "quota_exceeded",
+   "message": "You've used up today's free limit. Upgrade for more — or try again after midnight UTC."
+  }
+ },
+ "scan_busy": {
+  "status": 429,
+  "detail": {
+   "code": "scan_busy",
+   "message": "Still reading your last photo. Try again in a moment."
+  }
+ },
+ "scan_not_a_photo": {
+  "status": 400,
+  "detail": {
+   "code": "invalid_image",
+   "message": "Not a photo"
+  }
+ },
  "presign_unsupported_type": {
   "status": 400,
   "detail": {
@@ -100,26 +121,37 @@
  },
  "presign_too_large": {
   "status": 422,
-  "detail": [
-   {
-    "type": "less_than_equal",
-    "loc": [
-     "body",
-     "size_bytes"
-    ],
-    "msg": "Input should be less than or equal to 10485760",
-    "input": 10485761,
-    "ctx": {
-     "le": 10485760
+  "detail": {
+   "code": "invalid",
+   "message": "Input should be less than or equal to 10485760",
+   "errors": [
+    {
+     "type": "less_than_equal",
+     "loc": [
+      "body",
+      "size_bytes"
+     ],
+     "msg": "Input should be less than or equal to 10485760",
+     "input": 10485761,
+     "ctx": {
+      "le": 10485760
+     }
     }
-   }
-  ]
+   ]
+  }
  },
  "presign_daily_limit": {
   "status": 429,
   "detail": {
    "code": "daily_limit",
    "message": "You've reached today's image upload limit. Upgrade for more — or try again after midnight UTC."
+  }
+ },
+ "presign_storage_full": {
+  "status": 409,
+  "detail": {
+   "code": "storage_full",
+   "message": "Your Library is full. Delete files you no longer need, or upgrade for more room."
   }
  },
  "dictation_daily_limit": {
@@ -142,97 +174,6 @@
   "detail": {
    "code": "voice_spend_cap",
    "message": "Voice is temporarily unavailable. Try again later."
-  }
- },
- "live_talk_not_configured": {
-  "status": 503,
-  "detail": {
-   "code": "not_configured",
-   "message": "Realtime voice is not configured"
-  }
- },
- "live_talk_minutes_used": {
-  "status": 429,
-  "detail": {
-   "code": "live_talk_minutes_used",
-   "message": "You've used this month's live talk minutes. They renew on the 1st (UTC)."
-  }
- },
- "live_talk_rate_limited": {
-  "status": 429,
-  "detail": {
-   "code": "speech_rate_limited",
-   "message": "Too many live talk requests. Please wait a moment and try again."
-  }
- },
- "live_talk_spend_cap": {
-  "status": 429,
-  "detail": {
-   "code": "voice_spend_cap",
-   "message": "Voice is temporarily unavailable. Try again later."
-  }
- },
- "live_talk_upstream_failed": {
-  "status": 502,
-  "detail": {
-   "code": "upstream_failed",
-   "message": "Could not start realtime voice"
-  }
- },
- "live_talk_not_available": {
-  "status": 404,
-  "detail": {
-   "code": "not_available",
-   "message": "Not available"
-  }
- },
- "live_talk_not_in_plan": {
-  "status": 403,
-  "detail": {
-   "code": "not_in_plan",
-   "message": "Live talk isn't part of your plan. Upgrade to talk with Recall out loud."
-  }
- },
- "live_talk_consent_required": {
-  "status": 403,
-  "detail": {
-   "code": "consent_required",
-   "message": "Agree to how Recall uses outside AI services to continue."
-  }
- },
- "live_talk_save_rate_limited": {
-  "status": 429,
-  "detail": {
-   "code": "rate_limited",
-   "message": "Too many live talk requests. Please wait a moment and try again."
-  }
- },
- "live_talk_save_spend_cap": {
-  "status": 429,
-  "detail": {
-   "code": "voice_spend_cap",
-   "message": "Voice is temporarily unavailable. Try again later."
-  }
- },
- "live_talk_saves_used": {
-  "status": 429,
-  "detail": {
-   "code": "live_talk_saves_used",
-   "message": "This live talk call can't save more turns. Hang up and start a new call to keep going."
-  }
- },
- "live_talk_save_not_in_plan": {
-  "status": 403,
-  "detail": {
-   "code": "not_in_plan",
-   "message": "Live talk isn't part of your plan. Upgrade to talk with Recall out loud."
-  }
- },
- "live_talk_session_ended": {
-  "status": 403,
-  "detail": {
-   "code": "live_talk_session_ended",
-   "message": "Realtime session is not active"
   }
  },
  "memory_spend_cap": {
@@ -261,36 +202,6 @@
   "detail": {
    "code": "export_busy",
    "message": "An export is already running or was just made. Try again later."
-  }
- },
- "image_daily_limit": {
-  "status": 429,
-  "detail": {
-   "code": "daily_limit",
-   "message": "No more pictures today.",
-   "feature": "image_generation"
-  }
- },
- "image_content_blocked": {
-  "status": 422,
-  "detail": {
-   "code": "content_blocked",
-   "message": "That picture can't be made.",
-   "feature": "image_generation"
-  }
- },
- "image_spend_cap": {
-  "status": 429,
-  "detail": {
-   "code": "spend_cap",
-   "message": "Image generation is temporarily unavailable. Try again later."
-  }
- },
- "image_upstream_failed": {
-  "status": 502,
-  "detail": {
-   "code": "upstream_failed",
-   "message": "Could not generate image"
   }
  },
  "sign_in_rate_limited": {

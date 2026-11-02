@@ -11,7 +11,6 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Literal
 from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -19,6 +18,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.attachment_limits import MAX_ATTACHMENT_SIZE as MAX_ATTACHMENT_SIZE
 from app.core.config import Settings
 from app.models.orm import Attachment
+from app.modules.attachments import account_repository as _account_rows
 from app.modules.attachments import jobs as _jobs
 from app.modules.attachments import lifecycle as _lifecycle
 from app.modules.attachments import rag as _rag
@@ -41,30 +41,18 @@ class StoredImage:
     size_bytes: int
 
 
-@dataclass(frozen=True, slots=True)
-class ReferenceCopy:
-    """A private copy of a reference image, its bytes already stored under ``storage_key``."""
-
-    source: Attachment
-    attachment_id: UUID
-    storage_key: str
-
-
 async def add_server_images(
     session: AsyncSession,
     *,
     user_id: UUID,
     images: Sequence[StoredImage],
-    source: Literal["generated", "search"],
     label: str,
     message_id: UUID | None = None,
-    in_library: bool = True,
 ) -> None:
-    """Rows for images the server made or fetched; no commit.
+    """Rows for photos the server fetched (a photo lookup), kept out of the Library; no commit.
 
     They are verified at once, so ``/file`` never downloads them again to check, and with
-    ``message_id`` they are already on that message. ``label`` (the prompt or the search)
-    names them in the Library.
+    ``message_id`` they are already on that message. ``label`` (the search) names them.
     """
     filename = label.replace("\n", " ").strip()[:ORIGINAL_FILENAME_MAX_CHARS] or None
     for image in images:
@@ -75,27 +63,9 @@ async def add_server_images(
             storage_key=image.storage_key,
             content_type=image.content_type,
             size_bytes=image.size_bytes,
-            source=source,
+            source="search",
             original_filename=filename,
-            library_visible=in_library,
-            message_id=message_id,
-        )
-
-
-async def add_reference_copies(
-    session: AsyncSession, *, message_id: UUID, copies: Sequence[ReferenceCopy]
-) -> None:
-    """Hidden copies of reference images on the user's message; no commit.
-
-    Each is its own row over its own bytes, so an edit or a regenerate still finds its
-    reference after the original is deleted.
-    """
-    for copy in copies:
-        await _repo.insert_verified_clone(
-            session,
-            src=copy.source,
-            new_id=copy.attachment_id,
-            storage_key=copy.storage_key,
+            library_visible=False,
             message_id=message_id,
         )
 
@@ -198,6 +168,4 @@ async def delete_user_rows(session: AsyncSession, user_id: UUID) -> list[str]:
     delete commits: the files go only with the rows, never before them. Under the user's
     row lock no attachment can be added between the read and the delete.
     """
-    rows = await _repo.list_for_user(session, user_id)
-    await _repo.delete_all_for_user(session, user_id)
-    return [row.storage_key for row in rows if row.storage_key]
+    return await _account_rows.delete_all_for_user(session, user_id)

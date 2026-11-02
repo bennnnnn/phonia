@@ -134,16 +134,18 @@ describe("i18n runtime", () => {
 
   it("counts selected chats and to-dos in each language's forms, one included", async () => {
     await ensureLocale("en");
-    expect(i18n.t("drawer.bulk_archive_confirm_body", { count: 1 })).toBe("Archive 1 conversation?");
+    expect(i18n.t("drawer.bulk_delete_confirm_body", { count: 1 })).toBe(
+      "Delete 1 conversation permanently? This cannot be undone.",
+    );
     expect(i18n.t("drawer.bulk_deleted_toast", { count: 3 })).toBe("Deleted 3 conversations");
     expect(i18n.t("todos.delete_selected", { count: 1 })).toBe("Delete 1 to-do?");
     await ensureLocale("ru");
-    const ruArchive = [1, 3, 5, 21].map((count) => i18n.t("drawer.bulk_archive_confirm_body", { count }));
-    expect(ruArchive).toEqual([
-      "Переместить 1 чат в архив?",
-      "Переместить 3 чата в архив?",
-      "Переместить 5 чатов в архив?",
-      "Переместить 21 чат в архив?",
+    const ruDelete = [1, 3, 5, 21].map((count) => i18n.t("drawer.bulk_delete_confirm_body", { count }));
+    expect(ruDelete).toEqual([
+      "Удалить 1 чат навсегда? Это нельзя отменить.",
+      "Удалить 3 чата навсегда? Это нельзя отменить.",
+      "Удалить 5 чатов навсегда? Это нельзя отменить.",
+      "Удалить 21 чат навсегда? Это нельзя отменить.",
     ]);
     await ensureLocale("en");
   });

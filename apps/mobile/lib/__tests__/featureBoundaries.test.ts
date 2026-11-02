@@ -59,13 +59,6 @@ const PUBLIC: Record<string, readonly string[]> = {
     "model/emailDraftSanitize.ts",
   ],
   home: ["components/HomeStarters.tsx"],
-  images: [
-    "components/ImageGenPlaceholder.tsx",
-    "hooks/useImageGeneration.ts",
-    "model/imageGenMessages.ts",
-    "model/imageGenTurn.ts",
-    "model/imageIntentPrefilter.ts",
-  ],
   memory: ["model/memoryListCache.ts"],
   notifications: [
     "model/notificationChannels.ts",
@@ -79,14 +72,9 @@ const PUBLIC: Record<string, readonly string[]> = {
   ],
   search: ["components/DrawerSearchResults.tsx", "hooks/useDrawerSearch.ts"],
   speech: [
-    "components/LiveTalkButton.tsx",
-    "components/LiveTalkComposerControls.tsx",
-    "components/LazyLiveTalkOverlay.tsx",
     "components/VoiceComposerWaveform.tsx",
     "components/VoiceMicButton.tsx",
-    "hooks/useLiveTalk.ts",
     "hooks/useVoiceInput.ts",
-    "model/liveTalkLogic.ts",
     "model/pronunciation.ts",
     "model/speechRate.ts",
     "model/ttsPreference.ts",

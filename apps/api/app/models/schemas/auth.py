@@ -11,23 +11,11 @@ from app.core.validation import (
     normalize_display_name,
     normalize_locale_code,
 )
-from app.models.model_catalog import validate_user_alias
-from app.models.schemas.common import EmojiUse, ResponseTone, UserVoice
+from app.models.schemas.common import EmojiUse, UserVoice
 from app.models.schemas.text import UserText
 
 # The longest custom instructions a user may save; the prompt builders read this too.
 CUSTOM_INSTRUCTIONS_MAX_CHARS = 1000
-
-
-def chosen_model_id(enabled_models: list[str] | None) -> str:
-    """The model a message uses: "auto", or with Auto off the first model turned on.
-
-    ``enabled_models`` is the one source: the phone's "Messages use" row and the chat's
-    settings card both reorder it. ``users.default_model`` is only a stored copy.
-    """
-    if enabled_models is None or "auto" in enabled_models:
-        return "auto"
-    return next((model for model in enabled_models if model != "auto"), "auto")
 
 
 class UserOut(BaseModel):
@@ -38,8 +26,6 @@ class UserOut(BaseModel):
     name: str | None
     avatar_url: str | None
     plan: str = "free"
-    enabled_models: list[str] | None = None
-    response_tone: str = "casual"
     emoji_use: str = "some"
     memory_enabled: bool
     follow_up_suggestions_enabled: bool = True
@@ -57,8 +43,6 @@ class UserOut(BaseModel):
     quiet_hours_end_minute: int = 420
     locale: str = "en"
     timezone: str = "UTC"
-    location: str | None = None
-    location_enabled: bool = False
     custom_instructions: str | None = None
     age: int | None = None
     country: str | None = None
@@ -66,13 +50,6 @@ class UserOut(BaseModel):
     created_at: datetime
     google_sub: str | None = Field(default=None, exclude=True)
     apple_sub: str | None = Field(default=None, exclude=True)
-
-    # mypy rejects a decorator over @property; pydantic documents this ignore.
-    @computed_field  # type: ignore[prop-decorator]
-    @property
-    def default_model(self) -> str:
-        """Derived from ``enabled_models`` (``chosen_model_id``), never stored apart."""
-        return chosen_model_id(self.enabled_models)
 
     # mypy rejects a decorator over @property; pydantic documents this ignore.
     @computed_field  # type: ignore[prop-decorator]
@@ -123,9 +100,6 @@ class UserOut(BaseModel):
 class UserUpdate(BaseModel):
     name: UserText | None = Field(default=None, min_length=1, max_length=80)
     avatar_url: UserText | None = Field(default=None, max_length=64)
-    default_model: str | None = None
-    enabled_models: list[str] | None = None
-    response_tone: ResponseTone | None = None
     emoji_use: EmojiUse | None = None
     memory_enabled: bool | None = None
     follow_up_suggestions_enabled: bool | None = None
@@ -145,8 +119,6 @@ class UserUpdate(BaseModel):
     quiet_hours_end_minute: int | None = Field(default=None, ge=0, le=1439)
     locale: UserText | None = None
     timezone: UserText | None = Field(default=None, max_length=64)
-    location: UserText | None = Field(default=None, max_length=128)
-    location_enabled: bool | None = None
     custom_instructions: UserText | None = Field(
         default=None, max_length=CUSTOM_INSTRUCTIONS_MAX_CHARS
     )
@@ -170,27 +142,6 @@ class UserUpdate(BaseModel):
         if value is None:
             return None
         return normalize_avatar_url(value)
-
-    @field_validator("default_model")
-    @classmethod
-    def validate_default_model(cls, value: str | None) -> str | None:
-        if value is None:
-            return None
-        validate_user_alias(value, allow_auto=True)
-        return value
-
-    @field_validator("enabled_models")
-    @classmethod
-    def validate_enabled_models(cls, value: list[str] | None) -> list[str] | None:
-        if value is None:
-            return None
-        if not value:
-            raise ValueError("Turn on Auto or at least one model.")
-        for entry in value:
-            if entry == "auto":
-                continue
-            validate_user_alias(entry)
-        return value
 
     @field_validator("reminder_lead_minutes")
     @classmethod
@@ -295,8 +246,10 @@ class AuthSessionOut(BaseModel):
     id: str
     device_label: str | None = None
     platform: str | None = None
-    created_at: str | None = None
-    last_seen_at: str | None = None
+    # Datetimes, so they serialize as every other response's do (UTC as ``Z``); the
+    # session record keeps ISO text in Redis, and they went out as that text (``+00:00``).
+    created_at: datetime | None = None
+    last_seen_at: datetime | None = None
     current: bool = False
 
 

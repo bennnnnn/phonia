@@ -451,15 +451,14 @@ def is_location_question(text: str) -> bool:
     return _fold_location_ask(cleaned) in _LOCATION_ASK_FOLDED
 
 
-def format_location_answer(location: str | None, timezone: str | None) -> str:
+def format_location_answer(timezone: str | None) -> str:
+    """The answer to "where am I?": the app does not use the device's location."""
     tz = resolve_timezone(timezone)
     now = datetime.now(tz)
     time_str = now.strftime("%A, %B %d, %Y at %I:%M %p %Z")
-    if location:
-        return f"You're in **{location}**. Local time: {time_str}."
     return (
-        "I don't have your location yet. Turn on Location in Recall Settings "
-        "(Preferences), allow access if prompted, then ask again."
+        "I can't tell where you are: I don't use your device's location. "
+        f"Your local time is {time_str}."
     )
 
 
@@ -493,11 +492,7 @@ def format_time_answer(timezone: str | None, locale: str | None = None) -> str:
     return "```clock\n```"
 
 
-def format_time_context(
-    timezone: str | None,
-    locale: str | None = None,
-    location: str | None = None,
-) -> str:
+def format_time_context(timezone: str | None, locale: str | None = None) -> str:
     tz = resolve_timezone(timezone)
     now = datetime.now(tz)
     digital = format_digital_clock(now, locale)
@@ -506,10 +501,7 @@ def format_time_context(
         f"{now.strftime('%A, %B %d, %Y %H:%M %Z')}. "
         f"Digital clock now: {digital}.",
     ]
-    if location:
-        parts.append(f"User approximate location (from device GPS): {location}.")
-    else:
-        parts.append("User location is not synced yet.")
+    parts.append("User location is unknown (the app does not use the device's location).")
     parts.append(
         "When the user asks what time it is *here* (no other city/place), reply with "
         "only an empty ```clock``` fence. The app renders a live circular analog clock "
@@ -519,7 +511,6 @@ def format_time_context(
         "fence (that would show the user's local time). Put the place's IANA timezone "
         "alone inside the fence, e.g. ```clock\\nAmerica/New_York\\n``` for Washington "
         "DC / US Eastern, or answer in short prose with the local time there. "
-        "When they ask where they are, use the location above if set. "
         "Use this when answering questions about today, deadlines, overdue reminders, "
         "or how long until something is due. "
         "A clock hour keeps the part of day they used. Morning is AM. Afternoon, "

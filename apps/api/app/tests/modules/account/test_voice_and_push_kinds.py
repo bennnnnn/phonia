@@ -58,7 +58,7 @@ def test_patch_null_voice_puts_the_default_back() -> None:
 
 
 @pytest.mark.parametrize("voice", ["fable", "onyx", "Kore", ""])
-def test_patch_rejects_a_voice_live_talk_cannot_speak(voice: str) -> None:
+def test_patch_rejects_a_voice_not_offered(voice: str) -> None:
     response, update = _patch_me({"tts_voice": voice})
     assert response.status_code == 422
     update.assert_not_awaited()

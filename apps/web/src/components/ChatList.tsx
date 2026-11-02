@@ -40,7 +40,7 @@ export function ChatList() {
   const newChat = async () => {
     if (!accessToken) return;
     try {
-      const chat = await chatsApi.createChat(accessToken, "auto");
+      const chat = await chatsApi.createChat(accessToken);
       navigate(`/chats/${chat.id}`);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed to create chat");

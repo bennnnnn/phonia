@@ -13,7 +13,7 @@ import base64
 import json
 from collections.abc import AsyncIterator
 from dataclasses import dataclass, field
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 from uuid import UUID, uuid4
@@ -58,7 +58,6 @@ class OwnerData:
     attachment_id: UUID
     attachment_key: str
     pending_attachment_id: UUID
-    suggestion_id: UUID
     push_token: str
     reminder_proposal_id: str
     settings_proposal_id: str
@@ -87,7 +86,6 @@ async def _seed(settings: Settings, storage_root: Path) -> tuple[UUID, UUID, Own
         MemoryArea,
         Message,
         PushToken,
-        Suggestion,
         TodoItem,
         User,
     )
@@ -99,8 +97,8 @@ async def _seed(settings: Settings, storage_root: Path) -> tuple[UUID, UUID, Own
         session.add_all([a, b])
         await session.flush()
 
-        a_chat = Chat(user_id=a.id, model="free-chat", title=f"A private {secret}")
-        b_chat = Chat(user_id=b.id, model="free-chat", title="B chat")
+        a_chat = Chat(user_id=a.id, title=f"A private {secret}")
+        b_chat = Chat(user_id=b.id, title="B chat")
         session.add_all([a_chat, b_chat])
         await session.flush()
 
@@ -165,13 +163,6 @@ async def _seed(settings: Settings, storage_root: Path) -> tuple[UUID, UUID, Own
         )
         session.add_all([attachment, pending])
 
-        suggestion = Suggestion(
-            user_id=a.id,
-            text=f"Follow up on {secret}",
-            expires_at=datetime.now(UTC) + timedelta(days=1),
-        )
-        session.add(suggestion)
-
         push_token = f"ExponentPushToken[{uuid4().hex}]"
         session.add(
             PushToken(user_id=a.id, expo_push_token=push_token, platform="ios", device_id=None)
@@ -190,7 +181,6 @@ async def _seed(settings: Settings, storage_root: Path) -> tuple[UUID, UUID, Own
             attachment_id=att_id,
             attachment_key=att_key,
             pending_attachment_id=pending_id,
-            suggestion_id=suggestion.id,
             push_token=push_token,
             reminder_proposal_id="",
             settings_proposal_id="",

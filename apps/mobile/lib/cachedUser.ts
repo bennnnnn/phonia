@@ -11,9 +11,9 @@ const cachedUserFile = cacheFile("cached-user.json");
  * Only non-sensitive display fields are cached — enough to paint the app
  * instantly on cold start (name, avatar, plan for gating, and the language
  * the app is drawn in) without blocking on an ``api.me()`` round trip.
- * PII (email, age, country, job, location,
+ * PII (email, age, country, job,
  * custom_instructions) and prefs (push/email reminder flags, reminder lead,
- * memory enabled, response style/tone, etc.) are deliberately NOT cached:
+ * memory enabled, emoji use, etc.) are deliberately NOT cached:
  * the cache directory can be read by a backup tool or another app with
  * filesystem access, so we keep it to fields that are already visible to
  * anyone who sees the app on the device. Everything else is re-fetched
@@ -42,16 +42,11 @@ function cachedConsentAt(value: unknown): string | null | undefined {
  * ``api.me()`` returns. */
 const DEFAULT_USER_FIELDS: Omit<User, keyof CachedUser> = {
   email: "",
-  default_model: "",
-  enabled_models: null,
-  response_tone: "",
   memory_enabled: false,
   push_notifications_enabled: false,
   email_reminders_enabled: false,
   reminder_lead_minutes: 0,
   timezone: "",
-  location: null,
-  location_enabled: false,
   custom_instructions: null,
   age: null,
   country: null,
@@ -114,8 +109,8 @@ export function readCachedLocaleSync(): string | null {
 
 /** Persist only the non-sensitive display fields to the filesystem cache.
  *
- * PII (email, age, country, job, location, custom_instructions) and prefs
- * (push/email flags, reminder lead, memory enabled, response style/tone)
+ * PII (email, age, country, job, custom_instructions) and prefs
+ * (push/email flags, reminder lead, memory enabled, emoji use)
  * are stripped — the cache directory can be read by a backup tool or another
  * app, so we keep it to fields already visible on the device. Everything
  * else is re-fetched from the API on launch. */

@@ -2,8 +2,8 @@
 
 SymPy results that carry a ``canonical_fence`` are collected so
 ``validate_math_fences`` can still overwrite/densify geometry and graph fences
-the same way the heuristic math_tools path does. A successful ``generate_image``
-(or reference photo) is terminal: the stream skips the visible LLM pass and uses
+the same way the heuristic math_tools path does. A successful ``search_image``
+(a reference photo) is terminal: the stream skips the visible LLM pass and uses
 the already-persisted ``[Image: …]`` assistant row.
 """
 
@@ -19,7 +19,7 @@ from app.services.solving import VerifiedMathBlock
 
 @dataclass(frozen=True)
 class TerminalImageResult:
-    """Successful model-initiated image gen — stream must not create another row."""
+    """A model-initiated photo lookup that attached one — stream must not create another row."""
 
     message_id: str
     final_content: str
@@ -72,7 +72,7 @@ def _terminal_image_from_tool_result(result: ToolResult) -> TerminalImageResult 
     if not isinstance(message_id, str) or not message_id.strip():
         return None
     model = data.get("resolved_model")
-    resolved = model if isinstance(model, str) and model.strip() else "image-gen-model"
+    resolved = model if isinstance(model, str) and model.strip() else "image-search-model"
     return TerminalImageResult(
         message_id=message_id.strip(),
         final_content=marker.strip(),

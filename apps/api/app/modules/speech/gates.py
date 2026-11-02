@@ -30,7 +30,7 @@ _RATE_WINDOW_SECONDS = 60
 
 
 class SpeechRefusedError(DomainError):
-    """A speech or live talk request refused before it spends."""
+    """A speech request refused before it spends."""
 
 
 def require_plan_feature(user: User, settings: Settings, feature: Feature, message: str) -> None:
@@ -53,8 +53,7 @@ async def require_speech_rate(redis: Redis, settings: Settings, key: str, messag
     """At most ``speech_rate_limit_per_minute`` requests a minute under *key* (0 is off).
 
     A Redis error denies the request (fail closed) with ``RedisUnavailableError``: 503
-    unavailable, never ``speech_rate_limited``, which live talk words as the month's
-    minutes used up.
+    unavailable, never ``speech_rate_limited``.
     """
     rate_limit = settings.speech_rate_limit_per_minute
     if rate_limit <= 0:
@@ -86,11 +85,15 @@ async def reserve_day_or_raise(
 class RefundDayOnFailure:
     """``async with``: give a reserved slot back to its day when the block fails.
 
-    A 429 refusal keeps the slot (a cap refusal is not a failed request); any other
-    refusal, error or cancellation refunds it. Without a *day*
-    (nothing was reserved) nothing is refunded. The block's exception always
-    propagates. A class rather than ``@asynccontextmanager``, whose generator
-    would turn a StopAsyncIteration out of Redis into a RuntimeError.
+    A 429 refusal keeps the slot (a cap refusal is not a failed request), and so
+    does any failure once the provider was asked (``spend``): the provider may bill
+    a call that errored, returned nothing usable or was cut short by a cancel. It
+    refunded those, so a client that hung up mid-call, or audio the provider turns
+    away after upload, never used up the day. Any other refusal, error or
+    cancellation (before the call) refunds it. Without a *day* (nothing was
+    reserved) nothing is refunded. The block's exception always propagates. A
+    class rather than ``@asynccontextmanager``, whose generator would turn a
+    StopAsyncIteration out of Redis into a RuntimeError.
     """
 
     def __init__(
@@ -100,14 +103,19 @@ class RefundDayOnFailure:
         self.redis = redis
         self.user_id = user_id
         self.day = day
+        self.spent = False
 
-    async def __aenter__(self) -> None:
-        return None
+    def spend(self) -> None:
+        """The provider is being asked: from here a failure keeps the slot."""
+        self.spent = True
+
+    async def __aenter__(self) -> RefundDayOnFailure:
+        return self
 
     async def __aexit__(
         self, exc_type: type[BaseException] | None, exc: BaseException | None, tb: object
     ) -> None:
-        if exc is None or not self.day:
+        if exc is None or not self.day or self.spent:
             return
         # A refusal from the gates or the route (an HTTPException) names its status.
         if getattr(exc, "status_code", None) == status.HTTP_429_TOO_MANY_REQUESTS:

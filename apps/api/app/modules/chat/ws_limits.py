@@ -1,23 +1,29 @@
 """Per-socket limits on the chat WebSocket: frames, sockets per user, idle time.
 
-All three are in-process: they count this machine's sockets. With more than one
-``app`` machine a user can hold the socket cap on each one (docs/PRODUCTION.md,
-"Load and abuse limits"). The connect and handshake limits are in Redis
-(``ws_api``).
+The frame budget and the idle timer belong to one socket, so they are in-process.
+Sockets per user are counted across every ``app`` machine in Redis
+(``user_socket_slot``): counted per machine, a user could hold the cap on each.
+The connect and handshake limits are in Redis too (``ws_api``).
 """
 
 from __future__ import annotations
 
 import asyncio
+import logging
 import time
-from collections.abc import Iterator
-from contextlib import contextmanager, suppress
-from typing import Any
-from uuid import UUID
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager, suppress
+from typing import Any, Literal
+from uuid import UUID, uuid4
 
 from fastapi import WebSocket, WebSocketDisconnect
+from redis.asyncio import Redis
+from redis.exceptions import RedisError
 
 from app.exceptions import RATE_LIMITED_CODE
+from app.modules.chat.stream_events import RATE_LIMITED_MESSAGE
+
+logger = logging.getLogger(__name__)
 
 # Every frame after auth counts, chargeable or not. Only message/regenerate
 # were limited (30/min, account-wide); pings, cancels, unknown types and bad
@@ -31,6 +37,37 @@ WS_FRAME_FLOOD_PAYLOAD = {
     "code": RATE_LIMITED_CODE,
     "message": "Too many messages. Reconnect in a minute.",
 }
+# A socket's refusal of a frame or a connection, outside a turn's own frames: its sign-in,
+# a frame it cannot read, its connect limit. Each names a code; the phone matched the
+# English "Unauthorized" (features/chat/model/wsTransport.ts reads the code).
+SocketRefusal = Literal[
+    "unauthorized",
+    "missing_token",
+    "auth_timeout",
+    "invalid_json",
+    "invalid_message",
+    "invalid_regenerate",
+    "rate_limited",
+]
+_INVALID_FRAME = "invalid"
+_SOCKET_REFUSALS: dict[SocketRefusal, tuple[str, str]] = {
+    "unauthorized": ("unauthorized", "Unauthorized"),
+    "missing_token": ("missing_token", "Missing token"),
+    "auth_timeout": ("auth_timeout", "Auth timeout"),
+    "invalid_json": (_INVALID_FRAME, "Invalid JSON"),
+    "invalid_message": (_INVALID_FRAME, "Invalid message"),
+    "invalid_regenerate": (_INVALID_FRAME, "Invalid regenerate request"),
+    # Over the connect limit: no turn to name.
+    "rate_limited": (RATE_LIMITED_CODE, RATE_LIMITED_MESSAGE),
+}
+
+
+def socket_error_payload(refusal: SocketRefusal) -> dict[str, Any]:
+    """The error frame for a socket's refusal: its code and the English."""
+    code, message = _SOCKET_REFUSALS[refusal]
+    return {"type": "error", "code": code, "message": message}
+
+
 # Close codes the phone reads (features/chat/model/wsTransport.ts). No error
 # frame goes first: with no turn open, the phone would show it as a chat error.
 # Idle between turns: the phone opens a new socket on its next send.
@@ -38,8 +75,18 @@ WS_IDLE_CLOSE_CODE = 4408
 # Over the per-user cap: the phone sends over SSE instead.
 WS_TOO_MANY_SOCKETS_CLOSE_CODE = 4429
 
-# Open chat sockets per user on this machine.
+# Open chat sockets per user on this machine (the saturation report); the cap is
+# counted in Redis across machines.
 _open_sockets: dict[UUID, int] = {}
+# Each open socket holds a lease in ``wssock:{user}`` (a sorted set: socket id ->
+# expiry). The socket renews it while open; a machine that dies stops renewing, and
+# its sockets stop counting within the lease, so a crash never leaks a slot.
+SOCKET_LEASE_SECONDS = 90
+SOCKET_RENEW_SECONDS = 30
+# A lease is first added for this long, and gets its full term only once admitted: a
+# refused socket whose take-back fails stops counting within it, not a whole lease.
+SOCKET_CLAIM_SECONDS = 5
+_SOCKETS_KEY_PREFIX = "wssock:"
 
 
 class FrameBudget:
@@ -103,17 +150,34 @@ async def receive_frame(
     return read.result()
 
 
-@contextmanager
-def user_socket_slot(user_id: UUID, limit: int) -> Iterator[bool]:
-    """Hold one of ``user_id``'s sockets on this machine; False when ``limit`` are open.
+def sockets_key(user_id: UUID) -> str:
+    return f"{_SOCKETS_KEY_PREFIX}{user_id}"
 
-    ``limit`` 0 disables the cap.
+
+@asynccontextmanager
+async def user_socket_slot(redis: Redis, user_id: UUID, limit: int) -> AsyncIterator[bool]:
+    """Hold one of ``user_id``'s chat sockets across all machines; False when ``limit``
+    are open, or when Redis cannot say (fail closed: the phone sends over SSE).
+
+    ``limit`` 0 disables the cap (no Redis).
     """
-    held = _open_sockets.get(user_id, 0)
-    if limit > 0 and held >= limit:
-        yield False
-        return
-    _open_sockets[user_id] = held + 1
+    socket_id = uuid4().hex
+    key = sockets_key(user_id)
+    if limit > 0:
+        try:
+            admitted = await _claim_socket(redis, key, socket_id, limit)
+        except Exception as exc:
+            logger.warning("Chat socket count unavailable; refusing user_id=%s: %r", user_id, exc)
+            admitted = False
+        if not admitted:
+            yield False
+            return
+    _open_sockets[user_id] = _open_sockets.get(user_id, 0) + 1
+    renew = (
+        asyncio.create_task(_renew_socket(redis, key, socket_id), name="ws_socket_lease")
+        if limit > 0
+        else None
+    )
     try:
         yield True
     finally:
@@ -122,6 +186,51 @@ def user_socket_slot(user_id: UUID, limit: int) -> Iterator[bool]:
             _open_sockets[user_id] = remaining
         else:
             _open_sockets.pop(user_id, None)
+        if renew is not None:
+            renew.cancel()
+            with suppress(RedisError, OSError):  # the lease expires on its own
+                await asyncio.shield(redis.zrem(key, socket_id))
+
+
+async def _claim_socket(redis: Redis, key: str, socket_id: str, limit: int) -> bool:
+    """Drop expired leases, add this one, count: one transaction. Over the cap, take it back.
+
+    The lease is added for ``SOCKET_CLAIM_SECONDS`` and extended once admitted, so a
+    take-back that fails (Redis gone mid-claim) leaves no refused lease counting against
+    the user for a full term. A failed extension raises: the caller refuses (fail closed).
+    """
+    now = time.time()
+    async with redis.pipeline(transaction=True) as pipe:
+        pipe.zremrangebyscore(key, "-inf", now)
+        pipe.zadd(key, {socket_id: now + SOCKET_CLAIM_SECONDS})
+        pipe.zcard(key)
+        pipe.expire(key, SOCKET_LEASE_SECONDS)
+        _dropped, _added, held, _ttl = await pipe.execute()
+    if int(held) > limit:
+        with suppress(RedisError, OSError):  # it expires within SOCKET_CLAIM_SECONDS
+            await redis.zrem(key, socket_id)
+        return False
+    await _extend_lease(redis, key, socket_id)
+    return True
+
+
+async def _extend_lease(redis: Redis, key: str, socket_id: str) -> None:
+    """Give this socket's lease a full term. Not ``xx``: a lease that expired while Redis
+    could not be reached is added back, so an open socket counts again."""
+    async with redis.pipeline(transaction=True) as pipe:
+        pipe.zadd(key, {socket_id: time.time() + SOCKET_LEASE_SECONDS})
+        pipe.expire(key, SOCKET_LEASE_SECONDS)
+        await pipe.execute()
+
+
+async def _renew_socket(redis: Redis, key: str, socket_id: str) -> None:
+    """Keep this socket's lease (and the key) alive while the socket is open."""
+    while True:
+        await asyncio.sleep(SOCKET_RENEW_SECONDS)
+        try:
+            await _extend_lease(redis, key, socket_id)
+        except (RedisError, OSError):
+            logger.debug("Chat socket lease renew failed", exc_info=True)
 
 
 def open_socket_count() -> int:

@@ -28,7 +28,7 @@ from app.modules.chat.prompt_profile import (
     format_user_profile_block,
     should_include_profile_email,
 )
-from app.modules.chat.turn_prep import resolve_client_geo
+from app.modules.chat.turn_prep import read_geo_ask
 from app.modules.chemistry.reply_policy import CHEMISTRY_FENCE_HINT
 from app.modules.conversation import chats_repository, messages_repository
 from app.modules.turn_reading.personal import is_personal_advice_question, needs_rich_context
@@ -39,38 +39,11 @@ from app.tests.fakes import FakeSessionCM, make_user
 from app.tests.modules.chat.chat_test_support import system_prompt
 
 
-def test_resolve_client_geo_ignores_client_when_location_disabled():
-    user = MagicMock()
-    user.location_enabled = False
-    user.location = "Oakland, CA"
-    geo = resolve_client_geo(
-        user,
-        "Where am I",
-        client_location="San Francisco, CA",
-        client_latitude=37.7,
-        client_longitude=-122.4,
-    )
-    assert geo.user_location is None
-    assert geo.client_lat is None
-    assert geo.client_lng is None
-    assert geo.has_geo_fix is False
-
-
-def test_resolve_client_geo_uses_client_when_location_enabled():
-    user = MagicMock()
-    user.location_enabled = True
-    user.location = "Oakland, CA"
-    geo = resolve_client_geo(
-        user,
-        "Where am I",
-        client_location="Berkeley, CA",
-        client_latitude=37.87,
-        client_longitude=-122.27,
-    )
-    assert geo.user_location == "Berkeley, CA"
-    assert geo.client_lat == 37.87
-    assert geo.client_lng == -122.27
-    assert geo.has_geo_fix is True
+def test_read_geo_ask_reads_the_message_alone():
+    """The app has no device location: a nearby or where-am-I ask is read from its words."""
+    assert read_geo_ask("Where am I").geo_query is True
+    assert read_geo_ask("coffee near me").local_places is True
+    assert read_geo_ask("explain photosynthesis").geo_query is False
 
 
 def test_estimate_tokens_minimum():
@@ -557,7 +530,6 @@ async def test_build_prompt_injects_custom_instructions():
     user.name = "Test User"
     user.email = "test@example.com"
     user.location = None
-    user.response_tone = "funny"
     user.memory_enabled = True
     user.locale = "en"
     user.timezone = None
@@ -595,7 +567,6 @@ async def test_build_prompt_strips_solver_fences_from_recent_assistant():
     user.name = "Test User"
     user.email = "test@example.com"
     user.location = None
-    user.response_tone = "casual"
     user.memory_enabled = True
     user.locale = "en"
     user.timezone = None
@@ -635,7 +606,6 @@ async def test_build_prompt_reuses_passed_chat_without_db_fetch():
     user.name = "Test User"
     user.email = "test@example.com"
     user.location = None
-    user.response_tone = None
     user.memory_enabled = True
     user.locale = "en"
     user.timezone = None
@@ -679,7 +649,6 @@ async def test_build_prompt_omits_custom_instructions_block_when_empty():
     user.name = "Test User"
     user.email = "test@example.com"
     user.location = None
-    user.response_tone = "funny"
     user.memory_enabled = True
     user.locale = "en"
     user.timezone = None
@@ -716,7 +685,6 @@ async def test_build_prompt_includes_memory_and_fits_length_to_the_message():
     user.memory_enabled = True
     user.locale = "en"
     user.timezone = "UTC"
-    user.response_tone = "funny"
 
     with (
         patch(
@@ -767,7 +735,6 @@ async def test_build_prompt_recalled_count_counts_section_headers():
     user.name = "Dev User"
     user.email = "dev@example.com"
     user.location = None
-    user.response_tone = "funny"
     user.memory_enabled = True
     user.locale = "en"
     user.timezone = "UTC"
@@ -811,7 +778,6 @@ async def test_build_prompt_recalled_count_zero_when_no_memory():
     user.name = "Dev User"
     user.email = "dev@example.com"
     user.location = None
-    user.response_tone = "funny"
     user.memory_enabled = True
     user.locale = "en"
     user.timezone = "UTC"
@@ -845,12 +811,11 @@ async def test_build_prompt_recalled_count_zero_when_no_memory():
 
 
 @pytest.mark.asyncio
-async def test_build_prompt_includes_response_tone():
+async def test_build_prompt_includes_the_reply_voice():
     user = MagicMock()
     user.name = "Dev User"
     user.email = "dev@example.com"
     user.location = None
-    user.response_tone = "professional"
     user.memory_enabled = False
     user.locale = "en"
     user.timezone = "UTC"
@@ -878,7 +843,7 @@ async def test_build_prompt_includes_response_tone():
         messages = await build_prompt_messages(user, uuid4(), Settings())
 
     system = system_prompt(messages)
-    assert "Tone: PROFESSIONAL" in system
+    assert "Tone: CASUAL" in system
     assert "Privacy:" in system
     assert PRIVACY_HINT in system
 
@@ -889,7 +854,6 @@ async def test_build_prompt_includes_locale_hint_for_amharic():
     user.name = "Dev User"
     user.email = "dev@example.com"
     user.location = None
-    user.response_tone = "casual"
     user.memory_enabled = False
     user.locale = "am"
     user.timezone = "UTC"
@@ -1083,7 +1047,6 @@ async def test_build_prompt_minimal_for_who_am_i():
     user.email = "secret@example.com"
     user.location = "San Francisco, CA"
     user.location_enabled = True
-    user.response_tone = "funny"
     user.memory_enabled = True
     user.locale = "en"
     user.timezone = "UTC"
@@ -1136,7 +1099,6 @@ async def test_build_prompt_lightweight_hi_skips_memory_and_integrations():
     user.email = "dev@example.com"
     user.location = "San Francisco, CA"
     user.location_enabled = True
-    user.response_tone = "funny"
     user.memory_enabled = True
     user.locale = "en"
     user.timezone = "UTC"
@@ -1183,7 +1145,6 @@ async def test_build_prompt_casual_chitchat_loads_memory_without_integrations():
     user.email = "dev@example.com"
     user.location = "San Francisco, CA"
     user.location_enabled = True
-    user.response_tone = "funny"
     user.memory_enabled = True
     user.locale = "en"
     user.timezone = "UTC"
@@ -1235,7 +1196,6 @@ async def test_build_prompt_advice_loads_memory_not_integrations():
     user.email = "dev@example.com"
     user.location = "San Francisco, CA"
     user.location_enabled = True
-    user.response_tone = "funny"
     user.memory_enabled = True
     user.locale = "en"
     user.timezone = "UTC"
@@ -1281,7 +1241,6 @@ async def test_build_prompt_teaching_uses_a_known_detail_in_examples():
     user.email = "dev@example.com"
     user.location = "Addis Ababa"
     user.location_enabled = True
-    user.response_tone = None
     user.memory_enabled = True
     user.locale = "en"
     user.timezone = "UTC"
@@ -1330,7 +1289,6 @@ async def test_build_prompt_capabilities_overview_uses_memory_not_email_card():
     user.email = "dev@example.com"
     user.location = "San Francisco, CA"
     user.location_enabled = True
-    user.response_tone = None
     user.memory_enabled = True
     user.locale = "en"
     user.timezone = "UTC"
@@ -1383,7 +1341,6 @@ async def test_build_prompt_forces_rich_context_when_chat_has_attachment_chunks(
     user.email = "dev@example.com"
     user.location = None
     user.location_enabled = False
-    user.response_tone = "casual"
     user.memory_enabled = True
     user.locale = "en"
     user.timezone = "UTC"
@@ -1442,7 +1399,6 @@ async def test_build_prompt_skips_attachment_rag_probe_when_disabled():
     user.email = "dev@example.com"
     user.location = None
     user.location_enabled = False
-    user.response_tone = "casual"
     user.memory_enabled = True
     user.locale = "en"
     user.timezone = "UTC"
@@ -1501,7 +1457,6 @@ async def test_build_prompt_uses_preloaded_recent_without_list_recent():
     user.email = "dev@example.com"
     user.location = None
     user.location_enabled = False
-    user.response_tone = "casual"
     user.memory_enabled = True
     user.locale = "en"
     user.timezone = "UTC"
@@ -1878,7 +1833,6 @@ async def test_build_prompt_passes_client_timezone():
     user.name = "Dev User"
     user.email = "dev@example.com"
     user.location = None
-    user.response_tone = "funny"
     user.memory_enabled = False
     user.locale = "en"
     user.timezone = "UTC"
@@ -1918,11 +1872,11 @@ async def test_build_prompt_passes_client_timezone():
 
     load_todos.assert_awaited_once()
     assert load_todos.await_args.kwargs["client_timezone"] == "America/New_York"
-    format_time.assert_called_once_with("America/New_York", "en", None)
+    format_time.assert_called_once_with("America/New_York", "en")
 
 
 def test_is_short_letter_answer():
-    from app.modules.web_search import is_short_letter_answer
+    from app.modules.web_search.geo_intent import is_short_letter_answer
 
     assert is_short_letter_answer("B") is True
     assert is_short_letter_answer("c.") is True
@@ -1935,8 +1889,6 @@ def test_format_user_profile_block_includes_fields():
     user.name = "Ada Lovelace"
     user.email = "ada@example.com"
     user.plan = "pro"
-    user.location = "London"
-    user.location_enabled = True
     user.age = 36
     user.country = "United Kingdom"
     user.job = "Mathematician"
@@ -1944,7 +1896,7 @@ def test_format_user_profile_block_includes_fields():
     assert "Ada Lovelace" in block
     assert "ada@example.com" in block
     assert "Plan: pro" in block
-    assert "London" in block
+    assert "Location:" not in block
     assert "Age: 36" in block
     assert "Country: United Kingdom" in block
     assert "Job: Mathematician" in block
@@ -2035,7 +1987,6 @@ def _clock_user() -> MagicMock:
         email="dev@example.com",
         location=None,
         location_enabled=False,
-        response_tone=None,
         memory_enabled=False,
         locale="en",
         timezone="America/Indiana/Indianapolis",

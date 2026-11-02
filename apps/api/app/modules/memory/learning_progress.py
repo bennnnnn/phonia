@@ -27,7 +27,7 @@ from app.repositories import users as users_repo
 
 logger = logging.getLogger(__name__)
 
-LEARNING_TOPIC = "goals"
+LEARNING_TOPIC = "progress"
 
 
 def _heading(text: str) -> str:

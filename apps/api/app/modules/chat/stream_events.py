@@ -26,8 +26,6 @@ from app.exceptions import (
     QuotaExceededError,
     RedisUnavailableError,
     SpendCapReachedError,
-    TurnRefusedError,
-    UnknownModelOverrideError,
 )
 from app.gateways.litellm_gateway import ModelUnavailableError
 from app.modules.chat.stream_accum import Completion
@@ -383,11 +381,6 @@ def rate_limited_payload() -> dict[str, Any]:
     )
 
 
-def rate_limited_connect_payload() -> dict[str, Any]:
-    """The socket refused a connection over its connect limit (no turn to name)."""
-    return {"type": "error", "code": RATE_LIMITED_CODE, "message": RATE_LIMITED_MESSAGE}
-
-
 def restarting_payload(*, user_message_saved: bool) -> dict[str, Any]:
     """A turn the server refused or stopped because it is shutting down (a deploy)."""
     return turn_error_payload(
@@ -436,14 +429,10 @@ def error_payload_for_exception(exc: BaseException) -> dict[str, Any]:
         return {"type": "error", "code": "busy", "message": exc.message}
     if isinstance(exc, AttachmentValidationError):
         return {"type": "error", "code": "attachment_rejected", "message": exc.message}
-    if isinstance(exc, UnknownModelOverrideError):
-        return {"type": "error", "code": "unknown_model", "message": exc.message}
     if isinstance(exc, SpendCapReachedError):
-        return {"type": "error", "code": "spend_cap", "message": exc.message, **exc.fields}
+        return {"type": "error", "code": "spend_cap", "message": exc.message}
     if isinstance(exc, ConsentRequiredError):
         return {"type": "error", "code": exc.code, "message": exc.message}
-    if isinstance(exc, TurnRefusedError):
-        return {"type": "error", "code": exc.code, "message": exc.message, **exc.fields}
     if isinstance(exc, ChatNotFoundError):
         # The chat, or the message to answer, is gone (deleted on another device).
         return {"type": "error", "code": "not_found", "message": exc.message}

@@ -37,8 +37,6 @@ _UNAVAILABLE = {
     }
 }
 _CHAT_ID = uuid4()
-_CALL_ID = "issued-session"
-_LIVE_TALK = Settings(speech_live_talk_enabled=True, speech_realtime_voice_enabled=True)
 _PHOTO = {"image_base64": base64.b64encode(b"\xff\xd8\xff fake jpeg").decode()}
 
 
@@ -73,34 +71,6 @@ LIMITS: dict[str, _Limit] = {
         plan="pro",
         redis_at=("app.modules.speech.api.get_redis_client",),
     ),
-    "live talk saves": _Limit(
-        send=lambda c: c.post(
-            "/speech/live/persist",
-            headers=_AUTH,
-            json={"chat_id": str(_CHAT_ID), "call_id": _CALL_ID, "user_text": "hi"},
-        ),
-        over="rate_limited",
-        plan="pro",
-        settings=_LIVE_TALK,
-        redis_at=("app.modules.speech.realtime.get_redis_client",),
-    ),
-    "live talk lookups": _Limit(
-        send=lambda c: c.post(
-            "/speech/live/tool",
-            headers=_AUTH,
-            json={
-                "chat_id": str(_CHAT_ID),
-                "call_id": _CALL_ID,
-                "turn_id": "utterance-1",
-                "name": "web_search",
-                "query": "latest score",
-            },
-        ),
-        over="rate_limited",
-        plan="pro",
-        settings=_LIVE_TALK,
-        redis_at=("app.modules.speech.realtime.get_redis_client",),
-    ),
     "memory edits": _Limit(
         send=lambda c: c.post(
             "/memories/instruct", headers=_AUTH, json={"instruction": "Be brief"}
@@ -124,6 +94,15 @@ LIMITS: dict[str, _Limit] = {
         send=lambda c: c.get("/auth/me/export", headers=_AUTH),
         over="export_busy",
     ),
+    "product analytics": _Limit(
+        send=lambda c: c.post(
+            "/analytics/events",
+            headers=_AUTH,
+            json={"events": [{"name": "paywall_viewed", "properties": {"source": "quota"}}]},
+        ),
+        over="rate_limited",
+        redis_at=("app.modules.analytics.api.get_redis_client",),
+    ),
 }
 
 
@@ -136,10 +115,6 @@ def _client(limit: _Limit, allow_request: AsyncMock) -> Iterator[TestClient]:
     app.dependency_overrides[get_settings_dep] = lambda: limit.settings
     app.dependency_overrides[get_redis] = lambda: redis
     with ExitStack() as stack:
-        # The live talk session the phone named is this chat's (live_talk.issue_realtime_session).
-        stack.enter_context(
-            patch.object(redis, "get", AsyncMock(side_effect=_session_reads(user.id, redis.get)))
-        )
         for target in limit.redis_at:
             stack.enter_context(patch(target, return_value=redis))
         # The request limiter in front of every route lets it by: only the route's own counter fails.
@@ -148,15 +123,6 @@ def _client(limit: _Limit, allow_request: AsyncMock) -> Iterator[TestClient]:
         )
         stack.enter_context(patch("app.core.rate_limit.allow_request", allow_request))
         yield TestClient(app)
-
-
-def _session_reads(user_id: Any, read: Callable[[str], Any]) -> Callable[[str], Any]:
-    session_key = f"live_talk_rt:{user_id}:{_CALL_ID}"
-
-    async def get(key: str) -> Any:
-        return str(_CHAT_ID) if key == session_key else await read(key)
-
-    return get
 
 
 @pytest.mark.parametrize("name", LIMITS)
@@ -199,10 +165,10 @@ def test_every_route_limit_is_listed() -> None:
         "modules/account/api.py",  # data export
         "modules/account/refresh_limit.py",  # test_refresh_limit.py
         "modules/account/signin_limit.py",  # test_signin_limit.py
+        "modules/analytics/api.py",  # product events, per minute and per day
         "modules/chat/ws_api.py",  # test_ws_limit_outages.py
         "modules/link_preview/api.py",
         "modules/memory/api.py",
-        "modules/speech/gates.py",  # dictation, speech, live talk's session
-        "modules/speech/realtime.py",  # live talk saves and lookups
+        "modules/speech/gates.py",  # dictation, read aloud
         "services/scan_read.py",  # photo scans, every subject
     ]

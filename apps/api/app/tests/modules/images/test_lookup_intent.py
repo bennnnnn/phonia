@@ -2,7 +2,6 @@
 
 import pytest
 
-from app.modules.images.gen_intent import extract_image_gen_prompt
 from app.modules.images.lookup_intent import extract_image_lookup_query
 
 
@@ -128,21 +127,11 @@ def test_rejects_overly_long_subject() -> None:
     )
 
 
-def test_disjoint_from_generation_verbs() -> None:
-    """Lookup and generation must never both claim the same input."""
-    lookup_only = ["show me an ear", "let me see a shark", "what does a cat look like"]
-    for text in lookup_only:
-        assert extract_image_lookup_query(text) is not None
-        assert extract_image_gen_prompt(text) is None
-
-    generation_only = ["draw me a cat", "create an image of a sunset", "Create a cat pic"]
-    for text in generation_only:
-        assert extract_image_gen_prompt(text) is not None
+def test_draw_requests_are_not_lookups() -> None:
+    """A real photo is for "show me" / "look like", never a request to draw."""
+    for text in ["draw me a cat", "create an image of a sunset", "Create a cat pic"]:
         assert extract_image_lookup_query(text) is None
 
 
-def test_howto_picture_phrase_is_not_lookup_or_generation() -> None:
-    """Denied lookup how-to must not fall through to image generation."""
-    text = "show me a picture of ways to be smarter"
-    assert extract_image_lookup_query(text) is None
-    assert extract_image_gen_prompt(text) is None
+def test_howto_picture_phrase_is_not_lookup() -> None:
+    assert extract_image_lookup_query("show me a picture of ways to be smarter") is None

@@ -33,7 +33,6 @@ from app.modules.chat.turn_outcome import TurnOutcome
 from app.modules.chat.turn_prep import StreamContext
 from app.modules.chat.turn_trace import (
     begin_turn_trace,
-    current_turn_trace,
     emit_turn_trace,
     note_lightweight,
     note_pass,
@@ -43,8 +42,8 @@ from app.modules.chat.turn_trace import (
     note_subject,
     note_teaching,
     note_tool,
-    plain_record,
 )
+from app.tests.turn_trace_support import plain_record
 
 _SECRET = "my bank password is hunter2 and I live at 12 Elm St"
 _ALLOWED_KEYS = {
@@ -175,12 +174,6 @@ def test_a_tool_with_an_odd_name_is_counted_as_unknown() -> None:
     trace = begin_turn_trace("new")
     note_tool("rm -rf /; cat secrets")
     assert dict(trace.tools) == {"unknown": 1}
-
-
-def test_notes_outside_a_turn_go_nowhere() -> None:
-    note_route("auto.math")
-    note_tool("web_search")
-    assert current_turn_trace() is None
 
 
 def test_the_line_is_logged_once_and_later_notes_are_dropped(
@@ -359,7 +352,7 @@ def test_a_turn_a_photo_or_picture_answered_is_logged_when_its_reply_is_recorded
     caplog.set_level(logging.INFO, logger=turn_trace.__name__)
     begin_turn_trace("new")
     message = SimpleNamespace(id=uuid4(), content=_SECRET, model=None)
-    turn_intercepts._record(TurnOutcome(), message, "image-gen-model")  # type: ignore[arg-type]
+    turn_intercepts._record(TurnOutcome(), message, "image-search-model")  # type: ignore[arg-type]
     trace = _emitted(caplog).turn_trace  # type: ignore[attr-defined]
-    assert (trace["path"], trace["resolved_model"]) == ("intercept", "image-gen-model")
+    assert (trace["path"], trace["resolved_model"]) == ("intercept", "image-search-model")
     assert "hunter2" not in caplog.text

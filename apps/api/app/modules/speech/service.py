@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+from collections.abc import Callable
 
 from app.core.config import Settings
 from app.gateways import mock_llm, speech_gateway
@@ -18,7 +19,6 @@ _MOCK_MP3_BYTES = b"\xff\xfb\x90\x00" + b"\x00" * 64
 _STT_ALIAS = "speech-stt-model"
 TTS_QUALITY_ALIAS = "speech-tts-model"
 TTS_FAST_ALIAS = "speech-tts-fast-model"
-LIVE_TALK_ALIAS = "live-talk-model"
 _OPENAI_TTS_VOICES = frozenset(
     {
         "alloy",
@@ -73,7 +73,10 @@ async def transcribe_audio(
     *,
     filename: str = "speech.m4a",
     language: str | None = None,
+    on_call: Callable[[], None] | None = None,
 ) -> str | None:
+    """The transcript, or None on a failure. ``on_call`` runs just before the provider
+    is asked (the mock counts as one): from then on the call may be billed."""
     if not settings.speech_transcription_enabled:
         return None
     if not audio_bytes or len(audio_bytes) > SPEECH_MAX_AUDIO_BYTES:
@@ -83,6 +86,8 @@ async def transcribe_audio(
         )
         return None
     if mock_llm.should_mock_llm(settings):
+        if on_call is not None:
+            on_call()
         return "This is a mock transcription."
     if not settings.openai_api_key:
         return None
@@ -90,6 +95,8 @@ async def transcribe_audio(
     model = (settings.speech_transcription_model or openrouter_slug(_STT_ALIAS)).strip()
     if not speech_gateway.can_transcribe_with(model):
         model = openrouter_slug(_STT_ALIAS)
+    if on_call is not None:
+        on_call()
     text = await speech_gateway.transcribe_via_openai(
         settings,
         audio_bytes,
@@ -109,8 +116,11 @@ async def synthesize_speech(
     language: str | None = None,
     model_alias: str | None = None,
     voice: str | None = None,
+    on_call: Callable[[], None] | None = None,
 ) -> tuple[bytes, str] | None:
-    """Return (audio_bytes, content_type) for OpenAI TTS."""
+    """Return (audio_bytes, content_type) for OpenAI TTS.
+
+    ``on_call`` runs just before the provider is asked (the mock counts as one)."""
     if not settings.speech_tts_enabled:
         return None
     plain = " ".join((text or "").split()).strip()
@@ -121,11 +131,15 @@ async def synthesize_speech(
     # Mock chat must not fake TTS when a key is present: a stub MP3 fails
     # playback and the app falls back to on-device speech.
     if mock_llm.should_mock_llm(settings) and not settings.openai_api_key:
+        if on_call is not None:
+            on_call()
         return _MOCK_MP3_BYTES, "audio/mpeg"
     if not settings.openai_api_key:
         return None
 
     model = resolve_tts_model(settings, alias=model_alias)
+    if on_call is not None:
+        on_call()
     return await speech_gateway.synthesize_via_openai(
         settings,
         plain,

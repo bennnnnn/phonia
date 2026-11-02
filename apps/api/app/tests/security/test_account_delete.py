@@ -15,7 +15,6 @@ from app.models.orm import (
     MemoryArea,
     Message,
     PushToken,
-    Suggestion,
     TodoItem,
     User,
 )
@@ -33,7 +32,6 @@ async def _rows_owned_by(user_id) -> dict[str, int]:
             MemoryArea,
             Message,
             PushToken,
-            Suggestion,
             TodoItem,
         ):
             counts[model.__name__] = int(

@@ -7,7 +7,6 @@ import { GalleryItemActionsMenu } from "@/features/attachments/components/Galler
 import { useGalleryLibrary } from "@/features/attachments/hooks/useGalleryLibrary";
 import type { AttachmentListItem } from "@/lib/api";
 import {
-  galleryDisplayName,
   galleryFileName,
   galleryImageIndex,
   galleryImageItems,
@@ -31,18 +30,15 @@ export function GalleryMediaModals({ items, library, onLoadMore }: Props) {
   const images = useMemo(() => galleryImageItems(items), [items]);
   const viewerImages = useMemo(
     () =>
-      images.map((item): AttachmentViewerImage => ({
-        attachmentId: item.id,
-        path: item.download_url,
-        fileName: galleryFileName(item.content_type, item.original_filename, item.source),
-        label: galleryDisplayName(item),
-        chatId: item.chat_id ?? null,
-      })),
+      images.map((item): AttachmentViewerImage => {
+        const name = galleryFileName(item.content_type, item.original_filename);
+        return { attachmentId: item.id, path: item.download_url, fileName: name, label: name, chatId: item.chat_id ?? null };
+      }),
     [images],
   );
   const viewerIndex = viewerItem ? galleryImageIndex(images, viewerItem.id) : 0;
   const fileName = fileItem
-    ? galleryFileName(fileItem.content_type, fileItem.original_filename, fileItem.source)
+    ? galleryFileName(fileItem.content_type, fileItem.original_filename)
     : null;
   const sharingFile = fileItem != null && library.busyItemId === fileItem.id;
 

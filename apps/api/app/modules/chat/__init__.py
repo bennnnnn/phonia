@@ -45,16 +45,12 @@ if TYPE_CHECKING:
     from app.modules.chat.turn_prep import (
         StreamContext as StreamContext,
     )
-    from app.modules.chat.turn_prep.intents import (
-        cuts_after_picture as cuts_after_picture,
-    )
 
 _EXPORTS = {
     "RegenerateBackup": ("turn_prep", "RegenerateBackup"),
     "StreamContext": ("turn_prep", "StreamContext"),
     "StreamStatusFn": ("stream_status", "StreamStatusFn"),
     "clip_status_detail": ("stream_status", "clip_status_detail"),
-    "cuts_after_picture": ("turn_prep.intents", "cuts_after_picture"),
     "finish_turn": ("post_turn", "finish_turn"),
     "needs_generated_title": ("titles", "needs_generated_title"),
     "present_assistant_markdown": ("presentation", "present_assistant_markdown"),

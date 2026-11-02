@@ -1,6 +1,6 @@
 """A card that restates the question is no answer (2026-11-01 live baseline).
 
-"Find the cube root of 27a^3 + 54a^2b + 36ab^2 + 8b^3." went to the model reader, which wrote
+"Find the cube root of 27a^3 + 54a^2b + 36ab^2 + 8b^3." went to the model's typed read, which wrote
 ``cube_root(27a^3 + …)``. The parser read ``cube_root`` as one symbol times the polynomial,
 "simplified" that to itself, and the checked card was the question (right: 3a + 2b). A name
 the parser does not know as a function or as one-letter variables declines, and a card that
@@ -124,8 +124,8 @@ def test_a_number_a_letter_or_an_equation_never_restates(given: str, card: str) 
 
 
 @pytest.mark.asyncio
-async def test_the_model_readers_cube_root_gets_no_card(monkeypatch: pytest.MonkeyPatch) -> None:
-    """The live turn: the regex readers miss, the model reader writes ``cube_root(…)``."""
+async def test_the_models_cube_root_gets_no_card(monkeypatch: pytest.MonkeyPatch) -> None:
+    """The live turn: the regex readers miss, the model's typed read writes ``cube_root(…)``."""
     monkeypatch.setattr(math_prompt, "extract_math_intent", lambda _text: None)
 
     async def reader(**_kwargs: object) -> LLMMathExtract:

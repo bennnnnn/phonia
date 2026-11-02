@@ -1,7 +1,5 @@
 """Speech request and response models."""
 
-from datetime import datetime
-
 from pydantic import BaseModel, Field
 
 # Decoded audio cap. Router and transcribe_audio must use this same value
@@ -36,17 +34,3 @@ class SpeechTtsOut(BaseModel):
     content_type: str = "audio/mpeg"
     model: str = "speech-tts-model"
     lead_hash: str | None = None
-
-
-class SpeechLiveStatusOut(BaseModel):
-    """Live talk for this user. ``remaining`` / ``limit`` are whole minutes this
-    UTC month; the ``*_seconds`` fields are exact."""
-
-    enabled: bool
-    entitled: bool
-    remaining: int
-    limit: int
-    remaining_seconds: int = 0
-    limit_seconds: int = 0
-    min_session_seconds: int = 0
-    resets_at: datetime | None = None

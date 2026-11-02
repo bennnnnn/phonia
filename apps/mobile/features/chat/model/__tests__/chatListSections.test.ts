@@ -1,6 +1,5 @@
 import {
-  activeChatsFromGroups,
-  appendArchivedChats,
+  allChatsFromGroups,
   appendOlderChats,
   defaultChatSectionCollapsed,
   drawerSectionTitleKey,
@@ -19,30 +18,26 @@ describe("chatListSections", () => {
       last_7_days: [],
       this_month: [],
       older: [],
-      archived: [],
     });
   });
 
-  it("activeChatsFromGroups excludes archived", () => {
+  it("allChatsFromGroups lists pinned first, then the dated groups", () => {
     const groups = emptyChatList();
-    groups.archived.push({
-      id: "a",
+    groups.pinned.push({
+      id: "p",
       title: null,
-      model: "free-chat",
-      pinned: false,
-      archived: true,
+      pinned: true,
       created_at: "",
       updated_at: "",
     });
     groups.today.push({
       id: "t",
       title: null,
-      model: "free-chat",
       pinned: false,
       created_at: "",
       updated_at: "",
     });
-    expect(activeChatsFromGroups(groups).map((c) => c.id)).toEqual(["t"]);
+    expect(allChatsFromGroups(groups).map((c) => c.id)).toEqual(["p", "t"]);
   });
 
   it("pinned is not collapsible; only today starts expanded", () => {
@@ -60,7 +55,7 @@ describe("chatListSections", () => {
 
 
 describe("older chat pages (CLAR-12)", () => {
-  const chat = (id: string) => ({ id, title: id, model: "free-chat", pinned: false, created_at: "2026-01-01T00:00:00Z", updated_at: "2026-01-01T00:00:00Z" });
+  const chat = (id: string) => ({ id, title: id, pinned: false, created_at: "2026-01-01T00:00:00Z", updated_at: "2026-01-01T00:00:00Z" });
 
   it("appends each dated group below what is shown, once, and takes the page's cursor", () => {
     const shown = { ...emptyChatList(), pinned: [chat("p")], older: [chat("a")], next_cursor: "after-a" };
@@ -74,12 +69,5 @@ describe("older chat pages (CLAR-12)", () => {
   it("keeps the cursor when a chat leaves the list", () => {
     const groups = { ...emptyChatList(), older: [chat("a")], next_cursor: "after-a" };
     expect(removeChatFromGroups(groups, "a").next_cursor).toBe("after-a");
-  });
-
-  it("appends a page of archived chats below the ones shown, with the next cursor", () => {
-    const shown = { ...emptyChatList(), archived: [chat("a")], archived_next_cursor: "after-a" };
-    const merged = appendArchivedChats(shown, { items: [chat("a"), chat("b")], next_cursor: null });
-    expect(merged.archived.map((row) => row.id)).toEqual(["a", "b"]);
-    expect(merged.archived_next_cursor).toBeNull();
   });
 });

@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from typing import Literal
-from uuid import UUID
 
 from pydantic import BaseModel, Field
 
@@ -70,14 +69,6 @@ class SympyToolInput(BaseModel):
     guess: float | None = Field(default=None, ge=-1_000_000, le=1_000_000)
     # diff: 1 = first derivative; 2 = second, …
     order: int = Field(default=1, ge=1, le=4)
-
-
-class GenerateImageToolInput(BaseModel):
-    """Model-initiated image generation (Pro; tool loop only)."""
-
-    prompt: str = Field(min_length=1, max_length=2000)
-    aspect_ratio: Literal["1:1", "16:9", "9:16", "4:3", "3:4"] | None = None
-    reference_attachment_ids: list[UUID] | None = Field(default=None, max_length=2)
 
 
 class ImageSearchToolInput(BaseModel):

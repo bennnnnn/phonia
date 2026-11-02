@@ -37,10 +37,6 @@ def scanner_camera_subject(text: str) -> ScannerSubject | None:
     return None
 
 
-def is_scanner_camera_prompt(text: str) -> bool:
-    return scanner_camera_subject(text) is not None
-
-
 def confirmed_scan_reading(text: str) -> str | None:
     """The reading the student confirmed in the scanner, from a photo caption.
 

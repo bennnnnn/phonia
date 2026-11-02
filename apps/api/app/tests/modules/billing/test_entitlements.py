@@ -12,29 +12,19 @@ from app.services import model_health
 
 
 def _user(plan_id: str) -> SimpleNamespace:
-    return SimpleNamespace(plan=plan_id, enabled_models=None)
+    return SimpleNamespace(plan=plan_id)
 
 
 @pytest.mark.parametrize(
     "plan_id, expected",
     [
-        ("free", {"image_generation"}),
-        ("plus", {"all_models", "image_generation", "speech_transcription", "speech_tts"}),
-        (
-            "pro",
-            {"all_models", "image_generation", "speech_transcription", "speech_tts", "live_talk"},
-        ),
+        ("free", set()),
+        ("plus", {"all_models", "speech_transcription", "speech_tts"}),
+        ("pro", {"all_models", "speech_transcription", "speech_tts"}),
     ],
 )
 def test_each_plan_includes_exactly_its_features(plan_id, expected):
     assert set(entitlements.features_for(_user(plan_id), Settings())) == expected
-
-
-def test_live_talk_is_only_on_the_top_plan():
-    settings = Settings()
-    assert [p for p in entitlements.PLANS if entitlements.can_use(p, "live_talk", settings)] == [
-        "pro"
-    ]
 
 
 @pytest.mark.parametrize(
@@ -44,30 +34,24 @@ def test_live_talk_is_only_on_the_top_plan():
             "free",
             {
                 "daily_tokens": 100_000,
-                "daily_image_generations": 3,
                 "daily_speech_transcriptions": 0,
                 "daily_speech_tts": 0,
-                "monthly_live_talk_minutes": 0,
             },
         ),
         (
             "plus",
             {
                 "daily_tokens": 500_000,
-                "daily_image_generations": 10,
                 "daily_speech_transcriptions": 200,
                 "daily_speech_tts": 100,
-                "monthly_live_talk_minutes": 0,
             },
         ),
         (
             "pro",
             {
                 "daily_tokens": 500_000,
-                "daily_image_generations": 15,
                 "daily_speech_transcriptions": 200,
                 "daily_speech_tts": 100,
-                "monthly_live_talk_minutes": 60,
             },
         ),
     ],
@@ -87,9 +71,8 @@ def test_every_allowance_has_a_setting_for_every_plan():
 
 
 def test_a_feature_moves_between_plans_by_config_alone():
-    settings = Settings(daily_speech_tts=20, monthly_live_talk_minutes_plus=30)
+    settings = Settings(daily_speech_tts=20)
     assert entitlements.can_use("free", "speech_tts", settings)
-    assert entitlements.can_use("plus", "live_talk", settings)
 
 
 @pytest.mark.parametrize("raw", [None, "", "PRO ", "enterprise", "trial"])
@@ -150,5 +133,5 @@ def test_plan_catalog_lists_every_plan_with_its_numbers():
     catalog = entitlements.plan_catalog(Settings())
     assert [item["id"] for item in catalog] == ["free", "plus", "pro"]
     pro = catalog[2]
-    assert pro["allowances"]["monthly_live_talk_minutes"] == 60
-    assert "live_talk" in pro["features"]
+    assert pro["allowances"]["daily_speech_tts"] == 100
+    assert "speech_tts" in pro["features"]

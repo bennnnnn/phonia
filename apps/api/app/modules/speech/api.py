@@ -1,17 +1,17 @@
 import base64
 import binascii
 import json
+from collections.abc import Callable
 from datetime import date
 
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 
 from app.core.config import Settings
 from app.core.consent import get_consented_user
-from app.core.deps import get_current_user, get_settings_dep
+from app.core.deps import get_settings_dep
 from app.core.redis import get_redis_client
 from app.core.request_limits import reject_oversized
 from app.models.orm import User
-from app.modules.speech import live_talk as live_talk_service
 from app.modules.speech import service as speech_service
 from app.modules.speech.gates import (
     RefundDayOnFailure,
@@ -23,7 +23,6 @@ from app.modules.speech.gates import (
 from app.modules.speech.schemas import (
     SPEECH_MAX_AUDIO_BYTES,
     SPEECH_MAX_REQUEST_BYTES,
-    SpeechLiveStatusOut,
     SpeechTranscriptionIn,
     SpeechTranscriptionOut,
     SpeechTtsIn,
@@ -54,11 +53,12 @@ async def _transcribe_bytes(
     data: bytes,
     filename: str,
     language: str | None = None,
+    on_call: Callable[[], None] | None = None,
 ) -> SpeechTranscriptionOut:
     if not settings.speech_transcription_enabled:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not available")
     text = await speech_service.transcribe_audio(
-        settings, data, filename=filename, language=language
+        settings, data, filename=filename, language=language, on_call=on_call
     )
     if text is None:
         raise HTTPException(
@@ -100,7 +100,7 @@ async def synthesize_speech(
         )
         reserved_day = await reserve_day_or_raise("speech_tts", redis, user, settings)
 
-    async with RefundDayOnFailure("speech_tts", redis, user.id, reserved_day):
+    async with RefundDayOnFailure("speech_tts", redis, user.id, reserved_day) as refund:
         alias = speech_service.normalize_tts_alias(body.model)
         result = await speech_service.synthesize_speech(
             settings,
@@ -108,6 +108,7 @@ async def synthesize_speech(
             language=body.language,
             model_alias=alias,
             voice=user.tts_voice,
+            on_call=refund.spend,
         )
         if not result:
             raise HTTPException(
@@ -186,17 +187,9 @@ async def transcribe_speech(
     )
     day = await reserve_day_or_raise("speech_transcription", redis, user, settings)
 
-    async with RefundDayOnFailure("speech_transcription", redis, user.id, day):
-        result = await _transcribe_bytes(settings, data, filename, language)
+    # Once the audio is sent the provider may bill it, so a 502 or a hang-up after
+    # that keeps the slot; only a failure before the call gives it back.
+    async with RefundDayOnFailure("speech_transcription", redis, user.id, day) as refund:
+        result = await _transcribe_bytes(settings, data, filename, language, refund.spend)
         await quota_service.record_voice_spend(redis, quota_service.STT_SPEND_USD)
         return result
-
-
-@router.get("/live", response_model=SpeechLiveStatusOut)
-async def live_talk_status(
-    user: User = Depends(get_current_user),
-    settings: Settings = Depends(get_settings_dep),
-) -> SpeechLiveStatusOut:
-    if not settings.speech_live_talk_enabled:
-        return SpeechLiveStatusOut(enabled=False, entitled=False, remaining=0, limit=0)
-    return await live_talk_service.live_talk_status(get_redis_client(), user, settings)

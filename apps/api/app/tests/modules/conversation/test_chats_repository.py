@@ -14,7 +14,7 @@ async def test_create_chat(fake_session):
     """create should add, commit, refresh, and return the chat."""
     from app.modules.conversation.chats_repository import create
 
-    await create(fake_session, user_id=uuid4(), model="free-chat")
+    await create(fake_session, user_id=uuid4())
 
     fake_session.add.assert_called_once()
     fake_session.commit.assert_awaited_once()
@@ -164,9 +164,9 @@ def test_recent_chat_cache_forgets_chats_nobody_reads_again(monkeypatch):
     now = [time.monotonic()]
     monkeypatch.setattr(chats_repo._chat_cache, "clock", lambda: now[0])
     for _ in range(50):
-        chats_repo._remember_chat(Chat(id=uuid4(), user_id=uuid4(), model="auto"))
+        chats_repo._remember_chat(Chat(id=uuid4(), user_id=uuid4()))
     now[0] += chats_repo._CHAT_CACHE_TTL_SECONDS + 1
-    fresh = Chat(id=uuid4(), user_id=uuid4(), model="auto")
+    fresh = Chat(id=uuid4(), user_id=uuid4())
     chats_repo._remember_chat(fresh)
 
     assert len(chats_repo._chat_cache) == 1

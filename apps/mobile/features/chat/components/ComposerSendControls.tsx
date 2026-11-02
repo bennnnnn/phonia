@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 
 import type { makeChatComposerStyles } from "@/features/chat/components/chatComposerStyles";
 import { COMPOSER_CONTROL_SIZE } from "@/features/chat/model/composerLogic";
-import { LiveTalkButton } from "@/features/speech/components/LiveTalkButton";
 import { VoiceMicButton } from "@/features/speech/components/VoiceMicButton";
 import { useTheme } from "@/lib/theme";
 import { Icon } from "@/ui/icons/Icon";
@@ -17,17 +16,15 @@ type Props = {
   showSend: boolean;
   sendBusy: boolean;
   isOffline: boolean;
-  /** A picked file is still being prepared: send, the mic and live talk wait for it. */
+  /** A picked file is still being prepared: send and the mic wait for it. */
   attachBusy: boolean;
   showMic: boolean;
   voiceRecording: boolean;
   voiceTranscribing: boolean;
   onVoicePress?: () => void;
-  onLiveTalkPress?: () => void;
-  liveTalkOpen: boolean;
 };
 
-/** Stop while a reply streams; otherwise mic, live talk or send, whichever the draft calls for. */
+/** Stop while a reply streams; otherwise mic or send, whichever the draft calls for. */
 export function ComposerSendControls({
   s,
   streaming,
@@ -41,8 +38,6 @@ export function ComposerSendControls({
   voiceRecording,
   voiceTranscribing,
   onVoicePress,
-  onLiveTalkPress,
-  liveTalkOpen,
 }: Props) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -61,7 +56,6 @@ export function ComposerSendControls({
       </View>
     );
   }
-  const voiceActive = voiceRecording || voiceTranscribing;
   const sendDisabled = isOffline || sendBusy || attachBusy;
   return (
     <View style={s.sendBtnSlot}>
@@ -73,9 +67,6 @@ export function ComposerSendControls({
           disabled={attachBusy || sendBusy || isOffline}
           onPress={onVoicePress}
         />
-      ) : null}
-      {onLiveTalkPress && !liveTalkOpen && !voiceActive && !showSend && !sendBusy ? (
-        <LiveTalkButton size={COMPOSER_CONTROL_SIZE} disabled={attachBusy || isOffline} onPress={onLiveTalkPress} />
       ) : null}
       {showSend || sendBusy ? (
         <Pressable

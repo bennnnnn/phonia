@@ -3,8 +3,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.config import Settings
 from app.core.db import get_db
-from app.core.deps import get_current_user
+from app.core.deps import get_current_user, get_settings_dep
 from app.exceptions import PushTokenBindError
 from app.models.orm import User
 from app.models.schemas import PushTokenDeleteIn, PushTokenIn
@@ -18,6 +19,7 @@ async def register_push_token(
     body: PushTokenIn,
     user: User = Depends(get_current_user),
     session: AsyncSession = Depends(get_db),
+    settings: Settings = Depends(get_settings_dep),
 ) -> None:
     try:
         await push_repo.upsert(
@@ -27,6 +29,7 @@ async def register_push_token(
             platform=body.platform,
             device_id=body.device_id,
             android_channels=body.android_channels,
+            max_per_user=settings.push_tokens_max_per_user,
         )
     except PushTokenBindError as exc:
         raise HTTPException(

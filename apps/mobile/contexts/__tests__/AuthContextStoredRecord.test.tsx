@@ -45,6 +45,10 @@ jest.mock("@/lib/google-auth", () => ({ signInWithGoogleIdToken: jest.fn(), sign
 jest.mock("@/lib/signOutCleanup", () => ({ clearSignedOutAccount: jest.fn(async () => undefined) }));
 jest.mock("@/lib/syncRecords", () => ({ forgetSyncRecords: jest.fn(async () => undefined) }));
 jest.mock("@/features/notifications/model/pushNotifications", () => ({ devicePushToken: jest.fn(async () => null) }));
+jest.mock("@/lib/pendingLogout", () => ({
+  endServerSession: jest.fn(async () => undefined),
+  watchPendingLogouts: jest.fn(() => () => {}),
+}));
 
 const SESSION_KEY = "recall_session_v1";
 const alice = { id: "account-a", name: "Alice", locale: "en" } as User;

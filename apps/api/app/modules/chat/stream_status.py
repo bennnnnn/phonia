@@ -19,8 +19,7 @@ StreamStatusPhase = Literal[
     # The model is reasoning (its reasoning streams, or text is held as reasoning).
     "thinking",
     "composing",
-    # Tool-loop activity: AI image generation, and a real reference-photo lookup.
-    "image_gen",
+    # A real reference-photo lookup (the intercept or the tool loop).
     "finding_photo",
     # The tool-selection round: which tools, if any, the reply needs.
     "planning",

@@ -1,9 +1,7 @@
 import pytest
-from pydantic import ValidationError
 
 from app.core.config import Settings
 from app.models import model_catalog
-from app.models.schemas import ChatCreate, UserUpdate
 from app.services import model_health
 
 
@@ -79,12 +77,6 @@ def test_catalog_models_use_live_openrouter_prices(
     assert model.plan_access == plan
     assert model.selectable is True
     assert model_catalog.openrouter_slug(alias) == slug
-
-
-def test_every_catalog_alias_validates():
-    """The catalog is the one alias list; request schemas accept each id in it."""
-    for alias in model_catalog.known_ids():
-        model_catalog.validate_user_alias(alias)
 
 
 def test_estimate_cost_usd_for_known_model():
@@ -193,30 +185,6 @@ def test_price_sort_key_unpriced_max_tier_still_sorts_last():
     ranked = sorted([unpriced_max, priced_fast], key=model_catalog.price_sort_key)
 
     assert [m.id for m in ranked] == ["priced-fast", "unpriced-max"]
-
-
-def test_validate_user_alias_allows_auto():
-    model_catalog.validate_user_alias("auto", allow_auto=True)
-
-
-def test_validate_user_alias_rejects_unknown():
-    with pytest.raises(ValueError, match="Unknown model alias"):
-        model_catalog.validate_user_alias("not-a-model")
-
-
-def test_user_update_rejects_unknown_default_model():
-    with pytest.raises(ValidationError):
-        UserUpdate(default_model="fake-model")
-
-
-def test_user_update_accepts_model_mode():
-    update = UserUpdate(default_model="auto")
-    assert update.default_model == "auto"
-
-
-def test_chat_create_accepts_auto():
-    chat = ChatCreate(model="auto")
-    assert chat.model == "auto"
 
 
 def test_is_available_with_openrouter_key():

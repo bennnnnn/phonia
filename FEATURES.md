@@ -47,36 +47,37 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   Results use stable ordering and a consistent page/count database snapshot, and opening
   a message cancels obsolete navigation work.
 - ✅ **Pin** — pin/unpin a chat (chat `⋯` menu + drawer long-press); pinned chats show in a
-  **Pinned** section at the top of the drawer.
+  **Pinned** section at the top of the drawer. At most 20 pinned chats per account
+  (`modules/conversation/pins.py`); one more is refused with `pin_limit`, which the phone
+  words with the server's number.
 - ✅ **Share / Export** — share a conversation as a markdown transcript via the **native OS
   share sheet** (Messages, Mail, Files, …); export a chat as PDF from the in-chat `⋯` menu.
-  Chat `⋯` + drawer long-press (share/pin/archive/delete);
+  Chat `⋯` + drawer long-press (share/pin/delete);
   no backend. This is **not** a
   ChatGPT-style public `chatgpt.com/share/…` URL — anyone with that kind of link could
   read the thread without signing in. Public web links are a separate privacy feature
   (not started; do not assume we have them).
-- ✅ **Manage from the drawer** — long-press any chat for **Pin/Unpin · Share · Archive · Delete**.
+- ✅ **Manage from the drawer** — long-press any chat for **Pin/Unpin · Share · Delete**.
 - ✅ **Library** — drawer **Library** → paginated grid of the user’s verified attachments
-  (generated images, uploaded images, and files — not web lookup / reference photos,
-  which stay on the chat). Tabs: All / Generated / Uploaded / Files.
+  (uploaded images and files — not web lookup / reference photos, which stay on the
+  chat). Tabs: All / Uploaded / Files. Each account keeps at most 400 MB (free), 1 GiB
+  (Plus) or 4 GiB (Pro) in it, checked at presign (`library_storage_bytes`; over it,
+  409 `storage_full`).
   Search is a case-insensitive substring on filename, MIME type, and the **linked message
-  body**. For generated images that includes the **previous user message** (the draw
-  prompt) and the prompt stored on `original_filename`, not only the assistant
-  `[Image: …]` marker. Tap an image for a fullscreen viewer: black page, Close on the
+  body**. Tap an image for a fullscreen viewer: black page, Close on the
   left, More (⋮) / Download / white Share pill on the right, nothing at the bottom;
   swipe for the next photo (it loads the next page near the end), pinch or double-tap
   to zoom, and it follows the photo by id so a delete never acts on the wrong one.
   Toasts show inside the viewer. Long-press (or a screen reader's actions) for Use in
   chat / Open chat / Share / Delete. Share hands over the file through expo-sharing
-  (Android's RN Share would send only a path); generated images get a slugged file
-  name with a real extension. Tap a file to read it (PDF and text in-app; other types open on
+  (Android's RN Share would send only a path), named with a real extension. Tap a file to read it (PDF and text in-app; other types open on
   the device). The attach sheet also opens Library. Deleting a chat leaves
-  its uploads and generated files in Library (Open chat hides when the thread is gone). Lookup
+  its uploads in Library (Open chat hides when the thread is gone). Lookup
   photos stay on the chat only. Explicit Library
   delete removes the file. A failed thumbnail stays with Retry; the row is dropped
   only after the server confirms the file is gone. Opening Library warms the All page
   from the drawer tap (20s cache, same window as Memory); tab snapshots avoid a
-  wrong-grid flash. Logout, chat delete, upload, and image-gen invalidate it.
+  wrong-grid flash. Logout, chat delete and upload invalidate it.
 - ✅ **Attachment reliability** — picker and Library completions
   stay in their account and conversation; pagination failures retain rows with Retry.
   Downloads use distinct cache files, verify cached files still exist, and clear on logout.
@@ -86,12 +87,10 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   scanner, profile) is uploaded as a re-encode with no EXIF, GPS or XMP, upright; PNG and
   WebP keep their format, the rest become JPEG, and a GIF keeps its frames with its
   metadata blocks dropped (`features/attachments/model/attachmentPrep.ts`).
-- ✅ **Archive** — drawer long-press and in-chat `⋯` menu; archived chats show in a separate
-  section and are excluded from the main list.
-- ✅ **Multi-select** — drawer **Select** mode: tap rows to choose, then bulk **Archive** or
-  **Delete** (with confirm).
+- ✅ **Multi-select** — drawer **Select** mode: tap rows to choose, then bulk **Delete**
+  (with confirm).
 - ✅ **Chat management reliability** — manual titles survive delayed
-  generation; pin/archive updates are atomic; drawer and header changes stay in sync.
+  generation; pin updates are atomic; drawer and header changes stay in sync.
   Bulk partial failures preserve successful actions, and stale reads cannot restore
   deleted chats. Saved history and title polling respect navigation and account changes.
 - 🔜 Chat-list pagination beyond the current 200-row limit; pins take priority within it.
@@ -101,7 +100,7 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
 - ✅ **Streaming** — token-by-token over WebSocket; the reply appears as it's generated.
   Ordinary turns show typing dots only (no “loading memory / working on it” staircase).
   Status labels are reserved for real extra work while it runs: web search, files, math,
-  a reference-photo lookup ("Finding a photo") and image gen; the server sends
+  and a reference-photo lookup ("Finding a photo"); the server sends
   `composing` once a tool is done, so its label never outlives it. Hard turns say what
   they are doing once it has run a second: "Thinking… 12s" while a model reasons
   (counted from when it was asked; its reasoning is never shown), "Planning the answer…"
@@ -162,7 +161,8 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   lesson a new way, random input is not graded, and “everything at once” / a cheat sheet
   wins. A day or more after the last lesson, the next one opens with a two-line recap and a
   warm-up quiz. Each lesson keeps one ordinary memory line per chat (“Learning Python:
-  reached Lesson 3, Dictionaries … Covered: …”, `lesson_progress` job, no LLM; a hand edit
+  reached Lesson 3, Dictionaries … Covered: …” on the Learning progress page,
+  `lesson_progress` job, no LLM; a hand edit
   to memory after the lessons began keeps it out), so “teach me Python” in a new chat
   offers to pick up where they stopped. Prompt: `modules/chat/prompt_constants/teaching.py`
   and `lesson_flow.py`. Procedures (“teach me how to
@@ -221,25 +221,6 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   transcribes via OpenAI `gpt-4o-mini-transcribe`, and injects the transcript as normal text. Plus
   and Pro, **200/day**; on Free the mic opens the plans (the server refuses Free with 403). Not
   available in Expo Go.
-- ✅ **Live talk (Pro)** — waveform on the composer opens a **WebRTC**
-  speech-to-speech session (OpenAI Realtime `gpt-realtime-2.1`). Server VAD
-  ends your turn; the orb never shows “Transcribing…”. Physical devices enable
-  echo cancellation and barge-in; iOS Simulator retains half-duplex. Free and Plus
-  open the plans. Pro: **60 minutes per UTC calendar month**. Each session reserves up to
-  15 minutes at mint (refused under 1 minute left), the phone hangs up when its reservation
-  ends, and `POST /speech/live/end` settles the reservation to the time the server measured
-  (a session that never reports keeps the whole reservation). Settings → Account shows the
-  minutes left. Tap the mic (next to close) to mute so Recall
-  cannot hear you; it turns red. Playback is not paused. No Listening/Speaking
-  labels on screen; screen readers hear each phase (listening, thinking, speaking) as
-  it changes. A denied microphone asks for access with Open Settings. The normal composer stays so you can type and attach in voice mode.
-  Typing a draft hides mute and close so the field uses the full row; they
-  return when the draft is empty. Spoken turns are saved as normal chat
-  messages (what you said + the reply) so they are in the thread when you
-  close. Spoken sessions get the same stored-memory snapshot as text chat
-  plus bounded read-only memory lookup and web search.
-  Search sources use the existing reply chips. The chat header (drawer / ⋮) stays
-  available. Needs `OPENAI_API_KEY` — OpenRouter has no Realtime API.
 - ✅ **Read aloud (TTS)** — defaults to OpenAI **gpt-4o-mini-tts** PCM
   (`POST /speech/tts` lead then rest, rest bound to the lead hash so it cannot steal
   another utterance's unbilled quota) and starts playback on the first sentence.
@@ -268,30 +249,11 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   numbers, keywords); heuristic fallback for unknown langs.
 - ✅ **Tables** — styled (header shading, borders, cell padding).
 - ✅ **Inline images** — Markdown `![alt](url)` images render (contained, rounded).
-- ✅ **Image generation (every plan)** — Type an image request in the composer and send (e.g. "draw me a
-  cat" or "Dog" then "Image"); the user bubble keeps that wording (not rewritten to "Generate
-  image: …"). Daily caps: Free **3**, Plus **10**, Pro **15**, stored as chat attachments. No separate
-  prompt sheet, and the model must not send people to DALL-E / Midjourney. Stop
-  mid-generation keeps the user message and shows canceled/failed + Retry. While it works, the
-  card is a dot field with an accent wave (a Skia shader in builds with Skia; a band under a
-  dotted cover in Expo Go), a stage line ("Sketching it out" … "Almost there") and an estimated
-  percentage; tapping it starts a small dot game. Tap the result to
-  view full-screen and save via the system share sheet. Only the server reads the request:
-  the tap paints the bubble and typing dots first, and when a send might be a picture or a
-  photo the composer then asks `POST /images/intent` (a picture is drawn under that bubble), which
-  answers with the chat turn's own reading of the text and the chat's recent turns
-  (`docs/fixtures/image_intent_cases.json`), and draws what it answers, so "show the steps"
-  after a picture is chat. A maths, physics or chemistry turn is never a picture: "draw
-  ethanol" gets the structure and "A lens has focal length 15 cm. Where's the image?" gets the
-  optics; art ("a cartoon atom for our chemistry club poster") still draws. If the server
-  can't answer within 3 seconds the send goes to chat, and the chat turn still draws a typed
-  picture request.
-- 🔜 **Music generation** — same composer-send path as image gen (no prompt sheet): user asks
-  to generate a track, we generate a clip, store it as an audio attachment, and show a **compact
-  inline player** on the assistant message (play/pause + scrub + duration — not a full-screen
-  Now Playing UI). Pro + daily cap. Catalog alias + gateway (provider TBD); reuse
-  `expo-audio` / attachment URLs. Do not start until image-gen’s storage/cap path is the
-  template. Not TTS / not humming into the mic.
+- 🔜 **Music generation** — the user asks in the composer for a track (no prompt sheet), we
+  generate a clip, store it as an audio attachment, and show a **compact inline player** on the
+  assistant message (play/pause + scrub + duration — not a full-screen Now Playing UI). Pro +
+  daily cap. Catalog alias + gateway (provider TBD); reuse `expo-audio` / attachment URLs. Not
+  TTS / not humming into the mic.
 - ✅ **Math / LaTeX** — inline `$...$` renders in dedicated KaTeX Computer Modern faces (italic variables, upright digits/operators, superscripts, scalable continuous radicals, tight stacked fractions);
   display ` ```math` renders as **MathJax-SVG** (`MathSvgView` + `mathjax-full`, lazy-loaded
   and LRU-cached, themed via `currentColor`) on every build — no WebView — with a readable
@@ -580,16 +542,13 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   `entitlements.has_strong_everyday_model`, one switch per plan in `core/settings/plans.py`); it
   keeps photo turns too. Hard and maths turns keep their lanes on every plan. No OpenRouter-auto
   “Max” chip.
-- ✅ **Manual switching** — model selection lives in Settings → Models (settings-only by
-  design; the composer picker was removed to keep the composer single-purpose). Respected
-  per chat turn. With Auto off, every message goes to one model: the screen names it
-  ("Messages use") and lets the user pick it among the models switched on.
+- ✅ **No model choice** — students don't pick models: every turn takes Auto's path over the
+  plan's pool (`modules/chat/model_routing/choice.py`). There is no Models screen, no stored
+  model preference and no per-chat or per-message model.
 - ✅ **Chat settings from natural language** — small allowlist, confirm-then-write
-  (the same card a reminder change gets): model (Flash / Pro / Auto, nicknames like “GPT” → GPT-6 Luna),
-  tone (funny / professional / casual / soft), app language, and appearance
-  (light / dark / system — applied on-device). Respects `enabled_models` + plan.
-  No open settings tool.
-- ✅ **Auto routing** — an **Auto** option (Settings → Models) picks Flash vs Pro per message via a
+  (the same card a reminder change gets): app language and appearance
+  (light / dark / system — applied on-device). No open settings tool.
+- ✅ **Auto routing** — **Auto** picks Flash vs Pro per message via a
   fast heuristic (length, code fences, reasoning keywords). Explicit chat tutoring and substantive
   learning roadmaps use the low-latency fast lane (Qwen3.7 Flash) with strict step/day and tagged-example
   contracts; hard reasoning remains on Pro. Short follow-ups of a hard turn inherit that turn’s tier;
@@ -625,8 +584,8 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   raise N to skip intermediate LLM cost. Each pass includes
   user messages not processed by the previous pass (per-chat extract cursor), so a fact
   on turn 2 is not dropped if the chat ends there. Explicit “remember this” / “forget that”,
-  a mute ("stop mentioning my job") and a correction ("that's wrong, I'm at Stripe now")
-  still extract when N>1. No remember/forget chip or confirmation sheet.
+  a mute ("stop mentioning my grades") and a correction ("that's wrong, I'm in 11th grade
+  now") still extract when N>1. No remember/forget chip or confirmation sheet.
 - ✅ **Forget, mute, reset** (`modules/memory/commands.py`) — "forget that I use React"
   deletes the fact the phrase names, never a broader one sharing a word ("builds Recall with
   React Native") or someone else's ("my sister lives in Nairobi"). "Stop mentioning my job" /
@@ -635,22 +594,31 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   everything you know about me" and "stop remembering things about me" get a one-line reply
   pointing to Settings → Memory: chat changes no setting but the theme. Explicit facts and hand edits are
   never evicted by the 150 cap. Sweep look-alikes: `sweep_corpus/memory_controls.json`.
-- ✅ **Extraction hygiene** — only what the user's own lines state or clearly show (the
-  projects they build, the stack they build with, their job, goals, routines, recurring
-  interests); never assistant restatements. Transcript is the **user line only**, capped ~4k
+- ✅ **Extraction hygiene** — memory holds what learning needs: only what the student's own
+  lines state or clearly show (grade and school level, subjects and courses, exams and grades
+  they aim for, topics finished, concepts they keep finding hard, routines, recurring
+  interests); never their job, employer, the tools they build with or work projects, and
+  never assistant restatements. "I'm working on fractions" is kept as a learning-progress
+  fact even when the model returns nothing (`self_facts.py`). Transcript is the **user line only**, capped ~4k
   (head+tail); attachment OCR / untrusted blocks stripped before extract; memory wrapped as
   first-party notes (fence kept); account email injected only for email/draft/inbox intents.
-- ✅ **Extraction reliability (2026-09)** — name, job, employer, school, city, home country and
-  languages are `normal` sensitivity (the `identity` label means gender identity, immigration
-  status or disability), and a dating-app project is not a relationship fact. A failed model
+- ✅ **Extraction reliability (2026-09)** — name, grade, school, city, home country,
+  languages, subjects, goals and struggles are `normal` sensitivity (the `identity` label
+  means gender identity, immigration status or disability), and an essay on depression is a
+  subjects fact, not a health one. Students may be minors: a learning difference (ADHD,
+  dyslexia), an eating disorder, problems at home, bullying, abuse and self-harm are
+  sensitive (model label plus `text.py` needles) and are not stored unless the user says
+  "remember" or opts in. A failed model
   pass keeps the chat's extract cursor and retries on the next turn (3 tries, then moves on);
   a small-talk-only batch moves the cursor so it cannot hide later lines; failures log
   `memory_extract_model_failed`.
 - ✅ **Memory documents (Claude-style)** — each fact has a `topic` that files it into a page:
-  **You** (Profile, Preferences), **Topics** (Interests, Tech stack, Schedule, Recent work,
-  Goals, Side projects, Other) and **Areas** — one page per major project or part of life
-  (`area:<slug>`, title and one-line summary in `memory_areas`, named by the model). Facts
-  stay atomic rows; `type` follows the topic and still drives prompt priority.
+  **You** (Profile: name, grade, school, languages; Preferences: how they like things
+  explained), **Topics** (Subjects, Goals, Learning progress — where the lesson lines go —,
+  Struggles, Interests, Schedule: classes, routines and exam dates, Other) and **Areas** — one
+  page per major course, project or part of life (`area:<slug>`, title and one-line summary
+  in `memory_areas`, named by the model). Facts stay atomic rows; `type` follows the topic
+  and still drives prompt priority.
 - ✅ **Reads your recent chats once** — the first time the Memory screen opens, a
   `memory_history_scan` job reads the user lines of the 20 most recent non-quiz chats and
   records `users.memory_history_scanned_at`; the screen shows "Reading your recent chats…"
@@ -660,8 +628,8 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   plain-words edit that changed saved facts) are skipped, so a deleted fact cannot come back.
   A chat the model or database could not read is retried on a later pass (30 minutes apart,
   3 passes at most); the chats already read are skipped.
-- ✅ **Plain-words edits** — a box under the pages ("You can disagree with me more", "Keep
-  lists under five things") calls `POST /memories/instruct`; the model turns it into fact
+- ✅ **Plain-words edits** — a box under the pages ("Give me a hint before the answer",
+  "Explain things step by step") calls `POST /memories/instruct`; the model turns it into fact
   edits (saved like "remember this") and replies in a sentence. 30 edits per hour per user.
 - ✅ **Typed memories** — `profile` · `preference` · `project` · `fact` · `focus` (grouping
   categories, not a 20-type taxonomy). Each row is one atomic fact (the old one-paragraph-per-type
@@ -673,8 +641,8 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   recency until `memory_inject_max_chars` (1500). Similarity bar stays `memory_min_similarity`
   (0.35); a fact with no vector needs a word in common with the question. Scopes
   (`get_memory_block(scope=…)`): by query; with the profile page (career, "what's my job?");
-  everything ("what do you know about me"); **work** (programming and "my app / my backend"
-  turns: the tech-stack page and what the user builds, no query embed). An embed timeout
+  everything ("what do you know about me"). A programming turn reads memory like any other
+  turn (there is no work scope). An embed timeout
   injects the identity core plus word matches, uncached, and warms the key the turn read.
   Each fact line carries "(said YYYY-MM)" and "unconfirmed" under 0.6 confidence. A failed
   read is reported (`MemoryLoadReport`), never cached, and the reply says memory couldn't
@@ -769,8 +737,8 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
 ## 10. Settings & profile
 - ✅ **Account settings** — the avatar at the top of Settings opens **Profile**: a centered
   avatar with a pencil badge opens the name and photo editor (a camera badge picks and
-  previews a photo; Save profile persists both). Profile also holds age / country / job and
-  use current location. There is no username. Settings → Account shows the email (with how
+  previews a photo; Save profile persists both). Profile also holds age / country / job.
+  The app does not use the device's location. There is no username. Settings → Account shows the email (with how
   you sign in under it), the plan (free opens the upgrade sheet, which also restores a
   purchase; Pro manages the subscription in the store) and today's usage. Persisted on
   `users` and injected into the chat system prompt (see [§6](#6-memory-remembering-the-user)).
@@ -781,17 +749,18 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   app's `ListRow` / `ListGroup`. Rows that open a page show a chevron. Groups carry
   sentence-case headings; current values sit beneath row titles; overview explanations
   stay in accessibility hints. Nested screens omit row icons except connected-app marks.
-  Choice rows (appearance, accent, language, style, tone, voice, speed, reminder lead)
+  Choice rows (appearance, accent, language, emoji, voice, speed, reminder lead)
   open a floating popup — they do **not** expand inside the gray card.
 - ✅ **Experience** — Appearance (System / Light / Dark), Accent color, Language and
   Haptics, all on the Settings page itself. Appearance, accent and haptics are saved on
   the device; Haptics off silences every `lib/haptics` call.
-- ✅ **Personalization** — tone labels, emoji and custom instructions. Stored tone ids stay
-  `soft` / `casual` / `professional` / `funny`. Emoji (`users.emoji_use`: `off` /
+- ✅ **Personalization** — emoji, follow-up questions and custom instructions. There is no
+  tone setting: every reply keeps one casual voice line (`modules/chat/response_tone.VOICE_HINT`).
+  Emoji (`users.emoji_use`: `off` /
   `some` / `more`, every account starts at `some`) is the one emoji rule in the prompt
   (`modules/chat/response_tone.emoji_hint`): a few lead headings and list labels, never in
-  numbers, maths, code, cards, a worked solution, a draft or a painful reply; no tone
-  speaks about emoji. The finalize pass `emoji_use` (`modules/chat/emoji_placement.py`)
+  numbers, maths, code, cards, a worked solution, a draft or a painful reply; the voice
+  line never speaks about emoji. The finalize pass `emoji_use` (`modules/chat/emoji_placement.py`)
   keeps it whatever the model wrote: at A few an emoji moves to the front of its label
   and any in a sentence goes; at None they all go unless the user wrote one. There is no response-length setting:
   each message sets its own ("briefly", "in detail"), and how hard a turn thinks is
@@ -806,7 +775,7 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   (`users.push_*_enabled`; the scheduler skips a kind that is off, and to-do reminders
   off also stops the on-device ones). Reminder lead, email reminders, quiet hours.
 - ✅ **Models** — Auto and model toggles. Developer diagnostics are omitted from this screen.
-- ✅ **Data controls** — archived chats, archive all, delete all chats (Library stays),
+- ✅ **Data controls** — delete all chats (Library stays),
   export, delete account.
 - ✅ **Security** — session list + revoke + sign out of all devices. Removing a device stops its
   access token at once (the session id is revoked), not when the token expires. No MFA.
@@ -818,7 +787,7 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   user's profile photo or initials open Settings beside New chat.
 - ✅ **Sign out** — asks first.
 - ✅ **Data export** — exports profile and settings, chats and their messages, every memory row
-  and memory area, todos, attachments, suggestions, daily usage, push devices (no token) and
+  and memory area, todos, attachments, daily usage, push devices (no token) and
   product events as JSON via the native share sheet (`GET /auth/me/export`). Shows a progress
   screen while the archive builds.
 - ✅ **Account deletion** — permanently deletes the account and all its data (`DELETE /auth/me`),
@@ -841,7 +810,19 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   return to the foreground). The badge, Home and the editor's Remind at show `notify_at`; for a
   due time the editor has not saved, it asks `GET /todos/reminder-preview`. The phone works out none.
 - ✅ **Email reminders** — opt-in todo-due emails (Resend); Settings
-  toggle; worker scheduler only (welcome + Pro receipt unchanged).
+  toggle; worker scheduler only (welcome + Pro receipt unchanged). Each send of one reminder
+  carries the same `Idempotency-Key`, so a resend after a timeout is not mailed twice; an
+  address Resend refuses (a 4xx but 429) is not tried again, and a timeout, 429 or 5xx waits
+  out a doubling hold (`notifications/send_backoff.py`, Redis) instead of retrying every minute.
+- ✅ **Reminder delivery limits** — reminder pushes go `priority: high` with a `ttl`
+  (`push_reminder_ttl_seconds`, 4 h: a phone off longer never shows it late). A push Expo may
+  have accepted (a read timeout, an unreadable answer) is held 15 min, not resent next minute;
+  a 429 waits its Retry-After and a 5xx backs off; a request Expo refuses as a whole (a 400) is
+  split in halves so one bad token holds back only itself. Push and email cycles send while due
+  reminders remain for `reminder_cycle_budget_seconds` (no fixed page cap); receipts are polled
+  in batches for `push_receipt_poll_budget_seconds`. An account keeps at most
+  `push_tokens_max_per_user` (10) device tokens, newest first; registration is one
+  `INSERT … ON CONFLICT`, so two registrations at once no longer fail one.
 
 ## 11. Navigation & UX
 - ✅ **Drawer** — custom slide-in: search, New chat, chat history, profile + settings.
@@ -867,18 +848,18 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   `users.ai_data_consent_at` with the sign-in and a new account opens the chat. An account
   without it (from before this, withdrawn, or signed in by a client that sends no flag)
   sees once what goes to which outside service (AI models via OpenRouter, OpenAI voice,
-  Mathpix math photos, Tavily search, optional location) with a privacy-policy link; Agree
+  Mathpix math photos, Tavily search) with a privacy-policy link; Agree
   stores it (`PATCH /auth/me` `ai_data_consent`), Not now signs out to the sign-in page.
   Every signed-in screen waits on it (the root layout's
   `features/auth/components/AiConsentRedirect.tsx` sends it to `app/consent.tsx`); the web
   client keeps its own consent screen after sign-in. The server holds the same line (`core/consent.py`): a
-  chat turn (WebSocket and SSE), speech (transcribe, read aloud, a live talk key or tool) and a
+  chat turn (WebSocket and SSE), speech (transcribe, read aloud) and a
   scan read-back are refused with `consent_required` (an error frame with
   `user_message_saved: false`, or HTTP 403) until the account agrees, and the phone answers it
   with the consent screen (any feature hands it on with `notifyConsentRequired()`,
   `lib/api/consentRefusal.ts`). Settings → Data controls shows when the account agreed and
-  can withdraw it, which brings the consent screen back. Image generation, attachment uploads and
-  memory instructions are not gated yet.
+  can withdraw it, which brings the consent screen back. Attachment uploads and memory
+  instructions are not gated yet.
 - ✅ **Polish** — light haptic taps on key actions (Android via the built-in API) + chip fade-in
   animation.
 - ✅ **iOS haptics** — `expo-haptics` on real devices (graceful no-op on Android / Expo Go).
@@ -892,7 +873,7 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   wordmark and 11px stat chips keep their one-off sizes.
 
 **UX decisions from the 2026-09 frontend audit (do not relitigate):**
-- Model selection is **settings-only** (Settings → Models); no composer model picker.
+- There is **no model selection** anywhere: Auto picks every turn's model.
 - User-message copy stays **long-press only** (with a "Long press to copy"
   accessibility hint); no visible copy button on user bubbles.
 - Onboarding keeps a single CTA.
@@ -901,10 +882,9 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
 
 ## 12. Monetization
 - ✅ **Three plans** — `users.plan` is `free` | `plus` | `pro` (display names "Plus" / "Pro"
-  live in i18n only, `plans.*`). Free: every model in the free pool, 3 AI images a day, no
-  voice input, no natural read-aloud, no live talk. Plus: every model, Pro-size daily limits,
-  voice input and read-aloud, 10 images a day, no live talk. Pro: everything in Plus, 15
-  images a day and 60 live talk minutes a month. Prices live in the stores; the app shows
+  live in i18n only, `plans.*`). Free: every model in the free pool, no voice input, no
+  natural read-aloud. Plus: every model, Pro-size daily limits, voice input and
+  read-aloud. Pro: everything in Plus. Prices live in the stores; the app shows
   the offering's localized price. One place decides: `modules/billing/entitlements.py`.
 - ✅ **Subscriptions (RevenueCat)** — mobile purchase flow via lazy-loaded `react-native-purchases`
   (dev/production builds only; skipped in Expo Go). Two entitlements (`plus`, `pro`; `pro`
@@ -921,7 +901,7 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   every paid row. `GET /billing/plans` gives the paywall each plan's features and numbers.
 - ✅ **Plans sheet** — free sees Plus and Pro side by side; Plus sees the step up to Pro; a
   purchase whose server refresh fails says the plan will update (never "purchase failed").
-  Settings → Account shows the plan, live talk minutes left (Pro) and "Upgrade to Pro" (Plus).
+  Settings → Account shows the plan and "Upgrade to Pro" (Plus).
 - ✅ **Dev plan toggle** — the plans sheet shows **Enable Plus / Enable Pro (dev only)**
   (development builds only; `POST /auth/me/pro-dev?plan=`).
 - 🔜 App Store / Play billing polish, promotional offers, family plans.
@@ -1005,17 +985,14 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   words only Spanish, French, German, Italian, Portuguese or Turkish use; any English to-do
   word keeps a mixed message English. A message with no language of its own ("a las 5",
   "17:00", "sí") follows the user's previous message, then their app language, so the
-  answer to a question asked in Spanish never writes either. Live talk follows the same
-  rule: speech in another language never saves a reminder.
+  answer to a question asked in Spanish never writes either.
 - ✅ **LLM todo sync** — ` ```reminder ` fences and the spoken rules become reminder cards
   (above); with cards off they apply on persist (create + mutations), and a background job
   recovers missed writes from chat (dated items only). The job is off while cards are on,
   since it would write without one. Injects
   Schedule + overdue summary into the system prompt. “What time is my flight / meeting /
   …” loads Schedule on the first turn. Typed “remind me …” also classifies
-  as a Schedule turn. Live Talk injects a compact Schedule snapshot and applies the same
-  clocked “remind me … today/tomorrow at …” persist heuristic (no invented times; tools
-  stay read-only).
+  as a Schedule turn.
 - ✅ **Due dates** — `due_at` on items; mobile date/time picker on Reminders; relative
   labels in prompts (overdue, due today, due in N days); user timezone synced from
   device (`users.timezone`).
@@ -1025,7 +1002,7 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   before due). With push on, the server owns due-at (`server_todo_push_enabled` defaults
   true) and local scheduling is skipped so both do not fire. Turning push off cancels
   leftover local alerts then re-schedules them on-device.
-- ✅ **Follow-up questions** — up to three short questions (one line each, about 3–9 words) under the latest reply, about what the user just asked: a why, a what-if and a next step for a maths, physics, chemistry or biology problem, and the next things a person would ask for any other real question with a full answer. Small talk, drafts, personal updates, reminders and settings get none. One `memory-model` call per eligible turn after `done` (`modules/chat/related_prompts.py`), cached per message for reopen; rows in `features/suggestions/components/RelatedPromptLines.tsx`. The old proactive chips built from other chats are gone from the app, and the `suggestions` job, its generator and the `/suggestions` routes are removed; stored rows stay in the data export until a later release drops the table.
+- ✅ **Follow-up questions** — up to three short questions (one line each, about 3–9 words) under the latest reply, about what the user just asked: a why, a what-if and a next step for a maths, physics, chemistry or biology problem, and the next things a person would ask for any other real question with a full answer. Small talk, drafts, personal updates, reminders and settings get none. One `memory-model` call per eligible turn after `done` (`modules/chat/related_prompts.py`), cached per message for reopen; rows in `features/suggestions/components/RelatedPromptLines.tsx`.
 - 🔜 1-hour-early **email/push** nudges beyond the local lead picker.
 
 ## 15. Code execution policy
@@ -1049,12 +1026,12 @@ with them; it only ever carried the calendar hint. Sign-in with Google is unchan
 only `GOOGLE_CLIENT_ID`.
 
 - ✅ **MCP gateway** — `gateways/mcp/` with registry + module-owned adapters (`web_search`,
-  `sympy`, `generate_image`, `search_image`). Tools are owned by Recall; arbitrary user MCP
+  `sympy`, `search_image`). Tools are owned by Recall; arbitrary user MCP
   servers stay out of scope.
 - ✅ **Full tool-calling loop** — **on by default**, but **not on every turn.**
   Ordinary chat streams immediately. Pre-stream `complete_with_tools` runs only
   when the turn still looks like web search (the deterministic search gate),
-  unsolved math, or image gen. If that round
+  unsolved math, or a photo lookup. If that round
   finishes without tools, the text is shown — the stream does not call the model
   a second time. Pydantic-validated args, bounded by `mcp_tool_loop_max_rounds`.
   Heuristic SymPy still runs before the stream so homework does not wait on a tool
@@ -1088,14 +1065,13 @@ A consolidated list of what's intentionally **not** (or only partially) in this 
   (`chat_id`); top-k into later turns. **Not** a per-user file library across chats.
   Text-layer extract on prepare; vision OCR on the index job only. File chip shows
   indexing until chunks exist; wrapped inject includes filename.
-- ✅ **Camera math solver** — attach sheet “Solve math with camera” → VisionCamera live frame + adjustable crop + torch / pinch-zoom / photos. On-device ML Kit text recognition runs only inside the live crop and marks the frame ready after repeated stable reads; live frames never hit a paid OCR endpoint. Camera shots are cropped from the live frame immediately (no second crop/Solve step); imported photos retain the adjustable still-image crop. Math then shows **I read this as** (`POST /math/scan/read`: Mathpix, then `vision-chat`, no solve). The student edits the reading if needed and taps **Solve**, which sends it as text through the full math pipeline, or **Send photo**, which sends the crop at once with the checked reading so the turn does not read it again. Physics and chemistry read back the same way through their own readers (`POST /physics/scan/read`, `POST /chemistry/scan/read`: `vision-chat` plain text, no Mathpix kinds); physics turns OCR LaTeX into typed text (`2 × 10^-6 C`, `30°`), and **Solve** sends that text alone, so a photographed physics problem gets the same verified instant reply as a typed one. A physics photo sent with its reading is verified from that reading; one without gets the physics note, never math hints. The three readers share one guard (`services/scan_read.py`: payload limits, spend cap, per-user rate). A refused read (reader off, photo too large, rate limit, spend cap) names itself the same way for every subject (`features/scanner/model/scanReadError.ts`). Biology camera scans send the live crop directly. Mathpix runs only on the captured math crop when `MATHPIX_APP_ID`/`MATHPIX_APP_KEY` are set (`improve_mathpix=false`); SymPy verifies. Camera capture needs a **dev build**. Unverified fall-through is labeled (`Couldn't verify this with SymPy.`) only when the reply contains math.
+- ✅ **Camera math solver** — attach sheet “Solve math with camera” → VisionCamera live frame + adjustable crop + torch / pinch-zoom / photos. On-device ML Kit text recognition runs only inside the live crop and marks the frame ready after repeated stable reads; live frames never hit a paid OCR endpoint. Camera shots are cropped from the live frame immediately (no second crop/Solve step); imported photos retain the adjustable still-image crop. Math then shows **I read this as** (`POST /math/scan/read`: Mathpix, then `vision-chat`, no solve). The student edits the reading if needed and taps **Solve**, which sends it as text through the full math pipeline, or **Send photo**, which sends the crop at once with the checked reading so the turn does not read it again. Physics and chemistry read back the same way through their own readers (`POST /physics/scan/read`, `POST /chemistry/scan/read`: `vision-chat` plain text, no Mathpix kinds); physics turns OCR LaTeX into typed text (`2 × 10^-6 C`, `30°`), and **Solve** sends that text alone, so a photographed physics problem gets the same verified instant reply as a typed one. A physics photo sent with its reading is verified from that reading; one without gets the physics note, never math hints. The three readers share one guard (`services/scan_read.py`: per-user open reads, hourly rate and the day's chat tokens, checked before the body is read; a read takes `scan_read_tokens` from the chat's daily allowance, so the scan's limit is the chat's limit and a spent allowance refuses it with chat's `quota_exceeded`; payload limits and a JPEG/PNG/WebP byte check; spend cap). A refused read (reader off, photo too large, rate limit, chat allowance spent, spend cap) names itself the same way for every subject (`features/scanner/model/scanReadError.ts`). Biology camera scans send the live crop directly. Mathpix runs only on the captured math crop when `MATHPIX_APP_ID`/`MATHPIX_APP_KEY` are set (`improve_mathpix=false`); SymPy verifies. Camera capture needs a **dev build**. Unverified fall-through is labeled (`Couldn't verify this with SymPy.`) only when the reply contains math.
 - ✅ **Web search** — Tavily primary + DuckDuckGo fallback; sources on assistant messages
   (hidden on short A–D replies).
 - ✅ **Structured profile fields** — name / age / country / job (Settings + prompt injection).
-- ✅ **Vision + image gen** — image attachments route to vision models; a later
+- ✅ **Vision** — image attachments route to vision models; a later
   plain-text follow-up in the same chat rehydrates the last image(s). If the file
-  is gone, the model is told not to guess from a prior caption. Image generation
-  from the composer on send (daily cap per plan; no separate prompt sheet).
+  is gone, the model is told not to guess from a prior caption.
 - ✅ **Per-chat Redis prepare lock** — `chatprep:{chat_id}` around prepare + stream; concurrent
   turns get `ChatBusyError` / `code: "busy"` (#536).
 - ✅ **Math display rendering** — display math renders as MathJax-SVG (`MathSvgView`;
@@ -1271,7 +1247,7 @@ Shipped after the Phase 1/2 code review (and follow-up PRs):
 - ✅ WS handshake IP rate limit before `accept()`; core `user_id` FKs `ON DELETE CASCADE`
 - ✅ Alembic `transaction_per_migration` so future `CREATE INDEX CONCURRENTLY` can use
   `op.get_context().autocommit_block()`
-- ✅ Enum-like CHECK constraints — memories (type, status, sensitivity), users plan and response tone, and message role/feedback. Project, quiz-mode, and item-status checks left with the learning tables.
+- ✅ Enum-like CHECK constraints — memories (type, status, sensitivity), users plan and emoji use, and message role/feedback. Project, quiz-mode, and item-status checks left with the learning tables.
 - ✅ Mobile: in-chat delete syncs drawer + cache; mount chat-load `catch`; memoized contexts;
   removed unused `showContextSummarized`; bootstrap listener cleanup race; draft discard on
   background; a11y labels on key icon-only controls
@@ -1318,14 +1294,12 @@ magic-byte validation, daily caps). Blobs never live in Postgres.
 |------------|--------|
 | Presigned upload + confirm + orphan reaper | ✅ Shipped (local default; R2 when `STORAGE_BACKEND=r2` + secrets). Unconfirmed original uploads reap after `attachment_pending_orphan_hours` (default **1h**) so a killed-app image slot can refund the same UTC day. Hidden clones stay until `attachment_orphan_grace_hours` (default **24h**) — that billed window is intentional, not a leak. |
 | Image upload → vision-chat routing (Qwen3.7 Flash, GLM 5.3 Flash backup, via OpenRouter) | ✅ Shipped |
-| Image generation (composer send, daily cap per plan: 3 / 10 / 15) | ✅ Shipped |
 | Reference-photo lookup (`show me an ear` / what-X-looks-like / "can you show me…" / "send me a photo of X"; "show me her image" reads who from the chat; Tavily + mirrored attachment; not listed in Library) | ✅ Shipped (free+Pro; daily cap; flag `image_search_enabled`) |
 | Answer photos (one real photo above an answer about something worth seeing, no "show me"; the model's hidden ```photo query, searched while the text streams) | ✅ Shipped (free+Pro; same daily cap and flag) |
-| Library (drawer grid of generated + uploaded images and files; lookup photos stay on the chat) | ✅ Shipped (local blobs under `~/.recall/attachments`, not `/tmp`) |
+| Library (drawer grid of uploaded images and files; lookup photos stay on the chat) | ✅ Shipped (local blobs under `~/.recall/attachments`, not `/tmp`) |
 | PDF / doc upload + server text extract into prompt | ✅ Text-layer PDFs / DOCX + scanned-PDF OCR (page render → vision) |
 | PDF inline preview (pdf.js WebView, dev build) | ✅ Shipped |
 | Audio in (Whisper STT → composer) | ✅ Shipped (dev build) |
-| Live talk (speech-to-speech, Pro, 60 min/month) | ✅ WebRTC + OpenAI Realtime; physical-device barge-in implemented, live validation pending; Simulator half-duplex |
 | Audio out (read aloud) | ✅ Cloud TTS + device `expo-speech` fallback (no mic required; 502 ≠ API down) |
 | Music generation (composer send + compact inline player) | 🔜 Later (Pro + daily cap; not TTS) |
 | pgvector RAG over **this chat’s** attachments | ✅ Shipped (`attachment_rag`; flag on by default; not a user-wide corpus) |
@@ -1333,7 +1307,7 @@ magic-byte validation, daily caps). Blobs never live in Postgres.
 | Full chat-history corpus RAG | ✅ Shipped (`message_chunks`; flag on by default) |
 | Full duplex voice mode | 🔎 Physical-device implementation; release validation pending |
 
-Notes: multimodal routes through whichever catalog model supports the modality (vision/image-gen
+Notes: multimodal routes through whichever catalog model supports the modality (vision
 aliases on OpenRouter). Multimodal calls cost more than text — gated by plan + daily caps
 (images, speech).
 
@@ -1364,7 +1338,7 @@ A **web version that reuses this same API** — one backend, multiple clients. S
   CORS origin documented in `apps/api/.env.example` — cookie sessions need an explicit
   `CORS_ORIGINS` list (empty `*` disables cookies). Follows the mobile chat-ux-bans.
 - 🔜 **Later slices** — rich fences (math/charts/Mermaid/sandboxed HTML preview), Memory/
-  settings/attachments/image gen, `packages/api-types` extracted from
+  settings/attachments, `packages/api-types` extracted from
   `lib/api/types.ts`, Apple Sign-In on web, prod deploy.
 
 ---
@@ -1387,7 +1361,7 @@ with durable memory and everyday productivity.
 | Memory that compounds | User facts + past-chat RAG — the namesake |
 | Utility beyond chat | Schedule, reminders |
 | Trust & control | Export, delete account, confirm-before-write cards, quota transparency |
-| Monetize fairly | Free tier with limits; Plus for voice; Pro adds live talk |
+| Monetize fairly | Free tier with limits; Plus for voice |
 
 ### Release plan
 | Phase | Scope | Status |
@@ -1425,7 +1399,6 @@ drawer FTS search ✅.
 | Shipped | Not done |
 |---------|----------|
 | Record → OpenAI `gpt-4o-mini-transcribe` → composer (app-language hint, no-speech gate) | Live provider verification |
-| Live Talk WebRTC + OpenAI `gpt-realtime-2.1` (Pro, 60 min/month; server VAD, physical-device barge-in, bounded read-only tools; Schedule snapshot + clocked reminder persist off audio path). Needs `OPENAI_API_KEY`. | Physical-device echo/interruption checks; heard-word transcript alignment |
 | Device TTS + cloud TTS (`POST /speech/tts` lead/rest JSON, daily caps) | — |
 
 ### Cost guards (recent)
@@ -1434,8 +1407,6 @@ drawer FTS search ✅.
 | Daily tokens | 100k | 500k | 500k |
 | Speech transcriptions/day | 0 (not included) | 200 | 200 |
 | Speech TTS (read aloud)/day | 0 (phone voice only) | 100 | 100 |
-| AI images/day | 3 | 10 | 15 |
-| Live talk | not included | not included | 60 min/month |
 | Tavily searches/day | 20 (then DDG only) | 150 | 150 |
 | R1 / smart-chat quota weight | 3.5× token charge | Same | Same |
 
@@ -1473,8 +1444,7 @@ weakness. No video generation. Native share is enough unless we later decide we 
 ### Done (this product pass)
 
 1. ✅ **Owned tool loop on** — `mcp_tool_loop_enabled` defaults true. Adapters:
-   `web_search`, `sympy` (if math on), `image_gen` (if image gen on),
-   `search_image` (if image search on). Heuristic SymPy still runs. Web search is
+   `web_search`, `sympy` (if math on), `search_image` (if image search on). Heuristic SymPy still runs. Web search is
    the owned tool loop (source chips + wrap); a skipped `web_search` still runs
    one cached search. Add Docs/GitHub later as owned tools — not user MCP servers.
 2. ✅ **Scanned-PDF OCR** — text-layer extract on prepare (no vision); empty PDFs

@@ -79,7 +79,6 @@ async def prepare_money_turn(
     redis: Redis | None,
     *,
     user: User | None,
-    location: str | None,
     earlier: Sequence[str | Sequence[str]] = (),
     last_reply: str = "",
 ) -> MoneyTurn | None:
@@ -100,15 +99,15 @@ async def prepare_money_turn(
     )
     if request is None:
         return None
-    # The card and the prompt use one currency: the one named, else the user's place's.
-    request = replace(request, currency=currency_for(request.currency, location))
+    # The card and the prompt use one currency: the one named, else US dollars.
+    request = replace(request, currency=currency_for(request.currency))
     product = request.product
     # A follow-up's average is read again for its own kind and term.
     term = request.values.get("years", request.values.get("months"))
     if term is None:
         term = product.defaults.get("years", product.defaults.get("months"))
     lookup = stand_in = None
-    country = country_for(request.currency, location)
+    country = country_for(request.currency)
     if product.rate_lookup(request.variant) is not None:
         lookup = create_background_task(
             current_average(
@@ -137,7 +136,6 @@ async def prepare_standing_turn(
     redis: Redis | None,
     *,
     user: User | None,
-    location: str | None,
     earlier: Sequence[str | Sequence[str]],
     last_reply: str,
 ) -> MoneyTurn | None:
@@ -148,7 +146,7 @@ async def prepare_standing_turn(
     # "The interest rate on a savings account" after a mortgage is about another product.
     if request is None or request.rates_only or switches_product(request.product, text):
         return None
-    request = replace(request, currency=currency_for(request.currency, location))
+    request = replace(request, currency=currency_for(request.currency))
     product = request.product
     average = None
     lookup = product.rate_lookup(request.variant)
@@ -156,7 +154,7 @@ async def prepare_standing_turn(
         term = request.values.get("years", request.values.get("months"))
         if term is None:
             term = product.defaults.get("years", product.defaults.get("months"))
-        country = country_for(request.currency, location)
+        country = country_for(request.currency)
         task = create_background_task(
             current_average(
                 product, term, country, settings, redis, user=user, variant=request.variant

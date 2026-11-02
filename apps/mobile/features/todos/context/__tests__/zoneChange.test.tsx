@@ -31,7 +31,6 @@ jest.mock("@/features/billing/model/purchases", () => ({ isPurchasesConfigured: 
   registerPlanChangeListener: jest.fn() }));
 jest.mock("@/features/notifications/model/pushNotifications", () => ({ attachPushForegroundSync: jest.fn(),
   ensureReminderChannel: jest.fn(async () => undefined), ensureNotificationPermission: jest.fn(async () => true) }));
-jest.mock("@/lib/deviceLocation", () => ({ getDeviceLocationLabel: jest.fn(async () => null) }));
 jest.mock("@/lib/syncRecords", () => ({ recentSyncAt: jest.fn(async () => null), recordSync: jest.fn() }));
 jest.mock("@/lib/filePrefs", () => ({}));
 jest.mock("@/features/todos/model/reminderSeen", () => ({
@@ -86,7 +85,7 @@ const todo = (): Todo => ({
   updated_at: "2026-10-01T00:00:00Z", notify_at: NOTIFY_AT[serverZone],
 });
 const USER = {
-  id: "u1", timezone: "UTC", location_enabled: false, push_notifications_enabled: false,
+  id: "u1", timezone: "UTC", push_notifications_enabled: false,
   push_reminders_enabled: true, reminder_lead_minutes: 10, quiet_hours_enabled: true,
   quiet_hours_start_minute: 1320, quiet_hours_end_minute: 420,
 } as User;

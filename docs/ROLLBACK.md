@@ -44,8 +44,11 @@ Contracts waiting for a later release:
   release that ranks memory in SQL, migration `0118`). Drop once no image that ranks
   memory from the JSON copy is a rollback candidate.
 - `users.response_style`: no longer read, returned or accepted by `/auth/me` (the
-  release that removed the account-wide reply length). Drop once that release is the
-  oldest rollback candidate.
+  release that removed the account-wide reply length), and no longer mapped on `User`
+  (the release after migration `0123`, so its queries stop selecting it;
+  `alembic/env.py` `_RETIRED_COLUMNS` keeps `alembic check` from proposing the drop).
+  Drop, with its `_RETIRED_COLUMNS` entry, once that release is the oldest rollback
+  candidate: every earlier image selects the column with each user row.
 
 `app/tests/architecture/test_migration_safety.py` fails on a migration after
 `0111` whose `upgrade()` drops, renames or retypes without that comment, and on

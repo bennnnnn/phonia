@@ -12,13 +12,11 @@ export type ChatScreenMenuSheetsProps = {
   menuAnchorRef: RefObject<View | null>;
   chatTitle: string | null;
   pinned: boolean;
-  archived: boolean;
   onCloseMenu: () => void;
   onShare: () => void;
   onExportPdf: () => void;
   onRename: () => void;
   onTogglePin: () => void;
-  onToggleArchive: () => void;
   onDelete: () => void;
   renameVisible: boolean;
   renameText: string;
@@ -35,13 +33,11 @@ export function ChatScreenMenuSheets({
   menuAnchorRef,
   chatTitle,
   pinned,
-  archived,
   onCloseMenu,
   onShare,
   onExportPdf,
   onRename,
   onTogglePin,
-  onToggleArchive,
   onDelete,
   renameVisible,
   renameText,
@@ -59,13 +55,11 @@ export function ChatScreenMenuSheets({
         anchorRef={menuAnchorRef}
         title={chatTitle}
         pinned={pinned}
-        archived={archived}
         onClose={onCloseMenu}
         onShare={onShare}
         onExportPdf={onExportPdf}
         onRename={onRename}
         onTogglePin={onTogglePin}
-        onToggleArchive={onToggleArchive}
         onDelete={onDelete}
       />
       <ChatRenameSheet

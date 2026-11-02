@@ -28,7 +28,8 @@ ORIGINAL_FILENAME_MAX_CHARS = 255
 class Attachment(Base):
     __tablename__ = "attachments"
     __table_args__ = (
-        Index("ix_attachments_user", "user_id"),
+        # The gallery's pages by (created_at, id); leads the user_id FK cascade too.
+        Index("ix_attachments_user_created", "user_id", "created_at", "id"),
         # Message delete (FK SET NULL) and per-message reads.
         Index(
             "ix_attachments_message",
@@ -41,9 +42,7 @@ class Attachment(Base):
             "created_at",
             postgresql_where=text("message_id IS NULL"),
         ),
-        CheckConstraint(
-            "source IN ('upload', 'generated', 'search')", name="ck_attachments_source"
-        ),
+        CheckConstraint("source IN ('upload', 'search')", name="ck_attachments_source"),
     )
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)

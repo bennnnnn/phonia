@@ -9,7 +9,7 @@ import {
   isGalleryPageFresh,
   prefetchGallery,
   removeCachedGalleryItem,
-  setGalleryPage,
+  seedGalleryPageForTest,
 } from "@/features/attachments/model/galleryListCache";
 jest.mock("@/lib/auth", () => ({
   getSessionGeneration: jest.fn(() => 0),
@@ -50,13 +50,13 @@ describe("galleryListCache", () => {
     ["chats are deleted", () => emitAppEvent("chatsDeleted", { chatIds: ["chat-1"] })],
     ["a picture is saved into a chat", () => emitAppEvent("attachmentAdded", { chatId: "chat-1" })],
   ])("reads again when %s elsewhere (ARCH-10)", (_, announce) => {
-    setGalleryPage("all", "", sample);
+    seedGalleryPageForTest("all", "", sample);
     announce();
     expect(isGalleryPageFresh("all", "")).toBe(false);
   });
 
   it("returns a fresh page without refetching", async () => {
-    setGalleryPage("all", "", sample);
+    seedGalleryPageForTest("all", "", sample);
     expect(isGalleryPageFresh("all", "")).toBe(true);
     expect(getCachedGalleryPage("all", "")).toEqual(sample);
 
@@ -66,18 +66,18 @@ describe("galleryListCache", () => {
   });
 
   it("strips an id from every cached tab", () => {
-    setGalleryPage("all", "", {
+    seedGalleryPageForTest("all", "", {
       items: [sample.items[0]!, { ...sample.items[0]!, id: "b" }],
       hasMore: false,
     });
-    setGalleryPage("files", "", { items: [sample.items[0]!], hasMore: false });
+    seedGalleryPageForTest("files", "", { items: [sample.items[0]!], hasMore: false });
     removeCachedGalleryItem("a");
     expect(getCachedGalleryPage("all", "")?.items.map((row) => row.id)).toEqual(["b"]);
     expect(getCachedGalleryPage("files", "")?.items).toEqual([]);
   });
 
   it("prefetch skips when All is already fresh", () => {
-    setGalleryPage("all", "", sample);
+    seedGalleryPageForTest("all", "", sample);
     prefetchGallery("token");
     expect(listAttachments).not.toHaveBeenCalled();
   });
@@ -96,7 +96,7 @@ it("does not repopulate an invalidated cache from an earlier request", async () 
 });
 
 it("does not let an earlier next page replace a refreshed first page", async () => {
-  setGalleryPage("all", "", { ...sample, hasMore: true }, "after-a");
+  seedGalleryPageForTest("all", "", { ...sample, hasMore: true }, "after-a");
   let finish!: (value: unknown) => void;
   listAttachments.mockReturnValueOnce(new Promise((resolve) => { finish = resolve; }));
   const more = fetchGalleryNextPage("token", "all", "");
@@ -108,7 +108,7 @@ it("does not let an earlier next page replace a refreshed first page", async () 
 });
 
 it("does not restore a deleted item when an earlier next page completes", async () => {
-  setGalleryPage("all", "", { ...sample, hasMore: true }, "after-a");
+  seedGalleryPageForTest("all", "", { ...sample, hasMore: true }, "after-a");
   let finish!: (value: unknown) => void;
   listAttachments.mockReturnValueOnce(new Promise((resolve) => { finish = resolve; }));
   const more = fetchGalleryNextPage("token", "all", "");
@@ -120,7 +120,7 @@ it("does not restore a deleted item when an earlier next page completes", async 
 });
 
 it("never exposes a previous account's cached Library page", () => {
-  setGalleryPage("all", "", sample);
+  seedGalleryPageForTest("all", "", sample);
   (getSessionGeneration as jest.Mock).mockReturnValue(1);
   expect(getCachedGalleryPage("all", "")).toBeUndefined();
 });
@@ -129,7 +129,7 @@ it("reads each next page from the cursor the server named", async () => {
   invalidateGalleryCache();
   listAttachments.mockReset();
   const row = (id: string) => ({ ...sample.items[0]!, id });
-  setGalleryPage("all", "", { items: [row("a")], hasMore: true }, "after-a");
+  seedGalleryPageForTest("all", "", { items: [row("a")], hasMore: true }, "after-a");
   listAttachments.mockResolvedValueOnce({ items: [row("b")], next_cursor: "after-b" });
   await fetchGalleryNextPage("token", "all", "");
   listAttachments.mockResolvedValueOnce({ items: [row("c")], next_cursor: null });
@@ -142,7 +142,7 @@ it("keeps reading from the same row when a loaded file is deleted meanwhile (CLA
   invalidateGalleryCache();
   listAttachments.mockReset();
   const row = (id: string) => ({ ...sample.items[0]!, id });
-  setGalleryPage("all", "", { items: [row("a")], hasMore: true }, "after-a");
+  seedGalleryPageForTest("all", "", { items: [row("a")], hasMore: true }, "after-a");
   let finish!: (value: unknown) => void;
   listAttachments.mockReturnValueOnce(new Promise((resolve) => { finish = resolve; }));
   const more = fetchGalleryNextPage("token", "all", "");
@@ -157,14 +157,14 @@ it("keeps reading from the same row when a loaded file is deleted meanwhile (CLA
 it("stops when the server's cursor does not move", async () => {
   invalidateGalleryCache();
   listAttachments.mockReset();
-  setGalleryPage("all", "", { ...sample, hasMore: true }, "after-a");
+  seedGalleryPageForTest("all", "", { ...sample, hasMore: true }, "after-a");
   listAttachments.mockResolvedValueOnce({ items: sample.items, next_cursor: "after-a" });
   expect((await fetchGalleryNextPage("token", "all", "")).data?.hasMore).toBe(false);
 });
 
 it("keeps at most twenty searches, dropping the least recently used", () => {
   invalidateGalleryCache();
-  for (let i = 0; i < 25; i++) setGalleryPage("all", `query ${i}`, sample);
+  for (let i = 0; i < 25; i++) seedGalleryPageForTest("all", `query ${i}`, sample);
   expect(getCachedGalleryPage("all", "query 0")).toBeUndefined();
   expect(getCachedGalleryPage("all", "query 5")).toEqual(sample);
   expect(getCachedGalleryPage("all", "query 24")).toEqual(sample);

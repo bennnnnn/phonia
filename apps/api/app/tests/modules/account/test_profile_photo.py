@@ -64,7 +64,6 @@ async def test_profile_rejects_unusable_photo_without_saving_name(override):
             await account_lifecycle.update_account(
                 session,
                 user,
-                Settings(_env_file=None),
                 {"name": "After", "avatar_url": f"/attachments/{attachment_id}/file"},
             )
     get_photo.assert_awaited_once_with(session, attachment_id, user.id, for_update=True)
@@ -84,7 +83,6 @@ async def test_profile_save_rolls_back_without_cache_invalidation_on_commit_fail
             await account_lifecycle.update_account(
                 session,
                 user,
-                Settings(_env_file=None),
                 {"name": "After", "avatar_url": f"/attachments/{photo.id}/file"},
             )
     session.rollback.assert_awaited_once()
@@ -115,7 +113,6 @@ async def test_a_saved_profile_photo_is_published_after_its_commit():
         await account_lifecycle.update_account(
             session,
             user,
-            Settings(_env_file=None),
             {"name": "After", "avatar_url": f"/attachments/{photo.id}/file"},
         )
 
@@ -138,7 +135,6 @@ async def test_google_login_preserves_uploaded_photo_and_refreshes_provider_phot
         email=user.email,
         name=user.name,
         avatar_url=user.avatar_url,
-        default_model="free-chat",
         memory_enabled=True,
         created_at=datetime.now(UTC),
     )
@@ -171,7 +167,6 @@ async def test_provider_login_only_fills_a_blank_saved_name(provider, saved_name
         email=user.email,
         name=saved_name,
         avatar_url=user.avatar_url,
-        default_model="free-chat",
         memory_enabled=True,
         created_at=datetime.now(UTC),
     )

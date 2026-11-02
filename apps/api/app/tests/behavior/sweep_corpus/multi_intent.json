@@ -97,16 +97,6 @@
   "expect": "answer"
  },
  {
-  "id": "mi-draw-and-explain",
-  "area": "multi",
-  "prompt": "draw a cat wearing a hat and also explain what a black hole is",
-  "reply": "A black hole is a region of space where gravity is so strong that nothing, not even light, can escape once it crosses the event horizon.",
-  "expect": [
-   "image_gen",
-   "answer"
-  ]
- },
- {
   "id": "mi-compare-and-install",
   "area": "multi",
   "prompt": "compare python and javascript, and how do I install node on mac?",

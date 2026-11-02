@@ -14,7 +14,7 @@ const mockDestructive = jest.fn();
 jest.mock("@/lib/auth", () => ({ getSessionGeneration: () => mockSession }));
 jest.mock("@/contexts/actionFeedbackCore", () => ({ useActionFeedbackOptional: () => ({ error: mockError }) }));
 jest.mock("@/features/chat/model/chatListCache", () => ({ getCachedChat: jest.fn(), peekCreatedChat: jest.fn() }));
-jest.mock("@/lib/api", () => ({ api: { getChat: jest.fn(), renameChat: jest.fn(), setPin: jest.fn(), setArchive: jest.fn(), deleteChat: jest.fn() } }));
+jest.mock("@/lib/api", () => ({ api: { getChat: jest.fn(), renameChat: jest.fn(), setPin: jest.fn(), deleteChat: jest.fn() } }));
 jest.mock("@/features/chat/drawer/drawer", () => ({
   insertChatGlobal: jest.fn(), patchChatGlobal: jest.fn(),
   removeChatGlobal: jest.fn(), abandonActiveChatIfDeleted: jest.fn(),
@@ -28,19 +28,18 @@ jest.mock("@/lib/haptics", () => ({
 }));
 
 const chat: Chat = {
-  id: "chat-1", title: "Old title", model: "free-chat", pinned: false, archived: false,
+  id: "chat-1", title: "Old title", pinned: false,
   created_at: "2026-01-01", updated_at: "2026-01-01",
 };
 const setChatTitle = jest.fn();
 const setPinned = jest.fn();
-const setArchived = jest.fn();
 let actions: ReturnType<typeof useChatActions>;
-function Probe({ chatId = "chat-1", token = "token", pinned = false, archived = false }: {
-  chatId?: string; token?: string; pinned?: boolean; archived?: boolean;
+function Probe({ chatId = "chat-1", token = "token", pinned = false }: {
+  chatId?: string; token?: string; pinned?: boolean;
 }) {
   const value = useChatActions({
-    token, chatId, chatTitle: "Old title", messages: [], pinned, archived,
-    setPinned, setArchived, setChatTitle, editThread: jest.fn(), t: (key) => key,
+    token, chatId, chatTitle: "Old title", messages: [], pinned,
+    setPinned, setChatTitle, editThread: jest.fn(), t: (key) => key,
   });
   React.useLayoutEffect(() => { actions = value; });
   return <Text>Actions</Text>;
@@ -64,7 +63,6 @@ beforeEach(() => {
 describe.each([
   ["rename", "renameChat", "confirmRename", setChatTitle],
   ["pin", "setPin", "togglePin", setPinned],
-  ["archive", "setArchive", "toggleArchive", setArchived],
 ] as const)("%s lifetime", (_name, apiMethod, action, setter) => {
   it.each(["resolve", "reject"] as const)("does not update a different chat when its request %ss", async (outcome) => {
     const request = deferred<Chat>();
@@ -76,7 +74,7 @@ describe.each([
     await view.rerender(<Probe chatId="chat-2" />);
     setter.mockClear();
     await act(async () => {
-      if (outcome === "resolve") request.resolve({ ...chat, title: "Saved", pinned: apiMethod === "setPin", archived: apiMethod === "setArchive" });
+      if (outcome === "resolve") request.resolve({ ...chat, title: "Saved", pinned: apiMethod === "setPin" });
       else request.reject(new Error("offline"));
       await pending;
     });
@@ -153,18 +151,18 @@ it("haptics only after the confirmed chat deletion succeeds", async () => {
   expect(mockDestructive).toHaveBeenCalledTimes(1);
 });
 
-it("coalesces repeated archive taps while the mutation is pending, including token refresh", async () => {
+it("coalesces repeated pin taps while the mutation is pending, including token refresh", async () => {
   const request = deferred<Chat>();
-  (api.setArchive as jest.Mock).mockReturnValue(request.promise);
+  (api.setPin as jest.Mock).mockReturnValue(request.promise);
   const view = await render(<Probe />);
   let pending!: Promise<void>;
-  await act(async () => { pending = actions.toggleArchive(); });
+  await act(async () => { pending = actions.togglePin(); });
   await view.rerender(<Probe token="refreshed-token" />);
-  await act(async () => { void actions.toggleArchive(); });
-  expect(api.setArchive).toHaveBeenCalledTimes(1);
-  await act(async () => { request.resolve({ ...chat, title: "Saved", archived: true }); await pending; });
-  expect(actions.actionBanner?.message).toBe("chat.archived_toast");
-  expect(patchChatGlobal).toHaveBeenCalledWith("chat-1", { archived: true, pinned: false });
+  await act(async () => { void actions.togglePin(); });
+  expect(api.setPin).toHaveBeenCalledTimes(1);
+  await act(async () => { request.resolve({ ...chat, title: "Saved", pinned: true }); await pending; });
+  expect(actions.actionBanner?.message).toBe("chat.pinned_toast");
+  expect(patchChatGlobal).toHaveBeenCalledWith("chat-1", { pinned: true });
 });
 
 it("closes a rename editor when its conversation changes", async () => {
@@ -176,8 +174,8 @@ it("closes a rename editor when its conversation changes", async () => {
 });
 
 it("restores the original dated project chat after a failed delete", async () => {
-  const original = { id: "chat-1", title: "Old project", model: "free-chat", pinned: true,
-    archived: false, created_at: "2025-01-01", updated_at: "2025-02-01" } as Chat;
+  const original = { id: "chat-1", title: "Old project", pinned: true,
+    created_at: "2025-01-01", updated_at: "2025-02-01" } as Chat;
   jest.mocked(getCachedChat).mockReturnValue(original);
   (api.deleteChat as jest.Mock).mockRejectedValue(new Error("offline"));
   await render(<Probe />);
@@ -200,20 +198,16 @@ it("recovers real metadata after a failed delete when the chat was outside the c
 });
 
 it.each([
-  { name: "pin", action: "togglePin", method: "setPin", initialPinned: false, initialArchived: false, pinned: false, archived: true, toast: "chat.unpinned_toast" },
-  { name: "unpin", action: "togglePin", method: "setPin", initialPinned: true, initialArchived: false, pinned: true, archived: false, toast: "chat.pinned_toast" },
-  { name: "archive", action: "toggleArchive", method: "setArchive", initialPinned: true, initialArchived: false, pinned: true, archived: false, toast: "chat.unarchived_toast" },
-  { name: "unarchive", action: "toggleArchive", method: "setArchive", initialPinned: false, initialArchived: true, pinned: false, archived: true, toast: "chat.archived_toast" },
-] as const)("reconciles $name with the returned server flags after another device changes them", async (testCase) => {
-  const saved = { ...chat, pinned: testCase.pinned, archived: testCase.archived };
-  jest.mocked(api[testCase.method]).mockResolvedValue(saved);
-  await render(<Probe pinned={testCase.initialPinned} archived={testCase.initialArchived} />);
-  await act(async () => { await actions[testCase.action](); });
-  expect(api[testCase.method]).toHaveBeenCalledWith("token", chat.id,
-    !(testCase.method === "setPin" ? testCase.initialPinned : testCase.initialArchived));
+  { name: "pin", initialPinned: false, pinned: false, toast: "chat.unpinned_toast" },
+  { name: "unpin", initialPinned: true, pinned: true, toast: "chat.pinned_toast" },
+] as const)("reconciles $name with the returned server flag after another device changes it", async (testCase) => {
+  const saved = { ...chat, pinned: testCase.pinned };
+  jest.mocked(api.setPin).mockResolvedValue(saved);
+  await render(<Probe pinned={testCase.initialPinned} />);
+  await act(async () => { await actions.togglePin(); });
+  expect(api.setPin).toHaveBeenCalledWith("token", chat.id, !testCase.initialPinned);
   expect(setPinned).toHaveBeenLastCalledWith(saved.pinned);
-  expect(setArchived).toHaveBeenLastCalledWith(saved.archived);
-  expect(patchChatGlobal).toHaveBeenLastCalledWith(chat.id, { pinned: saved.pinned, archived: saved.archived });
+  expect(patchChatGlobal).toHaveBeenLastCalledWith(chat.id, { pinned: saved.pinned });
   expect(actions.actionBanner?.message).toBe(testCase.toast);
 });
 
@@ -224,12 +218,4 @@ it("keeps the rename editor open and says why when the title is blank, like the 
   expect(actions.renameVisible).toBe(true);
   expect(api.renameChat).not.toHaveBeenCalled();
   expect(mockError).toHaveBeenCalledWith("chat.rename_blank");
-});
-
-it("names an archive failure the same way the drawer does", async () => {
-  (api.setArchive as jest.Mock).mockRejectedValueOnce(new Error("offline"));
-  await render(<Probe />);
-  await act(async () => { await actions.toggleArchive(); });
-  expect(mockError).toHaveBeenCalledWith("chat.archive_failed");
-  expect(patchChatGlobal).toHaveBeenLastCalledWith("chat-1", { archived: false, pinned: false });
 });

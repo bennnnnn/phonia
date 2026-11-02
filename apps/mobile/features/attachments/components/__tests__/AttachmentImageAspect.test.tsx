@@ -115,7 +115,7 @@ describe("decoded attachment frame proportions", () => {
     expect(view.queryByTestId("image-viewer")).toBeNull();
   });
 
-  it("leaves generated image dimensions and cover behavior unchanged after load", async () => {
+  it("leaves a sized image's dimensions and cover behavior unchanged after load", async () => {
     const view = await render(<ChatMessageImage path="https://images.test/generated.jpg" width={148} height={189} />);
     const layers = view.getAllByTestId("animated-image");
     expect(layers).toHaveLength(2);

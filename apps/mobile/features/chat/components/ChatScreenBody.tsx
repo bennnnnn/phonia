@@ -1,4 +1,4 @@
-import { memo, ReactElement, RefObject, useCallback, useEffect, useMemo } from "react";
+import { memo, ReactElement, RefObject, useEffect, useMemo } from "react";
 import { View, type NativeScrollEvent, type NativeSyntheticEvent, type ViewStyle } from "react-native";
 import { FlashListRef, ListRenderItemInfo } from "@shopify/flash-list";
 import { type AnimatedStyle, type SharedValue } from "react-native-reanimated";
@@ -6,7 +6,7 @@ import { type AnimatedStyle, type SharedValue } from "react-native-reanimated";
 import { ActionBanner } from "@/ui/feedback/ActionBanner";
 import { AttachmentSourceSheet } from "@/features/attachments/components/AttachmentSourceSheet";
 import { LazyMathEquationScanner } from "@/features/scanner/components/LazyMathEquationScanner";
-import { ChatComposer, type LiveTalkComposerChrome } from "@/features/chat/components/ChatComposer";
+import { ChatComposer } from "@/features/chat/components/ChatComposer";
 import { ChatInlineError } from "@/features/chat/components/ChatInlineError";
 import { ChatMessageList } from "@/features/chat/components/ChatMessageList";
 import { ChatQuotaNudge } from "@/features/chat/components/ChatQuotaNudge";
@@ -64,7 +64,6 @@ export interface ChatScreenComposerProps {
   replySaving: boolean;
   attachPicking: boolean;
   sendBusy: boolean;
-  sendStatus?: string;
   pendingAttachment: PendingAttachment | null;
   onRemoveAttachment: () => void;
   onPickAttachment: () => void;
@@ -80,8 +79,6 @@ export interface ChatScreenComposerProps {
   voiceMeterLevel: SharedValue<number>;
   onVoicePress?: () => void;
   onCancelVoice?: () => void;
-  onLiveTalkPress?: () => void;
-  liveTalkSession?: LiveTalkComposerChrome | null;
 }
 
 export interface ChatScreenChromeProps {
@@ -101,7 +98,6 @@ export interface ChatScreenChromeProps {
   isPaid: boolean;
   onUpgrade: () => void;
   onRetryChatError: () => void;
-  onChangeModel: () => void;
   onDismissChatError: () => void;
 }
 
@@ -147,15 +143,7 @@ export const ChatScreenBody = memo(function ChatScreenBody({
   const drawerOpen = useDrawerOpen();
   const { styles: s, keyboardLift } = layout;
   const { messages } = list;
-  const { liveTalkSession, onSend } = composer;
   const { mathScannerOpen, onCloseMathScanner } = sheets;
-  const handleComposerSend = useCallback(
-    (text?: string) => {
-      liveTalkSession?.onYield();
-      onSend(text);
-    },
-    [liveTalkSession, onSend],
-  );
 
   useEffect(() => {
     if (drawerOpen && mathScannerOpen) onCloseMathScanner();
@@ -192,12 +180,11 @@ export const ChatScreenBody = memo(function ChatScreenBody({
         streaming={composerShowsStop(composer)}
         attachPicking={composer.attachPicking}
         sendBusy={composer.sendBusy}
-        sendStatus={composer.sendStatus}
         pendingAttachment={composer.pendingAttachment}
         onRemoveAttachment={composer.onRemoveAttachment}
         onCloseAttachSheet={sheets.onCloseAttachSheet}
         onPickAttachment={composer.onPickAttachment}
-        onSend={handleComposerSend}
+        onSend={composer.onSend}
         onStop={composer.onStop}
         isOffline={composer.isOffline}
         voiceAvailable={composer.voiceAvailable}
@@ -206,8 +193,6 @@ export const ChatScreenBody = memo(function ChatScreenBody({
         voiceMeterLevel={composer.voiceMeterLevel}
         onVoicePress={composer.onVoicePress}
         onCancelVoice={composer.onCancelVoice}
-        onLiveTalkPress={composer.onLiveTalkPress}
-        liveTalkChrome={composer.liveTalkSession}
         onOpenMathScanner={composer.onOpenMathScanner}
         onMathChromeHeightChange={composer.onMathChromeHeightChange}
         onInputFrameExtraChange={composer.onInputFrameExtraChange}
@@ -274,7 +259,6 @@ const ChatOverlays = memo(function ChatOverlays({
         onUpgrade={!chrome.isPaid ? chrome.onUpgrade : undefined}
         onStop={onStop}
         onRetry={chrome.onRetryChatError}
-        onChangeModel={chrome.onChangeModel}
         onDismiss={chrome.onDismissChatError}
       />
 

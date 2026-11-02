@@ -14,24 +14,21 @@ from app.tests.api_support import api_user
 
 
 @pytest.mark.parametrize(
-    "plan_id, has_live_talk, has_voice",
-    [("free", False, False), ("plus", False, True), ("pro", True, True)],
+    "plan_id, has_voice",
+    [("free", False), ("plus", True), ("pro", True)],
 )
-def test_user_payload_lists_plan_features(plan_id, has_live_talk, has_voice):
+def test_user_payload_lists_plan_features(plan_id, has_voice):
     out = UserOut(
         id=uuid4(),
         email="a@b.c",
         name=None,
         avatar_url=None,
-        default_model="auto",
         plan=plan_id,
         memory_enabled=True,
         created_at=datetime(2026, 1, 1),
     )
     body = out.model_dump()
-    assert ("live_talk" in body["features"]) is has_live_talk
     assert ("speech_transcription" in body["features"]) is has_voice
-    assert "image_generation" in body["features"]
 
 
 def test_plans_endpoint_returns_the_catalog_and_current_plan():
@@ -44,9 +41,7 @@ def test_plans_endpoint_returns_the_catalog_and_current_plan():
     assert body["current"] == "plus"
     plans = {item["id"]: item for item in body["plans"]}
     assert set(plans) == {"free", "plus", "pro"}
-    assert plans["pro"]["allowances"]["monthly_live_talk_minutes"] == 60
-    assert plans["plus"]["allowances"]["daily_image_generations"] == 10
-    assert "live_talk" not in plans["plus"]["features"]
+    assert plans["pro"]["allowances"]["daily_speech_tts"] == 100
     # Prices are the store's: never in the server catalog.
     assert "price" not in str(body).lower()
 

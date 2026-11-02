@@ -9,7 +9,7 @@ import {
 import { hasTodoLink, stripTodoLinkFences } from "@/features/todos/model/todoLink";
 import type { SearchSource } from "@/lib/api";
 
-import { isLocationQuestion } from "@/lib/places/localPlacesQuery";
+import { isLocationQuestion } from "@/lib/places/locationQuestion";
 import { resolvePlaces, stripPlacesContent, type PlaceItem } from "@/lib/places/placesList";
 import { resolveSearchSources, stripSearchSourcesFromContent } from "@/lib/searchSources";
 import { parseMessageImages, stripLookupSourceCaption, type ParsedMessageImage } from "@/lib/messageAttachments";

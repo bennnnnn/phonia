@@ -77,7 +77,7 @@ class TurnOutcome:
 
     def mark_stop_safe(self) -> None:
         """A hard cancel can no longer take back the user's message: it is in the
-        chat, or what runs next (a photo, a picture) saves it with its reply."""
+        chat, or what runs next (a photo) saves it with its reply."""
         held, self._held_stops = self._held_stops or [], None
         for stop in held:
             stop()

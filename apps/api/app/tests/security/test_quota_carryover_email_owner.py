@@ -2,7 +2,7 @@
 
 The email key (``quota_carryover``) let a quota be handed to a stranger: a Google account
 can be verified on an address Google does not own (a stale work address, a lapsed domain,
-``email_authority``). Its holder signs up with it, uses up the day and the live talk month,
+``email_authority``). Its holder signs up with it, uses up the day,
 deletes the account, and whoever signs up on that address next started at those counts.
 Account delete now files the email key only for an address a provider owns by its domain,
 on ``email_authority``'s rules: Google's Gmail, Apple's iCloud, me.com, mac.com and relay.
@@ -23,12 +23,10 @@ from uuid import uuid4
 import pytest
 
 from app.modules.account import quota_carryover
-from app.services import quota
 
 from .carry_world import Linked, counts, delete, deleted_account, signed_in, use
 
-_DELETED = {"usage": 1234, "imggen": 2, "tavily": 4}
-_LIVE_TALK_SECONDS = 300
+_DELETED = {"usage": 1234, "imgsearch": 2, "tavily": 4}
 
 
 def _address(domain: str) -> str:
@@ -60,16 +58,13 @@ async def test_quota_carryover_email_unowned_address_starts_the_next_sign_up_fre
     """Delete an account on an address no provider owns (or can be shown at delete to own): only the identity key is kept, and a later sign-up on that address with
     another login starts from zero. Before, it started at the deleted account's counts."""
     email = _address(domain)
-    deleted_sub = await deleted_account(
-        linked, deleted, email, _DELETED, live_talk=_LIVE_TALK_SECONDS, claims=claims
-    )
+    deleted_sub = await deleted_account(linked, deleted, email, _DELETED, claims=claims)
     assert await linked.redis.get(_email_key(linked, email)) is None
     identity_key = quota_carryover.carry_key(linked.settings, deleted, deleted_sub)
     assert await linked.redis.get(identity_key) is not None
 
     fresh, _ = await signed_in(linked, later, f"{later}-{uuid4()}", email)
     assert await counts(linked.redis, fresh) == {}
-    assert await quota.live_talk_used_seconds(linked.redis, fresh) == 0
     # The deleted login itself still carries its own day (its identity key is unchanged).
     again, _ = await signed_in(linked, deleted, deleted_sub, _address("gmail.com"), claims)
     assert await counts(linked.redis, again) == _DELETED
@@ -93,14 +88,13 @@ async def test_quota_carryover_email_owned_address_carries_to_a_new_login(
     """Deleted on a Gmail or iCloud address, whichever provider it signed in with, the
     account files the email key, and a new login on that address starts at its counts."""
     email = _address(domain)
-    await deleted_account(linked, deleted, email, _DELETED, live_talk=_LIVE_TALK_SECONDS)
+    await deleted_account(linked, deleted, email, _DELETED)
     email_key = _email_key(linked, email)
     assert await linked.redis.get(email_key) is not None
 
     later = "apple" if deleted == "google" else "google"
     fresh, _ = await signed_in(linked, later, f"{later}-{uuid4()}", email)
     assert await counts(linked.redis, fresh) == _DELETED
-    assert await quota.live_talk_used_seconds(linked.redis, fresh) == _LIVE_TALK_SECONDS
     assert await linked.redis.get(email_key) is None
 
 
@@ -114,7 +108,7 @@ async def test_quota_carryover_email_both_logins_store_it_when_either_owns(
     user_id, _ = await signed_in(linked, "google", f"google-{uuid4()}", email)
     joined, token = await signed_in(linked, "apple", f"apple-{uuid4()}", email)
     assert joined == user_id
-    await use(linked.redis, user_id, _DELETED, live_talk=_LIVE_TALK_SECONDS)
+    await use(linked.redis, user_id, _DELETED)
     await delete(linked, user_id, token)
     assert await linked.redis.get(_email_key(linked, email)) is not None
 

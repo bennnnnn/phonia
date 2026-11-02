@@ -56,6 +56,16 @@ def retry_delay_s(attempt: int, rand: Callable[[], float] = random.random) -> fl
     return base * (1 - _JITTER + 2 * _JITTER * rand())
 
 
+def retry_span_s() -> float:
+    """The longest a job's retries can wait in all, first failure to last attempt, at the
+    most jitter allows: a key a retrying job reads must outlive this."""
+    waits = (
+        min(_MAX_RETRY_S, _FIRST_RETRY_S * _RETRY_FACTOR ** (attempt - 2))
+        for attempt in range(2, MAX_ATTEMPTS + 1)
+    )
+    return sum(waits) * (1 + _JITTER)
+
+
 async def schedule(
     redis: Redis, fields: dict[str, str], *, delay_s: float, now: float | None = None
 ) -> None:

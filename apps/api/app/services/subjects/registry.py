@@ -280,7 +280,6 @@ class MoneyPeer(Protocol):
         redis: Redis | None,
         *,
         user: User | None,
-        location: str | None,
         earlier: Sequence[str | Sequence[str]],
         last_reply: str,
     ) -> MoneyTurn | None:
@@ -294,7 +293,6 @@ class MoneyPeer(Protocol):
         redis: Redis | None,
         *,
         user: User | None,
-        location: str | None,
         earlier: Sequence[str | Sequence[str]],
         last_reply: str,
     ) -> MoneyTurn | None:

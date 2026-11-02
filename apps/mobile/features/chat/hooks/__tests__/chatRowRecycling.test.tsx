@@ -28,7 +28,6 @@ jest.mock("@/features/chat/components/SettingsProposalCard", () => ({ SettingsPr
 jest.mock("@/features/todos/components/ReminderProposalCard", () => ({ ReminderProposalCard: () => null }));
 jest.mock("@/components/rich/PlacesListBlock", () => ({ PlacesListBlock: () => null }));
 jest.mock("@/features/attachments/components/ChatMessageImageStrip", () => ({ ChatMessageImageStrip: () => null }));
-jest.mock("@/features/images/components/ImageGenPlaceholder", () => ({ ImageGenPlaceholder: () => null }));
 jest.mock("@/ui/feedback/ActionShimmer", () => ({ ActionShimmer: () => null }));
 jest.mock("@/features/chat/components/SearchSourcesStack", () => ({ SearchSourcesStack: () => null }));
 jest.mock("@/features/chat/components/RecallTypingIndicator", () => ({ RecallTypingIndicator: () => null }));
@@ -72,7 +71,6 @@ function Cell({ item, streaming = false }: { item: Message; streaming?: boolean 
     messages: [item],
     streaming,
     finalizing: false,
-    selectedModel: "free-chat",
     highlightedMessageId: null,
     sendingMessageId: null,
     setMenuVisible: () => {},

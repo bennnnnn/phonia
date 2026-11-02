@@ -277,8 +277,7 @@
     "prompt": "how many miles is it to Hawassa from here?",
     "history": [],
     "reply": "Hawassa is about **170 miles (275 km)** south of you by road, around 4½ hours by car via the Addis–Adama expressway.",
-    "expect": "search",
-    "location": "Addis Ababa, Ethiopia"
+    "expect": "search"
   },
   {
     "id": "pi-036",

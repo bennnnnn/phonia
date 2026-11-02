@@ -7,11 +7,7 @@ function normalizeMessagePage(data: MessagePage | Message[]): MessagePage {
 }
 
 export const chatsApi = {
-  createChat: (token: string, model = "auto") =>
-    request<Chat>("/chats", token, {
-      method: "POST",
-      body: JSON.stringify({ model }),
-    }),
+  createChat: (token: string) => request<Chat>("/chats", token, { method: "POST" }),
   listChats: (token: string) => request<ChatList>("/chats", token),
   listMessages: async (
     token: string,

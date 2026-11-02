@@ -1,7 +1,7 @@
 """Conversation metadata regressions; SQL uses only an in-memory SQLite table."""
 
 from datetime import UTC, datetime, timedelta
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, patch
 from uuid import uuid4
 
 import pytest
@@ -12,7 +12,6 @@ from sqlalchemy.orm import Session
 from app.core.config import Settings
 from app.models.orm import Chat, Message
 from app.models.schemas import ChatOut, SearchResultItem
-from app.modules.chat import service as chats_service
 from app.modules.chat import titles as topic
 from app.modules.conversation import chats_repository as chats_repo
 
@@ -37,7 +36,7 @@ def metadata_session():
 async def test_topic_preserves_manual_rename_after_stale_read(metadata_session):
     sync_session, session = metadata_session
     owner_id = uuid4()
-    chat = Chat(user_id=owner_id, model="auto", title=None)
+    chat = Chat(user_id=owner_id, title=None)
     sync_session.add(chat)
     sync_session.commit()
     chat_id = chat.id
@@ -126,104 +125,15 @@ async def test_generated_title_write_respects_current_row(metadata_session, stat
 
 
 @pytest.mark.asyncio
-async def test_archive_clears_pin_committed_after_stale_read(metadata_session):
+async def test_pin_and_unpin(metadata_session):
     sync_session, session = metadata_session
     chat = Chat(user_id=uuid4(), pinned=False)
-    sync_session.add(chat)
-    sync_session.commit()
-    sync_session.execute(
-        update(Chat)
-        .where(Chat.id == chat.id)
-        .values(pinned=True)
-        .execution_options(synchronize_session=False)
-    )
-    sync_session.commit()
-    assert chat.pinned is False
-
-    archived = await chats_repo.set_archived(session, chat, True)
-
-    assert archived.archived is True
-    assert archived.pinned is False
-
-
-@pytest.mark.asyncio
-async def test_pin_does_not_repin_concurrently_archived_chat(metadata_session):
-    sync_session, session = metadata_session
-    chat = Chat(user_id=uuid4(), pinned=False, archived=False)
-    sync_session.add(chat)
-    sync_session.commit()
-    sync_session.execute(
-        update(Chat)
-        .where(Chat.id == chat.id)
-        .values(archived=True)
-        .execution_options(synchronize_session=False)
-    )
-    sync_session.commit()
-    assert chat.archived is False
-
-    result = await chats_repo.set_pinned(session, chat, True)
-
-    assert result.archived is True
-    assert result.pinned is False
-
-
-@pytest.mark.asyncio
-async def test_pin_service_rejects_archived_chat(metadata_session):
-    sync_session, session = metadata_session
-    chat = Chat(user_id=uuid4(), archived=True, pinned=False)
-    sync_session.add(chat)
-    sync_session.commit()
-    user = MagicMock(id=chat.user_id)
-
-    with pytest.raises(chats_service.ChatsError) as exc:
-        await chats_service.pin_chat(session, user, chat.id, pinned=True)
-
-    assert exc.value.status_code == 409
-    assert chat.pinned is False
-    session.commit.assert_not_awaited()
-
-
-@pytest.mark.asyncio
-async def test_pin_service_reports_concurrent_archive(metadata_session):
-    sync_session, session = metadata_session
-    chat = Chat(user_id=uuid4(), archived=False, pinned=False)
-    sync_session.add(chat)
-    sync_session.commit()
-    user = MagicMock(id=chat.user_id)
-    sync_session.execute(
-        update(Chat)
-        .where(Chat.id == chat.id)
-        .values(archived=True)
-        .execution_options(synchronize_session=False)
-    )
-    sync_session.commit()
-    assert chat.archived is False
-
-    with pytest.raises(chats_service.ChatsError) as exc:
-        await chats_service.pin_chat(session, user, chat.id, pinned=True)
-
-    assert exc.value.status_code == 409
-    assert chat.archived is True
-    assert chat.pinned is False
-
-
-@pytest.mark.asyncio
-async def test_pin_unpin_archive_and_unarchive(metadata_session):
-    sync_session, session = metadata_session
-    chat = Chat(user_id=uuid4(), archived=False, pinned=False)
     sync_session.add(chat)
     sync_session.commit()
 
     await chats_repo.set_pinned(session, chat, True)
     assert chat.pinned is True
     await chats_repo.set_pinned(session, chat, False)
-    assert chat.pinned is False
-    await chats_repo.set_pinned(session, chat, True)
-    await chats_repo.set_archived(session, chat, True)
-    assert chat.archived is True
-    assert chat.pinned is False
-    await chats_repo.set_archived(session, chat, False)
-    assert chat.archived is False
     assert chat.pinned is False
 
 

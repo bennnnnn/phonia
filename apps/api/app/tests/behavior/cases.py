@@ -47,7 +47,6 @@ class Expect:
     photo: str | None = None
     # Words the photo search must not carry ("new": find the model's name first).
     photo_not: tuple[str, ...] = ()
-    image_gen: bool | None = None
     # "math" / "physics" / "chemistry", or "" for none.
     subject: str | None = None
     # A solver checked the answer before the model wrote it.
@@ -66,12 +65,10 @@ class Expect:
     outline: bool = False
     # The model the case's plan gets on Auto (``model_choice.resolve_user_model``).
     model: str | None = None
-    # A multi-part message's picture, drawn above the model's answer to the rest.
-    picture: bool | None = None
     # A multi-part message's settings card, under the model's answer to the rest.
     settings_card: bool | None = None
-    # Saved memory is read for the turn, and which scope ("work", "query", "profile",
-    # "self"; see modules/chat/prompt_memory.py).
+    # Saved memory is read for the turn, and which scope ("query", "profile", "self";
+    # see modules/chat/prompt_memory.py).
     memory: bool | None = None
     memory_scope: str | None = None
 
@@ -87,7 +84,6 @@ class Case:
     # Earlier turns as (role, text), oldest first.
     history: tuple[tuple[str, str], ...] = ()
     pro: bool = False
-    location: str | None = None
     tags: tuple[str, ...] = field(default=())
     # The user's memory switch (Settings → Memory).
     memory_enabled: bool = True
@@ -690,281 +686,6 @@ CASES: tuple[Case, ...] = (
         Expect(photo="map of kenya"),
         "A map of Kenya.",
     ),
-    Case(
-        "image-gen",
-        "photos and maps",
-        "draw me a cat wearing a hat",
-        Expect(image_gen=True, photo=NO_PHOTO),
-        "A generated picture (Pro).",
-        pro=True,
-    ),
-    Case(
-        "image-gen-free",
-        "photos and maps",
-        "generate an image of a sunset over mountains",
-        Expect(image_gen=True, photo=NO_PHOTO),
-        "On the free plan too: a generated picture, within the free daily images.",
-    ),
-    Case(
-        "image-gen-es",
-        "photos and maps",
-        "Dibuja un gato con sombrero",
-        Expect(image_gen=False, photo=NO_PHOTO),
-        "Answered in words, as on main: a bare draw verb (no 'me') draws nothing in other "
-        "languages (round 5).",
-        pro=True,
-    ),
-    Case(
-        "image-gen-fr",
-        "photos and maps",
-        "Dessine-moi un mouton",
-        Expect(image_gen=True, photo=NO_PHOTO),
-        'A generated picture, as for "draw a cat" in English.',
-        pro=True,
-    ),
-    Case(
-        "image-gen-de",
-        "photos and maps",
-        "Zeichne eine Katze mit Hut",
-        Expect(image_gen=False, photo=NO_PHOTO),
-        "Answered in words, as on main: a bare draw verb (no 'me') draws nothing in other "
-        "languages (round 5).",
-        pro=True,
-    ),
-    Case(
-        "image-gen-it",
-        "photos and maps",
-        "Disegna un gatto con il cappello",
-        Expect(image_gen=False, photo=NO_PHOTO),
-        "Answered in words, as on main: a bare draw verb (no 'me') draws nothing in other "
-        "languages (round 5).",
-        pro=True,
-    ),
-    Case(
-        "image-gen-pt",
-        "photos and maps",
-        "Desenhe um gato com chapéu",
-        Expect(image_gen=False, photo=NO_PHOTO),
-        "Answered in words, as on main: a bare draw verb (no 'me') draws nothing in other "
-        "languages (round 5).",
-        pro=True,
-    ),
-    Case(
-        "image-gen-tr",
-        "photos and maps",
-        "Şapkalı bir kedi çiz",
-        Expect(image_gen=False, photo=NO_PHOTO),
-        "Answered in words, as on main: a bare draw verb (no 'me') draws nothing in other "
-        "languages (round 5).",
-        pro=True,
-    ),
-    Case(
-        "image-gen-ru",
-        "photos and maps",
-        "Нарисуй кошку в шляпе",
-        Expect(image_gen=False, photo=NO_PHOTO),
-        "Answered in words, as on main: a bare draw verb (no 'me') draws nothing in other "
-        "languages (round 5).",
-        pro=True,
-    ),
-    Case(
-        "image-gen-am",
-        "photos and maps",
-        "ድመት ሳልልኝ",
-        Expect(image_gen=True, photo=NO_PHOTO),
-        'A generated picture, as for "draw a cat" in English.',
-        pro=True,
-    ),
-    Case(
-        "image-gen-draw-me-es",
-        "photos and maps",
-        "¿Me dibujas un dragón?",
-        Expect(image_gen=True, photo=NO_PHOTO),
-        "A generated picture: a draw verb addressed with 'me', as 'draw me a dragon'.",
-        pro=True,
-    ),
-    Case(
-        "image-gen-draw-me-it",
-        "photos and maps",
-        "Mi disegni un panda?",
-        Expect(image_gen=True, photo=NO_PHOTO),
-        "A generated picture: a draw verb addressed with 'me', as 'draw me a dragon'.",
-        pro=True,
-    ),
-    Case(
-        "image-gen-draw-me-de",
-        "photos and maps",
-        "Zeichne mir einen Drachen",
-        Expect(image_gen=True, photo=NO_PHOTO),
-        "A generated picture: a draw verb addressed with 'me', as 'draw me a dragon'.",
-        pro=True,
-    ),
-    Case(
-        "image-gen-create-tr",
-        "photos and maps",
-        "Bana bir panda çizer misin?",
-        Expect(image_gen=True, photo=NO_PHOTO),
-        "A generated picture: a draw verb addressed with 'me', as 'draw me a dragon'.",
-        pro=True,
-    ),
-    Case(
-        "image-gen-lookalike-teaching-es",
-        "photos and maps",
-        "Ilustra con un ejemplo",
-        Expect(image_gen=False, photo=NO_PHOTO),
-        "An example in words: 'ilustrar' explains here.",
-        pro=True,
-    ),
-    Case(
-        "image-gen-lookalike-chemistry-de",
-        "photos and maps",
-        "Zeichne Koffein",
-        Expect(image_gen=False, photo=NO_PHOTO),
-        "The caffeine structure in words, not an AI picture.",
-        pro=True,
-    ),
-    Case(
-        "image-gen-lookalike-looks-es",
-        "photos and maps",
-        "¡Pinta bien!",
-        Expect(image_gen=False, photo=NO_PHOTO),
-        "A reply to 'looks good': no picture of 'bien'.",
-        pro=True,
-    ),
-    Case(
-        "image-gen-lookalike-points-back-pt",
-        "photos and maps",
-        "Pinta isso",
-        Expect(image_gen=False, photo=NO_PHOTO),
-        "Asks what to paint; 'isso' names nothing in the line.",
-        pro=True,
-    ),
-    Case(
-        "image-gen-draw-me-detail-en",
-        "photos and maps",
-        "draw me a robot and tell me its name",
-        Expect(image_gen=True, photo=NO_PHOTO),
-        "A robot picture, as on main: 'tell me its name' is about the picture.",
-        pro=True,
-    ),
-    Case(
-        "image-gen-draw-me-same-topic-en",
-        "photos and maps",
-        "Draw me a dog and tell me about dog breeds",
-        Expect(image_gen=True, photo=NO_PHOTO),
-        "A dog picture of the whole line, as on main: the plan keeps one request when "
-        "both halves are about dogs (round 6).",
-        pro=True,
-    ),
-    Case(
-        "image-gen-not-listed-es",
-        "photos and maps",
-        "Dibújame un cuadro comparativo entre iPhone y Android",
-        Expect(image_gen=False, photo=NO_PHOTO),
-        "A comparison in words: 'cuadro' is no listed drawable thing (round 6).",
-        pro=True,
-    ),
-    Case(
-        "image-gen-parts-fr",
-        "photos and maps",
-        "Dessine-moi un volcan avec ses parties",
-        Expect(image_gen=False, photo=NO_PHOTO),
-        "A labelled school figure, answered in words: 'parties' asks for the parts (round 6).",
-        pro=True,
-    ),
-    Case(
-        "image-gen-ascii-es",
-        "photos and maps",
-        "Dibújame un gato en ASCII",
-        Expect(image_gen=False, photo=NO_PHOTO),
-        "Characters, not a picture: 'ASCII' is no listed word, so the line is answered (round 7).",
-        pro=True,
-    ),
-    Case(
-        "image-gen-binary-tree-de",
-        "photos and maps",
-        "Zeichne mir einen binären Baum",
-        Expect(image_gen=False, photo=NO_PHOTO),
-        "A data structure, answered: 'binären' is no listed descriptor (round 7).",
-        pro=True,
-    ),
-    Case(
-        "image-gen-second-ask-es",
-        "photos and maps",
-        "Dibújame un perro y sugiéreme nombres",
-        Expect(image_gen=False, photo=NO_PHOTO),
-        "Answered, not a picture of 'perro y sugiéreme nombres': the second request is no "
-        "listed word, so the line is not one picture (round 7).",
-        pro=True,
-    ),
-    Case(
-        "image-gen-scene-es",
-        "photos and maps",
-        "Dibújame un gato negro en la playa",
-        Expect(image_gen=True, photo=NO_PHOTO),
-        "A black cat on a beach: every word is a listed noun, descriptor or function word "
-        "(round 7).",
-        pro=True,
-    ),
-    Case(
-        "image-gen-squirrel-ru",
-        "photos and maps",
-        "Нарисуй белку с орехом",
-        Expect(image_gen=False, photo=NO_PHOTO),
-        "Answered in words, as on main: a bare draw verb (no 'me') draws nothing in other "
-        "languages (round 5).",
-        pro=True,
-    ),
-    Case(
-        "image-gen-calculator-tr",
-        "photos and maps",
-        "Bir hesap makinesi çiz",
-        Expect(image_gen=False, photo=NO_PHOTO),
-        "Answered in words, as on main: a bare draw verb (no 'me') draws nothing in other "
-        "languages (round 5).",
-        pro=True,
-    ),
-    Case(
-        "image-gen-cell-es",
-        "photos and maps",
-        "Dibuja una célula",
-        Expect(image_gen=False, photo=NO_PHOTO),
-        "Answered in words, as on main: a bare draw verb (no 'me') draws nothing in other "
-        "languages (round 5).",
-        pro=True,
-    ),
-    Case(
-        "image-gen-lookalike-es",
-        "photos and maps",
-        "dibuja la gráfica de y = x^2",
-        Expect(image_gen=False, photo=NO_PHOTO),
-        "The parabola's graph card, not a generated picture.",
-        pro=True,
-    ),
-    Case(
-        "image-gen-lookalike-de",
-        "photos and maps",
-        "Zeichne mir eine Tabelle der Ergebnisse",
-        Expect(image_gen=False, photo=NO_PHOTO),
-        "A table in the reply, not a generated picture.",
-        pro=True,
-    ),
-    Case(
-        "image-gen-lookalike-ru",
-        "photos and maps",
-        "Нарисуй график функции y = x^2",
-        Expect(image_gen=False, photo=NO_PHOTO),
-        "The parabola's graph card, not a generated picture.",
-        pro=True,
-    ),
-    Case(
-        "image-gen-lookalike-tr",
-        "photos and maps",
-        "önemli yerlerin altını çiz",
-        Expect(image_gen=False, photo=NO_PHOTO),
-        "The important parts in bold: 'altını çiz' underlines, it draws nothing.",
-        pro=True,
-    ),
     # ── Time and location ───────────────────────────────────────────────────
     Case(
         "time-now",
@@ -999,45 +720,35 @@ CASES: tuple[Case, ...] = (
         "time and location",
         "find a coffee shop near me",
         Expect(instant="location"),
-        "Asks to turn on location, since none is set.",
-    ),
-    Case(
-        "location-nearby-set",
-        "time and location",
-        "find a coffee shop near me",
-        Expect(search="yes", hints=("local_places",)),
-        "A short list of nearby coffee shops around Nairobi, with sources.",
-        location="Westlands, Nairobi, Kenya",
+        "Asks for the city: the app does not use the device's location.",
     ),
     Case(
         "location-where-am-i",
         "time and location",
         "where am I",
         Expect(search="no"),
-        "The saved location (Westlands, Nairobi), or how to set one.",
-        location="Westlands, Nairobi, Kenya",
+        "Says it can't tell where the user is (no device location), with the local time.",
     ),
     Case(
         "location-weather-here",
         "time and location",
         "what's the weather like here",
-        Expect(search="yes"),
-        "The weather in Nairobi from a search.",
-        location="Westlands, Nairobi, Kenya",
+        Expect(instant="location"),
+        "Asks for the city: the app does not use the device's location.",
     ),
     Case(
         "location-weather-unset",
         "time and location",
         "will it rain tomorrow",
         Expect(instant="location"),
-        "Asks to turn on location (or name a city), since none is set.",
+        "Asks for the city: the app does not use the device's location.",
     ),
     Case(
         "location-trip-minutes-unset",
         "time and location",
         "how many minutes to drive to the airport",
         Expect(instant="location"),
-        "Asks to turn on location: a drive time needs a starting point.",
+        "Asks for the city: a drive time needs a starting point.",
     ),
     Case(
         "location-duration-not-a-trip",
@@ -1408,7 +1119,7 @@ CASES: tuple[Case, ...] = (
         "format",
         "Plot this experiment as a scatter plot with a best-fit line: "
         "x = 1,2,3,4,5 and y = 2.1,3.9,6.2,7.8,10.1",
-        Expect(hints=("chart",), subject=NONE, image_gen=False),
+        Expect(hints=("chart",), subject=NONE),
         "A scatter chart of the five points with a regression-line layer.",
     ),
     Case(
@@ -1503,49 +1214,49 @@ CASES: tuple[Case, ...] = (
         "format-flowchart",
         "format",
         "draw a flowchart of how a bill becomes law in the US",
-        Expect(hints=("mermaid",), image_gen=False, photo=NO_PHOTO),
-        "A flowchart diagram, not a generated picture.",
+        Expect(hints=("mermaid",), photo=NO_PHOTO),
+        "A flowchart diagram.",
     ),
     Case(
         "format-decision-tree",
         "format",
         "Draw a decision tree for choosing a first programming language",
-        Expect(hints=("diagram",), no_hints=("chart",), image_gen=False, photo=NO_PHOTO),
-        "A Mermaid flowchart; an AI picture of a tree garbles every label.",
+        Expect(hints=("diagram",), no_hints=("chart",), photo=NO_PHOTO),
+        "A Mermaid flowchart.",
     ),
     Case(
         "format-state-machine",
         "format",
         "Draw a state machine for a traffic light",
-        Expect(hints=("diagram",), image_gen=False, photo=NO_PHOTO),
+        Expect(hints=("diagram",), photo=NO_PHOTO),
         "A Mermaid stateDiagram-v2, not a picture of a machine.",
     ),
     Case(
         "format-mind-map",
         "format",
         "Make a mind map of renewable energy sources",
-        Expect(hints=("diagram",), image_gen=False, photo=NO_PHOTO),
+        Expect(hints=("diagram",), photo=NO_PHOTO),
         "A Mermaid mindmap, not a picture of a map.",
     ),
     Case(
         "format-org-chart",
         "format",
         "Draw an org chart for a small startup: CEO, CTO, two engineers and a designer",
-        Expect(hints=("diagram",), no_hints=("chart",), image_gen=False, photo=NO_PHOTO),
+        Expect(hints=("diagram",), no_hints=("chart",), photo=NO_PHOTO),
         "An org chart is a Mermaid diagram of people, not a numeric Vega chart.",
     ),
     Case(
         "format-quiz",
         "format",
         "Quiz me on the planets of the solar system",
-        Expect(hints=("quiz",), image_gen=False, photo=NO_PHOTO),
+        Expect(hints=("quiz",), photo=NO_PHOTO),
         "One ```quiz card per question; the answers stay hidden until checked.",
     ),
     Case(
         "format-flashcards",
         "format",
         "Make flashcards for 5 common Spanish verbs",
-        Expect(hints=("quiz",), image_gen=False, photo=NO_PHOTO),
+        Expect(hints=("quiz",), photo=NO_PHOTO),
         "Flashcards are ```quiz cards with no options: the back behind Show answer.",
     ),
     Case(
@@ -1566,7 +1277,7 @@ CASES: tuple[Case, ...] = (
         "clarify-vague-ask",
         "format",
         "What is the best country",
-        Expect(hints=("clarify",), image_gen=False),
+        Expect(hints=("clarify",)),
         "The strongest few countries, one bold line each with a short why, then a bold "
         "'But let me ask you one thing.', what 'best' means to them, and a tap card (main "
         "priority, region) with a 'Find my best country' button; never questions in prose.",
@@ -1575,7 +1286,7 @@ CASES: tuple[Case, ...] = (
         "clarify-vague-study",
         "format",
         "how can I understand integrals",
-        Expect(hints=("clarify",), image_gen=False),
+        Expect(hints=("clarify",)),
         "May ask with a tap card (level, goal) after a short start; never a list of questions "
         "in prose.",
     ),
@@ -1942,7 +1653,7 @@ CASES: tuple[Case, ...] = (
         "personal-reminder-clock-no-day",
         "personal",
         "remind me to plate the dinner at 7pm",
-        Expect(search="no", photo=NO_PHOTO, image_gen=False, subject=NONE),
+        Expect(search="no", photo=NO_PHOTO, subject=NONE),
         "A reminder card for 7 pm today (the next 7 pm) to tap; never 'I didn't change your "
         "reminders'. The sweep checks the card (sweep_corpus/routing_gaps.json).",
         pro=True,
@@ -2051,201 +1762,6 @@ CASES: tuple[Case, ...] = (
         "Paris, and the dark-mode card under it to tap.",
     ),
     Case(
-        "multi-draw-and-explain",
-        "multi-intent",
-        "draw a cat wearing a hat and also explain what a black hole is",
-        Expect(image_gen=False, picture=True, hints=("multi_intent",)),
-        "The cat picture above a short black-hole explanation, or one line saying why "
-        "the picture could not be drawn.",
-        pro=True,
-    ),
-    Case(
-        "multi-draw-me-and-explain",
-        "multi-intent",
-        "draw me a cat and also explain black holes",
-        Expect(image_gen=False, picture=True, hints=("multi_intent",)),
-        "The cat above a short black-hole explanation; the whole line was drawn as one "
-        "picture of 'cat and also explain black holes' before.",
-        pro=True,
-    ),
-    Case(
-        "multi-draw-me-and-suggest",
-        "multi-intent",
-        "Draw me a dog and suggest names",
-        Expect(image_gen=False, picture=True, hints=("multi_intent",)),
-        "The dog above a few name ideas; the whole line was drawn as one picture of 'dog "
-        "and suggest names' before, though the plan cut it (round 7).",
-        pro=True,
-    ),
-    Case(
-        "multi-explain-and-draw-es",
-        "multi-intent",
-        "Explica qué es un agujero negro y dibuja un gato",
-        Expect(image_gen=False, picture=False),
-        "One answer, no picture: the picture clause is a bare draw verb, no draw-me form "
-        "(round 5).",
-        pro=True,
-    ),
-    Case(
-        "multi-explain-and-draw-de",
-        "multi-intent",
-        "Erkläre, was ein schwarzes Loch ist, und zeichne auch eine Katze",
-        Expect(image_gen=False, picture=False),
-        "One answer, no picture: the picture clause is a bare draw verb, no draw-me form "
-        "(round 5).",
-        pro=True,
-    ),
-    Case(
-        "multi-explain-and-draw-ru",
-        "multi-intent",
-        "Объясни, что такое чёрная дыра, и нарисуй кошку",
-        Expect(image_gen=False, picture=False),
-        "One answer, no picture: the picture clause is a bare draw verb, no draw-me form "
-        "(round 5).",
-        pro=True,
-    ),
-    Case(
-        "multi-draw-and-explain-es",
-        "multi-intent",
-        "Dibuja un gato con sombrero y también explica qué es un agujero negro",
-        Expect(image_gen=False, picture=False),
-        "One answer, no picture: the picture clause is a bare draw verb, no draw-me form "
-        "(round 5).",
-        pro=True,
-    ),
-    Case(
-        "multi-draw-and-explain-de",
-        "multi-intent",
-        "Zeichne eine Katze mit Hut und erkläre auch, was ein schwarzes Loch ist",
-        Expect(image_gen=False, picture=False),
-        "One answer, no picture: the picture clause is a bare draw verb, no draw-me form "
-        "(round 5).",
-        pro=True,
-    ),
-    Case(
-        "multi-draw-and-explain-ru",
-        "multi-intent",
-        "Нарисуй кошку в шляпе, а также объясни, что такое чёрная дыра",
-        Expect(image_gen=False, picture=False),
-        "One answer, no picture: the picture clause is a bare draw verb, no draw-me form "
-        "(round 5).",
-        pro=True,
-    ),
-    Case(
-        "multi-draw-and-explain-tr",
-        "multi-intent",
-        "Şapkalı bir kedi çiz ve ayrıca kara deliğin ne olduğunu açıkla",
-        Expect(image_gen=False, picture=False),
-        "One answer, no picture: the picture clause is a bare draw verb, no draw-me form "
-        "(round 5).",
-        pro=True,
-    ),
-    Case(
-        "multi-draw-and-explain-fr",
-        "multi-intent",
-        "Dessine un chat avec un chapeau et explique aussi ce qu'est un trou noir",
-        Expect(image_gen=False, picture=False),
-        "One answer, no picture: the picture clause is a bare draw verb, no draw-me form "
-        "(round 5).",
-        pro=True,
-    ),
-    Case(
-        "multi-draw-and-explain-it",
-        "multi-intent",
-        "Disegna un gatto con il cappello e spiega anche cos'è un buco nero",
-        Expect(image_gen=False, picture=False),
-        "One answer, no picture: the picture clause is a bare draw verb, no draw-me form "
-        "(round 5).",
-        pro=True,
-    ),
-    Case(
-        "multi-draw-and-explain-pt",
-        "multi-intent",
-        "Desenhe um gato com chapéu e também explique o que é um buraco negro",
-        Expect(image_gen=False, picture=False),
-        "One answer, no picture: the picture clause is a bare draw verb, no draw-me form "
-        "(round 5).",
-        pro=True,
-    ),
-    Case(
-        "multi-draw-and-explain-am",
-        "multi-intent",
-        "ድመት ሳልልኝ እንዲሁም ጥቁር ቀዳዳ ምን እንደሆነ አስረዳኝ",
-        Expect(image_gen=False, picture=False, no_hints=("multi_intent",)),
-        "One answer in the message's language, no picture: no other-language message is "
-        "cut into a picture and a request (round 9).",
-        pro=True,
-    ),
-    Case(
-        "multi-draw-me-and-explain-es",
-        "multi-intent",
-        "Dibújame un gato con sombrero y también explica qué es un agujero negro",
-        Expect(image_gen=False, picture=False, no_hints=("multi_intent",)),
-        "One answer in the message's language, no picture: no other-language message is "
-        "cut into a picture and a request (round 9).",
-        pro=True,
-    ),
-    Case(
-        "multi-draw-me-and-explain-de",
-        "multi-intent",
-        "Zeichne mir eine Katze mit Hut und erkläre auch, was ein schwarzes Loch ist",
-        Expect(image_gen=False, picture=False, no_hints=("multi_intent",)),
-        "One answer in the message's language, no picture: no other-language message is "
-        "cut into a picture and a request (round 9).",
-        pro=True,
-    ),
-    Case(
-        "multi-explain-and-draw-me-ru",
-        "multi-intent",
-        "Объясни, что такое чёрная дыра, и нарисуй мне кошку",
-        Expect(image_gen=False, picture=False, no_hints=("multi_intent",)),
-        "One answer in the message's language, no picture: no other-language message is "
-        "cut into a picture and a request (round 9).",
-        pro=True,
-    ),
-    Case(
-        "multi-question-then-draw-me-fr",
-        "multi-intent",
-        "Quelle est la capitale de l'Italie ? Dessine-moi un chat",
-        Expect(image_gen=False, picture=False, no_hints=("multi_intent",)),
-        "One answer in the message's language, no picture: no other-language message is "
-        "cut into a picture and a request (round 9).",
-        pro=True,
-    ),
-    Case(
-        "multi-translate-draw-me-line-es",
-        "multi-intent",
-        "Traduce al inglés: dibújame un gato",
-        Expect(image_gen=False, picture=False, photo=NO_PHOTO),
-        "The draw-me line is the text to translate: answered, no picture, as English "
-        "'Translate to Spanish: draw me a cat' is (round 8).",
-        pro=True,
-    ),
-    Case(
-        "multi-quoted-draw-me-line-de",
-        "multi-intent",
-        "„Zeichne mir ein Schaf“: Wer hat das gesagt?",
-        Expect(image_gen=False, picture=False, photo=NO_PHOTO),
-        "Who said a quoted draw-me line: answered, no picture (round 8).",
-        pro=True,
-    ),
-    Case(
-        "multi-dropped-it-draw-me-line-es",
-        "multi-intent",
-        "Dime si es educado. Dibújame un gato",
-        Expect(image_gen=False, picture=False, photo=NO_PHOTO),
-        "Whether the draw-me line is polite, 'it' dropped: answered, no picture (review 8).",
-        pro=True,
-    ),
-    Case(
-        "multi-english-about-draw-me-line-es",
-        "multi-intent",
-        "Dibújame un gato. Why is the me at the end?",
-        Expect(image_gen=False, picture=False, photo=NO_PHOTO),
-        "An English question about a Spanish draw-me line: answered, no picture (review 8).",
-        pro=True,
-    ),
-    Case(
         "multi-compare-and-install",
         "multi-intent",
         "compare python and javascript, and how do I install node on mac?",
@@ -2313,39 +1829,37 @@ CASES: tuple[Case, ...] = (
         "personal-stack-carries",
         "personal",
         "How should I structure auth in my app?",
-        Expect(memory=True, memory_scope="work"),
-        "With 'User builds Recall with React Native and FastAPI' saved: tokens in Expo "
-        "SecureStore on the phone, FastAPI JWT on the server, without asking the stack. "
-        "Never the user's city or job.",
+        Expect(memory=False),
+        "A general answer. Memory holds what learning needs, not the stack the user builds "
+        "with: a programming turn reads memory like any other turn.",
     ),
     Case(
         "personal-stack-deploy",
         "personal",
         "How should I deploy my backend?",
-        Expect(memory=True, memory_scope="work"),
-        "Deploy steps for the saved backend (FastAPI), not a survey of every framework.",
+        Expect(memory=False),
+        "Deploy steps that ask what the backend is built with. No saved memory is read.",
     ),
     Case(
         "personal-stack-library",
         "personal",
         "Which state management library should I use?",
-        Expect(memory=True, memory_scope="work"),
-        "A pick for the saved stack (React Native: Zustand or Redux Toolkit), with why.",
+        Expect(memory=False),
+        "A short comparison of the common picks, with when each fits. No saved memory is read.",
     ),
     Case(
         "personal-stack-login-screen",
         "personal",
         "Write a login screen for me",
-        Expect(memory=True, memory_scope="work"),
-        "A React Native login screen when that is the saved stack.",
+        Expect(memory=False),
+        "A login screen, asking or assuming one framework. No saved memory is read.",
     ),
     Case(
         "personal-irrelevant-memory",
         "personal",
         "explain recursion with an example",
-        Expect(memory_scope="work"),
-        "A clear recursion example. A saved cat or marathon never appears: the work scope "
-        "reads the stack and what the user builds, nothing else.",
+        Expect(memory=False),
+        "A clear recursion example. No saved memory is read for a general question.",
     ),
     Case(
         "personal-general-no-memory",
@@ -2426,7 +1940,7 @@ CASES: tuple[Case, ...] = (
         "money-mortgage-low-rate",
         "money",
         "what is my mortgage for 300k dollars house if mr rate is 1 percent",
-        Expect(hints=("money", "money_reply"), solved=False, image_gen=False, photo=NO_PHOTO),
+        Expect(hints=("money", "money_reply"), solved=False, photo=NO_PHOTO),
         "$964.92 a month over an assumed 30 years, a calculator card, and a note that 1% is "
         "not a realistic rate next to today's average (when the lookup finds one).",
     ),
@@ -2434,7 +1948,7 @@ CASES: tuple[Case, ...] = (
         "money-car-loan",
         "money",
         "what would my car payment be on a $32,000 car at 7.5% APR for 72 months",
-        Expect(hints=("money", "money_reply"), image_gen=False, photo=NO_PHOTO),
+        Expect(hints=("money", "money_reply"), photo=NO_PHOTO),
         "About $553 a month, total interest and total paid, and the card with three sliders.",
     ),
     Case(
@@ -2469,7 +1983,7 @@ CASES: tuple[Case, ...] = (
         "money-what-if-term",
         "money",
         "hmm what if i only do 3 years instead",
-        Expect(hints=("money", "money_reply"), solved=False, image_gen=False, photo=NO_PHOTO),
+        Expect(hints=("money", "money_reply"), solved=False, photo=NO_PHOTO),
         "The same $11,000 at 7.16% over 36 months: $340.45 a month and $1,256.32 interest, "
         "worked by the server with a new card (live 2026-10-25 the model did it: $340.58).",
         history=(
@@ -2532,7 +2046,7 @@ CASES: tuple[Case, ...] = (
         "money-two-lines",
         "money",
         "20k with 6 percent",
-        Expect(hints=("money", "money_reply"), image_gen=False, photo=NO_PHOTO),
+        Expect(hints=("money", "money_reply"), photo=NO_PHOTO),
         "A $20,000 car loan at 6% over an assumed 60 months, worked by the server with its "
         "card (live 2026-10-25 no card came and the model's totals were off).",
         history=(
@@ -2599,7 +2113,7 @@ CASES: tuple[Case, ...] = (
         "clarify-plain-words",
         "format",
         "Don't uses want to see clean food?",
-        Expect(image_gen=False, photo=NO_PHOTO),
+        Expect(photo=NO_PHOTO),
         "Answers with a view on whether users want clean-food scores (the typo is 'users'); "
         "never a card asking what 'clean food' means (live 2026-10-25).",
         history=(

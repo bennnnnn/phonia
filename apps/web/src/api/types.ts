@@ -7,10 +7,7 @@ export type User = {
   email: string;
   name: string | null;
   avatar_url: string | null;
-  default_model: string;
-  plan: "free" | "pro";
-  response_style: string;
-  response_tone: string;
+  plan: "free" | "plus" | "pro";
   memory_enabled: boolean;
   locale: string;
   timezone: string;
@@ -22,9 +19,7 @@ export type User = {
 export type Chat = {
   id: string;
   title: string | null;
-  model: string;
   pinned: boolean;
-  archived?: boolean;
   created_at: string;
   updated_at: string;
 };
@@ -59,7 +54,6 @@ export type ChatList = {
   last_7_days: Chat[];
   this_month: Chat[];
   older: Chat[];
-  archived: Chat[];
 };
 
 export type AuthResult = {

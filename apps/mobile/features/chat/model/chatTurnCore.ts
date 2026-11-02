@@ -81,7 +81,6 @@ export type ChatTurnEvent =
   | { type: "regenerate_ui"; messages: Message[] }
   | { type: "regenerate_backup"; backup: Message }
   | { type: "regenerate"; messages: Message[] }
-  | { type: "regenerate_cancelled" }
   | { type: "stop" }
   | { type: "frame"; payload: ChatSsePayload; ttftTurnId?: string | null }
   | { type: "socket_fallback"; transport: ChatWsTransport; signal: ChatWsFallbackSignal }

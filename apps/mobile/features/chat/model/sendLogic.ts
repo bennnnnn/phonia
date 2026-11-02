@@ -1,8 +1,6 @@
 import type { Message } from "@/lib/api";
 import { messageTextForSend, type PendingAttachment } from "@/features/attachments/model/attachments";
 
-import type { ClientGeo } from "@/features/chat/model/clientGeo";
-
 export type ComposerSendDraft = {
   text: string;
   attachment: PendingAttachment | null;
@@ -16,8 +14,6 @@ export type SendMessageOptions = {
   localFileUri?: string | null;
   localFileName?: string | null;
   localFileContentType?: string | null;
-  model?: string | null;
-  clientGeo?: ClientGeo | null;
   /** Original composer data, retained only for definitely-unsaved recovery. */
   composerDraft?: ComposerSendDraft;
 };
@@ -92,8 +88,6 @@ export function buildPendingSendAfterCreate(options: {
   attached: PendingAttachment | null;
   attachmentIds?: string[];
   optimisticId: string;
-  clientGeo?: ClientGeo | null;
-  model: string;
 }): {
   text: string;
   composerDraft: ComposerSendDraft;
@@ -104,8 +98,6 @@ export function buildPendingSendAfterCreate(options: {
   localFileUri?: string | null;
   localFileName?: string | null;
   localFileContentType?: string | null;
-  clientGeo?: ClientGeo | null;
-  model: string;
 } {
   const sendText = messageTextForSend(options.text, options.attached);
   return {
@@ -122,7 +114,5 @@ export function buildPendingSendAfterCreate(options: {
       options.attached?.kind === "file" ? options.attached.fileName : null,
     localFileContentType:
       options.attached?.kind === "file" ? options.attached.contentType : null,
-    clientGeo: options.clientGeo ?? null,
-    model: options.model,
   };
 }

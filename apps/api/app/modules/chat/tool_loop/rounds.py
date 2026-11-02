@@ -69,7 +69,6 @@ async def run_tool_rounds(
     web_search: bool | None = None,
     user_timezone: str | None = None,
     user_text: str | None = None,
-    user_location: str | None = None,
     has_verified_math: bool = False,
     search_parts: list[str] | None = None,
     skip_tools: frozenset[str] = frozenset(),
@@ -91,7 +90,7 @@ async def run_tool_rounds(
     # The caller's text is the user's own words; the prompt's last user
     # message can also carry attached file text.
     own_text = user_text if user_text is not None else last_user_content(messages)
-    tools = _tools_for_user(settings, user, user_text=own_text, skip_tools=skip_tools)
+    tools = _tools_for_user(settings, user_text=own_text, skip_tools=skip_tools)
     if not tools:
         return ToolRoundsOutcome(messages, None, None, [])
 
@@ -105,17 +104,15 @@ async def run_tool_rounds(
         user_timezone=user_timezone,
         user_query=user_text,
         tavily_budget=TurnTavilyBudget(settings=settings, user=user),
-        user_location=user_location,
         deadline=time.monotonic() + settings.mcp_tool_loop_total_timeout_seconds,
     )
     # An obvious lookup used to spend a model round deciding to call
     # web_search, then a second round writing the answer. Search first
-    # and let the caller stream the reply once. Math and image turns
+    # and let the caller stream the reply once. Math and photo turns
     # still need the selection round.
     if _search_before_the_model(
         user_text,
         settings,
-        user,
         web_search=web_search,
         has_verified_math=has_verified_math,
         skip_tools=skip_tools,

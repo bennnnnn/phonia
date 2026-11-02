@@ -32,9 +32,6 @@ const KEPT_EVERYWHERE = new Set([
   "settings.sign_in_apple", // sign-in providers
   "settings.sign_in_google",
   "settings.sign_in_dev", // development builds only
-  "chat.live_talk_a11y", // Live talk is the feature's name in every locale
-  "settings.live_talk_minutes",
-  "upgrade.feature_live_talk_plain",
   "share.action_pdf", // file format
   "share.attachment_pdf",
   "common.ok",

@@ -137,7 +137,9 @@ async def read_off_loop[T](
     seed = dict(memo)
     try:
         result: T
-        result, recorded = await run_sympy(_record, fn, args, kwargs, seed, timeout=timeout)
+        result, recorded = await run_sympy(
+            _record, fn, args, kwargs, seed, timeout=timeout, lane="reading"
+        )
     except Exception as exc:
         logger.warning(
             "reading %s gave up (%s); this turn reads no subject",

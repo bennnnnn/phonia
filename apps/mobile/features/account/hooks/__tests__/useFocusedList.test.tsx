@@ -39,17 +39,3 @@ it("reads again once the API is back after a read before the connection was lost
   await apiBack();
   expect(read).toHaveBeenCalledTimes(3);
 });
-
-it("goes by the cache's time for a list it reads through a cache", async () => {
-  let cachedAt: number | undefined = Date.now();
-  await renderHook(() => useFocusedList("token", read, () => cachedAt));
-  await act(async () => {});
-  jest.advanceTimersByTime(1000);
-  reportDisconnected();
-  // The focus read came from the cache, fetched before the connection was lost.
-  await apiBack();
-  expect(read).toHaveBeenCalledTimes(2);
-  cachedAt = Date.now();
-  await apiBack();
-  expect(read).toHaveBeenCalledTimes(2);
-});

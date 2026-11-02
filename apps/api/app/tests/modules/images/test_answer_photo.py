@@ -186,11 +186,7 @@ async def test_photos_for_answer_stores_one_unlinked_photo():
     gateway.write_bytes.assert_awaited_once()
     added = mocks["add_rows"].await_args.kwargs
     assert [image.attachment_id for image in added["images"]] == ids
-    assert (added["label"], added["message_id"], added["in_library"]) == (
-        "Ethiopia map",
-        None,
-        False,
-    )
+    assert (added["label"], added["message_id"]) == ("Ethiopia map", None)
     mocks["refund"].assert_not_awaited()
 
 

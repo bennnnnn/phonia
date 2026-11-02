@@ -321,13 +321,6 @@ CATALOG: tuple[ChatModel, ...] = (
         stray_think_guard=True,
         **_GLM_FLASH,
     ),
-    _or(
-        id="image-gen-model",
-        label="Image generation",
-        model="black-forest-labs/flux.2-klein-4b",
-        provider="openrouter",
-        selectable=False,
-    ),
     ChatModel(
         id="speech-stt-model",
         label="Speech transcription",
@@ -354,15 +347,6 @@ CATALOG: tuple[ChatModel, ...] = (
         selectable=False,
         description="Legacy alias for OpenAI read-aloud.",
     ),
-    ChatModel(
-        id="live-talk-model",
-        label="Live talk",
-        model="openai/gpt-realtime-2.1",
-        provider="openai",
-        api_key_field="openai_api_key",
-        selectable=False,
-        description="Speech-to-speech for live talk.",
-    ),
 )
 
 _BY_ID: dict[str, ChatModel] = {m.id: m for m in CATALOG}
@@ -371,7 +355,7 @@ _BY_ID: dict[str, ChatModel] = {m.id: m for m in CATALOG}
 def get(model_id: str) -> ChatModel:
     """Resolve a known product alias. Unknown ids raise — never silent fallback.
 
-    Callers validate via ``known_ids()`` / ``validate_user_alias`` first.
+    Callers validate via ``known_ids()`` first.
     """
     try:
         return _BY_ID[model_id]
@@ -459,19 +443,6 @@ def estimate_cost_usd(
     input_price = model.input_price_per_m or 0.0
     output_price = model.output_price_per_m or 0.0
     return (input_tokens / 1_000_000.0) * input_price + (output_tokens / 1_000_000.0) * output_price
-
-
-def validate_user_alias(alias: str, *, allow_auto: bool = False) -> None:
-    """Raise ``ValueError`` unless ``alias`` is a catalog id (or ``auto`` when allowed).
-
-    The catalog is the one list of aliases: adding a model here makes it valid
-    in request schemas too.
-    """
-    if allow_auto and alias == "auto":
-        return
-    if alias in _BY_ID:
-        return
-    raise ValueError(f"Unknown model alias: {alias}")
 
 
 # An entry with no list price (an open model whose price is not backfilled yet, likely

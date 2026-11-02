@@ -252,10 +252,10 @@ COMPACT_RESPONSE_FORMAT_HINT = (
     "correct or complete it — do not invent a topic essay or joke about the words."
 )
 
-# Appended after the tone line so "funny" cannot override answer-first format.
+# Appended after the tone line so the voice cannot override answer-first format.
 TONE_FORMAT_GUARD = (
     "Configured tone is word choice only. Do not add a joke setup or recap "
-    "before the answer. Funny never means a bit about the question. "
+    "before the answer. "
     "If they asked for one sentence, one word, or briefly, skip decorative tables and headings; "
     "keep a draft/code fence only when it is the requested deliverable. "
     "Do not invent a decorative table before the answer — a feature or language "

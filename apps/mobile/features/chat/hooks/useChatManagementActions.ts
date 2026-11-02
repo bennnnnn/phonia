@@ -7,7 +7,6 @@ import { insertChatGlobal, patchChatGlobal, removeChatGlobal } from "@/features/
 import {
   confirmAndDeleteChat,
   renameChat,
-  setChatArchived,
   setChatPinned,
   type ChatOperationContext,
 } from "@/features/chat/model/chatOperations";
@@ -20,9 +19,7 @@ type Options = {
   chatId: string | null;
   chatTitle: string | null;
   pinned: boolean;
-  archived: boolean;
   setPinned: React.Dispatch<React.SetStateAction<boolean>>;
-  setArchived: React.Dispatch<React.SetStateAction<boolean>>;
   setChatTitle: React.Dispatch<React.SetStateAction<string | null>>;
   closeMenu: () => void;
   dismissActionBanner: () => void;
@@ -34,7 +31,7 @@ const DRAWER_LIST = { patch: patchChatGlobal, insert: insertChatGlobal, remove: 
 
 /** The chat header's menu: the same operations as the drawer's row menu, on the open chat. */
 export function useChatManagementActions({
-  token, chatId, chatTitle, pinned, archived, setPinned, setArchived,
+  token, chatId, chatTitle, pinned, setPinned,
   setChatTitle, closeMenu, dismissActionBanner, showActionBanner, t,
 }: Options) {
   const feedback = useActionFeedbackOptional();
@@ -64,18 +61,17 @@ export function useChatManagementActions({
             mirror: (patch: Partial<Chat>) => {
               if (patch.title !== undefined) setChatTitle(patch.title);
               if (patch.pinned !== undefined) setPinned(patch.pinned);
-              if (patch.archived !== undefined) setArchived(Boolean(patch.archived));
             },
             banner: showActionBanner,
             failure: (message: string) => reportRecoverableError(feedback, message),
             t,
           }
         : null,
-    [token, session, currentSession, currentView, setChatTitle, setPinned, setArchived, showActionBanner, feedback, t],
+    [token, session, currentSession, currentView, setChatTitle, setPinned, showActionBanner, feedback, t],
   );
   const ref = useMemo(
-    () => (chatId ? { id: chatId, title: chatTitle, pinned, archived } : null),
-    [chatId, chatTitle, pinned, archived],
+    () => (chatId ? { id: chatId, title: chatTitle, pinned } : null),
+    [chatId, chatTitle, pinned],
   );
 
   const openRename = useCallback(() => {
@@ -94,15 +90,10 @@ export function useChatManagementActions({
     await setChatPinned(operations, ref, !ref.pinned);
   }, [operations, ref, currentView]);
 
-  const toggleArchive = useCallback(async () => {
-    if (!operations || !ref || !currentView()) return;
-    await setChatArchived(operations, ref, !ref.archived);
-  }, [operations, ref, currentView]);
-
   const confirmDelete = useCallback(() => {
     if (!operations || !chatId || !currentView()) return;
     confirmAndDeleteChat(operations, chatId);
   }, [operations, chatId, currentView]);
 
-  return { renameVisible, setRenameVisible, renameText, setRenameText, openRename, confirmRename, togglePin, toggleArchive, confirmDelete };
+  return { renameVisible, setRenameVisible, renameText, setRenameText, openRename, confirmRename, togglePin, confirmDelete };
 }

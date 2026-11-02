@@ -28,11 +28,10 @@ from .carry_world import sign_in as _sign_in
 
 # The deleted account's day, and the account it comes back to: each counter either side
 # used more of, plus counters only one side used.
-_DELETED = {"usage": 1234, "imggen": 2, "tavily": 4}
-_LIVE_TALK_SECONDS = 300
+_DELETED = {"usage": 1234, "imgsearch": 2, "tavily": 4}
 _SURVIVOR = {"usage": 5000, "tavily": 1}
 # Raise-only on each counter (``carryover.apply_carried_usage``): the larger of the two.
-_MERGED = {"usage": 5000, "imggen": 2, "tavily": 4}
+_MERGED = {"usage": 5000, "imgsearch": 2, "tavily": 4}
 _EMAILS = {"apple": "icloud.com", "google": "gmail.com"}  # where that provider owns the address
 
 
@@ -43,7 +42,7 @@ async def _deleted_then_other_account(world: Linked, deleted: str) -> tuple[str,
     other = "google" if deleted == "apple" else "apple"
     sub, email = f"{deleted}-{uuid4()}", f"link-{uuid4().hex[:12]}@{_EMAILS[deleted]}"
     first, token = await signed_in(world, deleted, sub, email)
-    await use(world.redis, first, _DELETED, live_talk=_LIVE_TALK_SECONDS)
+    await use(world.redis, first, _DELETED)
     await delete(world, first, token)
     assert await world.redis.get(quota_carryover.carry_key(world.settings, deleted, sub))
     # Filed under the identity alone, as before the email key.
@@ -70,7 +69,6 @@ async def test_quota_carryover_linked_identity_raises_the_account_once(
         assert joined == survivor
         assert await linked_sub(survivor, deleted) == sub
         assert await counts(linked.redis, survivor) == _MERGED
-        assert await quota.live_talk_used_seconds(linked.redis, survivor) == _LIVE_TALK_SECONDS
         # Used: the snapshot is gone.
         assert (
             await linked.redis.get(quota_carryover.carry_key(linked.settings, deleted, sub)) is None

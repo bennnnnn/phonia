@@ -360,8 +360,7 @@ describe("useChatScroll keyboard steps", () => {
   });
 });
 
-// Image generation and live talk call it after every picture and voice turn: no haptic
-// there. The scroll button's press plays its own (ChatScrollFab).
+// Image generation calls it after every picture turn: no haptic there. The scroll button's press plays its own (ChatScrollFab).
 it("scrolls to the latest message without a haptic of its own", async () => {
   jest.mocked(tap).mockClear();
   const fake = fakeList(2000);

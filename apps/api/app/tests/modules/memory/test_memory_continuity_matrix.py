@@ -223,12 +223,12 @@ async def test_extractor_prompt_preserves_current_employer_when_target_is_aspira
 
     await memory_llm.revise_memory_facts(
         Settings(),
-        "User: I work at Uber but want to move to Google",
+        "User: I have a B in chemistry but want an A",
         existing_facts=[
             {
-                "id": "current-job",
-                "type": "profile",
-                "text": "Bini currently works at Uber",
+                "id": "current-grade",
+                "type": "fact",
+                "text": "Bini has a B in chemistry",
             }
         ],
     )
@@ -239,8 +239,8 @@ async def test_extractor_prompt_preserves_current_employer_when_target_is_aspira
     assert isinstance(first_message, dict)
     system_prompt = first_message["content"]
     assert isinstance(system_prompt, str)
-    assert "keeps Uber as the current employer" in system_prompt
-    assert "must not claim the user works at Google" in system_prompt
+    assert "keeps the B as their current grade" in system_prompt
+    assert "must not claim the user has an A" in system_prompt
     assert "4 in the evening is 16:00" in system_prompt
 
 
@@ -263,25 +263,28 @@ async def test_extractor_prompt_keeps_everyday_profile_facts_normal(
 
     await memory_llm.revise_memory_facts(
         Settings(),
-        "User: I'm an engineer at Uber in Oakland, originally from Ethiopia",
+        "User: I'm in 10th grade at a school in Oakland, originally from Ethiopia",
     )
 
     messages = captured["messages"]
     assert isinstance(messages, list)
     system_prompt = messages[0]["content"]
     assert isinstance(system_prompt, str)
-    # Profile is not described as "identity", so job and place facts are not
+    # Profile is not described as "identity", so grade and place facts are not
     # labelled with the sensitive identity category and dropped.
     assert "own identity" not in system_prompt
     assert (
-        "normal: name, job, employer, school, city, home country, languages" in system_prompt
+        "normal: name, grade, school, city, home country, languages, subjects" in system_prompt
     )  # safety phrase
     assert (
         "identity: gender identity, immigration status, or disability" in system_prompt
     )  # safety phrase
     assert (
-        "building a dating app or a health tracker is a normal project fact" in system_prompt
+        "an essay on depression or a biology unit on HIV is a normal subjects fact" in system_prompt
     )  # safety phrase
+    # The user may be a minor: learning differences, bullying and self-harm are sensitive.
+    assert "The user may be a minor" in system_prompt  # safety phrase
+    assert "learning difference (ADHD, dyslexia)" in system_prompt  # safety phrase
 
 
 @pytest.mark.asyncio

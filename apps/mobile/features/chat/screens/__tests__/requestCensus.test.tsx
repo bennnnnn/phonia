@@ -152,7 +152,6 @@ jest.mock("expo-image-picker", () => mockNativeModule("expo-image-picker"));
 jest.mock("expo-document-picker", () => mockNativeModule("expo-document-picker"));
 jest.mock("expo-audio", () => mockNativeModule("expo-audio"));
 jest.mock("expo-speech", () => mockNativeModule("expo-speech"));
-jest.mock("expo-location", () => mockNativeModule("expo-location"));
 jest.mock("expo-sharing", () => mockNativeModule("expo-sharing"));
 jest.mock("expo-print", () => mockNativeModule("expo-print"));
 jest.mock("expo-web-browser", () => mockNativeModule("expo-web-browser"));
@@ -166,7 +165,6 @@ jest.mock("expo-image-manipulator", () => mockNativeModule("expo-image-manipulat
 jest.mock("expo-splash-screen", () => mockNativeModule("expo-splash-screen"));
 jest.mock("expo-font", () => mockNativeModule("expo-font"));
 jest.mock("expo-updates", () => mockNativeModule("expo-updates"));
-jest.mock("react-native-webrtc", () => mockNativeModule("react-native-webrtc"));
 jest.mock("react-native-vision-camera", () => mockNativeModule("react-native-vision-camera"));
 jest.mock("react-native-vision-camera-mlkit", () => mockNativeModule("react-native-vision-camera-mlkit"));
 jest.mock("react-native-vision-camera-worklets", () => mockNativeModule("react-native-vision-camera-worklets"));
@@ -247,17 +245,17 @@ const accessToken = (exp: number, n = 0) => `h.${btoa(JSON.stringify({ sub: USER
 const deviceZone = () => Intl.DateTimeFormat().resolvedOptions().timeZone;
 const HOME_ZONE = deviceZone();
 const USER = {
-  id: USER_ID, email: "a@b.c", name: "Ann", avatar_url: null, default_model: "auto", plan: "free",
-  features: [], enabled_models: null, ai_data_consent_at: NOW, response_tone: "", memory_enabled: true,
+  id: USER_ID, email: "a@b.c", name: "Ann", avatar_url: null, plan: "free",
+  features: [], ai_data_consent_at: NOW, memory_enabled: true,
   push_notifications_enabled: true, push_reminders_enabled: true, reminder_lead_minutes: 0, locale: "en",
   // The device's own zone (lib/deviceTimezone): a profile in another is patched on start.
-  timezone: HOME_ZONE, location: null, location_enabled: false, custom_instructions: null, age: null,
+  timezone: HOME_ZONE, custom_instructions: null, age: null,
   country: null, job: null, created_at: NOW,
 };
 const uuid = (kind: number, n: number) => `00000000-0000-4000-8${kind}00-${String(n).padStart(12, "0")}`;
 const chatId = (n: number) => uuid(1, n);
 const CHATS = Array.from({ length: 30 }, (_, i) => ({
-  id: chatId(i), title: `Chat ${i}`, model: "auto", pinned: false, archived: false, created_at: NOW, updated_at: NOW,
+  id: chatId(i), title: `Chat ${i}`, model: "auto", pinned: false, created_at: NOW, updated_at: NOW,
 }));
 const fileContent = (n: number, type: string) =>
   `Summarize this file.\n[File: /attachments/${uuid(4, n)}/file]\n[File (${type})]`;
@@ -298,7 +296,6 @@ function serverBody(method: string, path: string, body?: string): unknown {
       user: { ...USER, timezone: profileZone },
     };
   }
-  if (p === "/models") return [{ id: "free-chat", label: "Free", available: true, plan_access: "free" }];
   if (p === "/todos/page") return { items: [], next_cursor: null };
   if (p === "/chats/usage/today") return { date: "2026-10-24", tokens_used: 0, daily_limit: 100000 };
   if (p === "/chats" && method === "POST") {
@@ -307,8 +304,8 @@ function serverBody(method: string, path: string, body?: string): unknown {
   }
   if (p === "/chats") {
     return {
-      pinned: [], today: CHATS, yesterday: [], last_7_days: [], this_month: [], older: [], archived: [],
-      next_cursor: null, archived_next_cursor: null,
+      pinned: [], today: CHATS, yesterday: [], last_7_days: [], this_month: [], older: [],
+      next_cursor: null,
     };
   }
   if (/^\/chats\/[^/]+\/messages$/.test(p)) return { messages: [...MESSAGES, ...savedTurn], has_more: false };
@@ -556,10 +553,9 @@ async function launch(): Promise<App> {
   process.env.RNTL_SKIP_AUTO_CLEANUP = "true";
   rtl = await import("@testing-library/react-native");
   jest.setSystemTime(clock);
-  const [{ AuthProvider }, { ModelsProvider }, { TodosProvider }, { NetworkProvider, useNetwork }, { PushNotificationBootstrap }] =
+  const [{ AuthProvider }, { TodosProvider }, { NetworkProvider, useNetwork }, { PushNotificationBootstrap }] =
     await Promise.all([
       import("@/contexts/AuthContext"),
-      import("@/contexts/ModelsContext"),
       import("@/features/todos/context/TodosContext"),
       import("@/contexts/NetworkContext"),
       import("@/features/todos/components/PushNotificationBootstrap"),
@@ -581,9 +577,7 @@ async function launch(): Promise<App> {
     gallery: (await import("@/features/attachments/screens/GalleryScreen")).default,
     settings: (await import("@/features/account/screens/SettingsScreen")).default,
     usage: (await import("@/features/account/screens/UsageScreen")).default,
-    models: (await import("@/features/account/screens/ModelsSettingsScreen")).default,
     about: (await import("@/features/account/screens/AboutScreen")).default,
-    archived: (await import("@/features/account/screens/ArchivedChatsScreen")).default,
     dataControls: (await import("@/features/account/screens/DataControlsScreen")).default,
     help: (await import("@/features/account/screens/HelpScreen")).default,
     memorySettings: (await import("@/features/memory/screens/MemorySettingsScreen")).default,
@@ -599,18 +593,16 @@ async function launch(): Promise<App> {
     const Top = top ? routes[top] : null;
     return (
       <AuthProvider>
-        <ModelsProvider>
-          <TodosProvider>
-            <NetworkProvider>
-              <StatusClock />
-              <PushNotificationBootstrap />
-              <MockFocus value={!Top}>
-                <ChatScreen />
-              </MockFocus>
-              {Top ? <Top /> : null}
-            </NetworkProvider>
-          </TodosProvider>
-        </ModelsProvider>
+        <TodosProvider>
+          <NetworkProvider>
+            <StatusClock />
+            <PushNotificationBootstrap />
+            <MockFocus value={!Top}>
+              <ChatScreen />
+            </MockFocus>
+            {Top ? <Top /> : null}
+          </NetworkProvider>
+        </TodosProvider>
       </AuthProvider>
     );
   };
@@ -640,12 +632,12 @@ async function send(app: App, text: string): Promise<void> {
 }
 
 const SCREENS = [
-  "memory", "todos", "gallery", "settings", "usage", "models", "about", "archived", "dataControls", "help",
+  "memory", "todos", "gallery", "settings", "usage", "about", "dataControls", "help",
   "memorySettings", "notifications", "preferences", "profile", "security", "voice",
 ];
 /** A screen's read on opening it (none: it shows what the app already holds). */
 const SCREEN_READS: Record<string, number> = {
-  memory: 1, gallery: 1, usage: 1, archived: 1, memorySettings: 1, security: 1,
+  memory: 1, gallery: 1, usage: 1, memorySettings: 1, security: 1,
 };
 
 /** Screens opened a second time, whose read the server answers 304. */
@@ -653,8 +645,8 @@ const REVISITED = ["memory", "security"];
 
 /** The most requests and sockets each step may send. */
 const CEILINGS: Record<string, number> = {
-  // /auth/me, the day's usage (free plan), to-dos, models, the check, the push token, the drawer.
-  "cold start after sign-in": 7,
+  // /auth/me, the day's usage (free plan), to-dos, the check, the push token, the drawer.
+  "cold start after sign-in": 6,
   // The newest page, each file's status (three), the socket.
   "open chat 1": 5,
   "open chat 2": 2,
@@ -674,8 +666,7 @@ const CEILINGS: Record<string, number> = {
   "a minute in the background": 0,
   // To-dos and the open chat (ETag, 304), the check, the socket.
   "return after a minute": 4,
-  // And the model list (older than 5 minutes).
-  "return after 10 minutes": 5,
+  "return after 10 minutes": 4,
   // iOS goes inactive and back without leaving: nothing is read again.
   "Control Centre and back, 6 minutes on": 0,
   // The zone sent to the server, and the to-dos read again for their new notify_at.
@@ -692,12 +683,12 @@ const CEILINGS: Record<string, number> = {
   "send in a new chat": 2 + TITLE_AFTER_READS + 1,
   "20 s after the new chat's reply": 0,
   // No push registration this time: the last one is under 12 hours old.
-  "cold start again": 6,
+  "cold start again": 5,
   // The page; the files' statuses the first run settled come from disk.
   "open chat 1 after the relaunch": 2,
   // The token has expired: one refresh, which answers with the account (no /auth/me),
-  // then the day's usage, to-dos, models, the check and the drawer.
-  "cold start two hours later": 6,
+  // then the day's usage, to-dos, the check and the drawer.
+  "cold start two hours later": 5,
 };
 
 jest.setTimeout(120_000);
@@ -1008,12 +999,7 @@ const RECOVERY_CASES: RecoveryCase[] = [
     read: /^GET \/memories\/documents(?: \(304\))?$/,
   },
   { title: "the library", show: (app) => showOnly(app, "gallery"), read: /^GET \/attachments\b/ },
-  // Settings' two lists (useFocusedList): the archived chats come with the drawer's list.
-  {
-    title: "the archived chats",
-    show: (app) => showOnly(app, "archived"),
-    read: /^GET \/chats\?client_timezone=[^&\s]+(?: \(304\))?$/,
-  },
+  // Settings' list (useFocusedList).
   {
     title: "the signed-in devices",
     show: (app) => showOnly(app, "security"),
@@ -1132,7 +1118,7 @@ it("reads the list on screen again once, 0 to 10 s after an outage ends, and not
   expect(listReads(steps[steps.length - 1].requests)).toEqual([expect.stringMatching(/^GET \/todos\/page\b/)]);
 
   // The outage ends while the app is in the background: nothing is read then, and the return
-  // reads what any return does (to-dos, the models, the open chat, the check, the socket): the
+  // reads what any return does (to-dos, the open chat, the check, the socket): the
   // chat once, the read the API's return asks for falling within its stale window.
   await RECOVERY_CASES[0].show(app);
   await returnIntoOutage();

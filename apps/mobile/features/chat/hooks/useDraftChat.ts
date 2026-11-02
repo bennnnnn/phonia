@@ -52,7 +52,7 @@ export function useDraftChat({ chatId, intent }: Options) {
   );
 
   const prepareDraftChat = useCallback(
-    async (model = "auto", opts?: { force?: boolean }): Promise<string | null> => {
+    async (opts?: { force?: boolean }): Promise<string | null> => {
       const token = getToken();
       if (!token) return null;
       if (opts?.force) {
@@ -64,7 +64,7 @@ export function useDraftChat({ chatId, intent }: Options) {
       if (draftCreatePromiseRef.current) return draftCreatePromiseRef.current;
 
       const task = api
-        .createChat(token, model)
+        .createChat(token)
         .then((chat) => {
           rememberCreatedChat(chat);
           draftChatIdRef.current = chat.id;

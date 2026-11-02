@@ -202,21 +202,6 @@ def test_format_todos_block_includes_dated_and_plain_items():
     assert "Milk" in block
 
 
-def test_format_todos_voice_block_is_plain_and_includes_undated():
-    due_item = _item("Reading at 10", "General")
-    due_item.due_at = datetime(2026, 7, 1, 10, 0, tzinfo=UTC)
-    block = todos_service.format_todos_voice_block(
-        [due_item, _item("Milk", "Groceries")],
-        user_timezone="UTC",
-    )
-    assert "User To-do list" in block
-    assert "Reading at 10" in block
-    assert "10:00" in block
-    assert "### " not in block
-    assert "Anytime: Milk" in block
-    assert "Anytime: Milk" in todos_service.format_todos_voice_block([_item("Milk")])
-
-
 @pytest.mark.asyncio
 async def test_apply_todo_actions_complete():
     session = fake_session()

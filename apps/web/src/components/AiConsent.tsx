@@ -19,7 +19,7 @@ const ITEMS: readonly { title: string; body: string }[] = [
   },
   {
     title: "Voice",
-    body: "Voice input, read aloud and live talk send your voice and the text being read to OpenAI.",
+    body: "Voice input and read aloud send your voice and the text being read to OpenAI.",
   },
   {
     title: "Web search",

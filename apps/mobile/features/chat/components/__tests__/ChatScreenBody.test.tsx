@@ -165,7 +165,6 @@ const baseProps: ChatScreenBodyProps = {
     isPaid: false,
     onUpgrade: noop,
     onRetryChatError: noop,
-    onChangeModel: noop,
     onDismissChatError: noop,
   },
   sheets: {

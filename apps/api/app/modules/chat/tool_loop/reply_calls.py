@@ -123,7 +123,6 @@ async def answer_reply_calls(
     chat_id: UUID | None,
     user_timezone: str | None,
     user_text: str,
-    user_location: str | None,
     on_status: StreamStatusFn | None,
     should_cancel: Callable[[], bool] | None,
 ) -> ReplyCallsOutcome:
@@ -140,7 +139,6 @@ async def answer_reply_calls(
         user_timezone=user_timezone,
         user_query=prompt_user_text,
         tavily_budget=TurnTavilyBudget(settings=settings, user=user),
-        user_location=user_location,
         deadline=time.monotonic() + settings.mcp_tool_loop_total_timeout_seconds,
     )
     turn = CallRound(

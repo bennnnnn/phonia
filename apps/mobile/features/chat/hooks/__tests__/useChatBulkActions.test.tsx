@@ -26,20 +26,18 @@ jest.mock("@/lib/haptics", () => ({
   notifyDestructive: (...args: unknown[]) => mockDestructive(...args),
 }));
 const first: Chat = {
-  id: "first", title: "First", pinned: true, archived: false, model: "free-chat",
+  id: "first", title: "First", pinned: true,
   created_at: "2026-01-01", updated_at: "2026-01-01",
 };
 const second: Chat = { ...first, id: "second", title: "Second", pinned: false };
 const insertChatInGroups = jest.fn();
-const patchChatInGroups = jest.fn();
-const moveChatArchiveState = jest.fn();
 const removeChatFromGroupsById = jest.fn();
 const reloadChats = jest.fn();
 const showActionBanner = jest.fn();
 let actions: ReturnType<typeof useChatBulkActions>;
 function Probe({ token = "token", isDrawerOpen = true }: { token?: string; isDrawerOpen?: boolean }) {
-  const value = useChatBulkActions({ token, isDrawerOpen, insertChatInGroups, patchChatInGroups, moveChatArchiveState,
-    removeChatFromGroupsById, reloadChats, showActionBanner });
+  const value = useChatBulkActions({ token, isDrawerOpen, insertChatInGroups, removeChatFromGroupsById,
+    reloadChats, showActionBanner });
   React.useLayoutEffect(() => { actions = value; });
   return <Text>Bulk actions</Text>;
 }
@@ -105,35 +103,6 @@ it("haptics once only after confirmed bulk deletion has a successful result", as
   expect(mockDestructive).toHaveBeenCalledTimes(1);
 });
 
-it("waits for the archive result and restores only the chats it did not change, pins included", async () => {
-  const request = deferred<Changed>();
-  bulkChats.mockReturnValue(request.promise);
-  await render(<Probe />);
-  await act(async () => { actions.bulkArchiveChats([first, second]); });
-  let pending!: Promise<void>;
-  await act(async () => { pending = confirmation()(); });
-  expect(reloadChats).not.toHaveBeenCalled();
-  expect(insertChatInGroups).not.toHaveBeenCalled();
-  await act(async () => { request.resolve({ changed: [second.id] }); await pending; });
-  expect(bulkChats).toHaveBeenCalledWith("token", "archive", [first.id, second.id]);
-  expect(patchChatInGroups).toHaveBeenCalledTimes(2);
-  expect(patchChatInGroups).toHaveBeenCalledWith(first.id, first);
-  expect(patchChatInGroups).toHaveBeenCalledWith(second.id, { pinned: false, archived: true });
-  expect(moveChatArchiveState).not.toHaveBeenCalledWith(second.id, false);
-  expect(mockError).toHaveBeenCalledWith("chat.archive_failed");
-});
-
-it("restores every chat when the archive request fails", async () => {
-  bulkChats.mockRejectedValue(new Error("offline"));
-  await render(<Probe />);
-  await act(async () => { actions.bulkArchiveChats([first, second]); });
-  await act(async () => { await confirmation()(); });
-  expect(patchChatInGroups).toHaveBeenCalledWith(first.id, first);
-  expect(patchChatInGroups).toHaveBeenCalledWith(second.id, second);
-  expect(reloadChats).toHaveBeenCalledTimes(1);
-  expect(mockError).toHaveBeenCalledWith("chat.archive_failed");
-});
-
 it("sends a selection past the server's cap in parts of 200", async () => {
   const many = Array.from({ length: 450 }, (_, index) => ({ ...second, id: `c${index}` }));
   bulkChats.mockImplementation(async (_token: string, _action: string, ids: string[]) => ({ changed: ids }));
@@ -144,9 +113,9 @@ it("sends a selection past the server's cap in parts of 200", async () => {
   expect(chatsDeleted).toHaveBeenCalledWith({ chatIds: many.map((chat) => chat.id) });
 });
 
-it.each(["bulkArchiveChats", "bulkDeleteChats"] as const)("ignores %s confirmation after drawer closes", async (method) => {
+it("ignores a bulk delete confirmation after the drawer closes", async () => {
   const view = await render(<Probe />);
-  await act(async () => { actions[method]([first]); });
+  await act(async () => { actions.bulkDeleteChats([first]); });
   const confirm = confirmation();
   await view.rerender(<Probe isDrawerOpen={false} />);
   await act(async () => { await confirm(); });
@@ -183,25 +152,26 @@ it("does not apply an old batch's success callback to a reopened drawer", async 
   expect(showActionBanner).not.toHaveBeenCalled();
 });
 
-it("uses the latest row at confirmation when restoring a failed archive", async () => {
+it("uses the latest row at confirmation when restoring a failed delete", async () => {
   const latest = { ...first, title: "Renamed before confirmation", pinned: false };
   bulkChats.mockRejectedValue(new Error("offline"));
   await render(<Probe />);
-  await act(async () => { actions.bulkArchiveChats([first]); });
+  await act(async () => { actions.bulkDeleteChats([first]); });
   jest.mocked(getCachedChat).mockReturnValue(latest);
   await act(async () => { await confirmation()(); });
-  expect(patchChatInGroups).toHaveBeenCalledWith(first.id, latest);
+  expect(insertChatInGroups).toHaveBeenCalledWith(latest);
+  expect(reloadChats).toHaveBeenCalledTimes(1);
 });
 
-it("reports the number of chats the server archived", async () => {
+it("reports the number of chats the server deleted", async () => {
   bulkChats.mockResolvedValue({ changed: [first.id, second.id] });
   const complete = jest.fn();
   await render(<Probe />);
-  await act(async () => { actions.bulkArchiveChats([first, second], complete); });
+  await act(async () => { actions.bulkDeleteChats([first, second], complete); });
   await act(async () => { await confirmation()(); });
-  expect(patchChatInGroups).toHaveBeenCalledWith(first.id, { pinned: false, archived: true });
-  expect(patchChatInGroups).toHaveBeenCalledWith(second.id, { pinned: false, archived: true });
-  expect(mockT).toHaveBeenCalledWith("drawer.bulk_archived_toast", { count: 2 });
+  expect(removeChatFromGroupsById).toHaveBeenCalledWith(first.id);
+  expect(removeChatFromGroupsById).toHaveBeenCalledWith(second.id);
+  expect(mockT).toHaveBeenCalledWith("drawer.bulk_deleted_toast", { count: 2 });
   expect(complete).toHaveBeenCalledTimes(1);
   expect(mockError).not.toHaveBeenCalled();
 });

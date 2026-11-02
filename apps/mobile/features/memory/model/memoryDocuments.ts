@@ -6,12 +6,12 @@ import type { MemoryDocument, MemoryDocumentGroup } from "@/features/memory/type
 export const STANDARD_DOCUMENT_KEYS = [
   "profile",
   "preferences",
-  "interests",
-  "tech-stack",
-  "schedule",
-  "recent-work",
+  "subjects",
   "goals",
-  "side-projects",
+  "progress",
+  "struggles",
+  "interests",
+  "schedule",
   "notes",
 ] as const;
 

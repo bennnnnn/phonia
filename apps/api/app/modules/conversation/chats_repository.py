@@ -2,14 +2,15 @@ from datetime import UTC, datetime, timedelta
 from typing import Any, cast
 from uuid import UUID
 
-from sqlalchemy import delete, exists, or_, select, update
+from sqlalchemy import delete, exists, func, or_, select, update
 from sqlalchemy.engine import CursorResult
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import load_only
 
 from app.core.timezone import resolve_timezone
 from app.core.ttl_cache import TtlCache
-from app.models.orm import Chat, Message
+from app.models.orm import Chat, Message, User
+from app.repositories.batch_delete import delete_in_batches
 from app.repositories.keyset import after, decode_cursor, encode_cursor, page_of
 
 # Same process just created this chat. The send that follows should not pay
@@ -41,9 +42,8 @@ async def create(
     session: AsyncSession,
     *,
     user_id: UUID,
-    model: str,
 ) -> Chat:
-    chat = Chat(user_id=user_id, model=model)
+    chat = Chat(user_id=user_id)
     session.add(chat)
     await session.commit()
     await session.refresh(chat)
@@ -51,7 +51,6 @@ async def create(
         Chat(
             id=chat.id,
             user_id=chat.user_id,
-            model=chat.model,
         )
     )
     return chat
@@ -80,9 +79,7 @@ _LIST_COLUMNS = load_only(
     Chat.id,
     Chat.user_id,
     Chat.title,
-    Chat.model,
     Chat.pinned,
-    Chat.archived,
     Chat.created_at,
     Chat.updated_at,
     raiseload=True,
@@ -94,7 +91,6 @@ async def list_for_user(
     user_id: UUID,
     limit: int | None = 200,
     *,
-    include_archived: bool = False,
     with_summary: bool = False,
 ) -> list[Chat]:
     """The user's chats with messages: list columns only, unless ``with_summary`` (export)."""
@@ -107,25 +103,45 @@ async def list_for_user(
     )
     if not with_summary:
         stmt = stmt.options(_LIST_COLUMNS)
-    if not include_archived:
-        stmt = stmt.where(Chat.archived.is_(False))
     if limit is not None:
         stmt = stmt.limit(limit)
     result = await session.execute(stmt)
     return list(result.scalars().all())
 
 
-async def list_pinned(session: AsyncSession, user_id: UUID) -> list[Chat]:
-    """The user's pinned, unarchived chats with messages, newest first; list columns only."""
+async def list_pinned(session: AsyncSession, user_id: UUID, *, limit: int) -> list[Chat]:
+    """The user's pinned chats with messages, newest first, at most ``limit``; list
+    columns only."""
     has_messages = exists().where(Message.chat_id == Chat.id)
     result = await session.execute(
         select(Chat)
         .options(_LIST_COLUMNS)
-        .where(Chat.user_id == user_id, Chat.pinned.is_(True), Chat.archived.is_(False))
+        .where(Chat.user_id == user_id, Chat.pinned.is_(True))
         .where(has_messages)
         .order_by(Chat.updated_at.desc(), Chat.id.desc())
+        .limit(limit)
     )
     return list(result.scalars().all())
+
+
+async def count_other_pins_locked(session: AsyncSession, user_id: UUID, chat_id: UUID) -> int:
+    """How many chats besides ``chat_id`` the user has pinned.
+
+    Takes the user's row lock first (held until the caller commits; memory writers and
+    the account delete lock the user row first too), so two pins at once cannot both
+    pass the cap.
+    """
+    await session.execute(select(User.id).where(User.id == user_id).with_for_update())
+    count = await session.scalar(
+        select(func.count())
+        .select_from(Chat)
+        .where(
+            Chat.user_id == user_id,
+            Chat.pinned.is_(True),
+            Chat.id != chat_id,
+        )
+    )
+    return int(count or 0)
 
 
 async def list_recent_page(
@@ -135,7 +151,7 @@ async def list_recent_page(
     limit: int,
     cursor: str | None = None,
 ) -> tuple[list[Chat], str | None]:
-    """One page of the drawer's dated chats (unpinned, unarchived), newest first.
+    """One page of the drawer's dated chats (unpinned), newest first.
 
     Returns the chats and the cursor for the next page (None: the last).
     """
@@ -143,30 +159,7 @@ async def list_recent_page(
     stmt = (
         select(Chat)
         .options(_LIST_COLUMNS)
-        .where(Chat.user_id == user_id, Chat.pinned.is_(False), Chat.archived.is_(False))
-        .where(has_messages)
-    )
-    if cursor is not None:
-        at, ids = decode_cursor(cursor, ids=1)
-        stmt = stmt.where(after((Chat.updated_at, Chat.id), at, ids))
-    stmt = stmt.order_by(Chat.updated_at.desc(), Chat.id.desc()).limit(limit + 1)
-    rows = list((await session.execute(stmt)).scalars().all())
-    return page_of(rows, limit, lambda chat: encode_cursor(chat.updated_at, chat.id))
-
-
-async def list_archived_page(
-    session: AsyncSession,
-    user_id: UUID,
-    *,
-    limit: int,
-    cursor: str | None = None,
-) -> tuple[list[Chat], str | None]:
-    """One page of archived chats, newest first, and the cursor for the next (None: the last)."""
-    has_messages = exists().where(Message.chat_id == Chat.id)
-    stmt = (
-        select(Chat)
-        .options(_LIST_COLUMNS)
-        .where(Chat.user_id == user_id, Chat.archived.is_(True))
+        .where(Chat.user_id == user_id, Chat.pinned.is_(False))
         .where(has_messages)
     )
     if cursor is not None:
@@ -277,70 +270,10 @@ async def set_title_if_empty(
 
 async def set_pinned(session: AsyncSession, chat: Chat, pinned: bool) -> Chat:
     stmt = update(Chat).where(Chat.id == chat.id, Chat.user_id == chat.user_id)
-    if pinned:
-        stmt = stmt.where(Chat.archived.is_(False))
     await session.execute(stmt.values(pinned=pinned).execution_options(synchronize_session=False))
     await session.commit()
     await session.refresh(chat)
     return chat
-
-
-async def set_archived(session: AsyncSession, chat: Chat, archived: bool) -> Chat:
-    stmt = (
-        update(Chat)
-        .where(Chat.id == chat.id, Chat.user_id == chat.user_id)
-        .values(archived=archived)
-    )
-    if archived:
-        # Explicitly clear the database value even if this ORM object saw an
-        # unpinned chat before another request pinned it.
-        stmt = stmt.values(pinned=False)
-    await session.execute(stmt.execution_options(synchronize_session=False))
-    await session.commit()
-    await session.refresh(chat)
-    return chat
-
-
-async def archive_all_for_user(
-    session: AsyncSession,
-    user_id: UUID,
-    *,
-    commit: bool = True,
-) -> int:
-    result = cast(
-        CursorResult[Any],
-        await session.execute(
-            update(Chat)
-            .where(Chat.user_id == user_id, Chat.archived.is_(False))
-            .values(archived=True, pinned=False)
-            .execution_options(synchronize_session=False)
-        ),
-    )
-    if commit:
-        await session.commit()
-    else:
-        await session.flush()
-    return int(result.rowcount or 0)
-
-
-async def set_archived_many(
-    session: AsyncSession, user_id: UUID, chat_ids: list[UUID], *, archived: bool
-) -> list[UUID]:
-    """Archive (and unpin) or unarchive the user's chats among ``chat_ids``; the ids changed.
-
-    The caller owns the commit (one transaction for the whole selection).
-    """
-    values: dict[str, bool] = {"archived": archived}
-    if archived:
-        values["pinned"] = False
-    result = await session.execute(
-        update(Chat)
-        .where(Chat.user_id == user_id, Chat.id.in_(chat_ids))
-        .values(**values)
-        .returning(Chat.id)
-        .execution_options(synchronize_session=False)
-    )
-    return list(result.scalars().all())
 
 
 async def delete_many(session: AsyncSession, user_id: UUID, chat_ids: list[UUID]) -> list[UUID]:
@@ -360,16 +293,23 @@ async def delete_all_for_user(
     *,
     commit: bool = True,
 ) -> int:
-    result = cast(
-        CursorResult[Any],
-        await session.execute(delete(Chat).where(Chat.user_id == user_id)),
+    """Delete every chat of the user; how many.
+
+    The messages go first, then the chats, each in id batches (``batch_delete``): one
+    statement cascading through a heavy account's messages could outrun the command
+    timeout and fail the same way on every retry. One transaction still holds them all.
+    """
+    user_chats = select(Chat.id).where(Chat.user_id == user_id)
+    await delete_in_batches(
+        session, Message.id, select(Message.id).where(Message.chat_id.in_(user_chats))
     )
+    count = await delete_in_batches(session, Chat.id, user_chats)
     if commit:
         await session.commit()
     else:
         await session.flush()
     forget_user_chats(user_id)
-    return int(result.rowcount or 0)
+    return count
 
 
 async def delete_abandoned_drafts(session: AsyncSession, cutoff: datetime, *, limit: int) -> int:

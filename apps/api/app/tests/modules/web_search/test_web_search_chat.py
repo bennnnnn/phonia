@@ -17,7 +17,6 @@ async def test_build_prompt_includes_web_search_hint():
     user.locale = "en"
     user.timezone = "UTC"
     user.location = None
-    user.response_tone = "funny"
 
     with (
         patch(

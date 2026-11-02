@@ -22,9 +22,7 @@ from app.models.orm import (
     MemoryArea,
     Message,
     PushToken,
-    Suggestion,
     TodoItem,
-    User,
 )
 
 from .conftest import World
@@ -65,7 +63,6 @@ async def test_chat_routes_answer_404_for_another_users_chat(world: World) -> No
         ("GET", f"/chats/{chat}", None),
         ("PATCH", f"/chats/{chat}", {"title": "pwned"}),
         ("PATCH", f"/chats/{chat}/pin", {"pinned": True}),
-        ("PATCH", f"/chats/{chat}/archive", {"archived": True}),
         ("GET", f"/chats/{chat}/messages", None),
         ("GET", f"/chats/{chat}/messages?before={msg}", None),
         ("PATCH", f"/chats/{chat}/messages/{msg}/feedback", {"feedback": "down"}),
@@ -84,7 +81,10 @@ async def test_chat_routes_answer_404_for_another_users_chat(world: World) -> No
         assert response.status_code == missing.status_code, (method, path)
 
     # Bulk routes only ever touch the caller's own chats.
-    assert (await c.post("/chats/archive-all", headers=b.headers)).status_code == 204
+    bulk = await c.post(
+        "/chats/bulk", json={"action": "delete", "chat_ids": [str(chat)]}, headers=b.headers
+    )
+    assert bulk.status_code == 200 and bulk.json() == {"changed": []}
     assert (await c.delete("/chats", headers=b.headers)).status_code == 204
     listed = (await c.get("/chats", headers=b.headers)).json()
     assert str(chat) not in json.dumps(listed)
@@ -93,7 +93,6 @@ async def test_chat_routes_answer_404_for_another_users_chat(world: World) -> No
     assert owner_view.status_code == 200
     assert owner_view.json()["title"].startswith("A private")
     assert owner_view.json()["pinned"] is False
-    assert owner_view.json()["archived"] is False
     messages = (await c.get(f"/chats/{chat}/messages", headers=a.headers)).json()["messages"]
     assert [m["id"] for m in messages] == [str(data.user_message_id), str(msg)]
     assert messages[1]["feedback"] is None
@@ -259,19 +258,7 @@ async def test_attachment_routes_answer_404_for_another_users_file(world: World)
     assert owner_file.status_code == 200 and owner_file.content.startswith(b"\x89PNG")
 
 
-# ── suggestions, push tokens, search, home, export ───────────────────────────
-
-
-@pytest.mark.asyncio
-async def test_the_retired_suggestions_routes_are_gone(world: World) -> None:
-    """No route reads or dismisses suggestions any more; stored rows stay only for
-    the data export and account deletion until the table is dropped."""
-    c, b, data = world.client, world.b, world.a_data
-    assert (await c.get("/suggestions", headers=b.headers)).status_code == 404
-    response = await c.post(f"/suggestions/{data.suggestion_id}/dismiss", headers=b.headers)
-    assert response.status_code == 404
-    row = await _get(Suggestion, data.suggestion_id)
-    assert row is not None and row.dismissed is False
+# ── push tokens, search, home, export ────────────────────────────────────────
 
 
 @pytest.mark.asyncio
@@ -359,79 +346,7 @@ async def test_search_and_export_only_show_the_callers_data(world: World) -> Non
     assert data.secret_word in export_a.text and "hello from b" not in export_a.text
 
 
-# ── images, voice, sessions ──────────────────────────────────────────────────
-
-
-@pytest.mark.asyncio
-async def test_image_generation_into_another_users_chat_is_404(world: World) -> None:
-    c, b, data = world.client, world.b, world.a_data
-    async with SessionLocal() as session:
-        row = await session.get(User, b.id)
-        assert row is not None
-        row.plan = "pro"
-        await session.commit()
-    from app.core.user_cache import forget_user
-
-    forget_user(b.id)
-    into_their_chat = await c.post(
-        "/images/generate",
-        json={"chat_id": str(data.chat_id), "prompt": "a cat"},
-        headers=b.headers,
-    )
-    assert into_their_chat.status_code == 404
-    their_reference = await c.post(
-        "/images/generate",
-        json={
-            "chat_id": str(world.b_chat_id),
-            "prompt": "a cat",
-            "reference_attachment_ids": [str(data.attachment_id)],
-        },
-        headers=b.headers,
-    )
-    assert their_reference.status_code == 404
-    assert await _count(Message, Message.chat_id == data.chat_id) == 2
-
-
-@pytest.mark.asyncio
-async def test_live_talk_routes_refuse_another_users_chat(world: World) -> None:
-    c, b, data = world.client, world.b, world.a_data
-    async with SessionLocal() as session:
-        row = await session.get(User, b.id)
-        assert row is not None
-        row.plan = "pro"
-        await session.commit()
-    from app.core.user_cache import forget_user
-
-    forget_user(b.id)
-    session_resp = await c.post(
-        "/speech/live/session", json={"chat_id": str(data.chat_id)}, headers=b.headers
-    )
-    assert session_resp.status_code == 404
-    persisted = await c.post(
-        "/speech/live/persist",
-        json={
-            "chat_id": str(data.chat_id),
-            "call_id": "call-" + uuid4().hex,
-            "user_text": "remember my bank pin",
-            "assistant_text": "ok",
-        },
-        headers=b.headers,
-    )
-    assert persisted.status_code == 403
-    tool = await c.post(
-        "/speech/live/tool",
-        json={
-            "chat_id": str(data.chat_id),
-            "call_id": "call-" + uuid4().hex,
-            "turn_id": "t1",
-            "name": "memory_lookup",
-            "query": "what is the plan",
-        },
-        headers=b.headers,
-    )
-    assert tool.status_code == 403
-    assert data.secret_word not in tool.text
-    assert await _count(Message, Message.chat_id == data.chat_id) == 2
+# ── voice, sessions ──────────────────────────────────────────────────
 
 
 @pytest.mark.asyncio

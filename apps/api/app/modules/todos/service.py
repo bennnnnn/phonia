@@ -1,6 +1,6 @@
 """Public todo operations for other product modules.
 
-This module does not import chat, so live talk can call it without a circular
+This module does not import chat, so any module can call it without a circular
 import.
 """
 
@@ -14,11 +14,12 @@ from app.models.orm import TodoItem
 from app.modules.todos import repository as todos_repo
 
 
-async def list_owned_todos(
-    session: AsyncSession, user_id: UUID, *, limit: int, offset: int = 0
+async def todos_for_export(
+    session: AsyncSession, user_id: UUID, *, after_id: UUID | None, limit: int
 ) -> list[TodoItem]:
-    """Read a page of a user's to-dos without advancing recurrence."""
-    return await todos_repo.list_for_user(session, user_id, limit=limit, offset=offset)
+    """A page of the user's to-dos after ``after_id`` by id (the data export); no
+    recurrence is advanced, and a to-do deleted meanwhile skips no other."""
+    return await todos_repo.list_after_id(session, user_id, limit=limit, cursor=after_id)
 
 
 async def delete_user_rows(session: AsyncSession, user_id: UUID) -> None:

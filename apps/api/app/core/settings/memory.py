@@ -22,7 +22,9 @@ class MemorySettings(BaseModel):
     # intermediate LLM cost; skipped lines still land on the next pass via the
     # extract cursor.
     memory_extract_every_n_turns: int = 1
-    memory_query_embed_cache_ttl: int = 3600
+    # A turn's recalls share one query vector; the next message is rarely the same
+    # text, so a long TTL mostly holds dead vectors (8 KB each, packed float32).
+    memory_query_embed_cache_ttl: int = 300
     # Chat-path live embed budget, for memory and chat-history recall: a slow
     # embedding provider falls back to the type-priority memory block (and no
     # earlier-chat snippets) instead of holding the first token. The embed runs

@@ -116,7 +116,6 @@ async def test_prepare_chat_turn_refunds_image_quota_when_r2_bytes_invalid():
                 user_id=user_id,
                 chat_id=chat_id,
                 content="hi",
-                model_alias=None,
                 settings=settings,
                 redis=redis,
                 reserved_tokens=100,
@@ -205,7 +204,7 @@ async def test_prepare_chat_turn_threads_image_math_extract_to_prompt_context(li
         ) as extract_mock,
         patch.object(
             model_choice,
-            "resolve_user_model_override",
+            "resolve_user_model",
             return_value="smart-chat",
         ),
         patch.object(
@@ -234,7 +233,6 @@ async def test_prepare_chat_turn_threads_image_math_extract_to_prompt_context(li
                     user_id=user_id,
                     chat_id=chat_id,
                     content=camera_prompt,
-                    model_alias=None,
                     settings=settings,
                     redis=redis,
                     reserved_tokens=100,
@@ -248,7 +246,6 @@ async def test_prepare_chat_turn_threads_image_math_extract_to_prompt_context(li
             user_id=user_id,
             chat_id=chat_id,
             content=camera_prompt,
-            model_alias=None,
             settings=settings,
             redis=redis,
             reserved_tokens=100,
@@ -334,7 +331,7 @@ async def _run_prepare_chat_turn_with_caption(caption: str) -> AsyncMock:
         ) as extract_mock,
         patch.object(
             model_choice,
-            "resolve_user_model_override",
+            "resolve_user_model",
             return_value="smart-chat",
         ),
         patch.object(
@@ -361,7 +358,6 @@ async def _run_prepare_chat_turn_with_caption(caption: str) -> AsyncMock:
             user_id=user_id,
             chat_id=chat_id,
             content=caption,
-            model_alias=None,
             settings=settings,
             redis=redis,
             reserved_tokens=100,
@@ -710,7 +706,6 @@ async def test_prepare_overlap_returns_before_persist_commit():
                 user_id=user.id,
                 chat_id=chat.id,
                 content="hi",
-                model_alias=None,
                 settings=Settings(),
                 redis=redis_mock(),
                 reserved_tokens=100,

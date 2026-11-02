@@ -148,7 +148,7 @@ def test_document_facts_say_where_they_were_learned_and_if_muted():
     "topic,result,status",
     [
         ("area:recall", True, 204),
-        ("tech-stack", False, 404),
+        ("subjects", False, 404),
         ("not-a-topic", None, 404),
     ],
 )

@@ -1,4 +1,4 @@
-"""/speech over HTTP: transcribe, speak, live talk."""
+"""/speech over HTTP: transcribe, speak."""
 
 from unittest.mock import AsyncMock, patch
 from uuid import uuid4
@@ -680,64 +680,6 @@ def test_free_plan_is_refused_voice_input_and_read_aloud(path, body):
     redis_client.assert_not_called()
     stt.assert_not_awaited()
     tts.assert_not_awaited()
-
-
-def test_speech_live_status_free_not_entitled():
-    import fakeredis.aioredis
-
-    user = api_user(plan="free")
-    client = TestClient(app_with_user(user))
-    fake_redis = fakeredis.aioredis.FakeRedis(decode_responses=True)
-    with patch("app.modules.speech.api.get_redis_client", return_value=fake_redis):
-        r = client.get("/speech/live", headers={"Authorization": "Bearer tok"})
-    assert r.status_code == 200
-    body = r.json()
-    assert body["enabled"] is True
-    assert body["entitled"] is False
-    assert body["remaining"] == 0
-    assert body["limit"] == 0
-
-
-def test_speech_live_status_pro_remaining():
-    import fakeredis.aioredis
-
-    user = api_user(plan="pro")
-    client = TestClient(app_with_user(user))
-    fake_redis = fakeredis.aioredis.FakeRedis(decode_responses=True)
-    with patch("app.modules.speech.api.get_redis_client", return_value=fake_redis):
-        r = client.get("/speech/live", headers={"Authorization": "Bearer tok"})
-    assert r.status_code == 200
-    body = r.json()
-    assert body["entitled"] is True
-    assert body["remaining"] == 60
-    assert body["limit"] == 60
-    assert body["remaining_seconds"] == 3600
-    assert body["resets_at"].endswith("T00:00:00Z")
-
-
-def test_speech_live_status_plus_not_entitled():
-    import fakeredis.aioredis
-
-    user = api_user(plan="plus")
-    client = TestClient(app_with_user(user))
-    fake_redis = fakeredis.aioredis.FakeRedis(decode_responses=True)
-    with patch("app.modules.speech.api.get_redis_client", return_value=fake_redis):
-        r = client.get("/speech/live", headers={"Authorization": "Bearer tok"})
-    assert r.json()["entitled"] is False
-    assert r.json()["limit"] == 0
-
-
-def test_speech_live_disabled():
-    from app.core.deps import get_current_user, get_settings_dep
-
-    user = api_user(plan="pro")
-    app = create_app()
-    app.dependency_overrides[get_current_user] = lambda: user
-    app.dependency_overrides[get_settings_dep] = lambda: Settings(speech_live_talk_enabled=False)
-    client = TestClient(app)
-    r = client.get("/speech/live", headers={"Authorization": "Bearer tok"})
-    assert r.status_code == 200
-    assert r.json()["enabled"] is False
 
 
 def test_list_messages_takes_one_cursor():

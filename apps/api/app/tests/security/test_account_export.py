@@ -19,7 +19,6 @@ async def test_export_includes_profile_all_memory_and_every_owned_record(world: 
         user = await session.get(User, a.id)
         assert user is not None
         user.custom_instructions = "Answer like a pirate"
-        user.location = "Lisbon"
         user.timezone = "Europe/Lisbon"
         user.job = "Nurse"
         user.age = 41
@@ -55,7 +54,6 @@ async def test_export_includes_profile_all_memory_and_every_owned_record(world: 
         json={"feedback": "up"},
         headers=a.headers,
     )
-    await c.patch(f"/chats/{data.chat_id}/archive", json={"archived": True}, headers=a.headers)
 
     response = await c.get("/auth/me/export", headers=a.headers)
     assert response.status_code == 200
@@ -63,7 +61,6 @@ async def test_export_includes_profile_all_memory_and_every_owned_record(world: 
 
     profile = export["user"]
     assert profile["custom_instructions"] == "Answer like a pirate"
-    assert profile["location"] == "Lisbon"
     assert profile["timezone"] == "Europe/Lisbon"
     assert profile["job"] == "Nurse" and profile["age"] == 41
     assert "google_sub" not in profile
@@ -79,14 +76,17 @@ async def test_export_includes_profile_all_memory_and_every_owned_record(world: 
     ]
 
     [chat] = export["chats"]
-    assert chat["archived"] is True
     assert chat["messages"][1]["feedback"] == "up"
+    # Each message names its id, so an attachment's message_id joins it to its message.
+    message_ids = {message["id"] for message in chat["messages"]}
+    assert str(data.assistant_message_id) in message_ids
+    linked = [item["message_id"] for item in export["attachments"] if item["message_id"]]
+    assert set(linked) <= message_ids
     [todo] = export["todos"]
     assert todo["content"] == f"buy {data.secret_word}"
     assert "recurrence_rule" in todo
     names = {item["original_filename"] for item in export["attachments"]}
     assert f"{data.secret_word}.png" in names
-    assert [s["text"] for s in export["suggestions"]] == [f"Follow up on {data.secret_word}"]
     assert export["usage"] == [{"day": "2026-10-14", "input_tokens": 100, "output_tokens": 50}]
     assert [device["platform"] for device in export["push_devices"]] == ["ios"]
     assert data.push_token not in response.text

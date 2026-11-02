@@ -37,10 +37,6 @@
       "lines": 534,
       "why": "Exception: Law catalog; all data"
     },
-    "apps/api/app/modules/images/gen_intent_words.py": {
-      "lines": 517,
-      "why": "Exception: The image-intent word lists, one word per line (data); the matchers are gen_intent.py"
-    },
     "apps/api/app/modules/math/fence.py": {
       "lines": 610,
       "why": "Over 500 before the standards; tracked in ES-22"
@@ -134,11 +130,11 @@
       "why": "Over 500 before the standards; split by responsibility after the ticketed files"
     },
     "apps/api/app/services/time_context.py": {
-      "lines": 571,
+      "lines": 562,
       "why": "Over 500 before the standards; tracked in ES-04"
     },
     "apps/mobile/features/chat/components/ChatComposer.tsx": {
-      "lines": 556,
+      "lines": 502,
       "why": "Over 500 before the standards; split by responsibility after the ticketed files"
     },
     "apps/mobile/features/chat/components/MathDraftPreview.tsx": {

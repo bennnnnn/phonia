@@ -24,8 +24,6 @@ type Options = {
   messages: Message[];
   pinned: boolean;
   setPinned: React.Dispatch<React.SetStateAction<boolean>>;
-  archived: boolean;
-  setArchived: React.Dispatch<React.SetStateAction<boolean>>;
   setChatTitle: React.Dispatch<React.SetStateAction<string | null>>;
   editThread: EditThread;
   t: (key: string, options?: Record<string, unknown>) => string;
@@ -38,8 +36,6 @@ export function useChatActions({
   messages,
   pinned,
   setPinned,
-  archived,
-  setArchived,
   setChatTitle,
   editThread,
   t,
@@ -162,9 +158,9 @@ export function useChatActions({
 
   const {
     renameVisible, setRenameVisible, renameText, setRenameText,
-    openRename, confirmRename, togglePin, toggleArchive, confirmDelete,
+    openRename, confirmRename, togglePin, confirmDelete,
   } = useChatManagementActions({
-    token, chatId, chatTitle, pinned, archived, setPinned, setArchived,
+    token, chatId, chatTitle, pinned, setPinned,
     setChatTitle, closeMenu, dismissActionBanner, showActionBanner, t,
   });
 
@@ -191,11 +187,6 @@ export function useChatActions({
     void togglePin();
   }, [closeMenu, togglePin]);
 
-  const onToggleArchiveFromMenu = useCallback(() => {
-    closeMenu();
-    void toggleArchive();
-  }, [closeMenu, toggleArchive]);
-
   const onDeleteFromMenu = useCallback(() => {
     closeMenu();
     confirmDelete();
@@ -221,13 +212,11 @@ export function useChatActions({
     openRename,
     confirmRename,
     togglePin,
-    toggleArchive,
     confirmDelete,
     onShareFromMenu,
     onExportPdfFromMenu,
     onRenameFromMenu,
     onTogglePinFromMenu,
-    onToggleArchiveFromMenu,
     onDeleteFromMenu,
   };
 }

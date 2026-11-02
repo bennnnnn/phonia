@@ -124,7 +124,7 @@ beforeEach(() => {
       delete: () => { mockDeleted.push(uri); },
     } as unknown as File;
   });
-  jest.mocked(api.presignAttachment).mockResolvedValue({ attachment_id: "a1", upload_url: "/ignored", api_upload: true, storage_key: "key", headers: {} });
+  jest.mocked(api.presignAttachment).mockResolvedValue({ attachment_id: "a1", upload_url: "/ignored", api_upload: true, headers: {} });
   jest.mocked(requestRaw).mockResolvedValue({ ok: true } as Response);
   globalThis.fetch = mockFetch as unknown as typeof fetch;
 });
@@ -138,7 +138,7 @@ it("reads picked native files with Expo File and uploads API bytes through refre
 });
 
 it("never adds Recall authorization to a storage URL sharing only the API host prefix", async () => {
-  jest.mocked(api.presignAttachment).mockResolvedValue({ attachment_id: "a1", upload_url: "https://api.test.external.test/upload", api_upload: false, storage_key: "key", headers: {} });
+  jest.mocked(api.presignAttachment).mockResolvedValue({ attachment_id: "a1", upload_url: "https://api.test.external.test/upload", api_upload: false, headers: {} });
   await uploadChatAttachment("token", pending);
   const remote = mockFetch.mock.calls.find(([url]) => url === "https://api.test.external.test/upload");
   expect(remote?.[1].headers).not.toHaveProperty("Authorization");

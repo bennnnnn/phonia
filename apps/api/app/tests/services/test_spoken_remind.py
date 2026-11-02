@@ -1,4 +1,4 @@
-"""Linear spoken-reminder parser (Live Talk / explicit user text)."""
+"""Linear spoken-reminder parser (explicit user text)."""
 
 from datetime import UTC, datetime
 from zoneinfo import ZoneInfo

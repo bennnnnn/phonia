@@ -140,7 +140,6 @@ def test_user_out_says_whether_apple_signs_in():
         "email": "t@recall.local",
         "name": None,
         "avatar_url": None,
-        "default_model": "free-chat",
         "memory_enabled": True,
         "created_at": datetime(2024, 1, 1),
     }

@@ -133,8 +133,8 @@ async def register_and_enqueue_finalize(
 
 
 async def _record_tool_round_spend(redis: Redis, ctx: StreamContext, usage: dict[str, int]) -> None:
-    """The tool rounds that led to a generated picture count toward the global
-    spend cap; the turn's quota is refunded and the picture is the image service's."""
+    """The tool rounds that led to a looked-up photo count toward the global
+    spend cap; the turn's quota is refunded and the photo is the image service's."""
     cost = model_catalog.estimate_cost_usd(
         ctx.model,
         input_tokens=usage.get("input", 0),
@@ -166,7 +166,7 @@ async def finalize_terminal_image_turn(
     assistant_text = ctx.terminal_image_content or ""
 
     async def slim_finalize() -> None:
-        # The picture's row moved the chat up when it was saved (``turn_record``).
+        # The photo's row moved the chat up when it was saved (``turn_record``).
         try:
             await enqueue_post_turn_jobs(redis, settings, ctx, assistant_text)
         except Exception:
@@ -192,7 +192,7 @@ async def _refund_turn(
 
 
 def _is_terminal_image(ctx: StreamContext) -> bool:
-    """A tool round generated a picture and saved its reply: the turn streams nothing.
+    """A tool round looked up a photo and saved its reply: the turn streams nothing.
 
     Only the tool loop sets this, and an instant reply never runs the tool loop.
     """
@@ -217,7 +217,7 @@ async def _produce_reply(
     """The reply's text: an instant reply, or the tool loop and then the model's stream.
 
     After the tool loop the turn may have become an instant reply, or a terminal
-    picture that yields nothing (``_is_terminal_image``).
+    photo that yields nothing (``_is_terminal_image``).
     """
     if ctx.instant_reply:
         async for token in run_instant_reply_path(ctx, should_cancel=should_cancel, accum=accum):
@@ -271,11 +271,11 @@ async def _finish_terminal_image_turn(
     outcome: TurnOutcome | None,
     resources: TurnResources | None,
 ) -> None:
-    """The picture's reply is already saved: report it, refund the turn, run its jobs."""
+    """The photo's reply is already saved: report it, refund the turn, run its jobs."""
     if outcome is not None:
         outcome.message_id = ctx.terminal_image_message_id
         outcome.final_content = ctx.terminal_image_content
-        outcome.resolved_model = ctx.terminal_image_model or "image-gen-model"
+        outcome.resolved_model = ctx.terminal_image_model or "image-search-model"
     await _refund_turn(deps, redis, ctx, resources)
     await await_user_message_persist(ctx)
     await finalize_terminal_image_turn(deps, redis, settings, ctx, outcome, usage)

@@ -8,7 +8,6 @@ type Props = {
   visible: boolean;
   title: string | null;
   pinned: boolean;
-  archived?: boolean;
   /** The ⋮ button in the chat header. */
   anchorRef?: RefObject<View | null>;
   /** Or where a drawer row was long-pressed. */
@@ -19,7 +18,6 @@ type Props = {
   onExportPdf?: () => void;
   onRename: () => void;
   onTogglePin: () => void;
-  onToggleArchive?: () => void;
   onDelete: () => void;
   /** Drawer only — enter multi-select with this chat checked. */
   onSelectChats?: () => void;
@@ -30,7 +28,6 @@ export function ChatActionsMenu({
   visible,
   title,
   pinned,
-  archived = false,
   anchorRef,
   anchorPoint,
   onClose,
@@ -38,7 +35,6 @@ export function ChatActionsMenu({
   onExportPdf,
   onRename,
   onTogglePin,
-  onToggleArchive,
   onDelete,
   onSelectChats,
 }: Props) {
@@ -56,22 +52,12 @@ export function ChatActionsMenu({
       rows.push({ key: "export-pdf", icon: "file-text", label: t("chat.export_pdf"), onPress: onExportPdf });
     }
     rows.push({ key: "rename", icon: "pencil", label: t("chat.rename"), onPress: onRename });
-    if (!archived) {
-      rows.push({
-        key: "pin",
-        icon: pinned ? "pin-off" : "pin",
-        label: pinned ? t("chat.unpin") : t("chat.pin"),
-        onPress: onTogglePin,
-      });
-    }
-    if (onToggleArchive) {
-      rows.push({
-        key: "archive",
-        icon: archived ? "unarchive" : "archive",
-        label: archived ? t("chat.unarchive") : t("chat.archive"),
-        onPress: onToggleArchive,
-      });
-    }
+    rows.push({
+      key: "pin",
+      icon: pinned ? "pin-off" : "pin",
+      label: pinned ? t("chat.unpin") : t("chat.pin"),
+      onPress: onTogglePin,
+    });
     if (onSelectChats) {
       rows.push({ key: "select", icon: "select", label: t("drawer.select"), onPress: onSelectChats });
     }
@@ -84,13 +70,11 @@ export function ChatActionsMenu({
     });
     return rows;
   }, [
-    archived,
     onDelete,
     onExportPdf,
     onRename,
     onSelectChats,
     onShare,
-    onToggleArchive,
     onTogglePin,
     pinned,
     t,

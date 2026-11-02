@@ -9,10 +9,6 @@ import appJson from "../../app.json";
  * in ios.infoPlist, or whichever plugin happens to run last replaces it.
  */
 const USAGE_DESCRIPTION_OPTIONS: Record<string, Record<string, string>> = {
-  "expo-location": {
-    locationWhenInUsePermission: "NSLocationWhenInUseUsageDescription",
-    motionUsagePermission: "NSMotionUsageDescription",
-  },
   "expo-image-picker": {
     photosPermission: "NSPhotoLibraryUsageDescription",
     cameraPermission: "NSCameraUsageDescription",
@@ -23,10 +19,6 @@ const USAGE_DESCRIPTION_OPTIONS: Record<string, Record<string, string>> = {
     savePhotosPermission: "NSPhotoLibraryAddUsageDescription",
   },
   "expo-audio": {
-    microphonePermission: "NSMicrophoneUsageDescription",
-  },
-  "@config-plugins/react-native-webrtc": {
-    cameraPermission: "NSCameraUsageDescription",
     microphonePermission: "NSMicrophoneUsageDescription",
   },
 };
@@ -57,20 +49,20 @@ describe("app store config", () => {
 
   it("leaves out permissions the app never asks for", () => {
     expect(pluginOptions("expo-secure-store").get("faceIDPermission")).toBe(false);
-    const location = pluginOptions("expo-location");
-    expect(location.get("locationAlwaysPermission")).toBe(false);
-    expect(location.get("locationAlwaysAndWhenInUsePermission")).toBe(false);
     for (const key of [
       "NSFaceIDUsageDescription",
+      // The app does not use the device's location (no expo-location).
+      "NSLocationWhenInUseUsageDescription",
       "NSLocationAlwaysUsageDescription",
       "NSLocationAlwaysAndWhenInUseUsageDescription",
+      "NSMotionUsageDescription",
     ]) {
       expect(infoPlist.has(key)).toBe(false);
     }
   });
 
   it("never plays audio in the background", () => {
-    // Read-aloud stops and Live Talk hangs up when the app leaves the foreground.
+    // Read-aloud stops when the app leaves the foreground.
     expect(pluginOptions("expo-audio").get("enableBackgroundPlayback")).toBe(false);
     expect(infoPlist.has("UIBackgroundModes")).toBe(false);
     expect(appJson.expo.android.blockedPermissions).toEqual(
@@ -114,14 +106,9 @@ const COLLECTED_DATA: Record<string, { linked: boolean; purposes: readonly strin
   UserID: { linked: true, purposes: ["AppFunctionality", "Analytics"] },
   // This install's id (lib/installationId.ts), sent with the push token and product events.
   DeviceID: { linked: true, purposes: ["AppFunctionality", "Analytics"] },
-  // A nearby or "where am I" message carries the fix's coordinates (features/chat/model/clientGeo.ts), and its
-  // place label is the coordinates to four decimals when the phone finds no place name.
-  PreciseLocation: { linked: true, purposes: ["AppFunctionality"] },
-  // The city, region and country saved while Use current location is on.
-  CoarseLocation: { linked: true, purposes: ["AppFunctionality"] },
   // Attached photos, maths scans and the profile photo.
   PhotosorVideos: { linked: true, purposes: ["AppFunctionality"] },
-  // Voice input and Live Talk.
+  // Voice input.
   AudioData: { linked: true, purposes: ["AppFunctionality"] },
   // Messages, chats, memory, to-dos, attached files, custom instructions and feedback.
   OtherUserContent: { linked: true, purposes: ["AppFunctionality", "ProductPersonalization"] },
@@ -276,5 +263,55 @@ describe("iOS privacy manifest", () => {
     });
     expect(manifest).toBeDefined();
     expect(resolved.ios?.privacyManifests).toEqual(manifest);
+  });
+});
+
+describe("simulator build", () => {
+  const pluginNames = (env: Record<string, string | undefined>) => {
+    const saved = { ...process.env };
+    Object.assign(process.env, env);
+    try {
+      const resolved = appConfig({
+        projectRoot: "",
+        staticConfigPath: null,
+        packageJsonPath: null,
+        config: {},
+      });
+      return (resolved.plugins ?? []).map((plugin) => (Array.isArray(plugin) ? plugin[0] : plugin));
+    } finally {
+      process.env = saved;
+    }
+  };
+
+  it("leaves ML Kit out of a simulator build only", () => {
+    expect(pluginNames({ RECALL_IOS_SIMULATOR: "1" })).not.toContain(
+      "react-native-vision-camera-mlkit",
+    );
+    expect(pluginNames({ RECALL_IOS_SIMULATOR: undefined })).toContain(
+      "react-native-vision-camera-mlkit",
+    );
+  });
+
+  it("unlinks ML Kit's iOS code in a simulator build only", () => {
+    const load = (simulator: boolean) => {
+      const saved = process.env.RECALL_IOS_SIMULATOR;
+      if (simulator) process.env.RECALL_IOS_SIMULATOR = "1";
+      else delete process.env.RECALL_IOS_SIMULATOR;
+      try {
+        let config: { dependencies?: Record<string, unknown> } = {};
+        jest.isolateModules(() => {
+          // eslint-disable-next-line @typescript-eslint/no-require-imports -- the CLI's config is CommonJS, read afresh for each environment
+          config = require("../../react-native.config.js");
+        });
+        return config;
+      } finally {
+        if (saved === undefined) delete process.env.RECALL_IOS_SIMULATOR;
+        else process.env.RECALL_IOS_SIMULATOR = saved;
+      }
+    };
+    expect(load(true).dependencies).toEqual({
+      "react-native-vision-camera-mlkit": { platforms: { ios: null } },
+    });
+    expect(load(false)).toEqual({});
   });
 });

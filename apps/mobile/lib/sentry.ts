@@ -38,11 +38,11 @@ const SENSITIVE_HEADERS = new Set([
   "x-forwarded-authorization",
 ]);
 
-// Bearer tokens, JWTs (our access tokens), Live Talk's ek_ secret, provider keys.
+// Bearer tokens, JWTs (our access tokens), provider keys.
 const SECRET_PATTERNS: readonly RegExp[] = [
   /\bBearer\s+[A-Za-z0-9._~+/=-]+/gi,
   /\beyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]+/g,
-  /\b(?:ek|sk|rk)_[A-Za-z0-9_-]{8,}/g,
+  /\b(?:sk|rk)_[A-Za-z0-9_-]{8,}/g,
 ];
 
 /** Errors can quote what they choked on; keep the start, which says what broke. */
@@ -109,7 +109,7 @@ export function scrubSentryEvent(
 
 /**
  * Requests that carry Sentry's trace headers: our API's, and no one else's. On a phone
- * the SDK's default is every URL, so OpenAI's realtime call, Google's connectivity check
+ * the SDK's default is every URL, so Google's connectivity check
  * and each storage upload carried the DSN's public key, the environment and a trace id
  * (`baggage` and `sentry-trace`, about 200 bytes).
  */
@@ -342,6 +342,27 @@ export function reportFenceRefused(fence: FenceId, reason: FenceRefusal): void {
   }, true);
 }
 
+/** A LaTeX command is reported once a day per name, ten an hour in all. */
+const unknownLatexAllowed = reportLimit(24 * HOUR_MS, 10);
+/** A command's name is letters (`\foo`); anything else is not a name and is not sent. */
+const LATEX_COMMAND_NAME = /^[A-Za-z]{1,40}$/;
+
+/**
+ * A reply used a LaTeX command the phone's renderer has no entry for
+ * (`subscribeUnknownLatexCommands`, `lib/math/latexNames.ts`): it drew the argument and
+ * not the command. The report names the command alone, never the maths around it.
+ */
+export function reportUnknownLatexCommandName(name: string): void {
+  if (!LATEX_COMMAND_NAME.test(name) || !unknownLatexAllowed(name)) return;
+  report((Sentry) => {
+    Sentry.captureMessage("Unknown LaTeX command", {
+      level: "info",
+      tags: { area: "latex_unknown", command: name },
+      fingerprint: ["latex_unknown", name],
+    });
+  }, true);
+}
+
 /**
  * Where a user's action failed after the screen handled it (a toast, the draft given
  * back, the page on screen kept).
@@ -355,7 +376,9 @@ export type FailureArea =
   | "paywall_load"
   | "purchase"
   | "purchase_restore"
-  | "purchase_sync";
+  | "purchase_sync"
+  /** The server's half of a sign-out, or the record of one still owed (lib/pendingLogout.ts). */
+  | "sign_out";
 
 /** A handled failure reports once per area and kind every ten minutes, twenty an hour in all. */
 const failureAllowed = reportLimit(10 * 60_000, 20);

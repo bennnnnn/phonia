@@ -34,10 +34,6 @@ describe("shouldRefetchChatOnForeground", () => {
     expect(shouldRefetchChatOnForeground({ ...base, chatLoading: true })).toBe(false);
   });
 
-  it("skips while image generation is in flight", () => {
-    expect(shouldRefetchChatOnForeground({ ...base, imageGenerating: true })).toBe(false);
-  });
-
   it("skips a fresh silent refetch and bypasses TTL after a mid-stream background", () => {
     const lastFetchedAt = Date.now();
     expect(shouldSkipSilentChatRefetch({ lastFetchedAt })).toBe(true);

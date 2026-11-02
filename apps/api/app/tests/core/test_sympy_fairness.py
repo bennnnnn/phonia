@@ -95,16 +95,16 @@ async def test_a_cancelled_callers_job_frees_its_slot_and_user_when_it_ends() ->
     job: Future[int] = Future()
     job.set_running_or_notify_cancel()
     loop = asyncio.get_running_loop()
-    await executor._claim_owner("alice", 0.1)
+    await executor._owners.claim("alice", 0.1)
 
     executor._finish_later(slot, "alice", job, deadline=loop.time() + 5)
     await asyncio.sleep(0.05)
-    assert free.empty() and "alice" in executor._owner_jobs
+    assert free.empty() and "alice" in executor._owners.running
 
     job.set_result(7)
     await asyncio.sleep(0.05)
     assert free.get_nowait() == slot
-    assert "alice" not in executor._owner_jobs
+    assert "alice" not in executor._owners.running
 
 
 async def test_a_cancelled_callers_job_past_its_deadline_is_killed() -> None:

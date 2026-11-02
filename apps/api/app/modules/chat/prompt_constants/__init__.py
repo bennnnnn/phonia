@@ -82,8 +82,6 @@ from app.modules.chat.prompt_constants.teaching import (
 from app.modules.chat.prompt_constants.unclear import UNCLEAR_MESSAGE_HINT
 from app.modules.chat.prompt_constants.visuals import (
     ANSWER_PHOTO_HINT,
-    IMAGE_GEN_HONESTY_HINT,
-    IMAGE_GEN_UNAVAILABLE_HINT,
     VISUALIZATION_HINTS,
     WHERE_IS_PHOTO_HINT,
 )
@@ -122,8 +120,6 @@ __all__ = [
     "FACT_GROUNDING_HINT",
     "FORMAT_CONTRACT",
     "HOWTO_FORMAT_HINT",
-    "IMAGE_GEN_HONESTY_HINT",
-    "IMAGE_GEN_UNAVAILABLE_HINT",
     "LEARNING_PLAN_HINT",
     "LIGHTWEIGHT_REPLY_HINT",
     "MATH_FENCE_SAFETY_HINT",

@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import logging
 from datetime import UTC, datetime, timedelta
-from typing import Literal
 from uuid import UUID
 
 from redis.asyncio import Redis
@@ -17,7 +16,6 @@ from app.core.db import SessionLocal
 from app.exceptions import DomainError
 from app.models.orm import Chat, Message, User
 from app.models.schemas import ChatListOut, ChatOut, MessageOut, MessagePageOut, UsageOut
-from app.models.schemas.page import Page
 from app.modules.chat import finalize_registry
 from app.modules.chat.email_fence import rewrite_first_email_fence
 from app.modules.chat.related_prompts import (
@@ -36,24 +34,25 @@ from app.services.quota import utc_today
 logger = logging.getLogger(__name__)
 
 DEFAULT_CHAT_LIST_LIMIT = 200
-ARCHIVED_CHAT_LIST_LIMIT = 50
 
 
 class ChatsError(DomainError):
     """A chat history refusal."""
 
 
-async def create_chat(
-    session: AsyncSession,
-    user: User,
-    *,
-    model: str,
-) -> Chat:
-    return await conversation_service.create_chat(
-        session,
-        user_id=user.id,
-        model=model,
-    )
+class PinLimitError(ChatsError):
+    """Pinning past ``MAX_PINNED_CHATS``; 409 ``pin_limit`` with the ``limit``."""
+
+    status_code = 409
+    default_code = "pin_limit"
+
+    def __init__(self) -> None:
+        limit = conversation_service.MAX_PINNED_CHATS
+        super().__init__(f"You can pin up to {limit} chats. Unpin one first.", limit=limit)
+
+
+async def create_chat(session: AsyncSession, user: User) -> Chat:
+    return await conversation_service.create_chat(session, user_id=user.id)
 
 
 async def list_chats_grouped(
@@ -66,25 +65,21 @@ async def list_chats_grouped(
 ) -> ChatListOut:
     """The drawer's chats by recency; ``cursor`` reads the dated chats after a page.
 
-    The first page also holds every pinned chat and the newest archived ones. The days
+    The first page also holds every pinned chat. The days
     are the phone's (``client_timezone``, as a chat turn sends it), the profile's when it
     sends none or no valid one: the phone files a chat it inserts itself in its own zone,
     and the profile's copy of that zone lags behind a flight until the next sync.
     """
 
-    async def _pinned_and_archived() -> tuple[list[Chat], tuple[list[Chat], str | None]]:
+    async def _pinned() -> list[Chat]:
         if cursor is not None:
-            return [], ([], None)
+            return []
         async with SessionLocal() as side_session:
-            pinned = await conversation_history.pinned_chats(side_session, user.id)
-            archived = await conversation_history.archived_chats_page(
-                side_session, user.id, limit=ARCHIVED_CHAT_LIST_LIMIT
-            )
-        return pinned, archived
+            return await conversation_history.pinned_chats(side_session, user.id)
 
-    (dated, next_cursor), (pinned, (archived, archived_cursor)) = await gather_or_cancel(
+    (dated, next_cursor), pinned = await gather_or_cancel(
         conversation_history.recent_chats_page(session, user.id, limit=limit, cursor=cursor),
-        _pinned_and_archived(),
+        _pinned(),
     )
     zone = time_context_service.effective_timezone(user.timezone, client_timezone)
     grouped = conversation_history.chats_by_recency(dated, user_timezone=zone)
@@ -95,20 +90,8 @@ async def list_chats_grouped(
         last_7_days=[ChatOut.model_validate(c) for c in grouped["last_7_days"]],
         this_month=[ChatOut.model_validate(c) for c in grouped["this_month"]],
         older=[ChatOut.model_validate(c) for c in grouped["older"]],
-        archived=[ChatOut.model_validate(c) for c in archived],
         next_cursor=next_cursor,
-        archived_next_cursor=archived_cursor,
     )
-
-
-async def list_archived_chats(
-    session: AsyncSession, user: User, *, limit: int, cursor: str | None
-) -> Page[ChatOut]:
-    """Archived chats after the drawer's first page, by cursor: none is out of reach."""
-    chats, next_cursor = await conversation_history.archived_chats_page(
-        session, user.id, limit=limit, cursor=cursor
-    )
-    return Page(items=[ChatOut.model_validate(c) for c in chats], next_cursor=next_cursor)
 
 
 async def get_chat(session: AsyncSession, user: User, chat_id: UUID) -> Chat:
@@ -128,53 +111,31 @@ async def rename_chat(session: AsyncSession, user: User, chat_id: UUID, title: s
 
 async def pin_chat(session: AsyncSession, user: User, chat_id: UUID, *, pinned: bool) -> Chat:
     chat = await get_chat(session, user, chat_id)
-    if pinned and chat.archived:
-        raise ChatsError("Unarchive the chat before pinning", status_code=409)
-    chat = await conversation_service.set_pinned(session, chat, pinned)
-    if pinned and chat.archived:
-        raise ChatsError("Unarchive the chat before pinning", status_code=409)
-    return chat
-
-
-async def archive_chat(session: AsyncSession, user: User, chat_id: UUID, *, archived: bool) -> Chat:
-    chat = await get_chat(session, user, chat_id)
-    return await conversation_service.set_archived(session, chat, archived)
-
-
-async def archive_all_chats(session: AsyncSession, user: User) -> int:
-    try:
-        count = await conversation_service.archive_all_chats(session, user.id, commit=False)
-        await session.commit()
-    except Exception:
-        await session.rollback()
-        raise
-    return count
+    if pinned:
+        others = await conversation_service.count_other_pins_locked(session, user.id, chat_id)
+        if others >= conversation_service.MAX_PINNED_CHATS:
+            await session.rollback()
+            raise PinLimitError()
+    return await conversation_service.set_pinned(session, chat, pinned)
 
 
 async def bulk_chats(
     session: AsyncSession,
     user: User,
     *,
-    action: Literal["archive", "unarchive", "delete"],
     chat_ids: list[UUID],
 ) -> list[UUID]:
     """One transaction for the drawer's selection: the phone sent one request per chat,
     and a few hundred at once passed the REST rate limit. Ids not the user's are skipped."""
     unique = list(dict.fromkeys(chat_ids))
     try:
-        if action == "delete":
-            changed = await conversation_service.delete_chats(session, user.id, unique)
-        else:
-            changed = await conversation_service.set_archived_many(
-                session, user.id, unique, archived=action == "archive"
-            )
+        changed = await conversation_service.delete_chats(session, user.id, unique)
         await session.commit()
     except Exception:
         await session.rollback()
         raise
-    if action == "delete":
-        for chat_id in changed:
-            conversation_service.forget_chat(chat_id)
+    for chat_id in changed:
+        conversation_service.forget_chat(chat_id)
     return changed
 
 
@@ -212,7 +173,7 @@ async def delete_chat(
     chat = await conversation_history.get_chat(session, chat_id, user.id)
     if chat is None:
         raise ChatsError("Chat not found", status_code=404)
-    if if_empty and await conversation_history.message_count(session, chat_id):
+    if if_empty and await conversation_history.has_messages(session, chat_id):
         return
     # Do not detach rows or delete bytes — explicit Library delete owns that.
     # attachments.message_id SET NULLs when messages cascade.
@@ -276,25 +237,34 @@ async def list_messages_page(
 ) -> MessagePageOut:
     """The newest page, the page ``before`` or ``after`` a message, or the window ``around`` one."""
     chat = await get_chat(session, user, chat_id)
-    # End the ownership read before waiting: up to 20 s for a stream and its save, with
+    # End the ownership read before any wait: up to 20 s for a stream and its save, with
     # this connection idle in transaction while the save needed one from the same pool.
     await session.commit()
-    await finalize_registry.wait_for_inflight_stream(chat_id)
-    await finalize_registry.wait_for_pending_finalize(chat_id, redis)
-    has_more_after = False
-    if around is not None:
-        msgs, has_more, has_more_after = await conversation_history.messages_around(
-            session, chat_id, limit=limit, around_id=around
-        )
-    elif after is not None:
-        msgs, has_more_after = await conversation_history.messages_after(
-            session, chat_id, limit=limit, after_id=after
-        )
-        has_more = True
-    else:
+    if before is not None:
+        # Older than a row the phone already holds: a turn in flight only adds rows after
+        # it, so scrolling back during a reply never waits for that reply.
         msgs, has_more = await conversation_history.messages_page_before(
             session, chat_id, limit=limit, before_id=before
         )
+        has_more_after = False
+    elif after is None and around is None:
+        await _wait_for_turn_in_flight(chat_id, redis)
+        msgs, has_more = await conversation_history.messages_page_before(
+            session, chat_id, limit=limit
+        )
+        has_more_after = False
+    else:
+        msgs, has_more, has_more_after = await _read_forward(
+            session, chat_id, limit=limit, after=after, around=around
+        )
+        if not has_more_after:
+            # The page reaches the newest row, so it can hold the turn in flight: wait
+            # for it and read again. A page with rows after it is settled as read.
+            await session.commit()
+            await _wait_for_turn_in_flight(chat_id, redis)
+            msgs, has_more, has_more_after = await _read_forward(
+                session, chat_id, limit=limit, after=after, around=around
+            )
     newest = before is None and after is None and around is None
 
     if not chat.title and newest and msgs:
@@ -325,6 +295,34 @@ async def list_messages_page(
     if newest or (around is not None and not has_more_after):
         await _attach_cached_related_prompts(redis, outs)
     return MessagePageOut(messages=outs, has_more=has_more, has_more_after=has_more_after)
+
+
+async def _wait_for_turn_in_flight(chat_id: UUID, redis: Redis) -> None:
+    """Bounded: the chat's stream on this machine, then its save on any machine."""
+    await finalize_registry.wait_for_inflight_stream(chat_id)
+    await finalize_registry.wait_for_pending_finalize(chat_id, redis)
+
+
+async def _read_forward(
+    session: AsyncSession,
+    chat_id: UUID,
+    *,
+    limit: int,
+    after: UUID | None,
+    around: UUID | None,
+) -> tuple[list[Message], bool, bool]:
+    """The page ``after`` a message or the window ``around`` one, and whether older
+    and newer messages remain."""
+    if around is not None:
+        return await conversation_history.messages_around(
+            session, chat_id, limit=limit, around_id=around
+        )
+    if after is None:
+        raise ValueError("A forward page reads after or around a message")
+    msgs, has_more_after = await conversation_history.messages_after(
+        session, chat_id, limit=limit, after_id=after
+    )
+    return msgs, True, has_more_after
 
 
 async def follow_up_reply_ids(session: AsyncSession, user_id: UUID) -> list[str]:

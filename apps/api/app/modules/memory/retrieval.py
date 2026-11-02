@@ -10,7 +10,6 @@ reaches this code too.
 """
 
 import logging
-from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Literal, cast
 from uuid import UUID
@@ -35,8 +34,8 @@ logger = logging.getLogger(__name__)
 MemoryLoadStatus = Literal["ok", "partial", "unavailable"]
 # "query": facts near this question (the default). "profile": those plus the profile
 # document, for "what's my job?" and career asks. "self": everything, for "what do
-# you know about me". "work": the stack and what the user builds.
-MemoryScope = Literal["query", "profile", "self", "work"]
+# you know about me".
+MemoryScope = Literal["query", "profile", "self"]
 _STATUS_RANK: dict[MemoryLoadStatus, int] = {"ok": 0, "partial": 1, "unavailable": 2}
 
 
@@ -265,27 +264,13 @@ async def _scoped_block(
     scope: MemoryScope,
     report: MemoryLoadReport,
 ) -> str:
-    if scope == "work":
-        return await _cached_block(
-            session,
-            user,
-            settings,
-            suffix="w",
-            exclude_sensitive=exclude_sensitive,
-            report=report,
-            select=lambda rows: selection.select_work_memories(
-                rows, settings, profile_name=user.name
-            ),
-        )
     if scope == "self" or not (query_text and settings.semantic_memory_enabled):
         return await _cached_block(
             session,
             user,
             settings,
-            suffix="",
             exclude_sensitive=exclude_sensitive,
             report=report,
-            select=None,
         )
     return await _query_block(
         session,
@@ -396,40 +381,30 @@ async def _cached_block(
     user: User,
     settings: Settings,
     *,
-    suffix: str,
     exclude_sensitive: bool,
     report: MemoryLoadReport,
-    select: Callable[[list[Memory]], list[Memory]] | None,
 ) -> str:
-    """A block that does not depend on the question: everything, or the work scope."""
+    """A block that does not depend on the question: everything."""
     redis = get_redis_client()
     key = cache.memory_block_key(user.id)
-    cache_key = f"{key}:{suffix}" if suffix else key
-    if exclude_sensitive:
-        cache_key = f"{cache_key}{'x' if suffix else ':x'}"
+    cache_key = f"{key}:x" if exclude_sensitive else key
+    generation: str | None = None
     try:
-        cached = await redis.get(cache_key)
+        cached, generation = await cache.read_block_cache(redis, user.id, cache_key)
         if cached is not None:
-            return cast(str, cached)
+            return cached
     except Exception:
         logger.debug("Memory block cache read failed", exc_info=True)
 
-    if select is None:
-        memories = await load_relevant_memories(session, user, settings, report=report)
-    else:
-        from app.modules.memory import repository as memories_repo
-
-        try:
-            memories = select(await memories_repo.list_for_user(session, user.id))
-        except Exception:
-            logger.warning("Memory retrieval failed for user_id=%s", user.id, exc_info=True)
-            report.degrade("unavailable")
-            memories = []
+    memories = await load_relevant_memories(session, user, settings, report=report)
     memories = filter_surface_memories(memories, exclude_sensitive=exclude_sensitive)
     block = selection.format_memory_block(memories, max_chars=settings.memory_inject_max_chars)
-    if report.status == "ok":
+    # No generation read (Redis failed) means nothing to tie the block to: not cached.
+    if report.status == "ok" and generation is not None:
         try:
-            await redis.set(cache_key, block, ex=settings.memory_cache_ttl)
+            await cache.write_block_cache(
+                redis, cache_key, generation, block, settings.memory_cache_ttl
+            )
         except Exception:
             logger.debug("Memory block cache write failed", exc_info=True)
     return _log_inject(user.id, block)

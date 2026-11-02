@@ -1,4 +1,4 @@
-"""/chats over HTTP: list, rename, archive, delete, messages."""
+"""/chats over HTTP: list, rename, delete, messages."""
 
 # ── chats ──────────────────────────────────────────────────────────────────────
 from datetime import datetime
@@ -21,9 +21,7 @@ def test_create_chat():
     chat = MagicMock(spec=Chat)
     chat.id = uuid4()
     chat.title = None
-    chat.model = "free-chat"
     chat.pinned = False
-    chat.archived = False
     chat.created_at = datetime(2024, 1, 1)
     chat.updated_at = datetime(2024, 1, 1)
 
@@ -34,7 +32,8 @@ def test_create_chat():
             "/chats", headers={"Authorization": "Bearer tok"}, json={"model": "free-chat"}
         )
     assert r.status_code == 201
-    assert r.json()["model"] == "free-chat"
+    # There is no model choice: an older phone's model is ignored and none is returned.
+    assert "model" not in r.json()
     assert "project_id" not in r.json()
     assert "quiz_mode" not in r.json()
 
@@ -47,9 +46,7 @@ def test_create_chat_ignores_retired_project_id():
     chat = MagicMock(spec=Chat)
     chat.id = uuid4()
     chat.title = None
-    chat.model = "free-chat"
     chat.pinned = False
-    chat.archived = False
     chat.created_at = datetime(2024, 1, 1)
     chat.updated_at = datetime(2024, 1, 1)
 
@@ -78,10 +75,6 @@ def test_list_chats():
             AsyncMock(return_value=(empty_list, None)),
         ),
         patch("app.modules.conversation.chats_repository.list_pinned", AsyncMock(return_value=[])),
-        patch(
-            "app.modules.conversation.chats_repository.list_archived_page",
-            AsyncMock(return_value=(empty_list, None)),
-        ),
     ):
         client = TestClient(app)
         r = client.get("/chats", headers={"Authorization": "Bearer tok"})
@@ -93,9 +86,7 @@ def test_list_chats():
         "last_7_days": [],
         "this_month": [],
         "older": [],
-        "archived": [],
         "next_cursor": None,
-        "archived_next_cursor": None,
     }
 
 
@@ -109,10 +100,6 @@ def test_list_chats_answers_an_unchanged_list_with_304():
             AsyncMock(return_value=([], None)),
         ),
         patch("app.modules.conversation.chats_repository.list_pinned", AsyncMock(return_value=[])),
-        patch(
-            "app.modules.conversation.chats_repository.list_archived_page",
-            AsyncMock(return_value=([], None)),
-        ),
     ):
         client = TestClient(app)
         first = client.get("/chats", headers={"Authorization": "Bearer tok"})
@@ -126,7 +113,7 @@ def test_list_chats_answers_an_unchanged_list_with_304():
 
 
 def test_list_chats_never_overlaps_ops_on_one_session():
-    """The dated page and the pinned + archived queries run concurrently, and an AsyncSession can
+    """The dated page and the pinned query run concurrently, and an AsyncSession can
     only run one operation at a time (asyncpg raises InterfaceError on
     overlap) — so each concurrent query must get its own session. Simulate
     asyncpg's guard: mark a session busy across a yield point and record a
@@ -158,10 +145,6 @@ def test_list_chats_never_overlaps_ops_on_one_session():
         patch(
             "app.modules.conversation.chats_repository.list_pinned",
             AsyncMock(side_effect=tracked("pinned", [])),
-        ),
-        patch(
-            "app.modules.conversation.chats_repository.list_archived_page",
-            AsyncMock(side_effect=tracked("archived", ([], None))),
         ),
     ):
         client = TestClient(app)
@@ -391,8 +374,8 @@ def test_router_delete_chat_404():
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize(("messages", "deleted"), [(0, True), (1, False)])
-async def test_delete_if_empty_keeps_a_chat_with_messages(messages: int, deleted: bool):
+@pytest.mark.parametrize(("messages", "deleted"), [(False, True), (True, False)])
+async def test_delete_if_empty_keeps_a_chat_with_messages(messages: bool, deleted: bool):
     """The phone drops an unused draft in one request (code-health audit NET-13)."""
     from app.modules.chat import service as chats_service
 
@@ -403,7 +386,7 @@ async def test_delete_if_empty_keeps_a_chat_with_messages(messages: int, deleted
     with (
         patch.object(chats_repo, "get_by_id", AsyncMock(return_value=chat)),
         patch.object(chats_repo, "forget_chat"),
-        patch.object(messages_repo, "count_for_chat", AsyncMock(return_value=messages)),
+        patch.object(messages_repo, "chat_has_messages", AsyncMock(return_value=messages)),
     ):
         await chats_service.delete_chat(session, user, uuid4(), settings=Settings(), if_empty=True)
     assert session.delete.await_count == (1 if deleted else 0)
@@ -462,21 +445,6 @@ async def test_delete_chat_keeps_library_attachments():
     enqueue.assert_not_awaited()
 
 
-def test_archived_chats_page_by_cursor_past_the_drawer():
-    """GET /chats/archived reads on from the drawer's ``archived_next_cursor``."""
-    user = api_user()
-    app = app_with_user(user)
-    page = AsyncMock(return_value=([], "next-page"))
-    with patch.object(chats_repo, "list_archived_page", page):
-        client = TestClient(app)
-        r = client.get(
-            "/chats/archived?cursor=abc&limit=20", headers={"Authorization": "Bearer tok"}
-        )
-    assert r.status_code == 200
-    assert r.json() == {"items": [], "next_cursor": "next-page"}
-    assert page.await_args.kwargs == {"limit": 20, "cursor": "abc"}
-
-
 def test_bulk_chats_runs_one_request_and_caps_the_selection():
     """One request for the whole selection (it was one per chat, past the rate limit)."""
     from app.modules.chat import service as chats_service
@@ -489,7 +457,7 @@ def test_bulk_chats_runs_one_request_and_caps_the_selection():
         client = TestClient(app)
         ok = client.post(
             "/chats/bulk",
-            json={"action": "archive", "chat_ids": ids},
+            json={"action": "delete", "chat_ids": ids},
             headers={"Authorization": "Bearer tok"},
         )
         too_many = client.post(
@@ -504,6 +472,5 @@ def test_bulk_chats_runs_one_request_and_caps_the_selection():
         )
     assert ok.status_code == 200
     assert ok.json() == {"changed": ids[:2]}
-    assert bulk.await_args.kwargs["action"] == "archive"
     assert [str(i) for i in bulk.await_args.kwargs["chat_ids"]] == ids
     assert (too_many.status_code, wrong.status_code) == (422, 422)

@@ -5,8 +5,8 @@ from __future__ import annotations
 import re
 
 from app.modules.turn_reading.chart import is_chart_question
+from app.modules.turn_reading.diagram_kinds import names_diagram_kind
 from app.modules.turn_reading.visuals import is_html_ui_question
-from app.services.diagram_kinds import names_diagram_kind
 
 _SEQUENCE_CUE = re.compile(r"\bsequence\s+diagram\b", re.IGNORECASE)
 

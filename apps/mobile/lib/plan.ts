@@ -9,20 +9,17 @@ export type PaidPlanId = Exclude<PlanId, "free">;
 
 export type PlanFeature =
   | "all_models"
-  | "image_generation"
   | "speech_transcription"
-  | "speech_tts"
-  | "live_talk";
+  | "speech_tts";
 
 type PlanAllowance =
   | "daily_tokens"
   | "daily_image_uploads"
   | "daily_web_searches"
   | "daily_image_searches"
-  | "daily_image_generations"
   | "daily_speech_transcriptions"
   | "daily_speech_tts"
-  | "monthly_live_talk_minutes";
+  | "library_storage_bytes";
 
 export type PlanInfo = {
   id: PlanId;
@@ -44,9 +41,8 @@ export function planOf(holder: PlanHolder): PlanId {
 
 /** Before the server lists features (an older cached user), assume the defaults. */
 function fallbackFeatures(plan: PlanId): PlanFeature[] {
-  if (plan === "free") return ["image_generation"];
-  const paid: PlanFeature[] = ["all_models", "image_generation", "speech_transcription", "speech_tts"];
-  return plan === "pro" ? [...paid, "live_talk"] : paid;
+  if (plan === "free") return [];
+  return ["all_models", "speech_transcription", "speech_tts"];
 }
 
 export function hasPlanFeature(holder: PlanHolder, feature: PlanFeature): boolean {

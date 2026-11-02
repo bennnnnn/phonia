@@ -31,6 +31,8 @@ const WS_TURN_EVENT_TYPES = new Set([
 ]);
 
 const WS_OPEN_STATE = 1;
+/** The socket's sign-in was refused (`ws_limits.socket_error_payload`): use SSE. */
+const WS_UNAUTHORIZED_CODE = "unauthorized";
 
 /** The server closed a socket idle between turns (`ws_limits.WS_IDLE_CLOSE_CODE`). */
 const WS_IDLE_CLOSE_CODE = 4408;
@@ -69,20 +71,12 @@ type ChatWsMessageFrame = ChatWsTurnZone & {
   type: "message";
   content: string;
   attachment_ids: string[];
-  model: string | null;
   /** The message's name, the same on every send of it: the server runs one turn per name. */
   client_message_id: string;
-  client_location: string | null;
-  client_latitude: number | null;
-  client_longitude: number | null;
 };
 
 type ChatWsRegenerateFrame = ChatWsTurnZone & {
   type: "regenerate";
-  model: string | null;
-  client_location: string | null;
-  client_latitude: number | null;
-  client_longitude: number | null;
 };
 
 export type ChatWsFallbackSignal =
@@ -215,7 +209,7 @@ export class ChatWsTransport {
     this.connectTimer = setTimeout(() => {
       if (!this.isCurrentSocket(socket)) return;
       this.socket = null;
-      this.backoff.fail();
+      this.backoff.fail("connect_timeout");
       this.finishConnect();
       this.options.onFallback({
         reason: "connect_timeout",
@@ -288,7 +282,7 @@ export class ChatWsTransport {
       }
       if (payload.type === "keepalive") return;
 
-      if (payload.type === "error" && payload.message === "Unauthorized") {
+      if (payload.type === "error" && payload.code === WS_UNAUTHORIZED_CODE) {
         const duringTurn = this.turnActive;
         this.socket = null;
         this.turnActive = false;

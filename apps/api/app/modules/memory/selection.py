@@ -5,8 +5,6 @@ through this module, so a test that patches ``selection.format_memory_block`` re
 the prompt path too.
 """
 
-import re
-
 from app.core.config import Settings
 from app.models.orm import Memory
 from app.modules.memory.facts import (
@@ -19,21 +17,6 @@ from app.modules.memory.facts import (
 )
 from app.modules.memory.lexical import overlap, terms
 from app.modules.memory.text import is_food_or_diet_memory_text, is_food_or_diet_query
-from app.modules.memory.topics import fact_topic, is_area
-
-# Topics that hold what the user builds, besides areas.
-_WORK_TOPICS = frozenset({"side-projects", "recent-work"})
-# A fact about software the user builds or runs: its words, or a technology it names.
-_WORK_CUE = re.compile(
-    r"\b(?:apps?|application|apis?|backend|front-?end|website|web ?app|code|codebase|repo|"
-    r"software|startup|saas|mvp|platform|develop(?:s|ing|er|ment)?|program(?:s|ming|mer)?|"
-    r"engineer(?:s|ing)?|tech ?stack|server|database|deploy\w*|frameworks?|library|sdk|"
-    r"extension|bot|react|native|expo|fastapi|django|flask|rails|laravel|spring|node(?:\.?js)?|"
-    r"next\.?js|vue|angular|svelte|flutter|swiftui|swift|kotlin|python|javascript|typescript|"
-    r"java|golang|rust|ruby|php|postgres(?:ql)?|mysql|sqlite|mongodb|redis|supabase|firebase|"
-    r"neon|aws|gcp|azure|vercel|docker|kubernetes|graphql|tailwind)\b",
-    re.IGNORECASE,
-)
 
 
 def _confidence_value(memory: Memory) -> float:
@@ -131,39 +114,6 @@ def select_memories_lexical(
     matched.sort(key=lambda entry: (entry[0], entry[1]), reverse=True)
     merged = always + [memory for _, _, memory in matched]
     return _with_diet_facts(merged, eligible, query_text)[: settings.memory_inject_limit]
-
-
-def select_work_memories(
-    memories: list[Memory], settings: Settings, *, profile_name: str | None = None
-) -> list[Memory]:
-    """Memory for a programming or "my app" turn: the stack and what the user builds.
-
-    Identity core, then the tech-stack document, then facts about what they build:
-    side projects and recent work that read as software, and every fact of an area
-    that does ("User builds Recall with React Native and FastAPI"). A wedding area,
-    the user's job or their city stay out.
-    """
-    eligible = [memory for memory in memories if _eligible_memory(memory, settings)]
-    always = identity_core(eligible, profile_name=profile_name)
-    always_ids = {id(memory) for memory in always}
-    work_areas = {
-        fact_topic(memory)
-        for memory in eligible
-        if is_area(fact_topic(memory)) and _WORK_CUE.search(memory.text)
-    }
-    stack: list[Memory] = []
-    built: list[Memory] = []
-    for memory in eligible:
-        if id(memory) in always_ids:
-            continue
-        topic = fact_topic(memory)
-        if topic == "tech-stack":
-            stack.append(memory)
-        elif topic in work_areas or (topic in _WORK_TOPICS and _WORK_CUE.search(memory.text)):
-            built.append(memory)
-    stack.sort(key=fallback_score, reverse=True)
-    built.sort(key=fallback_score, reverse=True)
-    return [*always, *stack, *built][: settings.memory_inject_limit]
 
 
 def _always_in(

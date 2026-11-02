@@ -2,14 +2,13 @@
 
 Title, memory, lesson progress, compression and indexing are best-effort background
 work: enqueued after the reply commits, never on the stream's path. A typed turn
-commits in ``turn_settle``; a picture, a photo lookup or a voice turn commits through
+commits in ``turn_settle``; a photo lookup or a voice turn commits through
 ``turn_record`` and sets off the same jobs (code-health audit ARCH-08).
 ``POST_TURN_JOBS`` is the list, in order: each entry reads the ``FinishedTurn`` and
 returns the jobs it wants (none or one). A turn's documents are not here: they are
 queued for indexing as soon as the user's message commits (``turn_prep/persist.py``).
 """
 
-import asyncio
 import logging
 from collections.abc import Awaitable, Callable, Sequence
 from dataclasses import dataclass
@@ -307,16 +306,14 @@ async def enqueue_saved_turn_jobs(redis: Redis, settings: Settings, saved: Saved
         spend_capped=spend_capped,
     )
     queued = [job for build in POST_TURN_JOBS for job in await build(turn)]
-    # Each job is queued whatever happens to the others: one failed enqueue loses only itself.
-    results = await asyncio.gather(
-        *(jobs.enqueue(redis, job.name, job.payload, dedupe_key=job.dedupe_key) for job in queued),
-        return_exceptions=True,
+    # One round trip for all of them; one rejected XADD loses only its own job.
+    results = await jobs.enqueue_many(
+        redis,
+        [jobs.JobRequest(job.name, job.payload, job.dedupe_key) for job in queued],
     )
-    for job, result in zip(queued, results, strict=True):
-        if isinstance(result, Exception):
-            logger.warning(
-                "Post-turn job %s not queued chat_id=%s", job.name, saved.chat_id, exc_info=result
-            )
+    for job, ok in zip(queued, results, strict=True):
+        if not ok:
+            logger.warning("Post-turn job %s not queued chat_id=%s", job.name, saved.chat_id)
 
 
 async def finish_turn(

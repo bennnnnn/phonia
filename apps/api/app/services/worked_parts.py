@@ -1,10 +1,12 @@
-"""One layout for a worked answer in parts, whoever worked it.
+r"""One layout for a worked answer in parts, whoever worked it.
 
 A question in parts reads as a single worked answer does, once:
 
-- **Given**: the givens every part shares, closed by one ``where`` line; a given only one
-  part uses (or a symbol with another value in another part) is listed at that part
-- **Required**: one line per part, ``(a) $v$ — speed after 1 s``
+- **Given**: one section for the whole question, never one under a part. A given every
+  part shares is a line of its own; a given only some parts use carries their letters as
+  Required's lines do (``(a) $t = 1\,\mathrm{s}$``). One ``where`` line names every symbol
+  once.
+- **Required**: one line per part, ``(a) $v$ (speed after 1 s)``
 - **Solution**, then each part: its label (``**(a) Speed after 1 s**``), its formula
   under its name's heading, its substitution or steps, and **Answer (a)** with that part's
   card; a hairline between parts
@@ -14,7 +16,8 @@ solved one by one (``services/subjects/dispatch.py``) and the model-written ```w
 block in parts (``modules/chat/worked_render.py``) all render here. Before November 2026
 the separate questions came back as whole replies one after another: the givens repeated
 under each part, the part above its givens, and no card under any answer (the finalize
-pass for one verified part dropped the others').
+pass for one verified part dropped the others'). Until 2026-11-02 a given one part used
+was listed under a second **Given** inside that part.
 """
 
 from __future__ import annotations
@@ -24,7 +27,14 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 
 from app.services.md_fence_scan import iter_fences
-from app.services.workout import ANSWER, GIVEN, REQUIRED, REQUIRED_HEADINGS, SOLUTION
+from app.services.workout import (
+    ANSWER,
+    GIVEN,
+    REQUIRED,
+    REQUIRED_HEADINGS,
+    SOLUTION,
+    asked_line,
+)
 
 _HARD_BREAK = "  \n"
 # "$v_0$ = initial speed" or "$m_1$, $m_2$ = masses": one name in a where-line.
@@ -69,14 +79,28 @@ def _where_pieces(line: str) -> list[str]:
     return [piece for piece in pieces if piece]
 
 
+_PIECE_SYMBOLS = re.compile(r"\$([^$]+)\$")
+
+
+def _named_symbols(piece: str) -> frozenset[str]:
+    return frozenset(symbol.strip() for symbol in _PIECE_SYMBOLS.findall(piece.split(" = ", 1)[0]))
+
+
 def merged_given(lines: Sequence[str]) -> list[str]:
-    """Each given once, in order, then one ``where`` line naming every symbol once."""
+    """Each given once, in order, then one ``where`` line naming every symbol once (a
+    symbol two parts name alike or apart is named by the first)."""
     values: list[str] = []
     names: list[str] = []
+    named: set[str] = set()
     for line in lines:
         text = line.strip()
         if text.startswith("where "):
-            names.extend(piece for piece in _where_pieces(text) if piece not in names)
+            for piece in _where_pieces(text):
+                symbols = _named_symbols(piece)
+                if piece in names or (symbols and symbols <= named):
+                    continue
+                names.append(piece)
+                named |= symbols
         elif text and text not in values:
             values.append(text)
     if names:
@@ -85,72 +109,76 @@ def merged_given(lines: Sequence[str]) -> list[str]:
     return values
 
 
-_VALUE_SYMBOL = re.compile(r"^\$\s*(?P<symbol>[^=$]+?)\s*=")
-_PIECE_SYMBOLS = re.compile(r"\$([^$]+)\$")
-
-
-def _value_key(line: str) -> str:
-    """What a given line gives: its symbol, or the whole line when it names none."""
-    match = _VALUE_SYMBOL.match(line)
-    return match.group("symbol").strip() if match else line
-
-
-def _piece_symbols(piece: str) -> set[str]:
-    return {symbol.strip() for symbol in _PIECE_SYMBOLS.findall(piece.split(" = ", 1)[0])}
-
-
 def _values_and_names(lines: Sequence[str]) -> tuple[list[str], list[str]]:
     values = [line.strip() for line in lines if line.strip() and not line.startswith("where ")]
     names = [piece for line in lines if line.startswith("where ") for piece in _where_pieces(line)]
     return values, names
 
 
-def _given_section(values: Sequence[str], names: Sequence[str]) -> list[str]:
-    """``values`` with a where-line naming only their symbols."""
-    keys = {_value_key(value) for value in values}
-    named = [piece for piece in names if _piece_symbols(piece) & keys]
-    return merged_given([*values, *(f"where {piece}" for piece in named)])
+def lettered_line(letters: Sequence[str], line: str) -> str:
+    r"""``(a) $t = 1\,\mathrm{s}$``: a given only some parts use, with their letters."""
+    return f"({', '.join(letters)}) {line}"
 
 
-def split_given(parts: Sequence[WorkedPart]) -> tuple[list[str], list[list[str]]]:
-    """(the givens every part shares, each part's own). A given is shared when every part
-    gives it with the same value; one only some parts use, or a symbol with another value
-    in another part (t = 1 s for (a) while (b) asks for t), stays with its part."""
+def one_given(given: Sequence[str], parts: Sequence[WorkedPart]) -> list[str]:
+    """The question's one Given: ``given`` (the whole question's), then what every part
+    gives alike, then each value only some parts give, lettered by those parts in their
+    order; one ``where`` line names every symbol once."""
     read = [_values_and_names(part.given) for part in parts]
-    names = [piece for _values, part_names in read for piece in part_names]
+    by_part = [values for values, _names in read]
+    first = by_part[0] if by_part else []
+    shared = [value for value in first if all(value in values for values in by_part[1:])]
+    letters: dict[str, list[str]] = {}
+    for index, values in enumerate(by_part):
+        for value in values:
+            if len(parts) > 1 and value not in shared:
+                letters.setdefault(value, []).append(part_letter(index))
+    top, top_names = _values_and_names(given)
+    names = [*top_names, *(piece for _values, part_names in read for piece in part_names)]
     if len(parts) < 2:
-        values = [value for part_values, _names in read for value in part_values]
-        return _given_section(values, names), [[] for _part in parts]
-    shared = [value for value in read[0][0] if all(value in values for values, _n in read[1:])]
-    own = [[value for value in values if value not in shared] for values, _n in read]
-    # A symbol a part gives on its own is named at that part, never in the shared line.
-    own_keys = {_value_key(value) for values in own for value in values}
-    shared_names = [piece for piece in names if not _piece_symbols(piece) & own_keys]
-    return _given_section(shared, shared_names), [
-        _given_section(values, part_names) if values else []
-        for values, (_v, part_names) in zip(own, read, strict=True)
-    ]
+        shared = [value for values in by_part for value in values]
+    return merged_given(
+        [
+            *top,
+            *shared,
+            *(lettered_line(at, value) for value, at in letters.items()),
+            *(f"where {piece}" for piece in names),
+        ]
+    )
 
 
 def _required_line(letter: str, line: str) -> str:
-    """``(a) $v$ — speed``: the part's letter before what it finds, as its solver named it."""
+    """``(a) $v$ (speed)``: the part's letter before what it finds, as its solver named it."""
     return f"({letter}) {line}"
 
 
 def render_parts(
-    parts: Sequence[WorkedPart], given: Sequence[str] = (), *, required: Sequence[str] = ()
+    parts: Sequence[WorkedPart],
+    given: Sequence[str] = (),
+    *,
+    required: Sequence[str] = (),
+    hoist: bool = True,
 ) -> str:
     """The question in parts in the one layout: Given and Required once, then Solution and
-    each part closed by its own Answer and card. ``required``: lines no part owns."""
-    shared, own = split_given(parts)
-    givens = merged_given([*given, *shared])
+    each part closed by its own Answer and card. ``required``: lines no part owns.
+    ``hoist`` False keeps each part's givens at the part, for a reply still streaming: a
+    given moved up to the one Given would rewrite what the phone has drawn. The finished
+    reply always has one Given (``one_given``)."""
+    own: list[list[str]]
+    if hoist:
+        givens, own = one_given(given, parts), [[] for _part in parts]
+    else:
+        givens, own = merged_given(given), [merged_given(part.given) for part in parts]
     asked = [
-        *required,
-        *(
-            _required_line(part_letter(index), line)
-            for index, part in enumerate(parts)
-            for line in part.required
-        ),
+        asked_line(line)
+        for line in (
+            *required,
+            *(
+                _required_line(part_letter(index), line)
+                for index, part in enumerate(parts)
+                for line in part.required
+            ),
+        )
     ]
     opening = [
         _section(heading, lines) for heading, lines in ((GIVEN, givens), (REQUIRED, asked)) if lines
@@ -159,7 +187,8 @@ def render_parts(
     for index, part in enumerate(parts):
         letter = part_letter(index)
         label = f"**({letter}) {part.title.strip()}**" if part.title.strip() else ""
-        # A given only this part uses is listed at the part, before its formula.
+        # Only while a reply streams: a part's givens written after its label wait at the
+        # part, before its formula, until the whole block moves them to the one Given.
         mine = _section(GIVEN, own[index]) if own[index] else ""
         pieces = [label, mine, part.working.strip()]
         # A part still streaming has no answer yet: its heading waits with it.

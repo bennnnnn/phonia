@@ -142,8 +142,6 @@ Manual QA checklist for iOS and Android before store submission. Run against a *
 
 | # | Test | iOS | Android | Notes |
 |---|------|-----|---------|-------|
-| 10.1 | Image generation (every plan) — composer send → inline image | ☐ | ☐ | No prompt sheet; sends immediately. Daily cap per plan: Free 3, Plus 10, Pro 15 (`core/settings/plans.py`); over it shows the limit message. |
-| 10.2 | Image gen intent detected from plain prompt (no attach-menu row) | ☐ | ☐ | Intent → `/images/generate`; no second modal |
 | 10.3 | Web search — source chips under reply, open source URL | ☐ | ☐ | `WEB_SEARCH_ENABLED=true`; MCP tool path wraps hits + chips; one Tavily reservation per turn; Redis reserve fail → DuckDuckGo (uncapped); no Tavily key → DDG. "Searching — “…”" ends when the search does: the wait for the answer shows typing dots only. |
 | 10.4 | Math scanner — open, torch, pinch-zoom, tap-focus, photos, corner-resize, pan | ☐ | ☐ | Dev build (camera). Close + cancel work. Tap inside the crop to focus. No front camera. |
 | 10.5 | Math scanner — capture → adjust crop → Solve → “I read this as” | ☐ | ☐ | “Reading the problem…” shows at once; the reading lands in an editable field (a hint line when it was hard to read). Edit a digit → **Solve** sends `Show steps: …` as text and the reply solves the edited problem. **Send photo** works before the read finishes and sends the crop. **Retake** returns to the camera. iOS: the field stays above the keyboard. |
@@ -152,7 +150,7 @@ Manual QA checklist for iOS and Android before store submission. Run against a *
 | 10.7 | Math lessons — steps for each traced kind | ☐ | ☐ | Balanced style: `solve 2x+3<7`, `solve -3x+2>=8` (flip when dividing by −3), `-2 < 3x+1 <= 7`, `solve 2x+3y=12, x-y=1`, `differentiate x^2 sin(x) step by step` (product rule), `integrate x(x^2+1)^5` (u-substitution), `integrate x e^x` (by parts). Numbered steps render, `$…$` labels typeset, answer chip last; inequalities keep the number line. Short style: chip only. |
 | 10.8 | Check my work | ☐ | ☐ | `check my work` + lines `2x + 3 = 11`, `2x = 14`, `x = 7`: line 2 ✗ with the sign explanation and a fixed continuation ending in `x = 4`. Same with “don't give me the answer”: only the hint question, no fix, no chip. All-correct lines: ✓ on each, “Every step checks out.”, check line, chip. |
 | 10.9 | Word problems | ☐ | ☐ | “Maria is three times as old as her son. Together their ages add up to 48. How old is her son?” → **Let** / **Equations** (with the quoted words) / steps / “her son's age: 12 years”. A problem the model misreads or cannot close falls back to a normal streamed reply without a verified claim. |
-| 10.10 | Reference photo lookup | ☐ | ☐ | "Show me a photo of a human ear": typing dots with "Finding a photo — “human ear”", never the image-generation card (dot game, "Sketching it out", a percentage); the photo lands in the chat. |
+| 10.10 | Reference photo lookup | ☐ | ☐ | "Show me a photo of a human ear": typing dots with "Finding a photo — “human ear”"; the photo lands in the chat. |
 
 ---
 
@@ -199,7 +197,6 @@ These were explicitly removed. If any reappears, it's a regression.
 | 14.1 | "✨ Recalled N memories" chip on assistant messages | ☐ | ☐ | Backend may send `recalled`; UI must not surface |
 | 14.2 | Show more / Show less on assistant message bodies | ☐ | ☐ | Code-block fold is OK; assistant body stays unfolded |
 | 14.3 | `chat.model_fallback` / "switched to…" / "summarized" chips | ☐ | ☐ | Backend may send; UI must not surface |
-| 14.4 | Image-gen prompt sheet / attach-menu "Generate image" | ☐ | ☐ | Composer-only; no second intercept |
 | 14.5 | Project filter chips / "Link to project" on reminders | ☐ | ☐ | Schedule has no Learning link |
 | 14.6 | Empty-state body / "Add" button duplicating the FAB | ☐ | ☐ | Schedule empty: icon + title only |
 | 14.7 | Drawer Lists row / shopping checklist UI | ☐ | ☐ | Lists feature removed; do not reintroduce |
@@ -291,7 +288,7 @@ Use a real model (not `MOCK_LLM_ENABLED`). Memory must be on in Settings.
 | 19.5 | Attach a photo (library and camera) and a PDF | ☐ | Pickers open as popovers or sheets and return the file. |
 | 19.6 | Chat ⋮ → Share, a photo's ⋮ → Save, and export to PDF | ☐ | iPad share sheets need an anchor: the sheet opens from the button and never crashes. |
 | 19.7 | Maths scanner: capture → Solve | ☐ | Camera preview fills the frame in both orientations. |
-| 19.8 | Mic dictation; Live Talk (Pro sandbox) | ☐ | Both prompts show the microphone text from 20.1. |
+| 19.8 | Mic dictation | ☐ | The prompt shows the microphone text from 20.1. |
 | 19.9 | Plan sheet: buy Plus in the sandbox, then restore | ☐ | Prices load; both buttons enabled. |
 | 19.10 | Settings pages and the time and date pickers | ☐ | Dialogs centred; tap targets at least 44 pt. |
 
@@ -303,28 +300,13 @@ Checks only a release build shows. A dev build carries dev-launcher keys and dif
 
 | # | Test | iOS | Android | Notes |
 |---|------|-----|---------|-------|
-| 20.1 | First mic use (dictation) | ☐ | ☐ | iOS prompt: "Recall uses the microphone so you can dictate messages and talk with Recall in Live Talk." Never "Allow Recall to access your microphone". |
+| 20.1 | First mic use (dictation) | ☐ | ☐ | iOS prompt: "Recall uses the microphone so you can dictate messages." Never "Allow Recall to access your microphone". |
 | 20.2 | First camera use: attach a photo, and the maths scanner | ☐ | ☐ | iOS prompt: "Recall uses the camera so you can take photos to attach in chat and scan math problems from your notes or worksheets." |
-| 20.3 | Location question ("where am I?") | ☐ | ☐ | While-in-use prompt only; iOS never offers "Always". No Face ID or Motion prompt anywhere. |
+| 20.3 | Location question ("where am I?") | ☐ | ☐ | No location prompt: the reply says the app does not use the device's location. No Face ID or Motion prompt anywhere. |
 | 20.4 | First launch | ☐ | n/a | No "find and connect to devices on your local network" prompt. |
-| 20.5 | Read-aloud, then press Home; start Live Talk, then press Home | ☐ | ☐ | Read-aloud stops; Live Talk hangs up. No audio keeps playing; Android shows no media notification. |
+| 20.5 | Read-aloud, then press Home | ☐ | ☐ | Read-aloud stops. No audio keeps playing; Android shows no media notification. |
 | 20.6 | Save a chat image (Android 13+), and on an Android 10–12 device | ☐ | ☐ | 13+: saves with no permission prompt. 10–12: the storage prompt appears once, then it saves. Photo attach works with no media permission on 13+. |
 | 20.7 | App Store Connect / Play Console processing | ☐ | ☐ | No ITMS-90683 or ITMS-91053 email; Play shows no foreground-service or photo/video permission declaration request. |
-
----
-
-## 21. Live Talk (Pro, dev build on a physical device)
-
-FEATURES calls device barge-in a release gate. Simulator Live Talk is half-duplex.
-
-| # | Test | iOS | Android | Notes |
-|---|------|-----|---------|-------|
-| 21.1 | Start | ☐ | ☐ | Pro account: tap the waveform. Start chime, then the orb; say a sentence and Recall answers aloud. Close: both turns are in the chat as messages. |
-| 21.2 | Mute | ☐ | ☐ | Tap the mic: it turns red and Recall does not hear you; tap again and it does. |
-| 21.3 | Barge-in | ☐ | ☐ | Talk over Recall while it speaks: playback stops at once, the cut reply reads "Generation stopped.", and your new turn is answered. |
-| 21.4 | Airplane mode mid-session | ☐ | ☐ | Turn airplane mode on while Recall talks: an error shows and no audio keeps playing; close Live Talk. Back online: the turns so far are in the chat, and Settings → Account minutes dropped by at most the session's reservation (15 min; a session whose end never reached the server keeps it). |
-| 21.5 | Microphone denied | ☐ | ☐ | Turn Recall's microphone off in system Settings, start Live Talk: "Microphone access needed" with Open Settings (opens Recall's settings page), never "needs a dev build"; no minutes are used. |
-| 21.6 | VoiceOver / TalkBack | ☐ | ☐ | The orb reads "Live talk, listening" / "Live talk, thinking" (hint "Cancel waiting") / "Live talk, Recall is speaking", and each change is announced. There is still no Listening/Speaking text on screen. |
 
 ---
 
@@ -332,7 +314,7 @@ FEATURES calls device barge-in a release gate. Simulator Live Talk is half-duple
 
 | # | Test | iOS | Android | Notes |
 |---|------|-----|---------|-------|
-| 22.1 | Upload in chat → Library | ☐ | ☐ | Attach a photo and a PDF in a chat: both appear in drawer → Library (Uploaded, Files), and search finds them by name. A generated image is under Generated; a lookup photo ("show me an ear") is not in Library. |
+| 22.1 | Upload in chat → Library | ☐ | ☐ | Attach a photo and a PDF in a chat: both appear in drawer → Library (Uploaded, Files), and search finds them by name. A lookup photo ("show me an ear") is not in Library. |
 | 22.2 | Delete the chat | ☐ | ☐ | Delete that chat: its files stay in Library; long-press shows no Open chat. Use in chat attaches the file to the current chat. |
 | 22.3 | Airplane mode | ☐ | ☐ | Open Library offline: failed thumbnails show Retry and stay; back online, Retry loads them. A failed upload never leaves a ghost tile. |
 | 22.4 | Delete from Library | ☐ | ☐ | Delete a file: confirm dialog; the tile goes only after the server confirms; it no longer opens from the old chat. |

@@ -7,7 +7,7 @@ const mockUpdateUser = jest.fn();
 
 jest.mock("expo-router", () => ({ Redirect: () => null, router: { push: jest.fn() } }));
 jest.mock("@/contexts/AuthContext", () => ({
-  useAuth: () => ({ token: "tok", user: { response_tone: "casual" }, updateUser: mockUpdateUser }),
+  useAuth: () => ({ token: "tok", user: { emoji_use: "some" }, updateUser: mockUpdateUser }),
 }));
 jest.mock("@/contexts/actionFeedbackCore", () => ({ useActionFeedbackOptional: () => null }));
 jest.mock("@/contexts/AppearanceContext", () => ({

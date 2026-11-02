@@ -67,24 +67,19 @@ def test_second_language_is_read_from_the_profile():
 
 
 @pytest.mark.parametrize(
-    ("facts", "location", "reply"),
+    ("facts", "reply"),
     [
         # M15: a saved home is said, never "I don't have that saved".
-        (("User lives in Addis Ababa",), None, "You live in Addis Ababa."),
-        (("Bini is based in Nairobi, Kenya",), None, "You live in Nairobi, Kenya."),
+        (("User lives in Addis Ababa",), "You live in Addis Ababa."),
+        (("Bini is based in Nairobi, Kenya",), "You live in Nairobi, Kenya."),
         # Someone else's home is not the user's.
-        (("User's sister lives in Nairobi suburbs",), None, "I don't have where you live saved."),
-        (
-            (),
-            "Bole, Addis Ababa",
-            "I don't have where you live saved, but your location is set to Bole, Addis Ababa.",
-        ),
-        ((), None, "I don't have where you live saved."),
+        (("User's sister lives in Nairobi suburbs",), "I don't have where you live saved."),
+        ((), "I don't have where you live saved."),
     ],
 )
-def test_where_do_i_live_reads_the_saved_home(facts, location, reply):
+def test_where_do_i_live_reads_the_saved_home(facts, reply):
     assert profile_question_to_answer("where do I live?", []) == "where do I live?"
-    assert reply_for_profile_question("where do I live?", facts, location=location) == reply
+    assert reply_for_profile_question("where do I live?", facts) == reply
 
 
 @pytest.mark.asyncio

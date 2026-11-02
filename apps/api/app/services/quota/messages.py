@@ -34,16 +34,6 @@ SPEECH_TTS_NOT_IN_PLAN_MESSAGE = (
     "Read aloud isn't part of your plan. Upgrade for it, or use your phone's voice."
 )
 
-IMAGE_GENERATION_LIMIT_EXCEEDED_MESSAGE_FREE = (
-    "You've reached today's image generation limit. "
-    "Upgrade for more — or try again after midnight UTC."
-)
-IMAGE_GENERATION_LIMIT_EXCEEDED_MESSAGE_PAID = (
-    "You've reached today's image generation limit. Try again after midnight UTC."
-)
-IMAGE_GENERATION_NOT_IN_PLAN_MESSAGE = "Image generation isn't part of your plan. Upgrade for it."
-IMAGE_GENERATION_SPEND_CAP_MESSAGE = "Image generation is temporarily unavailable. Try again later."
-
 IMAGE_SEARCH_LIMIT_EXCEEDED_MESSAGE_FREE = (
     "You've reached today's photo lookup limit. Upgrade for more — or try again after midnight UTC."
 )
@@ -51,17 +41,6 @@ IMAGE_SEARCH_LIMIT_EXCEEDED_MESSAGE_PAID = (
     "You've reached today's photo lookup limit. Try again after midnight UTC."
 )
 IMAGE_SEARCH_SPEND_CAP_MESSAGE = "Photo lookup is temporarily unavailable. Try again later."
-
-LIVE_TALK_NOT_IN_PLAN_MESSAGE = (
-    "Live talk isn't part of your plan. Upgrade to talk with Recall out loud."
-)
-LIVE_TALK_MINUTES_USED_MESSAGE = (
-    "You've used this month's live talk minutes. They renew on the 1st (UTC)."
-)
-LIVE_TALK_RATE_LIMIT_MESSAGE = "Too many live talk requests. Please wait a moment and try again."
-LIVE_TALK_SAVES_USED_MESSAGE = (
-    "This live talk call can't save more turns. Hang up and start a new call to keep going."
-)
 
 VOICE_SPEND_CAP_MESSAGE = "Voice is temporarily unavailable. Try again later."
 

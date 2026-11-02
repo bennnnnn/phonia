@@ -18,8 +18,14 @@
   "area": "math lookalike",
   "prompt": "factor in the cost of shipping too",
   "history": [
-   ["user", "I'm selling handmade candles for $18 each and each one costs me $7 to make. What's my profit per candle?"],
-   ["assistant", "Your profit per candle is **$11** ($18 − $7)."]
+   [
+    "user",
+    "I'm selling handmade candles for $18 each and each one costs me $7 to make. What's my profit per candle?"
+   ],
+   [
+    "assistant",
+    "Your profit per candle is **$11** ($18 − $7)."
+   ]
   ],
   "reply": "With shipping included, subtract that cost as well. If shipping is $4 per candle, your profit is $18 − $7 − $4 = **$7** per candle. Tell me your actual shipping cost and I'll redo it.",
   "expect": "answer"
@@ -29,8 +35,14 @@
   "area": "math lookalike",
   "prompt": "expand on that",
   "history": [
-   ["user", "why is sleep important?"],
-   ["assistant", "Sleep lets your body repair itself and your brain sort the day's memories."]
+   [
+    "user",
+    "why is sleep important?"
+   ],
+   [
+    "assistant",
+    "Sleep lets your body repair itself and your brain sort the day's memories."
+   ]
   ],
   "reply": "During deep sleep your body releases growth hormone, repairs muscle and tissue, and strengthens the immune system. During REM sleep the brain replays the day, moving useful memories into long-term storage and clearing out waste products that build up while you're awake.",
   "expect": "answer"
@@ -40,8 +52,14 @@
   "area": "math lookalike",
   "prompt": "simplify this paragraph for a 10 year old",
   "history": [
-   ["user", "Photosynthesis is the process by which chlorophyll-containing organisms convert light energy into chemical energy stored in glucose."],
-   ["assistant", "That's the textbook definition of photosynthesis."]
+   [
+    "user",
+    "Photosynthesis is the process by which chlorophyll-containing organisms convert light energy into chemical energy stored in glucose."
+   ],
+   [
+    "assistant",
+    "That's the textbook definition of photosynthesis."
+   ]
   ],
   "reply": "Plants are like tiny chefs. They use sunlight as their stove, take in water and air, and cook up sugar to eat. That's called photosynthesis!",
   "expect": "answer"
@@ -58,8 +76,14 @@
   "area": "math lookalike",
   "prompt": "factor it into the budget",
   "history": [
-   ["user", "the trip costs $400"],
-   ["assistant", "Got it, $400 for the trip."]
+   [
+    "user",
+    "the trip costs $400"
+   ],
+   [
+    "assistant",
+    "Got it, $400 for the trip."
+   ]
   ],
   "reply": "Added. With the $400 trip, set aside about $100 a month for the next four months so it doesn't squeeze any single paycheck.",
   "expect": "answer"
@@ -69,8 +93,14 @@
   "area": "math lookalike",
   "prompt": "integrate it into the report",
   "history": [
-   ["user", "here is a chart of our q3 sales"],
-   ["assistant", "Looks good. Sales grew each month of the quarter."]
+   [
+    "user",
+    "here is a chart of our q3 sales"
+   ],
+   [
+    "assistant",
+    "Looks good. Sales grew each month of the quarter."
+   ]
   ],
   "reply": "Here's a paragraph for the report: \"Q3 sales grew steadily, with each month beating the one before. The chart below shows the monthly totals.\" Place the chart right after it.",
   "expect": "answer"
@@ -80,8 +110,14 @@
   "area": "math lookalike",
   "prompt": "can you simplify it?",
   "history": [
-   ["user", "Here is my essay intro: The industrial revolution changed how people lived and worked."],
-   ["assistant", "Nice intro! It reads well."]
+   [
+    "user",
+    "Here is my essay intro: The industrial revolution changed how people lived and worked."
+   ],
+   [
+    "assistant",
+    "Nice intro! It reads well."
+   ]
   ],
   "reply": "Sure: \"The industrial revolution changed everyday life and work.\"",
   "expect": "answer"
@@ -91,8 +127,14 @@
   "area": "math lookalike",
   "prompt": "expand it",
   "history": [
-   ["user", "my business plan has 3 sections: market, product, team"],
-   ["assistant", "Sounds good."]
+   [
+    "user",
+    "my business plan has 3 sections: market, product, team"
+   ],
+   [
+    "assistant",
+    "Sounds good."
+   ]
   ],
   "reply": "Here's a fuller outline:\n\n1. **Market**: who the customers are, how big the market is, and who you compete with.\n2. **Product**: what it does, why it is better, and what it costs to build.\n3. **Team**: who is on it and why they can deliver.",
   "expect": "answer"
@@ -130,8 +172,14 @@
   "area": "math lookalike",
   "prompt": "can you expand on your last point",
   "history": [
-   ["user", "how do I get better at running?"],
-   ["assistant", "Run more often at an easy pace, add one faster session a week, and rest properly."]
+   [
+    "user",
+    "how do I get better at running?"
+   ],
+   [
+    "assistant",
+    "Run more often at an easy pace, add one faster session a week, and rest properly."
+   ]
   ],
   "reply": "Rest is when you actually get fitter: muscles repair and grow back stronger between runs. Take at least one full rest day a week and sleep seven to nine hours.",
   "expect": "answer"
@@ -141,8 +189,14 @@
   "area": "math lookalike",
   "prompt": "integrate these notes into one summary",
   "history": [
-   ["user", "notes: kickoff Monday. design review Wednesday. launch Friday."],
-   ["assistant", "Got your notes."]
+   [
+    "user",
+    "notes: kickoff Monday. design review Wednesday. launch Friday."
+   ],
+   [
+    "assistant",
+    "Got your notes."
+   ]
   ],
   "reply": "This week: kickoff on Monday, design review on Wednesday, and launch on Friday.",
   "expect": "answer"
@@ -173,8 +227,14 @@
   "area": "math lookalike",
   "prompt": "simplify the wording of this email please",
   "history": [
-   ["user", "Dear team, I am writing to inform you that the meeting which was previously scheduled for Thursday has been moved to Friday."],
-   ["assistant", "Got it."]
+   [
+    "user",
+    "Dear team, I am writing to inform you that the meeting which was previously scheduled for Thursday has been moved to Friday."
+   ],
+   [
+    "assistant",
+    "Got it."
+   ]
   ],
   "reply": "\"Hi team, Thursday's meeting has moved to Friday.\"",
   "expect": "answer"
@@ -184,8 +244,14 @@
   "area": "math lookalike",
   "prompt": "my answer is yes",
   "history": [
-   ["user", "should I take the job offer?"],
-   ["assistant", "It depends on what matters most to you. Do you want the higher salary?"]
+   [
+    "user",
+    "should I take the job offer?"
+   ],
+   [
+    "assistant",
+    "It depends on what matters most to you. Do you want the higher salary?"
+   ]
   ],
   "reply": "Then the offer looks like the right move. Ask for the start date and benefits in writing before you accept.",
   "expect": "answer"
@@ -420,7 +486,7 @@
   "prompt": "Rewrite this sentence: The nearby river rose 2 feet overnight.",
   "reply": "Overnight, the river nearby climbed two feet.",
   "expect": "answer",
-  "location": "Addis Ababa, Ethiopia"
+  "gap": "\"nearby\" in a sentence to rewrite reads as a nearby ask, and the app (which has no device location) asks where the user is"
  },
  {
   "id": "ml-055",
@@ -428,7 +494,7 @@
   "prompt": "In my story the hero hears a nearby wolf howl 3 times. What should happen next?",
   "reply": "After the third howl the forest goes quiet, which is worse. Have the hero find fresh tracks circling the camp, then a stranger steps out of the trees who seems to know why the pack is following them.",
   "expect": "answer",
-  "location": "Addis Ababa, Ethiopia"
+  "gap": "\"nearby\" in a story reads as a nearby ask, and the app (which has no device location) asks where the user is"
  },
  {
   "id": "ml-056",

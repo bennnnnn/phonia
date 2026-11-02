@@ -1,5 +1,9 @@
 # Recall — Structure tickets
 
+> AI image generation (`images/generation.py`, `/images/generate`, `/images/intent`, the
+> `generate_image` tool, the `reply_picture` pass and `features/images`) has since been removed;
+> entries that name it are kept as the record of the work.
+
 An outside review of the whole repository (2026-10-31) graded the runtime platform strong and the
 product-logic layer weak. Its first three fixes landed as their own PRs, and none of them changes
 behaviour:
@@ -227,8 +231,6 @@ for presentation and the post-turn jobs, not for reading.
     confirmations, lightweight turns, locale cues, code syntax, the emoji pattern.
   - `prompt_constants/` keeps only prompt copy.
   - Other modules import `turn_reading`, never chat.
-  - The model reader (`docs/MODEL_READER.md`) is not a pure reader: it calls a model and reads
-    the subjects' menus, so it lives in `modules/model_reader/`, never here.
 - **Seam:** the place ST-05's arbiter lives, and the one list of "what a message says" other
   modules may ask.
 - **Proof:** the decision diff is unchanged, and the #2151 cycle baseline shrinks again (the 50-module
@@ -591,8 +593,8 @@ printed "no decision changed".
     injection. `tool_loop/calls.py` asks maths' `tool` where it imported `tool_check`,
     `text_plot` and the trig-domain check.
   - `MathImageExtract` reaches chat through the registry, the type of what `photo` reads.
-    Maths' public list keeps only what the order, the solving types and the model reader
-    import, beside `subject`.
+    Maths' public list keeps only what the order and the solving types import, beside
+    `subject`.
   - Decision diff over 5,232 turns: no decision changed.
 - **Status, step 2e (money as a peer): done.** Chat imports no subject: 4 files → 0.
   - `modules/money/subject.py` holds `MoneyPeer` (`prepare`, `prepare_standing`, `finish`,

@@ -848,8 +848,7 @@
     "prompt": "is it gonna rain tomorrow evening? i have gym at 6pm",
     "history": [],
     "reply": "Here's the forecast for **Addis Ababa, tomorrow (Thursday, Oct 15)**:\n\n- **Daytime:** partly cloudy, high around **23 °C**\n- **Evening (5–8 PM):** mostly dry, about a **15% chance** of a light shower, around **17 °C**\n- **Wind:** light breeze\n\nLooks fine for your 6 PM gym session — maybe bring a light jacket for the walk home, since it cools down quickly after sunset. 🌤️",
-    "expect": "search",
-    "location": "Addis Ababa, Ethiopia"
+    "expect": "instant"
   },
   {
     "id": "ht-086",

@@ -15,7 +15,6 @@ import {
 } from "@/features/account/components/settingsUi";
 import { useAccent, useAppearance } from "@/contexts/AppearanceContext";
 import { useAuth } from "@/contexts/AuthContext";
-import { useModels } from "@/hooks/useModels";
 import { voiceLabel } from "@/features/speech/model/voices";
 import { ACCENT_OPTIONS, accentSwatch } from "@/lib/accent";
 import { APPEARANCE_OPTIONS } from "@/lib/appearance";
@@ -27,7 +26,6 @@ import { useTheme } from "@/lib/theme";
 export default function SettingsScreen() {
   const { token, user, signOut, updateUser } = useAuth();
   const { t } = useTranslation();
-  const { autoEnabled, modelEnabledSet } = useModels();
   const theme = useTheme();
   const router = useRouter();
   const { preference, setPreference } = useAppearance();
@@ -65,9 +63,6 @@ export default function SettingsScreen() {
   );
   const language = LANGUAGES.find((lang) => lang.code === user?.locale) ?? LANGUAGES[0];
 
-  const modelsValue = autoEnabled
-    ? t("settings.model_auto")
-    : t("settings.models_enabled", { count: modelEnabledSet.size });
   const notificationsValue =
     osPushGranted == null
       ? undefined
@@ -131,13 +126,6 @@ export default function SettingsScreen() {
           accessibilityHint={t("settings.memory_desc")}
           value={user?.memory_enabled ? t("settings.on") : t("settings.off")}
           href="/settings/memory-settings"
-        />
-        <SettingsLinkRow
-          icon="sparkles"
-          title={t("settings.model")}
-          accessibilityHint={t("settings.model_summary")}
-          value={modelsValue}
-          href="/settings/models"
         />
         <SettingsLinkRow
           icon="volume"

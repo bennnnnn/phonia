@@ -19,7 +19,6 @@ from app.tests.modules.chat.chat_test_support import turn_deps
 def _pro_user() -> MagicMock:
     user = MagicMock()
     user.id = uuid4()
-    user.default_model = "smart-chat"
     user.plan = "pro"
     return user
 
@@ -42,7 +41,7 @@ def _deps(**fields):
     quota = {"daily_limit_for_user": MagicMock(return_value=100_000), **fields.pop("quota", {})}
     return turn_deps(
         session_factory=_FakeSessionCM,
-        model_choice={"resolve_user_model_override": MagicMock(return_value="smart-chat")},
+        model_choice={"resolve_user_model": MagicMock(return_value="smart-chat")},
         quota=quota,
         **fields,
     )
@@ -67,8 +66,8 @@ def _borrowed_resources(deps, redis, user_id, chat_id, reserved: int) -> TurnRes
 
 
 @pytest.mark.asyncio
-async def test_stream_chat_response_refunds_pre_reserved_on_image_gen():
-    """Edit reserves before stream_chat_response; image-gen must refund that hold."""
+async def test_stream_chat_response_refunds_pre_reserved_on_photo_lookup():
+    """Edit reserves before stream_chat_response; a photo lookup must refund that hold."""
     user = _pro_user()
     chat_id = uuid4()
     redis = redis_mock()
@@ -78,7 +77,7 @@ async def test_stream_chat_response_refunds_pre_reserved_on_image_gen():
     with (
         _turn_load(),
         patch(
-            "app.modules.chat.turn_intercepts.try_image_gen_for_turn",
+            "app.modules.chat.turn_intercepts.try_image_lookup_for_turn",
             AsyncMock(return_value=True),
         ),
     ):
@@ -90,7 +89,7 @@ async def test_stream_chat_response_refunds_pre_reserved_on_image_gen():
                 Settings(),
                 user_id=user.id,
                 chat_id=chat_id,
-                content="draw a cat",
+                content="show me an ear",
                 resources=_borrowed_resources(deps, redis, user.id, chat_id, 500),
                 user=user,
                 skip_usage_seed=True,
@@ -115,10 +114,6 @@ async def test_stream_chat_response_refunds_on_cancelled_error():
     deps = _deps(quota={"refund_usage": refund}, locks=_held_lock())
     with (
         _turn_load(),
-        patch(
-            "app.modules.chat.turn_intercepts.try_image_gen_for_turn",
-            AsyncMock(return_value=False),
-        ),
         patch(
             "app.modules.chat.stream_entry.prepare_chat_turn",
             AsyncMock(return_value=MagicMock()),
@@ -154,10 +149,6 @@ async def test_stream_chat_response_reserves_max_output_ceiling():
 
     with (
         _turn_load(),
-        patch(
-            "app.modules.chat.turn_intercepts.try_image_gen_for_turn",
-            AsyncMock(return_value=False),
-        ),
         patch(
             "app.modules.chat.stream_entry.prepare_chat_turn",
             AsyncMock(return_value=MagicMock()),
@@ -232,10 +223,6 @@ async def test_stream_skips_count_when_recent_window_has_room():
         patch.object(messages_repository, "list_recent", AsyncMock(return_value=[MagicMock()])),
         patch.object(messages_repository, "count_for_chat", count),
         patch(
-            "app.modules.chat.turn_intercepts.try_image_gen_for_turn",
-            AsyncMock(return_value=False),
-        ),
-        patch(
             "app.modules.chat.stream_entry.prepare_chat_turn", AsyncMock(return_value=MagicMock())
         ),
         patch("app.modules.chat.stream_entry.stream_and_finalize", fake_stream),
@@ -277,10 +264,6 @@ async def test_stream_counts_when_recent_window_is_full():
         ),
         patch.object(messages_repository, "count_for_chat", count),
         patch(
-            "app.modules.chat.turn_intercepts.try_image_gen_for_turn",
-            AsyncMock(return_value=False),
-        ),
-        patch(
             "app.modules.chat.stream_entry.prepare_chat_turn", AsyncMock(return_value=MagicMock())
         ),
         patch("app.modules.chat.stream_entry.stream_and_finalize", fake_stream),
@@ -314,7 +297,7 @@ async def test_stream_chat_response_quota_exceeded(fake_redis, used: int) -> Non
     user_id = uuid4()
     await fake_redis.set(f"usage:{user_id}:{quota_service.utc_today().isoformat()}", used)
     settings = Settings(daily_token_limit=100)
-    fake_user = MagicMock(id=user_id, plan="free", default_model="free-chat")
+    fake_user = MagicMock(id=user_id, plan="free")
     # Fail immediately if the guard lets message persistence begin.
     prepare = AsyncMock(side_effect=AssertionError("Over-limit turn reached preparation"))
     deps = turn_deps(

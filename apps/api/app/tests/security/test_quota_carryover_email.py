@@ -41,11 +41,10 @@ from .carry_world import (
     use,
 )
 
-_DELETED = {"usage": 1234, "imggen": 2, "tavily": 4}
-_LIVE_TALK_SECONDS = 300
+_DELETED = {"usage": 1234, "imgsearch": 2, "tavily": 4}
 _MORE = {"usage": 5000, "tavily": 1}
 # The new account's own use goes on top of what it started from.
-_DELETED_THEN_MORE = {"usage": 6234, "imggen": 2, "tavily": 5}
+_DELETED_THEN_MORE = {"usage": 6234, "imgsearch": 2, "tavily": 5}
 _OTHER = {"apple": "google", "google": "apple"}
 # Where each provider owns the address, so its delete files the email key.
 _OWNED = {"apple": "icloud.com", "google": "gmail.com"}
@@ -65,7 +64,7 @@ async def _deleted_account(
     world: Linked, provider: str, email: str, used: dict[str, int] = _DELETED
 ) -> str:
     """An account made with *provider* on *email* uses *used* and is deleted. Its sub."""
-    return await deleted_account(world, provider, email, used, live_talk=_LIVE_TALK_SECONDS)
+    return await deleted_account(world, provider, email, used)
 
 
 async def _accounts_on(email: str) -> int:
@@ -92,7 +91,6 @@ async def test_quota_carryover_email_starts_the_other_providers_account(
         other_sub = f"{other}-{uuid4()}"
         fresh, _ = await signed_in(linked, other, other_sub, email)
         assert await counts(linked.redis, fresh) == _DELETED
-        assert await quota.live_talk_used_seconds(linked.redis, fresh) == _LIVE_TALK_SECONDS
         # The address's snapshot is used up; the deleted identity's own waits for it.
         assert await linked.redis.get(email_key) is None
         assert await linked.redis.get(identity_key) is not None
@@ -109,7 +107,6 @@ async def test_quota_carryover_email_starts_the_other_providers_account(
     assert joined == fresh
     assert await linked_sub(fresh, deleted) == deleted_sub
     assert await counts(linked.redis, fresh) == _DELETED_THEN_MORE
-    assert await quota.live_talk_used_seconds(linked.redis, fresh) == _LIVE_TALK_SECONDS
     assert await linked.redis.get(identity_key) is None
 
 
@@ -121,7 +118,6 @@ async def test_quota_carryover_email_ignores_case_and_surrounding_spaces(linked:
     await _deleted_account(linked, "google", f"  {local}@GMail.COM ")
     fresh, _ = await signed_in(linked, "apple", f"apple-{uuid4()}", f" {local.lower()}@gmail.com")
     assert await counts(linked.redis, fresh) == _DELETED
-    assert await quota.live_talk_used_seconds(linked.redis, fresh) == _LIVE_TALK_SECONDS
 
 
 @pytest.mark.parametrize(
@@ -276,7 +272,6 @@ async def test_quota_carryover_identity_and_email_snapshots_take_the_larger(
     email_key = _keys(linked, "apple", apple_sub, email)[1]
 
     fresh, _ = await signed_in(linked, "google", google_sub, email)
-    assert await counts(linked.redis, fresh) == {"usage": 5000, "imggen": 2, "tavily": 4}
-    assert await quota.live_talk_used_seconds(linked.redis, fresh) == _LIVE_TALK_SECONDS
+    assert await counts(linked.redis, fresh) == {"usage": 5000, "imgsearch": 2, "tavily": 4}
     assert await linked.redis.get(identity_key) is None
     assert await linked.redis.get(email_key) is None

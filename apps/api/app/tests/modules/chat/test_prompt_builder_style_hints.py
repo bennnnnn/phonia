@@ -104,22 +104,11 @@ def test_closed_form_math_prompt_is_instance_first_not_a_lecture():
     assert "Do not jump straight to the instance" not in MATH_INTENT_HINT
 
 
-def test_funny_tone_does_not_pad_one_line_arithmetic() -> None:
-    from app.modules.chat.response_tone import TONE_HINTS
+# The emoji setting alone decides emoji; a voice line that named them contradicted it.
+def test_the_reply_voice_says_nothing_about_emoji() -> None:
+    from app.modules.chat.response_tone import VOICE_HINT
 
-    funny = TONE_HINTS["funny"]
-    assert "3+0" in funny
-    assert "one line" in funny
-    assert "```tip" not in funny
-    assert "occasional emoji" not in funny
-
-
-# The emoji setting alone decides emoji; a tone that named them contradicted it.
-def test_no_tone_speaks_about_emoji() -> None:
-    from app.modules.chat.response_tone import TONE_HINTS
-
-    for tone, hint in TONE_HINTS.items():
-        assert "emoji" not in hint.lower(), tone
+    assert "emoji" not in VOICE_HINT.lower()
 
 
 @pytest.mark.parametrize(
@@ -164,9 +153,7 @@ def test_every_turn_carries_the_users_emoji_setting(level: str) -> None:
     from app.modules.chat.prompt_sections import STABLE_SECTIONS, PromptTurn
     from app.modules.chat.response_tone import emoji_hint
 
-    user = SimpleNamespace(
-        response_tone="casual", emoji_use=level, custom_instructions=None, locale="en"
-    )
+    user = SimpleNamespace(emoji_use=level, custom_instructions=None, locale="en")
     turn = cast("PromptTurn", SimpleNamespace(user=user))
     texts = [text for section in STABLE_SECTIONS[:2] for text in section.render(turn)]
     assert emoji_hint(level) in texts
@@ -218,48 +205,6 @@ def test_slim_casual_turn_uses_compact_math_safety_not_viz_pack():
     joined = "\n".join(parts)
     assert "Do NOT emit ```answer" in joined
     assert "Math diagrams and plots" not in joined
-
-
-def test_compact_image_turn_gets_honesty_hint_not_viz_pack():
-    from app.modules.chat.prompt_constants import (
-        FORMAT_CONTRACT,
-        IMAGE_GEN_HONESTY_HINT,
-        VISUALIZATION_HINTS,
-    )
-
-    parts = _style_format_hints(
-        query_text="Image",
-        is_day_plan=False,
-        minimal_personal_context=False,
-        compact=True,
-    )
-    assert IMAGE_GEN_HONESTY_HINT in parts
-    assert VISUALIZATION_HINTS not in parts
-    assert FORMAT_CONTRACT not in parts
-    joined = "\n".join(parts)
-    assert "Never send the user to DALL-E" in joined  # safety phrase
-    assert "Never say Recall cannot create or generate images" in joined  # safety phrase
-    assert "do not tell them to send the same image request again" in joined
-
-
-def test_compact_image_turn_when_generation_disabled_does_not_ask_to_retry():
-    from app.modules.chat.prompt_constants import (
-        IMAGE_GEN_HONESTY_HINT,
-        IMAGE_GEN_UNAVAILABLE_HINT,
-    )
-
-    parts = _style_format_hints(
-        query_text="generate an image of a dog",
-        is_day_plan=False,
-        minimal_personal_context=False,
-        compact=True,
-        image_generation_enabled=False,
-    )
-    assert IMAGE_GEN_UNAVAILABLE_HINT in parts
-    assert IMAGE_GEN_HONESTY_HINT not in parts
-    joined = "\n".join(parts)
-    assert IMAGE_GEN_UNAVAILABLE_HINT in joined
-    assert IMAGE_GEN_UNAVAILABLE_HINT in joined
 
 
 def test_rich_turn_injects_format_contract_once_and_keeps_math():
@@ -574,8 +519,6 @@ def test_integration_hints_wraps_todos_section():
         query_text=None,
         local_tz="UTC",
         user_locale="en",
-        location_for_context=None,
-        prompt_location=None,
         memory_block="",
         attachment_rag_block="",
         todos_section="User Schedule\n### Today\n- ○ Milk at 09:00 (open, topic: Reminders)",
@@ -685,7 +628,6 @@ def _turn_prompt(
         id=uuid4(),
         name="Bini",
         email="bini@example.com",
-        response_tone="casual",
         locale="en",
         timezone="UTC",
     )
@@ -699,7 +641,6 @@ def _turn_prompt(
         recall_memory=False,
         advice_memory=False,
         minimal_personal_context=False,
-        prompt_location=None,
         summary=None,
         memory_block="",
         attachment_rag_block="",

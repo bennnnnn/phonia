@@ -22,7 +22,6 @@ from typing import Any
 
 from app.core.config import Settings
 from app.models.orm import User
-from app.modules.account import profile as profile_service
 from app.modules.chat import response_tone as response_tone_service
 from app.modules.chat.clarify_turn import clarify_reply_hint
 from app.modules.chat.continuation_subject import exchange_pairs, is_resume_request
@@ -116,7 +115,6 @@ class PromptTurn:
     recall_memory: bool
     advice_memory: bool
     minimal_personal_context: bool
-    prompt_location: str | None
     summary: str | None
     memory_block: str
     attachment_rag_block: str
@@ -167,9 +165,7 @@ def _profile(turn: PromptTurn) -> list[str]:
         return [format_user_name_only_block(turn.user)]
     return [
         format_user_profile_block(
-            turn.user,
-            location_override=turn.prompt_location,
-            include_email=should_include_profile_email(turn.query_text),
+            turn.user, include_email=should_include_profile_email(turn.query_text)
         )
     ]
 
@@ -190,7 +186,6 @@ def _style_hints(turn: PromptTurn) -> list[str]:
         is_day_plan=bool(query and is_day_planning_question(query)),
         minimal_personal_context=turn.minimal_personal_context,
         compact=compact,
-        image_generation_enabled=turn.settings.image_generation_enabled,
         image_search_enabled=turn.settings.image_search_enabled,
         lesson=lesson,
         outline_pick=outline_pick,
@@ -206,8 +201,6 @@ def _integrations(turn: PromptTurn) -> list[str]:
         query_text=turn.query_text,
         local_tz=turn.local_tz,
         user_locale=turn.user.locale,
-        location_for_context=turn.prompt_location or profile_service.user_location_label(turn.user),
-        prompt_location=turn.prompt_location,
         memory_block=turn.memory_block,
         attachment_rag_block=turn.attachment_rag_block,
         todos_section=turn.todos_section,
@@ -272,7 +265,7 @@ STABLE_SECTIONS: tuple[PromptSection, ...] = (
     PromptSection(
         _always,
         lambda t: [
-            response_tone_service.tone_hint(t.user.response_tone),
+            response_tone_service.VOICE_HINT,
             response_tone_service.emoji_hint(t.user.emoji_use),
             TONE_FORMAT_GUARD,
         ],
@@ -359,10 +352,10 @@ CONTEXT_SECTIONS: tuple[PromptSection, ...] = (
         name="clock",
     ),
     PromptSection(lambda t: not t.slim, _integrations, name="integrations"),
-    # "Coffee near me" is a slim turn, yet it needs the place and the places layout.
+    # "Coffee near me" is a slim turn, yet it needs the places layout.
     PromptSection(
         lambda t: t.slim,
-        lambda t: slim_geo_hints(t.settings, t.query_text, t.prompt_location),
+        lambda t: slim_geo_hints(t.settings, t.query_text),
         name="slim_geo",
     ),
     PromptSection(lambda t: t.slim and t.recall_memory, _slim_memory, name="slim_memory"),

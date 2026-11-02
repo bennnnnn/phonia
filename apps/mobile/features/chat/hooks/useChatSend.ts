@@ -8,7 +8,6 @@ import { useActionFeedbackOptional } from "@/contexts/ActionFeedbackContext";
 import type { useDraftChat } from "@/features/chat/hooks/useDraftChat";
 import type { useChatScroll } from "@/features/chat/hooks/useChatScroll";
 import { getSessionGeneration } from "@/lib/auth";
-import type { Message } from "@/lib/api";
 import { notifyWarning, tap } from "@/lib/haptics";
 import { notifyOfflineSendBlocked } from "@/lib/offlineSendFeedback";
 import {
@@ -27,8 +26,6 @@ import { useRestoreFailedSend, type SendTurn } from "@/features/chat/hooks/useRe
 import { useSendAttachment } from "@/features/chat/hooks/useSendAttachment";
 import type { SendTurnStart } from "@/features/chat/hooks/useTurnStart";
 import { composerThreadKey } from "@/features/chat/model/composerThreadDraft";
-import type { ImageGenSubmit } from "@/features/images/hooks/useImageGeneration";
-import { queryNeedsClientGeo } from "@/features/chat/model/resolveClientGeoForQuery";
 import { useViewOwner } from "@/features/chat/hooks/useViewOwner";
 import type { EditThread } from "@/features/chat/model/threadEdit";
 import { discardDraftAttachment, type PendingAttachment } from "@/features/attachments/model/attachments";
@@ -40,7 +37,7 @@ import {
 type Router = ReturnType<typeof useRouter>;
 type DraftChat = ReturnType<typeof useDraftChat>;
 type ChatScroll = ReturnType<typeof useChatScroll>;
-type ChatSendPhase = "idle" | "locating" | "preparing" | "uploading" | "creating";
+type ChatSendPhase = "idle" | "preparing" | "uploading" | "creating";
 
 /** False when the chat refused the send before showing it, or Stop took it back before it went out. */
 type SendMessageFn = (text: string, opts?: SendMessageOptions) => Promise<boolean>;
@@ -78,12 +75,6 @@ type Options = {
   /** Typing dots that go up with the bubble, before the turn is sent. */
   sendStart: SendTurnStart;
   editThread: EditThread;
-  /** Current transcript — a short follow-up after a picture is worth asking the server about. */
-  messages: Message[];
-  selectedModel: string;
-  updateUser: (patch: Partial<import("@/lib/api").User>) => Promise<void>;
-  /** The profile's location switch is on (a location question then need not wait for it to save). */
-  locationEnabled?: boolean;
   t: (key: string, options?: Record<string, unknown>) => string;
   onStreamBusy?: () => void;
   /** Soft offline cue (toast) — prefer over a blocking Alert; draft stays in the composer. */
@@ -91,9 +82,6 @@ type Options = {
   isOffline: boolean;
   /** Runs before a send is painted (a window around a search hit goes to the newest page). */
   beforeSend?: () => Promise<void>;
-  /** Run image generation for detected image-intent text (no confirmation sheet). */
-  onGenerateImage?: (request: ImageGenSubmit) => void;
-  imageGenerating?: boolean;
 };
 
 export function useChatSend({
@@ -110,17 +98,11 @@ export function useChatSend({
   sendMessage,
   sendStart,
   editThread,
-  messages,
-  selectedModel,
-  updateUser,
-  locationEnabled = false,
   t,
   onStreamBusy,
   onOfflineBlocked,
   isOffline,
   beforeSend,
-  onGenerateImage,
-  imageGenerating = false,
 }: Options) {
   const { creatingRef, discardEmptyChat } = draft;
   const { newMessageCountRef } = scroll;
@@ -139,7 +121,7 @@ export function useChatSend({
     pendingAttachment, pendingAttachmentRef, setPendingAttachment, replacePendingAttachment,
     switchAttachmentThread, stashAttachmentForThread, resetAttachmentDrafts,
   } = useSendAttachment(token);
-  const ensureChatId = useEnsureChatId({ chatId, selectedModel, draft, setChatId, setChatTitle, router });
+  const ensureChatId = useEnsureChatId({ chatId, draft, setChatId, setChatTitle, router });
   const [sendPhase, setSendPhase] = useState<ChatSendPhase>("idle");
   const [pendingOutboundId, setPendingOutboundId] = useState<string | null>(null);
   const [pendingSend, setPendingSend] = useState<PendingChatSend | null>(null);
@@ -244,9 +226,7 @@ export function useChatSend({
         localFileUri,
         localFileName,
         localFileContentType,
-        clientGeo,
         composerDraft,
-        model,
       } = pendingSend;
       setPendingSend(null);
       const sending = sendMessage(text, {
@@ -257,8 +237,6 @@ export function useChatSend({
         localFileUri,
         localFileName,
         localFileContentType,
-        model,
-        clientGeo,
         composerDraft,
       });
       setPendingOutboundId(null);
@@ -329,10 +307,8 @@ export function useChatSend({
   );
 
   const routeSend = useChatSendRoute({
-    token, chatId, messages, selectedModel, imageGenerating, onGenerateImage, sendMessage, sendStart, updateUser,
-    locationEnabled, t,
-    pendingAttachmentRef, setPendingAttachment, setPendingOutboundId, sendInFlightRef, setSendPhase,
-    restoreFailedSend, sendToNewChat,
+    token, chatId, sendMessage, sendStart, t,
+    setPendingOutboundId, sendInFlightRef, setSendPhase, restoreFailedSend, sendToNewChat,
   });
 
   /** False when the send was refused before its bubble painted (offline, another send preparing). */
@@ -381,7 +357,7 @@ export function useChatSend({
       // Paint first: the bubble, an empty composer and typing dots in this
       // frame, before any network call. Where the turn goes is decided after.
       sendInFlightRef.current = true;
-      setSendPhase(queryNeedsClientGeo(text) ? "locating" : turn.attachment ? "uploading" : "preparing");
+      setSendPhase(turn.attachment ? "uploading" : "preparing");
       const painted = paintUserTurn(text, turn.attachment, tappedAt, leavesComposer);
       await routeSend({ ...turn, ...painted, version });
       return true;

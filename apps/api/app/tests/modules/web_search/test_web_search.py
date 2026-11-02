@@ -4,15 +4,15 @@ import pytest
 
 from app.gateways.web_search_gateway import WebSearchHit, mock_search_results
 from app.modules.web_search import (
-    build_search_queries,
     format_location_not_set_answer,
     format_search_block,
     format_search_empty_block,
-    format_sources_fence,
     needs_web_search,
-    resolve_search_subject,
     web_search_skip,
 )
+from app.modules.web_search.formatting import format_sources_fence
+from app.modules.web_search.query_builders import build_search_queries
+from app.modules.web_search.subject import resolve_search_subject
 
 
 @pytest.mark.parametrize(
@@ -167,25 +167,11 @@ def test_is_ambiguous_local_places_query():
     assert not is_ambiguous_local_places_query("nearest hospital")
 
 
-def test_build_search_queries_local_places_with_location():
-    queries = build_search_queries(
-        "Best restaurants near me",
-        user_location="San Francisco, CA",
-    )
-    assert "San Francisco" in queries[0]
-    assert "near me" not in queries[0].lower()
+def test_build_search_queries_local_places_keep_their_own_words():
+    """The app has no device location: a nearby search names no place of its own."""
+    queries = build_search_queries("Best restaurants near me")
+    assert queries[0] == "Best restaurants near me"
     assert any("official website" in q.lower() for q in queries)
-
-
-def test_build_search_queries_local_places_with_coordinates():
-    queries = build_search_queries(
-        "Nearest gas station",
-        user_location="San Francisco, CA",
-        latitude=37.8044,
-        longitude=-122.2712,
-    )
-    assert "37.80440,-122.27120" in queries[0]
-    assert "near me" not in queries[0].lower()
 
 
 def test_format_search_block_local_places_links():
@@ -513,7 +499,7 @@ def test_mock_search_results_respects_limit():
 
 
 def test_format_places_fence():
-    from app.modules.web_search import format_places_fence
+    from app.modules.web_search.formatting import format_places_fence
 
     fence = format_places_fence(
         [
@@ -530,19 +516,19 @@ def test_format_places_fence():
     assert "22 Hawthorne St" in fence
 
 
-def test_format_search_block_warns_when_location_missing():
+def test_format_search_block_says_the_location_is_unknown():
     block = format_search_block(
         [WebSearchHit(title="Cafe", url="https://cafe.com", snippet="Nice spot")],
         local_places=True,
-        user_location=None,
     )
-    assert "User location is not set" in block
+    assert "location is unknown" in block
+    assert "Settings" not in block
 
 
-def test_format_location_not_set_answer_prompts_to_enable():
+def test_format_location_not_set_answer_asks_for_the_city():
     answer = format_location_not_set_answer()
     assert "location" in answer.lower()
-    assert "Settings" in answer
+    assert "Settings" not in answer
     # It invites the city: naming one answers the question there.
     assert "Tell me the city" in answer
 
@@ -569,7 +555,7 @@ def test_post_stream_fences_from_search_hits():
         WebSearchHit(title="Venue", url="https://venue.example", snippet="123 Main St"),
     ]
     sources = format_sources_fence(hits)
-    from app.modules.web_search import format_places_fence
+    from app.modules.web_search.formatting import format_places_fence
 
     places = format_places_fence(hits)
     assert "```sources" in sources

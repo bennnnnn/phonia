@@ -79,34 +79,3 @@ it("wires search rows to the guarded result action and keeps the failed page ret
   expect(ordinaryOpen).not.toHaveBeenCalled();
   expect(retryPage).toHaveBeenCalledTimes(1);
 });
-
-it("tags a hit in an archived chat, which search used to skip", async () => {
-  const result: SearchResult = { chat_id: "chat", message_id: "message", chat_title: "Old trip",
-    content: "the pelican", match_type: "message", role: "user", created_at: "2026-01-01", archived: true };
-  const view = await render(<DrawerSearchResultRow result={result} title="Old trip" onOpenChat={jest.fn()} />);
-  expect(view.getByText("search.archived_tag")).toBeTruthy();
-  const live = await render(<DrawerSearchResultRow result={{ ...result, archived: false }} title="Old trip"
-    onOpenChat={jest.fn()} />);
-  expect(live.queryByText("search.archived_tag")).toBeNull();
-});
-
-it("offers more archived chats under the archived section, and retries a failed page", async () => {
-  const more = jest.fn();
-  const archivedChat = { id: "a1", title: "Archived one", pinned: false, archived: true,
-    created_at: "2025-01-01T00:00:00Z", updated_at: "2025-01-01T00:00:00Z", model: "free-chat" };
-  const groups = { ...emptyChatList(), archived: [archivedChat], archived_next_cursor: "after-a1" };
-  const props = { groups, activeChatCount: 0, loading: false, error: false,
-    isSectionCollapsed: () => false, toggleSectionCollapsed: jest.fn(), onOpenChat: jest.fn(),
-    onOpenSearchResult: jest.fn(), onShowRowMenu: jest.fn(), listHeader: <></>, contentPaddingTop: 0,
-    contentPaddingBottom: 0, refreshing: false, onRefresh: jest.fn(), onLoadMoreArchived: more };
-  const view = await render(<DrawerChatFlashList {...props} />);
-  await fireEvent.press(view.getByRole("button", { name: "drawer.archived_show_more" }));
-  expect(more).toHaveBeenCalledTimes(1);
-
-  const failed = await render(<DrawerChatFlashList {...props} archivedPaging="failed" />);
-  await fireEvent.press(failed.getByRole("button", { name: "common.retry" }));
-  expect(more).toHaveBeenCalledTimes(2);
-
-  const all = await render(<DrawerChatFlashList {...props} onLoadMoreArchived={undefined} />);
-  expect(all.queryByRole("button", { name: "drawer.archived_show_more" })).toBeNull();
-});

@@ -3,7 +3,7 @@ import type { SearchSource } from "@/lib/searchSources";
 
 export type { SearchSource };
 
-/** Voices both read-aloud and live talk speak (the server's UserVoice). */
+/** The voices a user may pick for read-aloud (the server's UserVoice). */
 export type UserVoice =
   | "marin"
   | "cedar"
@@ -21,11 +21,9 @@ export type User = {
   email: string;
   name: string | null;
   avatar_url: string | null;
-  default_model: string;
   plan: PlanId;
   /** What the plan includes (display only; the server checks every request). */
   features?: PlanFeature[];
-  enabled_models: string[] | null;
   /** Three follow-up questions under a reply; on unless the user turned it off. */
   follow_up_suggestions_enabled?: boolean;
   /** Web search and photo lookups (Settings → Data controls); on unless turned off. */
@@ -33,7 +31,6 @@ export type User = {
   /** When the account agreed to what goes to outside AI services; null until it does.
    * Absent only from an older server, which the consent gate lets through. */
   ai_data_consent_at?: string | null;
-  response_tone: string;
   /** How many emoji replies use: "off", "some" (the default) or "more". */
   emoji_use?: string;
   memory_enabled: boolean;
@@ -41,7 +38,7 @@ export type User = {
   push_notifications_enabled: boolean;
   /** Each push kind's own switch, under the master one. */
   push_reminders_enabled?: boolean;
-  /** Read-aloud and live talk voice; null is the server default. */
+  /** Read-aloud voice; null is the server default. */
   tts_voice?: UserVoice | null;
   email_reminders_enabled?: boolean;
   /** False when the server cannot send email (no provider set up): hide the switch. */
@@ -49,8 +46,6 @@ export type User = {
   reminder_lead_minutes: number;
   locale: string;
   timezone: string;
-  location: string | null;
-  location_enabled: boolean;
   custom_instructions: string | null;
   age: number | null;
   country: string | null;
@@ -67,9 +62,7 @@ export type User = {
 export type Chat = {
   id: string;
   title: string | null;
-  model: string;
   pinned: boolean;
-  archived?: boolean;
   created_at: string;
   updated_at: string;
 };
@@ -102,11 +95,6 @@ export type Message = {
   local_file_content_type?: string | null;
   /** Client-only FlashList key — stable while `id` changes streaming → persisted. */
   renderKey?: string;
-  /** Client-only: image generation stopped or failed (inline card + retry). */
-  image_gen_failure?: "canceled" | "failed";
-  image_gen_error?: string;
-  /** Client-only: refused for a reason a retry meets again (the day's cap, content rules): no Retry. */
-  image_gen_refused?: boolean;
   /** Client-only: stream was stopped or the provider died after tokens started. */
   generationStopped?: boolean;
   /** Saved with the reply: it did not finish (Stop, or cut off). Null when it did. */
@@ -119,7 +107,7 @@ export type Message = {
 export type Memory = {
   id: string;
   type: string;
-  /** The memory document this fact belongs to (profile, tech-stack, area:recall, …). */
+  /** The memory document this fact belongs to (profile, subjects, area:science-fair, …). */
   topic?: string;
   text: string;
   confidence: number | null;
@@ -159,8 +147,6 @@ export type SearchResult = {
   content: string;
   role: string;
   created_at: string;
-  /** The hit is in an archived chat. */
-  archived?: boolean;
 };
 
 export type HomeUrgentTodo = {
@@ -178,11 +164,8 @@ export type ChatList = {
   last_7_days: Chat[];
   this_month: Chat[];
   older: Chat[];
-  archived: Chat[];
   /** Older dated chats follow: read them with `cursor`. Absent or null: none. */
   next_cursor?: string | null;
-  /** More archived chats than `archived` holds: GET /chats/archived reads on. */
-  archived_next_cursor?: string | null;
 };
 
 export type Usage = {

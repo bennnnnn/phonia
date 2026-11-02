@@ -54,7 +54,6 @@ _LIGHTWEIGHT_CALLERS: dict[str, tuple[int, str]] = {
     "modules/chat/related_questions.py::general_question": (1, "a suggested question"),
     "modules/chat/related_questions.py::_asks": (1, "a suggested question"),
     "modules/math/followup.py::open_math_problem": (1, "a fragment against its equation"),
-    "modules/speech/live_talk_tools.py::execute_tool": (1, "live talk's spoken query"),
     "modules/turn_reading/personal.py::needs_rich_context": (1, "a reader built on it"),
     "modules/turn_reading/writing.py::_answers_draft_question": (1, "a reader built on it"),
     "modules/web_search/detection.py::web_search_skip": (1, "a reader with its own offer check"),
@@ -99,9 +98,6 @@ _SUBJECT_CALLERS: dict[str, tuple[int, str]] = {
     "modules/chat/continuation_subject.py::classify_presentation_subject": (1, "any line"),
     "modules/chat/continuation_subject.py::blocks_math_followup": (1, "an earlier line"),
     "modules/chat/follow_up_thread.py::subject_for_related": (1, "a related question"),
-    # Images reads a send before any chat turn (and may not import chat).
-    "modules/images/gen_intent.py::stem_subject": (1, "a picture request's subject"),
-    "modules/images/intent.py::composer_intent_for_chat": (1, "the composer's send"),
 }
 
 

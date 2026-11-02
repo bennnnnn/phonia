@@ -25,7 +25,7 @@ function RowFallback() {
 /**
  * Keeps a render error inside one chat row. The markdown body has its own
  * boundary; everything else in a bubble (images, places, proposal cards,
- * sources, attachments, the image-gen card) did not, so one bad message
+ * sources, attachments) did not, so one bad message
  * reached the root boundary and replaced the whole app.
  */
 export class MessageRowErrorBoundary extends Component<Props, State> {

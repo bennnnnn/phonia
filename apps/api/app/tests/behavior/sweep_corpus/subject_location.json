@@ -7,14 +7,6 @@
   "expect": "answer"
  },
  {
-  "id": "sbl-002",
-  "area": "physics",
-  "prompt": "A ball is dropped from a height of 20 m. How long does it take to reach the ground?",
-  "reply": "**Given:** $h = 20$ m, $u = 0$, $g = 9.81$ m/s²\n\n**Formula:** $h = \\tfrac{1}{2}gt^2$, so $t = \\sqrt{2h/g}$\n\n**Substitution:** $t = \\sqrt{2(20)/9.81}$\n\n**Answer:** about **2.02 s**.",
-  "expect": "answer",
-  "location": "Addis Ababa, Ethiopia"
- },
- {
   "id": "sbl-003",
   "area": "physics",
   "prompt": "A stone falls from the top of a cliff 45 m high. How long does it take to reach the bottom?",
@@ -152,24 +144,21 @@
   "area": "places",
   "prompt": "How long does it take to reach the airport?",
   "reply": "From Bole it's about **6 km** to **Bole International Airport**, roughly **15 minutes** by car outside rush hour.",
-  "expect": "search",
-  "location": "Addis Ababa, Ethiopia"
+  "expect": "instant"
  },
  {
   "id": "sbl-023",
   "area": "places",
   "prompt": "How far is the nearest hospital?",
   "reply": "The nearest is **Hayat Hospital** on Ring Road, about **1.5 km** from you (5 minutes by car).",
-  "expect": "search",
-  "location": "Addis Ababa, Ethiopia"
+  "expect": "instant"
  },
  {
   "id": "sbl-024",
   "area": "places",
   "prompt": "What's the weather like here today?",
   "reply": "Today in Addis Ababa: **partly cloudy**, high of **23°C**, low of **11°C**, with a **30%** chance of an afternoon shower.",
-  "expect": "search",
-  "location": "Addis Ababa, Ethiopia"
+  "expect": "instant"
  },
  {
   "id": "sbl-025",
@@ -218,8 +207,7 @@
   "area": "places",
   "prompt": "how hot is it here",
   "reply": "It's **24°C** in Addis Ababa right now, sunny with a light breeze.",
-  "expect": "search",
-  "location": "Addis Ababa, Ethiopia"
+  "expect": "instant"
  },
  {
   "id": "sbl-032",
@@ -258,7 +246,7 @@
    "search",
    "answer"
   ],
-  "location": "Addis Ababa, Ethiopia"
+  "gap": "the where-are-you reply (no device location) takes the whole message, so the other part goes unanswered"
  },
  {
   "id": "sbl-037",
@@ -269,7 +257,7 @@
    "search",
    "answer"
   ],
-  "location": "Addis Ababa, Ethiopia"
+  "gap": "the where-are-you reply (no device location) takes the whole message, so the other part goes unanswered"
  },
  {
   "id": "sbl-038",
@@ -280,7 +268,7 @@
    "search",
    "answer"
   ],
-  "location": "Addis Ababa, Ethiopia"
+  "gap": "the where-are-you reply (no device location) takes the whole message, so the other part goes unanswered"
  },
  {
   "id": "sbl-039",

@@ -1,7 +1,7 @@
 """A chat turn from the transports' side: a new message, or a regenerated reply.
 
 Each turn holds its prepare lock and quota (``turn_resources``), reads what it needs
-(``turn_load``), may be answered by a photo or a picture (``turn_intercepts``),
+(``turn_load``), may be answered by a photo (``turn_intercepts``),
 and otherwise streams through ``stream_pipeline``. ``turn_resources`` keeps the
 prepare lock alive on its own task, so a Redis blip never cuts a stream or skips
 its save. ``deps`` is what a turn uses outside the chat module (``turn_deps``); the
@@ -25,11 +25,7 @@ from app.modules.chat.model_routing.thinking import thinking_level
 from app.modules.chat.stream_pipeline import stream_and_finalize
 from app.modules.chat.stream_status import StreamReasoningFn, StreamStatusFn
 from app.modules.chat.turn_deps import ChatTurnDeps
-from app.modules.chat.turn_intercepts import (
-    intercept_new_turn,
-    intercept_regenerate,
-    start_reply_picture,
-)
+from app.modules.chat.turn_intercepts import intercept_new_turn, intercept_regenerate
 from app.modules.chat.turn_load import (
     NewTurn,
     RegenerateTurn,
@@ -92,18 +88,14 @@ async def _reserve_new_turn(
 
 
 async def _end_new_turn(ctx: StreamContext, chat_id: UUID) -> None:
-    """A turn that failed before its reply saved draws nothing; the user's row still lands."""
-    if ctx.reply_picture is not None:
-        ctx.reply_picture.cancel()
+    """The turn's end: the user's row lands even when its reply failed."""
     try:
         await await_user_message_persist(ctx)
     except Exception:
         logger.exception("User message persist failed chat_id=%s", chat_id)
 
 
-def _regenerate_images(
-    turn: RegenerateTurn, settings: Settings, model_alias: str | None
-) -> tuple[list[UUID], str]:
+def _regenerate_images(turn: RegenerateTurn, settings: Settings) -> tuple[list[UUID], str]:
     """The photos the message being answered again carries, and the model that reads them.
 
     Persisted image markers identify the current input on regeneration; unlike a new
@@ -112,10 +104,7 @@ def _regenerate_images(
     image_ids = image_attachment_ids_from_text(turn.content) if settings.attachments_enabled else []
     if not image_ids:
         return image_ids, turn.model
-    explicit = plan_service.is_explicit_pick(model_alias)
-    return image_ids, plan_service.image_turn_model(
-        turn.user, settings, turn.model, explicit=explicit
-    )
+    return image_ids, plan_service.image_turn_model(turn.user, settings, turn.model)
 
 
 @traced_turn("new")
@@ -127,14 +116,10 @@ async def stream_chat_response(
     user_id: UUID,
     chat_id: UUID,
     content: str,
-    model_alias: str | None = None,
     attachment_ids: list[UUID] | None = None,
     should_cancel: Callable[[], bool] | None = None,
     outcome: TurnOutcome | None = None,
     client_timezone: str | None = None,
-    client_location: str | None = None,
-    client_latitude: float | None = None,
-    client_longitude: float | None = None,
     on_status: StreamStatusFn | None = None,
     on_reasoning: StreamReasoningFn | None = None,
     user: User | None = None,
@@ -164,7 +149,6 @@ async def stream_chat_response(
             user_id=user_id,
             chat_id=chat_id,
             content=content,
-            model_alias=model_alias,
             user=user,
             user_generation=user_generation,
             chat=chat,
@@ -181,13 +165,12 @@ async def stream_chat_response(
             content=content,
             outcome=outcome,
             recent_messages=turn.recent,
-            prior_count=turn.prior_count,
             misses=misses,
             on_status=status,
         ):
             await res.refund()
             return
-        timing.mark_phase("image_gen")
+        timing.mark_phase("intercepts_done")
         rows = await _reserve_new_turn(
             deps, res, settings, turn, content=content, attachment_ids=attachment_ids
         )
@@ -195,16 +178,12 @@ async def stream_chat_response(
             user_id=user_id,
             chat_id=chat_id,
             content=content,
-            model_alias=model_alias,
             settings=settings,
             redis=redis,
             reserved_tokens=res.reserved_tokens,
             attachment_ids=attachment_ids or [],
             attachment_rows=rows,
             client_timezone=client_timezone,
-            client_location=client_location,
-            client_latitude=client_latitude,
-            client_longitude=client_longitude,
             on_status=status,
             user=turn.user,
             timing=timing,
@@ -219,9 +198,6 @@ async def stream_chat_response(
         )
         ctx.photo_missed = "photo" in misses
         try:
-            ctx.reply_picture = start_reply_picture(
-                deps, settings, user=turn.user, chat_id=chat_id, content=content
-            )
             await top_up_reserve_for_prompt(
                 res, settings=settings, ctx=ctx, daily_limit=turn.daily_limit
             )
@@ -249,13 +225,9 @@ async def stream_regenerate_response(
     *,
     user_id: UUID,
     chat_id: UUID,
-    model_alias: str | None = None,
     should_cancel: Callable[[], bool] | None = None,
     outcome: TurnOutcome | None = None,
     client_timezone: str | None = None,
-    client_location: str | None = None,
-    client_latitude: float | None = None,
-    client_longitude: float | None = None,
     on_status: StreamStatusFn | None = None,
     on_reasoning: StreamReasoningFn | None = None,
 ) -> AsyncIterator[str]:
@@ -264,9 +236,7 @@ async def stream_regenerate_response(
     timing.mark_phase("turn_start")
     status = wrap_stream_status(timing, on_status)
     async with turn_resources(deps, redis, user_id=user_id, chat_id=chat_id) as res:
-        turn = await load_regenerate_turn(
-            deps, redis, settings, user_id=user_id, chat_id=chat_id, model_alias=model_alias
-        )
+        turn = await load_regenerate_turn(deps, redis, settings, user_id=user_id, chat_id=chat_id)
         if outcome is not None:
             outcome.mark_user_message_saved()  # The message answered again just loaded.
         settings = profile_service.settings_for_user(settings, turn.user)
@@ -283,7 +253,7 @@ async def stream_regenerate_response(
             on_status=status,
         ):
             return
-        current_image_ids, model = _regenerate_images(turn, settings, model_alias)
+        current_image_ids, model = _regenerate_images(turn, settings)
         await res.reserve(
             user=turn.user,
             content=turn.content,
@@ -298,9 +268,6 @@ async def stream_regenerate_response(
             content=turn.content,
             model=model,
             client_timezone=client_timezone,
-            client_location=client_location,
-            client_latitude=client_latitude,
-            client_longitude=client_longitude,
             on_status=status,
             user=turn.user,
             chat=turn.chat,
@@ -333,7 +300,7 @@ async def stream_regenerate_response(
             run_title=False,
             skip_memory_jobs=False,
             regenerate_backup=turn.backup,
-            # The earlier reply's model (or the user's pick) runs whatever its health.
+            # The earlier reply's model runs whatever its health.
             model_named=True,
             # Regenerating says the answer was not good enough: one level more.
             thinking=thinking_level(turn.content, regenerate=True, settings=settings),
@@ -345,22 +312,15 @@ async def stream_regenerate_response(
             ctx=ctx,
             daily_limit=deps.quota.daily_limit_for_user(turn.user, settings),
         )
-        ctx.reply_picture = start_reply_picture(
-            deps, settings, user=turn.user, chat_id=chat_id, content=turn.content
-        )
-        try:
-            async for token in stream_and_finalize(
-                deps,
-                redis,
-                settings,
-                ctx,
-                should_cancel=should_cancel,
-                outcome=outcome,
-                on_status=status,
-                on_reasoning=on_reasoning,
-                resources=res,
-            ):
-                yield token
-        finally:
-            if ctx.reply_picture is not None:
-                ctx.reply_picture.cancel()
+        async for token in stream_and_finalize(
+            deps,
+            redis,
+            settings,
+            ctx,
+            should_cancel=should_cancel,
+            outcome=outcome,
+            on_status=status,
+            on_reasoning=on_reasoning,
+            resources=res,
+        ):
+            yield token

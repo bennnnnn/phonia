@@ -26,15 +26,6 @@ jest.mock("@/features/speech/components/VoiceMicButton", () => ({
   VoiceMicButton: () => null,
 }));
 
-jest.mock("@/features/speech/components/LiveTalkButton", () => {
-  const { Pressable } = jest.requireActual("react-native") as typeof import("react-native");
-  return {
-    LiveTalkButton: ({ onPress }: { onPress: () => void }) => (
-      <Pressable testID="live-talk-button" onPress={onPress} />
-    ),
-  };
-});
-
 jest.mock("@/features/attachments/components/ComposerAttachmentPreview", () => ({
   ComposerAttachmentPreview: () => null,
 }));
@@ -438,46 +429,6 @@ describe("ChatComposer math keyboard", () => {
     expect(queryByText(/tokens/i)).toBeNull();
   });
 
-  it("shows live talk when a handler is provided", async () => {
-    const onLiveTalkPress = jest.fn();
-    const { getByTestId } = await render(
-      <ChatComposer {...baseProps} onLiveTalkPress={onLiveTalkPress} />,
-    );
-    fireEvent.press(getByTestId("live-talk-button"));
-    expect(onLiveTalkPress).toHaveBeenCalled();
-  });
-
-  it("hides live talk when the send button is showing", async () => {
-    const { queryByTestId } = await render(
-      <DraftHarness input="hello">
-        <ChatComposer {...baseProps} onLiveTalkPress={jest.fn()} />
-      </DraftHarness>,
-    );
-    expect(queryByTestId("live-talk-button")).toBeNull();
-  });
-
-  it("keeps type and attach and puts mute next to close in live talk", async () => {
-    const onYield = jest.fn();
-    const { getByTestId, getByLabelText, queryByTestId } = await render(
-      <ChatComposer
-        {...baseProps}
-        onLiveTalkPress={jest.fn()}
-        liveTalkChrome={{
-          muted: false,
-          onClose: jest.fn(),
-          onMutePress: jest.fn(),
-          onYield,
-        }}
-      />,
-    );
-    expect(queryByTestId("live-talk-button")).toBeNull();
-    expect(getByTestId("live-talk-mute")).toBeTruthy();
-    expect(getByTestId("live-talk-close")).toBeTruthy();
-    expect(getByTestId("chat-composer-input")).toBeTruthy();
-    expect(getByLabelText("chat.attach_a11y")).toBeTruthy();
-    expect(getByTestId("composer-attachment-add-icon").props.name).toBe("plus");
-  });
-
   it.each([true, false])("replaces attach with cancel while voice is active (recording: %s)", async (recording) => {
     const onCancelVoice = jest.fn();
     const onPickAttachment = jest.fn();
@@ -496,45 +447,6 @@ describe("ChatComposer math keyboard", () => {
     fireEvent.press(getByLabelText("chat.voice_cancel_a11y"));
     expect(onCancelVoice).toHaveBeenCalledTimes(1);
     expect(onPickAttachment).not.toHaveBeenCalled();
-  });
-
-  it("hides mute and close while the user is typing in live talk", async () => {
-    const chrome = {
-      muted: false,
-      onClose: jest.fn(),
-      onMutePress: jest.fn(),
-      onYield: jest.fn(),
-    };
-    const { queryByTestId, rerender } = await render(
-      <DraftHarness input="hello">
-        <ChatComposer
-          {...baseProps}
-          onLiveTalkPress={jest.fn()}
-          liveTalkChrome={chrome}
-        />
-      </DraftHarness>,
-    );
-    expect(queryByTestId("live-talk-mute")).toBeNull();
-    expect(queryByTestId("live-talk-close")).toBeNull();
-    expect(queryByTestId("chat-composer-input")).toBeTruthy();
-
-    await rerender(
-      <DraftHarness input="">
-        <ChatComposer
-          {...baseProps}
-          onLiveTalkPress={jest.fn()}
-          liveTalkChrome={chrome}
-          pendingAttachment={{
-            kind: "image",
-            localUri: "file://photo.jpg",
-            contentType: "image/jpeg",
-            fileName: "photo.jpg",
-          }}
-        />
-      </DraftHarness>,
-    );
-    expect(queryByTestId("live-talk-mute")).toBeTruthy();
-    expect(queryByTestId("live-talk-close")).toBeTruthy();
   });
 });
 

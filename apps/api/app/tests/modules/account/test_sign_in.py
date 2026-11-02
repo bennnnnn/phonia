@@ -21,7 +21,6 @@ async def test_login_with_google_creates_user():
         email="google@test.local",
         name="Google User",
         avatar_url=None,
-        default_model="free-chat",
         memory_enabled=True,
         created_at="2024-01-01T00:00:00",
     )
@@ -68,7 +67,6 @@ async def test_login_with_google_existing_user():
         email="existing@test.local",
         name="Existing",
         avatar_url=None,
-        default_model="free-chat",
         memory_enabled=True,
         created_at="2024-01-01T00:00:00",
     )
@@ -136,7 +134,6 @@ async def test_login_with_google_links_existing_account_by_email():
         email="shared@gmail.com",
         name="Shared",
         avatar_url=None,
-        default_model="free-chat",
         memory_enabled=True,
         created_at="2024-01-01T00:00:00",
     )
@@ -198,7 +195,6 @@ async def test_login_with_apple_creates_user():
         email="apple@test.local",
         name="Apple User",
         avatar_url=None,
-        default_model="free-chat",
         memory_enabled=True,
         created_at="2024-01-01T00:00:00",
     )
@@ -245,7 +241,6 @@ async def test_login_with_apple_existing_user():
         email="apple-existing@test.local",
         name="Existing Apple",
         avatar_url=None,
-        default_model="free-chat",
         memory_enabled=True,
         created_at="2024-01-01T00:00:00",
     )
@@ -290,7 +285,6 @@ async def test_login_with_apple_links_existing_account_by_email():
         email="shared-apple@icloud.com",
         name="Shared",
         avatar_url=None,
-        default_model="free-chat",
         memory_enabled=True,
         created_at="2024-01-01T00:00:00",
     )
@@ -411,7 +405,6 @@ async def test_login_with_apple_accepts_string_true_email_verified():
         email="strtrue@test.local",
         name="Str True",
         avatar_url=None,
-        default_model="free-chat",
         memory_enabled=True,
         created_at="2024-01-01T00:00:00",
     )

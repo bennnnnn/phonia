@@ -1,4 +1,3 @@
-import { IMAGE_GEN_PENDING_ASSISTANT_ID } from "@/features/images/model/imageGenMessages";
 import { Space } from "@/lib/space";
 import { Type } from "@/lib/type";
 
@@ -11,7 +10,7 @@ const CHAT_KEYBOARD_LIFT_EXTRA = 0;
 export const CHAT_COMPOSER_MIN_BOTTOM_PAD = 10;
 /**
  * One-line composer row. Shorter than the 44 pt touch minimum; the buttons
- * add hitSlop so the placeholder, +, mic, and live talk stay on one line.
+ * add hitSlop so the placeholder, +, and mic stay on one line.
  * Also the input's minimum height, so the placeholder shares the controls' midline.
  */
 export const COMPOSER_CONTROL_SIZE = 36;
@@ -244,7 +243,7 @@ export function composerShowsStop(options: {
 
 /** True while the last row is the in-flight placeholder (no action icons yet). */
 export function shouldReserveComposerActionGap(lastMessageId?: string): boolean {
-  return lastMessageId === "streaming" || lastMessageId === IMAGE_GEN_PENDING_ASSISTANT_ID;
+  return lastMessageId === "streaming";
 }
 
 type ChatLayoutMetrics = {

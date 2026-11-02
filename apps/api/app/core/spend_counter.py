@@ -64,7 +64,7 @@ async def global_spend_exceeded(redis: Redis, settings: Settings) -> bool:
 
     Redis down raises ``RedisUnavailableError`` (fail closed): a request answers 503
     unavailable, the chat its ``unavailable`` frame. It returned True, so an outage after
-    sign-in said the day's cap was reached: pictures, scans, voice and memory edits
+    sign-in said the day's cap was reached: photos, scans, voice and memory edits
     "paused", chat "at capacity for today". Work nobody waits on skips on either.
     """
     if settings.daily_global_spend_usd <= 0:

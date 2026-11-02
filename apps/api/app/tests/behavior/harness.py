@@ -1,7 +1,7 @@
 """Route one battery prompt through the real turn path, offline, and say what happened.
 
-The turn runs the way ``stream_entry`` runs it: the photo-lookup and image-generation
-intercepts, the turn mode, the real prompt builder and pre-solvers, then the tool-loop
+The turn runs the way ``stream_entry`` runs it: the photo-lookup intercept, the turn
+mode, the real prompt builder and pre-solvers, then the tool-loop
 gate. Only IO is stubbed: the database, model health, the web and image
 search providers, PubChem, and the model calls. The tool rounds are recorded instead of
 called, so the route says whether a model would have been asked. Settings are
@@ -26,7 +26,6 @@ from app.gateways.pubchem_gateway import PubChemCompound, PubChemResult
 from app.gateways.web_search_gateway import WebSearchHit
 from app.models.orm import Chat, User
 from app.modules import web_search as web_search_service
-from app.modules.billing import can_use
 from app.modules.chat import prompt_constants as pc
 from app.modules.chat import prompt_memory
 from app.modules.chat.finalize_passes import enrich_final_content
@@ -55,7 +54,7 @@ from app.modules.chat.prompt_context import _PromptContextBlocks
 from app.modules.chat.stream_paths import run_tool_loop_path
 from app.modules.chat.tool_loop.selection import _search_before_the_model
 from app.modules.chat.turn_deps import default_deps
-from app.modules.chat.turn_intercepts import _chemistry_draws_it, reply_picture_prompt
+from app.modules.chat.turn_intercepts import _chemistry_draws_it
 from app.modules.chat.turn_outcome import TurnOutcome
 from app.modules.chat.turn_prep.context import (
     build_stream_prompt_context,
@@ -64,8 +63,6 @@ from app.modules.chat.turn_prep.context import (
 from app.modules.chat.turn_prep.mode import classify_turn_mode
 from app.modules.chat.turn_prep.request import TurnRequest
 from app.modules.chat.turn_trace import TurnTrace, begin_turn_trace
-from app.modules.images.gen_intent import stem_subject_claims
-from app.modules.images.intent import image_gen_request
 from app.modules.images.lookup_intent import dated_lookup_query, extract_image_lookup_query
 from app.modules.money.block import (
     MONEY_HEADER,
@@ -181,7 +178,6 @@ class Route:
     """What the turn did. Mirrors ``Expect``."""
 
     photo: str
-    image_gen: bool
     search: str
     subject: str
     solved: bool
@@ -197,8 +193,7 @@ class Route:
     # The verified result handed to the model when it writes the reply itself.
     verified_answer: str = ""
     verified_text: str = ""
-    # A multi-part message's picture and settings card (the server's part of its reply).
-    picture: bool = False
+    # A multi-part message's settings card (the server's part of its reply).
     settings_card: str = ""
     # The last reply asked with a clarify card: this reply may not ask again.
     after_card: bool = False
@@ -218,10 +213,6 @@ class Route:
         parts = [f"search={self.search}"]
         if self.photo:
             parts.append(f"photo={self.photo!r}")
-        if self.image_gen:
-            parts.append("image_gen")
-        if self.picture:
-            parts.append("picture")
         if self.settings_card:
             parts.append("settings_card")
         if self.subject:
@@ -265,7 +256,6 @@ def battery_settings() -> Settings:
         web_search_enabled=True,
         web_search_fallback_enabled=False,
         image_search_enabled=True,
-        image_generation_enabled=True,
         math_tools_enabled=True,
         # Coverage, not speed: a busy CI machine must not turn a 0.7s solve
         # into an unanswered turn at the production 5s limit.
@@ -352,13 +342,10 @@ async def route_case(case: Case, settings: Settings | None = None) -> Route:
         name=USER_NAME,
         email="bini@example.com",
         plan="pro" if case.pro else "free",
-        response_tone="casual",
         emoji_use="some",
         locale=case.locale,
         timezone=USER_TIMEZONE,
         memory_enabled=case.memory_enabled,
-        location=case.location,
-        location_enabled=case.location is not None,
     )
     chat = Chat(id=uuid4(), user_id=user.id, title=None)
     rows = _rows(case)
@@ -374,19 +361,10 @@ async def route_case(case: Case, settings: Settings | None = None) -> Route:
     )
 
     # "can u show me both" after a shape answer: the intercept lets chemistry draw the
-    # molecules before a photo lookup or image generation is asked.
+    # molecules before a photo lookup is asked.
     drawn = await _chemistry_draws_it(settings, text, rows)
     found = extract_image_lookup_query(text) if settings.image_search_enabled else None
     photo = dated_lookup_query(found, datetime.now(UTC).year) if found and not drawn else ""
-    image_gen = bool(
-        not photo
-        and not drawn
-        and settings.image_generation_enabled
-        and can_use(user, "image_generation", settings)
-        # Read with the thread, as the turn's intercept reads it ("Image" after "Dog").
-        and image_gen_request(text, rows, revisions=bool(rows)) is not None
-        and not stem_subject_claims(text, chemistry_enabled=settings.chemistry_enabled)
-    )
 
     searched: list[Any] = []
 
@@ -439,9 +417,6 @@ async def route_case(case: Case, settings: Settings | None = None) -> Route:
                 content=text,
                 model=model,
                 client_timezone=USER_TIMEZONE,
-                client_location=case.location,
-                client_latitude=None,
-                client_longitude=None,
                 user=user,
                 chat=chat,
                 turn_mode=turn_mode,
@@ -470,7 +445,7 @@ async def route_case(case: Case, settings: Settings | None = None) -> Route:
     web_flag = loop_call.kwargs.get("web_search") if loop_call is not None else None
     verified_part = bool(loop_call and loop_call.kwargs.get("has_verified_math"))
     direct = loop_ran and _search_before_the_model(
-        text, settings, user, web_search=web_flag, has_verified_math=verified_part
+        text, settings, web_search=web_flag, has_verified_math=verified_part
     )
     if prefetch_searched or direct or (loop_ran and needs_web_search(text)):
         search = "yes"
@@ -489,7 +464,6 @@ async def route_case(case: Case, settings: Settings | None = None) -> Route:
     )
     return Route(
         photo=photo,
-        image_gen=image_gen,
         search=search,
         subject=subject,
         solved=solved,
@@ -503,13 +477,6 @@ async def route_case(case: Case, settings: Settings | None = None) -> Route:
         if verified
         else "",
         verified_text=verified.text if verified else "",
-        picture=bool(
-            not photo
-            and not image_gen
-            and reply_picture_prompt(text, settings)
-            and settings.image_generation_enabled
-            and can_use(user, "image_generation", settings)
-        ),
         settings_card=bundle.settings_card or "",
         after_card=bundle.after_card,
         memory=bool(loaded.get("load_memory")),
@@ -552,11 +519,9 @@ def mismatches(expect: Expect, route: Route) -> list[str]:
         for word in expect.photo_not:
             if word in words:
                 out.append(f"photo: {route.photo!r} still says {word!r}")
-    check("image_gen", expect.image_gen, route.image_gen)
-    check("picture", expect.picture, route.picture)
     check("settings_card", expect.settings_card, bool(route.settings_card))
-    # An intercepted turn (photo or generated image) never reaches the rest.
-    if route.photo or route.image_gen:
+    # An intercepted turn (a photo) never reaches the rest.
+    if route.photo:
         return out
     check("search", expect.search, route.search)
     check("subject", expect.subject, route.subject)

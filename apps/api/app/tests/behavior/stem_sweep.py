@@ -552,8 +552,6 @@ def judge(entry: Entry, subject: str, route: Route) -> Outcome:
     problems = outcome.problems
     if route.photo:
         problems.append(Problem("misread", f"photo lookup took the turn ({route.photo!r})"))
-    if route.image_gen:
-        problems.append(Problem("misread", "image generation took the turn"))
     if entry.expect == "not_subject":
         if route.subject == subject:
             problems.append(Problem("misread", f"read as a {subject} question"))

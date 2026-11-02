@@ -470,14 +470,6 @@
   "expect": "answer"
  },
  {
-  "id": "w2-053",
-  "area": "image_gen",
-  "prompt": "generate an image for my coffee shop's opening post: a jebena pouring coffee into small cups, warm morning light, minimal style",
-  "history": [],
-  "reply": "Here's your image: a clay jebena pouring coffee into small white sini cups on a wooden tray, soft warm morning light from the side, with a clean, minimal cream background ☕\n\nWant a square version for the feed or a vertical one for stories?",
-  "expect": "image_gen"
- },
- {
   "id": "w2-054",
   "area": "edits",
   "prompt": "make it shorter",

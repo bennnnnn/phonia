@@ -21,31 +21,31 @@ def _fact(topic: str, text: str, *, day: int, memory_type: str = "fact", edited_
 
 def test_documents_group_facts_by_topic_in_reading_order():
     facts = [
-        _fact("tech-stack", "Uses Expo", day=3),
-        _fact("area:recall", "Builds Recall", day=2, memory_type="project"),
+        _fact("subjects", "Takes AP Chemistry", day=3),
+        _fact("area:science-fair", "Tests plant growth", day=2, memory_type="project"),
         _fact("profile", "Name is Sam", day=1, memory_type="profile"),
-        _fact("tech-stack", "Uses FastAPI", day=1, edited_day=9),
+        _fact("subjects", "Takes Algebra 2", day=1, edited_day=9),
         _fact("area:zebra", "Runs Zebra", day=4, memory_type="project"),
         _fact("preferences", "Likes short answers", day=5, memory_type="preference"),
     ]
-    areas = [SimpleNamespace(key="area:recall", title="Recall", summary="AI chat app")]
+    areas = [SimpleNamespace(key="area:science-fair", title="Science fair", summary="Plants")]
 
     documents = build_documents(facts, areas)
 
     assert [(doc.group, doc.key) for doc in documents] == [
         ("you", "preferences"),
         ("you", "profile"),
-        ("topics", "tech-stack"),
-        ("areas", "area:recall"),
+        ("topics", "subjects"),
+        ("areas", "area:science-fair"),
         ("areas", "area:zebra"),
     ]
-    stack = documents[2]
-    assert (stack.title, stack.summary) == ("Tech stack", "Tools and technologies you use")
+    subjects = documents[2]
+    assert (subjects.title, subjects.summary) == ("Subjects", "What you study and at what level")
     # Oldest first; updated is the latest change to any fact.
-    assert [fact.text for fact in stack.facts] == ["Uses FastAPI", "Uses Expo"]
-    assert stack.updated_at == _BASE + timedelta(days=9)
-    recall, zebra = documents[3], documents[4]
-    assert (recall.title, recall.summary) == ("Recall", "AI chat app")
+    assert [fact.text for fact in subjects.facts] == ["Takes Algebra 2", "Takes AP Chemistry"]
+    assert subjects.updated_at == _BASE + timedelta(days=9)
+    fair, zebra = documents[3], documents[4]
+    assert (fair.title, fair.summary) == ("Science fair", "Plants")
     # An area without a title row is named from its key.
     assert (zebra.title, zebra.summary) == ("Zebra", "")
 

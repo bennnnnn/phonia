@@ -566,14 +566,6 @@
   "expect": "answer"
  },
  {
-  "id": "s2-054",
-  "area": "chemistry",
-  "prompt": "draw me a cute cartoon atom with a smiley face for our chemistry club poster",
-  "history": [],
-  "reply": "Here's your cartoon atom! ⚛️😊 A happy round nucleus with a big smile, three colourful electron orbits looping around it, and little sparkles — bright and fun for the poster. Want a version with the club's name on it?",
-  "expect": "image_gen"
- },
- {
   "id": "s2-055",
   "area": "physics",
   "prompt": "a car starts from rest and accelerates at 3 m/s² for 5 seconds. whats its final speed and how far did it go",
@@ -596,14 +588,6 @@
   "history": [],
   "reply": "**10 g** will be left.\n\n15 days ÷ 5 days = **3 half-lives**.\n\n| Time | Half-lives | Mass left |\n|---|---|---|\n| 0 days | 0 | 80 g |\n| 5 days | 1 | 40 g |\n| 10 days | 2 | 20 g |\n| 15 days | 3 | **10 g** |\n\nFormula: $m = m_0 \\left(\\tfrac{1}{2}\\right)^{t/t_{1/2}} = 80 \\times \\left(\\tfrac{1}{2}\\right)^3 = 10$ g.",
   "expect": "answer"
- },
- {
-  "id": "s2-058",
-  "area": "math",
-  "prompt": "generate an image of a robot teaching calculus on a chalkboard",
-  "history": [],
-  "reply": "Here's your image: a friendly robot teacher with a piece of chalk, standing at a green chalkboard covered with integrals and derivative notation, in a sunlit classroom. 🤖📚",
-  "expect": "image_gen"
  },
  {
   "id": "s2-059",
@@ -659,8 +643,7 @@
   "prompt": "is it going to rain this afternoon? planning to walk to the library to study",
   "history": [],
   "reply": "In Addis Ababa this afternoon it's around **20 °C** and cloudy, with a **good chance of showers between about 2 and 5 PM** (it's the tail end of the rainy season). Take an umbrella or head out before 2 PM if you can. ☔",
-  "expect": "search",
-  "location": "Addis Ababa, Ethiopia"
+  "expect": "instant"
  },
  {
   "id": "s2-066",
@@ -830,8 +813,7 @@
   "prompt": "How far is the closest eyeglasses store from me?",
   "history": [],
   "reply": "The closest eyeglasses store is **Vision Plus Optics** on Bole Road, about **1.2 km** away (5 minutes by car).",
-  "expect": "search",
-  "location": "Addis Ababa, Ethiopia"
+  "expect": "instant"
  },
  {
   "id": "s2-085",
@@ -879,8 +861,7 @@
   "prompt": "what's the weather like on saturday? we have an outdoor study group",
   "history": [],
   "reply": "Saturday in Addis looks **mostly sunny, 22 °C**, with a small chance of a shower after 3 PM. A morning session outside should be fine.",
-  "expect": "search",
-  "location": "Addis Ababa, Ethiopia"
+  "expect": "instant"
  },
  {
   "id": "s2-091",

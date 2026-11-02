@@ -512,93 +512,59 @@ async def test_upsert_prunes_stale_tokens_for_device():
     session.commit.assert_awaited()
 
 
-@pytest.mark.asyncio
-async def test_upsert_rejects_cross_user_rebind_without_device_id():
-    from app.exceptions import PushTokenBindError
-    from app.repositories import push_tokens as repo
-
-    session = fake_session()
-    prior = MagicMock()
-    prior.user_id = uuid4()
-    prior.device_id = "device-a"
-    session.execute.return_value = MagicMock(scalar_one_or_none=MagicMock(return_value=prior))
-
-    with pytest.raises(PushTokenBindError, match="device_id is required"):
-        await repo.upsert(
-            session,
-            user_id=uuid4(),
-            expo_push_token="ExponentPushToken[stolen]",
-            platform="ios",
-            device_id=None,
-        )
+# The cross-account rebind rules run against Postgres: tests/repositories/test_push_tokens_db.py.
 
 
-@pytest.mark.asyncio
-async def test_upsert_rejects_cross_user_rebind_with_mismatched_device():
-    from app.exceptions import PushTokenBindError
-    from app.repositories import push_tokens as repo
-
-    session = fake_session()
-    prior = MagicMock()
-    prior.user_id = uuid4()
-    prior.device_id = "device-a"
-    session.execute.return_value = MagicMock(scalar_one_or_none=MagicMock(return_value=prior))
-
-    with pytest.raises(PushTokenBindError, match="different device"):
-        await repo.upsert(
-            session,
-            user_id=uuid4(),
-            expo_push_token="ExponentPushToken[stolen]",
-            platform="ios",
-            device_id="device-b",
-        )
-
-
-@pytest.mark.asyncio
-async def test_upsert_rejects_cross_user_rebind_of_a_row_without_device_id():
-    """A row from before device ids has no install to prove: it stays with its owner."""
-    from app.exceptions import PushTokenBindError
-    from app.repositories import push_tokens as repo
-
-    session = fake_session()
-    owner = uuid4()
-    prior = MagicMock()
-    prior.user_id = owner
-    prior.device_id = None
-    session.execute.return_value = MagicMock(scalar_one_or_none=MagicMock(return_value=prior))
-
-    with pytest.raises(PushTokenBindError):
-        await repo.upsert(
-            session,
-            user_id=uuid4(),
-            expo_push_token="ExponentPushToken[legacy]",
-            platform="ios",
-            device_id="any-device",
-        )
-    session.delete.assert_not_awaited()
-    session.commit.assert_not_awaited()
-    assert prior.user_id == owner
-
-
-@pytest.mark.asyncio
-async def test_upsert_allows_cross_user_rebind_with_matching_device():
-    from app.repositories import push_tokens as repo
-
-    session = fake_session()
-    prior_user = uuid4()
-    new_user = uuid4()
-    prior = MagicMock()
-    prior.user_id = prior_user
-    prior.device_id = "device-a"
-    session.execute.return_value = MagicMock(scalar_one_or_none=MagicMock(return_value=prior))
-
-    row = await repo.upsert(
-        session,
-        user_id=new_user,
-        expo_push_token="ExponentPushToken[shared]",
-        platform="ios",
-        device_id="device-a",
+@pytest.mark.parametrize("ttl", [None, 4 * 60 * 60])
+def test_reminder_pushes_are_high_priority_and_expire(ttl):
+    """Doze delayed a normal-priority reminder; a phone off for a day got it a day late."""
+    token = MagicMock()
+    token.expo_push_token = "ExponentPushToken[abc]"
+    token.platform = "ios"
+    out: list[push_service.OutboundPush] = []
+    push_service._append_outbound(
+        out, [token], title="Reminder", body="Call dentist", data={}, ttl_seconds=ttl
     )
-    assert row.user_id == new_user
-    session.delete.assert_awaited_with(prior)
-    session.commit.assert_awaited()
+    assert out[0].message["priority"] == "high"
+    assert out[0].message.get("ttl") == ttl
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(("budget", "polled"), [(60, [5, 5, 2]), (0, [5])])
+async def test_receipt_polling_reads_batches_while_its_budget_lasts(fake_redis, budget, polled):
+    """One batch of 1,000 per pass fell behind past 12,000 pushes an hour."""
+    for i in range(12):
+        await _ready_ticket(fake_redis, f"ticket-{i}", f"ExponentPushToken[{i}]", at=1_000.0)
+    fetch = AsyncMock(side_effect=lambda ids: {i: {"status": "ok"} for i in ids})
+    with (
+        patch("app.modules.notifications.push.expo_push_gateway.fetch_push_receipts", fetch),
+        patch.object(push_service, "RECEIPT_POLL_BATCH", 5),
+    ):
+        decided = await push_service.poll_deferred_push_receipts(
+            AsyncMock(), fake_redis, now=10_000.0, budget_seconds=budget
+        )
+    assert [len(call.args[0]) for call in fetch.await_args_list] == polled
+    assert decided == sum(polled)
+
+
+@pytest.mark.asyncio
+async def test_receipt_polling_reads_past_tickets_still_pending(fake_redis):
+    """A pending receipt stays in the set; the next batch must not read it again."""
+    for i in range(7):
+        await _ready_ticket(fake_redis, f"ticket-{i}", f"ExponentPushToken[{i}]", at=1_000.0 + i)
+    seen: list[list[str]] = []
+
+    async def fetch(ids: list[str]) -> dict:
+        seen.append(ids)
+        return {i: {"status": "pending" if i == "ticket-0" else "ok"} for i in ids}
+
+    with (
+        patch("app.modules.notifications.push.expo_push_gateway.fetch_push_receipts", fetch),
+        patch.object(push_service, "RECEIPT_POLL_BATCH", 3),
+    ):
+        await push_service.poll_deferred_push_receipts(
+            AsyncMock(), fake_redis, now=10_000.0, budget_seconds=60
+        )
+    flat = [ticket for batch in seen for ticket in batch]
+    assert sorted(flat) == sorted(f"ticket-{i}" for i in range(7))  # each read once
+    assert await fake_redis.zcard(push_service.RECEIPT_PENDING_ZSET) == 1

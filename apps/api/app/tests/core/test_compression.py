@@ -82,7 +82,7 @@ def test_compression_shrinks_a_json_list() -> None:
 
 
 def test_compression_never_touches_a_credential_reply() -> None:
-    assert {"/auth/refresh", "/speech/live/session"} <= UNCOMPRESSED_PATHS
+    assert "/auth/refresh" in UNCOMPRESSED_PATHS
     client = TestClient(_mini_app())
     response = client.post("/auth/refresh", headers={"Accept-Encoding": "gzip"})
     assert "content-encoding" not in response.headers

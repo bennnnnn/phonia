@@ -43,7 +43,7 @@ it.each([true, false])("only restores an unsaved attachment and never regenerate
   const retryRejectedSend = jest.fn();
   const { result } = await renderHook(() => useChatErrorRecovery({
     error: { kind: "attachment_rejected", message: "unsaved" }, blocked: false,
-    dismiss, regenerate, retryRejectedSend, restoreComposerDraft, restoreRejectedAttachmentDraft, selectedModel: "smart-chat",
+    dismiss, regenerate, retryRejectedSend, restoreComposerDraft, restoreRejectedAttachmentDraft,
   }));
   await act(async () => { result.current(); });
   expect(restoreComposerDraft).toHaveBeenCalledWith(draft);
@@ -57,7 +57,7 @@ it("refuses all recovery actions while another send is active", async () => {
   const { result } = await renderHook(() => useChatErrorRecovery({
     error: { kind: "attachment_rejected", message: "unsaved" }, blocked: true,
     dismiss: jest.fn(), regenerate: jest.fn(), retryRejectedSend: jest.fn(),
-    restoreComposerDraft: jest.fn(), restoreRejectedAttachmentDraft: restore, selectedModel: "smart-chat",
+    restoreComposerDraft: jest.fn(), restoreRejectedAttachmentDraft: restore,
   }));
   await act(async () => { result.current(); });
   expect(restore).not.toHaveBeenCalled();
@@ -70,7 +70,7 @@ it("retries an unsaved send without regenerating", async () => {
   const { result } = await renderHook(() => useChatErrorRecovery({
     error: { kind: "send_rejected", message: "unsaved" }, blocked: false,
     dismiss, regenerate, retryRejectedSend, restoreComposerDraft: jest.fn(),
-    restoreRejectedAttachmentDraft: jest.fn(), selectedModel: "smart-chat",
+    restoreRejectedAttachmentDraft: jest.fn(),
   }));
   await act(async () => { result.current(); });
   expect(retryRejectedSend).toHaveBeenCalledTimes(1);
@@ -84,10 +84,10 @@ it("regenerates a saved reply without retrying an unsaved send", async () => {
   const { result } = await renderHook(() => useChatErrorRecovery({
     error: { kind: "generic", message: "Connection lost" }, blocked: false,
     dismiss: jest.fn(), regenerate, retryRejectedSend, restoreComposerDraft: jest.fn(),
-    restoreRejectedAttachmentDraft: jest.fn(), selectedModel: "smart-chat",
+    restoreRejectedAttachmentDraft: jest.fn(),
   }));
   await act(async () => { result.current(); });
-  expect(regenerate).toHaveBeenCalledWith("smart-chat");
+  expect(regenerate).toHaveBeenCalledWith();
   expect(retryRejectedSend).not.toHaveBeenCalled();
 });
 

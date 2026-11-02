@@ -20,7 +20,6 @@ from app.modules.chat.turn_prep.context import (
     TurnPromptBundle,
 )
 from app.modules.chat.turn_prep.regenerate_vision import inject_regenerated_image_content
-from app.modules.chat.turn_prep.request import ClientGeoContext
 from app.tests.fakes import redis_mock
 from app.tests.modules.chat.chat_test_support import FakeSessionCM, turn_deps
 
@@ -193,7 +192,6 @@ async def test_regenerate_actual_entry_retains_image_routing_reserve_and_backup(
             fallback_models=[],
             lightweight=False,
             rich_context=False,
-            geo=ClientGeoContext(None, None, None, False, False, False, False),
             local_tz="UTC",
         )
 
@@ -221,10 +219,6 @@ async def test_regenerate_actual_entry_retains_image_routing_reserve_and_backup(
         patch("app.modules.chat.turn_load.wait_for_pending_finalize", AsyncMock()),
         patch(
             "app.modules.chat.turn_intercepts.try_image_lookup_for_turn",
-            AsyncMock(return_value=False),
-        ),
-        patch(
-            "app.modules.chat.turn_intercepts.try_image_gen_for_turn",
             AsyncMock(return_value=False),
         ),
         patch(f"{entry}.build_stream_prompt_context", build),

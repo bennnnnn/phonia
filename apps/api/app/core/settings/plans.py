@@ -1,4 +1,4 @@
-"""What each plan allows per day or month, and the global daily spend cap."""
+"""What each plan allows per day or in total, and the global daily spend cap."""
 
 from pydantic import BaseModel
 
@@ -33,17 +33,19 @@ class PlanAllowanceSettings(BaseModel):
     daily_speech_tts: int = 0
     daily_speech_tts_plus: int = 100
     daily_speech_tts_pro: int = 100
-    # Live talk minutes per UTC calendar month.
-    monthly_live_talk_minutes: int = 0
-    monthly_live_talk_minutes_plus: int = 0
-    monthly_live_talk_minutes_pro: int = 60
-    # AI pictures and reference-photo lookups per UTC day.
-    daily_image_generations: int = 3
-    daily_image_generations_plus: int = 10
-    daily_image_generations_pro: int = 15
+    # Reference-photo lookups per UTC day.
     daily_image_searches: int = 15
     daily_image_searches_plus: int = 60
     daily_image_searches_pro: int = 60
+    # Photo read-backs (POST /{math,physics,chemistry}/scan/read) have no count of their
+    # own: each takes ``scan_read_tokens`` from ``daily_token_limit``, the chat's allowance.
+    # Bytes one account may keep in its Library at once (every attachment row:
+    # uploads, the copies a resend makes, generated pictures and reference photos).
+    # Checked at presign; the daily upload counts alone let a free account keep
+    # about 4.5 GB more every month.
+    library_storage_bytes: int = 400 * 1024**2
+    library_storage_bytes_plus: int = 1 * 1024**3
+    library_storage_bytes_pro: int = 4 * 1024**3
 
     # Auto's everyday turns on the stronger model (``ROUTING.everyday_strong``), not
     # the cheap one (``ROUTING.everyday``). Hard and maths turns route as before.

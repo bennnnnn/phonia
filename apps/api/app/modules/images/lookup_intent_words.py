@@ -1,14 +1,13 @@
 """The word lists the photo lookup reads (``lookup_intent.py``).
 
-Kept apart from the matching logic, as ``gen_intent_words.py`` is for image
-generation. Cases: ``docs/fixtures/image_intent_cases.json``.
+Kept apart from the matching logic. Cases: ``docs/fixtures/photo_lookup_cases.json``.
 """
 
-from app.modules.images.gen_intent_words import NON_IMAGE_WORDS
+from app.modules.images.picture_words import NON_IMAGE_WORDS
 
 # "show me my todos", "show me the code", "show me how to solve this" — this
 # extremely common product phrase must NOT be hijacked into an image search.
-# Generation's denylist (code, writing, app content) plus the maths, chemistry,
+# The shared denylist (code, writing, app content; ``picture_words``) plus the maths, chemistry,
 # plan and explanation nouns that "show me" / "what does X look like" ask for
 # outside of visual object identification.
 LOOKUP_ONLY_NON_IMAGE_WORDS = frozenset(

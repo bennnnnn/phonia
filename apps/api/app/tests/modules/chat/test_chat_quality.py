@@ -94,8 +94,8 @@ def test_detect_quality_short_reply_skipped_for_instant_reply():
     assert not report.has_issues
 
 
-def test_detect_quality_short_reply_skipped_for_image_gen():
-    """An image gen turn (terminal_image_content set) is NOT flagged — the
+def test_detect_quality_short_reply_skipped_for_terminal_photo():
+    """A photo lookup turn (terminal_image_content set) is NOT flagged — the
     '[Image: …]' row is always short."""
     ctx = _ctx(rich_context_turn=True, terminal_image_content="[Image: cat.png]")
     report = detect_quality_issues(ctx, "[Image: cat.png]")

@@ -84,16 +84,15 @@ def format_search_block(
     *,
     team: str | None = None,
     local_places: bool = False,
-    user_location: str | None = None,
     user_timezone: str | None = None,
 ) -> str:
     lines = [
         "Web search results (retrieved just now — ground your answer in these):",
     ]
-    if local_places and not (user_location or "").strip():
+    if local_places:
         lines.append(
-            "User location is not set — nearby results may be less precise. "
-            "If they asked for 'near me', briefly suggest Settings → Location."
+            "The user's location is unknown (the app does not use the device's location): "
+            "answer for the place the question names."
         )
     if team:
         lines.append(
@@ -167,11 +166,6 @@ GEO_DISTANCE_HINT = (
     "Distance / travel query: use the user's location and search results. Give concrete "
     "miles or km and drive/walk time when available. Do NOT use a ```places fence unless "
     "they also asked to find venues."
-)
-
-GEO_ACTIVE_LOCATION_HINT = (
-    "The user's current device location for this nearby/distance query is shown above. "
-    "Use that location in your answer — do not substitute another city from memory or profile."
 )
 
 

@@ -2,7 +2,7 @@
 
 Conversation owns the chats, messages and message chunks (code-health audit ARCH-08;
 structure ticket ST-03): their repositories sit in this module and stay private. Chat,
-images, live talk, to-dos, memory, attachments and the account read through these
+images, to-dos, memory, attachments and the account read through these
 operations and write through ``service``; a turn chat did not stream saves through
 ``turn_record``, and memory forgets past snippets through ``history_rag``.
 """
@@ -17,6 +17,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.orm import Chat, Message
 from app.modules.conversation import chats_repository as _chats
 from app.modules.conversation import messages_repository as _messages
+from app.modules.conversation.pins import MAX_PINNED_CHATS
 
 
 async def get_chat(session: AsyncSession, chat_id: UUID, user_id: UUID) -> Chat | None:
@@ -80,10 +81,8 @@ async def messages_before(
 
 
 async def chats_for_export(session: AsyncSession, user_id: UUID, *, limit: int) -> list[Chat]:
-    """The user's chats, archived ones too, each with its summary (the data export)."""
-    return await _chats.list_for_user(
-        session, user_id, limit=limit, include_archived=True, with_summary=True
-    )
+    """The user's chats, each with its summary (the data export)."""
+    return await _chats.list_for_user(session, user_id, limit=limit, with_summary=True)
 
 
 async def messages_page(
@@ -91,6 +90,14 @@ async def messages_page(
 ) -> list[Message]:
     """An oldest-first slice of the chat's messages (the export pages through them)."""
     return await _messages.list_range(session, chat_id, offset=offset, limit=limit)
+
+
+async def messages_for_export(
+    session: AsyncSession, chat_id: UUID, *, after: tuple[datetime, UUID] | None, limit: int
+) -> list[Message]:
+    """The chat's messages after the ``(created_at, id)`` key of the last one read, oldest
+    first (the export pages by key, so a message deleted meanwhile skips no other)."""
+    return await _messages.list_after_key(session, chat_id, after=after, limit=limit)
 
 
 def forget_user_chats(user_id: UUID) -> None:
@@ -105,21 +112,14 @@ def peek_recent_chat(chat_id: UUID, user_id: UUID) -> Chat | None:
 
 async def pinned_chats(session: AsyncSession, user_id: UUID) -> list[Chat]:
     """The user's pinned chats (the drawer's top)."""
-    return await _chats.list_pinned(session, user_id)
+    return await _chats.list_pinned(session, user_id, limit=MAX_PINNED_CHATS)
 
 
 async def recent_chats_page(
     session: AsyncSession, user_id: UUID, *, limit: int, cursor: str | None = None
 ) -> tuple[list[Chat], str | None]:
-    """A page of the user's unarchived chats, newest activity first, and the next cursor."""
+    """A page of the user's unpinned chats, newest activity first, and the next cursor."""
     return await _chats.list_recent_page(session, user_id, limit=limit, cursor=cursor)
-
-
-async def archived_chats_page(
-    session: AsyncSession, user_id: UUID, *, limit: int, cursor: str | None = None
-) -> tuple[list[Chat], str | None]:
-    """A page of the user's archived chats, and the next cursor."""
-    return await _chats.list_archived_page(session, user_id, limit=limit, cursor=cursor)
 
 
 def chats_by_recency(
@@ -127,6 +127,11 @@ def chats_by_recency(
 ) -> dict[str, list[Chat]]:
     """The chats in the drawer's day groups (today, yesterday, …) in the user's zone."""
     return _chats.group_by_recency(chats, user_timezone=user_timezone, now=now)
+
+
+async def has_messages(session: AsyncSession, chat_id: UUID) -> bool:
+    """Whether the chat holds any message."""
+    return await _messages.chat_has_messages(session, chat_id)
 
 
 async def message_count(session: AsyncSession, chat_id: UUID) -> int:

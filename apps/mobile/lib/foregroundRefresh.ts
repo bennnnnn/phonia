@@ -14,7 +14,6 @@ export const FOREGROUND_STALE_MS = {
   chatMessages: CONTEXT_REFRESH_STALE_MS,
   todos: CONTEXT_REFRESH_STALE_MS,
   usage: CONTEXT_REFRESH_STALE_MS,
-  models: 5 * 60_000,
   /** The device's push token at the server. */
   pushRegistration: 12 * 60 * 60_000,
   /** The connection check runs on every return: it clears a stale "No internet". */

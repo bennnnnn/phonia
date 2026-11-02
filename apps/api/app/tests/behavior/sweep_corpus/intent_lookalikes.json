@@ -750,52 +750,12 @@
   "expect": "photo"
  },
  {
-  "id": "hi-077",
-  "area": "photo",
-  "prompt": "pics of the simien mountains pls",
-  "history": [],
-  "reply": "Here are the **Simien Mountains** in northern Ethiopia — dramatic cliffs, deep valleys, and high plateaus. They're home to gelada monkeys, Walia ibex, and Ethiopian wolves, and to **Ras Dashen**, Ethiopia's highest peak at about 4,550 m.",
-  "expect": "image_gen"
- },
- {
   "id": "hi-078",
   "area": "photo",
   "prompt": "what does a gelada look like 🐒",
   "history": [],
   "reply": "Here's a gelada — sometimes called the \"bleeding-heart monkey\" because of the bright red, hourglass-shaped patch of bare skin on its chest. It has long brown fur, and adult males grow a thick, lion-like mane. Geladas live only in the Ethiopian highlands and are the only primates that feed mainly on grass.",
   "expect": "photo"
- },
- {
-  "id": "hi-079",
-  "area": "image",
-  "prompt": "draw me a lion wearing a crown",
-  "history": [],
-  "reply": "Here's your lion wearing a crown 🦁👑 — a regal golden lion with a full mane and a jeweled gold crown. Want a different style, like cartoon or oil painting?",
-  "expect": "image_gen"
- },
- {
-  "id": "hi-080",
-  "area": "image",
-  "prompt": "generate an image of a futuristic Addis",
-  "history": [],
-  "reply": "Here's a futuristic Addis Ababa 🌆 — glass towers rising around Meskel Square, an elevated light-rail line weaving between them, green rooftop gardens, and Entoto in the background under an evening sky.",
-  "expect": "image_gen"
- },
- {
-  "id": "hi-081",
-  "area": "image",
-  "prompt": "make a watercolor picture of a cat astronaut floating over the moon",
-  "history": [],
-  "reply": "Here's your watercolor cat astronaut 🐱🚀 — a ginger cat in a little white spacesuit, drifting above a soft gray moon with a wash of deep blue and violet stars behind it.",
-  "expect": "image_gen"
- },
- {
-  "id": "hi-082",
-  "area": "image",
-  "prompt": "create an anime style illustration of an ethiopian coffee ceremony",
-  "history": [],
-  "reply": "Here's an anime-style Ethiopian coffee ceremony ☕ — a woman in a white habesha kemis pouring from a jebena into small cups, with frankincense smoke curling up, fresh grass on the floor, and family gathered around in warm afternoon light.",
-  "expect": "image_gen"
  },
  {
   "id": "hi-083",
@@ -827,8 +787,7 @@
   "prompt": "is it going to rain today",
   "history": [],
   "reply": "Looks mostly dry in **Addis Ababa** today — about a **20% chance of a brief afternoon shower**, partly cloudy, high around **23 °C**, dropping to **11 °C** tonight.\n\nThe main rainy season is over, so heavy rain is unlikely — but a light jacket for the evening is a good idea.",
-  "expect": "search",
-  "location": "Addis Ababa, Ethiopia"
+  "expect": "instant"
  },
  {
   "id": "hi-087",
@@ -836,8 +795,7 @@
   "prompt": "weather",
   "history": [],
   "reply": "**Addis Ababa — today (Wed, Oct 14)**\n- ⛅ Partly cloudy\n- 🌡️ High **23 °C**, low **11 °C**\n- 🌧️ Rain chance: **20%**, mostly in the afternoon\n- 💨 Light easterly wind, ~10 km/h\n\nCool morning, pleasant afternoon. Tomorrow looks similar and a little sunnier.",
-  "expect": "search",
-  "location": "Addis Ababa, Ethiopia"
+  "expect": "instant"
  },
  {
   "id": "hi-088",
@@ -861,8 +819,7 @@
   "prompt": "good pizza place near me thats open now",
   "history": [],
   "reply": "Here are a couple of well-rated pizza places in Addis that show as **open now** (hours from their listings — worth a quick call before you go):\n\n1. **Effoi Pizza** — Bole · wood-fired, very popular · open until about 10 PM\n2. **Castelli** — Piassa · classic Italian sit-down restaurant · open until about 10 PM\n\nWant me to look for one closer to a specific neighborhood, or places that deliver?",
-  "expect": "search",
-  "location": "Addis Ababa, Ethiopia"
+  "expect": "instant"
  },
  {
   "id": "hi-091",
@@ -937,43 +894,12 @@
   "expect": "answer"
  },
  {
-  "id": "hi-100",
-  "area": "image",
-  "prompt": "generate an image of an old oak tree in autumn, watercolor",
-  "history": [],
-  "reply": "Here's your watercolor of an old oak tree in autumn.",
-  "expect": "image_gen"
- },
- {
-  "id": "hi-101",
-  "area": "image",
-  "prompt": "draw a treasure map for my kid's pirate party",
-  "history": [],
-  "reply": "Here's your treasure map for the pirate party.",
-  "expect": "image_gen"
- },
- {
   "id": "hi-102",
   "area": "image",
   "prompt": "draw the learning curve for a new language",
   "history": [],
   "reply": "```chart\n{}\n```\nSample data: fast gains in the first months, then a long plateau.",
   "expect": "answer"
- },
- {
-  "id": "hi-103",
-  "area": "image",
-  "prompt": "draw a winding mountain road with sharp curves at sunset",
-  "history": [],
-  "reply": "Here's your winding mountain road at sunset.",
-  "expect": "image_gen"
- },
- {
-  "id": "hi-104",
-  "area": "image",
-  "prompt": "can you draw me a cute cartoon skeleton for my notes",
-  "reply": "Here is a friendly skeleton you can sketch into your notes.",
-  "expect": "image_gen"
  },
  {
   "id": "hi-105",

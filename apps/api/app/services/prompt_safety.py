@@ -104,8 +104,8 @@ def _neutralize_user_preference_fences(content: str) -> str:
 def custom_instructions_block(instructions: str | None) -> str | None:
     """The user's own instructions, marked as their preferences; None when they wrote none.
 
-    Chat and live talk both build it here, cut at the saved limit (code-health audit
-    CLAR-14: each cut at 2,000 characters while the schema saves 1,000).
+    Chat builds it here, cut at the saved limit (code-health audit CLAR-14: it was cut
+    at 2,000 characters while the schema saves 1,000).
     """
     custom = (instructions or "").strip()
     if not custom:

@@ -21,11 +21,9 @@ MemorySensitivity = Literal[
 MemoryOpKind = Literal["add", "update", "supersede", "delete", "mute"]
 
 
-ResponseTone = Literal["funny", "professional", "casual", "soft"]
 EmojiUse = Literal["off", "some", "more"]
 
-# Voices both read-aloud (gpt-4o-mini-tts) and live talk (realtime) can speak,
-# so one choice sounds the same in both.
+# The voices a user may pick for read-aloud.
 UserVoice = Literal[
     "marin", "cedar", "alloy", "ash", "ballad", "coral", "echo", "sage", "shimmer", "verse"
 ]

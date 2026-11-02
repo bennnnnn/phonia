@@ -210,45 +210,6 @@ async def test_unclear_reference_falls_through_to_the_model() -> None:
 
 
 @pytest.mark.asyncio
-async def test_after_a_generated_picture_it_is_left_to_the_editor() -> None:
-    """ "show it at night" after a generated cat edits the cat; no stock photo of "it"."""
-    from app.modules.chat.turn_intercepts import try_image_lookup_for_turn
-
-    user = MagicMock()
-    user.id = uuid4()
-    rows = [
-        SimpleNamespace(id=uuid4(), role="user", content="Generate image: black cat"),
-        SimpleNamespace(
-            id=uuid4(),
-            role="assistant",
-            content="[Image: /attachments/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/file]",
-            model="image-gen-model",
-        ),
-    ]
-    search_and_attach = _found(uuid4())
-    resolve = AsyncMock()
-
-    deps = turn_deps(
-        image_search={"search_and_attach_for_chat": search_and_attach},
-        references={"resolve_reference": resolve},
-    )
-    handled = await try_image_lookup_for_turn(
-        deps,
-        Settings(image_search_enabled=True),
-        user=user,
-        chat_id=uuid4(),
-        content="Show it at night",
-        outcome=TurnOutcome(),
-        create_user_message=True,
-        recent_messages=rows,
-    )
-
-    assert handled is False
-    resolve.assert_not_awaited()
-    search_and_attach.assert_not_awaited()
-
-
-@pytest.mark.asyncio
 async def test_a_named_subject_needs_no_resolver() -> None:
     from app.modules.chat.turn_intercepts import try_image_lookup_for_turn
 
@@ -318,10 +279,9 @@ async def test_regenerating_a_reference_lookup_reads_history_without_the_old_pho
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("kind", ["photo", "picture"])
-async def test_a_stop_held_for_the_users_row_cuts_off_a_photo_or_picture(kind: str) -> None:
-    """A new message holds a Stop's hard cancel until its row is saved; a photo or a
-    picture saves that row only with its reply, so the Stop reaches it before it runs."""
+async def test_a_stop_held_for_the_users_row_cuts_off_a_photo() -> None:
+    """A new message holds a Stop's hard cancel until its row is saved; a photo saves
+    that row only with its reply, so the Stop reaches it before it runs."""
     from app.modules.chat.turn_intercepts import intercept_new_turn
 
     user = make_user()
@@ -329,47 +289,32 @@ async def test_a_stop_held_for_the_users_row_cuts_off_a_photo_or_picture(kind: s
     found = _found(uuid4())
 
     async def work(*_args: Any, **_kwargs: Any) -> Any:
-        order.append(kind)
+        order.append("photo")
         return await found()
 
     outcome = TurnOutcome()
     outcome.hold_stops()
     outcome.stop_when_safe(lambda: order.append("stop"))
-    deps = turn_deps(
-        image_search={"search_and_attach_for_chat": work},
-        image_generation={"generate_for_chat": work},
-        plan={"can_use": MagicMock(return_value=True)},
-    )
-    content = "Show me a photo of the Eiffel Tower" if kind == "photo" else "Draw a black cat"
+    deps = turn_deps(image_search={"search_and_attach_for_chat": work})
     handled = await intercept_new_turn(
         deps,
-        Settings(image_search_enabled=kind == "photo"),
+        Settings(image_search_enabled=True),
         user=user,
         chat_id=uuid4(),
-        content=content,
+        content="Show me a photo of the Eiffel Tower",
         outcome=outcome,
         recent_messages=[],
-        prior_count=0,
     )
 
     assert handled is True
-    assert order == ["stop", kind]
+    assert order == ["stop", "photo"]
 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("regenerate", [False, True])
-@pytest.mark.parametrize(
-    "kind, content, phase",
-    [
-        ("photo", "Show me a photo of the Eiffel Tower", "finding_photo"),
-        ("picture", "Draw a black cat", "image_gen"),
-    ],
-)
-async def test_a_photo_or_picture_on_the_chat_path_says_so_before_it_runs(
-    kind: str, content: str, phase: str, regenerate: bool
-) -> None:
-    """Regression: the tool loop's photo or picture put up its label, the same work
-    on the chat path did not: plain typing dots for the seconds it took."""
+async def test_a_photo_on_the_chat_path_says_so_before_it_runs(regenerate: bool) -> None:
+    """Regression: the tool loop's photo put up its label, the same work on the chat
+    path did not: plain typing dots for the seconds it took."""
     from app.modules.chat.turn_intercepts import intercept_new_turn, intercept_regenerate
     from app.modules.chat.turn_prep import RegenerateBackup
 
@@ -377,7 +322,7 @@ async def test_a_photo_or_picture_on_the_chat_path_says_so_before_it_runs(
     found = _found(uuid4())
 
     async def work(*_args: Any, **_kwargs: Any) -> Any:
-        order.append(kind)
+        order.append("photo")
         return await found()
 
     async def on_status(
@@ -385,31 +330,26 @@ async def test_a_photo_or_picture_on_the_chat_path_says_so_before_it_runs(
     ) -> None:
         order.append(f"{phase}: {detail}")
 
-    deps = turn_deps(
-        image_search={"search_and_attach_for_chat": work},
-        image_generation={"generate_for_chat": work, "image_reference_ids": lambda _c: []},
-        plan={"can_use": MagicMock(return_value=True)},
-    )
-    settings = Settings(image_search_enabled=kind == "photo")
+    deps = turn_deps(image_search={"search_and_attach_for_chat": work})
+    settings = Settings(image_search_enabled=True)
     turn: dict[str, Any] = {
         "user": make_user(),
         "chat_id": uuid4(),
-        "content": content,
+        "content": "Show me a photo of the Eiffel Tower",
         "outcome": TurnOutcome(),
     }
     if regenerate:
-        model = "image-search-model" if kind == "photo" else "image-gen-model"
-        backup = RegenerateBackup(content="[Image]", model=model, message_id=uuid4())
+        backup = RegenerateBackup(content="[Image]", model="image-search-model", message_id=uuid4())
         handled = await intercept_regenerate(
             deps, settings, **turn, backup=backup, on_status=on_status
         )
     else:
         handled = await intercept_new_turn(
-            deps, settings, **turn, recent_messages=[], prior_count=0, on_status=on_status
+            deps, settings, **turn, recent_messages=[], on_status=on_status
         )
 
     assert handled is True
-    assert len(order) == 2 and order[0].startswith(f"{phase}: ") and order[1] == kind
+    assert len(order) == 2 and order[0].startswith("finding_photo: ") and order[1] == "photo"
 
 
 _MOLECULE_ROWS = [
@@ -447,13 +387,12 @@ async def _new_turn(
     misses: set[str] = set()
     handled = await intercept_new_turn(
         deps,
-        Settings(image_search_enabled=True, image_generation_enabled=True),
+        Settings(image_search_enabled=True),
         user=make_user(plan="pro" if pro else "free"),
         chat_id=uuid4(),
         content=content,
         outcome=TurnOutcome(),
         recent_messages=list(rows),
-        prior_count=len(rows),
         misses=misses,
     )
     return handled, resolve, search_and_attach, misses
@@ -483,12 +422,12 @@ async def _show_me_both(
 )
 @pytest.mark.parametrize("resolved", ["water and carbon dioxide", None])
 @pytest.mark.asyncio
-async def test_a_show_line_after_a_shape_answer_is_drawn_not_searched_or_generated(
+async def test_a_show_line_after_a_shape_answer_is_drawn_not_searched(
     content: str, resolved: str | None, thread_sympy_executor: None
 ) -> None:
     """ "can u show me both" searched the word "both" and showed a meme (2026-10-25). After a
     shape answer chemistry draws the molecules, whatever a resolver would have named, before a
-    photo or a generated picture is asked."""
+    photo is asked."""
     handled, resolve, search_and_attach, misses = await _new_turn(_MOLECULE_ROWS, content, resolved)
     assert handled is False
     resolve.assert_not_awaited()
@@ -496,41 +435,12 @@ async def test_a_show_line_after_a_shape_answer_is_drawn_not_searched_or_generat
     assert "photo" in misses
 
 
-_SHOW_LINES = (
-    "can u show me both",
-    "show me both of them",
-    "show me what they look like",
-    "show me each of them",
-    "show me the shapes",
-    "show me the models",
-    "show us both",
-    "show me both then",
-    "show me the drawings",
-    "show me pictures of both",
-    "display them",
-    "let me see them",
-    "what do they look like",
-    "lol no the molecules",
-)
-
-
-@pytest.mark.parametrize("content", _SHOW_LINES)
-def test_the_composer_sends_every_show_line_to_the_chat_turn(content: str) -> None:
-    """The composer reads a send before the chat turn exists: a picture it draws is the
-    picture the chat turn would draw. Every line chemistry claims is a photo lookup or a plain
-    send there, so it reaches the chat turn and its intercept."""
-    from app.modules.images.intent import composer_image_intent
-
-    assert composer_image_intent(content, list(_MOLECULE_ROWS)).request is None
-
-
 @pytest.mark.parametrize("content", ["draw both", "draw both of them", "draw them", "sketch them"])
 @pytest.mark.asyncio
-async def test_a_draw_line_after_a_shape_answer_is_left_to_image_generation(
+async def test_a_draw_line_after_a_shape_answer_is_no_show_line(
     content: str, thread_sympy_executor: None
 ) -> None:
-    """The composer sends "draw both" to /images/generate before any chat turn; chemistry
-    claiming it on the chat path would split that one reading."""
+    """Chemistry's follow-up reader claims a request to see the molecules, not to draw."""
     from app.modules.chat.turn_intercepts import _chemistry_draws_it
 
     assert not await _chemistry_draws_it(Settings(), content, list(_MOLECULE_ROWS))

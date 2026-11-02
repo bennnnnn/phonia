@@ -1255,7 +1255,7 @@
   ],
   "reply": "Of those three, **Gishen Pharmacy near Edna Mall** is the closest to Bole Medhanialem — it's only about a 5-minute walk from the church, and it's open **24 hours**, so you won't have to worry about closing time.\n\n- **Selam Pharmacy (Atlas)** is roughly 2 km away — about 10 minutes by taxi.\n- **Kenema Pharmacy (Bole Rwanda)** is the farthest, around 3 km.\n\nIf you need a specific medicine, call ahead to make sure it's in stock.",
   "expect": "search",
-  "location": "Addis Ababa, Ethiopia"
+  "gap": "\"closest to bole medhanialem\" (a place in lower case) is not read as naming its place: with no device location nothing is searched"
  },
  {
   "id": "hf-074",
@@ -1324,23 +1324,6 @@
   ],
   "reply": "Sure — here's the super-short version:\n\n1. **Wide end on the right**, hanging longer.\n2. **Over, under, over** — wrap the wide end around the narrow end.\n3. **Up** through the neck loop.\n4. **Down** through the front knot.\n5. **Pull** the narrow end and slide the knot up. Done! 👔\n\nMemory trick: **\"over, under, over, up, down\"**. If it ends too long or short, start again with the wide end hanging a little higher or lower.",
   "expect": "answer"
- },
- {
-  "id": "hf-078",
-  "area": "photo",
-  "prompt": "generate an image of the first one",
-  "history": [
-   [
-    "user",
-    "i need a logo idea for my coffee shop called Buna Time"
-   ],
-   [
-    "assistant",
-    "Here are three logo ideas for **Buna Time**:\n\n1. **Jebena clock** — a jebena (traditional clay coffee pot) whose round base is a clock face, with the spout as the hour hand. Warm brown and gold.\n2. **Three cups** — three small sini cups in a row for abol, tona and bereka, with \"Buna Time\" in a simple rounded font underneath.\n3. **Coffee bean sun** — a single coffee bean rising like a sun over a green hill, a nod to Ethiopia as the birthplace of coffee."
-   ]
-  ],
-  "reply": "Here's a generated logo concept for **Buna Time** — a **jebena** whose round base doubles as a clock face, with the spout pointing like an hour hand. Warm coffee browns with gold accents, on a cream background.\n\nWant me to try a version with the shop name integrated into the design, or a simpler flat style for signage?",
-  "expect": "image_gen"
  },
  {
   "id": "hf-079",
@@ -1578,8 +1561,7 @@
    ]
   ],
   "reply": "Bole International Airport is about **6.8 km** from you, roughly 18 minutes by car in current traffic.",
-  "expect": "search",
-  "location": "Addis Ababa, Ethiopia"
+  "expect": "instant"
  },
  {
   "id": "hf-093",

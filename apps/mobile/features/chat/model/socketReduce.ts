@@ -26,8 +26,6 @@ export type ChatWsPayload = {
   completion?: string;
   /** On an `error`: whether the turn's user message is in the chat (Retry vs Regenerate). */
   user_message_saved?: boolean;
-  /** On an `error`: the feature a `daily_limit` or `spend_cap` belongs to (`image_generation`). */
-  feature?: string;
   /** Follow-up questions on a `related_prompts` event. The message field stays `related_prompts`. */
   prompts?: unknown;
 };

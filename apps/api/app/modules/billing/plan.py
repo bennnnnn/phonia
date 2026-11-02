@@ -6,7 +6,7 @@ Plan policy itself lives in ``entitlements``. Which model a message needs is cha
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, TypeGuard
+from typing import TYPE_CHECKING
 
 from app.core.config import Settings
 from app.models import model_catalog
@@ -25,17 +25,13 @@ __all__ = [
     "default_pro_enabled",
     "free_pool",
     "image_turn_model",
-    "is_auto_enabled",
-    "is_explicit_pick",
     "is_paid",
     "model_pool",
-    "override_pool",
     "pick_cheapest_from_pool",
     "pick_fast_from_pool",
     "pick_preferred_tier",
     "pick_smart_from_pool",
     "pick_strongest_from_pool",
-    "validate_enabled_models_for_update",
 ]
 
 AUTO_ALIAS = "auto"
@@ -73,61 +69,13 @@ def allowed_model_ids(user: User, settings: Settings) -> set[str]:
     return set(free_pool(settings))
 
 
-def is_auto_enabled(user: User) -> bool:
-    if user.enabled_models is None:
-        return True
-    return AUTO_ALIAS in user.enabled_models
-
-
-def models_choosing(user: User, settings: Settings, model_id: str) -> list[str]:
-    """``enabled_models`` after choosing ``model_id``, the one rule for every chooser.
-
-    Auto keeps (or restores) the pool with Auto on. A model moves to the front with
-    Auto off and the rest of the pool kept, so the user's other switches survive.
-    """
-    if model_id == AUTO_ALIAS:
-        current = user.enabled_models
-        if current and AUTO_ALIAS in current:
-            return list(current)
-        pool = model_pool(user, settings)
-        return validate_enabled_models_for_update(user, [AUTO_ALIAS, *pool], settings) or [
-            AUTO_ALIAS
-        ]
-    if model_id not in allowed_model_ids(user, settings):
-        raise ValueError("That model isn't available on your plan.")
-    rest = [item for item in model_pool(user, settings) if item != model_id]
-    return validate_enabled_models_for_update(user, [model_id, *rest], settings) or [model_id]
-
-
 def model_pool(user: User, settings: Settings) -> list[str]:
-    """Concrete model aliases Recall may use (never includes ``auto``)."""
+    """Concrete model aliases Auto may use for this plan (never includes ``auto``)."""
     allowed = allowed_model_ids(user, settings)
-    stored = user.enabled_models
-    if stored:
-        pool = [model_id for model_id in stored if model_id != AUTO_ALIAS and model_id in allowed]
-        if pool:
-            return pool
     if can_use(user, "all_models", settings):
         enabled = [model_id for model_id in default_pro_enabled(settings) if model_id in allowed]
         return enabled or [model_catalog.auto_fast_alias()]
     return list(allowed) or [model_catalog.auto_fast_alias()]
-
-
-def override_pool(user: User, settings: Settings) -> set[str]:
-    """Models a per-message override may pick.
-
-    This is ``model_pool`` (plan + the user's ``enabled_models`` preference),
-    NOT ``allowed_model_ids`` (plan only): a model the user disabled in
-    Settings must not be reachable via a WS/HTTP override even if their plan
-    allows it. ``model_pool`` falls back to plan defaults when
-    ``enabled_models`` is None, so default users keep the full plan pool.
-    """
-    return set(model_pool(user, settings))
-
-
-def is_explicit_pick(model_alias: str | None) -> TypeGuard[str]:
-    """The picker named one model for this message (not Auto, not unset)."""
-    return bool(model_alias) and model_alias != AUTO_ALIAS
 
 
 def image_turn_model(
@@ -135,12 +83,11 @@ def image_turn_model(
     settings: Settings,
     routed: str,
     *,
-    explicit: bool,
     unhealthy: frozenset[str] = frozenset(),
 ) -> str:
     """The model for a turn that shows the model an image: one that can read it.
 
-    An explicit pick that reads images keeps the turn. Auto's hard lanes take the
+    Auto's hard lanes take the
     strongest healthy image reader above the everyday tier in the user's pool, so
     a hard question about a photo still gets a model that thinks. Everything else
     goes to the photo lane (``model_catalog.vision_alias``), or, while its breaker
@@ -153,8 +100,6 @@ def image_turn_model(
             user, settings, vision, max_fallbacks=1, unhealthy=unhealthy, needs_vision=True
         )
         lane = backups[0] if backups else vision
-    if explicit:
-        return routed if model_catalog.reads_images(routed) else lane
     if routed == vision or routed not in model_catalog.known_ids():
         return lane
     # Pro's everyday model reads photos itself: its turns keep it.
@@ -245,29 +190,6 @@ def chat_fallback_models(
         ):
             candidates.append(backup.id)
     return candidates[:max_fallbacks]
-
-
-def validate_enabled_models_for_update(
-    user: User,
-    enabled_models: list[str] | None,
-    settings: Settings,
-) -> list[str] | None:
-    if enabled_models is None:
-        return None
-    allowed = allowed_model_ids(user, settings)
-    cleaned: list[str] = []
-    for item in enabled_models:
-        if item == AUTO_ALIAS:
-            if AUTO_ALIAS not in cleaned:
-                cleaned.append(AUTO_ALIAS)
-            continue
-        if item in allowed and item not in cleaned:
-            cleaned.append(item)
-    has_auto = AUTO_ALIAS in cleaned
-    model_ids = [item for item in cleaned if item != AUTO_ALIAS]
-    if not has_auto and not model_ids:
-        raise ValueError("Turn on Auto or at least one model.")
-    return cleaned
 
 
 def _models_in_pool(pool: list[str]) -> list[model_catalog.ChatModel]:

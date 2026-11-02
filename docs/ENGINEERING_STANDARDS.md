@@ -132,6 +132,7 @@ Correct maths, physics and chemistry is a release requirement.
 | File size | `scripts/check_file_sizes.py` against `scripts/file_size_baseline.json` | API CI, Mobile CI |
 | Function size | `app/tests/architecture/test_function_sizes.py` against `function_size_baseline.json` beside it: no new API function over 100 lines, and a recorded one may not grow | API CI |
 | Event loop | `app/tests/loop_guard.py` fails any test in which production code runs SymPy or computes a reading on the loop; `test_sympy_worker_imports.py` keeps the pool's workers free of the web stack | API CI |
+| Dead code | vulture over `app/` without its tests (`[tool.vulture]` in `apps/api/pyproject.toml`): a function only a test calls fails; what a framework reads by name is in `apps/api/vulture_whitelist.py` | API CI |
 | Migrations | `app/tests/architecture/test_migration_safety.py`: one alembic head; no drop or rename in `upgrade()` without an `# expand-contract:` reason | API CI |
 | Deploy gate | Deploy and production app updates run from `main` only, after CI passed for the commit (`scripts/require-green-ci.sh`) | Deploy, Publish app update |
 | Security | CodeQL, Dependabot, GitHub secret scanning | GitHub |

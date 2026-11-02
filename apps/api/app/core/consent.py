@@ -7,8 +7,8 @@ account with none (one from before that, one that withdrew, a client that sends 
 flag such as the web) is asked after sign-in and agrees with ``PATCH /auth/me``
 ``ai_data_consent``. Either way the agreement is
 ``users.ai_data_consent_at``. The server holds the same line: a
-chat turn, speech (transcribe, read aloud, a live talk key or tool), a scanned
-problem's read-back, a picture and the composer's picture check, and a memory
+chat turn, speech (transcribe, read aloud), a scanned
+problem's read-back, and a memory
 edit are refused with ``consent_required`` until the account agrees, and again
 after it withdraws; a file's indexing (OCR and embeddings) skips it. The phone
 answers that code with its consent screen. It sits in ``core`` because every

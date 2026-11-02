@@ -3,7 +3,6 @@
 from functools import partial
 
 from app.core.config import Settings
-from app.models.orm import User
 
 
 def should_classify_tool_web_search(
@@ -14,11 +13,10 @@ def should_classify_tool_web_search(
     has_instant_reply: bool,
     has_verified_math: bool,
     has_search_sources: bool,
-    user: User | None,
 ) -> bool:
     """Classify only if a web verdict can change an otherwise negative gate.
 
-    Asking the actual gate preserves its image, math, feature and turn-mode
+    Asking the actual gate preserves its photo, math, feature and turn-mode
     rules rather than maintaining another list of intent heuristics.
     """
     if not settings.web_search_enabled or has_search_sources:
@@ -29,7 +27,6 @@ def should_classify_tool_web_search(
         turn_needs_tool_loop,
         content,
         settings=settings,
-        user=user,
         lightweight=lightweight,
         has_instant_reply=has_instant_reply,
         has_verified_math=has_verified_math,

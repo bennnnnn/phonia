@@ -163,7 +163,7 @@ _RESET_OFF_MARKERS = (
 _RESET_OFF_ALONE = ("turn off memory", "disable memory", "disable your memory")
 _ALONE_TAIL = frozenset({"", "please", "pls", "now", "for me", "thanks", "thank you"})
 
-# "That's wrong, I'm at Stripe now", "I switched from FastAPI to Django": a saved
+# "That's wrong, I'm in 11th grade now", "I switched from AP Physics 1 to C": a saved
 # fact may have changed. Read anywhere in the line; it only makes the memory pass run.
 _CORRECTION_MARKERS = (
     "that's wrong",
@@ -188,6 +188,11 @@ _CORRECTION_MARKERS = (
     "i dont work at",
     "i quit my",
     "i left my job",
+    "i changed schools",
+    "i switched schools",
+    "i transferred to",
+    "i'm now in",
+    "im now in",
     "actually i",
     "actually, i",
     "actually my",

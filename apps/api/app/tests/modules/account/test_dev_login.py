@@ -23,7 +23,6 @@ async def test_login_dev_creates_user():
         email="dev@test.local",
         name="Dev",
         avatar_url=None,
-        default_model="free-chat",
         memory_enabled=True,
         created_at="2024-01-01T00:00:00",
     )
@@ -57,7 +56,6 @@ async def test_login_dev_returns_existing_user():
         email="existing@test.local",
         name="Old",
         avatar_url=None,
-        default_model="free-chat",
         memory_enabled=True,
         created_at="2024-01-01T00:00:00",
     )
@@ -93,7 +91,6 @@ async def test_login_dev_updates_name_for_existing_user():
         email="dev@recall.local",
         name="bini",
         avatar_url=None,
-        default_model="free-chat",
         memory_enabled=True,
         created_at="2024-01-01T00:00:00",
     )

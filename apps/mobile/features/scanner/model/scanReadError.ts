@@ -13,6 +13,11 @@ const CODE_KEYS: Record<string, string> = {
   not_available: "chat.scan_unavailable",
   image_too_large: "chat.scan_too_large",
   scan_rate_limited: "chat.scan_rate_limit",
+  // A scan takes its tokens from the day's chat allowance: spent, it is refused as a chat
+  // turn is. The words name no plan (the scanner does not know it).
+  quota_exceeded: "chat.quota_exceeded_pro",
+  // Another read of this account's still open (the phone sends one at a time).
+  scan_busy: "chat.scan_busy",
   scan_spend_cap: "chat.scan_spend_cap",
   // Any request over a limit (the API's request limiter, a refused refresh): it showed the
   // server's English. Not the scan's own hourly limit, so not "Too many scans".

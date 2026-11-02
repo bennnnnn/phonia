@@ -21,7 +21,7 @@ export const Motion = {
     pulse: 450,
     /** Skeleton opacity breathe half-cycle */
     breathe: 600,
-    /** Soft pulse (typing / mic / image-gen) */
+    /** Soft pulse (typing / mic) */
     soft: 700,
     /** Pendulum / sway half-cycle */
     sway: 650,

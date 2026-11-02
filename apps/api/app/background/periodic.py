@@ -3,6 +3,14 @@
 Each scheduler keeps its own interval and cycle body so a slow cycle cannot
 delay the others. Lock TTL helpers mark the two intended conventions:
 hold-across-ticks (bounded work) vs yield-next-tick (unbounded work + refresh).
+
+Every worker runs every loop, out of phase with the others. The lock only
+keeps two cycles from overlapping; a finished cycle also leaves a ``:ran``
+marker that expires just before the next interval, so a peer whose tick comes
+later in the same interval skips it. A cycle runs about once per interval
+however many workers there are, not once per worker. The marker is written
+only when the cycle ends, so a holder that crashes mid-cycle leaves none and
+the next tick after its lock expires runs as before.
 """
 
 from __future__ import annotations
@@ -15,6 +23,7 @@ from contextvars import ContextVar
 from dataclasses import dataclass
 
 from redis.asyncio import Redis
+from redis.exceptions import RedisError
 
 from app.core.config import Settings
 from app.core.redis import get_redis_client
@@ -76,26 +85,67 @@ def lock_ttl_yield_next_tick(interval_seconds: int) -> int:
     return max(interval_seconds - 30, 60)
 
 
+def ran_marker_ttl(interval_seconds: int) -> int:
+    """How long a finished cycle keeps peers from running it again.
+
+    A tenth of the interval short of it (at least a second), so the worker
+    that ran it is never skipped on its own next tick by a few milliseconds of
+    clock slop; peers then run the cycle at most about once per interval.
+    """
+    interval = max(interval_seconds, 1)
+    return max(interval - max(interval // 10, 1), 1)
+
+
+def ran_marker_key(lock_key: str) -> str:
+    return f"{lock_key}:ran"
+
+
+async def _ran_recently(redis: Redis, marker_key: str) -> bool:
+    return bool(await redis.get(marker_key))
+
+
+async def _mark_ran(redis: Redis, marker_key: str, interval_seconds: int) -> None:
+    """Best effort: without the marker a peer may run the cycle again this interval."""
+    try:
+        await redis.set(marker_key, "1", ex=ran_marker_ttl(interval_seconds))
+    except (RedisError, OSError) as exc:
+        logger.warning("Could not mark %s as run; a peer may repeat it: %r", marker_key, exc)
+
+
 async def run_locked_cycle(
     *,
     name: str,
     lock_key: str,
     lock_ttl_seconds: int,
+    interval_seconds: int,
     enabled: bool,
     fn: CycleFn,
     settings: Settings,
 ) -> None:
+    """Run ``fn`` on one worker at a time, at most about once per ``interval_seconds``.
+
+    The marker is checked before the lock (the common skip costs one GET) and
+    again once the lock is held, in case a peer finished in between. A failed
+    cycle is marked too: one attempt per interval, as one worker alone makes.
+    """
     if not enabled:
         return
     redis = get_redis_client()
+    marker_key = ran_marker_key(lock_key)
+    if await _ran_recently(redis, marker_key):
+        return
     token = await acquire_lock(redis, lock_key, lock_ttl_seconds)
     if not token:
         return
-    lock = CycleLock(redis=redis, key=lock_key, token=token, ttl_seconds=lock_ttl_seconds)
     try:
-        await fn(settings, lock)
-    except Exception:
-        logger.exception("%s cycle failed", name)
+        if await _ran_recently(redis, marker_key):
+            return
+        lock = CycleLock(redis=redis, key=lock_key, token=token, ttl_seconds=lock_ttl_seconds)
+        try:
+            await fn(settings, lock)
+        except Exception:
+            logger.exception("%s cycle failed", name)
+        await _mark_ran(redis, marker_key, interval_seconds)
     finally:
         await release_lock(redis, lock_key, token)
 

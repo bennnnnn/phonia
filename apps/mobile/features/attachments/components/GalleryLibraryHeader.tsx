@@ -31,7 +31,6 @@ export function GalleryLibraryHeader({
   const C = useTheme();
   const filters: { key: GalleryFilter; label: string }[] = [
     { key: "all", label: t("gallery.filter.all") },
-    { key: "generated", label: t("gallery.filter.generated") },
     { key: "uploaded", label: t("gallery.filter.uploaded") },
     { key: "files", label: t("gallery.filter.files") },
   ];

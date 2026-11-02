@@ -55,7 +55,7 @@ async def _documents_out(session: AsyncSession, user: User) -> list[MemoryDocume
     """Every page, each fact with the chat it was learned in (M12)."""
     documents = await documents_service.list_documents(session, user.id)
     titles = await enqueue_policy.source_chat_titles(
-        session, [fact for document in documents for fact in document.facts]
+        session, user.id, [fact for document in documents for fact in document.facts]
     )
     return [_document_out(document, titles) for document in documents]
 
@@ -70,7 +70,7 @@ async def list_memories(
         get_redis_client(),
         user,
     )
-    titles = await enqueue_policy.source_chat_titles(session, memories)
+    titles = await enqueue_policy.source_chat_titles(session, user.id, memories)
     return [_fact_out(memory, titles) for memory in memories]
 
 

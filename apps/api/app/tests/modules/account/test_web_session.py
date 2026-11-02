@@ -20,7 +20,6 @@ def _fake_auth() -> AuthResponse:
             name="Dev",
             avatar_url=None,
             plan="free",
-            enabled_models=None,
             memory_enabled=True,
             created_at=datetime(2024, 1, 1),
         ),

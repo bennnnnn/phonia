@@ -8,26 +8,22 @@ const chatListFile = cacheFile("cached-chat-list.json");
  * is never shown to the next account. */
 type StoredChatList = { user_id: string; list: ChatList };
 
-const GROUPS = ["pinned", "today", "yesterday", "last_7_days", "this_month", "older", "archived"] as const;
+const GROUPS = ["pinned", "today", "yesterday", "last_7_days", "this_month", "older"] as const;
 
 function readChat(value: unknown): Chat | null {
   if (typeof value !== "object" || value === null) return null;
-  const { id, title, model, pinned, archived, created_at: createdAt, updated_at: updatedAt } =
+  const { id, title, pinned, created_at: createdAt, updated_at: updatedAt } =
     value as Record<string, unknown>;
   if (
     typeof id !== "string" ||
     (title !== null && typeof title !== "string") ||
-    typeof model !== "string" ||
     typeof pinned !== "boolean" ||
-    (archived !== undefined && typeof archived !== "boolean") ||
     typeof createdAt !== "string" ||
     typeof updatedAt !== "string"
   ) {
     return null;
   }
-  const chat: Chat = { id, title, model, pinned, created_at: createdAt, updated_at: updatedAt };
-  if (archived !== undefined) chat.archived = archived;
-  return chat;
+  return { id, title, pinned, created_at: createdAt, updated_at: updatedAt };
 }
 
 function readList(value: unknown): ChatList | null {

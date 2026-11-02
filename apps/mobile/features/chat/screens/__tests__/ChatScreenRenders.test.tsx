@@ -83,7 +83,6 @@ const mockChat = {
   retryRejectedSend: mockNoop,
   restoreRejectedAttachmentDraft: mockNoop,
   beginRegenerateUi: mockNoop,
-  cancelRegenerateUi: mockNoop,
   regenerateResponse: mockAsyncNoop,
   stopGeneration: mockNoop,
   connect: mockNoop,
@@ -95,8 +94,6 @@ const mockRouteLoader = {
   titleGenerating: false,
   pinned: false,
   setPinned: mockNoop,
-  archived: false,
-  setArchived: mockNoop,
   chatLoading: false,
   hasMoreOlder: false,
   loadingOlder: false,
@@ -124,7 +121,6 @@ const mockChatActions = {
   onExportPdfFromMenu: mockNoop,
   onRenameFromMenu: mockNoop,
   onTogglePinFromMenu: mockNoop,
-  onToggleArchiveFromMenu: mockNoop,
   onDeleteFromMenu: mockNoop,
 };
 const mockSend = {
@@ -146,17 +142,6 @@ const mockSend = {
   mathScannerOpen: false,
   setMathScannerOpen: mockNoop,
 };
-const mockLiveTalk = {
-  open: mockNoop,
-  close: mockNoop,
-  toggle: mockAsyncNoop,
-  toggleMute: mockNoop,
-  yieldToComposer: mockNoop,
-  visible: false,
-  muted: false,
-  phase: "idle",
-  recording: false,
-};
 const mockErrorHandlers = {
   chatError: null,
   handleChatError: mockNoop,
@@ -165,7 +150,6 @@ const mockErrorHandlers = {
   handleRejectedSendChange: mockNoop,
 };
 const mockQuotaNudge = { show: false, usedPct: 0, dismiss: mockNoop, applyTurnUsage: mockNoop };
-const mockImageGen = { generating: false, cancel: mockNoop, submitPrompt: mockAsyncNoop, retry: mockNoop };
 const mockDictation = {
   voiceInputAvailable: false,
   voiceRecording: false,
@@ -175,8 +159,6 @@ const mockDictation = {
   cancelVoiceInput: mockNoop,
 };
 const mockDraft = { activeChatId: null, draftChatId: null };
-const mockModels = { isPaid: false, autoEnabled: true, modelEnabledSet: new Set<string>(), AUTO_MODEL_ID: "auto" };
-const mockComposerState = { selectedModel: "auto" };
 const mockMessageList = { headerTitleLabel: null, renderItem: () => null };
 const mockRegenerate = { regenerate: mockAsyncNoop, regenerating: false };
 const mockAuth = { token: "token", user: null, updateUser: mockAsyncNoop };
@@ -202,7 +184,6 @@ jest.mock("@/features/chat/components/ChatComposer", () => ({ COMPOSER_HEIGHT: 5
 jest.mock("@/features/attachments/components/ComposerAttachmentPreview", () => ({
   composerAttachmentExtra: () => 0,
 }));
-jest.mock("@/features/speech/components/LiveTalkOverlay", () => ({ LiveTalkOverlay: () => null }));
 jest.mock("@/features/chat/hooks/useChat", () => ({
   useChat: () => {
     mockChatRenders();
@@ -210,7 +191,6 @@ jest.mock("@/features/chat/hooks/useChat", () => ({
   },
 }));
 jest.mock("@/features/chat/hooks/useChatActions", () => ({ useChatActions: () => mockChatActions }));
-jest.mock("@/features/chat/hooks/useChatComposerState", () => ({ useChatComposerState: () => mockComposerState }));
 jest.mock("@/features/chat/hooks/useComposerDictation", () => ({ useComposerDictation: () => mockDictation }));
 jest.mock("@/features/chat/hooks/useChatDraftWarmup", () => ({ useChatDraftWarmup: () => {} }));
 jest.mock("@/features/chat/hooks/useChatMessageList", () => ({ useChatMessageList: () => mockMessageList }));
@@ -223,9 +203,7 @@ jest.mock("@/features/chat/hooks/useChatSend", () => ({
     return mockSend;
   },
 }));
-jest.mock("@/features/speech/hooks/useLiveTalk", () => ({ useLiveTalk: () => mockLiveTalk }));
 jest.mock("@/features/chat/hooks/useDraftChat", () => ({ useDraftChat: () => mockDraft }));
-jest.mock("@/hooks/useModels", () => ({ useModels: () => mockModels }));
 jest.mock("@/contexts/NetworkContext", () => ({ useNetwork: () => ({ isOffline: false }) }));
 jest.mock("@/features/chat/hooks/useChatScreenError", () => ({
   useChatErrorHandlers: () => mockErrorHandlers,
@@ -234,7 +212,6 @@ jest.mock("@/features/chat/hooks/useChatScreenError", () => ({
 }));
 jest.mock("@/features/chat/hooks/useQuotaNudge", () => ({ useQuotaNudge: () => mockQuotaNudge }));
 jest.mock("@/features/todos/context/TodosContext", () => ({ useTodosOptional: () => null }));
-jest.mock("@/features/chat/hooks/useChatImageGeneration", () => ({ useChatImageGeneration: () => mockImageGen }));
 
 const { mockEmitKeyboard } = jest.requireMock("react-native-reanimated") as {
   mockEmitKeyboard: (frame: KeyboardFrame) => void;

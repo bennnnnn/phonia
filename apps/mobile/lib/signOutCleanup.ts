@@ -1,6 +1,5 @@
 import { resetComposerDraftsForAccount } from "@/features/chat/model/composerDraftReset";
 import { deleteAccountFiles } from "@/lib/accountFiles";
-import { clearCachedModels } from "@/lib/cachedModels";
 import { signOutGoogle } from "@/lib/google-auth";
 import { clearQuizAttempts } from "@/lib/lesson/quizAttempts";
 import { clearCalculatorPositions } from "@/lib/money/calculatorPositions";
@@ -34,7 +33,6 @@ export async function clearSignedOutAccount(userId: string | undefined): Promise
     import("@/features/chat/model/chatListCache").then(({ invalidateChatListCache }) => invalidateChatListCache()),
     import("@/lib/cache/usageCache").then(({ invalidateUsageCache }) => invalidateUsageCache()),
     import("@/features/notifications/model/pushNotifications").then(({ clearPushSyncRecord }) => clearPushSyncRecord()),
-    clearCachedModels(),
     import("@/features/billing/model/purchases").then(({ signOutRevenueCat }) => signOutRevenueCat()),
     signOutGoogle(),
     ...(userId ? [

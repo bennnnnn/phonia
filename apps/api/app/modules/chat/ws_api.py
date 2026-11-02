@@ -38,7 +38,6 @@ from app.modules.chat.stream_events import (
     build_reasoning_event,
     build_status_event,
     error_payload_for_exception,
-    rate_limited_connect_payload,
     rate_limited_payload,
     restarting_payload,
     turn_error_payload,
@@ -53,6 +52,7 @@ from app.modules.chat.ws_limits import (
     close_quietly,
     receive_frame,
     safe_send_json,
+    socket_error_payload,
     user_socket_slot,
 )
 from app.modules.chat.ws_turn import TURN_FRAME_TYPES, TurnLeft, run_chat_stream
@@ -123,20 +123,11 @@ def _status_emitters(websocket: WebSocket) -> tuple[StreamStatusFn, StreamReason
     return emit_status, emit_reasoning
 
 
-def _client_geo_kwargs(
-    request: ChatMessageRequest,
-    *,
-    client_timezone: str | None,
-) -> dict[str, Any]:
-    """Where the phone is for this turn. Its zone is the one the turn's frame names,
-    since the phone can change zone while the socket stays open (a flight, Settings);
-    a frame without one (an older phone) keeps the zone of the auth frame."""
-    return {
-        "client_timezone": request.client_timezone or client_timezone,
-        "client_location": request.client_location,
-        "client_latitude": request.client_latitude,
-        "client_longitude": request.client_longitude,
-    }
+def _turn_timezone(request: ChatMessageRequest, client_timezone: str | None) -> str | None:
+    """The phone's zone for this turn: the one the turn's frame names, since the phone
+    can change zone while the socket stays open (a flight, Settings); a frame without
+    one (an older phone) keeps the zone of the auth frame."""
+    return request.client_timezone or client_timezone
 
 
 async def _handle_regenerate(
@@ -156,7 +147,7 @@ async def _handle_regenerate(
     try:
         request = ChatMessageRequest.model_validate(payload)
     except ValidationError:
-        await websocket.send_json({"type": "error", "message": "Invalid regenerate request"})
+        await websocket.send_json(socket_error_payload("invalid_regenerate"))
         return None
 
     def _regen_stream(outcome: TurnOutcome) -> AsyncIterator[str]:
@@ -166,12 +157,11 @@ async def _handle_regenerate(
             settings,
             user_id=user_id,
             chat_id=chat_id,
-            model_alias=request.model,
             should_cancel=cancel_event.is_set,
             outcome=outcome,
             on_status=emit_status,
             on_reasoning=emit_reasoning,
-            **_client_geo_kwargs(request, client_timezone=client_timezone),
+            client_timezone=_turn_timezone(request, client_timezone),
         )
 
     return await run_chat_stream(
@@ -244,7 +234,6 @@ async def _handle_message(
             user_id=user_id,
             chat_id=chat_id,
             content=request.content,
-            model_alias=request.model,
             attachment_ids=request.attachment_ids,
             should_cancel=cancel_event.is_set,
             outcome=outcome,
@@ -252,7 +241,7 @@ async def _handle_message(
             on_reasoning=emit_reasoning,
             user=user,
             user_generation=user_generation,
-            **_client_geo_kwargs(request, client_timezone=client_timezone),
+            client_timezone=_turn_timezone(request, client_timezone),
         )
 
     return await run_chat_stream(
@@ -294,12 +283,12 @@ async def _authenticate(
             timeout=settings.ws_auth_timeout_seconds,
         )
         if not isinstance(auth_message, dict):
-            await websocket.send_json({"type": "error", "message": "Unauthorized"})
+            await websocket.send_json(socket_error_payload("unauthorized"))
             await websocket.close()
             return None
         token = auth_message.get("token")
         if not isinstance(token, str) or not token.strip():
-            await websocket.send_json({"type": "error", "message": "Missing token"})
+            await websocket.send_json(socket_error_payload("missing_token"))
             await websocket.close()
             return None
 
@@ -311,14 +300,14 @@ async def _authenticate(
         logger.info("WebSocket disconnected before authentication chat_id=%s", chat_id)
         return None
     except TimeoutError:
-        await safe_send_json(websocket, {"type": "error", "message": "Auth timeout"})
+        await safe_send_json(websocket, socket_error_payload("auth_timeout"))
         await websocket.close()
         return None
     except RedisUnavailableError as exc:
         await _close_while_down(websocket, error_payload_for_exception(exc))
         return None
     except (AuthenticationError, json.JSONDecodeError, KeyError, TypeError, AttributeError):
-        await safe_send_json(websocket, {"type": "error", "message": "Unauthorized"})
+        await safe_send_json(websocket, socket_error_payload("unauthorized"))
         await websocket.close()
         return None
     return user_id, token, client_timezone
@@ -356,31 +345,30 @@ async def chat_websocket(
         await _close_while_down(websocket, error_payload_for_exception(exc))
         return
     if not allowed:
-        await websocket.send_json(rate_limited_connect_payload())
+        await websocket.send_json(socket_error_payload("rate_limited"))
         await websocket.close()
         return
 
-    with (
-        bound_log_ids(user_id=user_id),
-        user_socket_slot(user_id, settings.ws_max_sockets_per_user) as admitted,
-    ):
-        if not admitted:
-            logger.warning("Chat socket cap reached user_id=%s chat_id=%s", user_id, chat_id)
-            await close_quietly(websocket, WS_TOO_MANY_SOCKETS_CLOSE_CODE)
-            return
-        await _serve_frames(
-            _ChatSocket(
-                websocket=websocket,
-                redis=redis,
-                settings=settings,
-                chat_id=chat_id,
-                user_id=user_id,
-                token=token,
-                client_timezone=client_timezone,
-                cancel_event=asyncio.Event(),
-                frame_budget=FrameBudget(),
+    slot = user_socket_slot(redis, user_id, settings.ws_max_sockets_per_user)
+    with bound_log_ids(user_id=user_id):
+        async with slot as admitted:
+            if not admitted:
+                logger.warning("Chat socket cap reached user_id=%s chat_id=%s", user_id, chat_id)
+                await close_quietly(websocket, WS_TOO_MANY_SOCKETS_CLOSE_CODE)
+                return
+            await _serve_frames(
+                _ChatSocket(
+                    websocket=websocket,
+                    redis=redis,
+                    settings=settings,
+                    chat_id=chat_id,
+                    user_id=user_id,
+                    token=token,
+                    client_timezone=client_timezone,
+                    cancel_event=asyncio.Event(),
+                    frame_budget=FrameBudget(),
+                )
             )
-        )
 
 
 async def _serve_frames(conn: _ChatSocket) -> None:
@@ -422,7 +410,7 @@ async def _serve_frames(conn: _ChatSocket) -> None:
                 if not conn.frame_budget.allow():
                     await close_flooding_socket(websocket)
                     return
-                await safe_send_json(websocket, {"type": "error", "message": "Invalid JSON"})
+                await safe_send_json(websocket, socket_error_payload("invalid_json"))
                 continue
 
             if not conn.frame_budget.allow():
@@ -431,7 +419,7 @@ async def _serve_frames(conn: _ChatSocket) -> None:
                 return
 
             if not isinstance(payload, dict):
-                await safe_send_json(websocket, {"type": "error", "message": "Invalid message"})
+                await safe_send_json(websocket, socket_error_payload("invalid_message"))
                 continue
             if not await _dispatch(conn, payload):
                 return
@@ -472,7 +460,7 @@ async def _dispatch(conn: _ChatSocket, payload: dict[str, Any]) -> bool:
         await _close_while_down(websocket, turn_error_payload(exc, user_message_saved=False))
         return False
     except AuthenticationError:
-        await safe_send_json(websocket, {"type": "error", "message": "Unauthorized"})
+        await safe_send_json(websocket, socket_error_payload("unauthorized"))
         await websocket.close(code=1008)
         return False
     if not allowed:

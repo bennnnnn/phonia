@@ -3,14 +3,14 @@
 Quota counters are keyed by user id, so deleting an account and signing in
 again with the same Google or Apple login, or with the other provider on the
 same email address (a Gmail or iCloud one), would otherwise start
-every daily cap, and this month's live talk minutes, from zero.
+every daily cap from zero.
 
 Account delete stores what the account had used under one Redis key per sign-in
 identity, ``quota_carry:<HMAC-SHA256(jwt_secret, "quota-carry:google:<sub>")>``, and
 one for the account's email, ``quota_carry:<HMAC-SHA256(jwt_secret,
 "quota-carry-email:<address>")>``: never the raw provider subject, never the address,
 never the user id (so the account's Redis sweep, which deletes every key naming the
-user id, leaves them). Each holds the same counts and expires when the UTC month ends.
+user id, leaves them). Each holds the same counts and expires when the UTC day ends.
 The email key closed a gap: delete an Apple account on x@icloud.com, sign in with
 Google on the same address, and the new account's day started again from zero, its
 snapshot filed only under the Apple id.
@@ -22,7 +22,7 @@ addresses are never given to someone else, so whoever verified one holds it, whi
 provider they signed in with (an Apple ID on a Gmail address is common). Any other
 address was only verified by a provider, which does not prove the person still has it
 (a stale work address, a lapsed domain): with an email key there, someone could use up
-the address's day and live talk month, delete the account, and whoever signs up on it
+the address's day, delete the account, and whoever signs up on it
 next would start at those counts. A Google Workspace address is owned by Google only
 when the sign-in token's ``hd`` claim names its domain; the account row keeps no token,
 so a delete cannot tell, and stores no email key for it. An account with no email, or
@@ -51,7 +51,7 @@ import hmac
 import logging
 import math
 from collections.abc import Sequence
-from datetime import UTC, datetime
+from datetime import UTC, datetime, time, timedelta
 from uuid import UUID
 
 from pydantic import ValidationError
@@ -67,8 +67,8 @@ from app.services import quota as quota_service
 logger = logging.getLogger(__name__)
 
 CARRY_KEY_PREFIX = "quota_carry:"
-# The snapshot only matters until the UTC month ends (live talk is monthly).
-_MAX_TTL_SECONDS = 35 * 24 * 60 * 60
+# The snapshot only matters until the UTC day ends (every carried cap is daily).
+_MAX_TTL_SECONDS = 24 * 60 * 60
 
 
 def _hashed(settings: Settings, message: str) -> str:
@@ -112,8 +112,9 @@ def _identities(user: User) -> list[tuple[str, str]]:
 
 
 def _ttl_seconds(now: datetime | None = None) -> int:
-    current = now or datetime.now(UTC)
-    left = (quota_service.next_month_start(current) - current).total_seconds()
+    current = (now or datetime.now(UTC)).astimezone(UTC)
+    next_day = datetime.combine(current.date() + timedelta(days=1), time.min, tzinfo=UTC)
+    left = (next_day - current).total_seconds()
     return max(1, min(_MAX_TTL_SECONDS, math.ceil(left)))
 
 
@@ -188,7 +189,7 @@ async def restore_for_new_account(
 async def drop_restored(redis: Redis, keys: Sequence[str]) -> None:
     """Delete the snapshots a committed account took. Best effort, never raises: the
     counters are raised already, and a snapshot left over only raises a later account's
-    counters (raise-only, never lowered) until it expires with the month."""
+    counters (raise-only, never lowered) until it expires with the day."""
     if not keys:
         return
     try:
