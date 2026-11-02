@@ -28,7 +28,7 @@ it("names the server's pin cap in the refusal", async () => {
     t,
   };
 
-  await setChatPinned(ctx, { id: "one", title: "A chat", pinned: false, archived: false }, true);
+  await setChatPinned(ctx, { id: "one", title: "A chat", pinned: false }, true);
 
   expect(failure).toHaveBeenCalledWith('chat.pin_limit:{"limit":20}');
 });
