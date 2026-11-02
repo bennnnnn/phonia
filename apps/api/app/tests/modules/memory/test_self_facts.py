@@ -7,15 +7,21 @@ from app.modules.memory.self_facts import stated_fact_writes, stated_self_facts
 def test_working_on_project_is_a_memory() -> None:
     found = stated_self_facts("User: I am working on a chemistry solver")
     assert found == [
-        ("project", "User is working on a chemistry solver", "a chemistry solver"),
+        ("focus", "User is working on a chemistry solver", "a chemistry solver"),
     ]
 
 
 def test_im_working_on_cuts_the_help_request() -> None:
-    found = stated_self_facts("I'm working on Recall, can you help me debug the build?")
+    found = stated_self_facts("I'm working on fractions, can you help me with this one?")
     assert len(found) == 1
-    assert found[0][0] == "project"
-    assert found[0][2] == "Recall"
+    assert found[0][0] == "focus"
+    assert found[0][2] == "fractions"
+
+
+def test_building_software_or_naming_a_project_is_not_a_memory() -> None:
+    """Memory holds what learning needs, not what the user builds at work."""
+    assert stated_self_facts("I'm building a SaaS app with FastAPI") == []
+    assert stated_self_facts("My project is called Recall") == []
 
 
 def test_story_character_working_on_is_not_the_user() -> None:
@@ -41,14 +47,14 @@ def test_another_memory_mentioning_the_name_does_not_hide_the_project() -> None:
         include_sensitive=False,
     )
     assert len(writes) == 1
-    assert writes[0].type == "project"
+    assert writes[0].type == "focus"
 
 
 def test_stored_project_is_not_added_again() -> None:
     writes = stated_fact_writes(
         "I am working on Recall",
         chat_id=uuid4(),
-        existing_facts=[("project", "User is working on Recall")],
+        existing_facts=[("focus", "User is working on Recall")],
         already=[],
         include_sensitive=False,
     )

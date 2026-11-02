@@ -119,7 +119,7 @@ export type Message = {
 export type Memory = {
   id: string;
   type: string;
-  /** The memory document this fact belongs to (profile, tech-stack, area:recall, …). */
+  /** The memory document this fact belongs to (profile, subjects, area:science-fair, …). */
   topic?: string;
   text: string;
   confidence: number | null;

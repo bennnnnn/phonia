@@ -162,7 +162,8 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   lesson a new way, random input is not graded, and “everything at once” / a cheat sheet
   wins. A day or more after the last lesson, the next one opens with a two-line recap and a
   warm-up quiz. Each lesson keeps one ordinary memory line per chat (“Learning Python:
-  reached Lesson 3, Dictionaries … Covered: …”, `lesson_progress` job, no LLM; a hand edit
+  reached Lesson 3, Dictionaries … Covered: …” on the Learning progress page,
+  `lesson_progress` job, no LLM; a hand edit
   to memory after the lessons began keeps it out), so “teach me Python” in a new chat
   offers to pick up where they stopped. Prompt: `modules/chat/prompt_constants/teaching.py`
   and `lesson_flow.py`. Procedures (“teach me how to
@@ -606,8 +607,8 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   raise N to skip intermediate LLM cost. Each pass includes
   user messages not processed by the previous pass (per-chat extract cursor), so a fact
   on turn 2 is not dropped if the chat ends there. Explicit “remember this” / “forget that”,
-  a mute ("stop mentioning my job") and a correction ("that's wrong, I'm at Stripe now")
-  still extract when N>1. No remember/forget chip or confirmation sheet.
+  a mute ("stop mentioning my grades") and a correction ("that's wrong, I'm in 11th grade
+  now") still extract when N>1. No remember/forget chip or confirmation sheet.
 - ✅ **Forget, mute, reset** (`modules/memory/commands.py`) — "forget that I use React"
   deletes the fact the phrase names, never a broader one sharing a word ("builds Recall with
   React Native") or someone else's ("my sister lives in Nairobi"). "Stop mentioning my job" /
@@ -616,22 +617,31 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   everything you know about me" and "stop remembering things about me" get a one-line reply
   pointing to Settings → Memory: chat changes no setting but the theme. Explicit facts and hand edits are
   never evicted by the 150 cap. Sweep look-alikes: `sweep_corpus/memory_controls.json`.
-- ✅ **Extraction hygiene** — only what the user's own lines state or clearly show (the
-  projects they build, the stack they build with, their job, goals, routines, recurring
-  interests); never assistant restatements. Transcript is the **user line only**, capped ~4k
+- ✅ **Extraction hygiene** — memory holds what learning needs: only what the student's own
+  lines state or clearly show (grade and school level, subjects and courses, exams and grades
+  they aim for, topics finished, concepts they keep finding hard, routines, recurring
+  interests); never their job, employer, the tools they build with or work projects, and
+  never assistant restatements. "I'm working on fractions" is kept as a learning-progress
+  fact even when the model returns nothing (`self_facts.py`). Transcript is the **user line only**, capped ~4k
   (head+tail); attachment OCR / untrusted blocks stripped before extract; memory wrapped as
   first-party notes (fence kept); account email injected only for email/draft/inbox intents.
-- ✅ **Extraction reliability (2026-09)** — name, job, employer, school, city, home country and
-  languages are `normal` sensitivity (the `identity` label means gender identity, immigration
-  status or disability), and a dating-app project is not a relationship fact. A failed model
+- ✅ **Extraction reliability (2026-09)** — name, grade, school, city, home country,
+  languages, subjects, goals and struggles are `normal` sensitivity (the `identity` label
+  means gender identity, immigration status or disability), and an essay on depression is a
+  subjects fact, not a health one. Students may be minors: a learning difference (ADHD,
+  dyslexia), an eating disorder, problems at home, bullying, abuse and self-harm are
+  sensitive (model label plus `text.py` needles) and are not stored unless the user says
+  "remember" or opts in. A failed model
   pass keeps the chat's extract cursor and retries on the next turn (3 tries, then moves on);
   a small-talk-only batch moves the cursor so it cannot hide later lines; failures log
   `memory_extract_model_failed`.
 - ✅ **Memory documents (Claude-style)** — each fact has a `topic` that files it into a page:
-  **You** (Profile, Preferences), **Topics** (Interests, Tech stack, Schedule, Recent work,
-  Goals, Side projects, Other) and **Areas** — one page per major project or part of life
-  (`area:<slug>`, title and one-line summary in `memory_areas`, named by the model). Facts
-  stay atomic rows; `type` follows the topic and still drives prompt priority.
+  **You** (Profile: name, grade, school, languages; Preferences: how they like things
+  explained), **Topics** (Subjects, Goals, Learning progress — where the lesson lines go —,
+  Struggles, Interests, Schedule: classes, routines and exam dates, Other) and **Areas** — one
+  page per major course, project or part of life (`area:<slug>`, title and one-line summary
+  in `memory_areas`, named by the model). Facts stay atomic rows; `type` follows the topic
+  and still drives prompt priority.
 - ✅ **Reads your recent chats once** — the first time the Memory screen opens, a
   `memory_history_scan` job reads the user lines of the 20 most recent non-quiz chats and
   records `users.memory_history_scanned_at`; the screen shows "Reading your recent chats…"
@@ -641,8 +651,8 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   plain-words edit that changed saved facts) are skipped, so a deleted fact cannot come back.
   A chat the model or database could not read is retried on a later pass (30 minutes apart,
   3 passes at most); the chats already read are skipped.
-- ✅ **Plain-words edits** — a box under the pages ("You can disagree with me more", "Keep
-  lists under five things") calls `POST /memories/instruct`; the model turns it into fact
+- ✅ **Plain-words edits** — a box under the pages ("Give me a hint before the answer",
+  "Explain things step by step") calls `POST /memories/instruct`; the model turns it into fact
   edits (saved like "remember this") and replies in a sentence. 30 edits per hour per user.
 - ✅ **Typed memories** — `profile` · `preference` · `project` · `fact` · `focus` (grouping
   categories, not a 20-type taxonomy). Each row is one atomic fact (the old one-paragraph-per-type
@@ -654,8 +664,8 @@ Neon Postgres + Upstash Redis + LiteLLM (OpenRouter).
   recency until `memory_inject_max_chars` (1500). Similarity bar stays `memory_min_similarity`
   (0.35); a fact with no vector needs a word in common with the question. Scopes
   (`get_memory_block(scope=…)`): by query; with the profile page (career, "what's my job?");
-  everything ("what do you know about me"); **work** (programming and "my app / my backend"
-  turns: the tech-stack page and what the user builds, no query embed). An embed timeout
+  everything ("what do you know about me"). A programming turn reads memory like any other
+  turn (there is no work scope). An embed timeout
   injects the identity core plus word matches, uncached, and warms the key the turn read.
   Each fact line carries "(said YYYY-MM)" and "unconfirmed" under 0.6 confidence. A failed
   read is reported (`MemoryLoadReport`), never cached, and the reply says memory couldn't

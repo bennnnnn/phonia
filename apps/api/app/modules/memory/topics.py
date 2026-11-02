@@ -1,9 +1,11 @@
 """Memory documents: which document ("topic") each fact belongs to.
 
 Facts stay atomic rows; a document is every active fact with the same topic.
-"You" holds who the user is and how they like replies. "Topics" are standard
-themes. An "area" is one major project or part of the user's life, named by
-the model (``area:recall``), with its own title and one-line summary.
+"You" holds who the student is and how they like things explained. "Topics" are
+the standard themes a tutor uses: what they study, what they aim for, how far
+they've got, what they find hard. An "area" is one major course, project or part
+of the student's life, named by the model (``area:science-fair``), with its own
+title and one-line summary.
 """
 
 from __future__ import annotations
@@ -26,22 +28,24 @@ class TopicSpec:
 
 
 STANDARD_TOPICS: tuple[TopicSpec, ...] = (
-    TopicSpec("profile", "you", "Profile", "Who you are: role, background, location", "profile"),
-    TopicSpec("preferences", "you", "Preferences", "How you want Recall to respond", "preference"),
-    TopicSpec("interests", "topics", "Interests", "Hobbies and interests outside work", "fact"),
-    TopicSpec("tech-stack", "topics", "Tech stack", "Tools and technologies you use", "fact"),
-    TopicSpec("schedule", "topics", "Schedule", "Routines and how you plan your time", "fact"),
+    TopicSpec("profile", "you", "Profile", "Who you are: grade, school, languages", "profile"),
+    TopicSpec("preferences", "you", "Preferences", "How you like things explained", "preference"),
+    TopicSpec("subjects", "topics", "Subjects", "What you study and at what level", "fact"),
+    TopicSpec("goals", "topics", "Goals", "Exams and grades you're aiming for", "focus"),
     TopicSpec(
-        "recent-work", "topics", "Recent work", "What you've been working on lately", "focus"
-    ),
-    TopicSpec("goals", "topics", "Goals", "What you're working toward", "focus"),
-    TopicSpec(
-        "side-projects",
+        "progress",
         "topics",
-        "Side projects",
-        "Ideas and smaller things you're building",
-        "project",
+        "Learning progress",
+        "What you're learning and how far you've got",
+        "focus",
     ),
+    TopicSpec(
+        "struggles", "topics", "Struggles", "What you find hard and mistakes you make", "fact"
+    ),
+    TopicSpec(
+        "interests", "topics", "Interests", "What you enjoy, for examples that click", "fact"
+    ),
+    TopicSpec("schedule", "topics", "Schedule", "Classes, study routines and exam dates", "fact"),
     TopicSpec("notes", "topics", "Other", "Other things worth remembering", "fact"),
 )
 STANDARD_BY_KEY = {spec.key: spec for spec in STANDARD_TOPICS}
@@ -57,9 +61,9 @@ _AREA_SLUG_RE = re.compile(r"[^a-z0-9]+")
 TYPE_DEFAULT_TOPIC = {
     "profile": "profile",
     "preference": "preferences",
-    "project": "side-projects",
+    "project": "notes",
     "fact": "notes",
-    "focus": "recent-work",
+    "focus": "progress",
 }
 
 

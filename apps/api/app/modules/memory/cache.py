@@ -55,16 +55,11 @@ async def write_query_block_cache(cache_key: str, block: str, settings: Settings
 
 
 async def invalidate_memory_block(user_id: UUID) -> None:
-    """Bump the query generation and drop every scoped block-cache key."""
+    """Bump the query generation and drop both block-cache keys."""
     try:
         redis = get_redis_client()
         await bump_generation(redis, memory_generation_key(user_id))
         block_key = memory_block_key(user_id)
-        await redis.delete(
-            block_key,
-            f"{block_key}:x",
-            f"{block_key}:w",
-            f"{block_key}:wx",
-        )
+        await redis.delete(block_key, f"{block_key}:x")
     except Exception:
         logger.debug("Memory block cache invalidation failed", exc_info=True)

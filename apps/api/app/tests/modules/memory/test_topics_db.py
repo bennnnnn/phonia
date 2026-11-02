@@ -45,13 +45,13 @@ async def test_writes_store_topics_and_create_area_rows(db_session):
         user.id,
         [
             _add(
-                "User is building Recall",
+                "User is doing a science fair project",
                 memory_type="project",
-                topic="area:recall",
-                area_title="Recall",
-                area_summary="Personal AI chat app",
+                topic="area:science-fair",
+                area_title="Science fair",
+                area_summary="Plant growth under light",
             ),
-            _add("User uses FastAPI", topic="tech-stack"),
+            _add("User takes AP Physics", topic="subjects"),
             _add("User likes chess"),
         ],
         None,
@@ -62,37 +62,37 @@ async def test_writes_store_topics_and_create_area_rows(db_session):
     facts = await memories_repo.list_for_user(db_session, user.id)
     topics = {fact.text: fact.topic for fact in facts}
     assert topics == {
-        "User is building Recall": "area:recall",
-        "User uses FastAPI": "tech-stack",
+        "User is doing a science fair project": "area:science-fair",
+        "User takes AP Physics": "subjects",
         "User likes chess": "notes",
     }
     areas = await memories_repo.list_areas(db_session, user.id)
     assert [(area.key, area.title, area.summary) for area in areas] == [
-        ("area:recall", "Recall", "Personal AI chat app")
+        ("area:science-fair", "Science fair", "Plant growth under light")
     ]
 
 
 @pytest.mark.asyncio
 async def test_a_second_title_for_an_area_keeps_the_first(db_session):
     user = await _make_user(db_session)
-    for title in ["Recall", "Recall app (renamed)"]:
+    for title in ["Science fair", "Science fair (renamed)"]:
         await apply_fact_ops(
             db_session,
             user.id,
-            [_add(f"Fact under {title}", topic="area:recall", area_title=title)],
+            [_add(f"Fact under {title}", topic="area:science-fair", area_title=title)],
             None,
             active_cap=150,
         )
     await db_session.flush()
     areas = await memories_repo.list_areas(db_session, user.id)
-    assert [area.title for area in areas] == ["Recall"]
+    assert [area.title for area in areas] == ["Science fair"]
 
 
 @pytest.mark.asyncio
 async def test_an_update_moves_a_fact_to_another_document_without_a_copy(db_session):
     user = await _make_user(db_session)
     await apply_fact_ops(
-        db_session, user.id, [_add("User builds apps with Expo")], None, active_cap=150
+        db_session, user.id, [_add("User is preparing a fair project")], None, active_cap=150
     )
     await db_session.flush()
 
@@ -103,10 +103,10 @@ async def test_an_update_moves_a_fact_to_another_document_without_a_copy(db_sess
             MemoryFactWrite(
                 op="update",
                 type="project",
-                text="User builds Recall with Expo",
+                text="User is testing plant growth for the science fair",
                 confidence=0.9,
-                match_text="User builds apps with Expo",
-                topic="area:recall",
+                match_text="User is preparing a fair project",
+                topic="area:science-fair",
             )
         ],
         None,
@@ -116,7 +116,7 @@ async def test_an_update_moves_a_fact_to_another_document_without_a_copy(db_sess
 
     facts = await memories_repo.list_for_user(db_session, user.id)
     assert [(fact.text, fact.topic, fact.type) for fact in facts] == [
-        ("User builds Recall with Expo", "area:recall", "project")
+        ("User is testing plant growth for the science fair", "area:science-fair", "project")
     ]
 
 
@@ -126,14 +126,14 @@ async def test_an_add_of_the_same_text_under_another_type_is_not_a_copy(db_sessi
     await apply_fact_ops(
         db_session,
         user.id,
-        [_add("User codes in TypeScript", memory_type="focus")],
+        [_add("User takes Algebra 2", memory_type="focus")],
         None,
         active_cap=150,
     )
     await apply_fact_ops(
         db_session,
         user.id,
-        [_add("User codes in TypeScript", memory_type="fact", topic="tech-stack")],
+        [_add("User takes Algebra 2", memory_type="fact", topic="subjects")],
         None,
         active_cap=150,
     )
@@ -141,7 +141,7 @@ async def test_an_add_of_the_same_text_under_another_type_is_not_a_copy(db_sessi
 
     facts = await memories_repo.list_for_user(db_session, user.id)
     assert [(fact.text, fact.topic, fact.type) for fact in facts] == [
-        ("User codes in TypeScript", "tech-stack", "fact")
+        ("User takes Algebra 2", "subjects", "fact")
     ]
 
 
@@ -149,7 +149,7 @@ async def test_an_add_of_the_same_text_under_another_type_is_not_a_copy(db_sessi
 async def test_an_update_without_a_topic_keeps_the_facts_document(db_session):
     user = await _make_user(db_session)
     await apply_fact_ops(
-        db_session, user.id, [_add("User uses Vim", topic="tech-stack")], None, active_cap=150
+        db_session, user.id, [_add("User takes Biology", topic="subjects")], None, active_cap=150
     )
     await apply_fact_ops(
         db_session,
@@ -158,9 +158,9 @@ async def test_an_update_without_a_topic_keeps_the_facts_document(db_session):
             MemoryFactWrite(
                 op="update",
                 type="fact",
-                text="User uses Neovim",
+                text="User takes AP Biology",
                 confidence=0.9,
-                match_text="User uses Vim",
+                match_text="User takes Biology",
             )
         ],
         None,
@@ -168,7 +168,7 @@ async def test_an_update_without_a_topic_keeps_the_facts_document(db_session):
     )
     await db_session.flush()
     facts = await memories_repo.list_for_user(db_session, user.id)
-    assert [(fact.text, fact.topic) for fact in facts] == [("User uses Neovim", "tech-stack")]
+    assert [(fact.text, fact.topic) for fact in facts] == [("User takes AP Biology", "subjects")]
 
 
 @pytest.mark.asyncio
@@ -180,7 +180,11 @@ async def test_delete_topic_removes_the_document_and_its_area(db_session):
             db_session,
             owner.id,
             [
-                _add("User builds Recall", topic="area:recall", area_title="Recall"),
+                _add(
+                    "User is doing a science fair project",
+                    topic="area:science-fair",
+                    area_title="Science fair",
+                ),
                 _add("User likes chess", topic="interests"),
             ],
             None,
@@ -188,7 +192,7 @@ async def test_delete_topic_removes_the_document_and_its_area(db_session):
         )
     await db_session.flush()
 
-    deleted = await memories_repo.delete_topic(db_session, user.id, "area:recall")
+    deleted = await memories_repo.delete_topic(db_session, user.id, "area:science-fair")
 
     assert deleted == 1
     assert [fact.topic for fact in await memories_repo.list_for_user(db_session, user.id)] == [
@@ -205,7 +209,13 @@ async def test_clearing_all_memory_removes_area_titles(db_session):
     await apply_fact_ops(
         db_session,
         user.id,
-        [_add("User builds Recall", topic="area:recall", area_title="Recall")],
+        [
+            _add(
+                "User is doing a science fair project",
+                topic="area:science-fair",
+                area_title="Science fair",
+            )
+        ],
         None,
         active_cap=150,
     )
@@ -221,12 +231,12 @@ async def test_clearing_all_memory_removes_area_titles(db_session):
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     "new_type,expected",
-    [("fact", ("tech-stack", "fact")), ("profile", ("profile", "profile"))],
+    [("fact", ("subjects", "fact")), ("profile", ("profile", "profile"))],
 )
 async def test_a_superseding_fact_keeps_type_and_document_together(db_session, new_type, expected):
     user = await _make_user(db_session)
     await apply_fact_ops(
-        db_session, user.id, [_add("User uses Vim", topic="tech-stack")], None, active_cap=150
+        db_session, user.id, [_add("User takes Biology", topic="subjects")], None, active_cap=150
     )
     await apply_fact_ops(
         db_session,
@@ -235,9 +245,9 @@ async def test_a_superseding_fact_keeps_type_and_document_together(db_session, n
             MemoryFactWrite(
                 op="supersede",
                 type=new_type,
-                text="User switched to Neovim",
+                text="User switched to AP Biology",
                 confidence=0.9,
-                match_text="User uses Vim",
+                match_text="User takes Biology",
             )
         ],
         None,

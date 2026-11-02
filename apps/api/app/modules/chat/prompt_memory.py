@@ -1,8 +1,8 @@
 """What a chat turn reads from memory, and what the prompt says when memory can't help.
 
-Which facts load (the scope), whether a programming turn carries the user's stack,
-and the one-line notes for a memory that is off, paused, unavailable or silent on
-an earlier conversation. Each note is added only on a turn it bears on.
+Which facts load (the scope), and the one-line notes for a memory that is off,
+paused, unavailable or silent on an earlier conversation. Each note is added only
+on a turn it bears on. A programming turn reads memory like any other turn.
 """
 
 from __future__ import annotations
@@ -15,7 +15,6 @@ from app.core.config import Settings
 from app.modules import memory as memory_service
 from app.modules.memory.switch import memory_switch_on
 from app.modules.todos import query_implies_todos
-from app.modules.turn_reading.coding import is_programming_turn
 from app.modules.turn_reading.personal import (
     is_career_personal_question,
     recalls_earlier_conversation,
@@ -68,21 +67,6 @@ NO_PAST_RECORD_HINT = (
     "say you can't find it and ask the user to remind you."
 )
 
-# "My app", "our backend": the user's own software.
-_OWN_WORK = re.compile(
-    r"\b(?:my|our)\s+(?:[\w-]+\s+){0,2}?(?:app|apps|application|project|backend|front-?end|"
-    r"api|server|codebase|code|repo|repository|website|web ?app|startup|product|database|db|"
-    r"schema|stack|bot|extension|platform|mvp|saas|plugin)\b",
-    re.IGNORECASE,
-)
-# Building software, said without "my": "write a login screen", "state management".
-_DEV_TASK = re.compile(
-    r"\b(?:auth|authentication|oauth|login (?:screen|page|flow|form)|"
-    r"sign[- ]?(?:in|up) (?:screen|page|flow|form)|state management|deploy(?:ing|ment)?|"
-    r"endpoints?|database schema|data model|push notifications|ci/cd|docker|unit tests?|"
-    r"refactor\w*)\b",
-    re.IGNORECASE,
-)
 # "What's my job?", "where do I work?", "do you remember my dog's name?".
 _ASKS_ABOUT_SELF = re.compile(
     r"^(?:what(?:'s| is| are| was)|where(?:'s| is| do i| did i)|who(?:'s| is)|"
@@ -114,21 +98,6 @@ _OWN_CAREER = re.compile(
     r"responsibilities))\b",
     re.IGNORECASE,
 )
-
-
-def is_work_turn(text: str | None) -> bool:
-    """A programming turn, or one about the user's own app, project or backend.
-
-    "Find the derivative of the function f(x)" uses a programming word but is a
-    maths problem: a turn a subject solver owns is not a work turn.
-    """
-    if not text or not text.strip():
-        return False
-    if _OWN_WORK.search(text) or _DEV_TASK.search(text):
-        return True
-    from app.modules.chat.turn_prep.reading import subject_of
-
-    return is_programming_turn(text) and subject_of(text) is None
 
 
 def memory_scope_for(text: str | None) -> MemoryScope:

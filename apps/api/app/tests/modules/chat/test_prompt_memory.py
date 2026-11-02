@@ -59,13 +59,14 @@ async def _plan(text: str, *, memory: bool = True, rich: bool = False, advice: b
         "How should I deploy my backend?",
         "Which state management library should I use?",
         "Write a login screen for me",
+        "write a python function that reverses a list",
     ],
 )
-async def test_a_programming_turn_reads_the_work_scope(text):
+async def test_a_programming_turn_reads_memory_like_any_other_turn(text):
+    """Memory holds what learning needs, not the stack: no work scope loads for code."""
     plan = await _plan(text)
-    assert plan.load_memory is True
-    assert plan.memory_scope == "work"
-    # The stack comes without a query embed or a past-chat search.
+    assert plan.load_memory is False
+    assert plan.memory_scope == "query"
     assert plan.history_rag is False
 
 
@@ -293,24 +294,6 @@ def test_the_saved_memory_block_says_it_may_be_stale():
     assert "comes from the current source" in memory  # safety phrase
     chats = wrap_earlier_chats("[1] (2026-05-03) User: we picked Neon")
     assert "not this conversation and not saved memory" in chats  # safety phrase
-
-
-@pytest.mark.parametrize(
-    ("text", "work"),
-    [
-        ("How should I structure auth in my app?", True),
-        ("fix the bug in our backend", True),
-        ("what is recursion", True),
-        ("find the derivative of the function f(x) = x^2 + 3x", False),
-        ("write a python function that reverses a list", True),
-        ("my history project is due friday, any tips?", True),
-        ("plan my weekend", False),
-        ("what's a good name for a cat", False),
-        ("a key component of happiness", False),
-    ],
-)
-def test_work_turns_are_about_building_software(text, work):
-    assert prompt_memory.is_work_turn(text) is work
 
 
 def test_memory_switch_counts_an_unloaded_row_as_on():

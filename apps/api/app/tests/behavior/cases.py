@@ -70,8 +70,8 @@ class Expect:
     picture: bool | None = None
     # A multi-part message's settings card, under the model's answer to the rest.
     settings_card: bool | None = None
-    # Saved memory is read for the turn, and which scope ("work", "query", "profile",
-    # "self"; see modules/chat/prompt_memory.py).
+    # Saved memory is read for the turn, and which scope ("query", "profile", "self";
+    # see modules/chat/prompt_memory.py).
     memory: bool | None = None
     memory_scope: str | None = None
 
@@ -2313,39 +2313,37 @@ CASES: tuple[Case, ...] = (
         "personal-stack-carries",
         "personal",
         "How should I structure auth in my app?",
-        Expect(memory=True, memory_scope="work"),
-        "With 'User builds Recall with React Native and FastAPI' saved: tokens in Expo "
-        "SecureStore on the phone, FastAPI JWT on the server, without asking the stack. "
-        "Never the user's city or job.",
+        Expect(memory=False),
+        "A general answer. Memory holds what learning needs, not the stack the user builds "
+        "with: a programming turn reads memory like any other turn.",
     ),
     Case(
         "personal-stack-deploy",
         "personal",
         "How should I deploy my backend?",
-        Expect(memory=True, memory_scope="work"),
-        "Deploy steps for the saved backend (FastAPI), not a survey of every framework.",
+        Expect(memory=False),
+        "Deploy steps that ask what the backend is built with. No saved memory is read.",
     ),
     Case(
         "personal-stack-library",
         "personal",
         "Which state management library should I use?",
-        Expect(memory=True, memory_scope="work"),
-        "A pick for the saved stack (React Native: Zustand or Redux Toolkit), with why.",
+        Expect(memory=False),
+        "A short comparison of the common picks, with when each fits. No saved memory is read.",
     ),
     Case(
         "personal-stack-login-screen",
         "personal",
         "Write a login screen for me",
-        Expect(memory=True, memory_scope="work"),
-        "A React Native login screen when that is the saved stack.",
+        Expect(memory=False),
+        "A login screen, asking or assuming one framework. No saved memory is read.",
     ),
     Case(
         "personal-irrelevant-memory",
         "personal",
         "explain recursion with an example",
-        Expect(memory_scope="work"),
-        "A clear recursion example. A saved cat or marathon never appears: the work scope "
-        "reads the stack and what the user builds, nothing else.",
+        Expect(memory=False),
+        "A clear recursion example. No saved memory is read for a general question.",
     ),
     Case(
         "personal-general-no-memory",

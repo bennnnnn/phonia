@@ -14,7 +14,7 @@ export const memoriesApi = {
     requestRevalidated<MemoryDocuments>("/memories/documents", token),
   deleteMemoryDocument: (token: string, key: string) =>
     request<void>(`/memories/documents/${encodeURIComponent(key)}`, token, { method: "DELETE" }),
-  /** Edit memory in plain words ("keep lists under five things"). */
+  /** Edit memory in plain words ("give me a hint before the answer"). */
   instructMemory: (token: string, instruction: string, topic?: string) =>
     request<MemoryInstructResult>("/memories/instruct", token, {
       method: "POST",

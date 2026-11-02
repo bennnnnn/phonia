@@ -1223,7 +1223,7 @@ def _store() -> list:
         _fact("preference", "Bini prefers concise answers", topic="preferences"),
         _fact("fact", "Bini has a cat named Mimi", topic="interests"),
         _fact("fact", "Bini is training for a marathon", topic="goals"),
-        _fact("fact", "Bini uses React Native and FastAPI", topic="tech-stack"),
+        _fact("fact", "Bini uses React Native and FastAPI", topic="notes"),
         _fact("project", "Bini builds Recall with React Native and FastAPI", topic="area:recall"),
         _fact("project", "Bini's wedding is planned for June", topic="area:wedding"),
         _fact("fact", "Bini wants auth tokens kept off the device logs", topic="notes"),
@@ -1326,20 +1326,6 @@ async def test_a_failed_read_is_reported_and_never_cached(fake_redis, semantic):
     assert block == ""
     assert report.status == "unavailable"
     assert not [key async for key in fake_redis.scan_iter("mem*:*")]
-
-
-def test_work_scope_reads_the_stack_and_what_the_user_builds():
-    """M2/M5: a programming turn gets the stack and the software areas, nothing else."""
-    from app.modules.memory.selection import select_work_memories
-
-    settings = Settings(memory_min_confidence=0.0)
-    texts = [memory.text for memory in select_work_memories(_store(), settings)]
-
-    assert texts[:2] == ["User's name is Bini", "Bini prefers concise answers"]
-    assert "Bini uses React Native and FastAPI" in texts
-    assert "Bini builds Recall with React Native and FastAPI" in texts
-    for unrelated in ("nurse", "Addis Ababa", "Mimi", "marathon", "wedding"):
-        assert not any(unrelated in text for text in texts)
 
 
 def test_profile_scope_keeps_the_profile_document():

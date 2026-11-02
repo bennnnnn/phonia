@@ -290,7 +290,8 @@ async def test_extract_saves_working_on_project_when_model_returns_nothing():
     apply.assert_awaited_once()
     writes: list[MemoryFactWrite] = apply.await_args.kwargs["writes"]
     assert len(writes) == 1
-    assert writes[0].type == "project"
+    # What a student works on is what they are learning now: a progress fact.
+    assert writes[0].type == "focus"
     assert writes[0].op == "add"
     assert "chemistry solver" in writes[0].text.lower()
 
@@ -1220,9 +1221,9 @@ async def test_the_extraction_prompt_names_decisions_mutes_and_corrections(monke
 
     monkeypatch.setattr(memory_llm.litellm_gateway, "complete_structured", fake_complete)
     await memory_llm.revise_memory_facts(
-        Settings(mock_llm_enabled=False), "User: For Recall I decided to use Neon"
+        Settings(mock_llm_enabled=False), "User: For my science fair I decided to test beans"
     )
     system = captured["messages"][0]["content"]
-    assert "Recall uses Neon (chosen over Supabase)" in system
+    assert "Science fair tests beans (chosen over tomatoes)" in system
     assert "op=mute" in system
-    assert "that's wrong, I'm at Stripe now" in system
+    assert "that's wrong, I'm in 11th grade now" in system

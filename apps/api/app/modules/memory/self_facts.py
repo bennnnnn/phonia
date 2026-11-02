@@ -1,6 +1,6 @@
 """Durable first-person facts taken from the user's own lines.
 
-The memory model often returns no ops for "I am working on …". Those
+The memory model often returns no ops for "I am working on fractions". Those
 statements are still saved here, without storing story characters.
 """
 
@@ -18,25 +18,15 @@ from app.modules.memory.writes_repository import MemoryFactWrite
 _MAX_FACTS = 5
 _MAX_OBJECT_CHARS = 200
 
-# Longest prefixes first so "currently working on" wins over "working on".
+# Longest prefixes first so "currently working on" wins over "working on". What a
+# student is working on is what they are learning now: a progress fact.
 _PREFIXES: tuple[tuple[str, str, str], ...] = (
-    ("i am currently working on ", "project", "User is working on {object}"),
-    ("i'm currently working on ", "project", "User is working on {object}"),
-    ("i am working on ", "project", "User is working on {object}"),
-    ("i'm working on ", "project", "User is working on {object}"),
-    ("im working on ", "project", "User is working on {object}"),
-    ("am working on ", "project", "User is working on {object}"),
-    ("i am currently building ", "project", "User is building {object}"),
-    ("i'm currently building ", "project", "User is building {object}"),
-    ("i am building ", "project", "User is building {object}"),
-    ("i'm building ", "project", "User is building {object}"),
-    ("im building ", "project", "User is building {object}"),
-    ("my main project is called ", "project", "User's project is {object}"),
-    ("my current project is called ", "project", "User's project is {object}"),
-    ("my project is called ", "project", "User's project is {object}"),
-    ("my main project is ", "project", "User's project is {object}"),
-    ("my current project is ", "project", "User's project is {object}"),
-    ("my project is ", "project", "User's project is {object}"),
+    ("i am currently working on ", "focus", "User is working on {object}"),
+    ("i'm currently working on ", "focus", "User is working on {object}"),
+    ("i am working on ", "focus", "User is working on {object}"),
+    ("i'm working on ", "focus", "User is working on {object}"),
+    ("im working on ", "focus", "User is working on {object}"),
+    ("am working on ", "focus", "User is working on {object}"),
     ("my current focus is ", "focus", "User's current focus is {object}"),
     ("my current priority is ", "focus", "User's current focus is {object}"),
     ("i am focusing on ", "focus", "User's current focus is {object}"),
@@ -177,7 +167,7 @@ def _match_prefix(line: str) -> tuple[str, str, str] | None:
 
 
 def stated_self_facts(transcript: str) -> list[tuple[str, str, str]]:
-    """Return ``(type, text, object)`` for work the user said they are doing."""
+    """Return ``(type, text, object)`` for what the user said they are working on."""
     found: list[tuple[str, str, str]] = []
     seen: set[str] = set()
     for line in _user_lines(transcript):
@@ -259,7 +249,7 @@ def _is_direct_assertion(folded: str, index: int) -> bool:
 
 
 def _model_sensitivity(obj: str, model_ops: Iterable[object]) -> str | None:
-    """Use the model's sensitivity when it already judged this same work."""
+    """Use the model's sensitivity when it already judged this same statement."""
     folded_obj = obj.casefold()
     words = [word for word in folded_obj.split() if len(word) >= 5]
     for op in model_ops:
@@ -283,6 +273,6 @@ def _already_stored(
     for item_type, item in known:
         if item == sentence:
             return True
-        if item_type == kind and kind in {"project", "focus"} and len(obj) >= 4 and obj in item:
+        if item_type == kind and len(obj) >= 4 and obj in item:
             return True
     return False

@@ -16,7 +16,7 @@ import { IconSize } from "@/ui/icons/sizes";
 const MEMORY_INSTRUCTION_MAX_LENGTH = 500;
 
 type Props = {
-  /** An example instruction, e.g. "Keep lists under five things". */
+  /** An example instruction, e.g. "Explain things step by step". */
   placeholder: string;
   /** Resolves true when memory took the edit; the box then clears. */
   onSubmit: (instruction: string) => Promise<boolean>;

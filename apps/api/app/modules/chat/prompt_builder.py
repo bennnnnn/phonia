@@ -16,7 +16,6 @@ from app.modules.chat.prompt_context import _load_context_blocks
 from app.modules.chat.prompt_format import render_rules
 from app.modules.chat.prompt_inject import append_after_history, inject_before_last_user
 from app.modules.chat.prompt_memory import (
-    is_work_turn,
     memory_saving_paused,
     memory_scope_for,
     recalls_shared_past,
@@ -178,7 +177,7 @@ class _ContextPlan:
     # "What did we decide last time": memory and past chats answer even a slim turn.
     recalls_shared_past: bool
     history_rag: bool
-    # Which saved facts load: by query, with the profile, everything, or the work scope.
+    # Which saved facts load: by query, with the profile, or everything.
     memory_scope: MemoryScope = "query"
 
 
@@ -208,15 +207,12 @@ async def _context_plan(
     # and chat history on every non-greeting, which sat on the first token
     # for seconds before the model started.
     personal_context = (rich_context or advice_memory) and not lightweight
-    # "How should I structure auth in my app?" needs the stack the user builds with,
-    # not their city or job: the work scope, without a query embed.
-    work_memory = not personal_context and not lightweight and is_work_turn(query_text)
     recalls_past = recalls_shared_past(query_text)
     # Memory off means no personal recall at all: no saved facts, no earlier chats.
     memory_on = memory_switch_on(user)
     return _ContextPlan(
         slim=minimal_personal_context or lightweight or not rich_context,
-        load_memory=memory_on and (personal_context or work_memory or recalls_past),
+        load_memory=memory_on and (personal_context or recalls_past),
         recalls_shared_past=recalls_past,
         history_rag=bool(
             memory_on
@@ -225,7 +221,7 @@ async def _context_plan(
             and query_text
             and query_text.strip()
         ),
-        memory_scope="work" if work_memory else memory_scope_for(query_text),
+        memory_scope=memory_scope_for(query_text),
     )
 
 

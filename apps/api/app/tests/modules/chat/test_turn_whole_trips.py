@@ -408,9 +408,9 @@ async def _seed_user() -> UUID:
             [
                 Memory(
                     user_id=user.id,
-                    type="project",
-                    topic="recent-work",
-                    text="User is building a chat app called Recall",
+                    type="focus",
+                    topic="progress",
+                    text="User is learning quadratic equations",
                     status="active",
                 ),
                 TodoItem(user_id=user.id, content="buy milk", topic="Groceries", sort_order=0),
