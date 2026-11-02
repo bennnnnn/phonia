@@ -88,8 +88,13 @@ async def generate_image(
     prompt: str,
     aspect_ratio: str | None = None,
     reference_images: list[tuple[bytes, str]] | None = None,
+    on_call: Callable[[], None] | None = None,
 ) -> tuple[bytes, str] | None:
-    """Return (image_bytes, content_type) or None on failure."""
+    """Return (image_bytes, content_type) or None on failure.
+
+    ``on_call`` runs just before the provider is asked (the mock counts as one): from
+    then on the call may be billed whatever this returns.
+    """
     if not settings.image_generation_enabled:
         return None
     cleaned = prompt.strip()
@@ -97,11 +102,15 @@ async def generate_image(
         logger.warning("Image generation rejected: prompt length=%s", len(cleaned))
         return None
     if mock_llm.should_mock_llm(settings):
+        if on_call is not None:
+            on_call()
         return mock_llm.mock_image_bytes(), "image/png"
     if not settings.openrouter_api_key:
         return None
 
     model = (settings.image_generation_model or openrouter_slug(_IMAGE_MODEL_ALIAS)).strip()
+    if on_call is not None:
+        on_call()
     return await image_gateway.generate_via_openrouter(
         settings,
         prompt=cleaned,
@@ -125,7 +134,9 @@ async def generate_for_chat(
     """Plan/quota/storage/persist path for POST /images/generate.
 
     Returns (user_message, assistant_message). Raises ImageGenerationError on
-    expected failures; unexpected exceptions are re-raised after quota refund.
+    expected failures. A failure before the provider is asked gives the day's slot
+    back; once it is asked the slot is spent, whatever follows (a Cancel, a content
+    refusal, a failed save): the provider may bill the call either way.
 
     ``user_message_content`` is the composer text shown in the user bubble
     (e.g. \"create a cat image\"). Falls back to ``Generate image: …`` only
@@ -157,6 +168,7 @@ async def generate_for_chat(
             aspect_ratio=aspect_ratio,
             references=references,
             copy_references=create_user_message,
+            on_provider_call=slot.spend,
         )
         # A Cancel that lands while the turn saves lets the save finish: the picture is
         # the user's then, and its slot is kept.
@@ -241,11 +253,14 @@ class _ReservedQuota:
 
     Entering refuses with 429 at the plan's cap. When the block raises anything
     (a cancellation too), ``undo`` runs first, then the slot is given back to
-    the day it was taken from unless the error is a 403 or 429
-    ImageGenerationError. An exception out of ``undo`` skips the refund; it,
-    or one out of the refund, propagates in place of the block's. A class
-    rather than ``@asynccontextmanager``, whose generator would turn a
-    StopAsyncIteration out of Redis into a RuntimeError.
+    the day it was taken from, unless the provider was already asked (``spend``)
+    or the error is a 403 or 429 ImageGenerationError. A Cancel during the
+    provider call used to give the slot back while the provider still billed:
+    generate-then-disconnect never reached the daily cap, and its spend counted
+    toward the global cap that pauses everyone. An exception out of ``undo``
+    skips the refund; it, or one out of the refund, propagates in place of the
+    block's. A class rather than ``@asynccontextmanager``, whose generator would
+    turn a StopAsyncIteration out of Redis into a RuntimeError.
     """
 
     def __init__(
@@ -257,10 +272,16 @@ class _ReservedQuota:
         self.undo = undo
         self.day: date | None = None
         self.kept = False
+        self.spent = False
 
     def keep(self) -> None:
         """The picture is saved: nothing after this undoes it or gives the slot back."""
         self.kept = True
+
+    def spend(self) -> None:
+        """The provider is being asked: a failure from here still undoes what the turn
+        wrote, but the slot stays used."""
+        self.spent = True
 
     async def __aenter__(self) -> _ReservedQuota:
         self.day = await counters.reserve("image_generation", self.redis, self.user, self.settings)
@@ -279,6 +300,8 @@ class _ReservedQuota:
         if exc is None or self.kept:
             return
         await self.undo()
+        if self.spent:
+            return
         if not (isinstance(exc, ImageGenerationError) and exc.status_code in _SLOT_KEPT_ON_STATUS):
             await counters.refund("image_generation", self.redis, self.user.id, day=self.day)
 
@@ -316,8 +339,11 @@ async def _generate_and_store(
     aspect_ratio: str | None,
     references: list[tuple[Attachment, bytes]],
     copy_references: bool,
+    on_provider_call: Callable[[], None],
 ) -> _StoredImage:
-    """Call the provider, check the image, and write it (and reference copies) to storage."""
+    """Call the provider, check the image, and write it (and reference copies) to storage.
+
+    ``on_provider_call`` runs just before the provider is asked."""
     # Provider HTTP — no DB session held.
     try:
         generated = await generate_image(
@@ -325,10 +351,11 @@ async def _generate_and_store(
             prompt=prompt,
             aspect_ratio=aspect_ratio,
             reference_images=[(raw, row.content_type) for row, raw in references] or None,
+            on_call=on_provider_call,
         )
     except asyncio.CancelledError:
         # Cancelled mid-call, the provider may still finish and bill it: the global spend
-        # cap is a safety limit, so it counts the call. The user's day does not.
+        # cap counts the call, and the user's slot stays used (``_ReservedQuota.spend``).
         await finish_despite_cancel(_record_spend(get_redis_client()))
         raise
     except image_gateway.ImageContentBlockedError as exc:

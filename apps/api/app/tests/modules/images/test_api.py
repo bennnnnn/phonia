@@ -99,6 +99,17 @@ def test_generate_image_quota_exhausted(quota_clock):
     assert r.status_code == 429
 
 
+def _asks(result: tuple[bytes, str]) -> AsyncMock:
+    """A generate_image that asks the provider (``on_call``, as the real one does) and gets
+    ``result``."""
+
+    async def provider(*_args: object, on_call, **_kwargs: object) -> tuple[bytes, str]:
+        on_call()
+        return result
+
+    return AsyncMock(side_effect=provider)
+
+
 def test_generate_image_rejects_oversized_result(quota_clock):
     """BUG FIX: last-line-of-defense size check, matching the
     presign + actual-bytes double-check every normal attachment upload gets."""
@@ -121,10 +132,7 @@ def test_generate_image_rejects_oversized_result(quota_clock):
             "app.modules.images.generation.history.get_chat",
             AsyncMock(return_value=chat),
         ),
-        patch(
-            "app.modules.images.generation.generate_image",
-            AsyncMock(return_value=(oversized, "image/png")),
-        ),
+        patch("app.modules.images.generation.generate_image", _asks((oversized, "image/png"))),
     ):
         client = TestClient(app)
         r = client.post(
@@ -132,8 +140,8 @@ def test_generate_image_rejects_oversized_result(quota_clock):
             headers={"Authorization": "Bearer tok"},
             json={"chat_id": str(chat_id), "prompt": "a cat"},
         )
-        # Reserved on entry, refunded after the size check rejects it.
-        assert asyncio.run(fake_redis.get(f"imggen:{user.id}:2026-10-16")) == "0"
+        # Reserved on entry and kept: the provider was asked, and may bill the call.
+        assert asyncio.run(fake_redis.get(f"imggen:{user.id}:2026-10-16")) == "1"
     assert r.status_code == 502
 
 
@@ -304,10 +312,7 @@ def test_generate_image_deletes_storage_when_persist_fails(quota_clock):
             "app.modules.images.generation.history.get_chat",
             AsyncMock(return_value=chat),
         ),
-        patch(
-            "app.modules.images.generation.generate_image",
-            AsyncMock(return_value=(b"\x89PNG\r\n", "image/png")),
-        ),
+        patch("app.modules.images.generation.generate_image", _asks((b"\x89PNG\r\n", "image/png"))),
         patch("app.modules.images.generation.get_storage_gateway", return_value=gateway),
         patch.object(
             messages_repository,
@@ -322,16 +327,17 @@ def test_generate_image_deletes_storage_when_persist_fails(quota_clock):
             headers={"Authorization": "Bearer tok"},
             json={"chat_id": str(chat_id), "prompt": "a cat"},
         )
-        # Reserved once, refunded after persist fail.
-        assert asyncio.run(fake_redis.get(f"imggen:{user.id}:2026-10-16")) == "0"
+        # Reserved once and kept after the persist fails: the provider was asked.
+        assert asyncio.run(fake_redis.get(f"imggen:{user.id}:2026-10-16")) == "1"
     assert r.status_code == 500
     gateway.write_bytes.assert_awaited_once_with(storage_key, b"\x89PNG\r\n")
     gateway.delete_bytes.assert_awaited_once_with(storage_key)
 
 
 async def test_generate_image_stops_the_work_when_the_phone_cancels():
-    """The phone's Cancel closes the request: the generation is cancelled, which gives
-    the day's slot back and deletes anything stored (test_generate_for_chat)."""
+    """The phone's Cancel closes the request: the generation is cancelled and anything
+    stored is deleted; the day's slot comes back only if the provider was not yet asked
+    (test_generate_for_chat)."""
     stopped = asyncio.Event()
 
     async def slow(*_args, **_kwargs):

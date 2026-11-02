@@ -42,7 +42,8 @@ async def generate_image(
     settings: Settings = Depends(get_settings_dep),
 ) -> ImageGenerateOut | Response:
     """A picture for the chat. The phone's Cancel closes the request: the provider call
-    stops, nothing is stored and the day's slot is given back (until_client_leaves)."""
+    stops and nothing is stored (until_client_leaves). The day's slot comes back only
+    when the provider was not yet asked: a call cut short may still be billed."""
     original = (body.user_message or "").strip() or None
     work = image_generation_service.generate_for_chat(
         settings,
