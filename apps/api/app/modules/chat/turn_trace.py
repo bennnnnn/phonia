@@ -202,11 +202,12 @@ def _money(ctx: StreamContext) -> dict[str, Any] | None:
 
 def _model_read(trace: TurnTrace, solver: Mapping[str, Any] | None) -> dict[str, Any] | None:
     """How the model reader's shadow read compares with the patterns' verified read;
-    ``pending`` while it is still reading (its own line follows, ``_log_late_read``)."""
+    ``pending`` while it is still reading (its own line follows, ``_log_late_read``), and
+    ``skipped`` when it ended without a read (the spend cap, a timeout, an error)."""
     if trace.model_read_task is None:
         return None
     if trace.model_read is None:
-        return {"verdict": "pending"}
+        return {"verdict": "skipped" if trace.model_read_task.done() else "pending"}
     return _shadow_fields(trace.model_read, solver)
 
 

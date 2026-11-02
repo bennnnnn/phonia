@@ -10,7 +10,7 @@ from litellm import acompletion as acompletion
 
 from app.core.background_tasks import create_background_task
 from app.core.config import Settings
-from app.gateways import mock_llm
+from app.gateways import llm_spend, mock_llm
 from app.gateways.prompt_cache import with_cache_breakpoint
 from app.gateways.reasoning import reasoning_body
 from app.gateways.stream_signals import (
@@ -25,11 +25,9 @@ from app.gateways.stream_signals import (
 from app.gateways.stream_tool_calls import StreamedToolCalls
 from app.gateways.stream_usage import apply_usage, merge_attempt_usage
 
-# The completion kinds split out of this module are part of its public surface
-# (callers use ``litellm_gateway.complete_structured`` and friends). They make
-# their provider calls through this module (``acompletion``, ``resolve_route``,
-# ``_litellm_kwargs``), importing it at call time: at load it would be a cycle,
-# and a test patches each seam once, here.
+# The completion kinds split out of this module are its public surface too. They call
+# the provider through this module (``acompletion``, ``resolve_route``, ``_litellm_kwargs``),
+# imported at call time (at load, a cycle), so a test patches each seam once, here.
 from app.gateways.structured_completion import complete_structured as complete_structured
 from app.gateways.text_completion import complete_text as complete_text
 from app.gateways.text_tool_calls import TextToolCalls
@@ -84,7 +82,8 @@ def _litellm_kwargs(
     latency_sensitive: bool = False,
     thinking: bool | str | None = None,
 ) -> dict[str, Any]:
-    kwargs: dict[str, Any] = {}
+    # No retries inside LiteLLM or the provider SDK: the fallback policy here is the only one.
+    kwargs: dict[str, Any] = {"num_retries": 0, "max_retries": 0}
     api_key = getattr(settings, route.api_key_field, "")
     if not api_key:
         raise ModelUnavailableError.for_alias(route.id, cause=REQUEST_FAULT)
@@ -164,8 +163,8 @@ async def stream_chat_completion(
         # (a flaky provider's quirk) falls through instead of locking in an empty reply.
         pending: list[str] = []
         started = False
-        # Discarded attempts add no provider tokens to the caller's daily quota: only the
-        # attempt that produced content merges (tool-loop usage is already on `usage`).
+        # Only the attempt that produced content merges into the caller's quota (tool-loop
+        # usage is already on `usage`); a discarded one still counts toward global spend.
         attempt_usage: dict[str, int] = {}
         attempt_calls: list[dict[str, Any]] = []
         cap = first_reply_cap(settings, alias, thinking, has_next=has_next, prompt=shape)
@@ -227,6 +226,9 @@ async def stream_chat_completion(
             if stream_meta is not None:
                 stream_meta["model_alias"] = failed
             raise ModelUnavailableError.for_alias(failed, cause=exc.cause) from exc
+        finally:
+            if not started and not attempt_calls:  # started: finalize charges it
+                llm_spend.meter_discarded_attempt(alias, attempt_usage, shape.chars, attempt.cause)
 
     if last_error is not None:
         raise last_error
@@ -246,11 +248,10 @@ def _try_again(
     settings: Settings,
     stream_meta: dict[str, str] | None,
 ) -> bool:
-    """The last model failed before any text: it is tried once more (appended to
-    ``aliases``): a one-model user has no backup, and one empty or stalled stream left the
-    reply empty. Not when the provider refused or rate-limited the request, ended the reply
-    itself, or a wait timed out past the connect timeout (a hung provider kept a one-model
-    user 60 to 120 s, 2026-11-01), or the attempt ran longer than a stalled start can."""
+    """The last model failed before any text: it is tried once more (appended to ``aliases``),
+    as a one-model user has no backup. Not when the provider refused or rate-limited the
+    request, ended the reply itself, a wait timed out past the connect timeout (a hung provider
+    kept a one-model user 60 to 120 s, 2026-11-01), or it ran longer than a stalled start."""
     alias = attempt.alias
     if exc.cause in _NO_RETRY_CAUSES or (len(aliases) > 1 and aliases[-2] == alias):
         return False
@@ -267,9 +268,8 @@ def _try_again(
 
 
 def _open_wait(settings: Settings, *, has_next: bool) -> float:
-    """How long one attempt waits for its stream to open. The short connect timeout
-    is there so the next model can take over; the last model has no next, and a
-    slow opening is a slow reply, so it gets the idle timeout a stalled stream gets."""
+    """How long one attempt waits for its stream to open: short, so the next model can take
+    over; the last model has none (a slow opening is a slow reply), so it gets the idle one."""
     if has_next:
         return settings.chat_stream_connect_timeout_seconds
     return max(settings.chat_stream_connect_timeout_seconds, settings.chat_stream_timeout_seconds)

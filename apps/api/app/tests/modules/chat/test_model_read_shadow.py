@@ -123,3 +123,38 @@ async def test_a_read_that_outlives_the_turn_logs_its_own_line(
     assert len(late) == 1
     assert '"verdict":"neither"' in late[0].getMessage()
     assert '"reason":"not_subject"' in late[0].getMessage()
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("failure", [RuntimeError("provider broke"), TimeoutError()])
+async def test_a_failed_read_is_caught_and_shows_skipped(
+    monkeypatch: pytest.MonkeyPatch, fake_redis: Any, failure: BaseException
+) -> None:
+    from app.modules.chat.turn_prep import model_read_shadow
+
+    async def broken(_text: str, _settings: Settings) -> BaseModel:
+        raise failure
+
+    monkeypatch.setattr(model_read_shadow, "read_with_model", broken)
+    trace = begin_turn_trace("new")
+    start_model_read_shadow(_SPEED, Settings(**_ON), fake_redis, subject="physics")
+    await trace.model_read_task  # never raises: the task caught it
+    assert trace.model_read_task.exception() is None
+    assert turn_record(trace, None, outcome=None)["model_read"] == {"verdict": "skipped"}
+
+
+@pytest.mark.asyncio
+async def test_the_read_is_a_tracked_background_task(
+    monkeypatch: pytest.MonkeyPatch, fake_redis: Any
+) -> None:
+    from app.core import background_tasks
+
+    async def capped(_redis: Any, _settings: Settings) -> bool:
+        return True
+
+    monkeypatch.setattr(quota_service, "global_spend_exceeded", capped)
+    trace = begin_turn_trace("new")
+    start_model_read_shadow(_SPEED, Settings(**_ON), fake_redis, subject="physics")
+    assert trace.model_read_task in background_tasks._background_tasks
+    await trace.model_read_task
+    assert turn_record(trace, None, outcome=None)["model_read"] == {"verdict": "skipped"}

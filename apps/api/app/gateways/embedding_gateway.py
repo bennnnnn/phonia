@@ -58,7 +58,8 @@ async def _embed_request(settings: Settings, texts: list[str]) -> list[list[floa
     if not api_key:
         return None
 
-    kwargs: dict[str, Any] = {"api_key": api_key}
+    # No retries inside LiteLLM or the provider SDK: a failed batch falls back here.
+    kwargs: dict[str, Any] = {"api_key": api_key, "num_retries": 0, "max_retries": 0}
     if route.api_base:
         kwargs["api_base"] = route.api_base
 
