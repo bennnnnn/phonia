@@ -164,6 +164,7 @@ def render_parts(
     ``hoist`` False keeps each part's givens at the part, for a reply still streaming: a
     given moved up to the one Given would rewrite what the phone has drawn. The finished
     reply always has one Given (``one_given``)."""
+    own: list[list[str]]
     if hoist:
         givens, own = one_given(given, parts), [[] for _part in parts]
     else:
