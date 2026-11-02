@@ -26,6 +26,7 @@ from app.modules.attachments.markers import image_marker
 from app.modules.billing import is_paid
 from app.modules.images import generation
 from app.modules.images.reply_picture_lines import Reason, not_drawn_line, reason_for_code
+from app.modules.images.written_bytes import WrittenBytes
 from app.services import quota as quota_service
 
 logger = logging.getLogger(__name__)
@@ -38,8 +39,9 @@ _WAIT_SECONDS = 90.0
 async def draw_unlinked(settings: Settings, *, user: User, chat_id: UUID, prompt: str) -> UUID:
     """Draw one picture and store it unlinked, under ``generate_for_chat``'s rules.
 
-    Raises ``ImageGenerationError`` as generation does; the slot is given back on
-    any failure (``generation._ReservedQuota``), and the bytes written are deleted.
+    Raises ``ImageGenerationError`` as generation does; the slot is given back on a
+    failure before the provider is asked, and kept after (``generation._ReservedQuota``);
+    the bytes written are deleted either way.
     """
     cleaned = prompt.strip()
     gateway, _references, redis = await generation._authorize_generation(
@@ -49,8 +51,8 @@ async def draw_unlinked(settings: Settings, *, user: User, chat_id: UUID, prompt
         create_user_message=True,
         reference_attachment_ids=[],
     )
-    written = generation._WrittenBytes(gateway)
-    async with generation._ReservedQuota(redis, user, settings, undo=written.delete_all):
+    written = WrittenBytes(gateway)
+    async with generation._ReservedQuota(redis, user, settings, undo=written.delete_all) as slot:
         stored = await generation._generate_and_store(
             settings,
             written,
@@ -59,6 +61,7 @@ async def draw_unlinked(settings: Settings, *, user: User, chat_id: UUID, prompt
             aspect_ratio=None,
             references=[],
             copy_references=False,
+            on_provider_call=slot.spend,
         )
         async with SessionLocal() as session:
             await attachments_service.add_server_images(

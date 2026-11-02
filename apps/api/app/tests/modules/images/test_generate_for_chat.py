@@ -470,7 +470,10 @@ async def test_generate_for_chat_a_failed_delete_is_logged_and_the_slot_kept(tur
     turn.fail["commit"] = Boom("db")
     turn.fail["delete"] = Boom("storage")
 
-    with caplog.at_level(logging.ERROR, logger=MOD), pytest.raises(Boom, match="db"):
+    with (
+        caplog.at_level(logging.ERROR, logger="app.modules.images.written_bytes"),
+        pytest.raises(Boom, match="db"),
+    ):
         await turn.run()
 
     assert await turn.slot() == "1"

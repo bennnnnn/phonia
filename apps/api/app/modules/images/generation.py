@@ -42,6 +42,7 @@ from app.modules.chat import finish_turn
 from app.modules.conversation import history, turn_record
 from app.modules.images.intent import image_reference_ids as image_reference_ids
 from app.modules.images.turn_references import shown_in_chat, turn_reference_ids
+from app.modules.images.written_bytes import WrittenBytes
 from app.services import quota as quota_service
 from app.services.quota import counters
 
@@ -57,20 +58,6 @@ _ALLOWED_ASPECT_RATIOS: frozenset[str] = frozenset({"1:1", "16:9", "9:16", "4:3"
 
 class ImageGenerationError(DomainError):
     """An image generation refusal."""
-
-
-async def _rollback_written_bytes(gateway: StorageGateway, storage_key: str | None) -> None:
-    """Delete an object that persisting never named (the reaper sees rows only), or queue it.
-
-    Without this an object written before a failed persist leaked for ever.
-    """
-    if not storage_key:
-        return
-    try:
-        await gateway.delete_bytes(storage_key)
-    except Exception:
-        logger.exception("Failed to delete orphaned generated image %s", storage_key)
-        await attachments_service.queue_storage_deletes([storage_key])
 
 
 def normalize_aspect_ratio(value: str | None) -> AspectRatio | None:
@@ -155,7 +142,7 @@ async def generate_for_chat(
         create_user_message=create_user_message,
         reference_attachment_ids=reference_attachment_ids,
     )
-    written = _WrittenBytes(gateway)
+    written = WrittenBytes(gateway)
     async with _ReservedQuota(redis, user, settings, undo=written.delete_all) as slot:
         cleaned = prompt.strip()
         if not cleaned:
@@ -306,22 +293,6 @@ class _ReservedQuota:
             await counters.refund("image_generation", self.redis, self.user.id, day=self.day)
 
 
-class _WrittenBytes:
-    """Storage objects this turn wrote, deleted in write order if the turn fails."""
-
-    def __init__(self, gateway: StorageGateway) -> None:
-        self.gateway = gateway
-        self.keys: list[str] = []
-
-    async def write(self, storage_key: str, data: bytes) -> None:
-        await self.gateway.write_bytes(storage_key, data)
-        self.keys.append(storage_key)
-
-    async def delete_all(self) -> None:
-        for key in self.keys:
-            await _rollback_written_bytes(self.gateway, key)
-
-
 @dataclass(frozen=True)
 class _StoredImage:
     """The generated image in storage, and the reference copies written beside it."""
@@ -332,7 +303,7 @@ class _StoredImage:
 
 async def _generate_and_store(
     settings: Settings,
-    written: _WrittenBytes,
+    written: WrittenBytes,
     *,
     user_id: UUID,
     prompt: str,
