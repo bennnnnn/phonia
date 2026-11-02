@@ -7,7 +7,6 @@ import {
   chatRecencySection,
   patchChatListGroups,
   regroupChatsByRecency,
-  removeChatFromGroups,
 } from "@/features/chat/model/listSections";
 import type { Chat, ChatList } from "@/lib/api";
 
@@ -18,7 +17,6 @@ const empty: ChatList = {
   last_7_days: [],
   this_month: [],
   older: [],
-  archived: [],
 };
 
 function chat(id: string, overrides: Partial<Chat> = {}): Chat {
@@ -99,42 +97,7 @@ describe("insertChatIntoGroups", () => {
     expect(next.pinned.map((c) => c.id)).toEqual(["p"]);
     expect(next.today).toHaveLength(0);
   });
-
-  it("adds archived chats to archived", () => {
-    const next = insertChatIntoGroups(empty, chat("z", { archived: true }));
-    expect(next.archived.map((c) => c.id)).toEqual(["z"]);
-  });
 });
-
-describe("archive/unarchive move (remove + reinsert with flipped field)", () => {
-  it("moves an active chat into archived", () => {
-    const groups: ChatList = { ...empty, today: [chat("a")] };
-    const removed = removeChatFromGroups(groups, "a");
-    const next = insertChatIntoGroups(removed, { ...chat("a"), archived: true });
-    expect(next.today).toHaveLength(0);
-    expect(next.archived.map((c) => c.id)).toEqual(["a"]);
-  });
-
-  it("moves an archived chat back to today when unarchived", () => {
-    const groups: ChatList = { ...empty, archived: [chat("a", { archived: true })] };
-    const removed = removeChatFromGroups(groups, "a");
-    const next = insertChatIntoGroups(removed, { ...chat("a"), archived: false });
-    expect(next.archived).toHaveLength(0);
-    expect(next.today.map((c) => c.id)).toEqual(["a"]);
-  });
-
-  it("moves an archived pinned chat back to pinned when unarchived", () => {
-    const groups: ChatList = {
-      ...empty,
-      archived: [chat("a", { archived: true, pinned: true })],
-    };
-    const removed = removeChatFromGroups(groups, "a");
-    const next = insertChatIntoGroups(removed, { ...chat("a"), archived: false, pinned: true });
-    expect(next.archived).toHaveLength(0);
-    expect(next.pinned.map((c) => c.id)).toEqual(["a"]);
-  });
-});
-
 
 it("moves a header pin patch into Pinned and restores the activity bucket on unpin", () => {
   const old = chat("old", { updated_at: new Date(2026, 5, 1).toISOString() });
@@ -145,16 +108,6 @@ it("moves a header pin patch into Pinned and restores the activity bucket on unp
   const restored = patchChatListGroups(pinned, old.id, { pinned: false });
   expect(restored.today).toEqual([]);
   expect(restored.older[0].id).toBe(old.id);
-});
-
-it("archive clears pinned and rollback restores the original pinned row", () => {
-  const old = chat("pinned", { pinned: true });
-  const archived = patchChatListGroups({ ...empty, pinned: [old] }, old.id, { archived: true });
-  expect(archived.pinned).toEqual([]);
-  expect(archived.archived[0]).toMatchObject({ archived: true, pinned: false });
-  const rollback = patchChatListGroups(archived, old.id, { archived: false, pinned: true });
-  expect(rollback.archived).toEqual([]);
-  expect(rollback.pinned[0].id).toBe(old.id);
 });
 
 it("restores deleted old chats to their date bucket in newest-first order", () => {
@@ -178,13 +131,11 @@ describe("regroupChatsByRecency", () => {
   const at = (...parts: [number, number, number, number, number?]) => new Date(...parts).toISOString();
   const ids = (rows: Chat[]) => rows.map((row) => row.id);
 
-  it("moves a list kept from yesterday to today's headings, leaving pinned and archived as they are", () => {
+  it("moves a list kept from yesterday to today's headings, leaving pinned as it is", () => {
     const pinned = [chat("pinned", { pinned: true })];
-    const archived = [chat("archived", { archived: true })];
     const kept: ChatList = {
       ...empty,
       pinned,
-      archived,
       today: [chat("yesterday-morning", { updated_at: at(2026, 5, 30, 9) })],
       yesterday: [chat("two-days-ago", { updated_at: at(2026, 5, 29, 20) })],
     };
@@ -193,7 +144,6 @@ describe("regroupChatsByRecency", () => {
     expect(ids(now.yesterday)).toEqual(["yesterday-morning"]);
     expect(ids(now.last_7_days)).toEqual(["two-days-ago"]);
     expect(now.pinned).toBe(pinned);
-    expect(now.archived).toBe(archived);
   });
 
   it("files a chat from just after local midnight under Today, where a UTC grouping said Yesterday", () => {

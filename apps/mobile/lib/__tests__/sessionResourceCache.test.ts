@@ -76,7 +76,6 @@ const chatList = (ids: string[]): ChatList => ({
   last_7_days: [],
   this_month: [],
   older: [],
-  archived: [],
 });
 const memory = (id: string): Memory => ({
   id,

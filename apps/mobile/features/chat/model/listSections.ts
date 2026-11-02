@@ -1,4 +1,4 @@
-import type { Chat, ChatList, Page } from "@/lib/api";
+import type { Chat, ChatList } from "@/lib/api";
 
 /** Date buckets returned by GET /chats (matches backend RECENCY_BUCKETS). */
 export const CHAT_DATE_SECTIONS = [
@@ -12,12 +12,8 @@ export const CHAT_DATE_SECTIONS = [
 type ChatDateSection = (typeof CHAT_DATE_SECTIONS)[number];
 
 export const PINNED_CHAT_SECTION = "pinned" as const;
-export const ARCHIVED_CHAT_SECTION = "archived" as const;
 
-export type ChatListSectionKey =
-  | typeof PINNED_CHAT_SECTION
-  | ChatDateSection
-  | typeof ARCHIVED_CHAT_SECTION;
+export type ChatListSectionKey = typeof PINNED_CHAT_SECTION | ChatDateSection;
 
 export function emptyChatList(): ChatList {
   return {
@@ -27,11 +23,10 @@ export function emptyChatList(): ChatList {
     last_7_days: [],
     this_month: [],
     older: [],
-    archived: [],
   };
 }
 
-export function activeChatsFromGroups(groups: ChatList): Chat[] {
+export function allChatsFromGroups(groups: ChatList): Chat[] {
   return [
     ...groups.pinned,
     ...groups.today,
@@ -40,10 +35,6 @@ export function activeChatsFromGroups(groups: ChatList): Chat[] {
     ...groups.this_month,
     ...groups.older,
   ];
-}
-
-export function allChatsFromGroups(groups: ChatList): Chat[] {
-  return [...activeChatsFromGroups(groups), ...groups.archived];
 }
 
 /** Drawer sections that can collapse (pinned stays open). */
@@ -70,12 +61,11 @@ export function patchChatListGroups(
   const chat = allChatsFromGroups(groups).find((row) => row.id === chatId);
   if (!chat) return groups;
   const updated = { ...chat, ...patch };
-  if (patch.archived === true) updated.pinned = false;
-  if (updated.pinned !== chat.pinned || updated.archived !== chat.archived || updated.updated_at !== chat.updated_at) {
+  if (updated.pinned !== chat.pinned || updated.updated_at !== chat.updated_at) {
     return insertChatByRecency(removeChatFromGroups(groups, chatId), updated);
   }
   const next = { ...groups };
-  for (const key of [PINNED_CHAT_SECTION, ...CHAT_DATE_SECTIONS, ARCHIVED_CHAT_SECTION]) {
+  for (const key of [PINNED_CHAT_SECTION, ...CHAT_DATE_SECTIONS]) {
     next[key] = groups[key].map((row) => row.id === chatId ? updated : row);
   }
   return next;
@@ -91,7 +81,6 @@ export function removeChatFromGroups(groups: ChatList, chatId: string): ChatList
     last_7_days: drop(groups.last_7_days),
     this_month: drop(groups.this_month),
     older: drop(groups.older),
-    archived: drop(groups.archived),
   };
 }
 
@@ -146,17 +135,7 @@ export function appendOlderChats(groups: ChatList, older: ChatList): ChatList {
   return next;
 }
 
-/** A page of archived chats joins the archived section below what it already shows. */
-export function appendArchivedChats(groups: ChatList, page: Page<Chat>): ChatList {
-  const shown = new Set(groups.archived.map((chat) => chat.id));
-  return {
-    ...groups,
-    archived: [...groups.archived, ...page.items.filter((chat) => !shown.has(chat.id))],
-    archived_next_cursor: page.next_cursor ?? null,
-  };
-}
-
 export function insertChatByRecency(groups: ChatList, chat: Chat): ChatList {
-  const key = chat.archived ? ARCHIVED_CHAT_SECTION : chat.pinned ? PINNED_CHAT_SECTION : chatRecencySection(chat);
+  const key = chat.pinned ? PINNED_CHAT_SECTION : chatRecencySection(chat);
   return { ...groups, [key]: [...groups[key], chat].sort(newestFirst) };
 }

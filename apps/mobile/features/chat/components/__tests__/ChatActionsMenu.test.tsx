@@ -14,12 +14,10 @@ const baseProps = {
   visible: true,
   title: "Trip ideas",
   pinned: false,
-  archived: false,
   onClose: jest.fn(),
   onShare: jest.fn(),
   onRename: jest.fn(),
   onTogglePin: jest.fn(),
-  onToggleArchive: jest.fn(),
   onDelete: jest.fn(),
 };
 
@@ -98,13 +96,4 @@ describe("ChatActionsMenu", () => {
     const { queryByText } = await render(<ChatActionsMenu {...baseProps} />);
     expect(queryByText("chat.export_pdf")).toBeNull();
   });
-});
-
-it("offers Unarchive before Pin for an archived conversation", async () => {
-  const view = await render(<ChatActionsMenu {...baseProps} archived />);
-  expect(view.queryByText("chat.pin")).toBeNull();
-  expect(view.queryByText("chat.unpin")).toBeNull();
-  expect(view.getByText("chat.unarchive")).toBeTruthy();
-  await view.rerender(<ChatActionsMenu {...baseProps} archived={false} />);
-  expect(view.getByText("chat.pin")).toBeTruthy();
 });

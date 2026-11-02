@@ -1,6 +1,6 @@
 import type { Chat, ChatList } from "@/lib/api";
 import {
-  activeChatsFromGroups,
+  allChatsFromGroups,
   CHAT_DATE_SECTIONS,
   PINNED_CHAT_SECTION,
   type ChatListSectionKey,
@@ -23,15 +23,10 @@ export function clearChatSelection(): Set<string> {
 
 export function chatsFromSelection(groups: ChatList, selectedIds: ReadonlySet<string>): Chat[] {
   if (selectedIds.size === 0) return [];
-  const listed = activeChatsFromGroups(groups).concat(groups.archived);
-  return listed.filter((chat) => selectedIds.has(chat.id));
+  return allChatsFromGroups(groups).filter((chat) => selectedIds.has(chat.id));
 }
 
-export function archiveBulkTargets(chats: readonly Chat[]): Chat[] {
-  return chats.filter((chat) => !chat.archived);
-}
-
-/** What "Select all" picks: the chats on screen, never archived ones or a collapsed section. */
+/** What "Select all" picks: the chats on screen, never a collapsed section. */
 export function selectableChats(
   groups: ChatList,
   isSectionCollapsed: (key: ChatListSectionKey) => boolean,

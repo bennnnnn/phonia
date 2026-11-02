@@ -1,5 +1,4 @@
 import {
-  archiveBulkTargets,
   bulkInParts,
   chatsFromSelection,
   clearChatSelection,
@@ -36,30 +35,21 @@ describe("drawerChatSelection", () => {
   it("resolves selected chats from groups", () => {
     const groups = {
       ...emptyChatList(),
+      pinned: [chat("p", { pinned: true })],
       today: [chat("a"), chat("b")],
-      archived: [chat("z", { archived: true })],
     };
-    const selected = new Set(["a", "z"]);
-    expect(chatsFromSelection(groups, selected).map((c) => c.id)).toEqual(["a", "z"]);
-  });
-
-  it("filters archive targets to non-archived chats", () => {
-    const targets = archiveBulkTargets([
-      chat("a"),
-      chat("b", { archived: true }),
-    ]);
-    expect(targets.map((c) => c.id)).toEqual(["a"]);
+    const selected = new Set(["a", "p"]);
+    expect(chatsFromSelection(groups, selected).map((c) => c.id)).toEqual(["p", "a"]);
   });
 });
 
 describe("select all and bulk parts", () => {
-  it("selects the chats on screen: pinned and dated, not collapsed, never archived", () => {
+  it("selects the chats on screen: pinned and dated, not collapsed", () => {
     const groups = {
       ...emptyChatList(),
       pinned: [chat("p", { pinned: true })],
       today: [chat("t")],
       older: [chat("o")],
-      archived: [chat("a", { archived: true })],
     };
     const ids = selectableChats(groups, (key) => key === "older").map((row) => row.id);
     expect(ids).toEqual(["p", "t"]);

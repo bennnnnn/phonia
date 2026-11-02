@@ -19,7 +19,6 @@ jest.mock("@/lib/api", () => ({
     renameChat: jest.fn(),
     deleteChat: jest.fn(),
     setPin: jest.fn(),
-    setArchive: jest.fn(),
     setMessageFeedback: jest.fn(),
     updateMessageEmail: jest.fn(),
     listAllMessages: jest.fn(),
@@ -63,8 +62,6 @@ function Probe() {
     messages: [],
     pinned: false,
     setPinned: jest.fn(),
-    archived: false,
-    setArchived: jest.fn(),
     setChatTitle,
     editThread: jest.fn(),
     t: (key) => key,
@@ -235,7 +232,7 @@ describe("useChatActions email draft", () => {
     function DeferredProbe() {
       const result = useChatActions({
         token: "tok", chatId: "chat-1", chatTitle: "Draft", messages: [original],
-        pinned: false, setPinned: jest.fn(), archived: false, setArchived: jest.fn(),
+        pinned: false, setPinned: jest.fn(),
         setChatTitle: jest.fn(), editThread: (update) => { updaters.push(update); },
         t: (key) => key,
       });
@@ -289,8 +286,6 @@ describe("useChatActions email draft", () => {
         messages: messagesState,
         pinned: false,
         setPinned: jest.fn(),
-        archived: false,
-        setArchived: jest.fn(),
         setChatTitle: jest.fn(),
         editThread: setMessages,
             t: (key) => key,

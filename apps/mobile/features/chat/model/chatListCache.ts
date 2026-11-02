@@ -3,7 +3,6 @@ import { getSessionGeneration, requireTokenSession } from "@/lib/auth";
 import { clearKnownAssistantChats } from "@/features/chat/model/draftLogic";
 import {
   allChatsFromGroups,
-  appendArchivedChats,
   appendOlderChats,
   emptyChatList,
   regroupChatsByRecency,
@@ -160,10 +159,7 @@ export async function fetchChatList(
   token: string,
   opts?: { force?: boolean; report?: FailureReporter },
 ): Promise<ResourceResult<ChatList>> {
-  const result = await resource.fetch(LIST, token, async () => {
-    const data = await api.listChats(token);
-    return { ...data, archived: data.archived ?? [] };
-  }, opts);
+  const result = await resource.fetch(LIST, token, () => api.listChats(token), opts);
   if (!result.error) ownerOf(token);
   return result;
 }
@@ -180,17 +176,4 @@ export async function fetchOlderChats(token: string): Promise<ChatList | null> {
   // Another account signed in meanwhile: the page is not theirs.
   return resource.update(LIST, (current) =>
     current.next_cursor === cursor ? appendOlderChats(current, older) : current, session) ?? null;
-}
-
-/**
- * Read the next page of archived chats into the cached list; null when there is none.
- * Past the drawer's first page they were out of reach (only the newest 50 were listed).
- */
-export async function fetchMoreArchivedChats(token: string): Promise<ChatList | null> {
-  const cursor = getCachedChatList()?.archived_next_cursor;
-  if (!cursor) return null;
-  const session = getSessionGeneration();
-  const page = await api.listArchivedChats(token, cursor);
-  return resource.update(LIST, (current) =>
-    current.archived_next_cursor === cursor ? appendArchivedChats(current, page) : current, session) ?? null;
 }

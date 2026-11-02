@@ -6,17 +6,14 @@ import type { Theme } from "@/lib/theme";
 
 jest.mock("@/ui/icons/Icon", () => ({ Icon: () => null }));
 
-it("disables Archive for an archived-only selection while keeping Delete available", async () => {
-  const archive = jest.fn();
+it("deletes the selection, and offers nothing with none selected", async () => {
   const remove = jest.fn();
-  const view = await render(<DrawerSelectionBar styles={{} as ConversationListStyles} theme={{} as Theme}
-    paddingBottom={0} selectedCount={2} archivableCount={0} onArchive={archive} onDelete={remove} />);
-  const archiveButton = view.getByRole("button", { name: "drawer.bulk_archive" });
+  const props = { styles: {} as ConversationListStyles, theme: {} as Theme, paddingBottom: 0, onDelete: remove };
+  const view = await render(<DrawerSelectionBar {...props} selectedCount={2} />);
   const deleteButton = view.getByRole("button", { name: "drawer.bulk_delete" });
-  expect(archiveButton).toBeDisabled();
   expect(deleteButton).not.toBeDisabled();
-  await fireEvent.press(archiveButton);
   await fireEvent.press(deleteButton);
-  expect(archive).not.toHaveBeenCalled();
   expect(remove).toHaveBeenCalledTimes(1);
+  await view.rerender(<DrawerSelectionBar {...props} selectedCount={0} />);
+  expect(view.getByRole("button", { name: "drawer.bulk_delete" })).toBeDisabled();
 });

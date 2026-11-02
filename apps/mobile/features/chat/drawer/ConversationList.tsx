@@ -79,13 +79,9 @@ export function ConversationList() {
     insertChatInGroups,
     isSectionCollapsed,
     toggleSectionCollapsed,
-    moveChatArchiveState,
     removeChatFromGroupsById,
     hasOlderChats,
     loadOlderChats,
-    hasMoreArchived,
-    loadMoreArchivedChats,
-    archivedPaging,
   } = useDrawerChatList({ isDrawerOpen: isOpen });
 
   const {
@@ -105,7 +101,6 @@ export function ConversationList() {
     openRenameFromMenu,
     confirmRename,
     togglePinChat,
-    toggleArchiveChat,
     confirmDeleteChat,
     closeRename,
   } = useChatMenuActions({
@@ -116,19 +111,16 @@ export function ConversationList() {
     removeChatFromGroupsById,
   });
 
-  const { bulkArchiveChats, bulkDeleteChats } = useChatBulkActions({
+  const { bulkDeleteChats } = useChatBulkActions({
     token,
     isDrawerOpen: isOpen,
-    patchChatInGroups,
     insertChatInGroups,
-    moveChatArchiveState,
     removeChatFromGroupsById,
     reloadChats: () => void load(false, true),
     showActionBanner,
   });
 
-  const listedChats = useMemo(() => [...allChats, ...groups.archived], [allChats, groups.archived]);
-  // "Select all" picks what is on screen: it used to take archived chats and collapsed sections too.
+  // "Select all" picks what is on screen: it used to take collapsed sections too.
   const selectable = useMemo(
     () => selectableChats(groups, isSectionCollapsed),
     [groups, isSectionCollapsed],
@@ -145,7 +137,7 @@ export function ConversationList() {
   } = useDrawerChatSelection({
     token,
     isDrawerOpen: isOpen,
-    listedChats,
+    listedChats: allChats,
     selectableChats: selectable,
   });
 
@@ -208,11 +200,6 @@ export function ConversationList() {
     () => chatsFromSelection(groups, selectedIds),
     [groups, selectedIds],
   );
-
-  const handleBulkArchive = useCallback(() => {
-    tap();
-    bulkArchiveChats(selectedChats, exitSelectionMode);
-  }, [bulkArchiveChats, selectedChats, exitSelectionMode]);
 
   const handleBulkDelete = useCallback(() => {
     tap();
@@ -293,12 +280,10 @@ export function ConversationList() {
         anchorPoint={menuPoint}
         title={menuChat?.title ?? null}
         pinned={menuChat?.pinned ?? false}
-        archived={menuChat?.archived ?? false}
         onClose={closeMenu}
         onShare={openShareChat}
         onRename={openRenameFromMenu}
         onTogglePin={() => void togglePinChat()}
-        onToggleArchive={() => void toggleArchiveChat()}
         onDelete={confirmDeleteChat}
         onSelectChats={handleSelectFromMenu}
       />
@@ -342,8 +327,6 @@ export function ConversationList() {
         searchLoadingMoreError={loadingMoreError}
         onSearchLoadMore={loadMore}
         onLoadOlderChats={hasOlderChats ? loadOlderChats : undefined}
-        onLoadMoreArchived={hasMoreArchived ? loadMoreArchivedChats : undefined}
-        archivedPaging={archivedPaging}
       />
 
       <LinearGradient
@@ -382,8 +365,6 @@ export function ConversationList() {
           theme={theme}
           paddingBottom={insets.bottom + 8}
           selectedCount={selectedCount}
-          archivableCount={selectedChats.filter((chat) => !chat.archived).length}
-          onArchive={handleBulkArchive}
           onDelete={handleBulkDelete}
         />
       ) : (

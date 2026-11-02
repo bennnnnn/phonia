@@ -17,7 +17,7 @@ jest.mock("@/lib/api/client", () => ({ ApiRequestError: class extends Error {} }
 jest.mock("expo-router", () => ({ useFocusEffect: () => undefined, useRouter: () => ({}) }));
 jest.mock("@/lib/api", () => ({ api: { getChat: jest.fn(), listMessages: jest.fn() } }));
 jest.mock("@/features/chat/model/chatListCache", () => {
-  const listed = (id: string) => ({ id, title: id.toUpperCase(), pinned: false, archived: false });
+  const listed = (id: string) => ({ id, title: id.toUpperCase(), pinned: false });
   return { getCachedChat: listed, getFetchedChat: listed };
 });
 // The kept pages are real; the file behind them is not.

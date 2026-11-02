@@ -121,7 +121,6 @@ describe("useChatRouteLoader", () => {
       id: "chat-1",
       title: "Loaded",
       pinned: true,
-      archived: false,
       project_id: "project-1",
     });
     (api.listMessages as jest.Mock).mockResolvedValue({
@@ -135,7 +134,6 @@ describe("useChatRouteLoader", () => {
       id: "chat-1",
       title: "From drawer",
       pinned: false,
-      archived: false,
       project_id: null,
     });
     await act(async () => {
@@ -152,7 +150,6 @@ describe("useChatRouteLoader", () => {
       id: "chat-1",
       title: "From drawer",
       pinned: false,
-      archived: false,
       project_id: null,
     });
     (readCachedChatMessages as jest.Mock).mockResolvedValue({
@@ -352,7 +349,7 @@ describe("chat history navigation races", () => {
     (getCachedChat as jest.Mock).mockReturnValue(undefined);
     (readCachedChatMessages as jest.Mock).mockResolvedValue(null);
     (api.getChat as jest.Mock).mockImplementation(async (_token, id) => ({
-      id, title: id, pinned: false, archived: false, project_id: null,
+      id, title: id, pinned: false, project_id: null,
     }));
     (api.listMessages as jest.Mock).mockResolvedValue({ messages: [current], has_more: true });
   });
@@ -451,7 +448,7 @@ describe("chat history navigation races", () => {
     const page = deferred<{ messages: Message[]; has_more: boolean }>();
     (api.listMessages as jest.Mock).mockReturnValue(page.promise);
     await render(<RouteProbe routeId="chat-a" />);
-    const updated = { id: "chat-a", title: "Manual title", pinned: true, archived: false, project_id: null };
+    const updated = { id: "chat-a", title: "Manual title", pinned: true, project_id: null };
     await act(async () => {
       mockRevision++;
       (getCachedChat as jest.Mock).mockReturnValue(updated);
@@ -499,7 +496,7 @@ describe("chat history navigation races", () => {
 const uuid = (n: number) => `0190a000-0000-7000-8000-${String(n).padStart(12, "0")}`;
 const userRow = (id: string, content: string): Message => ({ ...message(id, content), role: "user" });
 const listedChat = (id: string, updatedAt = "2026-01-01T00:00:00Z") => ({
-  id, title: id, model: "auto", pinned: false, archived: false, created_at: updatedAt, updated_at: updatedAt,
+  id, title: id, model: "auto", pinned: false, created_at: updatedAt, updated_at: updatedAt,
 });
 type Page = { messages: Message[]; has_more: boolean };
 

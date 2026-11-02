@@ -14,10 +14,10 @@ type ListProps = { data: DrawerChatListItem[]; renderItem: unknown; extraData?: 
 const mockLists: ListProps[] = [];
 const mockRouter = { setParams: jest.fn(), push: jest.fn() };
 const mockUser = { id: "u1", name: "Ann", email: "a@b.c", plan: "free" };
-const mockChat = (i: number): Chat => ({ id: `chat-${i}`, title: `Chat ${i}`, pinned: i < 3, archived: false,
+const mockChat = (i: number): Chat => ({ id: `chat-${i}`, title: `Chat ${i}`, pinned: i < 3,
   created_at: "2026-01-01T00:00:00Z", updated_at: "2026-01-01T00:00:00Z", model: "auto" } as Chat);
 const mockGroups = { pinned: [0, 1, 2].map(mockChat), today: Array.from({ length: 40 }, (_, i) => mockChat(i + 3)),
-  yesterday: [], last_7_days: [], this_month: [], older: [], archived: [] };
+  yesterday: [], last_7_days: [], this_month: [], older: [] };
 const mockAllChats = [...mockGroups.pinned, ...mockGroups.today];
 
 jest.mock("@shopify/flash-list", () => ({ FlashList: (props: ListProps) => { mockLists.push(props); return null; } }));

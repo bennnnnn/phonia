@@ -5,7 +5,6 @@
   "contexts/ModelsContext.tsx": 1,
   "features/account/hooks/useProfileEditor.ts": 1,
   "features/account/model/profilePhoto.ts": 1,
-  "features/account/screens/ArchivedChatsScreen.tsx": 1,
   "features/attachments/api.ts": 1,
   "features/attachments/components/AttachmentImageStage.tsx": 1,
   "features/attachments/model/attachmentFileStore.ts": 1,

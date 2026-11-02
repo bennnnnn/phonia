@@ -9,7 +9,6 @@ describe("the chat menu sheets' props", () => {
     onExportPdfFromMenu: jest.fn(),
     onRenameFromMenu: jest.fn(),
     onTogglePinFromMenu: jest.fn(),
-    onToggleArchiveFromMenu: jest.fn(),
     onDeleteFromMenu: jest.fn(),
     renameVisible: false,
     renameText: "Old title",
@@ -22,12 +21,12 @@ describe("the chat menu sheets' props", () => {
   };
 
   it("passes the actions through and closes what it opened", () => {
-    const props = chatMenuSheetProps(actions, { chatTitle: "Chat", pinned: true, archived: false });
+    const props = chatMenuSheetProps(actions, { chatTitle: "Chat", pinned: true });
     expect(props).toMatchObject({
-      chatTitle: "Chat", pinned: true, archived: false, menuVisible: true, renameVisible: false,
+      chatTitle: "Chat", pinned: true, menuVisible: true, renameVisible: false,
       renameText: "Old title", shareVisible: true, onShare: actions.onShareFromMenu,
       onExportPdf: actions.onExportPdfFromMenu, onRename: actions.onRenameFromMenu,
-      onTogglePin: actions.onTogglePinFromMenu, onToggleArchive: actions.onToggleArchiveFromMenu,
+      onTogglePin: actions.onTogglePinFromMenu,
       onDelete: actions.onDeleteFromMenu, onRenameTextChange: actions.setRenameText,
       onCloseShare: actions.closeShare, loadShareMessages: actions.loadTranscriptMessages,
     });

@@ -9,7 +9,6 @@ type MenuActions = {
   onExportPdfFromMenu: () => void;
   onRenameFromMenu: () => void;
   onTogglePinFromMenu: () => void;
-  onToggleArchiveFromMenu: () => void;
   onDeleteFromMenu: () => void;
   renameVisible: boolean;
   renameText: string;
@@ -25,7 +24,7 @@ type MenuActions = {
  * the header's anchor ref is passed on its own, never read while rendering. */
 export function chatMenuSheetProps(
   actions: MenuActions,
-  chat: Pick<ChatScreenMenuSheetsProps, "chatTitle" | "pinned" | "archived">,
+  chat: Pick<ChatScreenMenuSheetsProps, "chatTitle" | "pinned">,
 ): Omit<ChatScreenMenuSheetsProps, "menuAnchorRef"> {
   return {
     ...chat,
@@ -35,7 +34,6 @@ export function chatMenuSheetProps(
     onExportPdf: actions.onExportPdfFromMenu,
     onRename: actions.onRenameFromMenu,
     onTogglePin: actions.onTogglePinFromMenu,
-    onToggleArchive: actions.onToggleArchiveFromMenu,
     onDelete: actions.onDeleteFromMenu,
     renameVisible: actions.renameVisible,
     renameText: actions.renameText,

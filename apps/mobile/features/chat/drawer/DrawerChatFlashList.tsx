@@ -15,7 +15,6 @@ import {
 } from "@/features/search/components/DrawerSearchResults";
 import { makeConversationListStyles } from "@/features/chat/drawer/conversationListStyles";
 import {
-  ARCHIVED_CHAT_SECTION,
   CHAT_DATE_SECTIONS,
   drawerSectionTitleKey,
   isCollapsibleChatSection,
@@ -44,8 +43,7 @@ export type DrawerChatListItem =
       loadingMore: boolean;
       loadingMoreError: boolean;
       onLoadMore?: () => void;
-    }
-  | { type: "archivedMore"; key: "archived-more" };
+    };
 
 const NO_ITEMS: DrawerChatListItem[] = [];
 
@@ -78,9 +76,6 @@ type Props = {
   onSearchLoadMore?: () => void;
   /** Read the next page of older chats; omitted when the list holds them all. */
   onLoadOlderChats?: () => void;
-  /** Read more archived chats; omitted when the archived section holds them all. */
-  onLoadMoreArchived?: () => void;
-  archivedPaging?: "idle" | "loading" | "failed";
 };
 
 export function DrawerChatFlashList({
@@ -110,8 +105,6 @@ export function DrawerChatFlashList({
   searchLoadingMoreError = false,
   onSearchLoadMore,
   onLoadOlderChats,
-  onLoadMoreArchived,
-  archivedPaging = "idle",
 }: Props) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -151,12 +144,11 @@ export function DrawerChatFlashList({
 
   const chatItems = useMemo<DrawerChatListItem[]>(() => {
     const items: DrawerChatListItem[] = [];
-    if (activeChatCount === 0 && groups.archived.length === 0) return items;
+    if (activeChatCount === 0) return items;
 
     const sections: { key: ChatListSectionKey; chats: Chat[] }[] = [
       { key: PINNED_CHAT_SECTION, chats: groups.pinned },
       ...CHAT_DATE_SECTIONS.map((key) => ({ key, chats: groups[key] })),
-      { key: ARCHIVED_CHAT_SECTION, chats: groups.archived },
     ];
 
     for (const section of sections) {
@@ -172,12 +164,9 @@ export function DrawerChatFlashList({
       for (const chat of section.chats) {
         items.push({ type: "row", key: chat.id, chat });
       }
-      if (section.key === ARCHIVED_CHAT_SECTION && onLoadMoreArchived) {
-        items.push({ type: "archivedMore", key: "archived-more" });
-      }
     }
     return items;
-  }, [activeChatCount, groups, isSectionCollapsed, onLoadMoreArchived, t]);
+  }, [activeChatCount, groups, isSectionCollapsed, t]);
 
   const chatListData = useMemo(
     () => (searchItems.length > 0 ? [...searchItems, ...chatItems] : chatItems),
@@ -201,16 +190,6 @@ export function DrawerChatFlashList({
             loadingMore={item.loadingMore}
             loadingMoreError={item.loadingMoreError}
             onLoadMore={item.onLoadMore}
-          />
-        );
-      }
-      if (item.type === "archivedMore") {
-        return (
-          <DrawerSearchLoadMore
-            label={t("drawer.archived_show_more")}
-            loadingMore={archivedPaging === "loading"}
-            loadingMoreError={archivedPaging === "failed"}
-            onLoadMore={onLoadMoreArchived}
           />
         );
       }
@@ -266,8 +245,6 @@ export function DrawerChatFlashList({
       selectionMode,
       selectedIds,
       onToggleSelect,
-      archivedPaging,
-      onLoadMoreArchived,
       t,
     ],
   );

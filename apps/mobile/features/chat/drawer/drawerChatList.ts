@@ -1,5 +1,5 @@
 import type { Chat, ChatList } from "@/lib/api";
-import { activeChatsFromGroups, emptyChatList, insertChatByRecency } from "@/features/chat/model/listSections";
+import { allChatsFromGroups, emptyChatList, insertChatByRecency } from "@/features/chat/model/listSections";
 
 /** How long a GET /chats response stays fresh for drawer paint / prefetch. */
 export const CHAT_LIST_STALE_MS = 20_000;
@@ -31,8 +31,7 @@ export function shouldWarmClosedDrawerChatList(opts: {
 
 /** Insert a chat into drawer groups if it is not already listed. */
 export function insertChatIntoGroups(groups: ChatList, chat: Chat): ChatList {
-  const listed = activeChatsFromGroups(groups).concat(groups.archived);
-  if (listed.some((row) => row.id === chat.id)) {
+  if (allChatsFromGroups(groups).some((row) => row.id === chat.id)) {
     return groups;
   }
 

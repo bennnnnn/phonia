@@ -10,7 +10,7 @@ const mockError = jest.fn();
 const mockDestructive = jest.fn();
 jest.mock("@/lib/auth", () => ({ getSessionGeneration: () => mockSession }));
 jest.mock("@/contexts/actionFeedbackCore", () => ({ useActionFeedbackOptional: () => ({ error: mockError }) }));
-jest.mock("@/lib/api", () => ({ api: { renameChat: jest.fn(), setPin: jest.fn(), setArchive: jest.fn(), deleteChat: jest.fn(), listAllMessages: jest.fn() } }));
+jest.mock("@/lib/api", () => ({ api: { renameChat: jest.fn(), setPin: jest.fn(), deleteChat: jest.fn(), listAllMessages: jest.fn() } }));
 jest.mock("@/features/chat/model/messageCache", () => ({ clearCachedChatMessages: jest.fn() }));
 jest.mock("@/features/chat/model/chatListCache", () => ({ getCachedChat: () => undefined, peekCreatedChat: () => undefined }));
 jest.mock("@/features/chat/model/exportPdf", () => ({ printHtmlToSharedPdf: jest.fn() }));
@@ -19,7 +19,7 @@ jest.mock("@/lib/haptics", () => ({
   ...jest.requireActual("@/lib/haptics"),
   notifyDestructive: (...args: unknown[]) => mockDestructive(...args),
 }));
-const chat: Chat = { id: "one", title: "Original", model: "free-chat", pinned: true, archived: false, created_at: "2026-01-01", updated_at: "2026-01-01" };
+const chat: Chat = { id: "one", title: "Original", model: "free-chat", pinned: true, created_at: "2026-01-01", updated_at: "2026-01-01" };
 const patch = jest.fn();
 const remove = jest.fn();
 const insert = jest.fn();
@@ -31,14 +31,14 @@ function Probe({ token = "token", open = true }: { token?: string; open?: boolea
 }
 beforeEach(() => { jest.clearAllMocks(); mockSession++; jest.spyOn(Alert, "alert").mockImplementation(() => {}); });
 
-it("restores a pinned chat when optimistic archive fails", async () => {
-  (api.setArchive as jest.Mock).mockRejectedValueOnce(new Error("offline"));
+it("restores a pinned chat when an optimistic unpin fails", async () => {
+  (api.setPin as jest.Mock).mockRejectedValueOnce(new Error("offline"));
   await render(<Probe />);
   await act(async () => { current.showRowMenu(chat); });
-  await act(async () => { await current.toggleArchiveChat(); });
-  expect(patch).toHaveBeenCalledWith("one", { archived: true, pinned: false });
-  expect(patch).toHaveBeenLastCalledWith("one", { archived: false, pinned: true });
-  expect(mockError).toHaveBeenCalledWith("chat.archive_failed");
+  await act(async () => { await current.togglePinChat(); });
+  expect(patch).toHaveBeenCalledWith("one", { pinned: false });
+  expect(patch).toHaveBeenLastCalledWith("one", { pinned: true });
+  expect(mockError).toHaveBeenCalledWith("chat.pin_failed");
 });
 
 it("ignores failed rename completion after account switch", async () => {
@@ -114,8 +114,8 @@ it("does not submit a second surface's mutation for a busy chat", async () => {
   await render(<Probe />);
   await act(async () => { current.showRowMenu(chat); });
   const release = beginChatMutation(mockSession, [chat.id]);
-  await act(async () => { await current.toggleArchiveChat(); });
-  expect(api.setArchive).not.toHaveBeenCalled();
+  await act(async () => { await current.togglePinChat(); });
+  expect(api.setPin).not.toHaveBeenCalled();
   expect(patch).not.toHaveBeenCalled();
   release?.();
 });
@@ -144,16 +144,10 @@ it("reaffirms successful deletion after a concurrent list read", async () => {
   expect(mockDestructive).toHaveBeenCalledTimes(1);
 });
 
-it.each(["pin", "archive"])("uses the returned state for the drawer %s confirmation", async (kind) => {
+it("uses the returned state for the drawer pin confirmation", async () => {
   (api.setPin as jest.Mock).mockResolvedValueOnce(chat);
-  (api.setArchive as jest.Mock).mockResolvedValueOnce(chat);
   await render(<Probe />);
   await act(async () => { current.showRowMenu(chat); });
-  await act(async () => {
-    if (kind === "pin") await current.togglePinChat();
-    else await current.toggleArchiveChat();
-  });
-  expect(current.actionBanner).toEqual(kind === "pin"
-    ? { message: "chat.pinned_toast", icon: "pin" }
-    : { message: "chat.unarchived_toast", icon: "unarchive" });
+  await act(async () => { await current.togglePinChat(); });
+  expect(current.actionBanner).toEqual({ message: "chat.pinned_toast", icon: "pin" });
 });

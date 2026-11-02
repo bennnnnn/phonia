@@ -44,7 +44,7 @@ jest.mock("@/features/account/hooks/useDataControls", () => ({
   }),
 }));
 jest.mock("@/lib/api", () => ({
-  api: { archiveAllChats: jest.fn(), deleteAllChats: (...args: unknown[]) => mockDeleteAllChats(...args) },
+  api: { deleteAllChats: (...args: unknown[]) => mockDeleteAllChats(...args) },
   withdrawAiDataSharing: (...args: unknown[]) => mockWithdraw(...args),
 }));
 jest.mock("@/lib/cachedUser", () => ({

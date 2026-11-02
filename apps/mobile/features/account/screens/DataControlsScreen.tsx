@@ -131,24 +131,6 @@ export default function DataControlsScreen() {
       },
     );
 
-  const archiveAll = () =>
-    void action.run(
-      "archive",
-      async () => {
-        if (!token) return;
-        await api.archiveAllChats(token);
-        invalidateChatListCache();
-      },
-      {
-        confirm: {
-          title: t("settings.archive_all_chats"),
-          message: t("settings.archive_all_confirm"),
-          cancelLabel: t("common.cancel"),
-          confirmLabel: t("settings.archive_all_chats"),
-        },
-      },
-    );
-
   const deleteAll = () =>
     void action.run(
       "delete",
@@ -215,16 +197,6 @@ export default function DataControlsScreen() {
         />
       </SettingsGroup>
       <SettingsGroup label={t("settings.chats_group")}>
-        <SettingsLinkRow
-          title={t("settings.archived_chats")}
-          href="/settings/archived-chats"
-        />
-        <SettingsLinkRow
-          title={t("settings.archive_all_chats")}
-          busy={action.busy === "archive"}
-          disabled={action.busy !== null}
-          onPress={archiveAll}
-        />
         <SettingsLinkRow
           title={t("settings.delete_all_chats")}
           danger

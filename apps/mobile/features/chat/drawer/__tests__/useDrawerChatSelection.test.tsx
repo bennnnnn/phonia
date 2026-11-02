@@ -5,7 +5,7 @@ import { useDrawerChatSelection } from "@/features/chat/drawer/useDrawerChatSele
 import type { Chat } from "@/lib/api";
 let mockSession = 0;
 jest.mock("@/lib/auth", () => ({ getSessionGeneration: () => mockSession }));
-const chats = [{ id: "first" }, { id: "second", archived: true }] as Chat[];
+const chats = [{ id: "first" }, { id: "second" }] as Chat[];
 let selection: ReturnType<typeof useDrawerChatSelection>;
 function Probe({ listedChats = chats, selectableChats = chats.slice(0, 1), token = "token",
   isDrawerOpen = true }: {
@@ -60,7 +60,7 @@ it("rejects retained selection callbacks after the drawer closes and reopens", a
   expect(selection.selectedCount).toBe(0);
 });
 
-it("selects all of what is on screen, never the archived chats", async () => {
+it("selects all of what is on screen, never a collapsed section", async () => {
   await render(<Probe />);
   await act(async () => { selection.enterSelectionMode(); });
   await act(async () => { selection.selectAllListed(); });

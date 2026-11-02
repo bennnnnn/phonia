@@ -25,7 +25,6 @@ jest.mock("@/lib/auth", () => ({ getSessionGeneration: () => 0 }));
 jest.mock("@/lib/api", () => ({
   api: {
     setPin: jest.fn(),
-    setArchive: jest.fn(),
     listAllMessages: jest.fn(async () => []),
   },
 }));
@@ -42,14 +41,13 @@ jest.mock("@/features/chat/model/exportMessagePdf", () => ({ exportConversationA
 jest.mock("@/contexts/actionFeedbackCore", () => ({ useActionFeedbackOptional: () => null }));
 
 // The drawer: only the row menu is real.
-const chat: Chat = { id: "chat-1", title: "Trip ideas", model: "free-chat", pinned: false, archived: false } as Chat;
+const chat: Chat = { id: "chat-1", title: "Trip ideas", model: "free-chat", pinned: false } as Chat;
 const mockMenu = {
   menuChat: chat as Chat | null,
   closeMenu: jest.fn(),
   openShareChat: jest.fn(),
   openRenameFromMenu: jest.fn(),
   togglePinChat: jest.fn(async () => undefined),
-  toggleArchiveChat: jest.fn(async () => undefined),
   confirmDeleteChat: jest.fn(),
   showRowMenu: jest.fn(),
 };
@@ -69,7 +67,7 @@ jest.mock("@/features/chat/drawer/drawer", () => ({
   abandonActiveChatIfDeleted: jest.fn(),
 }));
 jest.mock("@/features/chat/drawer/useDrawerChatList", () => ({ useDrawerChatList: () => ({
-  groups: { pinned: [], today: [], yesterday: [], last_7_days: [], this_month: [], older: [], archived: [] },
+  groups: { pinned: [], today: [], yesterday: [], last_7_days: [], this_month: [], older: [] },
   allChats: [], load: jest.fn(), isSectionCollapsed: () => false,
 }) }));
 jest.mock("@/features/chat/hooks/useChatBulkActions", () => ({ useChatBulkActions: () => ({}) }));
@@ -101,8 +99,6 @@ function HeaderMenu() {
     messages: [],
     pinned: false,
     setPinned: jest.fn(),
-    archived: false,
-    setArchived: jest.fn(),
     setChatTitle: jest.fn(),
     editThread: jest.fn(),
     t: (key) => key,
@@ -115,13 +111,11 @@ function HeaderMenu() {
         visible
         title="Trip ideas"
         pinned={false}
-        archived={false}
         onClose={jest.fn()}
         onShare={result.onShareFromMenu}
         onExportPdf={result.onExportPdfFromMenu}
         onRename={result.onRenameFromMenu}
         onTogglePin={result.onTogglePinFromMenu}
-        onToggleArchive={result.onToggleArchiveFromMenu}
         onDelete={result.onDeleteFromMenu}
       />
     </>
@@ -132,10 +126,9 @@ beforeEach(() => {
   jest.clearAllMocks();
   jest.spyOn(Alert, "alert").mockImplementation(() => {});
   jest.mocked(api.setPin).mockResolvedValue({ ...chat, pinned: true });
-  jest.mocked(api.setArchive).mockResolvedValue({ ...chat, archived: true });
 });
 
-const ROWS = ["chat.share", "chat.export_pdf", "chat.rename", "chat.pin", "chat.archive", "common.delete"];
+const ROWS = ["chat.share", "chat.export_pdf", "chat.rename", "chat.pin", "common.delete"];
 
 it.each(ROWS)("the chat header's ⋮ %s plays one haptic", async (row) => {
   const view = await render(<HeaderMenu />);

@@ -95,8 +95,6 @@ const mockRouteLoader = {
   titleGenerating: false,
   pinned: false,
   setPinned: mockNoop,
-  archived: false,
-  setArchived: mockNoop,
   chatLoading: false,
   hasMoreOlder: false,
   loadingOlder: false,
@@ -124,7 +122,6 @@ const mockChatActions = {
   onExportPdfFromMenu: mockNoop,
   onRenameFromMenu: mockNoop,
   onTogglePinFromMenu: mockNoop,
-  onToggleArchiveFromMenu: mockNoop,
   onDeleteFromMenu: mockNoop,
 };
 const mockSend = {

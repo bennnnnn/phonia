@@ -138,7 +138,7 @@ function ChatScreen() {
   });
 
   const {
-    chatTitle, setChatTitle, titleGenerating, pinned, setPinned, archived, setArchived, chatLoading,
+    chatTitle, setChatTitle, titleGenerating, pinned, setPinned, chatLoading,
     hasMoreOlder, loadingOlder, loadOlderMessages, newerPage, jumpToLatest, highlightedMessageId, startNewChat,
   } = routeLoader;
   useScrollHoldForHighlight(scroll.holdForHighlight, highlightedMessageId !== null && !llmBusy);
@@ -150,8 +150,6 @@ function ChatScreen() {
     messages,
     pinned,
     setPinned,
-    archived,
-    setArchived,
     setChatTitle,
     editThread,
     t,
@@ -380,7 +378,7 @@ function ChatScreen() {
     <ChatReplyProviders saveEmailDraft={handleSaveEmailDraft} send={sendTappedLine} busy={streamActive || regenerating}>
       <View style={{ flex: 1 }}>
         <ChatScreenBody {...chatScreenBodyProps} />
-        <ChatScreenMenuSheets menuAnchorRef={menuAnchorRef} {...chatMenuSheetProps(chatActions, { chatTitle, pinned, archived })} />
+        <ChatScreenMenuSheets menuAnchorRef={menuAnchorRef} {...chatMenuSheetProps(chatActions, { chatTitle, pinned })} />
       </View>
     </ChatReplyProviders>
   );

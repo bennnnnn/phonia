@@ -7,7 +7,6 @@ import type {
   Feedback,
   Message,
   MessagePage,
-  Page,
 } from "@/lib/api/types";
 
 function normalizeMessagePage(data: MessagePage | Message[]): MessagePage {
@@ -67,21 +66,14 @@ export const chatsApi = {
       method: "PATCH",
       body: JSON.stringify({ pinned }),
     }),
-  setArchive: (token: string, chatId: string, archived: boolean) =>
-    request<Chat>(`/chats/${chatId}/archive`, token, {
-      method: "PATCH",
-      body: JSON.stringify({ archived }),
-    }),
   deleteChat: (token: string, chatId: string) =>
     request<void>(`/chats/${chatId}`, token, { method: "DELETE" }),
-  /** Archive, unarchive or delete up to 200 chats at once; `changed` is what the server did. */
-  bulkChats: (token: string, action: "archive" | "unarchive" | "delete", chatIds: string[]) =>
+  /** Delete up to 200 chats at once; `changed` is what the server did. */
+  bulkChats: (token: string, action: "delete", chatIds: string[]) =>
     request<{ changed: string[] }>("/chats/bulk", token, {
       method: "POST",
       body: JSON.stringify({ action, chat_ids: chatIds }),
     }),
-  archiveAllChats: (token: string) =>
-    request<void>("/chats/archive-all", token, { method: "POST" }),
   deleteAllChats: (token: string) =>
     request<void>("/chats", token, { method: "DELETE" }),
   /** One request: the server keeps a chat that holds any message (a turn left mid-stream). */
@@ -93,9 +85,6 @@ export const chatsApi = {
   /** The dated chats after the first page; `cursor` is the list's `next_cursor`. */
   listOlderChats: (token: string, cursor: string) =>
     request<ChatList>(chatListPath(cursor), token),
-  /** Archived chats past the drawer's first page; `cursor` is `archived_next_cursor`. */
-  listArchivedChats: (token: string, cursor: string) =>
-    request<Page<Chat>>(`/chats/archived?cursor=${encodeURIComponent(cursor)}`, token),
   listMessages,
   listAllMessages: async (token: string, chatId: string): Promise<Message[]> => {
     const batch = 100;

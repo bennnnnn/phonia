@@ -2,8 +2,7 @@ import { useAccountSession } from "@/contexts/accountSession";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 import {
-  activeChatsFromGroups,
-  ARCHIVED_CHAT_SECTION,
+  allChatsFromGroups,
   CHAT_DATE_SECTIONS,
   defaultChatSectionCollapsed,
   isCollapsibleChatSection,
@@ -13,7 +12,6 @@ import {
 } from "@/features/chat/model/listSections";
 import {
   fetchChatList,
-  fetchMoreArchivedChats,
   fetchOlderChats,
   getCachedChatList,
   getChatListFetchedAt,
@@ -46,7 +44,7 @@ import { useLatestRef } from "@/lib/latestRef";
 type Params = { isDrawerOpen: boolean };
 
 function initialCollapsedSections(): Record<string, boolean> {
-  return Object.fromEntries([...CHAT_DATE_SECTIONS, ARCHIVED_CHAT_SECTION]
+  return Object.fromEntries(CHAT_DATE_SECTIONS
     .map((key) => [key, defaultChatSectionCollapsed(key)]));
 }
 
@@ -82,7 +80,7 @@ export function useDrawerChatList({ isDrawerOpen }: Params) {
     setCollapsedSections(initialCollapsedSections());
   }, [session]);
 
-  const allChats = useMemo(() => activeChatsFromGroups(groups), [groups]);
+  const allChats = useMemo(() => allChatsFromGroups(groups), [groups]);
   const isSectionCollapsed = useCallback((key: ChatListSectionKey) =>
     isCollapsibleChatSection(key) && (collapsedSections[key] ?? defaultChatSectionCollapsed(key)), [collapsedSections]);
   const toggleSectionCollapsed = useCallback((key: ChatListSectionKey) => {
@@ -138,24 +136,6 @@ export function useDrawerChatList({ isDrawerOpen }: Params) {
     }
   }, [account, getToken, current, applyChatList, reportFailure]);
 
-  const [archivedPaging, setArchivedPaging] = useState<"idle" | "loading" | "failed">("idle");
-  /** The next page of archived chats, from the archived section's "Show more" row. */
-  const loadMoreArchivedChats = useCallback(async () => {
-    const token = getToken();
-    if (!account || !token || !current()) return;
-    setArchivedPaging("loading");
-    try {
-      const grown = await fetchMoreArchivedChats(token);
-      if (grown && current()) applyChatList(grown, false);
-      if (current()) setArchivedPaging("idle");
-    } catch (caught) {
-      const error = caught instanceof Error ? caught : new Error(String(caught));
-      if (!current()) return;
-      setArchivedPaging("failed");
-      if (!isExpectedReadFailure(error)) reportFailure(error);
-    }
-  }, [account, getToken, current, applyChatList, reportFailure]);
-
   const handleRefresh = useCallback(async () => {
     if (!account || !current()) return;
     setRefreshing(true);
@@ -204,8 +184,7 @@ export function useDrawerChatList({ isDrawerOpen }: Params) {
     publishChatChange(chatId, patch);
   }, [account, current, applyChatList]);
   const patchChatInGroups = useCallback((chatId: string, patch: Partial<Chat>) => {
-    const normalized = patch.archived === true ? { ...patch, pinned: false } : patch;
-    updateGroups(chatId, normalized, (prev) => patchChatListGroups(prev, chatId, normalized));
+    updateGroups(chatId, patch, (prev) => patchChatListGroups(prev, chatId, patch));
   }, [updateGroups]);
   const insertChatInGroups = useCallback((chat: Chat) => {
     updateGroups(chat.id, chat, (prev) => insertChatIntoGroups(prev, chat));
@@ -213,9 +192,6 @@ export function useDrawerChatList({ isDrawerOpen }: Params) {
   const removeChatFromGroupsById = useCallback((chatId: string) => {
     updateGroups(chatId, null, (prev) => removeChatFromGroups(prev, chatId));
   }, [updateGroups]);
-  const moveChatArchiveState = useCallback((chatId: string, archived: boolean) => {
-    patchChatInGroups(chatId, archived ? { archived, pinned: false } : { archived });
-  }, [patchChatInGroups]);
 
   useEffect(() => {
     const unregisters = [
@@ -230,8 +206,7 @@ export function useDrawerChatList({ isDrawerOpen }: Params) {
   return {
     loading, error, refreshing, groups, allChats, load, handleRefresh,
     hasOlderChats: Boolean(groups.next_cursor), loadOlderChats,
-    hasMoreArchived: Boolean(groups.archived_next_cursor), loadMoreArchivedChats, archivedPaging,
     patchChatInGroups, insertChatInGroups, isSectionCollapsed, toggleSectionCollapsed,
-    moveChatArchiveState, removeChatFromGroupsById,
+    removeChatFromGroupsById,
   };
 }

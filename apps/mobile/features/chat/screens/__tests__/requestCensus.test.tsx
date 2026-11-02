@@ -256,7 +256,7 @@ const USER = {
 const uuid = (kind: number, n: number) => `00000000-0000-4000-8${kind}00-${String(n).padStart(12, "0")}`;
 const chatId = (n: number) => uuid(1, n);
 const CHATS = Array.from({ length: 30 }, (_, i) => ({
-  id: chatId(i), title: `Chat ${i}`, model: "auto", pinned: false, archived: false, created_at: NOW, updated_at: NOW,
+  id: chatId(i), title: `Chat ${i}`, model: "auto", pinned: false, created_at: NOW, updated_at: NOW,
 }));
 const fileContent = (n: number, type: string) =>
   `Summarize this file.\n[File: /attachments/${uuid(4, n)}/file]\n[File (${type})]`;
@@ -306,8 +306,8 @@ function serverBody(method: string, path: string, body?: string): unknown {
   }
   if (p === "/chats") {
     return {
-      pinned: [], today: CHATS, yesterday: [], last_7_days: [], this_month: [], older: [], archived: [],
-      next_cursor: null, archived_next_cursor: null,
+      pinned: [], today: CHATS, yesterday: [], last_7_days: [], this_month: [], older: [],
+      next_cursor: null,
     };
   }
   if (/^\/chats\/[^/]+\/messages$/.test(p)) return { messages: [...MESSAGES, ...savedTurn], has_more: false };
@@ -582,7 +582,6 @@ async function launch(): Promise<App> {
     usage: (await import("@/features/account/screens/UsageScreen")).default,
     models: (await import("@/features/account/screens/ModelsSettingsScreen")).default,
     about: (await import("@/features/account/screens/AboutScreen")).default,
-    archived: (await import("@/features/account/screens/ArchivedChatsScreen")).default,
     dataControls: (await import("@/features/account/screens/DataControlsScreen")).default,
     help: (await import("@/features/account/screens/HelpScreen")).default,
     memorySettings: (await import("@/features/memory/screens/MemorySettingsScreen")).default,
@@ -639,12 +638,12 @@ async function send(app: App, text: string): Promise<void> {
 }
 
 const SCREENS = [
-  "memory", "todos", "gallery", "settings", "usage", "models", "about", "archived", "dataControls", "help",
+  "memory", "todos", "gallery", "settings", "usage", "models", "about", "dataControls", "help",
   "memorySettings", "notifications", "preferences", "profile", "security", "voice",
 ];
 /** A screen's read on opening it (none: it shows what the app already holds). */
 const SCREEN_READS: Record<string, number> = {
-  memory: 1, gallery: 1, usage: 1, archived: 1, memorySettings: 1, security: 1,
+  memory: 1, gallery: 1, usage: 1, memorySettings: 1, security: 1,
 };
 
 /** Screens opened a second time, whose read the server answers 304. */
@@ -1007,12 +1006,7 @@ const RECOVERY_CASES: RecoveryCase[] = [
     read: /^GET \/memories\/documents(?: \(304\))?$/,
   },
   { title: "the library", show: (app) => showOnly(app, "gallery"), read: /^GET \/attachments\b/ },
-  // Settings' two lists (useFocusedList): the archived chats come with the drawer's list.
-  {
-    title: "the archived chats",
-    show: (app) => showOnly(app, "archived"),
-    read: /^GET \/chats\?client_timezone=[^&\s]+(?: \(304\))?$/,
-  },
+  // Settings' list (useFocusedList).
   {
     title: "the signed-in devices",
     show: (app) => showOnly(app, "security"),

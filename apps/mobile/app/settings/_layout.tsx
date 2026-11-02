@@ -26,7 +26,6 @@ const SETTINGS_PAGES = [
   { name: "memory-settings", title: "settings.memory" },
   { name: "notifications", title: "settings.notifications" },
   { name: "data-controls", title: "settings.data_controls" },
-  { name: "archived-chats", title: "settings.archived_chats" },
   { name: "security", title: "settings.security" },
   { name: "about", title: "settings.about" },
   { name: "help", title: "settings.help" },
