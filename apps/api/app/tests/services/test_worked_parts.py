@@ -105,7 +105,7 @@ def test_render_parts_is_one_layout() -> None:
         "Constant acceleration formula",
         "Answer (b)",
     ]
-    assert "(a) $v$ — speed  \n(b) $t$ — time" in text
+    assert "(a) $v$ (speed)  \n(b) $t$ (time)" in text
     assert re.findall(r"```answer\n(.*?)\n```", text) == ["9.81", "2.02"]
 
 
@@ -130,7 +130,7 @@ async def test_the_ball_dropped_from_20_m_is_one_layout() -> None:
     ]
     assert text.split("**Solution**")[0].count("**Given**") == 1
     assert text.count("**Required**") == 1
-    assert "(a) $v$ — speed  \n(b) $t$ — time" in text
+    assert "(a) $v$ (speed)  \n(b) $t$ (time)" in text
     assert text.split("**Solution**")[0].count("where ") == 1
     # Every part ends with its own card, in the reply the phone streams.
     assert re.findall(r"\*\*Answer \(([ab])\)\*\*\n\n```answer\n", text) == ["a", "b"]
@@ -247,7 +247,7 @@ async def test_three_parts_share_their_setup() -> None:
     text = found.direct_text or ""
     opening, sections = _sections_of(text)
     assert "$h_0 = 45" in opening and "$t = " not in opening
-    assert "(a) $t$ — time  \n(b) $v$ — speed  \n(c) $v$ — speed" in opening
+    assert "(a) $t$ (time)  \n(b) $v$ (speed)  \n(c) $v$ (speed)" in opening
     assert "**Given**" not in sections[0]
     assert "$t = 1" in sections[1] and "$t = 2" in sections[2]
     assert len(re.findall(r"^```answer\n", text, re.M)) == 3

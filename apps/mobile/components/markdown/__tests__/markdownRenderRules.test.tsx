@@ -524,6 +524,39 @@ describe("markdown render rules", () => {
     ).toBeNull();
   });
 
+  it.each([
+    ["$v$ (speed of the car)", "(a) $v$ (speed of the car)"],
+    // An older reply wrote the meaning as a move's note; it reads inline too.
+    ["$v$ — speed of the car", "(a) $v$ — speed of the car"],
+  ])(
+    "draws what is asked on one line, its meaning beside it: %s",
+    async (single, lettered) => {
+      const content = [
+        "**Given**  ",
+        String.raw`$d = 100\,\mathrm{m}$  `,
+        "where $d$ = distance",
+        "",
+        "**Required**  ",
+        `${single}  `,
+        lettered,
+      ].join("\n");
+      const { getAllByTestId, queryByTestId } = await render(
+        <MarkdownContent content={content} />,
+      );
+      expect(queryByTestId("workout-note")).toBeNull();
+      const asked = getAllByTestId("workout-asked");
+      expect(asked).toHaveLength(2);
+      expect(StyleSheet.flatten(asked[0]!.props.style)).toMatchObject({
+        flexDirection: "row",
+      });
+      expect(StyleSheet.flatten(asked[0]!.props.style).flexWrap).toBeUndefined();
+      expect(asked[0]).toHaveTextContent(/^v\s*\(speed of the car\)$/);
+      expect(asked[1]).toHaveTextContent(/^\(a\)\s*v\s*\(speed of the car\)$/);
+      // The Given's where-line still names its symbols in secondary ink.
+      expect(getAllByTestId("workout-naming")).toHaveLength(1);
+    },
+  );
+
   it("rules an older reply's Find like Required", async () => {
     const content = ["**Given**  ", "$d = 5$", "", "**Find**  ", "$t$"].join(
       "\n",

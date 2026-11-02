@@ -80,6 +80,22 @@ export function splitWorkoutNote(line: string): { state: string; note: string | 
   return { state: line, note: null };
 }
 
+/** **Required** or an older **Find**: what is asked. */
+export function isRequiredHeading(heading: string): boolean {
+  return REQUIRED_HEADINGS.includes(heading);
+}
+
+/**
+ * ``$v$ — speed`` → ``$v$ (speed)``: what is asked reads as one line, the unknown with its
+ * meaning beside it, never a note at the right edge (that place is a move's). The API
+ * writes it this way since November 2026 (`services/workout.asked_line`); older replies
+ * and a model's own reply are drawn the same.
+ */
+export function askedLine(line: string): string {
+  const { state, note } = splitWorkoutNote(line);
+  return note ? `${state} (${note})` : state;
+}
+
 // "(a) Acceleration", "Part (b): Speed after 3 s", "c) Distance": one part of
 // a question in parts, labelled by its letter and what it finds.
 const WORKOUT_PART_RE =

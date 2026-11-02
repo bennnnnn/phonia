@@ -20,7 +20,9 @@ import { Space } from "@/lib/space";
 import { DYNAMIC_TYPE_MAX, Type, Weight } from "@/lib/type";
 import { splitInlineMath } from "@/lib/markdown/preprocess";
 import {
+  askedLine,
   isAnswerHeading,
+  isRequiredHeading,
   isSolutionHeading,
   lawHeading,
   OPENING_HEADINGS,
@@ -152,7 +154,7 @@ const RULE_WIDTH = 2;
 function renderWorkoutLine(
   lineKey: string,
   line: string,
-  given: boolean,
+  { given, asked }: { given: boolean; asked: boolean },
   {
     body,
     noteStyle,
@@ -161,7 +163,10 @@ function renderWorkoutLine(
 ): React.ReactElement {
   // While streaming, the caret's mark rides on the last line: draw the caret, never the mark.
   const marked = splitStreamCaret(line);
-  const { state, note } = splitWorkoutNote(marked.text);
+  // What is asked is one line: the unknown, its meaning beside it.
+  const { state, note } = splitWorkoutNote(
+    asked ? askedLine(marked.text) : marked.text,
+  );
   const naming = given && /^where\s/i.test(state);
   return (
     <View
@@ -204,13 +209,33 @@ function renderWorkoutLine(
                 )}
               </View>
             ))
-          : workoutInline(
-              state,
-              `${lineKey}-state`,
-              body,
-              t.assistantText,
-              t.success,
-            )}
+          : asked
+            ? (
+                <View
+                  testID="workout-asked"
+                  // The unknown stays beside its meaning on one line; a long meaning
+                  // wraps inside it, never onto a row of its own.
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    maxWidth: "100%",
+                  }}
+                >
+                  {workoutInline(
+                    state,
+                    `${lineKey}-asked`,
+                    [body, { flexShrink: 1 }],
+                    t.assistantText,
+                  )}
+                </View>
+              )
+            : workoutInline(
+                state,
+                `${lineKey}-state`,
+                body,
+                t.assistantText,
+                t.success,
+              )}
         {marked.caret ? <StreamingCursor key={`${lineKey}-caret`} /> : null}
       </View>
       {note ? (
@@ -261,13 +286,14 @@ export function renderWorkoutSection(
     { ...Type.secondary, color: t.textSecondary },
   ];
   const given = section.heading === "Given";
+  const asked = isRequiredHeading(section.heading);
   const answer = isAnswerHeading(section.heading);
   const boxed = answer ? lastMathLine(section.lines) : -1;
   const lines = section.lines.map((line, index) =>
     renderWorkoutLine(
       `${key}-line-${index}`,
       line,
-      given,
+      { given, asked },
       { body, noteStyle },
       t,
     ),

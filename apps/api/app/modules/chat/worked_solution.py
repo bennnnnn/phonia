@@ -104,6 +104,8 @@ class PartLabel(_Record):
 class Part(_Record):
     letter: Annotated[str, StringConstraints(pattern=r"^[a-h]?$")] = ""
     title: Words = ""
+    # The givens written after this part's ``part`` record: this part's own.
+    given: tuple[Given, ...] = ()
     formula: Formula | None = None
     working: tuple[Step, ...] = ()
     answers: tuple[Answer, ...] = ()
@@ -113,11 +115,13 @@ class WorkedSolution(_Record):
     given: tuple[Given, ...] = ()
     required: tuple[Required, ...] = ()
     parts: tuple[Part, ...] = Field(default=(), max_length=MAX_PARTS)
+    # A ``part`` record was read, even before any part has a line of its own.
+    in_parts: bool = False
 
     @property
     def labelled(self) -> bool:
         """A question in parts: a ``part`` record gave a part its letter."""
-        return any(part.letter for part in self.parts)
+        return self.in_parts or any(part.letter for part in self.parts)
 
 
 RecordModel = Given | Required | Formula | Step | Answer | PartLabel
@@ -195,6 +199,7 @@ def _letter(label: str, index: int) -> str:
 class _PartDraft:
     letter: str = ""
     title: str = ""
+    given: list[Given] = field(default_factory=list)
     formula: Formula | None = None
     working: list[Step] = field(default_factory=list)
     answers: list[Answer] = field(default_factory=list)
@@ -203,8 +208,15 @@ class _PartDraft:
     def started(self) -> bool:
         return bool(self.formula or self.working or self.answers)
 
-    def add(self, record: Formula | Step | Answer) -> None:
-        if isinstance(record, Answer):
+    @property
+    def has_content(self) -> bool:
+        """A line of its own to show: a part with a label and nothing else is no part."""
+        return self.started or bool(self.given)
+
+    def add(self, record: Given | Formula | Step | Answer) -> None:
+        if isinstance(record, Given):
+            self.given.append(record)
+        elif isinstance(record, Answer):
             self.answers.append(record)
         elif isinstance(record, Step):
             self.working.append(record)
@@ -217,40 +229,53 @@ class _PartDraft:
         return Part(
             letter=self.letter,
             title=self.title,
+            given=tuple(self.given),
             formula=self.formula,
             working=tuple(self.working),
             answers=tuple(self.answers),
         )
 
 
+def _labelled_part(drafts: list[_PartDraft], current: int, label: PartLabel, *, first: bool) -> int:
+    """The draft a ``part`` record opens, by its index. The first label names a part begun
+    and not yet answered ("formula: …" then "part: a"); a letter named before is that part
+    again, whatever came between; any other label opens a part of its own."""
+    letter = _letter(label.letter, len(drafts))
+    named = next((at for at, draft in enumerate(drafts) if draft.letter == letter), None)
+    if named is not None:
+        drafts[named].title = drafts[named].title or label.title
+        return named
+    if first and not drafts[current].answers:
+        drafts[current].letter, drafts[current].title = _letter(label.letter, 0), label.title
+        return current
+    if len(drafts) >= MAX_PARTS:
+        return current
+    drafts.append(_PartDraft(letter=letter, title=label.title))
+    return len(drafts) - 1
+
+
 def assemble(records: list[RecordModel]) -> WorkedSolution:
-    """The records in the order written, as one solution: the givens and what is asked,
-    then each part's formula, working and answer. Records before the first ``part`` are
-    the first part's."""
+    """The records in the order written, as one solution. Before the first ``part``, the
+    givens and what is asked are the whole question's, and a formula or working is the
+    first part's. After a ``part`` record every record is that part's, its givens too, so
+    a given one part uses is never mixed with another part's. A part that holds nothing
+    (a label alone) is left out, so the parts shown are lettered in order."""
     given: list[Given] = []
     required: list[Required] = []
     drafts = [_PartDraft()]
+    current = 0
     labelled = False
     for record in records:
-        if isinstance(record, Given):
-            given.append(record)
-        elif isinstance(record, Required):
+        if isinstance(record, Required):
             required.append(record)
+        elif isinstance(record, Given) and not labelled:
+            given.append(record)
         elif isinstance(record, PartLabel):
-            # The first label names a part begun and not yet answered ("formula: …" then
-            # "part: a"); a part already answered is finished.
-            begun = labelled or bool(drafts[-1].answers)
-            fresh = begun and len(drafts) < MAX_PARTS
-            letter = _letter(record.letter, len(drafts) - (0 if fresh else 1))
-            if labelled and letter == drafts[-1].letter:
-                # The same part named again (before its substitution): still that part.
-                drafts[-1].title = drafts[-1].title or record.title
-                continue
-            if fresh:
-                drafts.append(_PartDraft())
+            current = _labelled_part(drafts, current, record, first=not labelled)
             labelled = True
-            drafts[-1].letter, drafts[-1].title = letter, record.title
         else:
-            drafts[-1].add(record)
-    parts = tuple(draft.part() for draft in drafts if draft.started or draft.title)
-    return WorkedSolution(given=tuple(given), required=tuple(required), parts=parts)
+            drafts[current].add(record)
+    parts = tuple(draft.part() for draft in drafts if draft.has_content)
+    return WorkedSolution(
+        given=tuple(given), required=tuple(required), parts=parts, in_parts=labelled
+    )

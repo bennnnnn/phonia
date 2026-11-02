@@ -1,4 +1,5 @@
 import {
+  askedLine,
   isAnswerHeading,
   isSolutionHeading,
   isWorkedReply,
@@ -15,6 +16,18 @@ describe("splitWorkoutNote", () => {
     ["$x > 0$ — domain for $x$", { state: "$x > 0$", note: "domain for $x$" }],
   ])("%s", (line, expected) => {
     expect(splitWorkoutNote(line)).toEqual(expected);
+  });
+});
+
+describe("askedLine", () => {
+  it.each([
+    ["$v$ — speed", "$v$ (speed)"],
+    ["(a) $d$ — displacement of the car (due East)", "(a) $d$ (displacement of the car (due East))"],
+    ["$v$ (speed)", "$v$ (speed)"],
+    ["$a — b$", "$a — b$"],
+    ["$t$", "$t$"],
+  ])("%s", (line, expected) => {
+    expect(askedLine(line)).toBe(expected);
   });
 });
 
