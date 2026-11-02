@@ -28,6 +28,9 @@ patchedDependencies:
   decode-uri-component@0.5.0:
     hash: gmx37hifmhjurluvdkzcfvlmxm
     path: patches/decode-uri-component@0.5.0.patch
+  react-native-vision-camera-mlkit@2.0.1:
+    hash: qo6kmmcgj6sr36pfksmq4gzfcm
+    path: patches/react-native-vision-camera-mlkit@2.0.1.patch
 
 importers:
 
@@ -212,7 +215,7 @@ importers:
         version: 5.2.3(react-native-nitro-image@0.15.2(react-native-nitro-modules@0.37.1(react-native@0.86.0(@babel/core@7.29.7)(@react-native/jest-preset@0.86.0(@babel/core@7.29.7)(react@19.3.0))(@react-native/metro-config@0.86.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0))(react-native@0.86.0(@babel/core@7.29.7)(@react-native/jest-preset@0.86.0(@babel/core@7.29.7)(react@19.3.0))(@react-native/metro-config@0.86.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0))(react-native-nitro-modules@0.37.1(react-native@0.86.0(@babel/core@7.29.7)(@react-native/jest-preset@0.86.0(@babel/core@7.29.7)(react@19.3.0))(@react-native/metro-config@0.86.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0))(react-native@0.86.0(@babel/core@7.29.7)(@react-native/jest-preset@0.86.0(@babel/core@7.29.7)(react@19.3.0))(@react-native/metro-config@0.86.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       react-native-vision-camera-mlkit:
         specifier: 2.0.1
-        version: 2.0.1(ypyfq5jlg34c7hbxcf5xiv5w7u)
+        version: 2.0.1(patch_hash=qo6kmmcgj6sr36pfksmq4gzfcm)(ypyfq5jlg34c7hbxcf5xiv5w7u)
       react-native-vision-camera-worklets:
         specifier: 5.2.3
         version: 5.2.3(l5aynomfmp7ksn5hpuase5deti)
@@ -12034,7 +12037,7 @@ snapshots:
       react-native: 0.86.0(@babel/core@7.29.7)(@react-native/jest-preset@0.86.0(@babel/core@7.29.7)(react@19.3.0))(@react-native/metro-config@0.86.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0)
       warn-once: 0.1.1
 
-  react-native-vision-camera-mlkit@2.0.1(ypyfq5jlg34c7hbxcf5xiv5w7u):
+  react-native-vision-camera-mlkit@2.0.1(patch_hash=qo6kmmcgj6sr36pfksmq4gzfcm)(ypyfq5jlg34c7hbxcf5xiv5w7u):
     dependencies:
       react: 19.3.0
       react-native: 0.86.0(@babel/core@7.29.7)(@react-native/jest-preset@0.86.0(@babel/core@7.29.7)(react@19.3.0))(@react-native/metro-config@0.86.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0)
