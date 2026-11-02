@@ -32,7 +32,7 @@
   "features/chat/hooks/useSettingsProposal.ts": 1,
   "features/chat/model/chatListCache.ts": 2,
   "features/chat/model/chatListFile.ts": 1,
-  "features/chat/model/chatOperations.ts": 4,
+  "features/chat/model/chatOperations.ts": 3,
   "features/chat/model/messageCache.ts": 3,
   "features/chat/model/printDocument.ts": 2,
   "features/chat/model/socketReduce.ts": 1,
