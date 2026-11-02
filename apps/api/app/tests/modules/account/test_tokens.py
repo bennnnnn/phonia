@@ -83,7 +83,9 @@ async def test_reused_refresh_token_revokes_every_session(fake_redis):
         )
         assert await fake_redis.get(f"refresh:{refresh2}") is not None
 
-        # Attacker (or a delayed retry) replays the now-superseded refresh1.
+        # Attacker (or a delayed retry) replays the now-superseded refresh1 after the
+        # seconds a duplicate of the rotation is still answered (rotation grace).
+        await fake_redis.delete(f"refresh_grace:{refresh1}")
         with pytest.raises(AuthenticationError):
             await tokens_service.refresh_token_pair(fake_redis, refresh1, session, settings)
 
@@ -112,6 +114,7 @@ async def test_revoked_since_blocks_existing_access_tokens(fake_redis):
         _access2, _refresh2, _ = await tokens_service.refresh_token_pair(
             fake_redis, refresh1, session, settings
         )
+        await fake_redis.delete(f"refresh_grace:{refresh1}")  # past the rotation grace
         with pytest.raises(AuthenticationError):
             await tokens_service.refresh_token_pair(fake_redis, refresh1, session, settings)
 

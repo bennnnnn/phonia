@@ -8,6 +8,7 @@ import pytest
 from redis.exceptions import ConnectionError as RedisConnectionError
 from sqlalchemy.exc import OperationalError
 
+from app.core.access_tokens import redis_str
 from app.core.config import Settings
 from app.exceptions import AuthenticationError, RedisUnavailableError
 from app.modules.account import tokens as tokens
@@ -127,8 +128,17 @@ async def test_refresh_lost_watch_connection_keeps_session_retryable(fake_redis)
     assert _refresh_user_id(raw, refresh) == str(user.id)
 
 
+async def _live_sessions(redis, user_id) -> set[str]:
+    return {redis_str(token) for token in await redis.smembers(f"refresh_user:{user_id}")}
+
+
 @pytest.mark.asyncio
-async def test_concurrent_refresh_has_one_winner_and_detects_replay(fake_redis):
+async def test_concurrent_refreshes_of_one_token_share_one_session(fake_redis):
+    """Two refreshes of one token in flight at once both succeed, with one successor.
+
+    One used to win and the other revoked every session of the account, the winner's
+    included: the phone that sent both was signed out by its own duplicate.
+    """
     user = api_user()
     settings = Settings(jwt_secret="x" * 32)
     _, refresh = await tokens.issue_token_pair(fake_redis, user.id, settings)
@@ -147,9 +157,74 @@ async def test_concurrent_refresh_has_one_winner_and_detects_replay(fake_redis):
             ),
             timeout=2,
         )
-    assert sum(isinstance(result, tuple) for result in results) == 1
-    assert sum(isinstance(result, AuthenticationError) for result in results) == 1
-    assert await fake_redis.smembers(f"refresh_user:{user.id}") == set()
+    assert all(isinstance(result, tuple) for result in results), results
+    successors = {result[1] for result in results if isinstance(result, tuple)}
+    assert len(successors) == 1
+    assert await _live_sessions(fake_redis, user.id) == successors
+    for result in results:
+        assert isinstance(result, tuple)
+        assert await tokens.verify_access_token(fake_redis, result[0], settings) == user.id
+    assert await fake_redis.get(f"revoked_since:{user.id}") is None
+
+
+@pytest.mark.asyncio
+async def test_a_refresh_whose_answer_was_lost_is_answered_again_within_the_grace(fake_redis):
+    """The rotation committed but its answer never reached the phone (an app reload, a
+    deadline, a dropped connection), so the phone presents the same token again. Seconds
+    later that is the same phone, not a thief: it gets the successor, and stays signed in.
+    (2026-11-02: a reload dropped the answer, the retry 7 s later was taken for reuse and
+    every session of the account was revoked.)"""
+    user = api_user()
+    settings = Settings(jwt_secret="x" * 32)
+    _, refresh = await tokens.issue_token_pair(fake_redis, user.id, settings)
+    with patch("app.modules.account.tokens.users_repo.get_by_id", AsyncMock(return_value=user)):
+        _lost_access, successor, _ = await tokens.refresh_token_pair(
+            fake_redis, refresh, AsyncMock(), settings
+        )
+        access, again, user_out = await tokens.refresh_token_pair(
+            fake_redis, refresh, AsyncMock(), settings
+        )
+        assert again == successor
+        assert user_out.id == user.id
+        assert await tokens.verify_access_token(fake_redis, access, settings) == user.id
+        assert await _live_sessions(fake_redis, user.id) == {successor}
+        # The successor is an ordinary live token: it rotates as usual.
+        _, third, _ = await tokens.refresh_token_pair(fake_redis, successor, AsyncMock(), settings)
+    assert await _live_sessions(fake_redis, user.id) == {third}
+    assert await fake_redis.get(f"revoked_since:{user.id}") is None
+
+
+@pytest.mark.asyncio
+async def test_the_grace_lasts_seconds_and_a_later_replay_is_still_reuse(fake_redis):
+    user = api_user()
+    settings = Settings(jwt_secret="x" * 32)
+    _, refresh = await tokens.issue_token_pair(fake_redis, user.id, settings)
+    with patch("app.modules.account.tokens.users_repo.get_by_id", AsyncMock(return_value=user)):
+        await tokens.refresh_token_pair(fake_redis, refresh, AsyncMock(), settings)
+        ttl = await fake_redis.ttl(f"refresh_grace:{refresh}")
+        assert 0 < ttl <= tokens.ROTATION_GRACE_SECONDS <= 10
+        await fake_redis.delete(f"refresh_grace:{refresh}")  # the grace ran out
+        with pytest.raises(AuthenticationError):
+            await tokens.refresh_token_pair(fake_redis, refresh, AsyncMock(), settings)
+    assert await _live_sessions(fake_redis, user.id) == set()
+    assert await fake_redis.get(f"revoked_since:{user.id}") is not None
+
+
+@pytest.mark.asyncio
+async def test_a_replay_within_the_grace_after_sign_out_fails_and_spares_other_devices(fake_redis):
+    """Within the grace a rotated-out token is a duplicate, never theft: once its successor
+    has ended (signed out), it is refused, and the account's other devices stay signed in."""
+    user = api_user()
+    settings = Settings(jwt_secret="x" * 32)
+    _, phone = await tokens.issue_token_pair(fake_redis, user.id, settings)
+    _, tablet = await tokens.issue_token_pair(fake_redis, user.id, settings)
+    with patch("app.modules.account.tokens.users_repo.get_by_id", AsyncMock(return_value=user)):
+        _, successor, _ = await tokens.refresh_token_pair(fake_redis, phone, AsyncMock(), settings)
+        await tokens.revoke_refresh_token(fake_redis, successor)
+        with pytest.raises(AuthenticationError):
+            await tokens.refresh_token_pair(fake_redis, phone, AsyncMock(), settings)
+    assert await _live_sessions(fake_redis, user.id) == {tablet}
+    assert await fake_redis.get(f"revoked_since:{user.id}") is None
 
 
 @pytest.mark.asyncio

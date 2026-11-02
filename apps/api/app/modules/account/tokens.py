@@ -1,8 +1,10 @@
 """JWT access + refresh lifecycle with Redis rotation and revocation.
 
 Rotated-out refresh tokens are tombstoned. Reuse revokes the user's refresh
-sessions and older access tokens. This strict policy also rejects a retry
-when a successful rotation's response was lost.
+sessions and older access tokens. For ``ROTATION_GRACE_SECONDS`` after a
+rotation, the same token presented again is that rotation's duplicate (a second
+refresh already in flight, or a retry whose answer was lost to an app reload or
+a dropped connection), not theft: it is answered with the same successor.
 """
 
 from __future__ import annotations
@@ -41,6 +43,11 @@ _USER_REFRESH_SET_PREFIX = "refresh_user:"
 # stolen token after the legitimate device already rotated it), short enough
 # to bound Redis growth. Independent of the refresh token's own TTL.
 _REUSE_DETECTION_WINDOW_SECONDS = 24 * 60 * 60
+# How long a rotated-out token still gets its successor: an app reload lost a refresh's
+# answer and sent the token again 7 s later (2026-11-02), and as reuse it signed every
+# device out. Whoever holds the token in this window gets the successor: keep it seconds.
+ROTATION_GRACE_SECONDS = 10
+_REFRESH_GRACE_PREFIX = "refresh_grace:"
 _MAX_SESSION_TRANSACTION_ATTEMPTS = 3
 
 
@@ -50,6 +57,10 @@ def _refresh_key(token: str) -> str:
 
 def _tombstone_key(token: str) -> str:
     return f"{_REFRESH_TOMBSTONE_PREFIX}{token}"
+
+
+def _grace_key(token: str) -> str:
+    return f"{_REFRESH_GRACE_PREFIX}{token}"
 
 
 def _user_refresh_set_key(user_id: UUID) -> str:
@@ -217,6 +228,39 @@ async def _reject_invalid_refresh(redis: Redis, refresh_token: str, settings: Se
     raise AuthenticationError("Invalid refresh token")
 
 
+async def _answer_again_or_reject(
+    redis: Redis,
+    refresh_token: str,
+    session: AsyncSession,
+    settings: Settings,
+    read_user: UserOut | None = None,
+) -> tuple[str, str, UserOut]:
+    """A token rotated within the grace gets its successor again; another dead one is refused.
+
+    Within the grace it is a duplicate, never theft: once its successor ended (signed out,
+    purged, rotated on) it is refused without revoking the account's other sessions."""
+    successor_raw = await redis.get(_grace_key(refresh_token))
+    if successor_raw is None:
+        await _reject_invalid_refresh(redis, refresh_token, settings)
+    successor = _redis_str(successor_raw)
+    raw = await redis.get(_refresh_key(successor))
+    record = parse_refresh_record(raw) if raw is not None else None
+    if record is None:
+        raise AuthenticationError("Invalid refresh token")
+    user_id = UUID(str(record["user_id"]))
+    user_out = read_user if read_user is not None and read_user.id == user_id else None
+    if user_out is None:
+        user = await users_repo.get_by_id(session, user_id)
+        if user is None:
+            raise AuthenticationError("User not found")
+        user_out = UserOut.model_validate(user)
+    # Issued before the last liveness read: a purge after that read revokes it (iat <= cutoff).
+    access_token = create_access_token(user_id, settings, session_id=str(record["session_id"]))
+    if await redis.get(_refresh_key(successor)) != raw:
+        raise AuthenticationError("Invalid refresh token")
+    return access_token, successor, user_out
+
+
 async def refresh_token_pair(
     redis: Redis,
     refresh_token: str,
@@ -230,7 +274,7 @@ async def refresh_token_pair(
         key = _refresh_key(refresh_token)
         user_id_raw = await redis.get(key)
         if user_id_raw is None:
-            await _reject_invalid_refresh(redis, refresh_token, settings)
+            return await _answer_again_or_reject(redis, refresh_token, session, settings)
         record = parse_refresh_record(user_id_raw)
         if record is None:
             await revoke_refresh_token(redis, refresh_token)
@@ -270,7 +314,10 @@ async def refresh_token_pair(
             try:
                 await pipe.watch(key)
                 if await pipe.get(key) != user_id_raw:
-                    await _reject_invalid_refresh(redis, refresh_token, settings)
+                    await pipe.reset()
+                    return await _answer_again_or_reject(
+                        redis, refresh_token, session, settings, user_out
+                    )
                 pipe.multi()
                 pipe.delete(key)
                 pipe.set(
@@ -278,6 +325,7 @@ async def refresh_token_pair(
                     str(user_id),
                     ex=_REUSE_DETECTION_WINDOW_SECONDS,
                 )
+                pipe.set(_grace_key(refresh_token), new_refresh, ex=ROTATION_GRACE_SECONDS)
                 pipe.srem(user_set_key, refresh_token)
                 pipe.set(_refresh_key(new_refresh), payload, ex=ttl)
                 pipe.sadd(user_set_key, new_refresh)
@@ -288,9 +336,11 @@ async def refresh_token_pair(
                     # Redis also reports lost WATCH connections as WatchError.
                     # The credential is still live: let the client retry it.
                     raise RedisUnavailableError() from exc
-                # Logout/purge or another refresh won. Never recreate a session
-                # that disappeared while the DB lookup or transaction ran.
-                await _reject_invalid_refresh(redis, refresh_token, settings)
+                # Logout/purge or another refresh won. Never recreate a session that
+                # disappeared meanwhile; a refresh that won left its successor for this one.
+                return await _answer_again_or_reject(
+                    redis, refresh_token, session, settings, user_out
+                )
     except RedisError as exc:
         logger.warning("Refresh token Redis op failed; Redis unavailable", exc_info=True)
         raise RedisUnavailableError() from exc
