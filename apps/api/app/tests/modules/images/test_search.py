@@ -273,7 +273,7 @@ async def test_successful_lookup_persists_attachment_and_message():
     refund.assert_not_awaited()
     add_rows.assert_awaited_once()
     added = add_rows.await_args.kwargs
-    assert (added["source"], added["in_library"], added["message_id"]) == ("search", False, asst_id)
+    assert added["message_id"] == asst_id
     markers = [f"[Image: /attachments/{image.attachment_id}/file]" for image in added["images"]]
     assert asst_msg.content == "\n".join(markers)
 

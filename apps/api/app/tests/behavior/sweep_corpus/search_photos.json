@@ -223,13 +223,6 @@
   "expect": "photo"
  },
  {
-  "id": "sp-030",
-  "area": "photo",
-  "prompt": "picture of a 1967 Mustang",
-  "reply": "Here's a **1967 Ford Mustang** fastback in Highland Green.\n\nWhat changed for '67:\n\n- A wider, longer body to fit the big-block 390 V8\n- A larger grille and deeper side scoops\n- A concave rear panel with triple tail lights\n\nWant to see the coupe or the convertible too?",
-  "expect": "image_gen"
- },
- {
   "id": "sp-031",
   "area": "photo",
   "prompt": "Show me how to tie a tie",
@@ -286,20 +279,6 @@
   "expect": "answer"
  },
  {
-  "id": "sp-035",
-  "area": "photo",
-  "prompt": "Draw me a cat",
-  "reply": "Here's your cat — a fluffy orange tabby curled up on a sunny windowsill, tail wrapped neatly around its paws. Want a different style, like a cartoon or a watercolor?",
-  "expect": "image_gen"
- },
- {
-  "id": "sp-036",
-  "area": "photo",
-  "prompt": "image of a sunset",
-  "reply": "Here's a sunset over the Indian Ocean from Diani Beach, Kenya — deep orange fading to violet over the water.\n\nWant a particular place (Santorini, the Grand Canyon, the Serengeti), or an AI-generated one instead?",
-  "expect": "image_gen"
- },
- {
   "id": "sp-037",
   "area": "photo",
   "prompt": "Show me another one",
@@ -346,20 +325,6 @@
   "prompt": "Get me a picture of a red panda",
   "reply": "Here's a **red panda** — rusty-red fur, a white-masked face, and a thick ringed tail it wraps around itself like a scarf. Despite the name, it isn't closely related to the giant panda.",
   "expect": "photo"
- },
- {
-  "id": "sp-041",
-  "area": "photo",
-  "prompt": "Generate an image of a cozy cabin in the snow at night",
-  "reply": "Here's your cabin — a small log cabin half-buried in snow, warm light glowing from the windows and smoke curling from the chimney under a starry sky.",
-  "expect": "image_gen"
- },
- {
-  "id": "sp-042",
-  "area": "photo",
-  "prompt": "Make me a picture of a dragon drinking buna in Addis",
-  "reply": "Here's your dragon — a friendly green one curled around a clay jebena, sipping buna from a tiny cup on a Piassa rooftop at sunset.",
-  "expect": "image_gen"
  },
  {
   "id": "sp-043",

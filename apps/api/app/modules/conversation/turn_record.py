@@ -1,9 +1,9 @@
-"""Saving a turn chat did not stream: a picture or a photo lookup.
+"""Saving a turn chat did not stream: a photo lookup.
 
 Conversation owns the message rows (code-health audit ARCH-08; structure ticket ST-03).
 A typed turn saves in chat's ``turn_settle``. Images saved their own rows
 and skipped what a typed turn does after: the chat stayed where it was in the drawer, a
-chat that began with a picture got no title, and memory and chat-history search never
+chat that began with a photo got no title, and memory and chat-history search never
 read the turn. They save through here now, and chat's ``finish_turn`` sets off a typed
 turn's jobs.
 """
@@ -31,7 +31,7 @@ async def add_turn_message(
 ) -> Message:
     """One message of the turn, and the chat moved up the drawer; no commit.
 
-    The caller commits it with its own rows: a picture's attachment.
+    The caller commits it with its own rows: a photo's attachment.
     """
     message = await messages_repo.create(
         session,

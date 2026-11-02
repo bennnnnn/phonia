@@ -25,7 +25,6 @@ from app.models.schemas import (
 from app.models.schemas.text import NUL_REJECTED_MESSAGE, storable_text
 from app.modules.attachments.schemas import AttachmentPresignIn
 from app.modules.chat.stream_api import require_chat_rate_limit
-from app.modules.images.schemas import ImageGenerateIn
 from app.modules.memory.schemas import MemoryInstructIn, MemoryUpdate
 from app.modules.todos.schemas import TodoCreate, TodoUpdate
 
@@ -46,8 +45,6 @@ PERSISTED_TEXT_FIELDS: list[tuple[type[BaseModel], str, dict[str, Any]]] = [
     (TodoUpdate, "content", {}),
     (MemoryUpdate, "text", {}),
     (MemoryInstructIn, "instruction", {}),
-    (ImageGenerateIn, "prompt", {"chat_id": _CHAT}),
-    (ImageGenerateIn, "user_message", {"chat_id": _CHAT, "prompt": "a cat"}),
     (AttachmentPresignIn, "filename", {"content_type": "application/pdf", "size_bytes": 10}),
 ]
 

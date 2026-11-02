@@ -35,7 +35,7 @@ from app.main import create_app
 from app.models.orm import User
 from app.models.schemas.scan import SCAN_MAX_IMAGE_BYTES
 from app.modules.account.email_authority import AccountExistsError
-from app.services.quota import IMAGE_GENERATION_SPEND_CAP_MESSAGE, counters
+from app.services.quota import counters
 
 FIXTURE = Path(__file__).resolve().parents[4] / "docs" / "fixtures" / "error_codes.json"
 _AUTH = {"Authorization": "Bearer tok"}
@@ -151,41 +151,6 @@ def _memory_instruct(*, spend_capped: bool = False, allowed: bool = True) -> Any
     ):
         return _client(_user()).post(
             "/memories/instruct", headers=_AUTH, json={"instruction": "Remember I like tea"}
-        )
-
-
-def _generate(code: str) -> Any:
-    """POST /images/generate refused the way the picture service refuses."""
-    from app.modules.images.generation import ImageGenerationError
-
-    refusals = {
-        "daily_limit": ImageGenerationError(
-            "No more pictures today.",
-            status_code=429,
-            code="daily_limit",
-            feature="image_generation",
-        ),
-        "content_blocked": ImageGenerationError(
-            "That picture can't be made.",
-            status_code=422,
-            code="content_blocked",
-            feature="image_generation",
-        ),
-        "spend_cap": ImageGenerationError(
-            IMAGE_GENERATION_SPEND_CAP_MESSAGE, status_code=429, code="spend_cap"
-        ),
-        # The image service failed (generation.py's 502s): the code is the status's.
-        "upstream_failed": ImageGenerationError("Could not generate image", status_code=502),
-    }
-    with (
-        patch(
-            "app.modules.images.api.image_generation_service.generate_for_chat",
-            AsyncMock(side_effect=refusals[code]),
-        ),
-        patch("app.core.rest_rate_limit.allow_request", AsyncMock(return_value=True)),
-    ):
-        return _client(_user()).post(
-            "/images/generate", headers=_AUTH, json={"chat_id": str(uuid4()), "prompt": "a cat"}
         )
 
 
@@ -403,10 +368,6 @@ def _bodies() -> dict[str, dict[str, Any]]:
         "memory_busy": _refusal(_memory_instruct()),
         "memory_rate_limited": _refusal(_memory_instruct(allowed=False)),
         "export_busy": _refusal(_export_busy()),
-        "image_daily_limit": _refusal(_generate("daily_limit")),
-        "image_content_blocked": _refusal(_generate("content_blocked")),
-        "image_spend_cap": _refusal(_generate("spend_cap")),
-        "image_upstream_failed": _refusal(_generate("upstream_failed")),
         **_sign_in_bodies(),
     }
 

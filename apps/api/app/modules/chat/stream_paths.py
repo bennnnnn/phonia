@@ -21,7 +21,6 @@ from app.core.background_tasks import create_background_task
 from app.core.config import Settings
 from app.exceptions import RedisUnavailableError
 from app.gateways.litellm_gateway import ModelUnavailableError
-from app.models.orm import User
 from app.modules.chat import tool_loop
 from app.modules.chat.control_tokens import until_control_run
 from app.modules.chat.stream_accum import StreamAccum
@@ -104,9 +103,7 @@ class _LoopGate:
             ),
         )
 
-    def needs_loop(
-        self, settings: Settings, user: User | None, *, web_search: bool | None = None
-    ) -> bool:
+    def needs_loop(self, settings: Settings, *, web_search: bool | None = None) -> bool:
         return tool_loop.turn_needs_tool_loop(
             self.content,
             lightweight=self.lightweight,
@@ -115,7 +112,6 @@ class _LoopGate:
             has_search_sources=self.has_search_sources,
             web_search=web_search,
             settings=settings,
-            user=user,
             skip_tools=self.skip_tools,
         )
 
@@ -134,7 +130,7 @@ class _LoopGate:
             ),
         )
 
-    def may_classify(self, settings: Settings, user: User | None) -> bool:
+    def may_classify(self, settings: Settings) -> bool:
         return should_classify_tool_web_search(
             self.content,
             settings,
@@ -142,7 +138,6 @@ class _LoopGate:
             has_instant_reply=self.has_instant_reply,
             has_verified_math=self.has_verified_math,
             has_search_sources=self.has_search_sources,
-            user=user,
         )
 
 
@@ -152,7 +147,7 @@ def _web_verdict(
     """Whether the turn needs live results when that alone decides the loop, and the
     requests to search: each request of the message read for itself
     (``tool_loop.parts``). ``(None, None)``: the verdict cannot change the gate."""
-    if not gate.may_classify(settings, ctx.user):
+    if not gate.may_classify(settings):
         return None, None
     prompt = ctx.prompt_messages if isinstance(ctx.prompt_messages, list) else []
     found = searchable_parts(
@@ -166,7 +161,7 @@ def _web_verdict(
 
 def _apply_tool_rounds(ctx: StreamContext, rounds: ToolRoundsOutcome) -> None:
     """What the tool rounds found becomes the turn's: the messages the stream reads,
-    a verified block, a terminal picture, search sources the prompt path lacked."""
+    a verified block, a terminal photo, search sources the prompt path lacked."""
     ctx.prompt_messages, tool_verified, terminal_image, tool_search_hits = rounds
     if tool_verified is not None:
         question = ctx.user_message_content or ""
@@ -219,9 +214,9 @@ async def run_tool_loop_path(
         return
     # Sync heuristic first (math / news). Classifier only when
     # that gate is weak so we do not add an LLM round to already-needed turns.
-    if not gate.needs_loop(settings, ctx.user):
+    if not gate.needs_loop(settings):
         web_search_flag, search_parts = _web_verdict(settings, ctx, gate)
-        if not gate.needs_loop(settings, ctx.user, web_search=web_search_flag):
+        if not gate.needs_loop(settings, web_search=web_search_flag):
             prompt = ctx.prompt_messages if isinstance(ctx.prompt_messages, list) else []
             ctx.reply_tools = gate.reply_tools(settings, prompt)
             if not (ctx.reply_tools or gate.has_search_sources or gate.has_instant_reply):

@@ -18,10 +18,6 @@ _KIND_NOTES: dict[PartKind, str] = {
         "a settings change. The app adds a card under your reply that applies it when "
         "tapped: do not say it is done, and do not explain how to change it. No section."
     ),
-    "image": (
-        "a picture to draw. The app draws it and shows it above your reply, or says it "
-        "could not: do not describe it, promise it, or write a prompt for it. No section."
-    ),
     "photo": (
         "a real photo. Open the reply with a ```photo fence holding a short image search "
         "for it on one line (the app swaps it for a real photo); never describe the photo. "
@@ -35,7 +31,7 @@ _KIND_NOTES: dict[PartKind, str] = {
         "could not check it live."
     ),
 }
-_NO_SECTION_KINDS: frozenset[PartKind] = frozenset({"settings", "image", "photo", "reminder"})
+_NO_SECTION_KINDS: frozenset[PartKind] = frozenset({"settings", "photo", "reminder"})
 
 _SECTIONS = (
     "Put each request that needs a written answer under its own `###` heading of a few "

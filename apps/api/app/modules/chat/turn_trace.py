@@ -233,7 +233,7 @@ def turn_record(
         "total_ms": round((time.perf_counter() - trace.started) * 1000, 1),
     }
     if outcome is not None:
-        # The model that answered: a fallback's, or the picture model's.
+        # The model that answered: a fallback's, or the photo lookup's.
         record["resolved_model"] = _token(outcome.resolved_model)
         record["fallback_used"] = outcome.fallback_used
     if ctx is not None:

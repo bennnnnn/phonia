@@ -347,37 +347,7 @@ async def test_search_and_export_only_show_the_callers_data(world: World) -> Non
     assert data.secret_word in export_a.text and "hello from b" not in export_a.text
 
 
-# ── images, voice, sessions ──────────────────────────────────────────────────
-
-
-@pytest.mark.asyncio
-async def test_image_generation_into_another_users_chat_is_404(world: World) -> None:
-    c, b, data = world.client, world.b, world.a_data
-    async with SessionLocal() as session:
-        row = await session.get(User, b.id)
-        assert row is not None
-        row.plan = "pro"
-        await session.commit()
-    from app.core.user_cache import forget_user
-
-    forget_user(b.id)
-    into_their_chat = await c.post(
-        "/images/generate",
-        json={"chat_id": str(data.chat_id), "prompt": "a cat"},
-        headers=b.headers,
-    )
-    assert into_their_chat.status_code == 404
-    their_reference = await c.post(
-        "/images/generate",
-        json={
-            "chat_id": str(world.b_chat_id),
-            "prompt": "a cat",
-            "reference_attachment_ids": [str(data.attachment_id)],
-        },
-        headers=b.headers,
-    )
-    assert their_reference.status_code == 404
-    assert await _count(Message, Message.chat_id == data.chat_id) == 2
+# ── voice, sessions ──────────────────────────────────────────────────
 
 
 @pytest.mark.asyncio

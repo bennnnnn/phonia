@@ -98,9 +98,6 @@ _SUBJECT_CALLERS: dict[str, tuple[int, str]] = {
     "modules/chat/continuation_subject.py::classify_presentation_subject": (1, "any line"),
     "modules/chat/continuation_subject.py::blocks_math_followup": (1, "an earlier line"),
     "modules/chat/follow_up_thread.py::subject_for_related": (1, "a related question"),
-    # Images reads a send before any chat turn (and may not import chat).
-    "modules/images/gen_intent.py::stem_subject": (1, "a picture request's subject"),
-    "modules/images/intent.py::composer_intent_for_chat": (1, "the composer's send"),
 }
 
 

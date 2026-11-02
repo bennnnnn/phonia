@@ -26,7 +26,6 @@ PAID_PLANS: frozenset[str] = frozenset({"plus", "pro"})
 
 Feature = Literal[
     "all_models",
-    "image_generation",
     "speech_transcription",
     "speech_tts",
 ]
@@ -38,7 +37,6 @@ Allowance = Literal[
     "daily_document_uploads",
     "daily_web_searches",
     "daily_image_searches",
-    "daily_image_generations",
     "daily_speech_transcriptions",
     "daily_speech_tts",
 ]
@@ -51,14 +49,12 @@ _ALLOWANCE_SETTING: dict[Allowance, str] = {
     "daily_document_uploads": "daily_document_limit",
     "daily_web_searches": "daily_tavily_searches",
     "daily_image_searches": "daily_image_searches",
-    "daily_image_generations": "daily_image_generations",
     "daily_speech_transcriptions": "daily_speech_transcriptions",
     "daily_speech_tts": "daily_speech_tts",
 }
 
 # Metered features: included when the plan's allowance is above zero.
 _FEATURE_ALLOWANCE: dict[Feature, Allowance] = {
-    "image_generation": "daily_image_generations",
     "speech_transcription": "daily_speech_transcriptions",
     "speech_tts": "daily_speech_tts",
 }

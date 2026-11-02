@@ -48,7 +48,7 @@ class Chat(Base):
     summary: Mapped[str | None] = mapped_column(Text)
     summary_message_count: Mapped[int] = mapped_column(Integer, default=0)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
-    # Last activity: a reply or a picture turn (chats_repository.touch_by_id). Pinning,
+    # Last activity: a reply or a photo turn (chats_repository.touch_by_id). Pinning,
     # renaming, a generated title or a compacted history is not activity,
     # so none of them moves the chat to Today in the drawer.
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())

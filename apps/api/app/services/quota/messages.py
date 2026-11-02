@@ -34,16 +34,6 @@ SPEECH_TTS_NOT_IN_PLAN_MESSAGE = (
     "Read aloud isn't part of your plan. Upgrade for it, or use your phone's voice."
 )
 
-IMAGE_GENERATION_LIMIT_EXCEEDED_MESSAGE_FREE = (
-    "You've reached today's image generation limit. "
-    "Upgrade for more — or try again after midnight UTC."
-)
-IMAGE_GENERATION_LIMIT_EXCEEDED_MESSAGE_PAID = (
-    "You've reached today's image generation limit. Try again after midnight UTC."
-)
-IMAGE_GENERATION_NOT_IN_PLAN_MESSAGE = "Image generation isn't part of your plan. Upgrade for it."
-IMAGE_GENERATION_SPEND_CAP_MESSAGE = "Image generation is temporarily unavailable. Try again later."
-
 IMAGE_SEARCH_LIMIT_EXCEEDED_MESSAGE_FREE = (
     "You've reached today's photo lookup limit. Upgrade for more — or try again after midnight UTC."
 )

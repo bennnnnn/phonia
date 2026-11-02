@@ -1,7 +1,7 @@
 """Every turn is saved and followed up as a typed one (code-health audit ARCH-08).
 
-A picture and a photo lookup saved their own rows: the chat stayed where it was in the
-drawer, and a chat that began with a picture got no title.
+A photo lookup saved its own rows: the chat stayed where it was in the drawer, and a
+chat that began with a photo got no title.
 """
 
 from __future__ import annotations
@@ -63,8 +63,8 @@ async def _typed() -> None:
     await post_turn.enqueue_post_turn_jobs(AsyncMock(), _SETTINGS, ctx, _REPLY)
 
 
-async def _picture() -> None:
-    # As images.generation and images.search finish a turn that saved the user's message.
+async def _photo() -> None:
+    # As images.search finishes a turn that saved the user's message.
     await post_turn.finish_turn(
         AsyncMock(),
         _SETTINGS,
@@ -77,7 +77,7 @@ async def _picture() -> None:
 
 
 @pytest.mark.asyncio
-async def test_a_picture_queues_a_typed_turns_jobs() -> None:
+async def test_a_photo_queues_a_typed_turns_jobs() -> None:
     typed = await _queued(_typed)
     assert [name for name, _ in typed] == [
         "memory",
@@ -87,7 +87,7 @@ async def test_a_picture_queues_a_typed_turns_jobs() -> None:
         "message_index",
     ]
     # Same names and payloads; the compress key is unique per enqueue, not compared.
-    assert await _queued(_picture) == typed
+    assert await _queued(_photo) == typed
 
 
 @pytest.mark.asyncio
@@ -110,7 +110,7 @@ async def test_a_message_saved_for_a_turn_moves_the_chat_up(db_session) -> None:
         user_id=user.id,
         role="assistant",
         content="[Image: /attachments/x/file]",
-        model="image-gen-model",
+        model="image-search-model",
     )
     await db_session.flush()
 

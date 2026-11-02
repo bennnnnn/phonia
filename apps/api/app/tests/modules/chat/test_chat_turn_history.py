@@ -51,10 +51,6 @@ async def test_next_turn_history_includes_pending_assistant_after_finalize():
     )
     with (
         patch("app.modules.chat.turn_load.wait_for_pending_finalize", finish_previous_turn),
-        patch(
-            "app.modules.chat.turn_intercepts.try_image_gen_for_turn",
-            AsyncMock(return_value=False),
-        ),
         patch("app.modules.chat.turn_resources.reserve_turn_quota", AsyncMock(return_value=100)),
         patch("app.modules.chat.stream_entry.top_up_reserve_for_prompt", AsyncMock()),
         patch("app.modules.chat.stream_entry.prepare_chat_turn", prepare),

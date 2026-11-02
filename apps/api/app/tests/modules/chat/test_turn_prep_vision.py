@@ -13,7 +13,6 @@ from PIL import Image
 
 from app.core.config import Settings
 from app.gateways.storage_gateway import StorageUnavailableError
-from app.modules.chat.prompt_constants.visuals import IMAGE_GEN_UNAVAILABLE_HINT
 from app.modules.chat.turn_prep.attachments import _AttachmentProcessResult
 from app.modules.chat.turn_prep.vision import inject_turn_images
 from app.tests.modules.chat.chat_test_support import FakeSessionCM
@@ -165,7 +164,6 @@ async def test_an_earlier_photo_is_read_again_and_asks_for_the_vision_model():
     sent = _photo_message(messages)
     parts = [part for part in sent["content"] if part["type"] == "image_url"]
     assert [_colour(part) for part in parts] == ["red", "blue"]
-    assert IMAGE_GEN_UNAVAILABLE_HINT not in str(sent["content"])
     # Back on the message that sent them: "Smart" after a screenshot described it again
     # when the photo rode on the new message (live chat, 2026-10-25).
     assert sent is not messages[-1]

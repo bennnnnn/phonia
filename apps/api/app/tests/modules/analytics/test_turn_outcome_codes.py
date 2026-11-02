@@ -1,8 +1,8 @@
 """The turn outcome event's error codes: the phone's list, the server's, and the stream's.
 
 Codes added to the chat stream's error frame (``failed``, ``not_found``,
-``server_restarting``, ``reply_not_saved``, ``consent_required``, a picture's
-``daily_limit`` and ``content_blocked``) were counted as "other" on both sides. A code a
+``server_restarting``, ``reply_not_saved``, ``consent_required``) were counted as
+"other" on both sides. A code a
 started turn's frame can carry is a bucket here and on the phone, so the next one cannot
 drift again.
 """
@@ -23,7 +23,6 @@ from app.exceptions import (
     QuotaExceededError,
     RedisUnavailableError,
     SpendCapReachedError,
-    TurnRefusedError,
 )
 from app.gateways.litellm_gateway import ModelUnavailableError
 from app.modules.analytics.service import _ALLOWED_PROPERTIES
@@ -52,14 +51,10 @@ _TURN_FAILURES: list[BaseException] = [
     ChatBusyError(),
     AttachmentValidationError("Too big."),
     SpendCapReachedError("Paused today."),
-    SpendCapReachedError("Pictures paused.", feature="image_generation"),
     ConsentRequiredError(),
-    # turn_intercepts: a picture's own cap or the provider's refusal.
-    TurnRefusedError("No more pictures.", code="daily_limit", feature="image_generation"),
-    TurnRefusedError("Blocked.", code="content_blocked", feature="image_generation"),
     ModelUnavailableError("Model down."),
     ChatNotFoundError("Chat not found."),
-    ChatServiceError("Could not generate image"),
+    ChatServiceError("Could not find a photo"),
     RuntimeError("boom"),
 ]
 

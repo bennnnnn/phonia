@@ -50,7 +50,6 @@ from app.modules.chat.finalize_contracts import (
 from app.modules.chat.finalize_money import attach_money_card
 from app.modules.chat.finalize_parts import (
     add_settings_card,
-    attach_reply_picture,
     divide_request_sections,
 )
 from app.modules.chat.finalize_reminders import apply_reminder_pass, drop_cut_reminder_fence
@@ -242,13 +241,6 @@ FINALIZE_PASSES: tuple[FinalizePass, ...] = (
     FinalizePass("emoji_use", place_reply_emoji, kind=TEXT),
     # A linked photo commits the text, so a later failure keeps its marker.
     FinalizePass("answer_photo", attach_answer_photo, kind=EFFECT),
-    # After the answer photo's pass, which sets the list the picture joins.
-    FinalizePass(
-        "reply_picture",
-        attach_reply_picture,
-        kind=EFFECT,
-        after=frozenset({"answer_photo"}),
-    ),
     FinalizePass(
         "chemistry_fences",
         check_chemistry_fences,

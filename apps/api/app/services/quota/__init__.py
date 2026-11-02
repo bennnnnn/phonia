@@ -16,8 +16,6 @@ from app.services.quota.carryover import (
 from app.services.quota.counters import utc_today
 from app.services.quota.messages import (
     CHAT_SPEND_CAP_MESSAGE,
-    IMAGE_GENERATION_NOT_IN_PLAN_MESSAGE,
-    IMAGE_GENERATION_SPEND_CAP_MESSAGE,
     IMAGE_SEARCH_SPEND_CAP_MESSAGE,
     SPEECH_NOT_IN_PLAN_MESSAGE,
     SPEECH_RATE_LIMIT_MESSAGE,
@@ -27,7 +25,6 @@ from app.services.quota.messages import (
     quota_exceeded_message,
 )
 from app.services.quota.spend import (
-    IMAGE_GEN_SPEND_USD,
     IMAGE_SEARCH_SPEND_USD,
     MATH_SCAN_READ_SPEND_USD,
     STT_SPEND_USD,
@@ -54,9 +51,6 @@ from app.services.quota.tokens import (
 
 __all__ = [
     "CHAT_SPEND_CAP_MESSAGE",
-    "IMAGE_GENERATION_NOT_IN_PLAN_MESSAGE",
-    "IMAGE_GENERATION_SPEND_CAP_MESSAGE",
-    "IMAGE_GEN_SPEND_USD",
     "IMAGE_SEARCH_SPEND_CAP_MESSAGE",
     "IMAGE_SEARCH_SPEND_USD",
     "MATH_SCAN_READ_SPEND_USD",

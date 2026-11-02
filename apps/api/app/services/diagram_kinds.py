@@ -1,8 +1,7 @@
 """Diagrams the app draws itself as a ```mermaid card, by the names people give them.
 
-Images reads this so "draw a decision tree" is never an AI picture, whose labels come
-out garbled; chat reads it to lead the reply with the right Mermaid diagram, and so an
-org chart is never mistaken for a numeric chart.
+Chat reads it to lead the reply with the right Mermaid diagram, and so an org chart is
+never mistaken for a numeric chart.
 """
 
 from __future__ import annotations

@@ -1,21 +1,13 @@
-"""Detect reference-photo *lookup* intent in a message: the word rules ``intent.py`` reads.
+"""Detect reference-photo *lookup* intent in a message.
 
-Cases: ``docs/fixtures/image_intent_cases.json``.
+Cases: ``docs/fixtures/photo_lookup_cases.json``.
 
-Separate from ``image_gen_intent`` (creative generation). "Show me an ear" /
-"what does a golden retriever look like" want a real photo, not AI art —
-this module recognizes that distinct phrasing so the router can send it to
-``image_search`` instead of ``generate_image``.
-
-Checked *before* generation intent in the caller: none of the trigger verbs
-here ("show", "let … see", "what does … look like") overlap with
-generation's verb set (create/generate/make/design/render/produce/draw/
-paint/illustrate), so this only changes behavior for phrasing generation
-did not already own on purpose (see the "show me a picture of X" bug this
-fixes — generation's bare colloquial fallback used to mis-parse it).
+"Show me an ear" / "what does a golden retriever look like" want a real photo:
+this module recognizes that phrasing so the chat turn sends it to the photo
+search (``search.py``) instead of answering in words.
 
 Matching is linear token scans — no ``\\s+`` / ``.+`` regex on user chat text
-(CodeQL ``py/polynomial-redos``), same discipline as ``image_gen_intent``.
+(CodeQL ``py/polynomial-redos``).
 """
 
 from __future__ import annotations
@@ -28,6 +20,7 @@ from app.modules.images.lookup_intent_words import (
     DUAL_USE_WORDS,
     LOOKUP_NON_IMAGE_WORDS,
 )
+from app.modules.images.picture_words import IMAGE_NOUNS as IMAGE_NOUNS  # chat reads it here
 from app.modules.images.unnamed_subjects import is_count_only
 from app.services.text_normalize import fold_token
 

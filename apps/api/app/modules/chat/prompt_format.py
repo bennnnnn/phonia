@@ -65,10 +65,6 @@ from app.modules.chat.prompt_constants.chart import with_chart_followup
 from app.modules.chat.prompt_constants.clarify import ranking_layout
 from app.modules.chat.prompt_constants.conversation import CONFIRMED_HINT
 from app.modules.chat.prompt_constants.lesson_flow import lesson_turn_hint
-from app.modules.chat.prompt_constants.visuals import (
-    IMAGE_GEN_HONESTY_HINT,
-    IMAGE_GEN_UNAVAILABLE_HINT,
-)
 from app.modules.chat.prompt_subjects import subject_closing_hints, subject_presentation_hints
 from app.modules.chat.turn_prep.reading import subject_of
 from app.modules.chat.turn_trace import note_prompt_rule
@@ -94,7 +90,6 @@ from app.modules.turn_reading.teaching import (
     is_walkthrough_request,
 )
 from app.modules.turn_reading.turn import teaching_of
-from app.modules.turn_reading.visuals import is_image_generation_mention
 from app.modules.turn_reading.writing import draft_followup
 from app.modules.turn_reading.writing_kind import writing_request_kind
 from app.services.day_planning import is_day_planning_question, is_day_reflection_question
@@ -192,7 +187,6 @@ class StyleTurn:
     is_day_plan: bool
     minimal_personal_context: bool
     compact: bool
-    image_generation_enabled: bool
     image_search_enabled: bool
     writing: str | None
     writing_kind: str | None
@@ -218,7 +212,6 @@ def _style_turn(
     is_day_plan: bool,
     minimal_personal_context: bool,
     compact: bool,
-    image_generation_enabled: bool,
     image_search_enabled: bool,
     lesson: int | None,
     outline_pick: bool = False,
@@ -248,7 +241,6 @@ def _style_turn(
         is_day_plan=is_day_plan,
         minimal_personal_context=minimal_personal_context,
         compact=compact,
-        image_generation_enabled=image_generation_enabled,
         image_search_enabled=image_search_enabled,
         writing=writing,
         writing_kind=writing_request_kind(query) if query else None,
@@ -361,13 +353,6 @@ HINT_RULES: tuple[PromptRule[StyleTurn], ...] = (
     # A real photo above an answer about something to see.
     PromptRule(offers_answer_photo, answer_photo_hints, name="answer_photo"),
     PromptRule(
-        _asks(is_image_generation_mention),
-        lambda t: [
-            IMAGE_GEN_HONESTY_HINT if t.image_generation_enabled else IMAGE_GEN_UNAVAILABLE_HINT
-        ],
-        name="image_generation_honesty",
-    ),
-    PromptRule(
         _always,
         lambda t: subject_presentation_hints(t.subject, short=t.compact),
         name="subject_presentation",
@@ -463,7 +448,6 @@ def _style_format_hints(
     is_day_plan: bool,
     minimal_personal_context: bool,
     compact: bool = False,
-    image_generation_enabled: bool = True,
     image_search_enabled: bool = False,
     lesson: int | None = None,
     outline_pick: bool = False,
@@ -492,7 +476,6 @@ def _style_format_hints(
         is_day_plan=is_day_plan,
         minimal_personal_context=minimal_personal_context,
         compact=compact,
-        image_generation_enabled=image_generation_enabled,
         image_search_enabled=image_search_enabled,
         multi=multi,
     )

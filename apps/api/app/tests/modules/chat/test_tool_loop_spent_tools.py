@@ -58,7 +58,7 @@ def test_a_spent_tool_is_not_offered() -> None:
     try:
 
         def offered(spent: frozenset[str]) -> set[Any]:
-            tools = selection._tools_for_user(settings, MagicMock(), skip_tools=spent)
+            tools = selection._tools_for_user(settings, skip_tools=spent)
             return {(tool.get("function") or {}).get("name") for tool in tools}
 
         assert offered(frozenset()) == {"sympy", "search_image"}
@@ -201,10 +201,6 @@ def _photo_deps(search: AsyncMock) -> Any:
         chats={"get_by_id": AsyncMock(return_value=MagicMock(project_id=None))},
         messages={"list_recent": AsyncMock(return_value=[])},
         quota={"daily_limit_for_user": MagicMock(return_value=100_000)},
-        plan={
-            "resolve_user_model": MagicMock(return_value="free-chat"),
-            "can_use": MagicMock(return_value=False),
-        },
         image_search={"search_and_attach_for_chat": search},
     )
 
@@ -259,7 +255,7 @@ async def test_the_turn_tells_its_tool_loop_the_photo_was_not_found() -> None:
     from app.modules.images.search import ImageSearchError
 
     search = AsyncMock(side_effect=ImageSearchError("no usable photo", status_code=502))
-    prepared = SimpleNamespace(reply_picture=None)
+    prepared = SimpleNamespace()
     streamed: list[Any] = []
 
     async def fake_stream(_deps: Any, _redis: Any, _settings: Any, ctx: Any, **_kwargs: Any):
@@ -273,7 +269,6 @@ async def test_the_turn_tells_its_tool_loop_the_photo_was_not_found() -> None:
         patch("app.modules.chat.turn_resources.reserve_turn_quota", AsyncMock(return_value=100)),
         patch("app.modules.chat.stream_entry.top_up_reserve_for_prompt", AsyncMock()),
         patch("app.modules.chat.stream_entry.prepare_chat_turn", AsyncMock(return_value=prepared)),
-        patch("app.modules.chat.stream_entry.start_reply_picture", return_value=None),
         patch("app.modules.chat.stream_entry.await_user_message_persist", AsyncMock()),
         patch("app.modules.chat.stream_entry.stream_and_finalize", fake_stream),
     ):

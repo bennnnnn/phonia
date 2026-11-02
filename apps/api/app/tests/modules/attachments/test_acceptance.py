@@ -111,7 +111,7 @@ async def test_storage_outage_before_acceptance_is_safe_to_retry():
     [
         {"library_visible": False},
         {"verified_at": datetime.now(UTC)},
-        {"source": "generated"},
+        {"source": "search"},
         {"created_at": datetime.now(UTC) - timedelta(days=1)},
     ],
 )

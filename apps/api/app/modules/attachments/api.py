@@ -57,7 +57,6 @@ def _workflow_http_errors() -> Iterator[None]:
 @router.get("", response_model=Page[AttachmentListItemOut])
 async def list_attachments(
     category: str | None = Query(default=None, pattern="^(images|files)$"),
-    source: str | None = Query(default=None, pattern="^(upload|generated)$"),
     q: str | None = Query(default=None, max_length=80),
     limit: int = Query(default=30, ge=1, le=100),
     cursor: str | None = Query(default=None, max_length=200),
@@ -68,7 +67,7 @@ async def list_attachments(
     """One page of the user's attachments, newest first; ``cursor`` reads the next.
 
     ``q`` is a case-insensitive substring over filename, content type, and
-    the linked message (covers image-gen prompts).
+    the linked message.
     """
     query = q.strip() if q else None
     if not query:
@@ -78,7 +77,6 @@ async def list_attachments(
         settings,
         user,
         category=category,
-        source=source,
         q=query,
         limit=limit,
         cursor=cursor,

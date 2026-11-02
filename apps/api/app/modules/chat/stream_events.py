@@ -26,7 +26,6 @@ from app.exceptions import (
     QuotaExceededError,
     RedisUnavailableError,
     SpendCapReachedError,
-    TurnRefusedError,
 )
 from app.gateways.litellm_gateway import ModelUnavailableError
 from app.modules.chat.stream_accum import Completion
@@ -436,11 +435,9 @@ def error_payload_for_exception(exc: BaseException) -> dict[str, Any]:
     if isinstance(exc, AttachmentValidationError):
         return {"type": "error", "code": "attachment_rejected", "message": exc.message}
     if isinstance(exc, SpendCapReachedError):
-        return {"type": "error", "code": "spend_cap", "message": exc.message, **exc.fields}
+        return {"type": "error", "code": "spend_cap", "message": exc.message}
     if isinstance(exc, ConsentRequiredError):
         return {"type": "error", "code": exc.code, "message": exc.message}
-    if isinstance(exc, TurnRefusedError):
-        return {"type": "error", "code": exc.code, "message": exc.message, **exc.fields}
     if isinstance(exc, ChatNotFoundError):
         # The chat, or the message to answer, is gone (deleted on another device).
         return {"type": "error", "code": "not_found", "message": exc.message}

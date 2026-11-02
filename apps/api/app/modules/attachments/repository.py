@@ -14,9 +14,9 @@ from sqlalchemy.sql.elements import ColumnElement
 from app.models.orm import Attachment, Chat, Message, User
 from app.repositories.keyset import after, decode_cursor, encode_cursor, page_of
 
-# Library is the user's archive. Reference-photo lookup copies (`search`)
-# stay on the chat and are never listed.
-_LIBRARY_SOURCES = ("upload", "generated")
+# Library is the user's archive of uploads. Reference-photo lookup copies
+# (`search`) stay on the chat and are never listed.
+_LIBRARY_SOURCES = ("upload",)
 
 
 def _never_sent_upload() -> ColumnElement[bool]:
@@ -130,9 +130,8 @@ async def insert_verified_clone(
     src: Attachment,
     new_id: UUID,
     storage_key: str,
-    message_id: UUID | None = None,
 ) -> Attachment:
-    """Copy of an item for a new chat send, on ``message_id`` if given. Hidden from gallery."""
+    """Copy of an item for a new chat send. Hidden from gallery."""
     row = Attachment(
         id=new_id,
         user_id=src.user_id,
@@ -143,8 +142,6 @@ async def insert_verified_clone(
         original_filename=src.original_filename,
         verified_at=src.verified_at or datetime.now(UTC),
         library_visible=False,
-        message_id=message_id,
-        linked_at=datetime.now(UTC) if message_id is not None else None,
     )
     session.add(row)
     await session.flush()
@@ -263,7 +260,6 @@ async def list_for_gallery(
     user_id: UUID,
     *,
     category: str | None = None,
-    source: str | None = None,
     q: str | None = None,
     limit: int = 30,
     cursor: str | None = None,
@@ -274,17 +270,13 @@ async def list_for_gallery(
 
     * ``"images"`` — ``content_type LIKE 'image/%'``
     * ``"files"``  — ``content_type NOT LIKE 'image/%'``
-    * ``None``     — uploads and generated files (not lookup photos)
+    * ``None``     — every upload (not lookup photos)
 
-    Optional ``source`` filter narrows to ``'upload'`` or ``'generated'``.
-    Reference-photo lookup copies (``source='search'``) are never listed, nor
-    uploads no message ever linked (composer drafts, reaped after a day).
-    Verified items stay listed after their chat is deleted (``message_id``
+    Only uploads are listed: reference-photo lookup copies (``source='search'``)
+    never are, nor uploads no message ever linked (composer drafts, reaped after
+    a day). Verified items stay listed after their chat is deleted (``message_id``
     SET NULL); Open chat is omitted when no chat remains. Optional ``q``
-    matches original filename, content type, the linked message body, or
-    the previous user message in that chat (the draw prompt for generated
-    images, which are linked to the assistant ``[Image: …]`` marker rather
-    than the user prompt).
+    matches original filename, content type, or the linked message body.
     """
     stmt = select(Attachment).where(
         Attachment.user_id == user_id,
@@ -297,29 +289,14 @@ async def list_for_gallery(
         stmt = stmt.where(Attachment.content_type.like("image/%"))
     elif category == "files":
         stmt = stmt.where(Attachment.content_type.notlike("image/%"))
-    if source in _LIBRARY_SOURCES:
-        stmt = stmt.where(Attachment.source == source)
     if q:
         linked = aliased(Message)
-        prev_user_content = (
-            select(Message.content)
-            .where(
-                Message.chat_id == linked.chat_id,
-                Message.role == "user",
-                Message.created_at < linked.created_at,
-            )
-            .order_by(Message.created_at.desc(), Message.id.desc())
-            .limit(1)
-            .correlate(linked)
-            .scalar_subquery()
-        )
         stmt = stmt.outerjoin(linked, Attachment.message_id == linked.id)
         stmt = stmt.where(
             or_(
                 _contains(Attachment.original_filename, q),
                 _contains(Attachment.content_type, q),
                 _contains(linked.content, q),
-                _contains(prev_user_content, q),
             )
         )
     if cursor is not None:

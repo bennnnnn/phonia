@@ -1326,23 +1326,6 @@
   "expect": "answer"
  },
  {
-  "id": "hf-078",
-  "area": "photo",
-  "prompt": "generate an image of the first one",
-  "history": [
-   [
-    "user",
-    "i need a logo idea for my coffee shop called Buna Time"
-   ],
-   [
-    "assistant",
-    "Here are three logo ideas for **Buna Time**:\n\n1. **Jebena clock** — a jebena (traditional clay coffee pot) whose round base is a clock face, with the spout as the hour hand. Warm brown and gold.\n2. **Three cups** — three small sini cups in a row for abol, tona and bereka, with \"Buna Time\" in a simple rounded font underneath.\n3. **Coffee bean sun** — a single coffee bean rising like a sun over a green hill, a nod to Ethiopia as the birthplace of coffee."
-   ]
-  ],
-  "reply": "Here's a generated logo concept for **Buna Time** — a **jebena** whose round base doubles as a clock face, with the spout pointing like an hour hand. Warm coffee browns with gold accents, on a cream background.\n\nWant me to try a version with the shop name integrated into the design, or a simpler flat style for signage?",
-  "expect": "image_gen"
- },
- {
   "id": "hf-079",
   "area": "photo",
   "prompt": "show me both side by side",

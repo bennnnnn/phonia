@@ -279,7 +279,7 @@ async def test_reply_call_to_a_tool_it_was_not_offered_is_refused(
     image_call = {
         "id": "call_2",
         "type": "function",
-        "function": {"name": "generate_image", "arguments": '{"prompt": "a trophy"}'},
+        "function": {"name": "search_image", "arguments": '{"query": "a trophy"}'},
     }
     llm, seen = _model(([], [image_call]), (["Here is what I know."], []))
 

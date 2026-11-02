@@ -1,7 +1,7 @@
 """Reference-photo lookup — Tavily image search (server-side only).
 
-Separate from ``web_search_gateway`` (text results) and ``image_gateway``
-(AI generation). Returns real, source-linked photo URLs for "what does X
+Separate from ``web_search_gateway`` (text results). Returns real,
+source-linked photo URLs for "what does X
 look like" asks; the caller (``services.image_search``) mirrors the bytes
 into Recall's own storage via ``safe_fetch`` before ever showing a URL to
 a client, so no arbitrary third-party URL is ever rendered on mobile.

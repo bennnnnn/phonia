@@ -321,13 +321,6 @@ CATALOG: tuple[ChatModel, ...] = (
         stray_think_guard=True,
         **_GLM_FLASH,
     ),
-    _or(
-        id="image-gen-model",
-        label="Image generation",
-        model="black-forest-labs/flux.2-klein-4b",
-        provider="openrouter",
-        selectable=False,
-    ),
     ChatModel(
         id="speech-stt-model",
         label="Speech transcription",

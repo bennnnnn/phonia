@@ -4,7 +4,7 @@ The model writes the card (``prompt_constants/clarify.py``); this keeps one vali
 the end of the reply, in the shape the phone draws (docs/clarify.md). A card that breaks
 the rules is not shown: a reply that only asked keeps its questions as a short line of
 prose so the user still knows what was asked. A turn that must never ask (a solved
-problem, an instant reply, a reminder, a picture, a multi-part reply) loses the card: the
+problem, an instant reply, a reminder, a photo, a multi-part reply) loses the card: the
 finalize pass (``finalize_text.settle_clarify``) says which turns those are.
 """
 

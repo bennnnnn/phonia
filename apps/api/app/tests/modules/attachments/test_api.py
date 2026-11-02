@@ -1145,7 +1145,7 @@ def _attachment_row(
     attachment_id=None,
     content_type="image/png",
     size_bytes=1024,
-    source="generated",
+    source="upload",
     storage_key="user/key",
     created_at=None,
 ):
@@ -1165,8 +1165,8 @@ def _attachment_row(
 def test_list_attachments_returns_images():
     """GET /attachments returns image attachments with download URLs."""
     user = _fake_user()
-    row1 = _attachment_row(source="generated")
-    row2 = _attachment_row(source="upload")
+    row1 = _attachment_row(content_type="image/png")
+    row2 = _attachment_row(content_type="image/jpeg")
     gateway = MagicMock()
     gateway.presign_download = AsyncMock(side_effect=["url1", "url2"])
 
@@ -1184,9 +1184,9 @@ def test_list_attachments_returns_images():
     body = r.json()
     assert len(body["items"]) == 2
     assert body["next_cursor"] is None
-    assert body["items"][0]["source"] == "generated"
+    assert body["items"][0]["source"] == "upload"
     assert body["items"][0]["download_url"] == f"/attachments/{row1.id}/file"
-    assert body["items"][1]["source"] == "upload"
+    assert body["items"][1]["content_type"] == "image/jpeg"
     gateway.presign_download.assert_not_called()
     assert body["items"][0]["chat_id"] is None
 
@@ -1196,7 +1196,7 @@ def test_list_attachments_includes_chat_id():
     user = _fake_user()
     message_id = uuid4()
     chat_id = uuid4()
-    row = _attachment_row(source="generated")
+    row = _attachment_row()
     row.message_id = message_id
     gateway = MagicMock()
     gateway.presign_download = AsyncMock(return_value="url1")
@@ -1222,32 +1222,6 @@ def test_list_attachments_includes_chat_id():
     assert item["chat_title"] == "Trip"
 
 
-def test_list_attachments_source_filter():
-    """GET /attachments?source=generated is forwarded to the gallery query."""
-    user = _fake_user()
-    row = _attachment_row(source="generated")
-    gateway = MagicMock()
-    gateway.presign_download = AsyncMock(return_value="url1")
-    mock_list = AsyncMock(return_value=([row], None))
-    with (
-        patch(
-            "app.modules.attachments.workflow.attachments_repo.list_for_gallery",
-            mock_list,
-        ),
-        patch("app.modules.attachments.workflow.get_storage_gateway", return_value=gateway),
-    ):
-        client = TestClient(_app_with_user(user))
-        r = client.get(
-            "/attachments?category=images&source=generated",
-            headers={"Authorization": "Bearer tok"},
-        )
-
-    assert r.status_code == 200
-    _, kwargs = mock_list.call_args
-    assert kwargs.get("category") == "images"
-    assert kwargs.get("source") == "generated"
-
-
 def test_list_attachments_passes_the_cursor_and_returns_the_next():
     """GET /attachments?cursor=… reads the next page; the answer says where the one after starts."""
     user = _fake_user()
@@ -1271,17 +1245,6 @@ def test_list_attachments_refuses_a_cursor_it_did_not_write():
     r = client.get("/attachments?cursor=not-ours", headers={"Authorization": "Bearer tok"})
     assert r.status_code == 422
     assert r.json()["detail"]["code"] == "invalid_cursor"
-
-
-def test_list_attachments_rejects_search_source():
-    """Lookup photos are chat-only; Library cannot filter to source=search."""
-    user = _fake_user()
-    client = TestClient(_app_with_user(user))
-    r = client.get(
-        "/attachments?source=search",
-        headers={"Authorization": "Bearer tok"},
-    )
-    assert r.status_code == 422
 
 
 def test_list_attachments_q_filter():

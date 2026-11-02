@@ -52,10 +52,6 @@ def _photo_turn(resources: SimpleNamespace) -> Iterator[None]:
             "app.modules.chat.turn_intercepts.try_image_lookup_for_turn",
             AsyncMock(return_value=True),
         ),
-        patch(
-            "app.modules.chat.turn_intercepts.try_image_gen_for_turn",
-            AsyncMock(return_value=False),
-        ),
     ):
         yield
 

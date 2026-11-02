@@ -78,10 +78,6 @@ def web_search_tool() -> Iterator[None]:
             [("switch to dark mode", "settings"), ("tell me a joke", "ask")],
         ),
         (
-            "draw a cat wearing a hat and also explain what a black hole is",
-            [("draw a cat wearing a hat", "image"), ("explain what a black hole is", "ask")],
-        ),
-        (
             "remind me to buy milk at 5pm and what's the weather in Nairobi today?",
             [
                 ("remind me to buy milk at 5pm", "reminder"),
@@ -453,9 +449,9 @@ def test_a_multi_part_turn_is_never_offered_a_turn_ending_photo_tool() -> None:
     mcp_registry.clear()
     mcp_registry.register(ImageSearchAdapter(configured))
     try:
-        single = _tools_for_user(configured, None, user_text="show me an ear")
+        single = _tools_for_user(configured, user_text="show me an ear")
         multi = _tools_for_user(
-            configured, None, user_text="what's the capital of Australia? and how do I boil an egg?"
+            configured, user_text="what's the capital of Australia? and how do I boil an egg?"
         )
     finally:
         mcp_registry.clear()

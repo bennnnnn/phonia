@@ -29,7 +29,7 @@ from app.services.quota import carryover, counters
 from .conftest import World, delete_accounts
 
 # Every per-user daily counter, named independently of the code under test.
-DAILY_PREFIXES = ("usage", "imgup", "docup", "speech", "tts", "tavily", "imggen", "imgsearch")
+DAILY_PREFIXES = ("usage", "imgup", "docup", "speech", "tts", "tavily", "imgsearch")
 
 
 def _pro_caps(cap: int) -> Settings:
@@ -80,7 +80,6 @@ async def _use_quota(redis: Any, user_id: UUID) -> None:
     assert await counters.reserve("speech_tts", redis, user, caps)
     for _ in range(4):
         assert await counters.reserve("tavily_search", redis, user, caps)
-    assert await counters.reserve("image_generation", redis, user, caps)
     for _ in range(2):
         assert await counters.reserve("image_search", redis, user, caps)
 
@@ -92,7 +91,6 @@ _USED = {
     "speech": 3,
     "tts": 1,
     "tavily": 4,
-    "imggen": 1,
     "imgsearch": 2,
 }
 
@@ -139,9 +137,9 @@ async def test_quota_carryover_same_google_sub_keeps_todays_counts(world: World)
     try:
         assert new_id != a.id
         assert await _daily_counts(redis, new_id) == _USED
-        # The carried counts are enforced: one image generation was today's cap.
+        # The carried counts are enforced: one read-aloud was today's cap.
         new_user = User(id=new_id, plan="pro")
-        assert not await counters.reserve("image_generation", redis, new_user, _pro_caps(1))
+        assert not await counters.reserve("speech_tts", redis, new_user, _pro_caps(1))
         # The raise-only DB heal (the new account has no usage rows) keeps them.
         await quota.heal_usage_drift(redis, str(new_id), 10)
         assert await quota.get_daily_usage(redis, str(new_id)) == 1234

@@ -46,14 +46,12 @@ from app.core.jobs import JOBS_STREAM
 from app.core.jobs.worker import _process_one_entry
 from app.gateways import (
     embedding_gateway,
-    image_gateway,
     image_search_gateway,
     litellm_gateway,
     storage_gateway,
     web_search_gateway,
 )
 from app.gateways.mcp import registry as mcp_registry
-from app.gateways.mock_llm import mock_image_bytes
 from app.models.orm import Attachment, Chat, Memory, Message, TodoItem, User
 from app.services.mcp import setup_mcp_adapters
 from app.services.quota import tokens as quota_tokens
@@ -77,10 +75,9 @@ class Ceiling:
 
 
 # A chat's first reply is titled; compress runs only when the chat has messages out of
-# its window, or when the turn cannot tell (a picture, a regenerate).
+# its window, or when the turn cannot tell (a regenerate).
 _FIRST = ("memory", "topic", "message_index")
 _NEXT = ("memory", "message_index")
-_FIRST_UNTOLD = ("memory", "topic", "compress", "message_index")
 _NEXT_FOLDS = ("memory", "compress", "message_index")
 # Measured with the user, today's usage and the chat already known to Redis, as for
 # every message after the day's first. To update: ``pytest -s`` prints every count.
@@ -130,11 +127,6 @@ CEILINGS: dict[str, Ceiling] = {
         Counts(sql=12, checkouts=4, transactions=4, redis=21, models=2, embeds=1),
         _FIRST,
     ),
-    "picture": Ceiling(
-        Counts(sql=8, checkouts=3, transactions=3, redis=16, models=1),
-        Counts(sql=15, checkouts=5, transactions=5, redis=27, models=2, embeds=1),
-        _FIRST_UNTOLD,
-    ),
     "attachment question": Ceiling(
         Counts(sql=13, checkouts=8, transactions=8, redis=36, models=2, embeds=1),
         Counts(sql=13, checkouts=5, transactions=5, redis=25, models=2, embeds=1),
@@ -163,6 +155,12 @@ LIST_CEILINGS: dict[str, Counts] = {
     "/search?q=Paris": Counts(sql=1, checkouts=1, transactions=1, redis=2),
 }
 
+# A 1x1 PNG: valid image bytes for an attachment in storage.
+_PNG = (
+    b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01"
+    b"\x08\x06\x00\x00\x00\x1f\x15\xc4\x89\x00\x00\x00\nIDATx\x9cc\x00\x01"
+    b"\x00\x00\x05\x00\x01\r\n-\xb4\x00\x00\x00\x00IEND\xaeB`\x82"
+)
 # A reply long enough to get follow-up questions (``related_questions``).
 _LONG = (
     " It sits on the Seine in the north of the country and has been the seat of"
@@ -371,7 +369,7 @@ def _count_redis(ledger: Ledger, fake: Any, monkeypatch: pytest.MonkeyPatch) -> 
 
 
 def _fake_providers(ledger: Ledger, monkeypatch: pytest.MonkeyPatch) -> None:
-    """The model, the embedder, the picture model and the searches: counted fakes."""
+    """The model, the embedder and the searches: counted fakes."""
     monkeypatch.setattr(litellm_gateway, "acompletion", fake_acompletion(ledger))
     monkeypatch.setattr(embedding_gateway, "aembedding", fake_aembedding(ledger))
 
@@ -388,14 +386,8 @@ def _fake_providers(ledger: Ledger, monkeypatch: pytest.MonkeyPatch) -> None:
             ledger.searches.append(f"photo <- {callers()}")
         return []
 
-    async def picture(_settings: Any, **_kwargs: Any) -> tuple[bytes, str]:
-        if ledger.counting:
-            ledger.models.append(f"picture <- {callers()}")
-        return mock_image_bytes(), "image/png"
-
     monkeypatch.setattr(web_search_gateway, "_search_tavily", web)
     monkeypatch.setattr(image_search_gateway, "search_images", photos)
-    monkeypatch.setattr(image_gateway, "generate_via_openrouter", picture)
 
 
 async def _seed_user() -> UUID:
@@ -564,7 +556,6 @@ async def _turns(harness: _Harness) -> dict[str, _Seen]:
     )
     tower = "The Eiffel Tower is a wrought-iron lattice tower in Paris." + _LONG
     await turn("photo lookup", "Show me a photo of the Eiffel Tower", tower)
-    await turn("picture", "Draw a picture of a cat wearing a hat", "Here is your cat.")
     plan = "Budget plan 2026. Rent 1200. Food 400. Transport 150. Savings 500. " * 20
     attachment = await _upload_text(harness, plan)
     await harness.run_jobs(count=False)
@@ -677,7 +668,7 @@ async def _seed_lists(harness: _Harness, n: int) -> UUID:
             await session.flush()
             key = f"u/{harness.user_id}/{uuid4()}.png"
             (harness.storage / key).parent.mkdir(parents=True, exist_ok=True)
-            (harness.storage / key).write_bytes(mock_image_bytes())
+            (harness.storage / key).write_bytes(_PNG)
             session.add_all(
                 [
                     Memory(

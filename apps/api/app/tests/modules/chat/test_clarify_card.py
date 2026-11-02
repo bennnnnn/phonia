@@ -283,7 +283,6 @@ _ASKED = f"{_ASK}\n\n{_fence({'questions': [_PRIORITY, _GOAL]})}"
         {"solver_unverified": True},
         {"instant_reply": "It's 9:00."},
         {"settings_card": "```settings_proposal\n{}\n```"},
-        {"reply_picture": MagicMock()},
         {"answer_photo_ids": [uuid4()]},
     ],
 )

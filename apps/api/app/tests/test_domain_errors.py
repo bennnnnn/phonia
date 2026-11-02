@@ -25,7 +25,6 @@ from app.modules.attachments.upload import AttachmentUploadError
 from app.modules.attachments.workflow import AttachmentWorkflowError
 from app.modules.billing.subscription import StoreUnreachableError
 from app.modules.chat.service import ChatsError
-from app.modules.images.generation import ImageGenerationError
 from app.modules.images.search import ImageSearchError
 from app.modules.memory.crud import MemoryEmptyTextError
 from app.modules.memory.instruct import MemoryInstructionFailedError, MemoryOffError
@@ -42,7 +41,6 @@ CASES: list[tuple[DomainError, int, str]] = [
     (TodosError("recurrence_rule requires due_at", status_code=422), 422, "invalid"),
     (ProposalError("This expired. Ask again.", status_code=410), 410, "expired"),
     (SettingsProposalError("That's already set."), 400, "invalid"),
-    (ImageGenerationError("Not available", status_code=404, code="not_available"), 404, "not_available"),
     (ImageSearchError("Could not link reference photo", status_code=500), 500, "failed"),
     (AttachmentUploadError("Unsupported content type", status_code=400, code="unsupported_type"), 400, "unsupported_type"),
     (AttachmentWorkflowError("File missing", status_code=404), 404, "not_found"),

@@ -1,4 +1,4 @@
-"""Voice (dictation, read-aloud) and image generation."""
+"""Voice (dictation, read-aloud)."""
 
 from pydantic import BaseModel
 
@@ -13,8 +13,3 @@ class MediaSettings(BaseModel):
     speech_tts_enabled: bool = True
     speech_tts_model: str = ""
     speech_tts_voice: str = ""
-
-    image_generation_enabled: bool = True
-    # Operator override (raw OpenRouter slug); empty → catalog alias
-    # `image-gen-model`.
-    image_generation_model: str = ""

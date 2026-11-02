@@ -309,10 +309,6 @@ async def test_stream_chat_response_at_spend_cap_never_prepares_the_turn(
         patch.object(messages_repository, "list_recent", AsyncMock(return_value=[])),
         patch.object(messages_repository, "count_for_chat", AsyncMock(return_value=0)),
         patch("app.modules.chat.turn_load.wait_for_pending_finalize", AsyncMock()),
-        patch(
-            "app.modules.chat.turn_intercepts.try_image_gen_for_turn",
-            AsyncMock(return_value=False),
-        ),
         patch("app.modules.chat.stream_entry.prepare_chat_turn", prepare),
         pytest.raises(refusal) as caught,
     ):

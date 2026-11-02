@@ -16,7 +16,6 @@ from app.models.schemas import ChatMessageRequest
 from app.modules import todos, web_search
 from app.modules.attachments import lifecycle as attachment_lifecycle
 from app.modules.attachments import service as attachments_service
-from app.modules.billing import plan
 from app.modules.chat.model_routing import choice as model_choice
 from app.modules.chat.turn_deps import (
     CONVERSATION_CHATS,
@@ -26,7 +25,6 @@ from app.modules.chat.turn_deps import (
 )
 from app.modules.conversation import history as conversation_history
 from app.modules.conversation import service as conversation_service
-from app.modules.images import generation as image_generation
 from app.modules.images import search as image_search
 from app.repositories import usage, users
 from app.services import conversation_reference, quota
@@ -40,11 +38,9 @@ _REAL_MODULES = {
     "messages": CONVERSATION_MESSAGES,
     "usage": usage,
     "quota": quota,
-    "plan": plan,
     "model_choice": model_choice,
     "locks": redis_lock,
     "llm": litellm_gateway,
-    "image_generation": image_generation,
     "image_search": image_search,
     "attachments": attachment_lifecycle,
     "attachment_links": attachments_service,

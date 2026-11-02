@@ -56,10 +56,10 @@ def test_quota_exceeded_message(settings):
 
 
 @pytest.mark.parametrize(
-    "plan, tokens, stt, tts, images",
-    [("free", 100_000, 0, 0, 3), ("plus", 500_000, 200, 100, 10), ("pro", 500_000, 200, 100, 15)],
+    "plan, tokens, stt, tts, photos",
+    [("free", 100_000, 0, 0, 15), ("plus", 500_000, 200, 100, 60), ("pro", 500_000, 200, 100, 60)],
 )
-def test_per_plan_daily_caps(plan, tokens, stt, tts, images):
+def test_per_plan_daily_caps(plan, tokens, stt, tts, photos):
     user = MagicMock()
     user.plan = plan
     # The built-in defaults, not a developer's .env overrides.
@@ -67,7 +67,7 @@ def test_per_plan_daily_caps(plan, tokens, stt, tts, images):
     assert quota_service.daily_limit_for_user(user, settings) == tokens
     assert counters.limit("speech_transcription", user, settings) == stt
     assert counters.limit("speech_tts", user, settings) == tts
-    assert counters.limit("image_generation", user, settings) == images
+    assert counters.limit("image_search", user, settings) == photos
 
 
 @pytest.mark.parametrize(
@@ -397,7 +397,6 @@ _COUNTER_KEYS = [
     ("speech_transcription", "speech"),
     ("speech_tts", "tts"),
     ("tavily_search", "tavily"),
-    ("image_generation", "imggen"),
     ("image_search", "imgsearch"),
 ]
 _REFUNDABLE = [pair for pair in _COUNTER_KEYS if pair[0] != "tavily_search"]
@@ -448,7 +447,7 @@ async def test_counter_reserve_always_leaves_a_ttl(
     assert await fake_redis.ttl(key) == 48 * 60 * 60
 
 
-@pytest.mark.parametrize("counter", ["speech_transcription", "speech_tts", "image_generation"])
+@pytest.mark.parametrize("counter", ["speech_transcription", "speech_tts"])
 @pytest.mark.asyncio
 async def test_counter_reserve_refuses_a_plan_without_it(counter):
     user = _free_user()
@@ -580,7 +579,6 @@ async def test_tavily_searches_are_neither_refunded_nor_announced(fake_redis):
         ("image_upload", True),
         ("speech_transcription", False),
         ("speech_tts", False),
-        ("image_generation", True),
         ("image_search", True),
     ],
 )

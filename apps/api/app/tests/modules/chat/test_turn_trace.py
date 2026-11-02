@@ -359,7 +359,7 @@ def test_a_turn_a_photo_or_picture_answered_is_logged_when_its_reply_is_recorded
     caplog.set_level(logging.INFO, logger=turn_trace.__name__)
     begin_turn_trace("new")
     message = SimpleNamespace(id=uuid4(), content=_SECRET, model=None)
-    turn_intercepts._record(TurnOutcome(), message, "image-gen-model")  # type: ignore[arg-type]
+    turn_intercepts._record(TurnOutcome(), message, "image-search-model")  # type: ignore[arg-type]
     trace = _emitted(caplog).turn_trace  # type: ignore[attr-defined]
-    assert (trace["path"], trace["resolved_model"]) == ("intercept", "image-gen-model")
+    assert (trace["path"], trace["resolved_model"]) == ("intercept", "image-search-model")
     assert "hunter2" not in caplog.text

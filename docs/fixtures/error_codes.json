@@ -172,36 +172,6 @@
    "message": "An export is already running or was just made. Try again later."
   }
  },
- "image_daily_limit": {
-  "status": 429,
-  "detail": {
-   "code": "daily_limit",
-   "message": "No more pictures today.",
-   "feature": "image_generation"
-  }
- },
- "image_content_blocked": {
-  "status": 422,
-  "detail": {
-   "code": "content_blocked",
-   "message": "That picture can't be made.",
-   "feature": "image_generation"
-  }
- },
- "image_spend_cap": {
-  "status": 429,
-  "detail": {
-   "code": "spend_cap",
-   "message": "Image generation is temporarily unavailable. Try again later."
-  }
- },
- "image_upstream_failed": {
-  "status": 502,
-  "detail": {
-   "code": "upstream_failed",
-   "message": "Could not generate image"
-  }
- },
  "sign_in_rate_limited": {
   "status": 429,
   "detail": {

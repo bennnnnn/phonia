@@ -90,7 +90,6 @@ def test_the_passes_run_in_one_declared_order() -> None:
         "lesson_again",
         "emoji_use",
         "answer_photo",
-        "reply_picture",
         "chemistry_fences",
         "physics_fences",
         "math_fences",
@@ -123,7 +122,6 @@ def test_the_passes_run_in_one_declared_order() -> None:
     assert falls_back == {
         "untrusted_media",
         "answer_photo",
-        "reply_picture",
         "settings_card",
         "money_card",
         "search_sources",
@@ -228,7 +226,6 @@ def test_the_effect_passes_are_the_ones_that_change_the_turn() -> None:
     assert effects == {
         "untrusted_media",
         "answer_photo",
-        "reply_picture",
         "settings_card",
         "money_card",
         "search_sources",

@@ -22,18 +22,6 @@ def should_mock_search(settings: Settings) -> bool:
     return settings.mock_llm_enabled and not settings.tavily_api_key.strip()
 
 
-# 1x1 PNG — valid image bytes for mock image generation in dev.
-_MOCK_PNG_BYTES = (
-    b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01"
-    b"\x08\x06\x00\x00\x00\x1f\x15\xc4\x89\x00\x00\x00\nIDATx\x9cc\x00\x01"
-    b"\x00\x00\x05\x00\x01\r\n-\xb4\x00\x00\x00\x00IEND\xaeB`\x82"
-)
-
-
-def mock_image_bytes() -> bytes:
-    return _MOCK_PNG_BYTES
-
-
 def _last_user_text(messages: list[dict[str, str]] | None) -> str:
     if not messages:
         return ""

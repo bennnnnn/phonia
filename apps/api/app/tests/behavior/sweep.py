@@ -13,18 +13,16 @@ in front raises the programming errors a decline would hide (``math/solve/declin
 
 ``expect`` per entry: "answer" (an ordinary reply that must reach the user),
 "instant" (the server answers without the model: the date, the time),
-"photo", "search", "image_gen", "save" (a reminder is saved), "ask_time",
+"photo", "search", "save" (a reminder is saved), "ask_time",
 "change" (done / delete / move), "read" (the reminder list), "settings",
 "memory", "todo" (any of the reminder outcomes), "todo_screen" (a to-do change asked in
 another language: nothing saved or changed, the Open To-do button instead). A list asks
 for every outcome on the one turn: ``["search", "answer"]`` is a message with a live part
-and another
-answered beside it ("image_gen" and "settings" there are the picture or card a
-multi-part reply carries). Area "multi" must be read as more than one request and
+and another answered beside it ("settings" there is the card a multi-part reply
+carries). Area "multi" must be read as more than one request and
 "multi lookalike" as one.
 
-Turns run as a Pro user, so image generation can claim one; ``"pro": false``
-runs one as free. ``"gap"`` names a known miss: ``test_sweep.py`` expects it to fail
+Turns run as a Pro user; ``"pro": false`` runs one as free. ``"gap"`` names a known miss: ``test_sweep.py`` expects it to fail
 until it is fixed.
 """
 
@@ -83,7 +81,6 @@ EXPECTS = {
     "instant",
     "photo",
     "search",
-    "image_gen",
     "settings",
     "memory",
     "todo_screen",
@@ -472,7 +469,7 @@ def _judge_expect(outcome: Outcome, expect: str) -> list[str]:
     expects = set(entry.expects)
     canned = next((text for text in CANNED if final.strip().startswith(text)), None)
 
-    if expect in {"answer", "photo", "search", "image_gen", "settings", "memory"}:
+    if expect in {"answer", "photo", "search", "settings", "memory"}:
         if canned:
             problems.append(f"reply replaced by {canned!r}")
         elif not _kept(entry.reply, final) and entry.area not in AFTER_CARD_AREAS:
@@ -486,8 +483,6 @@ def _judge_expect(outcome: Outcome, expect: str) -> list[str]:
     if expect == "answer":
         if route.photo:
             problems.append(f"photo lookup took the turn ({route.photo!r})")
-        if route.image_gen:
-            problems.append("image generation took the turn")
         if route.instant == "text" and route.instant_text:
             problems.append(f"instant reply: {route.instant_text[:80]!r}")
         # "How many minutes in a good nap" answered "Tell me the city".
@@ -525,8 +520,6 @@ def _judge_expect(outcome: Outcome, expect: str) -> list[str]:
         problems.append("no photo lookup")
     elif expect == "search" and route.search == "no":
         problems.append("no web search")
-    elif expect == "image_gen" and not (route.image_gen or route.picture):
-        problems.append("no image generation")
     elif expect == "settings" and not (outcome.settings_changes or route.settings_card):
         problems.append("not read as a settings change")
     elif expect == "memory" and not outcome.memory_command:

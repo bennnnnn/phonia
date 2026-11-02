@@ -1,7 +1,7 @@
 """Reference-photo lookup MCP adapter — model-callable when the tool loop is on.
 
-Distinct from ``ImageGenAdapter``: this returns a *real* photo (Tavily image
-search, mirrored into Recall's storage), never AI-generated art. Persists
+This returns a *real* photo (Tavily image search, mirrored into Recall's
+storage). Persists
 the attachment + assistant ``[Image: …]`` marker and signals a terminal turn
 via ``ToolResult.data`` — same terminal-image contract the chat tool loop
 already understands, so the stream skips the visible LLM pass and the
@@ -40,7 +40,7 @@ class ImageSearchAdapter:
             "looks like. The query names the subject itself: a person's full name "
             "or the thing from the conversation, never 'her', 'him' or 'it'. "
             "Do NOT use for creative/artistic requests (draw, paint, create "
-            "an image of) — use generate_image for those instead."
+            "an image of)."
         )
 
     def to_openai_tool(self) -> dict[str, Any]:
@@ -78,7 +78,7 @@ class ImageSearchAdapter:
 
         try:
             # User row already exists from turn prep — only write the
-            # assistant image marker, same as ImageGenAdapter.
+            # assistant image marker.
             _user_msg, asst_msg = await image_search_service.search_and_attach_for_chat(
                 self.settings,
                 user=user,

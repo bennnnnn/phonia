@@ -20,7 +20,6 @@ from app.modules.chat import api as chats
 from app.modules.chat import stream_api as chat_stream
 from app.modules.chat import ws_api as ws
 from app.modules.chemistry import api as chemistry_api
-from app.modules.images import api as images
 from app.modules.link_preview import api as link_preview
 from app.modules.math import api as math_api
 from app.modules.memory import api as memories
@@ -125,7 +124,6 @@ def create_app() -> FastAPI:
     app.include_router(search.router)
     app.include_router(attachments.router)
     app.include_router(speech.router)
-    app.include_router(images.router)
     app.include_router(ws.router)
 
     return app

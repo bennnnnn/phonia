@@ -221,10 +221,6 @@ async def test_regenerate_actual_entry_retains_image_routing_reserve_and_backup(
             "app.modules.chat.turn_intercepts.try_image_lookup_for_turn",
             AsyncMock(return_value=False),
         ),
-        patch(
-            "app.modules.chat.turn_intercepts.try_image_gen_for_turn",
-            AsyncMock(return_value=False),
-        ),
         patch(f"{entry}.build_stream_prompt_context", build),
         patch(f"{entry}.top_up_reserve_for_prompt", AsyncMock()),
         patch(f"{entry}.stream_and_finalize", final_stream),

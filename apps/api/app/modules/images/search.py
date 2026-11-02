@@ -1,8 +1,7 @@
 """Reference-photo lookup — search + SSRF-safe mirror + chat persistence.
 
-Separate product path from ``generation.py`` (AI creation). Finds a
-real photo via Tavily image search, mirrors the bytes into Recall's own
-storage (SSRF-safe fetch, size/type validated exactly like any other
+Finds a real photo via Tavily image search, mirrors the bytes into Recall's
+own storage (SSRF-safe fetch, size/type validated exactly like any other
 attachment upload), and attaches it to the chat as an ``[Image: …]`` marker
 — the client never renders a third-party URL directly.
 """
@@ -216,10 +215,8 @@ async def _add_photo_rows(
         session,
         user_id=user.id,
         images=stored,
-        source="search",
         label=label,
         message_id=message_id,
-        in_library=False,
     )
 
 
@@ -236,10 +233,9 @@ async def search_and_attach_for_chat(
 
     Returns (user_message, assistant_message). Raises ``ImageSearchError`` on
     expected failures (not found, quota, storage); unexpected exceptions are
-    re-raised after quota refund. Mirrors ``image_generation.generate_for_chat``'s
-    shape — the "provider call" here is a Tavily image search followed by an
-    SSRF-safe fetch of the winning photo(s), never an AI generation, and runs
-    with no DB session held.
+    re-raised after quota refund. The provider call is a Tavily image search
+    followed by an SSRF-safe fetch of the winning photo(s), and runs with no
+    DB session held.
     """
     if not settings.image_search_enabled:
         raise ImageSearchError("Not available", status_code=404, code="not_available")

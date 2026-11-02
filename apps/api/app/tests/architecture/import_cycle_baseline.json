@@ -42,13 +42,6 @@
   },
   {
     "modules": [
-      "app.modules.images.gen_intent",
-      "app.modules.images.gen_intent_second"
-    ],
-    "imports": 2
-  },
-  {
-    "modules": [
       "app.modules.math.followup",
       "app.modules.math.followup_what_if",
       "app.modules.math.tools",

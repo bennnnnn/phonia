@@ -112,27 +112,6 @@
     "expect": "answer"
   },
   {
-    "id": "media-017",
-    "area": "image",
-    "prompt": "make a poster for my event",
-    "reply": "Here's a bold poster for your event: big headline space at the top, a warm sunset gradient behind it, and room at the bottom for the date and place. Want it in a different style?",
-    "expect": "image_gen"
-  },
-  {
-    "id": "media-018",
-    "area": "image",
-    "prompt": "make me a logo for my app",
-    "reply": "Here's a clean, modern app logo: a rounded square with a simple geometric mark in deep blue. Tell me your app's name and I can add it.",
-    "expect": "image_gen"
-  },
-  {
-    "id": "media-019",
-    "area": "image",
-    "prompt": "design a mascot for my game",
-    "reply": "Here's a friendly mascot for your game: a round little fox in an explorer's scarf, drawn in a bright cartoon style.",
-    "expect": "image_gen"
-  },
-  {
     "id": "media-020",
     "area": "code",
     "prompt": "make a logo for my website in html",
@@ -166,30 +145,6 @@
     "prompt": "generate a random number between 1 and 100",
     "reply": "**47**",
     "expect": "answer"
-  },
-  {
-    "id": "media-025",
-    "area": "image",
-    "prompt": "Create a walking poor man on the streets of Addis Ababa",
-    "reply": "Here's your picture: a man walking a busy street in Addis Ababa.",
-    "expect": "image_gen"
-  },
-  {
-    "id": "media-026",
-    "area": "image",
-    "prompt": "U can’t create an image",
-    "history": [
-      [
-        "user",
-        "Create a walking poor man on the streets of Addis Ababa"
-      ],
-      [
-        "assistant",
-        "I can't create images, but I can describe the scene."
-      ]
-    ],
-    "reply": "Here's your picture.",
-    "expect": "image_gen"
   },
   {
     "id": "media-027",

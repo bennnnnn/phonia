@@ -54,8 +54,6 @@ _ALLOWED_PROPERTIES: dict[str, dict[str, frozenset[str]]] = {
                 "attachment_rejected",
                 "rate_limited",
                 "consent_required",
-                "daily_limit",
-                "content_blocked",
                 "not_found",
                 "failed",
                 "reply_not_saved",
@@ -73,7 +71,6 @@ _ALLOWED_PROPERTIES: dict[str, dict[str, frozenset[str]]] = {
                 "chemistry",
                 "reading_files",
                 "finding_photo",
-                "image_gen",
             }
         ),
         "sample_rate": _SAMPLE_RATES,

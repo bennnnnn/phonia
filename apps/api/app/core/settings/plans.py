@@ -33,10 +33,7 @@ class PlanAllowanceSettings(BaseModel):
     daily_speech_tts: int = 0
     daily_speech_tts_plus: int = 100
     daily_speech_tts_pro: int = 100
-    # AI pictures and reference-photo lookups per UTC day.
-    daily_image_generations: int = 3
-    daily_image_generations_plus: int = 10
-    daily_image_generations_pro: int = 15
+    # Reference-photo lookups per UTC day.
     daily_image_searches: int = 15
     daily_image_searches_plus: int = 60
     daily_image_searches_pro: int = 60

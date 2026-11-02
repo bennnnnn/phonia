@@ -45,14 +45,13 @@ def test_turn_needs_tool_loop_gates_ordinary_chat(text: str, kwargs: dict, expec
 
 
 def test_turn_needs_tool_loop_image_lookup_needs_no_pro_user():
-    """Reference-photo lookup is free-tier — unlike generate_image it needs no user/plan check."""
+    """Reference-photo lookup is on every plan: it needs no plan check."""
     assert (
         tool_loop.turn_needs_tool_loop(
             "show me an ear",
             settings=settings(
                 mcp_tool_loop_enabled=True, math_tools_enabled=True, image_search_enabled=True
             ),
-            user=None,
         )
         is True
     )
@@ -65,14 +64,13 @@ def test_turn_needs_tool_loop_image_lookup_respects_disabled_flag():
             settings=settings(
                 mcp_tool_loop_enabled=True, math_tools_enabled=True, image_search_enabled=False
             ),
-            user=None,
         )
         is False
     )
 
 
 def test_turn_needs_tool_loop_draw_request_does_not_trigger_lookup_path():
-    """'draw me a fox' is generation phrasing; only Pro users get the tool-loop nod for it."""
+    """'draw me a fox' is no photo lookup: it needs no tool round."""
     assert (
         tool_loop.turn_needs_tool_loop(
             "draw me a fox",
@@ -80,9 +78,7 @@ def test_turn_needs_tool_loop_draw_request_does_not_trigger_lookup_path():
                 mcp_tool_loop_enabled=True,
                 math_tools_enabled=True,
                 image_search_enabled=True,
-                image_generation_enabled=True,
             ),
-            user=None,
         )
         is False
     )

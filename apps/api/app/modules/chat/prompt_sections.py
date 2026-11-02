@@ -186,7 +186,6 @@ def _style_hints(turn: PromptTurn) -> list[str]:
         is_day_plan=bool(query and is_day_planning_question(query)),
         minimal_personal_context=turn.minimal_personal_context,
         compact=compact,
-        image_generation_enabled=turn.settings.image_generation_enabled,
         image_search_enabled=turn.settings.image_search_enabled,
         lesson=lesson,
         outline_pick=outline_pick,

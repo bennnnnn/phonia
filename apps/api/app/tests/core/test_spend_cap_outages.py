@@ -1,7 +1,7 @@
 """Every request the global spend cap gates: Redis down answers 503 unavailable, the cap its own.
 
 ``global_spend_exceeded`` read a Redis error as the cap reached (fail closed), so an outage
-after sign-in answered as the day's spend cap: pictures and voice "temporarily unavailable,
+after sign-in answered as the day's spend cap: voice "temporarily unavailable,
 try again later", scans "paused" and memory edits "paused". The phone took each for the cap and never checked its connection, which it does after
 a 503. Nothing spends either way. The spend read is what fails here (``spend_musd:<day>``), so
 each route's own gate runs. Chat turns: ``modules/chat/test_turn_quota_reserve.py``.
@@ -86,22 +86,6 @@ GATES: dict[str, _Gate] = {
         capped=(429, "voice_spend_cap"),
         plan="pro",
         redis_at=("app.modules.speech.api.get_redis_client",),
-    ),
-    "image generation": _Gate(
-        send=lambda c: c.post(
-            "/images/generate",
-            headers=_AUTH,
-            json={"chat_id": str(_CHAT_ID), "prompt": "a cat"},
-        ),
-        capped=(429, "spend_cap"),
-        plan="pro",
-        redis_at=("app.modules.images.generation.get_redis_client",),
-        stubs=(
-            (
-                "app.modules.images.generation.history.get_chat",
-                AsyncMock(return_value=MagicMock()),
-            ),
-        ),
     ),
 }
 
@@ -193,8 +177,6 @@ def test_every_spend_gate_is_listed() -> None:
         "modules/chat/stream_paths.py",
         # The chat turn: the socket's and SSE's unavailable frame. test_turn_quota_reserve.py.
         "modules/chat/turn_resources.py",
-        # Image generation: "image generation" above, and the chat's picture turns.
-        "modules/images/generation.py",
         # Photo lookup: the chat's photo turn, and a reply's photo (best-effort, none).
         "modules/images/search.py",
         "modules/memory/api.py",  # memory edits

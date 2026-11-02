@@ -2,7 +2,7 @@
 
 Heuristic SymPy and Tavily already inject on the prompt path, so the pre-stream
 selection round only runs when the message still looks like search, unsolved
-math, a photo lookup or Pro image generation. Only the user's own words decide:
+math or a photo lookup. Only the user's own words decide:
 web results, file text and other context the model reads never do.
 """
 
@@ -10,10 +10,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from app.core.config import Settings, get_settings
+from app.core.config import Settings
 from app.gateways.mcp import registry as mcp_registry
-from app.models.orm import User
-from app.modules.billing import plan as plan_service
 from app.modules.chat.tool_loop.parts import live_parts, open_parts
 
 
@@ -91,7 +89,6 @@ def turn_needs_tool_loop(
     has_search_sources: bool = False,
     web_search: bool | None = None,
     settings: Settings | None = None,
-    user: User | None = None,
     skip_tools: frozenset[str] = frozenset(),
 ) -> bool:
     """True when a pre-stream ``complete_with_tools`` round is worth the TTFT cost.
@@ -100,7 +97,7 @@ def turn_needs_tool_loop(
     non-streaming LLM round on every other turn (then discarding the answer and
     streaming a second call) is what made ordinary chat sit on typing dots for
     ~6s. Skip unless this message still looks like search, unsolved math,
-    or Pro image gen.
+    or a photo lookup.
 
     ``web_search``: optional classifier override (None = sync heuristic).
     ``skip_tools``: tools the turn already spent (``spent_tools``), no reason to loop.
@@ -129,31 +126,15 @@ def turn_needs_tool_loop(
         return True
     if web_search is not False and not has_search_sources and live_parts(parts):
         return True
-    return any(_needs_non_web_tool(part, settings, user, skip_tools) for part in parts)
-
-
-def _user_asks_for_image(text: str, settings: Settings) -> bool:
-    """The user's own words ask for a picture (the chat image intercept's rules).
-
-    Only the user's message counts: web results, file text and other context
-    the model reads must never decide to spend the user's image allowance.
-    """
-    from app.modules.images.gen_intent import extract_image_gen_prompt, stem_subject_claims
-
-    return bool(
-        text
-        and extract_image_gen_prompt(text)
-        and not stem_subject_claims(text, chemistry_enabled=settings.chemistry_enabled)
-    )
+    return any(_needs_non_web_tool(part, settings, skip_tools) for part in parts)
 
 
 def _needs_non_web_tool(
     text: str,
     settings: Settings | None,
-    user: User | None,
     skip_tools: frozenset[str] = frozenset(),
 ) -> bool:
-    """Math, a photo lookup, or image generation still needs a tool-selection round."""
+    """Math or a photo lookup still needs a tool-selection round."""
     from app.modules.images.lookup_intent import extract_image_lookup_query
     from app.services.subjects.registry import subject_adapter
 
@@ -170,31 +151,16 @@ def _needs_non_web_tool(
         # calls the same extractor and burns the round timeout for nothing.
         if maths.reads(text):
             return True
-    # Reference-photo lookup ("show me an ear") is checked before generation
-    # so its disjoint trigger phrasing (show / let … see / what does … look
-    # like) never competes with generation's own verbs — see
-    # image_lookup_intent's module docstring.
+    # Reference-photo lookup ("show me an ear").
     lookup_on = "search_image" not in skip_tools and (
         settings is None or settings.image_search_enabled
     )
-    if lookup_on and extract_image_lookup_query(text):
-        return True
-    image_on = settings is None or settings.image_generation_enabled
-    resolved = settings or get_settings()
-    if (
-        image_on
-        and user is not None
-        and plan_service.can_use(user, "image_generation", resolved)
-        and _user_asks_for_image(text, resolved)
-    ):
-        return True
-    return False
+    return bool(lookup_on and extract_image_lookup_query(text))
 
 
 def _search_before_the_model(
     user_text: str,
     settings: Settings,
-    user: User | None,
     *,
     web_search: bool | None,
     has_verified_math: bool = False,
@@ -204,7 +170,7 @@ def _search_before_the_model(
     if not settings.web_search_enabled or not user_text:
         return False
     parts = open_parts(user_text, has_verified_math=has_verified_math, settings=settings)
-    if any(_needs_non_web_tool(part, settings, user, skip_tools) for part in parts or [user_text]):
+    if any(_needs_non_web_tool(part, settings, skip_tools) for part in parts or [user_text]):
         return False
     if web_search is True:
         return True
@@ -215,15 +181,14 @@ def _search_before_the_model(
 
 def _tools_for_user(
     settings: Settings,
-    user: User | None,
     *,
     user_text: str = "",
     skip_tools: frozenset[str] = frozenset(),
 ) -> list[dict[str, Any]]:
     """OpenAI tool payloads for this turn, less the ones it already spent.
 
-    Image generation is offered only when it is on, in the user's plan, and
-    *user_text* (the user's own message) asks for a picture.
+    The photo search is left out when it is off, or when *user_text* (the user's
+    own message) asks for more than one thing.
     """
     tools = [
         tool
@@ -236,11 +201,4 @@ def _tools_for_user(
         # A photo ends the turn, and a message with more than one request must
         # still get its other answers: its photo comes above the reply instead.
         tools = [t for t in tools if (t.get("function") or {}).get("name") != "search_image"]
-    if (
-        settings.image_generation_enabled
-        and user is not None
-        and plan_service.can_use(user, "image_generation", settings)
-        and _user_asks_for_image(user_text, settings)
-    ):
-        return tools
-    return [t for t in tools if (t.get("function") or {}).get("name") != "generate_image"]
+    return tools

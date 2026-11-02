@@ -23,7 +23,7 @@ async def create_chat(session: AsyncSession, *, user_id: UUID) -> Chat:
 
 
 async def touch_chat(session: AsyncSession, chat_id: UUID, *, commit: bool = True) -> None:
-    """The chat moves up the drawer: a reply or a picture turn is its last activity."""
+    """The chat moves up the drawer: a reply or a photo turn is its last activity."""
     await _chats.touch_by_id(session, chat_id, commit=commit)
 
 

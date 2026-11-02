@@ -1,7 +1,7 @@
-"""The terminal-image tool result both picture tools hand the chat tool loop.
+"""The terminal-image tool result the photo tool hands the chat tool loop.
 
-A generated picture and a reference photo end the turn the same way: the
-assistant row already holds the ``[Image: …]`` marker, and ``data`` tells the
+A reference photo ends the turn: the assistant row already holds the
+``[Image: …]`` marker, and ``data`` tells the
 loop to skip the visible LLM pass (never trust the model to invent attachment
 URLs).
 """

@@ -29,7 +29,6 @@ def test_user_payload_lists_plan_features(plan_id, has_voice):
     )
     body = out.model_dump()
     assert ("speech_transcription" in body["features"]) is has_voice
-    assert "image_generation" in body["features"]
 
 
 def test_plans_endpoint_returns_the_catalog_and_current_plan():
@@ -43,7 +42,6 @@ def test_plans_endpoint_returns_the_catalog_and_current_plan():
     plans = {item["id"]: item for item in body["plans"]}
     assert set(plans) == {"free", "plus", "pro"}
     assert plans["pro"]["allowances"]["daily_speech_tts"] == 100
-    assert plans["plus"]["allowances"]["daily_image_generations"] == 10
     # Prices are the store's: never in the server catalog.
     assert "price" not in str(body).lower()
 

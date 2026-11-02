@@ -66,10 +66,6 @@ def _status_for_tool(name: str) -> StreamStatusPhase | None:
         return "searching"
     if name == "sympy":
         return "calculating"
-    if name == "generate_image":
-        return "image_gen"
-    # A reference-photo lookup finds a real photo; it is not image generation,
-    # whose card (progress estimate, "Sketching it out") would be a false claim.
     if name == "search_image":
         return "finding_photo"
     return None
@@ -79,8 +75,6 @@ def _status_detail_for_tool(name: str, raw_args: str) -> str | None:
     """Surface the tool's subject (e.g. the search query) for the status label."""
     if name in ("web_search", "search_image"):
         key = "query"
-    elif name == "generate_image":
-        key = "prompt"
     else:
         return None
     try:
@@ -148,7 +142,7 @@ async def execute_calls(
         )
     if announced and turn.on_status is not None and collected.terminal_image is None:
         # The tools are done; the model is next. A "Searching — …" label must not
-        # keep rotating through that model round. A picture ends the turn itself.
+        # keep rotating through that model round. A photo ends the turn itself.
         await turn.on_status("composing")
 
 
@@ -162,7 +156,7 @@ def _refusal(
         return "Tool round timed out."
     if name not in turn.offered:
         # A provider can return a call to a tool it was not given.
-        # Never run it (e.g. generate_image the user did not ask for).
+        # Never run it (e.g. search_image on a multi-part message).
         return f"Tool {name or '(unnamed)'} is not available for this turn."
     tool = subject_adapter("math").tool
     if tool is not None and tool.refuses(name, raw_args, turn.user_text):

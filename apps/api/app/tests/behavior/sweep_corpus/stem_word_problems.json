@@ -566,14 +566,6 @@
   "expect": "answer"
  },
  {
-  "id": "s2-054",
-  "area": "chemistry",
-  "prompt": "draw me a cute cartoon atom with a smiley face for our chemistry club poster",
-  "history": [],
-  "reply": "Here's your cartoon atom! ⚛️😊 A happy round nucleus with a big smile, three colourful electron orbits looping around it, and little sparkles — bright and fun for the poster. Want a version with the club's name on it?",
-  "expect": "image_gen"
- },
- {
   "id": "s2-055",
   "area": "physics",
   "prompt": "a car starts from rest and accelerates at 3 m/s² for 5 seconds. whats its final speed and how far did it go",
@@ -596,14 +588,6 @@
   "history": [],
   "reply": "**10 g** will be left.\n\n15 days ÷ 5 days = **3 half-lives**.\n\n| Time | Half-lives | Mass left |\n|---|---|---|\n| 0 days | 0 | 80 g |\n| 5 days | 1 | 40 g |\n| 10 days | 2 | 20 g |\n| 15 days | 3 | **10 g** |\n\nFormula: $m = m_0 \\left(\\tfrac{1}{2}\\right)^{t/t_{1/2}} = 80 \\times \\left(\\tfrac{1}{2}\\right)^3 = 10$ g.",
   "expect": "answer"
- },
- {
-  "id": "s2-058",
-  "area": "math",
-  "prompt": "generate an image of a robot teaching calculus on a chalkboard",
-  "history": [],
-  "reply": "Here's your image: a friendly robot teacher with a piece of chalk, standing at a green chalkboard covered with integrals and derivative notation, in a sunlit classroom. 🤖📚",
-  "expect": "image_gen"
  },
  {
   "id": "s2-059",

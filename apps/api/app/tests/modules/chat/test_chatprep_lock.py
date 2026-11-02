@@ -120,10 +120,6 @@ async def test_stream_chat_releases_lock_on_success():
         patch("app.modules.chat.turn_load.wait_for_pending_finalize", AsyncMock()),
         _turn_load(),
         patch(
-            "app.modules.chat.turn_intercepts.try_image_gen_for_turn",
-            AsyncMock(return_value=False),
-        ),
-        patch(
             "app.modules.chat.stream_entry.prepare_chat_turn",
             AsyncMock(return_value=MagicMock()),
         ),
@@ -170,10 +166,6 @@ async def test_stream_chat_releases_lock_when_prepare_fails():
     with (
         patch("app.modules.chat.turn_load.wait_for_pending_finalize", AsyncMock()),
         _turn_load(),
-        patch(
-            "app.modules.chat.turn_intercepts.try_image_gen_for_turn",
-            AsyncMock(return_value=False),
-        ),
         patch(
             "app.modules.chat.stream_entry.prepare_chat_turn",
             AsyncMock(side_effect=RuntimeError("prepare boom")),
@@ -233,10 +225,6 @@ async def test_regenerate_acquires_chatprep_lock():
             model_choice,
             "resolve_user_model",
             return_value="free-chat",
-        ),
-        patch(
-            "app.modules.chat.turn_intercepts.try_image_gen_for_turn",
-            AsyncMock(return_value=False),
         ),
         patch(
             "app.modules.chat.stream_entry.build_stream_prompt_context",

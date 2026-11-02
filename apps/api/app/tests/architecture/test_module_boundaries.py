@@ -213,25 +213,12 @@ def test_mobile_attachments_has_one_feature_home_and_thin_routes() -> None:
 def test_images_runtime_code_has_one_owner() -> None:
     module_root = APP_ROOT / "modules" / "images"
     expected = {
-        "api.py",
-        "gen_intent.py",
-        "gen_tool.py",
-        "generation.py",
+        "answer_photo.py",
         "lookup_intent.py",
-        "schemas.py",
         "search.py",
         "search_tool.py",
     }
     assert expected <= {path.name for path in module_root.glob("*.py")}
-    assert (APP_ROOT / "tests" / "modules" / "images" / "test_api.py").is_file()
-
-    # schemas.py imports MessageOut from chats, which loads this package first.
-    # Re-exporting the image models here imports the module while it is still initializing.
-    schema_barrel = APP_ROOT / "models" / "schemas" / "__init__.py"
-    assert not any(
-        imported == "app.modules.images" or imported.startswith("app.modules.images.")
-        for imported in _imports(schema_barrel)
-    )
 
 
 def test_mobile_images_has_one_feature_home() -> None:

@@ -3,12 +3,12 @@
 A photo sent now is injected from the bytes attachment processing already read. A
 follow-up about an earlier photo reads that photo again, so the model looks at it
 rather than at its marker, and is told plainly when it is gone. Only the user's own
-photos go back in: a picture Recall generated is the model's own work, and sending
-it again would move every later turn onto a photo model for nothing.
+photos go back in: a photo Recall looked up is the app's own, and sending it again
+would move every later turn onto a photo model for nothing.
 
 An earlier photo is read again only while the conversation is still about it: it
 was sent in the user's previous message (the reply in between was about it), or
-this message names a picture ("the photo", "that screenshot": the image intents'
+this message names a picture ("the photo", "that screenshot": the photo lookup's
 nouns plus the words people use for a picture they sent). Otherwise every later turn of a chat that once had a
 photo downloaded it again and ran on the vision model. A storage outage here
 cannot fail the turn: the user's message is already saved, so the turn goes on
@@ -33,7 +33,7 @@ from app.modules.attachments import markers as attachment_markers
 from app.modules.attachments import service as attachments_service
 from app.modules.attachments import vision_input
 from app.modules.chat.turn_prep.attachments import _AttachmentProcessResult
-from app.modules.images.gen_intent import IMAGE_NOUNS
+from app.modules.images.lookup_intent import IMAGE_NOUNS
 
 logger = logging.getLogger(__name__)
 
@@ -72,8 +72,8 @@ async def inject_turn_images(
     )
 
 
-# The image intents' nouns, plus what people call a picture they sent rather than
-# one they want drawn.
+# The photo lookup's nouns, plus what people call a picture they sent rather than
+# one they want found.
 _PICTURE_NOUNS = IMAGE_NOUNS | frozenset(
     {
         "photograph",

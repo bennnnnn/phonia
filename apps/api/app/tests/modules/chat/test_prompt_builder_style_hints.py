@@ -207,48 +207,6 @@ def test_slim_casual_turn_uses_compact_math_safety_not_viz_pack():
     assert "Math diagrams and plots" not in joined
 
 
-def test_compact_image_turn_gets_honesty_hint_not_viz_pack():
-    from app.modules.chat.prompt_constants import (
-        FORMAT_CONTRACT,
-        IMAGE_GEN_HONESTY_HINT,
-        VISUALIZATION_HINTS,
-    )
-
-    parts = _style_format_hints(
-        query_text="Image",
-        is_day_plan=False,
-        minimal_personal_context=False,
-        compact=True,
-    )
-    assert IMAGE_GEN_HONESTY_HINT in parts
-    assert VISUALIZATION_HINTS not in parts
-    assert FORMAT_CONTRACT not in parts
-    joined = "\n".join(parts)
-    assert "Never send the user to DALL-E" in joined  # safety phrase
-    assert "Never say Recall cannot create or generate images" in joined  # safety phrase
-    assert "do not tell them to send the same image request again" in joined
-
-
-def test_compact_image_turn_when_generation_disabled_does_not_ask_to_retry():
-    from app.modules.chat.prompt_constants import (
-        IMAGE_GEN_HONESTY_HINT,
-        IMAGE_GEN_UNAVAILABLE_HINT,
-    )
-
-    parts = _style_format_hints(
-        query_text="generate an image of a dog",
-        is_day_plan=False,
-        minimal_personal_context=False,
-        compact=True,
-        image_generation_enabled=False,
-    )
-    assert IMAGE_GEN_UNAVAILABLE_HINT in parts
-    assert IMAGE_GEN_HONESTY_HINT not in parts
-    joined = "\n".join(parts)
-    assert IMAGE_GEN_UNAVAILABLE_HINT in joined
-    assert IMAGE_GEN_UNAVAILABLE_HINT in joined
-
-
 def test_rich_turn_injects_format_contract_once_and_keeps_math():
     from app.modules.chat.prompt_constants import COMPARISON_FORMAT_HINT, FORMAT_CONTRACT
     from app.modules.math.reply_policy import MATH_INTENT_HINT, MATH_SOLVER_HINT

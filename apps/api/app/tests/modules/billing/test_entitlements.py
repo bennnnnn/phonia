@@ -18,9 +18,9 @@ def _user(plan_id: str) -> SimpleNamespace:
 @pytest.mark.parametrize(
     "plan_id, expected",
     [
-        ("free", {"image_generation"}),
-        ("plus", {"all_models", "image_generation", "speech_transcription", "speech_tts"}),
-        ("pro", {"all_models", "image_generation", "speech_transcription", "speech_tts"}),
+        ("free", set()),
+        ("plus", {"all_models", "speech_transcription", "speech_tts"}),
+        ("pro", {"all_models", "speech_transcription", "speech_tts"}),
     ],
 )
 def test_each_plan_includes_exactly_its_features(plan_id, expected):
@@ -34,7 +34,6 @@ def test_each_plan_includes_exactly_its_features(plan_id, expected):
             "free",
             {
                 "daily_tokens": 100_000,
-                "daily_image_generations": 3,
                 "daily_speech_transcriptions": 0,
                 "daily_speech_tts": 0,
             },
@@ -43,7 +42,6 @@ def test_each_plan_includes_exactly_its_features(plan_id, expected):
             "plus",
             {
                 "daily_tokens": 500_000,
-                "daily_image_generations": 10,
                 "daily_speech_transcriptions": 200,
                 "daily_speech_tts": 100,
             },
@@ -52,7 +50,6 @@ def test_each_plan_includes_exactly_its_features(plan_id, expected):
             "pro",
             {
                 "daily_tokens": 500_000,
-                "daily_image_generations": 15,
                 "daily_speech_transcriptions": 200,
                 "daily_speech_tts": 100,
             },

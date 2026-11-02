@@ -20,7 +20,7 @@ CARD_PASSES = frozenset({"chemistry_fences", "physics_fences", "math_fences", "w
 # The passes that read the model's fences as it wrote them.
 FENCE_READERS = (CARD_PASSES - {"working_check"}) | {"formula_charts", "chemistry_enrich"}
 # The server's own pictures and chips: added after the model's media is neutralized.
-SERVER_MEDIA = frozenset({"answer_photo", "reply_picture", "search_sources"})
+SERVER_MEDIA = frozenset({"answer_photo", "search_sources"})
 
 # After the user's Stop the reply is what they saw: only the passes that remove
 # or neutralize model text (forged checks, untrusted media, scaffolding) or lay it

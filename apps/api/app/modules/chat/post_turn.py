@@ -2,7 +2,7 @@
 
 Title, memory, lesson progress, compression and indexing are best-effort background
 work: enqueued after the reply commits, never on the stream's path. A typed turn
-commits in ``turn_settle``; a picture, a photo lookup or a voice turn commits through
+commits in ``turn_settle``; a photo lookup or a voice turn commits through
 ``turn_record`` and sets off the same jobs (code-health audit ARCH-08).
 ``POST_TURN_JOBS`` is the list, in order: each entry reads the ``FinishedTurn`` and
 returns the jobs it wants (none or one). A turn's documents are not here: they are

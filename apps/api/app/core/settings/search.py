@@ -18,11 +18,10 @@ class SearchSettings(BaseModel):
     web_search_max_results: int = 5
     web_search_cache_ttl: int = 300
 
-    # Real reference-photo lookup ("show me an ear" / "what does X look like")
-    # — separate from AI generation. Reuses Tavily (image_search_enabled also
-    # requires tavily_api_key, same as web_search). Available to free users
-    # (lower cap) since it costs one Tavily query + one image fetch, not a
-    # 120s image-gen provider call.
+    # Real reference-photo lookup ("show me an ear" / "what does X look like").
+    # Reuses Tavily (image_search_enabled also requires tavily_api_key, same as
+    # web_search). Available to free users (lower cap) since it costs one
+    # Tavily query + one image fetch.
     image_search_enabled: bool = True
     image_search_max_results: int = 3
     image_search_fetch_timeout_seconds: float = 8.0

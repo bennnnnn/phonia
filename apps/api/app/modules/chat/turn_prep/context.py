@@ -45,7 +45,6 @@ logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
     from app.modules.images.answer_photo import AnswerPhoto
-    from app.modules.images.reply_picture import ReplyPicture
     from app.services.subjects.registry import MoneyTurn
 
 
@@ -113,7 +112,7 @@ class StreamContext:
     # finalize and stream teardown await it so the assistant insert cannot
     # commit first and so a failed prompt still keeps what the user sent.
     user_message_persist: asyncio.Task[None] | None = None
-    # Set when the tool loop's generate_image persisted the assistant row —
+    # Set when the tool loop's search_image persisted the assistant row —
     # stream_and_finalize skips the LLM + second insert.
     terminal_image_message_id: str | None = None
     terminal_image_content: str | None = None
@@ -123,12 +122,10 @@ class StreamContext:
     # A real photo above an answer about something worth seeing: the search
     # starts when the reply's ```photo fence closes; finalize links the ids.
     answer_photo: AnswerPhoto | None = None
-    # What the reply shows above its text, linked to it when it saves: that photo, or
-    # the picture a multi-part message asked for (``reply_picture``).
+    # What the reply shows above its text, linked to it when it saves: that photo.
     answer_photo_ids: list[UUID] = field(default_factory=list)
-    # A multi-part message's settings card and picture: the server's part of the reply.
+    # A multi-part message's settings card: the server's part of the reply.
     settings_card: str | None = None
-    reply_picture: ReplyPicture | None = None
     # The tools the reply's own model call carries, when the tool loop leaves the
     # turn to it: ``web_search`` (``tool_loop.reply_calls``).
     reply_tools: list[dict[str, Any]] = field(default_factory=list)

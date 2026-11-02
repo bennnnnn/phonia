@@ -133,12 +133,3 @@ def reply_language_hint(
         f"Write this reply in {name}, the language of the user's message, whatever a saved "
         "memory or an earlier reply says."
     )
-
-
-def line_language(text: str, locale: Any) -> str:
-    """The language of a line the server adds to the reply to ``text``: the message's own
-    when it is plainly one of the app's languages (the reply follows it), else the app's.
-
-    A German app asked in English got an English answer with a German line under it.
-    """
-    return _plainly(text) or normalize_locale_code(locale if isinstance(locale, str) else None)

@@ -117,7 +117,6 @@ RETIRED_LEGACY_MODULES: tuple[str, ...] = (
     "app.services.live_talk_tools",
     "app.services.math",
     "app.services.mcp.calendar_adapter",
-    "app.services.mcp.image_gen_adapter",
     "app.services.mcp.image_search_adapter",
     "app.services.mcp.sympy_adapter",
     "app.services.mcp.web_search_adapter",

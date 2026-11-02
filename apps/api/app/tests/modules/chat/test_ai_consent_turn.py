@@ -126,10 +126,6 @@ async def test_a_cached_user_that_agreed_on_another_machine_is_read_again() -> N
     with (
         _patches(fakes),
         patch("app.modules.chat.stream_entry.stream_and_finalize", fake_stream),
-        patch(
-            "app.modules.chat.turn_intercepts.try_image_gen_for_turn",
-            AsyncMock(return_value=False),
-        ),
         patch("app.modules.chat.stream_entry.top_up_reserve_for_prompt", AsyncMock()),
         patch("app.modules.chat.stream_entry.await_user_message_persist", AsyncMock()),
     ):
