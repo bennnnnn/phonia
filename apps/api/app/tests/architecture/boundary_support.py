@@ -53,11 +53,11 @@ RETIRED_LEGACY_MODULES: tuple[str, ...] = (
     # Split by job: ``request_text``, ``expr_rewrite``, ``function_def``, ``direct_newton`` (ES-34).
     "app.modules.math.tools.helpers",
     # The model-reader experiment, removed with its shadow hook.
-    "app.modules.model_reader",
+    "app.modules.model_reader.service",
     "app.modules.notifications.legacy_alias",
     "app.modules.physics.legacy_alias",
     # The retired proactive suggestions; follow-ups are ``chat.related_prompts``.
-    "app.modules.suggestions",
+    "app.modules.suggestions.service",
     "app.modules.web_search.legacy_alias",
     "app.repositories.attachment_chunks",
     "app.repositories.attachments",
