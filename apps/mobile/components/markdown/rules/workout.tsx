@@ -156,7 +156,7 @@ const RULE_WIDTH = 2;
  * numbered move) is ruled, its gap below padded instead of left as a margin, so the
  * sections run together as one ruled block under **Solution**.
  */
-export function workoutRule(t: Theme) {
+function workoutRule(t: Theme) {
   return {
     marginLeft: Space.xxs,
     paddingLeft: Space.sm,
@@ -181,7 +181,7 @@ const SOLVE_FOR = /^Solve for\s/;
 /**
  * One state of a section, its maths. Nothing is ever drawn at the right edge: a move
  * (`$2x = 8$ — subtract 3`) is a line of its own just above the maths it reached, drawn
- * as "Solve for $t$" is; what is asked reads "$t$ (time)" on one row. A given's closing
+ * as "Solve for $t$" is; a given or what is asked reads "$t$ (time)" on one row. A given's closing
  * "where" line names each symbol in secondary ink.
  */
 function renderWorkoutLine(
@@ -196,9 +196,10 @@ function renderWorkoutLine(
 ): React.ReactElement {
   // While streaming, the caret's mark rides on the last line: draw the caret, never the mark.
   const marked = splitStreamCaret(line);
-  // What is asked is one line: the unknown, its meaning beside it.
+  // A given or what is asked is one line, its meaning beside it ("$t$ (time)"); only a
+  // move's note is a line of its own.
   const { state, note } = splitWorkoutNote(
-    asked ? askedLine(marked.text) : marked.text,
+    asked || given ? askedLine(marked.text) : marked.text,
   );
   const naming = given && /^where\s/i.test(state);
   const move = !note && SOLVE_FOR.test(state);

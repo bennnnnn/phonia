@@ -137,6 +137,48 @@ function stepOperand(label: string): { prefix: string; operand: string; suffix: 
   return null;
 }
 
+/** A step's reason, the rule under its move: smaller and dimmer than the working. */
+function renderLessonReason(
+  key: string,
+  reason: string,
+  styles: StyleMap,
+  t: Theme,
+): React.ReactElement {
+  return (
+    <View
+      testID="lesson-step-reason"
+      // The rule under the step: smaller and dimmer than the working.
+      style={{
+        flexDirection: "row",
+        flexWrap: "wrap",
+        alignItems: "center",
+        marginBottom: Space.xxs,
+      }}
+    >
+      {splitInlineMath(reason).map((part, i) =>
+        part.type === "math" ? (
+          <MathText
+            scrollOverflow
+            key={`${key}-reason-m-${i}`}
+            latex={part.value}
+            textColor={t.textTertiary}
+            fontSize={Type.secondary.fontSize}
+          />
+        ) : (
+          <Text
+            key={`${key}-reason-t-${i}`}
+            style={[styles.text, Type.secondary, { color: t.textTertiary }]}
+            maxFontSizeMultiplier={DYNAMIC_TYPE_MAX}
+            selectable
+          >
+            {part.value}
+          </Text>
+        ),
+      )}
+    </View>
+  );
+}
+
 /** A lesson step: its number in a pill and the move, then the reason and each equation. */
 export function renderLessonStep(
   key: string,
@@ -198,39 +240,7 @@ export function renderLessonStep(
       </View>
       {step.reason || step.formulas.length ? (
         <View testID="lesson-step-formula" style={{ paddingLeft: Space.xl, gap: Space.xxs }}>
-          {step.reason ? (
-            <View
-              testID="lesson-step-reason"
-              // The rule under the step: smaller and dimmer than the working.
-              style={{
-                flexDirection: "row",
-                flexWrap: "wrap",
-                alignItems: "center",
-                marginBottom: Space.xxs,
-              }}
-            >
-              {splitInlineMath(step.reason).map((part, i) =>
-                part.type === "math" ? (
-                  <MathText
-                    scrollOverflow
-                    key={`${key}-reason-m-${i}`}
-                    latex={part.value}
-                    textColor={t.textTertiary}
-                    fontSize={Type.secondary.fontSize}
-                  />
-                ) : (
-                  <Text
-                    key={`${key}-reason-t-${i}`}
-                    style={[styles.text, Type.secondary, { color: t.textTertiary }]}
-                    maxFontSizeMultiplier={DYNAMIC_TYPE_MAX}
-                    selectable
-                  >
-                    {part.value}
-                  </Text>
-                ),
-              )}
-            </View>
-          ) : null}
+          {step.reason ? renderLessonReason(key, step.reason, styles, t) : null}
           {step.formulas.map((formula, i) => (
             // A move's maths is centred, as in every worked section; the reason above it
             // stays at the left.

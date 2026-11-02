@@ -617,8 +617,10 @@ describe("markdown render rules", () => {
       );
     };
     expect(rightAligned(toJSON())).toBe(0);
-    // Every note is a line of its own (Required reads "t (time)" instead).
-    expect(getAllByTestId("workout-move").map((move) => move.props.testID)).toHaveLength(6);
+    // A given and what is asked read inline ("v = 20 m/s (east)", "t (time)"); every other
+    // note is a line of its own.
+    expect(getAllByTestId("workout-line")[0]).toHaveTextContent(/\(east\)$/);
+    expect(getAllByTestId("workout-move").map((move) => move.props.testID)).toHaveLength(5);
   });
 
   it("centres a line of maths inside Solution and keeps Given and the headings at the left", async () => {
